@@ -35,3 +35,51 @@ Create a durable source of truth before application code.
 ### Next
 
 Build 001 — Monorepo, Web App & Chrome Extension Shell.
+
+## Build 001 — Monorepo, Web App & Chrome Extension Shell
+
+Date: 2026-10-02
+
+Status: COMPLETE on `dev`, pending promotion to `main`.
+
+### Goal
+
+Create the first executable platform baseline with independently buildable web and browser-extension applications.
+
+### Delivered
+
+- pnpm workspace monorepo;
+- Node.js 24 baseline;
+- Next.js 16.3.8 App Router web shell;
+- React 19.3.0 UI baseline;
+- Chrome Manifest V3 side-panel extension shell;
+- least-privilege extension manifest using only the `sidePanel` permission;
+- Vite-based extension production build;
+- shared TypeScript contracts package;
+- shared TypeScript compiler baseline;
+- ESLint 10-compatible web lint configuration;
+- exact direct dependency versions;
+- committed `pnpm-lock.yaml`;
+- CI verification using frozen-lockfile installation;
+- development and Chrome extension loading documentation.
+
+### Verification
+
+The Build 001 `dev` workflow verified:
+
+- dependency installation;
+- TypeScript checks for web, extension and contracts;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- shared-contract smoke test.
+
+### Security notes
+
+- no Supabase keys or runtime secrets exist in Build 001;
+- the extension has no host permissions, `activeTab`, or scripting permission;
+- dependency lifecycle scripts are denied by default except the explicitly reviewed `unrs-resolver@1.12.2` build required by the lint toolchain.
+
+### Next
+
+Build 002 — Supabase Auth & Workspace Isolation.
