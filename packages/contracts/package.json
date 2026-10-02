@@ -19,6 +19,6 @@
     "test": "node --test tests/contracts.test.mjs"
   },
   "devDependencies": {
-    "typescript": "7.0.2"
+    "typescript": "5.9.3"
   }
 }
