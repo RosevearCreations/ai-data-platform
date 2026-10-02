@@ -1,0 +1,63 @@
+# Decisions
+
+This file records durable architectural/product decisions. New decisions should be appended rather than silently changing history.
+
+## D0001 — Dedicated repository
+
+Decision: The shared platform lives in `RosevearCreations/ai-data-platform`, not inside Rosie Dazzlers, Devil n Dove or YW.
+
+Reason: no business application should own infrastructure shared by the others.
+
+## D0002 — One platform, multiple workspaces
+
+Decision: Rosie Dazzlers, Devil n Dove and Personal are separate workspaces in one platform.
+
+Reason: extraction, provenance, matching and review logic should be built once while data access remains isolated.
+
+## D0003 — Local-first extraction
+
+Decision: interactive extraction initially runs in the Chrome extension.
+
+Reason: it provides a useful product before building costly remote browser infrastructure.
+
+## D0004 — AI interprets; deterministic code repeats
+
+Decision: AI is used for semantic work and recipe assistance. Normal code performs bulk extraction and arithmetic whenever possible.
+
+Reason: lower cost, higher predictability, easier testing.
+
+## D0005 — Evidence is canonical provenance
+
+Decision: every external fact should be traceable to a URL/dataset and retrieval time.
+
+Reason: comparisons and updates must be auditable.
+
+## D0006 — Review before production writes
+
+Decision: scraped/enriched data does not automatically overwrite Rosie Dazzlers or Devil n Dove production data by default.
+
+Reason: prevent incorrect extraction or AI interpretation from corrupting business records.
+
+## D0007 — Provider-neutral AI
+
+Decision: core application logic calls internal AI tasks rather than vendor-specific APIs directly.
+
+Reason: providers, models and pricing change.
+
+## D0008 — Supabase persistence baseline
+
+Decision: use Supabase Postgres/Auth/Storage initially, with RLS-based workspace isolation.
+
+Reason: strong relational model, auth and existing project familiarity.
+
+## D0009 — Prefer APIs/datasets over scraping
+
+Decision: where a suitable official API or dataset exists, prefer it over page scraping.
+
+Reason: reliability, policy compliance and lower maintenance.
+
+## D0010 — Shared platform does not share business databases directly
+
+Decision: integrations occur through explicit adapters and approved jobs.
+
+Reason: preserve application boundaries and reduce blast radius.
