@@ -18,7 +18,7 @@ Deliverables:
 
 ## Build 001 — Monorepo, Web App & Chrome Extension Shell
 
-Status: COMPLETE on `dev`, pending promotion to `main`.
+Status: COMPLETE. Promotion is performed through the Build 001 pull request.
 
 - initialize package manager/workspaces;
 - create Next.js web app;
