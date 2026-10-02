@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+.next/
+dist/
+build/
+out/
+coverage/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# local tooling
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Supabase local
+.supabase/
