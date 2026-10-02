@@ -4,7 +4,7 @@
 
 Date: 2026-10-02
 
-Status: completed on `dev` pending promotion to `main`.
+Status: COMPLETE. Promotion is performed through the Build 000 pull request.
 
 ### Goal
 
