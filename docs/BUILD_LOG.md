@@ -40,7 +40,7 @@ Build 001 — Monorepo, Web App & Chrome Extension Shell.
 
 Date: 2026-10-02
 
-Status: COMPLETE on `dev`, pending promotion to `main`.
+Status: COMPLETE. Promotion is performed through the Build 001 pull request.
 
 ### Goal
 
