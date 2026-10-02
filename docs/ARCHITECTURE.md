@@ -1,0 +1,118 @@
+# Architecture
+
+## Architectural goals
+
+- one shared platform, multiple isolated workspaces;
+- local-first extraction where practical;
+- AI for interpretation, not repetitive row-by-row work;
+- auditable provenance for collected data;
+- review-before-write for business integrations;
+- provider-neutral AI layer;
+- independently testable extraction engine.
+
+## Proposed monorepo
+
+```text
+apps/
+  web/            Next.js dashboard and API surface
+  extension/      Chrome MV3 side-panel extension
+
+packages/
+  extractor/      DOM inspection and deterministic extraction
+  recipes/        portable extraction recipe schema and execution
+  pagination/     next-button, numbered-page and infinite-scroll logic
+  ai/             provider-neutral AI interpretation layer
+  normalization/  value cleanup, units, currency, categories
+  matching/       record/entity matching and confidence scoring
+  schema/         shared TypeScript schemas
+  shared-ui/      shared UI primitives where appropriate
+
+supabase/
+  migrations/
+  seed/
+  functions/
+
+docs/
+```
+
+## Technology baseline
+
+- TypeScript
+- Next.js App Router for the web application
+- React for UI surfaces
+- Chrome Manifest V3 with Side Panel API for browser interaction
+- Supabase Postgres/Auth/Storage as the initial persistence layer
+- a provider-neutral AI adapter; model/provider choice is configuration rather than business logic
+- standard browser APIs and deterministic JavaScript/TypeScript for bulk extraction
+
+## Runtime split
+
+### Browser extension
+
+Responsible for:
+
+- reading the current page DOM with approved extension permissions;
+- visual element picking;
+- identifying candidate record containers;
+- executing extraction recipes against the page;
+- pagination/infinite-scroll actions while the user is present;
+- previewing data before upload to the platform.
+
+### Web application
+
+Responsible for:
+
+- workspace management;
+- scraper/recipe management;
+- dataset browsing;
+- run history;
+- review queues;
+- historical comparisons;
+- integration configuration;
+- export and audit views.
+
+### Backend/database
+
+Responsible for:
+
+- authenticated persistence;
+- workspace isolation;
+- versioned recipes;
+- source evidence;
+- datasets and records;
+- change history;
+- approval state;
+- integration jobs.
+
+## Data flow
+
+```text
+Web page
+  -> DOM inspector
+  -> candidate record/field detection
+  -> optional AI interpretation
+  -> extraction recipe
+  -> deterministic extraction
+  -> preview
+  -> normalization
+  -> matching/confidence
+  -> review/approval
+  -> dataset
+  -> optional approved integration
+```
+
+## Local-first principle
+
+The first useful version does not require a large remote scraping cluster. The browser extension performs interactive extraction in the user's own browser. Cloud crawling, proxies and remote scheduled browsers are deferred until a demonstrated need exists.
+
+## AI boundary
+
+AI may propose a schema, interpret ambiguous labels, normalize free text, help repair a recipe and classify/match records. It should not be invoked for every row when a deterministic selector or transform can do the same work.
+
+## Integration boundary
+
+Rosie Dazzlers and Devil n Dove remain independent applications. This repository owns shared acquisition/intelligence logic. Business applications consume approved outputs through explicit integration adapters rather than by sharing database tables directly.
+
+## Deployment baseline
+
+The web application may be deployed independently of the two business sites. The extension and web app version together through this repository. Production deployment decisions begin after Build 001 establishes executable application code.
