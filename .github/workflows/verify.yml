@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   verify:
@@ -28,21 +28,10 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24
+          package-manager-cache: false
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Typecheck, lint, build and test
         run: pnpm verify
-
-      - name: Commit generated lockfile on dev
-        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-        shell: bash
-        run: |
-          if [ -n "$(git status --porcelain -- pnpm-lock.yaml)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add pnpm-lock.yaml
-            git commit -m "build 001: refresh pnpm lockfile"
-            git push
-          fi
