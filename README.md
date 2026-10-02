@@ -36,3 +36,15 @@ Start with:
 ## Build 000
 
 Build 000 establishes the shared platform foundation and source-of-truth documentation. No production scraping automation is enabled by Build 000.
+
+## Executable applications
+
+- `apps/web` — Next.js dashboard shell.
+- `apps/extension` — Chrome Manifest V3 side-panel shell.
+- `packages/contracts` — shared TypeScript platform contracts.
+
+See [Development](docs/DEVELOPMENT.md) for install, build, verification and extension-loading instructions.
+
+## Current build
+
+Build 001 — Monorepo, Web App & Chrome Extension Shell.
