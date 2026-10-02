@@ -18,6 +18,8 @@ Deliverables:
 
 ## Build 001 — Monorepo, Web App & Chrome Extension Shell
 
+Status: COMPLETE on `dev`, pending promotion to `main`.
+
 - initialize package manager/workspaces;
 - create Next.js web app;
 - create Chrome MV3 extension shell with side panel;
