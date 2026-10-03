@@ -257,6 +257,24 @@ export function executeExtractionRecipe(
     }
   };
 
+  const attributeAllowed = (name: string) => {
+    const normalized = name.trim().toLowerCase();
+
+    if (!normalized) {
+      return false;
+    }
+
+    if (
+      normalized === "value" ||
+      normalized === "srcdoc" ||
+      normalized.startsWith("on")
+    ) {
+      return false;
+    }
+
+    return /^[a-z_:][a-z0-9_.:-]*$/i.test(normalized);
+  };
+
   const applyTransforms = (
     initialValue: string,
     transforms: ExtractionFieldRecipe["transforms"]
@@ -364,7 +382,13 @@ export function executeExtractionRecipe(
             )
           );
         } else if (field.source === "attribute") {
-          raw = cleanString(element.getAttribute(field.attribute));
+          if (!attributeAllowed(field.attribute)) {
+            recordWarnings.push(
+              `${field.label}: attribute "${field.attribute}" is not allowed.`
+            );
+          } else {
+            raw = cleanString(element.getAttribute(field.attribute));
+          }
         }
       }
 
