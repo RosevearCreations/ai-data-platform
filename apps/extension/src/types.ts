@@ -42,3 +42,27 @@ export interface PageInspection {
   candidates: ContainerCandidate[];
   truncated: boolean;
 }
+
+export interface VisualPickResult {
+  status: "picked" | "cancelled";
+  selector: string;
+  generalizedSelector: string;
+  generalizedMatchCount: number;
+  tagName: string;
+  text: string;
+  attributes: Record<string, string>;
+  rect: {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null;
+}
+
+export interface SelectorPreviewResult {
+  selector: string;
+  matchCount: number;
+  visibleMatchCount: number;
+  sampleTexts: string[];
+  truncated: boolean;
+}
