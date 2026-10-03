@@ -106,3 +106,15 @@ Never log secrets, authorization headers, full session tokens or sensitive reque
 ## Backups and recovery
 
 Before production integrations are enabled, define backup/restore procedures for canonical datasets and integration mappings.
+
+### Visual picker boundary
+
+Build 004 reuses the Build 003 temporary active-tab grant.
+
+- hover highlighting uses extension-created overlays that do not receive pointer input;
+- selecting an element prevents that one page interaction from navigating or submitting;
+- Escape or the side-panel Cancel action exits without a selection;
+- selector capture reads only the safe attributes already allowed by the DOM inspector;
+- selectors and short visible-text samples return to the side panel;
+- selector preview highlights at most 50 visible matches and removes those overlays automatically;
+- preview does not activate matched elements.
