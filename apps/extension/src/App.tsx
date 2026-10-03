@@ -2,12 +2,18 @@ import { useMemo, useState } from "react";
 
 import { inspectPage } from "./inspect-page";
 import {
+  detectRepeatingRecords,
+  previewRecordGroup
+} from "./record-detector";
+import {
   cancelVisualPicker,
   previewSelector,
   startVisualPicker
 } from "./visual-picker";
 import type {
   PageInspection,
+  RecordDetectionResult,
+  RecordPreviewResult,
   SelectorPreviewResult,
   VisualPickResult
 } from "./types";
@@ -52,8 +58,13 @@ export function App() {
     null
   );
   const [preview, setPreview] = useState<SelectorPreviewResult | null>(null);
+  const [recordDetection, setRecordDetection] =
+    useState<RecordDetectionResult | null>(null);
+  const [recordPreview, setRecordPreview] =
+    useState<RecordPreviewResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
+  const [recordPending, setRecordPending] = useState(false);
   const [pickerActive, setPickerActive] = useState(false);
 
   const topCandidate = useMemo(
@@ -126,6 +137,64 @@ export function App() {
     }
   }
 
+  async function runRecordDetection(inputSelector = "") {
+    setRecordPending(true);
+    setRecordPreview(null);
+    setError(null);
+
+    try {
+      const tabId = await getActiveTabId();
+      const injection = inputSelector
+        ? ({
+            target: { tabId },
+            func: detectRepeatingRecords,
+            args: [inputSelector]
+          } as unknown as Parameters<typeof chrome.scripting.executeScript>[0])
+        : ({
+            target: { tabId },
+            func: detectRepeatingRecords
+          } as Parameters<typeof chrome.scripting.executeScript>[0]);
+
+      const results = await chrome.scripting.executeScript(injection);
+      const result = results[0]?.result as RecordDetectionResult | undefined;
+
+      if (!result) {
+        throw new Error("Record detection did not return a result.");
+      }
+
+      setRecordDetection(result);
+    } catch (reason) {
+      setRecordDetection(null);
+      setError(normalizeChromeError(reason));
+    } finally {
+      setRecordPending(false);
+    }
+  }
+
+  async function runRecordPreview(recordSelector: string) {
+    setError(null);
+
+    try {
+      const tabId = await getActiveTabId();
+      const injection = {
+        target: { tabId },
+        func: previewRecordGroup,
+        args: [recordSelector]
+      } as unknown as Parameters<typeof chrome.scripting.executeScript>[0];
+
+      const results = await chrome.scripting.executeScript(injection);
+      const result = results[0]?.result as RecordPreviewResult | undefined;
+
+      if (!result) {
+        throw new Error("Record preview did not return a result.");
+      }
+
+      setRecordPreview(result);
+    } catch (reason) {
+      setError(normalizeChromeError(reason));
+    }
+  }
+
   async function runPreview(selector: string) {
     setError(null);
 
@@ -157,15 +226,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">004</span>
+        <span className="build">005</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
         <strong>Point, click, verify</strong>
         <p>
-          Start the picker, hover the page until the field we want is
-          highlighted, then click it. Press Escape or use Cancel to stop without
-          selecting anything.
+          Detect repeated rows, cards, products, packages, or other record
+          groups automatically. If we already picked a field, we can also infer
+          the repeated record boundary around that field.
         </p>
       </section>
 
@@ -191,7 +260,33 @@ export function App() {
         >
           {pending ? "Inspecting…" : "Analyze page"}
         </button>
-        {pickerActive ? (
+        <div className="recordActions">
+        <button
+          className="recordPrimary"
+          disabled={recordPending || pickerActive}
+          onClick={() => runRecordDetection()}
+          type="button"
+        >
+          {recordPending ? "Detecting records…" : "Detect repeating records"}
+        </button>
+        <button
+          className="recordSecondary"
+          disabled={
+            recordPending ||
+            pickerActive ||
+            !pickedElement ||
+            pickedElement.generalizedMatchCount < 2
+          }
+          onClick={() =>
+            runRecordDetection(pickedElement?.generalizedSelector ?? "")
+          }
+          type="button"
+        >
+          Detect around selected field
+        </button>
+      </div>
+
+      {pickerActive ? (
           <button className="dangerButton" onClick={cancelPicker} type="button">
             Cancel picker
           </button>
@@ -216,6 +311,160 @@ export function App() {
         <section className="errorBox" role="alert">
           <strong>Action unavailable</strong>
           <p>{error}</p>
+        </section>
+      ) : null}
+
+      {recordDetection ? (
+        <section className="recordDetection">
+          <div className="sectionHeader">
+            <div>
+              <p className="eyebrow">Repeating records</p>
+              <h2>
+                {recordDetection.candidates.length} candidate group
+                {recordDetection.candidates.length === 1 ? "" : "s"}
+              </h2>
+            </div>
+            <span className="modeBadge">
+              {recordDetection.mode === "selected-field"
+                ? "Field guided"
+                : "Automatic"}
+            </span>
+          </div>
+
+          <p className="recordSummary">
+            Inspected {recordDetection.inspectedParents} possible containers.
+            {recordDetection.truncated
+              ? " Showing the strongest candidates."
+              : ""}
+          </p>
+
+          {recordDetection.candidates.length ? (
+            <div className="recordCandidateList">
+              {recordDetection.candidates.map((candidate, index) => (
+                <article
+                  className="recordCandidateCard"
+                  key={`${candidate.recordSelector}-${index}`}
+                >
+                  <div className="recordCandidateTop">
+                    <div>
+                      <span className="recordRank">#{index + 1}</span>
+                      <strong>{candidate.recordCount} records</strong>
+                      <small>
+                        {candidate.visibleRecordCount} visible ·{" "}
+                        {candidate.source === "selected-field"
+                          ? "field-guided"
+                          : "automatic"}
+                      </small>
+                    </div>
+                    <span className="confidence">
+                      {candidate.confidence}
+                    </span>
+                  </div>
+
+                  <div className="recordSelector">
+                    <span>Record selector</span>
+                    <code>{candidate.recordSelector}</code>
+                  </div>
+
+                  <div className="recordMetrics">
+                    <div>
+                      <strong>
+                        {formatPercent(candidate.metrics.repeatRatio)}
+                      </strong>
+                      <span>repeat</span>
+                    </div>
+                    <div>
+                      <strong>
+                        {formatPercent(
+                          candidate.metrics.structuralConsistency
+                        )}
+                      </strong>
+                      <span>structure</span>
+                    </div>
+                    <div>
+                      <strong>
+                        {formatPercent(candidate.metrics.linkCoverage)}
+                      </strong>
+                      <span>links</span>
+                    </div>
+                    <div>
+                      <strong>
+                        {formatPercent(candidate.metrics.imageCoverage)}
+                      </strong>
+                      <span>images</span>
+                    </div>
+                  </div>
+
+                  {candidate.diagnostics.length ? (
+                    <ul className="diagnostics">
+                      {candidate.diagnostics.map((diagnostic) => (
+                        <li key={diagnostic}>{diagnostic}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  {candidate.samples.length ? (
+                    <div className="recordSamples">
+                      {candidate.samples.slice(0, 3).map((sample) => (
+                        <div key={sample.index}>
+                          <span>Record {sample.index + 1}</span>
+                          <p>{sample.text || "(No visible text)"}</p>
+                          {sample.fieldHints.length ? (
+                            <small>{sample.fieldHints.join(" · ")}</small>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  <button
+                    className="previewButton"
+                    onClick={() =>
+                      runRecordPreview(candidate.recordSelector)
+                    }
+                    type="button"
+                  >
+                    Preview record boundaries
+                  </button>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="emptyMessage">
+              No reliable repeating record group was found. Pick a field from one
+              record and try field-guided detection.
+            </p>
+          )}
+        </section>
+      ) : null}
+
+      {recordPreview ? (
+        <section className="recordPreview" role="status">
+          <div className="sectionHeader">
+            <div>
+              <p className="eyebrow">Record preview</p>
+              <h2>
+                {recordPreview.visibleMatchCount} visible of{" "}
+                {recordPreview.matchCount} total
+              </h2>
+            </div>
+            <span className="recordPreviewBadge">Previewed</span>
+          </div>
+          <p>
+            Record boundaries are highlighted on the page for about two seconds.
+            {recordPreview.truncated
+              ? " Highlighting is capped at the first 60 visible records."
+              : ""}
+          </p>
+          {recordPreview.sampleTexts.length ? (
+            <div className="samples">
+              {recordPreview.sampleTexts.map((sample, index) => (
+                <blockquote key={`${index}-${sample}`}>
+                  {sample}
+                </blockquote>
+              ))}
+            </div>
+          ) : null}
         </section>
       ) : null}
 
