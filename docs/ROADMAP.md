@@ -46,7 +46,7 @@ Acceptance: authenticated users only see permitted workspace data, verified agai
 
 ## Build 003 — Page DOM Inspector
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 003 pull request.
 
 - temporary active-page inspection using `activeTab` + `scripting`;
 - bounded DOM snapshot model;
