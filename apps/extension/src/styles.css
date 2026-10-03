@@ -712,3 +712,383 @@ h1 {
   font-size: 0.62rem;
   line-height: 1.35;
 }
+
+.recordCardActions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.recipeStartButton {
+  min-height: 2.8rem;
+  border: 1px solid rgba(173, 127, 255, 0.3);
+  border-radius: 0.75rem;
+  background: rgba(173, 127, 255, 0.08);
+  color: #ddcaff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.recipeStartButton:hover {
+  border-color: rgba(173, 127, 255, 0.52);
+}
+
+.recipeBuilder {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border: 1px solid rgba(173, 127, 255, 0.2);
+  border-radius: 0.95rem;
+  background: rgba(173, 127, 255, 0.04);
+}
+
+.recipeBuilder h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.recipeClose {
+  border: 0;
+  background: transparent;
+  color: #b9a4dc;
+  font-size: 0.72rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.recipeRecordBoundary {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.7rem;
+  border-radius: 0.7rem;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.recipeRecordBoundary span,
+.transformList > span {
+  color: #9988b6;
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.recipeRecordBoundary code {
+  overflow-wrap: anywhere;
+  color: #e3d7f7;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.recipeRecordBoundary small,
+.recipeHint {
+  color: #8f83a2;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.recipeLabel,
+.recipeField label {
+  display: grid;
+  gap: 0.35rem;
+  color: #d8d0e4;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.recipeLabel input,
+.recipeField input,
+.recipeField select {
+  width: 100%;
+  min-height: 2.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.65rem;
+  outline: none;
+  background: #111923;
+  color: #edf6f7;
+  padding: 0 0.7rem;
+}
+
+.recipeLabel input:focus,
+.recipeField input:focus,
+.recipeField select:focus {
+  border-color: rgba(173, 127, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(173, 127, 255, 0.08);
+}
+
+.monoInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+}
+
+.recipeActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.recipePrimary,
+.recipeSecondary,
+.runRecipe {
+  min-height: 2.7rem;
+  border-radius: 0.7rem;
+  font-weight: 900;
+}
+
+.recipePrimary,
+.runRecipe {
+  border: 0;
+  background: #ad7fff;
+  color: #0e0819;
+}
+
+.recipeSecondary {
+  border: 1px solid rgba(173, 127, 255, 0.25);
+  background: rgba(173, 127, 255, 0.06);
+  color: #ddcaff;
+}
+
+.recipePrimary:not(:disabled),
+.recipeSecondary:not(:disabled),
+.runRecipe:not(:disabled) {
+  cursor: pointer;
+}
+
+.recipePrimary:disabled,
+.runRecipe:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.recipeHint {
+  margin: 0;
+}
+
+.recipeDerivation {
+  padding: 0.7rem;
+  border: 1px solid rgba(125, 226, 216, 0.12);
+  border-radius: 0.7rem;
+  background: rgba(125, 226, 216, 0.035);
+}
+
+.recipeDerivation strong {
+  font-size: 0.74rem;
+}
+
+.recipeDerivation p,
+.recipeDerivation small {
+  margin: 0.25rem 0 0;
+  color: #91a6a8;
+  font-size: 0.68rem;
+  line-height: 1.45;
+}
+
+.recipeFields {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.recipeField {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(173, 127, 255, 0.12);
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.recipeFieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.recipeFieldHeader strong {
+  color: #e6daf9;
+  font-size: 0.78rem;
+}
+
+.recipeFieldHeader button {
+  border: 0;
+  background: transparent;
+  color: #c594a4;
+  font-size: 0.68rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.recipeFieldGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.requiredToggle {
+  display: flex !important;
+  min-height: 2.45rem;
+  align-items: center;
+  gap: 0.4rem !important;
+  padding-top: 1.05rem;
+}
+
+.requiredToggle input {
+  width: auto;
+  min-height: auto;
+}
+
+.transformList {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.transformList > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.transformList label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 999px;
+  padding: 0.35rem 0.5rem;
+  color: #aaa0b8;
+  font-size: 0.63rem;
+  font-weight: 700;
+}
+
+.transformList input {
+  width: auto;
+  min-height: auto;
+  margin: 0;
+}
+
+.runRecipe {
+  width: 100%;
+}
+
+.recipeRun {
+  display: grid;
+  gap: 0.8rem;
+  padding-top: 0.2rem;
+}
+
+.recipeVersion {
+  padding: 0.25rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(173, 127, 255, 0.1);
+  color: #cdb2ff !important;
+  font-size: 0.65rem !important;
+}
+
+.recipeStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.recipeStats div {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.55rem 0.3rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.025);
+  text-align: center;
+}
+
+.recipeStats strong {
+  color: #eadffd;
+  font-size: 0.82rem;
+}
+
+.recipeStats span {
+  color: #817591;
+  font-size: 0.6rem;
+}
+
+.recipeRows {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.recipeRows article {
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.recipeRows article > strong {
+  color: #cdb2ff;
+  font-size: 0.68rem;
+}
+
+.recipeRows dl {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.55rem 0 0;
+}
+
+.recipeRows dl > div {
+  display: grid;
+  grid-template-columns: minmax(75px, 0.6fr) 1.4fr;
+  gap: 0.45rem;
+}
+
+.recipeRows dt {
+  color: #7f748d;
+  font-size: 0.64rem;
+}
+
+.recipeRows dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #c2b9cc;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.recipeRows article > small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #d59a9a;
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+
+.recipeJson {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.65rem;
+}
+
+.recipeJson summary {
+  color: #bfa8e6;
+  font-size: 0.7rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.recipeJson pre {
+  max-height: 320px;
+  overflow: auto;
+  border-radius: 0.65rem;
+  background: #081018;
+  color: #b7c7c9;
+  padding: 0.7rem;
+  font-size: 0.62rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 360px) {
+  .recipeActions,
+  .recipeFieldGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .requiredToggle {
+    padding-top: 0;
+  }
+}
