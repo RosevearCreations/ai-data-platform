@@ -92,7 +92,7 @@ Acceptance: the extension can rank plausible repeated-record groups automaticall
 
 ## Build 006 — Extraction Recipe Engine
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 006 pull request.
 
 - portable recipe schema version 1;
 - selected record group -> recipe workflow;
