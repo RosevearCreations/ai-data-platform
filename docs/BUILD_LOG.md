@@ -291,3 +291,61 @@ GitHub Actions verified the complete repository on the Build 005 executable head
 ### Next
 
 Build 006 — Extraction Recipe Engine.
+
+## Build 006 — Extraction Recipe Engine
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 006 pull request.
+
+### Goal
+
+Turn a detected repeated-record group into a portable, versioned recipe that extracts structured fields deterministically from every matched record.
+
+### Delivered
+
+- extraction recipe schema version 1;
+- record-group-to-recipe workflow;
+- field derivation from Build 004 visual selections;
+- selector derivation tested across the complete record group;
+- manual field authoring/editing;
+- text extraction;
+- safe arbitrary-attribute extraction;
+- link href extraction;
+- image src extraction;
+- relative link/image normalization to absolute URLs;
+- required-field validation warnings;
+- deterministic trim, whitespace, lowercase, uppercase, number and currency transforms;
+- per-run populated/empty/required-missing statistics;
+- bounded local execution capped at 500 records;
+- structured row preview;
+- portable JSON recipe output including tested source URL;
+- extension version 0.6.0;
+- no database persistence or AI dependency.
+
+### Verification
+
+GitHub Actions verified the complete repository on the Build 006 final development head:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests: PASS.
+
+### Security notes
+
+- recipe execution is local to the user-invoked active tab;
+- field queries are scoped to each repeated-record element;
+- extraction is read-only and does not activate page controls;
+- manual attribute extraction blocks form `value`, `srcdoc`, event-handler attributes and invalid attribute names;
+- cookies, browser storage, live form values and page JavaScript state remain out of scope;
+- no page content is sent to an AI provider or external extraction service;
+- recipes are not automatically persisted.
+
+### Next
+
+Build 007 — Spreadsheet Preview & Review.
