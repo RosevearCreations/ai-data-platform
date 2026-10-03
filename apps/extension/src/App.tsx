@@ -235,7 +235,10 @@ export function App() {
           <div className="selectorBlock">
             <div className="selectorHeading">
               <strong>Exact selector</strong>
-              <span>1 target</span>
+              <span>
+                {pickedElement.selectorMatchCount} match
+                {pickedElement.selectorMatchCount === 1 ? "" : "es"}
+              </span>
             </div>
             <code>{pickedElement.selector}</code>
             <button
