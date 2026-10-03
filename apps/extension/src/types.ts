@@ -46,6 +46,7 @@ export interface PageInspection {
 export interface VisualPickResult {
   status: "picked" | "cancelled";
   selector: string;
+  selectorMatchCount: number;
   generalizedSelector: string;
   generalizedMatchCount: number;
   tagName: string;
