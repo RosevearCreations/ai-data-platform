@@ -67,3 +67,49 @@ export interface SelectorPreviewResult {
   sampleTexts: string[];
   truncated: boolean;
 }
+
+export interface RecordSample {
+  index: number;
+  text: string;
+  link: string;
+  image: string;
+  descendantCount: number;
+  fieldHints: string[];
+}
+
+export interface RecordGroupCandidate {
+  containerSelector: string;
+  recordSelector: string;
+  source: "auto" | "selected-field";
+  recordCount: number;
+  visibleRecordCount: number;
+  confidence: number;
+  metrics: {
+    repeatRatio: number;
+    structuralConsistency: number;
+    textCoverage: number;
+    linkCoverage: number;
+    imageCoverage: number;
+    averageDescendants: number;
+  };
+  diagnostics: string[];
+  samples: RecordSample[];
+}
+
+export interface RecordDetectionResult {
+  url: string;
+  detectedAt: string;
+  mode: "auto" | "selected-field";
+  inputSelector: string;
+  candidates: RecordGroupCandidate[];
+  inspectedParents: number;
+  truncated: boolean;
+}
+
+export interface RecordPreviewResult {
+  recordSelector: string;
+  matchCount: number;
+  visibleMatchCount: number;
+  sampleTexts: string[];
+  truncated: boolean;
+}
