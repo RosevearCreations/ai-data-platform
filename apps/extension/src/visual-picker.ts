@@ -290,6 +290,7 @@ export function startVisualPicker(): Promise<VisualPickResult> {
     const cancelledResult = (): VisualPickResult => ({
       status: "cancelled",
       selector: "",
+      selectorMatchCount: 0,
       generalizedSelector: "",
       generalizedMatchCount: 0,
       tagName: "",
@@ -340,6 +341,7 @@ export function startVisualPicker(): Promise<VisualPickResult> {
       resolve({
         status: "picked",
         selector,
+        selectorMatchCount: count(selector),
         generalizedSelector: generalized.selector,
         generalizedMatchCount: generalized.matchCount,
         tagName: target.tagName.toLowerCase(),
