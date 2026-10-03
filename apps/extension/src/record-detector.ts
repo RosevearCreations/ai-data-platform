@@ -54,17 +54,12 @@ export function detectRepeatingRecords(
     const classes = stableClasses(element).slice(0, 3).sort().join(".");
     const role = cleanText(element.getAttribute("role"), 80);
     const itemprop = cleanText(element.getAttribute("itemprop"), 80);
-    const testId =
-      cleanText(element.getAttribute("data-testid"), 80) ||
-      cleanText(element.getAttribute("data-test"), 80) ||
-      cleanText(element.getAttribute("data-qa"), 80);
 
     return [
       element.tagName.toLowerCase(),
       classes ? `class:${classes}` : "",
       role ? `role:${role}` : "",
-      itemprop ? `itemprop:${itemprop}` : "",
-      testId ? `test:${testId}` : ""
+      itemprop ? `itemprop:${itemprop}` : ""
     ]
       .filter(Boolean)
       .join("|");
