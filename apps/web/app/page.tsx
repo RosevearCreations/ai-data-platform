@@ -1,55 +1,105 @@
-const workspaces = [
-  {
-    name: "Rosie Dazzlers",
-    purpose: "Ontario detailing intelligence, pricing history and SEO evidence."
-  },
-  {
-    name: "Devil n Dove",
-    purpose: "Supplier, product, tool and inventory intelligence."
-  },
-  {
-    name: "Personal",
-    purpose: "Movie metadata enrichment and approved private datasets."
-  }
-] as const;
+import { headers } from "next/headers";
+import Link from "next/link";
+
+import { auth } from "@/lib/auth";
+import { listWorkspacesForUser } from "@/lib/database";
+
+import { SignOutButton } from "./sign-out-button";
 
 const foundations = [
+  "PostgreSQL row-level workspace isolation",
   "Source evidence on every external observation",
   "Review before downstream business writes",
-  "Local-first browser extraction",
   "AI for interpretation; deterministic code for repetition"
 ] as const;
 
-export default function HomePage() {
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  const workspaces = session
+    ? await listWorkspacesForUser(session.user.id)
+    : [];
+
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Build 001</p>
+        <p className="eyebrow">Build 002</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure for Rosie Dazzlers,
           Devil n Dove and approved personal datasets.
         </p>
-        <div className="status" role="status">
-          <span className="statusDot" aria-hidden="true" />
-          Foundation shell online
-        </div>
+
+        {session ? (
+          <div className="accountBar">
+            <div>
+              <strong>{session.user.name}</strong>
+              <span>{session.user.email}</span>
+            </div>
+            <SignOutButton />
+          </div>
+        ) : (
+          <div className="heroActions">
+            <Link className="primaryLink" href="/sign-in">
+              Sign in
+            </Link>
+            <span>Authentication and workspace isolation are enabled.</span>
+          </div>
+        )}
       </section>
 
       <section aria-labelledby="workspace-heading">
         <div className="sectionHeading">
           <p className="eyebrow">Workspaces</p>
-          <h2 id="workspace-heading">One engine, isolated contexts</h2>
+          <h2 id="workspace-heading">
+            {session ? "Your authorized workspaces" : "One engine, isolated contexts"}
+          </h2>
         </div>
-        <div className="grid">
-          {workspaces.map((workspace) => (
-            <article className="card" key={workspace.name}>
-              <h3>{workspace.name}</h3>
-              <p>{workspace.purpose}</p>
-              <span className="badge">Planned in Build 002+</span>
+
+        {session ? (
+          workspaces.length > 0 ? (
+            <div className="grid">
+              {workspaces.map((workspace) => (
+                <article className="card" key={workspace.id}>
+                  <h3>{workspace.name}</h3>
+                  <p>
+                    {workspace.type === "business"
+                      ? "Business intelligence workspace."
+                      : "Private personal-data workspace."}
+                  </p>
+                  <span className="badge">{workspace.role}</span>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="emptyState">
+              <h3>No workspace access</h3>
+              <p>
+                This account is authenticated but has not been granted access to
+                a workspace.
+              </p>
+            </div>
+          )
+        ) : (
+          <div className="grid">
+            <article className="card">
+              <h3>Rosie Dazzlers</h3>
+              <p>Ontario detailing intelligence, pricing history and SEO evidence.</p>
             </article>
-          ))}
-        </div>
+            <article className="card">
+              <h3>Devil n Dove</h3>
+              <p>Supplier, product, tool and inventory intelligence.</p>
+            </article>
+            <article className="card">
+              <h3>Personal</h3>
+              <p>Movie metadata enrichment and approved private datasets.</p>
+            </article>
+          </div>
+        )}
       </section>
 
       <section className="principles" aria-labelledby="principles-heading">
