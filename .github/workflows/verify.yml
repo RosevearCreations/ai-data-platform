@@ -55,11 +55,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Typecheck, lint, build and test
-        run: pnpm verify
-
       - name: Apply database migrations
         run: pnpm --filter @rosevear/ai-data-web db:migrate
+
+      - name: Typecheck, lint, build and test
+        run: pnpm verify
 
       - name: Verify auth and workspace isolation
         run: pnpm --filter @rosevear/ai-data-web db:verify
