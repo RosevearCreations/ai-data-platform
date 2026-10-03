@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   verify:
@@ -53,7 +53,7 @@ jobs:
           package-manager-cache: false
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Apply database migrations
         run: pnpm --filter @rosevear/ai-data-web db:migrate
@@ -63,16 +63,3 @@ jobs:
 
       - name: Verify auth and workspace isolation
         run: pnpm --filter @rosevear/ai-data-web db:verify
-
-      - name: Commit generated lockfile on dev
-        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
-        shell: bash
-        run: |
-          if [ -n "$(git status --porcelain -- pnpm-lock.yaml)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add pnpm-lock.yaml
-            git commit -m "build 002: refresh pnpm lockfile"
-            git pull --rebase origin dev
-            git push
-          fi
