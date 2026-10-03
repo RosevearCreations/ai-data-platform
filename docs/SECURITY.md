@@ -13,7 +13,7 @@
 
 Never commit:
 
-- Supabase service-role/secret keys;
+- PostgreSQL connection strings and database passwords;
 - AI provider keys;
 - integration tokens;
 - session cookies;
@@ -21,14 +21,16 @@ Never commit:
 
 Public/browser-safe configuration must be clearly separated from server secrets.
 
-## Supabase
+## PostgreSQL and authentication
 
-- Enable RLS on every exposed workspace table.
-- Authorize by workspace membership, not merely by authenticated role.
-- Do not use user-editable metadata for authorization decisions.
-- Never expose service-role/secret keys to the browser or extension.
-- Views exposed through the API must preserve caller authorization.
-- Privileged database functions require explicit security review.
+- Better Auth owns authentication/session tables in the `auth` schema.
+- Workspace data lives in the separate `app` schema.
+- Workspace tables use PostgreSQL row-level security.
+- User-scoped application queries run inside a transaction after `SET LOCAL ROLE ai_data_runtime`.
+- The authenticated Better Auth user ID is supplied with transaction-local `set_config`, preventing pooled-connection identity leakage.
+- The restricted runtime role is not the table owner, so RLS remains enforceable.
+- Database owner credentials are server-only and must never reach the browser or extension.
+- Sign-up is disabled by default after initial owner provisioning.
 
 ## Chrome extension
 
