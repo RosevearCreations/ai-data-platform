@@ -92,3 +92,11 @@ Decision: the visual picker returns both an exact selector for the clicked eleme
 Reason: exact selectors are useful for verification and one-off targets, while generalized selectors are the foundation for later multi-record extraction. Build 004 previews match counts before a selector is accepted by later recipe-building features.
 
 Selector generation prefers stable IDs and semantic/test attributes, then stable class combinations, and only falls back to structural `:nth-of-type()` paths when uniqueness requires it.
+
+## D0014 — Exact and generalized selector capture
+
+Decision: the visual picker returns both an exact selector for the chosen element and a generalized selector intended to reveal repeated peer fields.
+
+Reason: exact selectors support verification and one-off targets, while generalized selectors support later multi-record extraction. Build 004 reports match counts and previews selector matches before later recipe-building features consume them.
+
+Selector generation prefers stable IDs and semantic attributes, then stable class combinations, and falls back to structural position only when uniqueness requires it.
