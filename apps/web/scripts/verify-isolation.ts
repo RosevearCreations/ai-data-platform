@@ -62,8 +62,15 @@ async function main() {
   console.log("Build 002 database isolation acceptance passed.");
 }
 
-try {
-  await main();
-} finally {
-  await closeDatabasePools();
+async function run() {
+  try {
+    await main();
+  } finally {
+    await closeDatabasePools();
+  }
 }
+
+void run().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});
