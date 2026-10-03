@@ -59,7 +59,7 @@ Acceptance: extension can inspect a user-selected public page and display ranked
 
 ## Build 004 — Visual Element Picker
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 004 pull request.
 
 - point-and-click field selection;
 - hover highlight and tooltip overlays;
