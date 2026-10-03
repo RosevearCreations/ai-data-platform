@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 005 — Repeating Record Detection.
+Build 006 — Extraction Recipe Engine.
 
 
 ## Persistence and authentication
