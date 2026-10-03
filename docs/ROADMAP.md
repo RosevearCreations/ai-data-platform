@@ -75,7 +75,7 @@ Acceptance: a user can select a visible page element, receive exact and generali
 
 ## Build 005 — Repeating Record Detection
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 005 pull request.
 
 - automatic repeated list/table/card/row detection;
 - field-guided record-boundary inference from Build 004 selections;
