@@ -237,3 +237,57 @@ GitHub Actions verified the complete repository on the Build 004 executable head
 ### Next
 
 Build 005 — Repeating Record Detection.
+
+## Build 005 — Repeating Record Detection
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 005 pull request.
+
+### Goal
+
+Turn raw DOM structure and Build 004 field selections into ranked, explainable repeated-record groups that can become the row boundary for extraction recipes.
+
+### Delivered
+
+- automatic repeated list, table, row, article and card detection;
+- field-guided record-boundary inference from a selected field;
+- deterministic structural signatures that ignore record-identity test attributes;
+- repeat-ratio scoring;
+- structural-consistency scoring;
+- text, link and image coverage metrics;
+- descendant-richness measurement;
+- semantic structure bonuses;
+- navigation/header/footer penalties;
+- bounded candidate ranking;
+- confidence scores and human-readable diagnostics;
+- record selector generation;
+- sample record text, links, images and field hints;
+- on-page record-boundary preview overlays;
+- extension version 0.5.0;
+- no additional Chrome permissions.
+
+### Verification
+
+GitHub Actions verified the complete repository on the Build 005 executable head:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests: PASS.
+
+### Security notes
+
+- detection remains local to the user-invoked active tab;
+- no AI or external service receives page data in Build 005;
+- record detection does not activate page elements;
+- preview overlays ignore pointer input and remove themselves automatically;
+- confidence reflects structural evidence only and is not treated as factual certainty.
+
+### Next
+
+Build 006 — Extraction Recipe Engine.
