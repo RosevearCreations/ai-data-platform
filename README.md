@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 003 — Page DOM Inspector.
+Build 004 — Visual Element Picker.
 
 
 ## Persistence and authentication
