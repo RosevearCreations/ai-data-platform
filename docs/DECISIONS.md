@@ -44,11 +44,13 @@ Decision: core application logic calls internal AI tasks rather than vendor-spec
 
 Reason: providers, models and pricing change.
 
-## D0008 — Supabase persistence baseline
+## D0008 — Supabase persistence baseline — SUPERSEDED
 
 Decision: use Supabase Postgres/Auth/Storage initially, with RLS-based workspace isolation.
 
 Reason: strong relational model, auth and existing project familiarity.
+
+Status: Superseded by D0011 after storage-capacity constraints were identified.
 
 ## D0009 — Prefer APIs/datasets over scraping
 
@@ -61,3 +63,16 @@ Reason: reliability, policy compliance and lower maintenance.
 Decision: integrations occur through explicit adapters and approved jobs.
 
 Reason: preserve application boundaries and reduce blast radius.
+
+
+## D0011 — Portable PostgreSQL + Better Auth
+
+Decision: use provider-portable PostgreSQL for persistence and Better Auth for authentication. Neon is the initial managed PostgreSQL host.
+
+Reason: the platform needs more independent storage capacity without coupling authentication, authorization or migrations to a single hosted database product.
+
+## D0012 — Runtime-role RLS boundary
+
+Decision: user-scoped application queries switch transaction-locally to the non-owner `ai_data_runtime` role and set the Better Auth user ID only for that transaction.
+
+Reason: PostgreSQL table owners normally bypass RLS. Using a restricted runtime role preserves database-level workspace isolation while allowing migrations and owner bootstrap tasks to use the administrative connection deliberately.
