@@ -31,7 +31,7 @@ Acceptance: both applications build from a clean checkout.
 
 ## Build 002 — PostgreSQL Auth & Workspace Isolation
 
-Status: implementation complete on `dev`; CI acceptance in progress.
+Status: COMPLETE. Promotion is performed through the Build 002 pull request.
 
 - provider-portable PostgreSQL foundation;
 - Better Auth email/password authentication;
