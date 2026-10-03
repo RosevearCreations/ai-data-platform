@@ -92,3 +92,13 @@ Decision: the visual picker returns both an exact selector for the chosen elemen
 Reason: exact selectors support verification and one-off targets, while generalized selectors support later multi-record extraction. Build 004 reports match counts and previews selector matches before later recipe-building features consume them.
 
 Selector generation prefers stable IDs and semantic attributes, then stable class combinations, and falls back to structural position only when uniqueness requires it.
+
+## D0015 — Repeating-record detection is deterministic and confidence-scored
+
+Decision: Build 005 detects repeated record boundaries with deterministic DOM heuristics before any AI involvement.
+
+The detector scores candidates using repeat ratio, structural consistency, record count, text richness, descendant richness, link/image coverage and semantic structures such as tables, lists and articles. Navigation/header/footer structures are penalized.
+
+A selected field can also guide boundary inference by finding repeated sibling ancestors around all matching field elements.
+
+Reason: record boundaries are foundational extraction logic. Deterministic evidence is cheaper, testable and explainable, while AI can later assist only when these signals are ambiguous.
