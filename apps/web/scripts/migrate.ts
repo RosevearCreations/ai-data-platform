@@ -117,11 +117,18 @@ async function main() {
   console.log("Database migrations complete.");
 }
 
-try {
-  await main();
-} finally {
-  await Promise.allSettled([
-    adminPool.end(),
-    closeDatabasePools()
-  ]);
+async function run() {
+  try {
+    await main();
+  } finally {
+    await Promise.allSettled([
+      adminPool.end(),
+      closeDatabasePools()
+    ]);
+  }
 }
+
+void run().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});
