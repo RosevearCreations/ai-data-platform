@@ -46,12 +46,16 @@ Acceptance: authenticated users only see permitted workspace data, verified agai
 
 ## Build 003 — Page DOM Inspector
 
-- active-page inspection;
-- DOM snapshot model;
-- visible text/attribute capture;
-- candidate container scoring.
+Status: COMPLETE. Promotion is performed through the Build 003 pull request.
 
-Acceptance: extension can inspect a public test page and display candidate records.
+- temporary active-page inspection using `activeTab` + `scripting`;
+- bounded DOM snapshot model;
+- visible text/safe-attribute capture without form values;
+- page metadata and structural counts;
+- candidate repeating-container scoring;
+- side-panel inspection results and diagnostics.
+
+Acceptance: extension can inspect a user-selected public page and display ranked candidate record containers without persistent host permissions.
 
 ## Build 004 — Visual Element Picker
 

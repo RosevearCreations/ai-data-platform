@@ -45,6 +45,15 @@ Initial preference:
 
 Avoid broad persistent host permissions when an active-tab or user-approved permission can accomplish the task.
 
+Build 003 enforcement:
+
+- page inspection requires a user-invoked active-tab grant;
+- `scripting` is used only to execute the bundled inspector in the selected tab;
+- no `<all_urls>` host permission is requested;
+- inspected data is capped before it returns to the side panel;
+- input/textarea values, cookies, browser storage and host-page JavaScript state are not captured;
+- Chrome-restricted pages such as browser settings are treated as non-inspectable.
+
 ## Untrusted page content
 
 A webpage may contain malicious text intended to manipulate AI or code.

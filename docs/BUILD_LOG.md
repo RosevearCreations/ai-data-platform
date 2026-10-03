@@ -135,3 +135,54 @@ No persistent hosted database is required to promote this build. Neon is the sel
 ### Next
 
 Build 003 — Page DOM Inspector.
+
+## Build 003 — Page DOM Inspector
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 003 pull request.
+
+### Goal
+
+Allow the Chrome side-panel extension to inspect the user-selected active page and return a bounded structural snapshot for later extraction builds.
+
+### Delivered
+
+- temporary `activeTab` + `scripting` page access;
+- no persistent broad host permissions;
+- bounded page-inspection contract;
+- title, URL, language, meta description and canonical URL capture;
+- structural counts for elements, links, images, headings, tables and forms;
+- bounded visible-element summaries with safe attributes;
+- explicit exclusion of form values and browser/page storage;
+- repeating child-signature analysis;
+- ranked candidate record-container scoring;
+- sample text previews for candidate containers;
+- Chrome-restricted-page error handling;
+- side-panel metrics, candidate results and inspection diagnostics;
+- source-of-truth security and architecture decision updates.
+
+### Verification
+
+GitHub Actions verified the complete repository on the Build 003 executable head:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- typecheck: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing database isolation acceptance: PASS.
+
+### Security notes
+
+- inspection happens only after user invocation of the extension;
+- `activeTab` supplies temporary host access;
+- `scripting` injects the bundled inspector into the selected tab;
+- the extension does not request `<all_urls>`;
+- snapshots are deliberately capped;
+- input values, passwords, cookies, local/session storage and page JavaScript state are not collected.
+
+### Next
+
+Build 004 — Visual Element Picker.
