@@ -29,16 +29,20 @@ Status: COMPLETE. Promotion is performed through the Build 001 pull request.
 
 Acceptance: both applications build from a clean checkout.
 
-## Build 002 — Supabase Auth & Workspace Isolation
+## Build 002 — PostgreSQL Auth & Workspace Isolation
 
-- Supabase project integration;
-- authentication;
-- workspace schema;
-- membership model;
-- RLS;
-- seed initial Rosie Dazzlers, Devil n Dove and Personal workspaces.
+Status: COMPLETE. Promotion is performed through the Build 002 pull request.
 
-Acceptance: authenticated users only see permitted workspace data.
+- provider-portable PostgreSQL foundation;
+- Better Auth email/password authentication;
+- separate `auth` and `app` schemas;
+- workspace membership model;
+- PostgreSQL row-level security using a restricted runtime role;
+- seed initial Rosie Dazzlers, Devil n Dove and Personal workspaces;
+- first-user owner bootstrap;
+- CI PostgreSQL integration test.
+
+Acceptance: authenticated users only see permitted workspace data, verified against a real ephemeral PostgreSQL instance.
 
 ## Build 003 — Page DOM Inspector
 

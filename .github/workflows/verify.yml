@@ -15,6 +15,28 @@ jobs:
   verify:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ai_data_platform_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ai_data_platform_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_test
+      BETTER_AUTH_SECRET: build-002-ci-only-secret-please-never-use-in-production-000000000000
+      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_TRUSTED_ORIGINS: http://localhost:3000
+      AUTH_ALLOW_SIGN_UP: "true"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -33,5 +55,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Apply database migrations
+        run: pnpm --filter @rosevear/ai-data-web db:migrate
+
       - name: Typecheck, lint, build and test
         run: pnpm verify
+
+      - name: Verify auth and workspace isolation
+        run: pnpm --filter @rosevear/ai-data-web db:verify

@@ -167,3 +167,162 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+.heroActions,
+.accountBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.4rem;
+}
+
+.heroActions span,
+.accountBar span {
+  color: #91a6a8;
+  font-size: 0.9rem;
+}
+
+.accountBar {
+  justify-content: space-between;
+  max-width: 680px;
+  padding: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.16);
+  border-radius: 0.9rem;
+  background: rgba(125, 226, 216, 0.05);
+}
+
+.accountBar div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.primaryLink,
+.secondaryButton,
+.primary {
+  display: inline-flex;
+  min-height: 2.8rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0 1rem;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.primaryLink,
+.primary {
+  border: 0;
+  background: #7de2d8;
+  color: #071018;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #edf6f7;
+}
+
+.secondaryButton:disabled,
+.primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.emptyState {
+  padding: 1.5rem;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  color: #adbdc0;
+}
+
+.authShell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  gap: 4rem;
+  align-items: start;
+}
+
+.authIntro h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+}
+
+.textLink {
+  color: #7de2d8;
+}
+
+.authCard {
+  overflow: hidden;
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.authTabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.authTab {
+  flex: 1;
+  min-height: 3rem;
+  border: 0;
+  background: transparent;
+  color: #91a6a8;
+  font-weight: 800;
+}
+
+.authTab.active {
+  background: rgba(125, 226, 216, 0.08);
+  color: #c9f7f1;
+}
+
+.authForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.authForm label {
+  display: grid;
+  gap: 0.45rem;
+  color: #c8d7d9;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.authForm input {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0 0.8rem;
+}
+
+.authForm input:focus {
+  border-color: #7de2d8;
+  outline: 2px solid rgba(125, 226, 216, 0.18);
+}
+
+.authMessage {
+  margin: 0;
+  color: #ffb4a8;
+  font-size: 0.88rem;
+}
+
+.authSubmit {
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 760px) {
+  .authShell {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .accountBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

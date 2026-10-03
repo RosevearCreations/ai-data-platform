@@ -27,10 +27,8 @@ packages/
   schema/         shared TypeScript schemas
   shared-ui/      shared UI primitives where appropriate
 
-supabase/
+db/
   migrations/
-  seed/
-  functions/
 
 docs/
 ```
@@ -41,7 +39,8 @@ docs/
 - Next.js App Router for the web application
 - React for UI surfaces
 - Chrome Manifest V3 with Side Panel API for browser interaction
-- Supabase Postgres/Auth/Storage as the initial persistence layer
+- standard PostgreSQL as the persistence layer, initially hosted on Neon
+- Better Auth for application authentication and session management
 - a provider-neutral AI adapter; model/provider choice is configuration rather than business logic
 - standard browser APIs and deterministic JavaScript/TypeScript for bulk extraction
 
@@ -115,4 +114,6 @@ Rosie Dazzlers and Devil n Dove remain independent applications. This repository
 
 ## Deployment baseline
 
-The web application may be deployed independently of the two business sites. The extension and web app version together through this repository. Production deployment decisions begin after Build 001 establishes executable application code.
+The web application may be deployed independently of the two business sites. The extension and web app version together through this repository.
+
+The database design remains provider-portable PostgreSQL. Neon is the initial managed host, but application schemas, migrations and authentication do not depend on Neon-specific database features.

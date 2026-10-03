@@ -5,6 +5,9 @@
 - Node.js 24
 - pnpm 12.8.1
 - Chrome 114+ for the side-panel extension
+- PostgreSQL 16+ for local/runtime database use
+
+For our normal workflow, local command-line access is not required. GitHub Actions performs clean installs, builds and database acceptance tests remotely.
 
 ## Install
 
@@ -65,3 +68,32 @@ dev -> Verify -> Pull Request -> main
 ```
 
 Do not bypass verification for numbered builds.
+
+
+## PostgreSQL authentication setup
+
+The platform uses Better Auth with standard PostgreSQL.
+
+Required server environment variables:
+
+- `DATABASE_URL`
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL`
+- `BETTER_AUTH_TRUSTED_ORIGINS`
+- `AUTH_ALLOW_SIGN_UP`
+
+Use `apps/web/.env.example` as the reference. Never commit real values.
+
+The migration command is:
+
+```bash
+pnpm --filter @rosevear/ai-data-web db:migrate
+```
+
+The isolation acceptance command is:
+
+```bash
+pnpm --filter @rosevear/ai-data-web db:verify
+```
+
+GitHub CI runs both against an ephemeral PostgreSQL service, so these commands do not need to be run manually for normal remote GitHub development.
