@@ -83,3 +83,55 @@ The Build 001 `dev` workflow verified:
 ### Next
 
 Build 002 — Supabase Auth & Workspace Isolation.
+
+## Build 002 — PostgreSQL Auth & Workspace Isolation
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 002 pull request.
+
+### Goal
+
+Replace the Supabase-specific persistence assumption with provider-portable PostgreSQL authentication and database-enforced workspace isolation.
+
+### Delivered
+
+- Better Auth 1.7.7 email/password authentication;
+- standard PostgreSQL via node-postgres;
+- separate `auth` and `app` schemas;
+- portable SQL migrations;
+- restricted `ai_data_runtime` database role;
+- transaction-local authenticated-user context;
+- PostgreSQL row-level-security policies;
+- seeded Rosie Dazzlers, Devil n Dove and Personal workspaces;
+- first-user owner bootstrap with advisory-lock protection;
+- authenticated Next.js sign-in/sign-out and workspace UI;
+- authenticated `/api/workspaces` endpoint;
+- migration and isolation verification scripts;
+- PostgreSQL 18 integration service in GitHub Actions;
+- frozen-lockfile CI after dependency bootstrap;
+- source-of-truth migration from Supabase to portable PostgreSQL.
+
+### Acceptance evidence
+
+GitHub Actions verified against a fresh PostgreSQL 18 instance:
+
+- dependency install: PASS;
+- Better Auth schema migration: PASS;
+- application workspace migration: PASS;
+- typecheck: PASS;
+- lint/static checks: PASS;
+- web production build: PASS;
+- Chrome extension production build: PASS;
+- shared-contract tests: PASS;
+- first authenticated user receives owner access to all three initial workspaces: PASS;
+- second authenticated user receives no workspace access: PASS;
+- RLS-scoped workspace query after switching users: PASS.
+
+### Hosted database status
+
+No persistent hosted database is required to promote this build. Neon is the selected initial managed PostgreSQL provider and can be provisioned when the web application is ready for deployment. The repository remains portable to another PostgreSQL host.
+
+### Next
+
+Build 003 — Page DOM Inspector.
