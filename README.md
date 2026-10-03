@@ -40,14 +40,14 @@ Build 000 establishes the shared platform foundation and source-of-truth documen
 ## Executable applications
 
 - `apps/web` — Next.js dashboard shell.
-- `apps/extension` — Chrome Manifest V3 side-panel shell.
+- `apps/extension` — Chrome Manifest V3 side panel with temporary active-tab DOM inspection.
 - `packages/contracts` — shared TypeScript platform contracts.
 
 See [Development](docs/DEVELOPMENT.md) for install, build, verification and extension-loading instructions.
 
 ## Current build
 
-Build 002 — PostgreSQL Auth & Workspace Isolation.
+Build 003 — Page DOM Inspector.
 
 
 ## Persistence and authentication
