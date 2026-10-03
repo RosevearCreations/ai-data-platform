@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { inspectPage } from "./inspect-page";
+import { RecipeBuilder } from "./RecipeBuilder";
 import {
   detectRepeatingRecords,
   previewRecordGroup
@@ -13,6 +14,7 @@ import {
 import type {
   PageInspection,
   RecordDetectionResult,
+  RecordGroupCandidate,
   RecordPreviewResult,
   SelectorPreviewResult,
   VisualPickResult
@@ -62,6 +64,8 @@ export function App() {
     useState<RecordDetectionResult | null>(null);
   const [recordPreview, setRecordPreview] =
     useState<RecordPreviewResult | null>(null);
+  const [selectedRecordGroup, setSelectedRecordGroup] =
+    useState<RecordGroupCandidate | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [recordPending, setRecordPending] = useState(false);
@@ -226,15 +230,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">005</span>
+        <span className="build">006</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Point, click, verify</strong>
+        <strong>Detect, define, extract</strong>
         <p>
-          Detect repeated rows, cards, products, packages, or other record
-          groups automatically. If we already picked a field, we can also infer
-          the repeated record boundary around that field.
+          Choose a repeating record group, turn picked page elements into
+          reusable field rules, and run a versioned extraction recipe against
+          the live page before saving anything.
         </p>
       </section>
 
@@ -417,15 +421,27 @@ export function App() {
                     </div>
                   ) : null}
 
-                  <button
-                    className="previewButton"
-                    onClick={() =>
-                      runRecordPreview(candidate.recordSelector)
-                    }
-                    type="button"
-                  >
-                    Preview record boundaries
-                  </button>
+                  <div className="recordCardActions">
+                    <button
+                      className="previewButton"
+                      onClick={() =>
+                        runRecordPreview(candidate.recordSelector)
+                      }
+                      type="button"
+                    >
+                      Preview record boundaries
+                    </button>
+                    <button
+                      className="recipeStartButton"
+                      onClick={() => {
+                        setSelectedRecordGroup(candidate);
+                        setError(null);
+                      }}
+                      type="button"
+                    >
+                      Build extraction recipe
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
@@ -466,6 +482,14 @@ export function App() {
             </div>
           ) : null}
         </section>
+      ) : null}
+
+      {selectedRecordGroup ? (
+        <RecipeBuilder
+          candidate={selectedRecordGroup}
+          onClose={() => setSelectedRecordGroup(null)}
+          pickedElement={pickedElement}
+        />
       ) : null}
 
       {pickedElement ? (

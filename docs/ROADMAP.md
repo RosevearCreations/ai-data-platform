@@ -92,10 +92,21 @@ Acceptance: the extension can rank plausible repeated-record groups automaticall
 
 ## Build 006 — Extraction Recipe Engine
 
-- versioned recipe schema;
-- text/attribute/link/image extraction;
-- deterministic transforms;
-- recipe test runner.
+Status: COMPLETE. Promotion is performed through the Build 006 pull request.
+
+- portable recipe schema version 1;
+- selected record group -> recipe workflow;
+- relative field-selector derivation from Build 004 picks;
+- manual field authoring and editing;
+- text, safe-attribute, link and image extraction;
+- absolute URL normalization for links/images;
+- deterministic trim/whitespace/case/number/currency transforms;
+- required-field warnings and extraction statistics;
+- bounded local recipe test runner;
+- first-row preview and portable recipe JSON;
+- no database persistence or AI dependency.
+
+Acceptance: a user can choose a Build 005 record group, define multiple reusable field rules, execute the recipe across repeated records, inspect structured rows/warnings, and obtain portable versioned recipe JSON without writing to a backend.
 
 ## Build 007 — Spreadsheet Preview & Review
 
