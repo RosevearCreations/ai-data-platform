@@ -506,7 +506,16 @@ export function RecipeBuilder({
 
           <details className="recipeJson">
             <summary>Portable recipe JSON</summary>
-            <pre>{JSON.stringify(recipe, null, 2)}</pre>
+            <pre>
+              {JSON.stringify(
+                {
+                  ...recipe,
+                  sourceUrl: run.sourceUrl
+                },
+                null,
+                2
+              )}
+            </pre>
           </details>
         </div>
       ) : null}
