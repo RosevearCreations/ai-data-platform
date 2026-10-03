@@ -308,3 +308,194 @@ h1 {
 .primary:not(:disabled):hover {
   filter: brightness(1.05);
 }
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.secondaryButton,
+.dangerButton,
+.previewButton {
+  min-height: 2.8rem;
+  border-radius: 0.75rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(125, 226, 216, 0.24);
+  background: rgba(125, 226, 216, 0.06);
+  color: #c9f7f1;
+}
+
+.dangerButton {
+  border: 1px solid rgba(255, 151, 151, 0.24);
+  background: rgba(255, 151, 151, 0.07);
+  color: #ffd1d1;
+}
+
+.previewButton {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.045);
+  color: #e1eeee;
+}
+
+.secondaryButton:hover,
+.previewButton:hover {
+  border-color: rgba(125, 226, 216, 0.46);
+}
+
+.pickerActive {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(125, 226, 216, 0.25);
+  border-radius: 0.9rem;
+  background: rgba(125, 226, 216, 0.07);
+}
+
+.pickerActive strong {
+  display: block;
+  font-size: 0.86rem;
+}
+
+.pickerActive p {
+  margin: 0.2rem 0 0;
+  color: #9eb1b4;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.pulse {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #7de2d8;
+  box-shadow: 0 0 0 0 rgba(125, 226, 216, 0.5);
+  animation: pickerPulse 1.4s infinite;
+}
+
+@keyframes pickerPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(125, 226, 216, 0.42);
+  }
+  70% {
+    box-shadow: 0 0 0 0.55rem rgba(125, 226, 216, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(125, 226, 216, 0);
+  }
+}
+
+.pickedResult,
+.previewResult {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(125, 226, 216, 0.045);
+}
+
+.pickedResult h2,
+.previewResult h2 {
+  margin: 0;
+  max-width: 240px;
+  overflow-wrap: anywhere;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.selectedBadge {
+  padding: 0.3rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.1);
+  color: #7de2d8;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.selectorBlock {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.selectorHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.selectorHeading strong,
+.pickedText strong,
+.attributeList > strong {
+  font-size: 0.76rem;
+}
+
+.selectorHeading span {
+  color: #7de2d8;
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.selectorBlock code,
+.attributeList code {
+  overflow-wrap: anywhere;
+  color: #cfe9e7;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.pickedText {
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.pickedText p {
+  margin: 0.4rem 0 0;
+  color: #aebfc1;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.attributeList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.attributeList > div {
+  display: grid;
+  grid-template-columns: minmax(60px, auto) 1fr;
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.attributeList span {
+  color: #819699;
+  font-size: 0.7rem;
+}
+
+.previewResult > p {
+  margin: 0;
+  color: #aebfc1;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 340px) {
+  .actionGrid {
+    grid-template-columns: 1fr;
+  }
+}

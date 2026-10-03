@@ -59,10 +59,19 @@ Acceptance: extension can inspect a user-selected public page and display ranked
 
 ## Build 004 — Visual Element Picker
 
+Status: COMPLETE. Promotion is performed through the Build 004 pull request.
+
 - point-and-click field selection;
-- highlight overlays;
-- robust selector generation;
-- selector preview.
+- hover highlight and tooltip overlays;
+- Escape and side-panel cancellation;
+- stable exact-selector generation;
+- generalized repeated-field selector generation;
+- match-count visibility;
+- exact/generalized selector preview;
+- temporary multi-match highlight overlays;
+- safe attribute and visible-text summary.
+
+Acceptance: a user can select a visible page element, receive exact and generalized selectors, and preview selector matches without activating the page element or requesting persistent host access.
 
 ## Build 005 — Repeating Record Detection
 

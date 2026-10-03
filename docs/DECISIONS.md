@@ -84,3 +84,11 @@ Decision: Build 003 inspects pages with Chrome's `activeTab` and `scripting` per
 Reason: the Page DOM Inspector only needs temporary access to the page the user explicitly chooses. This reduces permission scope and avoids continuous background access to browsing content.
 
 The inspector captures bounded structural/text/attribute summaries and does not collect form values, passwords, cookies, local/session storage, or page JavaScript state.
+
+## D0014 — Exact and generalized selector capture
+
+Decision: the visual picker returns both an exact selector for the chosen element and a generalized selector intended to reveal repeated peer fields.
+
+Reason: exact selectors support verification and one-off targets, while generalized selectors support later multi-record extraction. Build 004 reports match counts and previews selector matches before later recipe-building features consume them.
+
+Selector generation prefers stable IDs and semantic attributes, then stable class combinations, and falls back to structural position only when uniqueness requires it.

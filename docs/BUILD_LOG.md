@@ -186,3 +186,54 @@ GitHub Actions verified the complete repository on the Build 003 executable head
 ### Next
 
 Build 004 — Visual Element Picker.
+
+## Build 004 — Visual Element Picker
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 004 pull request.
+
+### Goal
+
+Turn page inspection into an interactive field-selection workflow that can identify one chosen element and reveal repeated peer fields for later extraction recipes.
+
+### Delivered
+
+- point-and-click element selection from the Chrome side panel;
+- hover highlight overlays and live selector tooltip;
+- Escape and side-panel cancellation;
+- exact selector generation using stable IDs, semantic attributes, classes and structural fallback;
+- generalized selector generation for repeated peer fields;
+- exact and generalized match counts;
+- safe visible-text and attribute summary;
+- selector preview with temporary page highlights;
+- preview sample texts;
+- automatic preview overlay removal;
+- selector-cardinality reporting instead of assuming uniqueness;
+- extension version 0.4.0;
+- source-of-truth decision and security updates.
+
+### Verification
+
+GitHub Actions verified the complete repository on the Build 004 executable head:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- typecheck: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- tests: PASS.
+
+### Security notes
+
+- no new persistent host permissions were added;
+- Build 004 reuses temporary `activeTab` and `scripting` access;
+- selected page clicks are intercepted so the picker does not accidentally navigate or submit;
+- preview only highlights matches and does not activate them;
+- safe-attribute rules from Build 003 remain in force.
+
+### Next
+
+Build 005 — Repeating Record Detection.
