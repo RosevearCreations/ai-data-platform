@@ -245,6 +245,18 @@ export function executeExtractionRecipe(
 
   const cleanString = (value: string | null | undefined) => value ?? "";
 
+  const absoluteUrl = (value: string) => {
+    if (!value) {
+      return "";
+    }
+
+    try {
+      return new URL(value, window.location.href).href;
+    } catch {
+      return value;
+    }
+  };
+
   const applyTransforms = (
     initialValue: string,
     transforms: ExtractionFieldRecipe["transforms"]
@@ -340,14 +352,16 @@ export function executeExtractionRecipe(
             element.matches("a[href]")
               ? element
               : element.querySelector("a[href]");
-          raw = cleanString(link?.getAttribute("href"));
+          raw = absoluteUrl(cleanString(link?.getAttribute("href")));
         } else if (field.source === "image") {
           const image =
             element.matches("img")
               ? element
               : element.querySelector("img");
-          raw = cleanString(
-            image?.getAttribute("src") || image?.getAttribute("data-src")
+          raw = absoluteUrl(
+            cleanString(
+              image?.getAttribute("src") || image?.getAttribute("data-src")
+            )
           );
         } else if (field.source === "attribute") {
           raw = cleanString(element.getAttribute(field.attribute));
