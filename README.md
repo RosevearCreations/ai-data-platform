@@ -47,4 +47,9 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 001 — Monorepo, Web App & Chrome Extension Shell.
+Build 002 — PostgreSQL Auth & Workspace Isolation.
+
+
+## Persistence and authentication
+
+The platform uses provider-portable PostgreSQL with Better Auth. Neon is the initial managed PostgreSQL host, while migrations and workspace isolation remain standard PostgreSQL.
