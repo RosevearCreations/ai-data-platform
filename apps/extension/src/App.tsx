@@ -131,11 +131,13 @@ export function App() {
 
     try {
       const tabId = await getActiveTabId();
-      const results = await chrome.scripting.executeScript({
+      const previewInjection = {
         target: { tabId },
         func: previewSelector,
         args: [selector]
-      });
+      } as unknown as Parameters<typeof chrome.scripting.executeScript>[0];
+
+      const results = await chrome.scripting.executeScript(previewInjection);
       const result = results[0]?.result as SelectorPreviewResult | undefined;
 
       if (!result) {
