@@ -14,11 +14,28 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ai_data_platform_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d ai_data_platform_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     env:
-      DATABASE_URL: postgresql://build_only:build_only@127.0.0.1:1/build_only
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_test
       BETTER_AUTH_SECRET: build-002-ci-only-secret-please-never-use-in-production-000000000000
       BETTER_AUTH_URL: http://localhost:3000
-      AUTH_ALLOW_SIGN_UP: "false"
+      BETTER_AUTH_TRUSTED_ORIGINS: http://localhost:3000
+      AUTH_ALLOW_SIGN_UP: "true"
 
     steps:
       - name: Checkout
@@ -41,6 +58,12 @@ jobs:
       - name: Typecheck, lint, build and test
         run: pnpm verify
 
+      - name: Apply database migrations
+        run: pnpm --filter @rosevear/ai-data-web db:migrate
+
+      - name: Verify auth and workspace isolation
+        run: pnpm --filter @rosevear/ai-data-web db:verify
+
       - name: Commit generated lockfile on dev
         if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
         shell: bash
@@ -50,5 +73,6 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add pnpm-lock.yaml
             git commit -m "build 002: refresh pnpm lockfile"
+            git pull --rebase origin dev
             git push
           fi
