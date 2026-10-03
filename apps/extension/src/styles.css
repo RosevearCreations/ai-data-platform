@@ -154,3 +154,157 @@ h1 {
   cursor: not-allowed;
   opacity: 0.45;
 }
+
+
+.errorBox,
+.pageSummary,
+.candidateHighlight,
+.captureSummary {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.errorBox {
+  border-color: rgba(255, 151, 151, 0.18);
+  background: rgba(255, 151, 151, 0.06);
+}
+
+.errorBox p,
+.captureSummary p {
+  margin: 0.45rem 0 0;
+  color: #aebfc1;
+  line-height: 1.5;
+}
+
+.pageSummary h2,
+.candidateHighlight h2,
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.url {
+  margin: 0.45rem 0 0;
+  overflow-wrap: anywhere;
+  color: #8ea2a5;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.metricGrid div {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.75rem;
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.metricGrid strong {
+  color: #eaf8f8;
+  font-size: 1.15rem;
+}
+
+.metricGrid span {
+  color: #839699;
+  font-size: 0.72rem;
+}
+
+.candidateHighlight {
+  border-color: rgba(125, 226, 216, 0.18);
+  background: rgba(125, 226, 216, 0.055);
+}
+
+.candidateHeader,
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.candidateHeader small {
+  display: block;
+  margin-top: 0.25rem;
+  overflow-wrap: anywhere;
+  color: #7f9295;
+  font-size: 0.7rem;
+}
+
+.score {
+  display: grid;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  place-items: center;
+  border-radius: 0.65rem;
+  background: rgba(125, 226, 216, 0.11);
+  color: #7de2d8;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.candidateHighlight > p,
+.candidateCard p {
+  margin: 0.65rem 0 0;
+  color: #9fb1b4;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.samples {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.samples blockquote {
+  margin: 0;
+  border-left: 2px solid rgba(125, 226, 216, 0.35);
+  color: #bed0d2;
+  padding-left: 0.65rem;
+  font-size: 0.77rem;
+  line-height: 1.45;
+}
+
+.sectionHeader > span {
+  color: #7de2d8;
+  font-size: 0.8rem;
+  font-weight: 900;
+}
+
+.candidateList {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.candidateCard {
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.emptyMessage {
+  margin: 0.75rem 0 0;
+  color: #899c9f;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.primary:not(:disabled) {
+  cursor: pointer;
+}
+
+.primary:not(:disabled):hover {
+  filter: brightness(1.05);
+}
