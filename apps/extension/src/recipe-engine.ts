@@ -58,14 +58,15 @@ export function deriveFieldRecipe(
       const classes = Array.from(current.classList)
         .filter(stableToken)
         .slice(0, 2);
-      const parent = current.parentElement;
+      const parentElement: Element | null = current.parentElement;
       let segment = tag;
 
       if (classes.length) {
-        segment += classes.map((value) => `.${CSS.escape(value)}`).join("");
-      } else if (parent) {
-        const sameTag = Array.from(parent.children).filter(
-          (child) => child.tagName === current?.tagName
+        segment += classes.map((value: string) => `.${CSS.escape(value)}`).join("");
+      } else if (parentElement) {
+        const currentTagName = current.tagName;
+        const sameTag: Element[] = Array.from(parentElement.children).filter(
+          (child: Element) => child.tagName === currentTagName
         );
 
         if (sameTag.length > 1) {
@@ -74,7 +75,7 @@ export function deriveFieldRecipe(
       }
 
       segments.unshift(segment);
-      current = parent;
+      current = parentElement;
     }
 
     return segments.join(" > ");
@@ -260,15 +261,15 @@ export function executeExtractionRecipe(
       } else if (transform === "uppercase") {
         value = String(value).toUpperCase();
       } else if (transform === "number") {
-        const normalized = String(value).replace(/[^0-9+-.]/g, "");
-        const numberValue = Number(normalized);
+        const normalized: string = String(value).replace(/[^0-9+.\-]/g, "");
+        const numberValue: number = Number(normalized);
         value = Number.isFinite(numberValue) ? numberValue : "";
       } else if (transform === "currency") {
-        const normalized = String(value)
+        const normalized: string = String(value)
           .replace(/\s/g, "")
-          .replace(/[^0-9,.-]/g, "");
+          .replace(/[^0-9,.\-]/g, "");
 
-        let numeric = normalized;
+        let numeric: string = normalized;
 
         if (normalized.includes(",") && normalized.includes(".")) {
           numeric =
@@ -285,7 +286,7 @@ export function executeExtractionRecipe(
           numeric = normalized.replace(/,/g, "");
         }
 
-        const numberValue = Number(numeric);
+        const numberValue: number = Number(numeric);
         value = Number.isFinite(numberValue) ? numberValue : "";
       }
     }
