@@ -75,9 +75,20 @@ Acceptance: a user can select a visible page element, receive exact and generali
 
 ## Build 005 — Repeating Record Detection
 
-- candidate list/table/card detection;
-- record boundary inference;
-- confidence and diagnostics.
+Status: COMPLETE. Promotion is performed through the Build 005 pull request.
+
+- automatic repeated list/table/card/row detection;
+- field-guided record-boundary inference from Build 004 selections;
+- deterministic structural signatures;
+- repeat-ratio and structural-consistency measurement;
+- text/link/image coverage metrics;
+- semantic bonuses and navigation penalties;
+- ranked confidence scores and diagnostics;
+- bounded record samples and field hints;
+- record-selector generation;
+- temporary record-boundary preview overlays.
+
+Acceptance: the extension can rank plausible repeated-record groups automatically or infer them around a selected field, show why a group scored well, and preview the resulting record selector without activating page content.
 
 ## Build 006 — Extraction Recipe Engine
 

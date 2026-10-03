@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 004 — Visual Element Picker.
+Build 005 — Repeating Record Detection.
 
 
 ## Persistence and authentication
