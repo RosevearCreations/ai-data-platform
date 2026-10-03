@@ -479,23 +479,29 @@ export function detectRepeatingRecords(
     for (const field of selectedFields.slice(0, 80)) {
       let current: Element | null = field;
 
-      for (let depth = 0; current?.parentElement && depth < 7; depth += 1) {
-        const parent = current.parentElement;
+      for (let depth = 0; current && depth < 7; depth += 1) {
+        const parentElement: Element | null = current.parentElement;
+
+        if (!parentElement) {
+          break;
+        }
+
         const currentSignature = signature(current);
-        const peers = Array.from(parent.children).filter(
-          (child) => isVisible(child) && signature(child) === currentSignature
+        const peers: Element[] = Array.from(parentElement.children).filter(
+          (child: Element) =>
+            isVisible(child) && signature(child) === currentSignature
         );
 
         if (peers.length >= 2) {
-          const previous = ancestorGroups.get(parent);
-          ancestorGroups.set(parent, {
+          const previous = ancestorGroups.get(parentElement);
+          ancestorGroups.set(parentElement, {
             signature: currentSignature,
             records: peers,
             hits: (previous?.hits ?? 0) + 1
           });
         }
 
-        current = parent;
+        current = parentElement;
       }
     }
 
