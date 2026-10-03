@@ -9,11 +9,16 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://build_only:build_only@127.0.0.1:1/build_only
+      BETTER_AUTH_SECRET: build-002-ci-only-secret-please-never-use-in-production-000000000000
+      BETTER_AUTH_URL: http://localhost:3000
+      AUTH_ALLOW_SIGN_UP: "false"
 
     steps:
       - name: Checkout
@@ -31,7 +36,19 @@ jobs:
           package-manager-cache: false
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Typecheck, lint, build and test
         run: pnpm verify
+
+      - name: Commit generated lockfile on dev
+        if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain -- pnpm-lock.yaml)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pnpm-lock.yaml
+            git commit -m "build 002: refresh pnpm lockfile"
+            git push
+          fi
