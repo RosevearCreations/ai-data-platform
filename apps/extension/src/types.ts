@@ -113,3 +113,62 @@ export interface RecordPreviewResult {
   sampleTexts: string[];
   truncated: boolean;
 }
+
+export type ExtractionSource = "text" | "attribute" | "link" | "image";
+
+export type ExtractionTransform =
+  | "trim"
+  | "collapse-whitespace"
+  | "lowercase"
+  | "uppercase"
+  | "number"
+  | "currency";
+
+export interface ExtractionFieldRecipe {
+  id: string;
+  key: string;
+  label: string;
+  selector: string;
+  source: ExtractionSource;
+  attribute: string;
+  required: boolean;
+  transforms: ExtractionTransform[];
+}
+
+export interface ExtractionRecipe {
+  version: 1;
+  name: string;
+  sourceUrl: string;
+  recordSelector: string;
+  fields: ExtractionFieldRecipe[];
+}
+
+export interface DerivedFieldResult {
+  field: ExtractionFieldRecipe;
+  matchedRecords: number;
+  recordCount: number;
+  coverage: number;
+  samples: string[];
+}
+
+export interface ExtractionRecordResult {
+  index: number;
+  values: Record<string, string | number | null>;
+  warnings: string[];
+}
+
+export interface ExtractionRunResult {
+  recipeVersion: 1;
+  sourceUrl: string;
+  recordSelector: string;
+  recordCount: number;
+  fieldCount: number;
+  records: ExtractionRecordResult[];
+  warnings: string[];
+  stats: {
+    populatedCells: number;
+    emptyCells: number;
+    requiredMissingCells: number;
+  };
+  truncated: boolean;
+}
