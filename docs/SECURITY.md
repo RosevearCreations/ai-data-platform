@@ -129,3 +129,16 @@ Build 005 reuses the temporary page access established in Build 003.
 - record preview creates pointer-events-disabled overlays and removes them automatically;
 - preview highlights at most 60 visible record boundaries;
 - candidate confidence is a structural heuristic, not a statement about the truth or meaning of the underlying content.
+
+### Extraction recipe execution boundary
+
+Build 006 executes recipes locally in the user-invoked active tab.
+
+- field selectors are evaluated only inside each selected record element;
+- recipe testing is capped at 500 records per run;
+- extraction is read-only and does not click, submit, focus or mutate page content;
+- link and image paths are normalized to absolute URLs using the current page URL;
+- manual attribute extraction rejects the form `value` attribute, `srcdoc`, inline event-handler attributes and invalid attribute names;
+- form control live values, cookies, browser storage and page JavaScript state remain outside the extraction model;
+- page content is not sent to AI or another external service in Build 006;
+- recipe JSON shown in the side panel contains selectors/configuration and the tested source URL, but is not persisted automatically.
