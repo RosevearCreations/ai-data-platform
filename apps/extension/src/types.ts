@@ -172,3 +172,40 @@ export interface ExtractionRunResult {
   };
   truncated: boolean;
 }
+
+export interface ReviewColumn {
+  id: string;
+  key: string;
+  label: string;
+  position: number;
+  dropped: boolean;
+}
+
+export interface ReviewRow {
+  id: string;
+  sourceIndex: number;
+  included: boolean;
+  values: Record<string, string | number | null>;
+  warnings: string[];
+  editedKeys: string[];
+}
+
+export interface ReviewedDataset {
+  version: 1;
+  id: string;
+  recipeName: string;
+  sourceUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  columns: ReviewColumn[];
+  rows: ReviewRow[];
+  stats: {
+    totalRows: number;
+    includedRows: number;
+    excludedRows: number;
+    visibleColumns: number;
+    droppedColumns: number;
+    editedCells: number;
+    warningRows: number;
+  };
+}
