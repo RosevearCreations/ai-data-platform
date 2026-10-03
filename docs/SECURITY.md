@@ -118,3 +118,14 @@ Build 004 reuses the Build 003 temporary active-tab grant.
 - selectors and short visible-text samples return to the side panel;
 - selector preview highlights at most 50 visible matches and removes those overlays automatically;
 - preview does not activate matched elements.
+
+### Repeating-record detection boundary
+
+Build 005 reuses the temporary page access established in Build 003.
+
+- detection reads visible DOM structure and the same bounded/safe page information already permitted;
+- record detection does not click, navigate, submit forms or alter page data;
+- field-guided detection uses the selector already chosen by the user;
+- record preview creates pointer-events-disabled overlays and removes them automatically;
+- preview highlights at most 60 visible record boundaries;
+- candidate confidence is a structural heuristic, not a statement about the truth or meaning of the underlying content.
