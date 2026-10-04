@@ -230,15 +230,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">009</span>
+        <span className="build">010</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Extract across pages safely</strong>
+        <strong>Enrich records from detail pages</strong>
         <p>
-          Build 009 adds bounded next-page, numbered-page, load-more and
-          infinite-scroll traversal with same-origin enforcement, hard limits,
-          progress checks and stop conditions.
+          Build 010 follows same-origin public record links without cookies,
+          extracts bounded detail fields from inert HTML, merges them back into
+          parent rows, and reuses repeated detail URLs instead of refetching them.
         </p>
       </section>
 
