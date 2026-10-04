@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { listWorkspacesForUser } from "@/lib/database";
 
+import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { SignOutButton } from "./sign-out-button";
 
 const foundations = [
@@ -101,6 +102,8 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {session ? <AiFieldSuggestions /> : null}
 
       <section className="principles" aria-labelledby="principles-heading">
         <div>
