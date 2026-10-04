@@ -189,3 +189,20 @@ Build 009 adds controlled page traversal.
 - paginated results retain page number and source URL evidence for every collected row;
 - cumulative load-more/infinite-scroll runs skip already-seen DOM-index/value records so existing rows are not re-added on every growth step;
 - Build 009 does not bypass robots controls, authentication barriers, CAPTCHAs or site access restrictions.
+
+### Detail/subpage enrichment boundary
+
+Build 010 enriches parent extraction rows from public detail pages.
+
+- detail URLs are normalized from a user-selected parent field;
+- only HTTP(S) detail URLs on the source origin are eligible;
+- cross-origin detail links and cross-origin redirects are blocked;
+- optional site access is requested explicitly through Chrome and can be removed from the enrichment panel;
+- detail-page requests use `credentials: "omit"`, `cache: "no-store"`, bounded timeouts and a configurable inter-request delay;
+- fetched responses must be successful HTML responses;
+- HTML is parsed with `DOMParser` as inert `text/html`; fetched scripts are not executed;
+- form `value`, `srcdoc`, inline event-handler attributes and invalid attribute names remain blocked;
+- repeated detail URLs are fetched once and reused;
+- row removal for duplicate detail URLs is opt-in rather than automatic;
+- maximum unique detail pages are bounded to 500 per run;
+- detail values are merged into review copies and do not write automatically into PostgreSQL, Rosie Dazzlers or Devil n Dove.
