@@ -55,7 +55,7 @@ Then in Chrome:
 4. Select `apps/extension/dist`.
 5. Click the extension action to open its side panel.
 
-Build 001 intentionally grants only the `sidePanel` extension permission. Page inspection permissions are introduced only when the corresponding feature is implemented and reviewed.
+The extension currently uses `sidePanel`, `activeTab` and `scripting`. Build 009 also declares optional HTTP(S) host patterns so Chrome can grant a specific site only when navigational pagination requires it. No optional host is granted automatically at install time.
 
 ## Workspace package
 
@@ -97,3 +97,23 @@ pnpm --filter @rosevear/ai-data-web db:verify
 ```
 
 GitHub CI runs both against an ephemeral PostgreSQL service, so these commands do not need to be run manually for normal remote GitHub development.
+
+
+## Build 009 pagination permission
+
+Load-more and infinite-scroll runs do not need an additional site grant.
+
+For **Next button** or **Numbered pages** pagination:
+
+1. Open the target website in Chrome.
+2. Open the AI Data Platform extension side panel from the extension action.
+3. Detect the repeating records and create/run the extraction recipe.
+4. In **Pagination & infinite scroll**, choose **Inspect pagination**.
+5. Select the detected **next-button** or **numbered-pages** candidate if needed.
+6. Click **Allow this site for pagination**.
+7. Chrome will show a permission prompt for the current site. Choose **Allow**.
+8. Set the page/step, record and wait limits.
+9. Click **Run bounded pagination**.
+10. When that site should no longer have the optional grant, click **Remove site access** in the same pagination panel.
+
+This is a browser permission prompt only. No GitHub, database, Vercel or command-line setup is required for Build 009.
