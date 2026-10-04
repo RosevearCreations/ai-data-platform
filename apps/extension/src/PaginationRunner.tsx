@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 
+import { DetailEnrichment } from "./DetailEnrichment";
 import {
   inspectPagination,
   performPaginationStep,
@@ -820,11 +821,22 @@ export function PaginationRunner({
           ) : null}
 
           {reviewRun && result.rows.length ? (
-            <SpreadsheetReview
-              fields={recipe.fields}
-              recipeName={`${recipe.name} — paginated`}
-              run={reviewRun}
-            />
+            <>
+              <SpreadsheetReview
+                fields={recipe.fields}
+                recipeName={`${recipe.name} — paginated`}
+                run={reviewRun}
+              />
+              <DetailEnrichment
+                fields={recipe.fields}
+                recipe={{
+                  ...recipe,
+                  name: `${recipe.name} — paginated`,
+                  sourceUrl: reviewRun.sourceUrl
+                }}
+                run={reviewRun}
+              />
+            </>
           ) : null}
         </div>
       ) : null}
