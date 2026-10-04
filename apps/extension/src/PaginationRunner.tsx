@@ -33,7 +33,7 @@ function sleep(milliseconds: number) {
   return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
-async function getActiveTabId() {
+async function getActiveTab() {
   const [tab] = await chrome.tabs.query({
     active: true,
     currentWindow: true
@@ -43,7 +43,21 @@ async function getActiveTabId() {
     throw new Error("No active browser tab is available.");
   }
 
-  return tab.id;
+  return tab;
+}
+
+function originPattern(url: string | undefined) {
+  if (!url) {
+    throw new Error("The active tab URL is unavailable.");
+  }
+
+  const parsed = new URL(url);
+
+  if (!["http:", "https:"].includes(parsed.protocol)) {
+    throw new Error("Pagination site access is only available for HTTP(S) pages.");
+  }
+
+  return `${parsed.origin}/*`;
 }
 
 async function injectWithArgs<T>(
@@ -120,6 +134,9 @@ export function PaginationRunner({
   const [maxRecords, setMaxRecords] = useState(DEFAULT_LIMITS.maxRecords);
   const [waitMs, setWaitMs] = useState(DEFAULT_LIMITS.waitMs);
   const [running, setRunning] = useState(false);
+  const [sitePermission, setSitePermission] = useState<
+    "not-required" | "unknown" | "granted" | "denied"
+  >("unknown");
   const [result, setResult] = useState<PaginatedExtractionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const cancelRef = useRef(false);
@@ -169,9 +186,9 @@ export function PaginationRunner({
     setError(null);
 
     try {
-      const tabId = await getActiveTabId();
+      const tab = await getActiveTab();
       const value = await injectWithArgs<PaginationInspection>(
-        tabId,
+        tab.id!,
         inspectPagination as (...args: never[]) => unknown,
         [recipe.recordSelector]
       );
@@ -181,12 +198,82 @@ export function PaginationRunner({
       if (value.recommendedMode !== "none") {
         setMode(value.recommendedMode);
         setSelectedSelector(value.recommendedSelector);
+        await refreshSitePermission(value.recommendedMode);
       }
     } catch (reason) {
       setError(
         reason instanceof Error
           ? reason.message
           : "Unable to inspect pagination."
+      );
+    }
+  }
+
+  async function refreshSitePermission(targetMode: PaginationMode) {
+    if (
+      targetMode === "none" ||
+      targetMode === "load-more" ||
+      targetMode === "infinite-scroll"
+    ) {
+      setSitePermission("not-required");
+      return true;
+    }
+
+    try {
+      const tab = await getActiveTab();
+      const pattern = originPattern(tab.url);
+      const granted = await chrome.permissions.contains({
+        origins: [pattern]
+      });
+
+      setSitePermission(granted ? "granted" : "denied");
+      return granted;
+    } catch {
+      setSitePermission("denied");
+      return false;
+    }
+  }
+
+  async function requestSitePermission() {
+    setError(null);
+
+    try {
+      const tab = await getActiveTab();
+      const pattern = originPattern(tab.url);
+      const granted = await chrome.permissions.request({
+        origins: [pattern]
+      });
+
+      setSitePermission(granted ? "granted" : "denied");
+
+      if (!granted) {
+        setError("Chrome did not grant access to this site for pagination.");
+      }
+    } catch (reason) {
+      setSitePermission("denied");
+      setError(
+        reason instanceof Error
+          ? reason.message
+          : "Unable to request pagination access for this site."
+      );
+    }
+  }
+
+  async function removeSitePermission() {
+    setError(null);
+
+    try {
+      const tab = await getActiveTab();
+      const pattern = originPattern(tab.url);
+      await chrome.permissions.remove({
+        origins: [pattern]
+      });
+      setSitePermission("denied");
+    } catch (reason) {
+      setError(
+        reason instanceof Error
+          ? reason.message
+          : "Unable to remove pagination access for this site."
       );
     }
   }
@@ -286,7 +373,18 @@ export function PaginationRunner({
     let stopReason: PaginatedExtractionResult["stopReason"] = "completed";
 
     try {
-      const tabId = await getActiveTabId();
+      const tab = await getActiveTab();
+      const tabId = tab.id!;
+
+      if (
+        (mode === "next-button" || mode === "numbered-pages") &&
+        !(await refreshSitePermission(mode))
+      ) {
+        throw new Error(
+          "Allow this site for pagination before running navigational pagination."
+        );
+      }
+
       const firstProbe = await probe(tabId);
       const initialOrigin = firstProbe.origin;
       let currentProbe = firstProbe;
@@ -546,8 +644,7 @@ export function PaginationRunner({
               <button
                 className={
                   mode === candidate.mode &&
-                  (!candidate.selector ||
-                    candidate.selector === inspection.recommendedSelector)
+                  candidate.selector === selectedSelector
                     ? "active"
                     : ""
                 }
@@ -556,6 +653,7 @@ export function PaginationRunner({
                 onClick={() => {
                   setMode(candidate.mode);
                   setSelectedSelector(candidate.selector);
+                  void refreshSitePermission(candidate.mode);
                 }}
                 type="button"
               >
@@ -578,6 +676,42 @@ export function PaginationRunner({
             </ul>
           ) : null}
         </>
+      ) : null}
+
+      {(mode === "next-button" || mode === "numbered-pages") ? (
+        <div className="paginationPermission">
+          <div>
+            <strong>Site access for navigation</strong>
+            <p>
+              Chrome revokes temporary active-tab access after navigation, so
+              next-page automation needs an optional grant for this site only.
+            </p>
+          </div>
+          {sitePermission === "granted" ? (
+            <button
+              className="paginationPermissionRemove"
+              disabled={running}
+              onClick={removeSitePermission}
+              type="button"
+            >
+              Remove site access
+            </button>
+          ) : (
+            <button
+              className="paginationPermissionGrant"
+              disabled={running}
+              onClick={requestSitePermission}
+              type="button"
+            >
+              Allow this site for pagination
+            </button>
+          )}
+          <span>
+            {sitePermission === "granted"
+              ? "Granted for the current origin"
+              : "Not granted"}
+          </span>
+        </div>
       ) : null}
 
       <div className="paginationLimits">
@@ -620,7 +754,12 @@ export function PaginationRunner({
       <div className="paginationActions">
         <button
           className="paginationRun"
-          disabled={running || mode === "none"}
+          disabled={
+            running ||
+            mode === "none" ||
+            ((mode === "next-button" || mode === "numbered-pages") &&
+              sitePermission !== "granted")
+          }
           onClick={runPagination}
           type="button"
         >
