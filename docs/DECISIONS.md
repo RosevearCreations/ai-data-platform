@@ -132,3 +132,15 @@ AI output does not create or approve CSS selectors. Selector selection remains t
 The server uses bounded sample records rather than the full page DOM. If AI Gateway is not configured or fails, the endpoint returns deterministic suggestions instead of failing the platform.
 
 Reason: AI is useful for interpreting extraction intent, but selectors are operational scraping instructions and must remain inspectable, testable and user-verifiable.
+
+## D0019 — Pagination uses bounded traversal and optional per-site navigation access
+
+Decision: Build 009 supports four pagination modes: next-button, numbered pages, load-more and infinite scroll.
+
+Load-more and infinite-scroll runs stay within the existing user-invoked page grant. Next-button and numbered-page runs require an optional host permission scoped to the current HTTP(S) origin because Chrome revokes temporary active-tab access when the tab navigates.
+
+The extension declares optional HTTP(S) host patterns but requests only the current origin at runtime after the user chooses navigational pagination. The user can remove that site access from the pagination panel.
+
+Every pagination run has hard page/step, record and wait limits plus progress/stall, repeated-state and cross-origin stop conditions.
+
+Reason: multi-page extraction must remain bounded and reviewable without granting silent permanent access to every website.

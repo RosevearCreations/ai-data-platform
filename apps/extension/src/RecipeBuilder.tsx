@@ -4,6 +4,7 @@ import {
   deriveFieldRecipe,
   executeExtractionRecipe
 } from "./recipe-engine";
+import { PaginationRunner } from "./PaginationRunner";
 import { SpreadsheetReview } from "./SpreadsheetReview";
 import type {
   DerivedFieldResult,
@@ -479,6 +480,14 @@ export function RecipeBuilder({
             fields={fields}
             recipeName={recipe.name}
             run={run}
+          />
+
+          <PaginationRunner
+            initialRun={run}
+            recipe={{
+              ...recipe,
+              sourceUrl: run.sourceUrl
+            }}
           />
 
           <details className="recipeJson">

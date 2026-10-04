@@ -473,3 +473,70 @@ The platform is fully buildable and usable without AI credentials through determ
 ### Next
 
 Build 009 — Pagination & Infinite Scroll.
+
+## Build 009 — Pagination & Infinite Scroll
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 009 pull request.
+
+### Goal
+
+Run a deterministic extraction recipe across bounded pagination patterns while preserving same-origin safety, source-page evidence and explicit stop conditions.
+
+### Delivered
+
+- next-button detection;
+- numbered-page progression;
+- load-more detection;
+- safe infinite-scroll progression;
+- candidate confidence and diagnostics;
+- exact first-control selection with fresh control detection after each successful step;
+- same-origin pagination enforcement;
+- optional current-site host permission for page-navigation modes;
+- built-in grant and remove-site-access controls;
+- refusal to follow cross-origin pagination;
+- refusal to click disabled controls or form submit buttons as pagination;
+- configurable maximum pages/steps (1–50);
+- configurable maximum records (1–5,000);
+- configurable per-step wait window (1–15 seconds);
+- cancellation;
+- repeated-page/state detection;
+- no-new-record and stalled-growth stop conditions;
+- multi-page execution of Build 006 recipes;
+- cumulative load-more/infinite-scroll row protection;
+- per-step URL/extraction/addition summaries;
+- per-row page number and source URL evidence;
+- paginated result handoff to the Build 007 review grid;
+- extension version 0.9.0;
+- no new automatically granted broad host permission.
+
+### Verification
+
+The Build 009 executable implementation passed the complete repository verification matrix after the pagination selector typing correction and optional-site-access integration:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests including AI suggestion checks: PASS.
+
+### Security notes
+
+- load-more/infinite-scroll use the existing temporary page grant;
+- Chrome navigation revokes temporary active-tab access, so next/numbered modes request an optional grant only for the current origin;
+- the optional site grant is user-approved and removable;
+- navigation never follows a different origin;
+- hard limits and progress checks prevent unbounded page traversal;
+- Build 009 does not attempt CAPTCHA bypass, authentication bypass or anti-bot evasion.
+
+### Manual browser action
+
+For next-button or numbered-page pagination, click **Allow this site for pagination** and approve Chrome's site permission prompt. No other application, service or command-line setup is required.
+
+### Next
+
+Build 010 — Detail/Subpage Enrichment.

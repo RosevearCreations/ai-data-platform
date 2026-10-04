@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 008 — AI Suggested Fields.
+Build 009 — Pagination & Infinite Scroll.
 
 
 ## Persistence and authentication
