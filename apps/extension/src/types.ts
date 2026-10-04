@@ -209,3 +209,82 @@ export interface ReviewedDataset {
     warningRows: number;
   };
 }
+
+export type PaginationMode =
+  | "next-button"
+  | "numbered-pages"
+  | "load-more"
+  | "infinite-scroll"
+  | "none";
+
+export interface PaginationCandidate {
+  mode: Exclude<PaginationMode, "none">;
+  selector: string;
+  label: string;
+  confidence: number;
+  sameOrigin: boolean;
+  disabled: boolean;
+}
+
+export interface PaginationInspection {
+  url: string;
+  recordCount: number;
+  scrollHeight: number;
+  recommendedMode: PaginationMode;
+  recommendedSelector: string;
+  candidates: PaginationCandidate[];
+  diagnostics: string[];
+}
+
+export interface PaginationProbe {
+  url: string;
+  origin: string;
+  recordCount: number;
+  scrollHeight: number;
+  readyState: DocumentReadyState;
+}
+
+export interface PaginationStepResult {
+  mode: Exclude<PaginationMode, "none">;
+  selector: string;
+  action: "clicked" | "scrolled";
+  beforeUrl: string;
+  beforeRecordCount: number;
+  beforeScrollHeight: number;
+}
+
+export interface PaginationRunLimits {
+  maxPages: number;
+  maxRecords: number;
+  waitMs: number;
+  maxStalledSteps: number;
+}
+
+export interface PaginationPageSummary {
+  page: number;
+  url: string;
+  extractedRows: number;
+  addedRows: number;
+  duplicateRows: number;
+}
+
+export interface PaginatedExtractionResult {
+  startedAt: string;
+  finishedAt: string;
+  mode: PaginationMode;
+  pagesVisited: number;
+  rows: ExtractionRecordResult[];
+  pageSummaries: PaginationPageSummary[];
+  stopReason:
+    | "completed"
+    | "max-pages"
+    | "max-records"
+    | "no-next-control"
+    | "no-new-records"
+    | "repeated-url"
+    | "cross-origin"
+    | "stalled"
+    | "cancelled"
+    | "error";
+  warnings: string[];
+}
