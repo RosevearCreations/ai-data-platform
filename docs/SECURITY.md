@@ -170,3 +170,22 @@ Build 008 introduces the first optional model call.
 - cost telemetry records model, input/output/total tokens and estimated request cost when known;
 - the default model is configurable with `AI_SUGGESTION_MODEL`;
 - no AI suggestion is written automatically to Rosie Dazzlers, Devil n Dove or PostgreSQL.
+
+### Pagination and infinite-scroll boundary
+
+Build 009 adds controlled page traversal.
+
+- next-button, numbered-page, load-more and infinite-scroll candidates are detected from visible page controls and DOM growth;
+- cross-origin pagination targets are never followed;
+- disabled controls are ignored;
+- form submit buttons are refused as pagination controls;
+- load-more/infinite-scroll stay under the temporary active-tab grant;
+- navigational next/numbered pagination requires an optional host grant for the current origin only;
+- optional host access is requested explicitly from the user and can be removed from the pagination UI;
+- no host access is granted automatically at install time;
+- runs are capped at 50 pages/steps and 5,000 records, with configurable lower limits;
+- per-step wait time is bounded between 1 and 15 seconds;
+- repeated URLs/page payloads, no new records, stalled growth, cancellation and origin changes terminate a run;
+- paginated results retain page number and source URL evidence for every collected row;
+- cumulative load-more/infinite-scroll runs skip already-seen DOM-index/value records so existing rows are not re-added on every growth step;
+- Build 009 does not bypass robots controls, authentication barriers, CAPTCHAs or site access restrictions.
