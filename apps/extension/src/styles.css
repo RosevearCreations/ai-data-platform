@@ -1092,3 +1092,342 @@ h1 {
     padding-top: 0;
   }
 }
+
+.spreadsheetReview {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(85, 214, 190, 0.18);
+  border-radius: 0.85rem;
+  background: rgba(85, 214, 190, 0.035);
+}
+
+.spreadsheetReview h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.reviewBadge {
+  padding: 0.28rem 0.48rem;
+  border-radius: 999px;
+  background: rgba(85, 214, 190, 0.1);
+  color: #9de7db !important;
+  font-size: 0.66rem !important;
+  font-weight: 900 !important;
+}
+
+.reviewStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.reviewStats div {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.025);
+  text-align: center;
+}
+
+.reviewStats strong {
+  color: #d8f5ef;
+  font-size: 0.8rem;
+}
+
+.reviewStats span {
+  color: #728e89;
+  font-size: 0.58rem;
+  line-height: 1.2;
+}
+
+.reviewToolbar {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.reviewFilters,
+.reviewBulkActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.reviewFilters button,
+.reviewBulkActions button {
+  min-height: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.025);
+  color: #9fb2af;
+  padding: 0 0.55rem;
+  font-size: 0.64rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reviewFilters button.active {
+  border-color: rgba(85, 214, 190, 0.34);
+  background: rgba(85, 214, 190, 0.1);
+  color: #c9f5ee;
+}
+
+.reviewColumns {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.reviewColumnsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.reviewColumnsHeader strong {
+  color: #d8ece8;
+  font-size: 0.72rem;
+}
+
+.reviewColumnsHeader span {
+  color: #728e89;
+  font-size: 0.62rem;
+}
+
+.reviewColumnList {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.reviewColumnChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.reviewColumnChip > span {
+  min-width: 0;
+  overflow: hidden;
+  color: #c0d5d1;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reviewColumnChip > div {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.25rem;
+}
+
+.reviewColumnChip button {
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.035);
+  color: #8fa6a2;
+  font-size: 0.62rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reviewColumnChip button:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.droppedColumns summary {
+  color: #8eaaa5;
+  font-size: 0.64rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.droppedColumns > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.droppedColumns button {
+  border: 1px solid rgba(85, 214, 190, 0.15);
+  border-radius: 999px;
+  background: rgba(85, 214, 190, 0.04);
+  color: #9dc2bb;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.reviewGridWrap {
+  max-width: 100%;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.7rem;
+  background: #081018;
+}
+
+.reviewGrid {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.reviewGrid th,
+.reviewGrid td {
+  border-right: 1px solid rgba(255, 255, 255, 0.055);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  vertical-align: top;
+}
+
+.reviewGrid th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-width: 160px;
+  background: #101a22;
+  color: #9fb4b0;
+  padding: 0.55rem;
+  font-size: 0.62rem;
+  text-align: left;
+}
+
+.reviewGrid td {
+  min-width: 160px;
+  background: rgba(255, 255, 255, 0.008);
+  padding: 0.35rem;
+}
+
+.reviewIncludeHead,
+.reviewIncludeCell {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  min-width: 52px !important;
+  width: 52px;
+  text-align: center !important;
+}
+
+.reviewIncludeCell {
+  background: #0b141c !important;
+}
+
+.reviewRowHead,
+.reviewRowNumber {
+  min-width: 46px !important;
+  width: 46px;
+  text-align: center !important;
+}
+
+.reviewRowNumber {
+  color: #708984;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding-top: 0.75rem !important;
+}
+
+.reviewWarningHead,
+.reviewWarnings {
+  min-width: 210px !important;
+}
+
+.reviewGrid textarea {
+  width: 100%;
+  min-height: 3.6rem;
+  resize: vertical;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  outline: none;
+  background: transparent;
+  color: #c4d5d2;
+  padding: 0.4rem;
+  font: 0.65rem/1.4 inherit;
+}
+
+.reviewGrid textarea:focus {
+  border-color: rgba(85, 214, 190, 0.35);
+  background: rgba(85, 214, 190, 0.035);
+}
+
+.editedCell {
+  background: rgba(173, 127, 255, 0.045) !important;
+}
+
+.editedCell textarea {
+  color: #dfcdfd;
+}
+
+.excludedRow td {
+  opacity: 0.48;
+}
+
+.excludedRow textarea {
+  text-decoration: line-through;
+}
+
+.reviewWarnings ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 0.9rem;
+  color: #d9a6a6;
+  font-size: 0.6rem;
+  line-height: 1.4;
+}
+
+.reviewWarnings span {
+  color: #657a76;
+  font-size: 0.62rem;
+}
+
+.reviewEmpty {
+  margin: 0;
+  color: #7d918e;
+  font-size: 0.68rem;
+}
+
+.reviewSave {
+  display: grid;
+  gap: 0.4rem;
+  padding-top: 0.2rem;
+}
+
+.reviewSave button {
+  min-height: 2.8rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #55d6be;
+  color: #07120f;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.reviewSave p {
+  margin: 0;
+  color: #748c88;
+  font-size: 0.62rem;
+  line-height: 1.4;
+}
+
+.reviewSave strong {
+  color: #a8e9dd;
+  font-size: 0.65rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 360px) {
+  .reviewStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

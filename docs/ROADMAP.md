@@ -110,11 +110,23 @@ Acceptance: a user can choose a Build 005 record group, define multiple reusable
 
 ## Build 007 — Spreadsheet Preview & Review
 
-- preview grid;
-- edit/drop/reorder fields;
-- warnings;
-- row exclusion;
-- save dataset.
+Status: COMPLETE. Promotion is performed through the Build 007 pull request.
+
+- full spreadsheet-style extraction grid;
+- editable reviewed cell values;
+- row include/exclude controls;
+- include-all, exclude-all and reset actions;
+- column reorder controls;
+- non-destructive column drop/restore;
+- all/included/warnings row filters;
+- current required-field warning recalculation after edits;
+- edited-cell, excluded-row and warning-state presentation;
+- review statistics;
+- local reviewed-dataset snapshot save;
+- retention of up to 20 recent local review snapshots;
+- no business-system or backend writes.
+
+Acceptance: a successful Build 006 extraction can be reviewed across all rows, corrected, filtered, column-curated and row-approved, then saved as a local reviewed dataset while preserving the original extraction result.
 
 ## Build 008 — AI Suggested Fields
 

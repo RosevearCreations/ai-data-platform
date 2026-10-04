@@ -230,15 +230,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">006</span>
+        <span className="build">007</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Detect, define, extract</strong>
+        <strong>Extract, review, approve</strong>
         <p>
-          Choose a repeating record group, turn picked page elements into
-          reusable field rules, and run a versioned extraction recipe against
-          the live page before saving anything.
+          Run a recipe, review every extracted row in a spreadsheet-style grid,
+          edit values, exclude bad records, reorder or drop columns, and save a
+          reviewed local dataset without updating a business system.
         </p>
       </section>
 

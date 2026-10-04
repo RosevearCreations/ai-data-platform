@@ -4,6 +4,7 @@ import {
   deriveFieldRecipe,
   executeExtractionRecipe
 } from "./recipe-engine";
+import { SpreadsheetReview } from "./SpreadsheetReview";
 import type {
   DerivedFieldResult,
   ExtractionFieldRecipe,
@@ -474,35 +475,11 @@ export function RecipeBuilder({
             </ul>
           ) : null}
 
-          <div className="recipeRows">
-            {run.records.slice(0, 8).map((record) => (
-              <article key={record.index}>
-                <strong>Row {record.index + 1}</strong>
-                <dl>
-                  {fields.map((field) => (
-                    <div key={field.id}>
-                      <dt>{field.label}</dt>
-                      <dd>
-                        {record.values[field.key] === null
-                          ? "—"
-                          : String(record.values[field.key] ?? "—")}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-                {record.warnings.length ? (
-                  <small>{record.warnings.join(" · ")}</small>
-                ) : null}
-              </article>
-            ))}
-          </div>
-
-          {run.records.length > 8 ? (
-            <p className="recipeHint">
-              Showing the first 8 rows here. Build 007 will provide the full
-              spreadsheet-style review grid.
-            </p>
-          ) : null}
+          <SpreadsheetReview
+            fields={fields}
+            recipeName={recipe.name}
+            run={run}
+          />
 
           <details className="recipeJson">
             <summary>Portable recipe JSON</summary>

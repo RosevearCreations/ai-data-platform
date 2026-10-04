@@ -349,3 +349,61 @@ GitHub Actions verified the complete repository on the Build 006 final developme
 ### Next
 
 Build 007 — Spreadsheet Preview & Review.
+
+## Build 007 — Spreadsheet Preview & Review
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 007 pull request.
+
+### Goal
+
+Turn Build 006 extraction results into a reviewable working dataset where a human can correct values, exclude bad rows, curate columns and save an approved local snapshot without mutating source evidence or production business data.
+
+### Delivered
+
+- spreadsheet-style review grid across all extracted rows;
+- editable reviewed cell values;
+- edited-cell highlighting;
+- row inclusion/exclusion controls;
+- include-all and exclude-all actions;
+- full review reset;
+- all/included/warnings row filters;
+- column move-left/move-right ordering;
+- non-destructive column drop;
+- individual/all dropped-column restore;
+- current required-field warning recalculation after edits;
+- excluded-row and warning-state presentation;
+- included/excluded/edited/warning review statistics;
+- reviewed-dataset schema version 1;
+- extension-local reviewed dataset persistence;
+- retention of up to 20 recent reviewed datasets;
+- storage-quota/error reporting;
+- extension version 0.7.0;
+- no PostgreSQL, Rosie Dazzlers, Devil n Dove or AI writes.
+
+### Verification
+
+GitHub Actions verified the Build 007 implementation through the existing complete repository matrix:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests: PASS.
+
+### Security notes
+
+- the review grid works on a copy of extraction results;
+- edits do not mutate the inspected webpage or original extraction run;
+- saved snapshots use only the extension page's own local storage;
+- inspected-site browser storage remains untouched;
+- row exclusion and column dropping remain reversible review metadata;
+- reviewed datasets do not write into business systems or backend persistence.
+
+### Next
+
+Build 008 — AI Suggested Fields.

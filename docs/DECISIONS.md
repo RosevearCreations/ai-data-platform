@@ -112,3 +112,13 @@ Supported extraction sources are text, link URL, image URL and safe attributes. 
 Reason: recipes must be portable, inspectable and executable without AI. Versioning gives future builds a stable compatibility boundary as recipe capabilities grow.
 
 Build 006 only drafts and tests recipes locally in the active tab. Persistent recipe storage is intentionally deferred to the Saved Scrapers and Templates milestone.
+
+## D0017 — Review datasets are explicit working copies
+
+Decision: Build 007 creates a separate reviewed-dataset working copy from a successful extraction run.
+
+Cell edits, row inclusion/exclusion, column ordering and dropped columns modify only that review copy. The original extraction result and extraction recipe remain unchanged for traceability.
+
+Reviewed datasets are saved locally in the extension origin in Build 007. Backend persistence and business-system integration remain deferred.
+
+Reason: human review must be reversible and must never silently mutate source evidence or production business data.

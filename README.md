@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 006 — Extraction Recipe Engine.
+Build 007 — Spreadsheet Preview & Review.
 
 
 ## Persistence and authentication
