@@ -361,6 +361,32 @@ export function DetailEnrichment({
       return;
     }
 
+    const allKeys = [
+      ...fields.map((field) => field.key),
+      ...detailFields.map((field) => field.key)
+    ];
+    const duplicateKey = allKeys.find(
+      (key, index) => allKeys.indexOf(key) !== index
+    );
+
+    if (duplicateKey) {
+      setError(
+        `Field key "${duplicateKey}" is duplicated. Parent and detail field keys must be unique.`
+      );
+      return;
+    }
+
+    const invalidField = detailFields.find(
+      (field) => !field.key.trim() || !field.label.trim() || !field.selector.trim()
+    );
+
+    if (invalidField) {
+      setError(
+        "Every detail field needs a label, unique key, and CSS selector."
+      );
+      return;
+    }
+
     if (!(await checkPermission())) {
       setError("Allow this site for detail-page enrichment first.");
       return;
