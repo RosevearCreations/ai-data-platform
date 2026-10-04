@@ -294,3 +294,58 @@ export interface PaginatedExtractionResult {
     | "error";
   warnings: string[];
 }
+
+export type DetailExtractionSource =
+  | "text"
+  | "attribute"
+  | "link"
+  | "image"
+  | "meta";
+
+export interface DetailFieldRecipe {
+  id: string;
+  key: string;
+  label: string;
+  selector: string;
+  source: DetailExtractionSource;
+  attribute: string;
+  required: boolean;
+  transforms: ExtractionTransform[];
+}
+
+export interface DetailEnrichmentLimits {
+  maxPages: number;
+  delayMs: number;
+  timeoutMs: number;
+}
+
+export interface DetailPageEvidence {
+  requestedUrl: string;
+  finalUrl: string;
+  status: number;
+  fetched: boolean;
+  reused: boolean;
+  error: string;
+}
+
+export interface DetailEnrichedRecord extends ExtractionRecordResult {
+  detailUrl: string;
+  detailPageIndex: number | null;
+  evidence: DetailPageEvidence;
+}
+
+export interface DetailEnrichmentResult {
+  startedAt: string;
+  finishedAt: string;
+  sourceFieldKey: string;
+  sourceOrigin: string;
+  parentRows: number;
+  uniqueDetailUrls: number;
+  fetchedPages: number;
+  reusedPages: number;
+  skippedRows: number;
+  failedPages: number;
+  records: DetailEnrichedRecord[];
+  detailFields: DetailFieldRecipe[];
+  warnings: string[];
+}
