@@ -150,7 +150,7 @@ Acceptance: an authenticated user can describe desired data, submit bounded reco
 
 ## Build 009 — Pagination & Infinite Scroll
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 009 pull request.
 
 - visible next-button detection;
 - numbered-page progression;
