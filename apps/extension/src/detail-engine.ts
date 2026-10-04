@@ -58,15 +58,15 @@ function applyTransforms(
     } else if (transform === "uppercase") {
       value = String(value).toUpperCase();
     } else if (transform === "number") {
-      const normalized = String(value).replace(/[^0-9+.\-]/g, "");
-      const numberValue = Number(normalized);
+      const normalized: string = String(value).replace(/[^0-9+.\-]/g, "");
+      const numberValue: number = Number(normalized);
       value = Number.isFinite(numberValue) ? numberValue : "";
     } else if (transform === "currency") {
-      const normalized = String(value)
+      const normalized: string = String(value)
         .replace(/\s/g, "")
         .replace(/[^0-9,.\-]/g, "");
 
-      let numeric = normalized;
+      let numeric: string = normalized;
 
       if (normalized.includes(",") && normalized.includes(".")) {
         numeric =
@@ -83,7 +83,7 @@ function applyTransforms(
         numeric = normalized.replace(/,/g, "");
       }
 
-      const numberValue = Number(numeric);
+      const numberValue: number = Number(numeric);
       value = Number.isFinite(numberValue) ? numberValue : "";
     }
   }
