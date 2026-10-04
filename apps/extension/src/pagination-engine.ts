@@ -321,23 +321,34 @@ export function inspectPagination(recordSelector: string): PaginationInspection 
 }
 
 export function probePagination(recordSelector: string): PaginationProbe {
-  let recordCount = 0;
+  let records: Element[] = [];
 
   try {
-    recordCount = document.querySelectorAll(recordSelector).length;
+    records = Array.from(document.querySelectorAll(recordSelector));
   } catch {
-    recordCount = 0;
+    records = [];
   }
+
+  const cleanText = (value: string | null | undefined, max = 160) =>
+    (value ?? "").replace(/\s+/g, " ").trim().slice(0, max);
+
+  const signatureParts = [
+    String(records.length),
+    cleanText(records[0]?.textContent),
+    cleanText(records[1]?.textContent),
+    cleanText(records.at(-1)?.textContent)
+  ];
 
   return {
     url: window.location.href,
     origin: window.location.origin,
-    recordCount,
+    recordCount: records.length,
     scrollHeight: Math.max(
       document.documentElement.scrollHeight,
       document.body?.scrollHeight ?? 0
     ),
-    readyState: document.readyState
+    readyState: document.readyState,
+    recordSignature: signatureParts.join("|")
   };
 }
 
