@@ -28,7 +28,7 @@ export default async function HomePage() {
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Build 002</p>
+        <p className="eyebrow">Build 008</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure for Rosie Dazzlers,
