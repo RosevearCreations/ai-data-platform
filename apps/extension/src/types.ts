@@ -242,6 +242,7 @@ export interface PaginationProbe {
   recordCount: number;
   scrollHeight: number;
   readyState: DocumentReadyState;
+  recordSignature: string;
 }
 
 export interface PaginationStepResult {
@@ -268,12 +269,17 @@ export interface PaginationPageSummary {
   duplicateRows: number;
 }
 
+export interface PaginatedExtractionRecord extends ExtractionRecordResult {
+  page: number;
+  sourceUrl: string;
+}
+
 export interface PaginatedExtractionResult {
   startedAt: string;
   finishedAt: string;
   mode: PaginationMode;
   pagesVisited: number;
-  rows: ExtractionRecordResult[];
+  rows: PaginatedExtractionRecord[];
   pageSummaries: PaginationPageSummary[];
   stopReason:
     | "completed"
