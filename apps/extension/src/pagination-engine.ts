@@ -90,13 +90,14 @@ export function inspectPagination(recordSelector: string): PaginationInspection 
     let current: Element | null = element;
 
     for (let depth = 0; current && depth < 6; depth += 1) {
-      const currentTag = current.tagName.toLowerCase();
-      const parent = current.parentElement;
+      const currentTagName = current.tagName;
+      const currentTag = currentTagName.toLowerCase();
+      const parentElement: Element | null = current.parentElement;
       let segment = currentTag;
 
-      if (parent) {
-        const sameTag = Array.from(parent.children).filter(
-          (child) => child.tagName === current?.tagName
+      if (parentElement) {
+        const sameTag: Element[] = Array.from(parentElement.children).filter(
+          (child: Element) => child.tagName === currentTagName
         );
 
         if (sameTag.length > 1) {
@@ -111,7 +112,7 @@ export function inspectPagination(recordSelector: string): PaginationInspection 
         return selector;
       }
 
-      current = parent;
+      current = parentElement;
     }
 
     return parts.join(" > ") || tag;
