@@ -230,15 +230,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">008</span>
+        <span className="build">009</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Extract, review, enrich</strong>
+        <strong>Extract across pages safely</strong>
         <p>
-          Deterministic extraction stays local. Build 008 can package bounded
-          record samples for the authenticated web app to suggest useful field
-          semantics without sending the full page DOM.
+          Build 009 adds bounded next-page, numbered-page, load-more and
+          infinite-scroll traversal with same-origin enforcement, hard limits,
+          progress checks and stop conditions.
         </p>
       </section>
 
