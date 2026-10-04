@@ -150,10 +150,24 @@ Acceptance: an authenticated user can describe desired data, submit bounded reco
 
 ## Build 009 — Pagination & Infinite Scroll
 
-- next-button;
-- numbered pages;
-- safe infinite scroll;
-- limits and stop conditions.
+Status: IN VERIFICATION on `dev`.
+
+- visible next-button detection;
+- numbered-page progression;
+- load-more control detection;
+- safe infinite-scroll progression;
+- exact first-control selection with fresh per-page re-detection;
+- same-origin enforcement;
+- optional current-site host access for navigational pagination;
+- removable site access;
+- configurable page/step, record and wait limits;
+- repeated-state, no-new-record, stalled-growth, cancellation and cross-origin stop conditions;
+- multi-page recipe execution;
+- cumulative-row protection for load-more/infinite-scroll;
+- page/step summaries and per-row source-page evidence;
+- direct handoff of paginated results to the Build 007 review grid.
+
+Acceptance: a user can run a Build 006 recipe across bounded same-origin pagination, collect and review multi-page results, and stop safely on configured limits or lack of measurable progress.
 
 ## Build 010 — Detail/Subpage Enrichment
 
