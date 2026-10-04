@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 009 — Pagination & Infinite Scroll.
+Build 010 — Detail/Subpage Enrichment.
 
 
 ## Persistence and authentication

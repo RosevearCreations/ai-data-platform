@@ -117,3 +117,24 @@ For **Next button** or **Numbered pages** pagination:
 10. When that site should no longer have the optional grant, click **Remove site access** in the same pagination panel.
 
 This is a browser permission prompt only. No GitHub, database, Vercel or command-line setup is required for Build 009.
+
+## Build 010 detail-page permission
+
+Detail enrichment fetches public same-origin HTML from the extension side panel instead of navigating the active tab. Chrome therefore requires optional access to the target site.
+
+To use it:
+
+1. Open the source/list page in Chrome and open the AI Data Platform side panel.
+2. Detect records, define fields and run the extraction recipe. You may also run Build 009 pagination first.
+3. Open **Detail / subpage enrichment**.
+4. Choose the parent field containing the detail-page URL, such as **Product URL** or **Record URL**.
+5. Click **Allow this site for detail enrichment**.
+6. When Chrome displays the current-site permission prompt, choose **Allow**.
+7. Add **H1 title**, **Meta description**, or one or more custom detail fields.
+8. Set the maximum unique detail pages, delay and timeout.
+9. Leave duplicate-row removal off unless you explicitly want only the first parent row for each identical detail URL.
+10. Click **Run bounded detail enrichment**.
+11. Review the merged rows in the spreadsheet grid.
+12. Click **Remove site access** when you no longer want the optional grant retained.
+
+Detail fetches omit target-site cookies and credentials. No GitHub, database, Vercel, AI-provider or command-line setup is required for Build 010.

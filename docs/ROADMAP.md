@@ -171,9 +171,25 @@ Acceptance: a user can run a Build 006 recipe across bounded same-origin paginat
 
 ## Build 010 — Detail/Subpage Enrichment
 
-- follow record links;
-- merge parent/detail fields;
-- deduplication.
+Status: COMPLETE. Promotion is performed through the Build 010 pull request.
+
+- user-selected parent detail-URL field;
+- same-origin public detail-page fetching without cookies;
+- inert HTML parsing;
+- H1 and meta-description field presets;
+- custom detail-field CSS selectors;
+- text, meta-content, link, image and safe-attribute extraction;
+- deterministic transforms and required-field warnings;
+- bounded unique-page count, delay and timeout controls;
+- repeated-detail-URL fetch reuse;
+- explicit opt-in parent-row deduplication by identical detail URL;
+- cross-origin link/redirect blocking;
+- parent/detail value merging;
+- per-record detail fetch evidence;
+- enrichment from both single-page and Build 009 paginated results;
+- direct handoff to the Build 007 review grid.
+
+Acceptance: a reviewed extraction can follow bounded same-origin public detail links, extract configured fields without target-site credentials, reuse duplicate detail fetches, merge results with parent rows and preserve fetch evidence for review.
 
 ## Build 011 — CSV/XLSX/JSON Export
 

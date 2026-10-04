@@ -144,3 +144,13 @@ The extension declares optional HTTP(S) host patterns but requests only the curr
 Every pagination run has hard page/step, record and wait limits plus progress/stall, repeated-state and cross-origin stop conditions.
 
 Reason: multi-page extraction must remain bounded and reviewable without granting silent permanent access to every website.
+
+## D0020 — Detail enrichment fetches public same-origin HTML without credentials
+
+Decision: Build 010 follows detail/subpage URLs by making bounded extension-origin fetches after the user grants optional access to the current site.
+
+Detail requests use `credentials: "omit"`, accept HTML, enforce the original origin after redirects, parse responses as inert `text/html`, and never execute fetched scripts.
+
+Repeated detail URLs are fetched once and their extracted values are reused. Removing duplicate parent rows is a separate explicit opt-in choice.
+
+Reason: subpage enrichment should add public record detail without navigating the user's tab, reusing logged-in target-site sessions, or silently deleting parent records.

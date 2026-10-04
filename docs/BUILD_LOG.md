@@ -540,3 +540,71 @@ For next-button or numbered-page pagination, click **Allow this site for paginat
 ### Next
 
 Build 010 — Detail/Subpage Enrichment.
+
+## Build 010 — Detail/Subpage Enrichment
+
+Date: 2026-10-04
+
+Status: COMPLETE. Promotion is performed through the Build 010 pull request.
+
+### Goal
+
+Enrich extracted parent rows from public detail/subpages while keeping requests same-origin, bounded, credential-free and reviewable.
+
+### Delivered
+
+- parent detail-URL field selection;
+- optional current-site host permission request and removal;
+- same-origin detail URL normalization;
+- credential-free public HTML fetches with `credentials: "omit"`;
+- cross-origin detail-link and redirect blocking;
+- successful-HTML response validation;
+- inert `DOMParser` parsing without fetched script execution;
+- H1 title and meta-description presets;
+- custom detail CSS selectors;
+- text, meta-content, link, image and safe-attribute extraction;
+- trim, whitespace, case, number and currency transforms;
+- required-field validation warnings;
+- duplicate parent/detail field-key validation;
+- configurable 1–500 unique detail-page cap;
+- configurable 0–5,000 ms inter-request delay;
+- configurable 2–30 second per-page timeout;
+- repeated detail URLs fetched once and reused;
+- optional parent-row deduplication by identical detail URL;
+- parent/detail field merging;
+- per-row requested/final URL, status, reuse and error evidence;
+- enrichment from ordinary Build 006 runs and Build 009 paginated results;
+- merged-result handoff to the Build 007 spreadsheet review grid;
+- extension version 0.10.0.
+
+### Verification
+
+GitHub Actions verified the complete Build 010 executable implementation after the detail-transform typing correction:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests including AI suggestion checks: PASS.
+
+### Security notes
+
+- detail requests stay on the source origin;
+- target-site cookies and credentials are omitted;
+- cross-origin redirects are rejected;
+- fetched HTML is parsed inertly and scripts are not executed;
+- unsafe form/event attributes remain blocked;
+- network fetch reuse does not silently delete parent rows;
+- duplicate parent-row removal is an explicit user option;
+- no enriched result writes automatically to business systems or PostgreSQL.
+
+### Manual browser action
+
+Click **Allow this site for detail enrichment** and approve Chrome's current-site permission prompt before running detail-page fetches. Existing permission from Build 009 may already satisfy this requirement on the same origin.
+
+### Next
+
+Build 011 — CSV/XLSX/JSON Export.
