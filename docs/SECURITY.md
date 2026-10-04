@@ -154,3 +154,19 @@ Build 007 reviews a local copy of Build 006 extraction results.
 - save failures, including browser storage quota errors, are surfaced to the user;
 - no reviewed dataset is written to Rosie Dazzlers, Devil n Dove, PostgreSQL or an AI provider in Build 007;
 - required-field warnings are recalculated from current reviewed values so manual corrections remove stale missing-value warnings.
+
+### AI suggested-fields boundary
+
+Build 008 introduces the first optional model call.
+
+- the AI endpoint requires an authenticated Better Auth session;
+- the AI Gateway key is server-only and is never placed in the Chrome extension or browser bundle;
+- request parsing caps intent length, sample count, sample text length and existing-field count;
+- only bounded record samples, source URL, record selector metadata and existing field definitions are eligible for the model request;
+- the full DOM, cookies, browser storage, page JavaScript state and live form values are not included;
+- AI output is constrained to a strict structured schema and sanitized again before use;
+- AI output cannot directly create CSS selectors;
+- gateway failures, timeouts, missing credentials and unusable structured output fall back to deterministic suggestions;
+- cost telemetry records model, input/output/total tokens and estimated request cost when known;
+- the default model is configurable with `AI_SUGGESTION_MODEL`;
+- no AI suggestion is written automatically to Rosie Dazzlers, Devil n Dove or PostgreSQL.
