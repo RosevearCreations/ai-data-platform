@@ -110,7 +110,7 @@ Acceptance: a user can choose a Build 005 record group, define multiple reusable
 
 ## Build 007 — Spreadsheet Preview & Review
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 007 pull request.
 
 - full spreadsheet-style extraction grid;
 - editable reviewed cell values;
