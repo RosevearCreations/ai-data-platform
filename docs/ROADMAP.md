@@ -171,7 +171,7 @@ Acceptance: a user can run a Build 006 recipe across bounded same-origin paginat
 
 ## Build 010 — Detail/Subpage Enrichment
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 010 pull request.
 
 - user-selected parent detail-URL field;
 - same-origin public detail-page fetching without cookies;
