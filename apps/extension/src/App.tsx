@@ -230,15 +230,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">007</span>
+        <span className="build">008</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Extract, review, approve</strong>
+        <strong>Extract, review, enrich</strong>
         <p>
-          Run a recipe, review every extracted row in a spreadsheet-style grid,
-          edit values, exclude bad records, reorder or drop columns, and save a
-          reviewed local dataset without updating a business system.
+          Deterministic extraction stays local. Build 008 can package bounded
+          record samples for the authenticated web app to suggest useful field
+          semantics without sending the full page DOM.
         </p>
       </section>
 
