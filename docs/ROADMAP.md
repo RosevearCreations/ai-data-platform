@@ -130,7 +130,7 @@ Acceptance: a successful Build 006 extraction can be reviewed across all rows, c
 
 ## Build 008 — AI Suggested Fields
 
-Status: IN VERIFICATION on `dev`.
+Status: COMPLETE. Promotion is performed through the Build 008 pull request.
 
 - authenticated natural-language extraction intent;
 - bounded sample-record context instead of full-DOM upload;
