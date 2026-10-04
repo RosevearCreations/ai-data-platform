@@ -92,13 +92,28 @@ export function SpreadsheetReview({
   const visibleColumns = orderedColumns.filter((column) => !column.dropped);
   const droppedColumns = orderedColumns.filter((column) => column.dropped);
 
+  const currentWarnings = (row: ReviewRow) => {
+    const baseWarnings = row.warnings.filter(
+      (warning) => !warning.endsWith(": required value is missing.")
+    );
+    const requiredWarnings = fields
+      .filter((field) => field.required)
+      .filter((field) => {
+        const value = row.values[field.key];
+        return value === null || value === undefined || String(value).trim() === "";
+      })
+      .map((field) => `${field.label}: required value is missing.`);
+
+    return [...baseWarnings, ...requiredWarnings];
+  };
+
   const visibleRows = useMemo(() => {
     if (filter === "included") {
       return rows.filter((row) => row.included);
     }
 
     if (filter === "warnings") {
-      return rows.filter((row) => row.warnings.length > 0);
+      return rows.filter((row) => currentWarnings(row).length > 0);
     }
 
     return rows;
@@ -110,7 +125,9 @@ export function SpreadsheetReview({
       (total, row) => total + row.editedKeys.length,
       0
     );
-    const warningRows = rows.filter((row) => row.warnings.length > 0).length;
+    const warningRows = rows.filter(
+      (row) => currentWarnings(row).length > 0
+    ).length;
 
     return {
       totalRows: rows.length,
@@ -233,7 +250,10 @@ export function SpreadsheetReview({
       createdAt,
       updatedAt,
       columns: orderedColumns,
-      rows,
+      rows: rows.map((row) => ({
+        ...row,
+        warnings: currentWarnings(row)
+      })),
       stats
     };
 
@@ -421,9 +441,9 @@ export function SpreadsheetReview({
                   );
                 })}
                 <td className="reviewWarnings">
-                  {row.warnings.length ? (
+                  {currentWarnings(row).length ? (
                     <ul>
-                      {row.warnings.map((warning) => (
+                      {currentWarnings(row).map((warning) => (
                         <li key={warning}>{warning}</li>
                       ))}
                     </ul>
