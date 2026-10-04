@@ -115,6 +115,7 @@ export function PaginationRunner({
     null
   );
   const [mode, setMode] = useState<PaginationMode>("none");
+  const [selectedSelector, setSelectedSelector] = useState("");
   const [maxPages, setMaxPages] = useState(DEFAULT_LIMITS.maxPages);
   const [maxRecords, setMaxRecords] = useState(DEFAULT_LIMITS.maxRecords);
   const [waitMs, setWaitMs] = useState(DEFAULT_LIMITS.waitMs);
@@ -179,6 +180,7 @@ export function PaginationRunner({
 
       if (value.recommendedMode !== "none") {
         setMode(value.recommendedMode);
+        setSelectedSelector(value.recommendedSelector);
       }
     } catch (reason) {
       setError(
@@ -395,17 +397,21 @@ export function PaginationRunner({
           [recipe.recordSelector]
         );
 
+        const modeCandidates = pageInspection.candidates.filter(
+          (item) =>
+            item.mode === mode &&
+            !item.disabled &&
+            item.sameOrigin
+        );
+
         const candidate =
           mode === "infinite-scroll"
-            ? pageInspection.candidates.find(
-                (item) => item.mode === "infinite-scroll"
-              )
-            : pageInspection.candidates.find(
-                (item) =>
-                  item.mode === mode &&
-                  !item.disabled &&
-                  item.sameOrigin
-              );
+            ? modeCandidates[0]
+            : pagesVisited === 1 && selectedSelector
+              ? modeCandidates.find(
+                  (item) => item.selector === selectedSelector
+                ) ?? modeCandidates[0]
+              : modeCandidates[0];
 
         if (!candidate) {
           stopReason = "no-next-control";
@@ -547,7 +553,10 @@ export function PaginationRunner({
                 }
                 disabled={candidate.disabled || !candidate.sameOrigin}
                 key={`${candidate.mode}-${candidate.selector}-${index}`}
-                onClick={() => setMode(candidate.mode)}
+                onClick={() => {
+                  setMode(candidate.mode);
+                  setSelectedSelector(candidate.selector);
+                }}
                 type="button"
               >
                 <strong>{candidate.mode}</strong>
