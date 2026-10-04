@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 007 — Spreadsheet Preview & Review.
+Build 008 — AI Suggested Fields.
 
 
 ## Persistence and authentication

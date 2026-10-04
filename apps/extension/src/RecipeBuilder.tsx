@@ -494,6 +494,36 @@ export function RecipeBuilder({
               )}
             </pre>
           </details>
+
+          <details className="recipeJson aiContextExport">
+            <summary>AI suggestion context JSON</summary>
+            <p className="recipeHint">
+              This is the bounded context accepted by the authenticated web AI
+              suggestion surface. It contains samples and recipe metadata, not
+              the full page DOM.
+            </p>
+            <pre>
+              {JSON.stringify(
+                {
+                  pageUrl: run.sourceUrl,
+                  recordSelector: candidate.recordSelector,
+                  sampleRecords: candidate.samples.slice(0, 8).map((sample) => ({
+                    text: sample.text,
+                    link: sample.link || undefined,
+                    image: sample.image || undefined,
+                    fieldHints: sample.fieldHints
+                  })),
+                  existingFields: fields.map((field) => ({
+                    key: field.key,
+                    label: field.label,
+                    source: field.source
+                  }))
+                },
+                null,
+                2
+              )}
+            </pre>
+          </details>
         </div>
       ) : null}
     </section>

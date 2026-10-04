@@ -122,3 +122,13 @@ Cell edits, row inclusion/exclusion, column ordering and dropped columns modify 
 Reviewed datasets are saved locally in the extension origin in Build 007. Backend persistence and business-system integration remain deferred.
 
 Reason: human review must be reversible and must never silently mutate source evidence or production business data.
+
+## D0018 — AI suggests semantics; deterministic tools own selectors
+
+Decision: Build 008 uses AI only to suggest extraction fields, semantics, preferred extraction sources, required-state guidance and deterministic transforms.
+
+AI output does not create or approve CSS selectors. Selector selection remains the responsibility of the deterministic visual picker, repeating-record detector and recipe engine from Builds 004–006.
+
+The server uses bounded sample records rather than the full page DOM. If AI Gateway is not configured or fails, the endpoint returns deterministic suggestions instead of failing the platform.
+
+Reason: AI is useful for interpreting extraction intent, but selectors are operational scraping instructions and must remain inspectable, testable and user-verifiable.

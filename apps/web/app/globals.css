@@ -326,3 +326,243 @@ h3 {
     flex-direction: column;
   }
 }
+
+.aiSuggestions {
+  display: grid;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid rgba(125, 226, 216, 0.14);
+  border-radius: 1rem;
+  background: rgba(9, 22, 30, 0.78);
+}
+
+.aiSuggestionIntro {
+  margin: 0;
+  max-width: 72ch;
+  color: #9db0b3;
+  line-height: 1.6;
+}
+
+.aiSuggestionForm {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.aiSuggestionForm label {
+  display: grid;
+  gap: 0.4rem;
+  color: #dce9ea;
+  font-size: 0.8rem;
+  font-weight: 850;
+}
+
+.aiSuggestionForm textarea {
+  width: 100%;
+  border: 1px solid rgba(237, 246, 247, 0.13);
+  border-radius: 0.75rem;
+  outline: none;
+  background: #0d1921;
+  color: #edf6f7;
+  padding: 0.75rem;
+  font: inherit;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.aiSuggestionForm textarea:focus {
+  border-color: rgba(125, 226, 216, 0.62);
+  box-shadow: 0 0 0 3px rgba(125, 226, 216, 0.08);
+}
+
+.aiContextInput {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace !important;
+  font-size: 0.78rem !important;
+}
+
+.aiSuggestionForm button {
+  min-height: 2.9rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: #7de2d8;
+  color: #071018;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.aiSuggestionForm button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.aiSuggestionError,
+.aiSuggestionWarnings {
+  border: 1px solid rgba(255, 158, 158, 0.17);
+  border-radius: 0.75rem;
+  background: rgba(255, 158, 158, 0.055);
+  color: #ffd1d1;
+  padding: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.aiSuggestionWarnings {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.aiSuggestionWarnings p {
+  margin: 0;
+}
+
+.aiSuggestionResults {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.aiSuggestionSummary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.aiSuggestionSummary strong {
+  color: #e9f7f7;
+}
+
+.aiSuggestionSummary p {
+  margin: 0.3rem 0 0;
+  color: #9eb1b4;
+  line-height: 1.55;
+}
+
+.aiSuggestionSummary > span {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.1);
+  color: #9de9e2;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.aiSuggestionTelemetry {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.aiSuggestionTelemetry div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.7rem;
+}
+
+.aiSuggestionTelemetry strong {
+  overflow: hidden;
+  color: #d9eeee;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiSuggestionTelemetry span {
+  color: #7f9295;
+  font-size: 0.66rem;
+}
+
+.aiSuggestedFieldList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.7rem;
+}
+
+.aiSuggestedFieldList article {
+  display: grid;
+  gap: 0.65rem;
+  border: 1px solid rgba(237, 246, 247, 0.08);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.85rem;
+}
+
+.aiSuggestedFieldHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.aiSuggestedFieldHeader > div {
+  min-width: 0;
+}
+
+.aiSuggestedFieldHeader strong {
+  display: block;
+  color: #e9f7f7;
+}
+
+.aiSuggestedFieldHeader code {
+  display: block;
+  margin-top: 0.2rem;
+  overflow-wrap: anywhere;
+  color: #86aaa7;
+  font-size: 0.7rem;
+}
+
+.aiSuggestedFieldHeader > span {
+  border-radius: 999px;
+  background: rgba(173, 127, 255, 0.1);
+  color: #ddcaff;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.aiSuggestedFieldList article > p {
+  margin: 0;
+  color: #9aacae;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.aiSuggestedFieldList dl {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+}
+
+.aiSuggestedFieldList dl > div {
+  display: grid;
+  grid-template-columns: minmax(78px, 0.65fr) 1.35fr;
+  gap: 0.4rem;
+}
+
+.aiSuggestedFieldList dt {
+  color: #6f8588;
+  font-size: 0.68rem;
+}
+
+.aiSuggestedFieldList dd {
+  margin: 0;
+  color: #bdcdcf;
+  font-size: 0.7rem;
+}
+
+.aiSuggestedFieldList small {
+  color: #7f9295;
+  line-height: 1.45;
+}
+
+@media (max-width: 720px) {
+  .aiSuggestionTelemetry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .aiSuggestionSummary {
+    flex-direction: column;
+  }
+}

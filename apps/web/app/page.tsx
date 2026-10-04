@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { listWorkspacesForUser } from "@/lib/database";
 
+import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { SignOutButton } from "./sign-out-button";
 
 const foundations = [
@@ -27,7 +28,7 @@ export default async function HomePage() {
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Build 002</p>
+        <p className="eyebrow">Build 008</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure for Rosie Dazzlers,
@@ -101,6 +102,8 @@ export default async function HomePage() {
           </div>
         )}
       </section>
+
+      {session ? <AiFieldSuggestions /> : null}
 
       <section className="principles" aria-labelledby="principles-heading">
         <div>

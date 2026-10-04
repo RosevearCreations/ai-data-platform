@@ -407,3 +407,69 @@ GitHub Actions verified the Build 007 implementation through the existing comple
 ### Next
 
 Build 008 — AI Suggested Fields.
+
+## Build 008 — AI Suggested Fields
+
+Date: 2026-10-03
+
+Status: COMPLETE. Promotion is performed through the Build 008 pull request.
+
+### Goal
+
+Add an optional, authenticated AI interpretation layer that turns natural-language extraction intent plus bounded record samples into useful field-schema suggestions without giving AI control over scraping selectors.
+
+### Delivered
+
+- authenticated `POST /api/ai/suggest-fields` endpoint;
+- bounded request parser for extraction intent, source URL, record selector metadata, record samples and existing fields;
+- strict structured-output schema for suggested fields;
+- semantic types including name, price, URL, image, SKU, category, location, year, description, quantity, rating, phone and email;
+- preferred extraction-source guidance;
+- required-field guidance;
+- deterministic transform recommendations;
+- per-field confidence and rationale;
+- selector-strategy guidance without AI-generated CSS selectors;
+- Vercel AI Gateway integration using a server-only key;
+- configurable `AI_SUGGESTION_MODEL`;
+- default model `openai/gpt-5.4-mini`;
+- input/output/total-token telemetry;
+- cost estimate for the default model using the current AI Gateway catalog rate captured on 2026-10-03;
+- deterministic zero-cost fallback when the Gateway key is missing, the provider fails, the request times out or structured output is unusable;
+- authenticated web UI for extraction intent and suggestion review;
+- extension-side bounded AI context JSON handoff;
+- automated parser, fallback, structured-output sanitizer and cost-estimate verification;
+- extension version 0.8.0;
+- GitHub verification now runs on merged `main` pushes as well as `dev` and pull requests.
+
+### Verification
+
+GitHub Actions verified the complete Build 008 executable implementation using the normal repository matrix without a live AI key:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests: PASS;
+- AI suggestion parser/fallback/sanitizer/cost checks: PASS.
+
+### Security notes
+
+- AI Gateway credentials never enter the browser bundle or Chrome extension;
+- the AI route requires an authenticated session;
+- page context is deliberately bounded and excludes the full DOM;
+- cookies, inspected-site storage, live form values and page JavaScript state are excluded;
+- AI output is schema-constrained and sanitized again server-side;
+- AI cannot create or approve CSS selectors;
+- failed or unavailable AI degrades to deterministic field suggestions rather than failing Production;
+- no AI suggestion writes directly into PostgreSQL, Rosie Dazzlers or Devil n Dove.
+
+### External setup
+
+The platform is fully buildable and usable without AI credentials through deterministic fallback. Live model-backed suggestions require a server deployment with an `AI_GATEWAY_API_KEY`. The connected Vercel app currently exposes no Vercel team/project to this conversation, so deployment/key provisioning cannot be completed autonomously in Build 008.
+
+### Next
+
+Build 009 — Pagination & Infinite Scroll.

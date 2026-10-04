@@ -130,11 +130,23 @@ Acceptance: a successful Build 006 extraction can be reviewed across all rows, c
 
 ## Build 008 — AI Suggested Fields
 
-- natural-language extraction intent;
-- schema suggestion;
-- field semantics;
-- structured outputs;
-- cost telemetry.
+Status: COMPLETE. Promotion is performed through the Build 008 pull request.
+
+- authenticated natural-language extraction intent;
+- bounded sample-record context instead of full-DOM upload;
+- strict structured field-schema suggestions;
+- field semantics, preferred sources and required-state guidance;
+- deterministic transform recommendations;
+- AI cannot create or approve CSS selectors;
+- server-only Vercel AI Gateway integration;
+- configurable model with `AI_SUGGESTION_MODEL`;
+- token and estimated-cost telemetry;
+- deterministic zero-cost fallback when AI is unavailable;
+- extension-side bounded context handoff;
+- automated suggestion parser/fallback/sanitizer verification;
+- production-branch CI after merge.
+
+Acceptance: an authenticated user can describe desired data, submit bounded record samples, receive sanitized structured field suggestions with telemetry, and continue safely when AI credentials or the provider are unavailable.
 
 ## Build 009 — Pagination & Infinite Scroll
 
