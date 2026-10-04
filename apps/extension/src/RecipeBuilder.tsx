@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { DetailEnrichment } from "./DetailEnrichment";
 import {
   deriveFieldRecipe,
   executeExtractionRecipe
@@ -488,6 +489,15 @@ export function RecipeBuilder({
               ...recipe,
               sourceUrl: run.sourceUrl
             }}
+          />
+
+          <DetailEnrichment
+            fields={fields}
+            recipe={{
+              ...recipe,
+              sourceUrl: run.sourceUrl
+            }}
+            run={run}
           />
 
           <details className="recipeJson">
