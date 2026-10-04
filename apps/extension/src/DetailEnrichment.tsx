@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   extractDetailFields,
@@ -182,6 +182,10 @@ export function DetailEnrichment({
     () => (result ? mergedReviewRun(run, result) : null),
     [result, run]
   );
+
+  useEffect(() => {
+    void checkPermission();
+  }, [origin]);
 
   async function checkPermission() {
     if (!origin) {
@@ -394,6 +398,7 @@ export function DetailEnrichment({
       }
     >();
     const seenParentDetailUrls = new Set<string>();
+    let attemptedPages = 0;
     let fetchedPages = 0;
     let reusedPages = 0;
     let skippedRows = 0;
@@ -458,10 +463,11 @@ export function DetailEnrichment({
         seenParentDetailUrls.add(detailUrl);
 
         let cached = cache.get(detailUrl);
+        const reused = Boolean(cached);
         let evidenceError = "";
 
         if (!cached) {
-          if (fetchedPages >= normalizedMaxPages) {
+          if (attemptedPages >= normalizedMaxPages) {
             warnings.push(
               `Detail enrichment stopped at the ${normalizedMaxPages}-page limit.`
             );
@@ -486,11 +492,13 @@ export function DetailEnrichment({
             continue;
           }
 
-          if (fetchedPages > 0 && normalizedDelay > 0) {
+          if (attemptedPages > 0 && normalizedDelay > 0) {
             await new Promise((resolve) =>
               window.setTimeout(resolve, normalizedDelay)
             );
           }
+
+          attemptedPages += 1;
 
           try {
             const fetched = await fetchDetailPage(detailUrl);
@@ -555,7 +563,7 @@ export function DetailEnrichment({
             finalUrl: cached.finalUrl,
             status: cached.status,
             fetched: true,
-            reused: cache.has(detailUrl) && cached.pageIndex <= fetchedPages,
+            reused,
             error: ""
           }
         });
