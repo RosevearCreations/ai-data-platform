@@ -142,3 +142,15 @@ Build 006 executes recipes locally in the user-invoked active tab.
 - form control live values, cookies, browser storage and page JavaScript state remain outside the extraction model;
 - page content is not sent to AI or another external service in Build 006;
 - recipe JSON shown in the side panel contains selectors/configuration and the tested source URL, but is not persisted automatically.
+
+### Spreadsheet review boundary
+
+Build 007 reviews a local copy of Build 006 extraction results.
+
+- edits do not mutate the webpage or the original extraction result;
+- row exclusion and column dropping are review metadata, not destructive deletion;
+- saved review snapshots use the extension page's own local storage, never the inspected site's local/session storage;
+- at most 20 recent reviewed datasets are retained by the Build 007 local save helper;
+- save failures, including browser storage quota errors, are surfaced to the user;
+- no reviewed dataset is written to Rosie Dazzlers, Devil n Dove, PostgreSQL or an AI provider in Build 007;
+- required-field warnings are recalculated from current reviewed values so manual corrections remove stale missing-value warnings.
