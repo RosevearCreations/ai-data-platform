@@ -55,21 +55,28 @@ export function buildJson(exportData: PreparedExport) {
           generatedAt: exportData.generatedAt,
           recipeName: exportData.recipeName,
           sourceUrl: exportData.sourceUrl,
+          valueView: exportData.valueView,
           columns: exportData.columns,
           records: exportData.records.map((record) => ({
             sourceIndex: record.sourceIndex,
             included: record.included,
             values: record.values,
-            warnings: record.warnings,
-            sourceEvidence: {
-              sourceUrl: record.sourceUrl,
-              page: record.page,
-              detailUrl: record.detailUrl,
-              detailPageIndex: record.detailPageIndex,
-              detailStatus: record.detailStatus,
-              detailReused: record.detailReused,
-              detailError: record.detailError
-            }
+            ...(exportData.includeWarnings
+              ? { warnings: record.warnings }
+              : {}),
+            ...(exportData.includeSourceEvidence
+              ? {
+                  sourceEvidence: {
+                    sourceUrl: record.sourceUrl,
+                    page: record.page,
+                    detailUrl: record.detailUrl,
+                    detailPageIndex: record.detailPageIndex,
+                    detailStatus: record.detailStatus,
+                    detailReused: record.detailReused,
+                    detailError: record.detailError
+                  }
+                }
+              : {})
           }))
         },
         null,
