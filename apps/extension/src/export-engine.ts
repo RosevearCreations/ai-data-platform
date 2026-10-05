@@ -56,11 +56,17 @@ export function buildJson(exportData: PreparedExport) {
           recipeName: exportData.recipeName,
           sourceUrl: exportData.sourceUrl,
           valueView: exportData.valueView,
-          columns: exportData.columns,
+          columns: exportData.columns.filter(
+            (column) => !column.key.startsWith("__")
+          ),
           records: exportData.records.map((record) => ({
             sourceIndex: record.sourceIndex,
             included: record.included,
-            values: record.values,
+            values: Object.fromEntries(
+              Object.entries(record.values).filter(
+                ([key]) => !key.startsWith("__")
+              )
+            ),
             ...(exportData.includeWarnings
               ? { warnings: record.warnings }
               : {}),
