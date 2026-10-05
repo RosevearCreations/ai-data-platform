@@ -608,3 +608,65 @@ Click **Allow this site for detail enrichment** and approve Chrome's current-sit
 ### Next
 
 Build 011 — CSV/XLSX/JSON Export.
+
+## Build 011 — CSV/XLSX/JSON Export
+
+Date: 2026-10-05
+
+Status: COMPLETE. Promotion is performed through the Build 011 pull request.
+
+### Goal
+
+Export reviewed or raw datasets from the local review workspace in portable formats without introducing a backend export service.
+
+### Delivered
+
+- CSV export;
+- real XLSX generation as an Office Open XML workbook;
+- structured JSON export;
+- reviewed/edited value view;
+- original raw extraction value view;
+- included-row-only or all-row export;
+- visible-column-only or all-column export;
+- optional row warnings;
+- optional source URL, pagination page/step, detail URL, detail fetch index, HTTP status, fetch reuse and detail error evidence;
+- structured JSON source evidence;
+- automatic availability for ordinary extraction, paginated extraction and detail-enriched review grids;
+- preservation of numeric values in XLSX;
+- sanitized local filenames;
+- UTF-8 CSV BOM for spreadsheet compatibility;
+- CSV formula-like string neutralization;
+- raw exports retain original extraction warnings;
+- extension version 0.11.0;
+- no backend, AI-provider or business-system dependency for file generation.
+
+### Verification
+
+GitHub Actions verified the complete Build 011 executable implementation before source-of-truth finalization:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests including AI suggestion checks: PASS.
+
+### Security notes
+
+- export files are created locally in the extension;
+- no dataset is uploaded for export generation;
+- CSV formula-like strings are neutralized;
+- XLSX string cells are emitted explicitly as strings, not formulas;
+- raw/reviewed export choices remain explicit;
+- source/detail evidence is optional;
+- export does not write to Rosie Dazzlers, Devil n Dove or PostgreSQL.
+
+### Manual setup
+
+No manual application, service, API, database or command-line setup is required for Build 011.
+
+### Next
+
+Build 012 — Saved Scrapers & Templates.

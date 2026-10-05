@@ -349,3 +349,48 @@ export interface DetailEnrichmentResult {
   detailFields: DetailFieldRecipe[];
   warnings: string[];
 }
+
+export type ExportFormat = "csv" | "xlsx" | "json";
+export type ExportValueView = "reviewed" | "raw";
+export type ExportRowScope = "included" | "all";
+export type ExportColumnScope = "visible" | "all";
+
+export interface ExportOptions {
+  format: ExportFormat;
+  valueView: ExportValueView;
+  rowScope: ExportRowScope;
+  columnScope: ExportColumnScope;
+  includeWarnings: boolean;
+  includeSourceEvidence: boolean;
+}
+
+export interface ExportColumn {
+  key: string;
+  label: string;
+}
+
+export interface ExportRecord {
+  sourceIndex: number;
+  values: Record<string, string | number | null>;
+  warnings: string[];
+  included: boolean;
+  sourceUrl: string;
+  page: number | null;
+  detailUrl: string;
+  detailPageIndex: number | null;
+  detailStatus: number | null;
+  detailReused: boolean | null;
+  detailError: string;
+}
+
+export interface PreparedExport {
+  filenameBase: string;
+  generatedAt: string;
+  recipeName: string;
+  sourceUrl: string;
+  valueView: ExportValueView;
+  includeWarnings: boolean;
+  includeSourceEvidence: boolean;
+  columns: ExportColumn[];
+  records: ExportRecord[];
+}

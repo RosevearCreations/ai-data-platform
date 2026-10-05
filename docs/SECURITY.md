@@ -206,3 +206,18 @@ Build 010 enriches parent extraction rows from public detail pages.
 - row removal for duplicate detail URLs is opt-in rather than automatic;
 - maximum unique detail pages are bounded to 500 per run;
 - detail values are merged into review copies and do not write automatically into PostgreSQL, Rosie Dazzlers or Devil n Dove.
+
+### CSV/XLSX/JSON export boundary
+
+Build 011 generates export files locally from the extension review workspace.
+
+- export generation does not upload dataset contents to a backend or third-party service;
+- reviewed exports use the current working-copy edits, row inclusion state and column visibility/order;
+- raw exports use the untouched extraction values and original extraction warnings;
+- source/detail evidence is opt-in for tabular exports and structured separately in JSON;
+- CSV is UTF-8 with a BOM for spreadsheet compatibility;
+- string cells beginning with spreadsheet formula markers (`=`, `+`, `-`, `@`) are prefixed safely in CSV to reduce formula-injection risk;
+- XLSX text cells are emitted explicitly as inline strings and are not interpreted as formulas;
+- XLSX is generated as a valid Office Open XML ZIP package rather than by renaming another file type;
+- filenames are sanitized before local download;
+- Build 011 requires no download host permission, backend export service, AI provider or business-system write.

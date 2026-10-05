@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 010 — Detail/Subpage Enrichment.
+Build 011 — CSV/XLSX/JSON Export.
 
 
 ## Persistence and authentication

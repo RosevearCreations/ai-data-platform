@@ -193,9 +193,23 @@ Acceptance: a reviewed extraction can follow bounded same-origin public detail l
 
 ## Build 011 — CSV/XLSX/JSON Export
 
-- exports;
-- source/evidence options;
-- normalized vs raw views.
+Status: COMPLETE. Promotion is performed through the Build 011 pull request.
+
+- local CSV export;
+- real Office Open XML XLSX generation without a spreadsheet service;
+- structured JSON export;
+- reviewed/edited versus original raw value selection;
+- included-row-only versus all-row selection;
+- visible-column-only versus all-column selection;
+- optional warning export;
+- optional source-page/detail-page evidence export;
+- preservation of numeric values in XLSX;
+- sanitized filenames;
+- UTF-8 CSV with BOM;
+- CSV formula-like string neutralization;
+- automatic availability for base, paginated and detail-enriched review datasets.
+
+Acceptance: any Build 007 review workspace can export the intended reviewed or raw dataset as CSV, XLSX or JSON using explicit row/column/evidence options without a backend export dependency.
 
 ## Build 012 — Saved Scrapers & Templates
 

@@ -230,15 +230,14 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">010</span>
+        <span className="build">011</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Enrich records from detail pages</strong>
+        <strong>Review and export clean datasets</strong>
         <p>
-          Build 010 follows same-origin public record links without cookies,
-          extracts bounded detail fields from inert HTML, merges them back into
-          parent rows, and reuses repeated detail URLs instead of refetching them.
+          Build 011 exports reviewed or raw datasets as CSV, real XLSX, or JSON
+          with explicit row, column, warning, and source-evidence controls.
         </p>
       </section>
 

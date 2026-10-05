@@ -1989,3 +1989,119 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.exportPanel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(126, 231, 135, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(67, 160, 71, 0.035);
+}
+
+.exportPanel h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.exportBadge {
+  border-radius: 999px;
+  background: rgba(126, 231, 135, 0.1);
+  color: #bcefc1 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.exportIntro,
+.exportStatus {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.exportGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.exportGrid label {
+  display: grid;
+  gap: 0.3rem;
+  color: #c9d8ca;
+  font-size: 0.64rem;
+  font-weight: 850;
+}
+
+.exportGrid select {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.exportGrid select:focus {
+  border-color: rgba(126, 231, 135, 0.5);
+}
+
+.exportOptions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.exportOptions label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  color: #9eb0a0;
+  font-size: 0.64rem;
+  line-height: 1.4;
+}
+
+.exportOptions input {
+  margin-top: 0.05rem;
+}
+
+.exportPreview {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.65rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.exportPreview strong {
+  color: #dceedd;
+  font-size: 0.72rem;
+}
+
+.exportPreview span {
+  color: #7e9181;
+  font-size: 0.61rem;
+}
+
+.exportButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #7ee787;
+  color: #061109;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.exportStatus {
+  color: #a8d9ac;
+}
+
+@media (max-width: 360px) {
+  .exportGrid {
+    grid-template-columns: 1fr;
+  }
+}
