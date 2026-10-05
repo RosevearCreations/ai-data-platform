@@ -25,7 +25,12 @@ export function exportFilenameBase(recipeName: string, generatedAt: string) {
 }
 
 function csvCell(value: unknown) {
-  const text = safeText(value).replace(/"/g, '""');
+  const raw = safeText(value);
+  const safe =
+    typeof value === "string" && /^[=+\-@]/.test(raw)
+      ? `'${raw}`
+      : raw;
+  const text = safe.replace(/"/g, '""');
   return `"${text}"`;
 }
 
