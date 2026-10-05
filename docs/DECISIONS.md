@@ -154,3 +154,13 @@ Detail requests use `credentials: "omit"`, accept HTML, enforce the original ori
 Repeated detail URLs are fetched once and their extracted values are reused. Removing duplicate parent rows is a separate explicit opt-in choice.
 
 Reason: subpage enrichment should add public record detail without navigating the user's tab, reusing logged-in target-site sessions, or silently deleting parent records.
+
+## D0021 — Exports are generated locally from explicit review state
+
+Decision: Build 011 exports datasets directly from the extension review workspace without a backend export service.
+
+Users choose reviewed versus original extracted values, included versus all rows, visible versus all columns, and whether warnings/source evidence are included. CSV and XLSX are tabular exports; JSON preserves structured record metadata.
+
+XLSX is generated as a real Office Open XML workbook. CSV formula-like string values are neutralized before download to reduce spreadsheet formula-injection risk.
+
+Reason: export should preserve the user's explicit review decisions, remain portable/offline, and avoid unnecessary upload or server processing of scraped datasets.
