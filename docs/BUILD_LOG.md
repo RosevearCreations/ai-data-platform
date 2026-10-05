@@ -670,3 +670,67 @@ No manual application, service, API, database or command-line setup is required 
 ### Next
 
 Build 012 — Saved Scrapers & Templates.
+
+## Build 011 — CSV/XLSX/JSON Export
+
+Date: 2026-10-05
+
+Status: COMPLETE. Promotion is performed through the Build 011 pull request.
+
+### Goal
+
+Export reviewed, paginated and detail-enriched datasets as portable local files while preserving the user's review decisions and source evidence options.
+
+### Delivered
+
+- CSV export;
+- real Office Open XML XLSX export;
+- structured JSON export;
+- reviewed/edited versus original raw value selection;
+- included-row-only versus all-row selection;
+- visible-column-only versus all-column selection;
+- optional row warning export;
+- optional source-page/detail-page evidence export;
+- source URL, pagination step, detail URL, detail fetch index/status/reuse/error evidence columns where applicable;
+- structured JSON evidence metadata;
+- sanitized filenames with generation date;
+- UTF-8 CSV with BOM for spreadsheet compatibility;
+- CSV formula-like string neutralization for values beginning with =, +, - or @;
+- XLSX numeric values preserved as numeric cells;
+- XLSX string values emitted explicitly as inline strings;
+- XLSX workbook generated locally as a ZIP-based Office Open XML package;
+- export controls available automatically in every Build 007 review workspace, including Build 009 paginated and Build 010 detail-enriched datasets;
+- extension version 0.11.0;
+- no backend export service, AI dependency or new Chrome permission.
+
+### Verification
+
+GitHub Actions verified the exact Build 011 executable head after the raw-warning alignment correction:
+
+- PostgreSQL 18 service initialization: PASS;
+- Better Auth and application migrations: PASS;
+- workspace RLS acceptance: PASS;
+- TypeScript checks: PASS;
+- lint/static checks: PASS;
+- Next.js production build: PASS;
+- Chrome extension production build: PASS;
+- existing tests including AI suggestion checks: PASS.
+
+### Security notes
+
+- files are generated entirely in the extension;
+- no dataset content is uploaded for export;
+- raw export warnings remain tied to raw extraction values;
+- reviewed export warnings remain tied to current reviewed values;
+- CSV formula-like strings are neutralized;
+- filenames are sanitized;
+- XLSX is a real workbook package rather than a renamed CSV;
+- exports do not write into PostgreSQL, Rosie Dazzlers or Devil n Dove.
+
+### Manual setup
+
+None. Build 011 requires no additional browser permission, external application, service account or command-line action.
+
+### Next
+
+Build 012 — Saved Scrapers & Templates.
