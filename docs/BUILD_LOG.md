@@ -734,3 +734,68 @@ None. Build 011 requires no additional browser permission, external application,
 ### Next
 
 Build 012 — Saved Scrapers & Templates.
+
+
+## Build 012 — Saved Scrapers & Templates
+
+Date: 2026-10-05
+
+Status: COMPLETE. Promotion is performed through the Build 012 pull request.
+
+### Goal
+
+Turn one-off extraction recipes into a reusable local scraper library with site templates, explicit revision history and a pre-run breakage check.
+
+### Delivered
+
+- Chrome-local saved scraper library;
+- saved scraper and reusable site-template item types;
+- built-in HTML table, schema.org product-card and semantic article starter templates;
+- direct loading of saved scrapers from the main side panel without repeating record detection;
+- save-current-recipe flow from the recipe builder;
+- save-as-site-template flow;
+- editable loaded record selectors;
+- same-site library hints based on the saved source origin;
+- explicit revision numbers;
+- up to 12 prior recipe revisions retained per saved item;
+- prior revision loading without silently overwriting the current saved revision;
+- current-page breakage detection for the record selector and every saved field selector;
+- healthy, degraded and broken compatibility outcomes;
+- per-field selector coverage percentages across up to 100 sampled records;
+- required-field coverage warnings;
+- invalid-selector detection;
+- zero-record breakage detection;
+- compatibility-check history on the saved item;
+- deletion of obsolete saved scrapers/templates;
+- extension version 0.12.0;
+- Chrome local-storage permission only; no new host permission and no backend dependency.
+
+### Verification target
+
+The Build 012 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Security notes
+
+- saved recipes remain in Chrome local storage;
+- no extracted dataset is persisted by the scraper library;
+- no new broad host permission is granted automatically;
+- compatibility checks execute only against the current tab under the existing active-tab model;
+- the breakage check evaluates CSS selector coverage only and does not bypass authentication, CAPTCHAs or anti-bot controls;
+- revision restoration is explicit and does not silently overwrite a newer saved recipe.
+
+### Manual setup
+
+None. Chrome grants the extension-local storage capability from the updated manifest when Build 012 is installed or reloaded.
+
+### Next
+
+Build 013 — Historical Change Detection.

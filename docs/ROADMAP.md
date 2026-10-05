@@ -213,10 +213,16 @@ Acceptance: any Build 007 review workspace can export the intended reviewed or r
 
 ## Build 012 — Saved Scrapers & Templates
 
-- recipe library;
-- site templates;
-- versioning;
-- breakage detection.
+Status: COMPLETE (2026-10-05).
+
+- local recipe library;
+- built-in and user-saved site templates;
+- bounded revision history;
+- current-page selector breakage detection;
+- same-site saved-item hints;
+- load and restore prior revisions without silently overwriting the current saved version.
+
+Acceptance: a user can save an extraction recipe, reopen it without rebuilding selectors, keep intentional revisions, load a starter template, and check whether its record/field selectors are healthy, degraded, or broken on the current page.
 
 ## Build 013 — Historical Change Detection
 
