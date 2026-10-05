@@ -388,6 +388,9 @@ export interface PreparedExport {
   generatedAt: string;
   recipeName: string;
   sourceUrl: string;
+  valueView: ExportValueView;
+  includeWarnings: boolean;
+  includeSourceEvidence: boolean;
   columns: ExportColumn[];
   records: ExportRecord[];
 }
