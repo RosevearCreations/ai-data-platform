@@ -97,32 +97,36 @@ export async function updateSavedScraper(
   id: string,
   recipe: ExtractionRecipe,
   sourceUrl: string
-) {
+): Promise<SavedScraper> {
   const items = await loadSavedScrapers();
-  let updated: SavedScraper | null = null;
-  const next = items.map((item) => {
-    if (item.id !== id) return item;
-    const now = new Date().toISOString();
-    const previous = {
-      revision: item.revision,
-      savedAt: item.updatedAt,
-      sourceUrl: item.sourceUrl,
-      recipe: cloneExtractionRecipe(item.recipe)
-    };
-    updated = {
-      ...item,
-      name: recipe.name.trim() || item.name,
-      sourceUrl,
-      sourceOrigin: sourceOriginFor(sourceUrl),
-      updatedAt: now,
-      revision: item.revision + 1,
-      recipe: cloneExtractionRecipe({ ...recipe, sourceUrl }),
-      revisions: [...item.revisions, previous].slice(-MAX_REVISIONS),
-      lastCheck: null
-    };
-    return updated;
-  });
-  if (!updated) throw new Error("The selected saved scraper no longer exists.");
+  const index = items.findIndex((item) => item.id === id);
+
+  if (index < 0) {
+    throw new Error("The selected saved scraper no longer exists.");
+  }
+
+  const item = items[index];
+  const now = new Date().toISOString();
+  const previous = {
+    revision: item.revision,
+    savedAt: item.updatedAt,
+    sourceUrl: item.sourceUrl,
+    recipe: cloneExtractionRecipe(item.recipe)
+  };
+  const updated: SavedScraper = {
+    ...item,
+    name: recipe.name.trim() || item.name,
+    sourceUrl,
+    sourceOrigin: sourceOriginFor(sourceUrl),
+    updatedAt: now,
+    revision: item.revision + 1,
+    recipe: cloneExtractionRecipe({ ...recipe, sourceUrl }),
+    revisions: [...item.revisions, previous].slice(-MAX_REVISIONS),
+    lastCheck: null
+  };
+
+  const next = [...items];
+  next[index] = updated;
   await writeSavedScrapers(next);
   return updated;
 }
@@ -154,7 +158,7 @@ function field(
   return { id, key, label, selector, source, attribute: "", required, transforms };
 }
 
-export const BUILT_IN_SCRAPER_TEMPLATES: ScraperTemplate[] = [
+const BUILT_IN_TEMPLATE_DEFINITIONS: ScraperTemplate[] = [
   {
     id: "html-table",
     name: "HTML data table",
@@ -204,4 +208,10 @@ export const BUILT_IN_SCRAPER_TEMPLATES: ScraperTemplate[] = [
       ]
     }
   }
-].map((template) => ({ ...template, recipe: cloneExtractionRecipe(template.recipe) }));
+];
+
+export const BUILT_IN_SCRAPER_TEMPLATES: ScraperTemplate[] =
+  BUILT_IN_TEMPLATE_DEFINITIONS.map((template) => ({
+    ...template,
+    recipe: cloneExtractionRecipe(template.recipe)
+  }));
