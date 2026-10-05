@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { ExportPanel } from "./ExportPanel";
 import type {
   ExtractionFieldRecipe,
   ExtractionRunResult,
@@ -460,6 +461,17 @@ export function SpreadsheetReview({
       {!visibleRows.length ? (
         <p className="reviewEmpty">No rows match the current review filter.</p>
       ) : null}
+
+      <ExportPanel
+        columns={orderedColumns}
+        originalRecords={run.records}
+        recipeName={recipeName}
+        rows={rows.map((row) => ({
+          ...row,
+          warnings: currentWarnings(row)
+        }))}
+        sourceUrl={run.sourceUrl}
+      />
 
       <div className="reviewSave">
         <button onClick={saveReviewedDataset} type="button">
