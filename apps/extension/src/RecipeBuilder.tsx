@@ -6,6 +6,7 @@ import {
   executeExtractionRecipe
 } from "./recipe-engine";
 import { PaginationRunner } from "./PaginationRunner";
+import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import { SpreadsheetReview } from "./SpreadsheetReview";
 import type {
   DerivedFieldResult,
@@ -20,6 +21,7 @@ import type {
 
 interface RecipeBuilderProps {
   candidate: RecordGroupCandidate;
+  initialRecipe?: ExtractionRecipe | null;
   pickedElement: VisualPickResult | null;
   onClose: () => void;
 }
@@ -80,11 +82,23 @@ function createBlankField(index: number): ExtractionFieldRecipe {
 
 export function RecipeBuilder({
   candidate,
+  initialRecipe = null,
   pickedElement,
   onClose
 }: RecipeBuilderProps) {
-  const [name, setName] = useState("Untitled extraction recipe");
-  const [fields, setFields] = useState<ExtractionFieldRecipe[]>([]);
+  const [name, setName] = useState(
+    initialRecipe?.name ?? "Untitled extraction recipe"
+  );
+  const [sourceUrl, setSourceUrl] = useState(initialRecipe?.sourceUrl ?? "");
+  const [recordSelector, setRecordSelector] = useState(
+    initialRecipe?.recordSelector ?? candidate.recordSelector
+  );
+  const [fields, setFields] = useState<ExtractionFieldRecipe[]>(
+    () => initialRecipe?.fields.map((field) => ({
+      ...field,
+      transforms: [...field.transforms]
+    })) ?? []
+  );
   const [derived, setDerived] = useState<DerivedFieldResult | null>(null);
   const [run, setRun] = useState<ExtractionRunResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -94,11 +108,11 @@ export function RecipeBuilder({
     () => ({
       version: 1,
       name: name.trim() || "Untitled extraction recipe",
-      sourceUrl: "",
-      recordSelector: candidate.recordSelector,
+      sourceUrl,
+      recordSelector,
       fields
     }),
-    [candidate.recordSelector, fields, name]
+    [fields, name, recordSelector, sourceUrl]
   );
 
   function updateField(
@@ -126,7 +140,7 @@ export function RecipeBuilder({
         target: { tabId: tab.id! },
         func: deriveFieldRecipe,
         args: [
-          candidate.recordSelector,
+          recordSelector,
           pickedElement.generalizedSelector,
           pickedElement.text.slice(0, 50)
         ]
@@ -176,6 +190,7 @@ export function RecipeBuilder({
         ...recipe,
         sourceUrl: tab.url ?? ""
       };
+      setSourceUrl(executableRecipe.sourceUrl);
       const injection = {
         target: { tabId: tab.id! },
         func: executeExtractionRecipe,
@@ -199,6 +214,21 @@ export function RecipeBuilder({
     } finally {
       setPending(false);
     }
+  }
+
+  function applyRecipe(nextRecipe: ExtractionRecipe) {
+    setName(nextRecipe.name);
+    setSourceUrl(nextRecipe.sourceUrl);
+    setRecordSelector(nextRecipe.recordSelector);
+    setFields(
+      nextRecipe.fields.map((field) => ({
+        ...field,
+        transforms: [...field.transforms]
+      }))
+    );
+    setDerived(null);
+    setRun(null);
+    setError(null);
   }
 
   function toggleTransform(
@@ -230,9 +260,18 @@ export function RecipeBuilder({
 
       <div className="recipeRecordBoundary">
         <span>Record boundary</span>
-        <code>{candidate.recordSelector}</code>
+        <input
+          className="monoInput"
+          onChange={(event) => {
+            setRecordSelector(event.target.value);
+            setRun(null);
+          }}
+          value={recordSelector}
+        />
         <small>
-          {candidate.recordCount} records · confidence {candidate.confidence}
+          {candidate.recordCount > 0
+            ? candidate.recordCount + " detected records · confidence " + candidate.confidence
+            : "Loaded recipe — run a compatibility check or recipe test on this page."}
         </small>
       </div>
 
@@ -243,6 +282,11 @@ export function RecipeBuilder({
           value={name}
         />
       </label>
+
+      <SavedScrapersPanel
+        currentRecipe={recipe}
+        onApplyRecipe={applyRecipe}
+      />
 
       <div className="recipeActions">
         <button
@@ -525,8 +569,12 @@ export function RecipeBuilder({
               {JSON.stringify(
                 {
                   pageUrl: run.sourceUrl,
-                  recordSelector: candidate.recordSelector,
-                  sampleRecords: candidate.samples.slice(0, 8).map((sample) => ({
+                  recordSelector: recipe.recordSelector,
+                  sampleRecords: (
+                    recipe.recordSelector === candidate.recordSelector
+                      ? candidate.samples
+                      : []
+                  ).slice(0, 8).map((sample) => ({
                     text: sample.text,
                     link: sample.link || undefined,
                     image: sample.image || undefined,

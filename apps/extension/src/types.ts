@@ -394,3 +394,56 @@ export interface PreparedExport {
   columns: ExportColumn[];
   records: ExportRecord[];
 }
+
+
+export type SavedScraperKind = "scraper" | "template";
+export type ScraperHealth = "healthy" | "degraded" | "broken";
+
+export interface RecipeFieldCompatibility {
+  key: string;
+  label: string;
+  matchedRecords: number;
+  sampledRecords: number;
+  coverage: number;
+  required: boolean;
+  validSelector: boolean;
+}
+
+export interface ScraperCompatibilityReport {
+  checkedAt: string;
+  url: string;
+  status: ScraperHealth;
+  recordMatches: number;
+  sampledRecords: number;
+  fields: RecipeFieldCompatibility[];
+  warnings: string[];
+}
+
+export interface SavedScraperRevision {
+  revision: number;
+  savedAt: string;
+  sourceUrl: string;
+  recipe: ExtractionRecipe;
+}
+
+export interface SavedScraper {
+  version: 1;
+  id: string;
+  kind: SavedScraperKind;
+  name: string;
+  sourceUrl: string;
+  sourceOrigin: string;
+  createdAt: string;
+  updatedAt: string;
+  revision: number;
+  recipe: ExtractionRecipe;
+  revisions: SavedScraperRevision[];
+  lastCheck: ScraperCompatibilityReport | null;
+}
+
+export interface ScraperTemplate {
+  id: string;
+  name: string;
+  description: string;
+  recipe: ExtractionRecipe;
+}

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { inspectPage } from "./inspect-page";
 import { RecipeBuilder } from "./RecipeBuilder";
+import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import {
   detectRepeatingRecords,
   previewRecordGroup
@@ -12,6 +13,7 @@ import {
   startVisualPicker
 } from "./visual-picker";
 import type {
+  ExtractionRecipe,
   PageInspection,
   RecordDetectionResult,
   RecordGroupCandidate,
@@ -35,6 +37,27 @@ async function getActiveTabId() {
   }
 
   return tab.id;
+}
+
+function savedRecipeCandidate(recipe: ExtractionRecipe): RecordGroupCandidate {
+  return {
+    containerSelector: recipe.recordSelector,
+    recordSelector: recipe.recordSelector,
+    source: "auto",
+    recordCount: 0,
+    visibleRecordCount: 0,
+    confidence: 1,
+    metrics: {
+      repeatRatio: 1,
+      structuralConsistency: 1,
+      textCoverage: 1,
+      linkCoverage: 0,
+      imageCoverage: 0,
+      averageDescendants: 0
+    },
+    diagnostics: ["Loaded from the local saved scraper library."],
+    samples: []
+  };
 }
 
 function normalizeChromeError(reason: unknown) {
@@ -66,6 +89,7 @@ export function App() {
     useState<RecordPreviewResult | null>(null);
   const [selectedRecordGroup, setSelectedRecordGroup] =
     useState<RecordGroupCandidate | null>(null);
+  const [initialRecipe, setInitialRecipe] = useState<ExtractionRecipe | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [recordPending, setRecordPending] = useState(false);
@@ -230,14 +254,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">011</span>
+        <span className="build">012</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Review and export clean datasets</strong>
+        <strong>Reuse saved scrapers and site templates</strong>
         <p>
-          Build 011 exports reviewed or raw datasets as CSV, real XLSX, or JSON
-          with explicit row, column, warning, and source-evidence controls.
+          Build 012 keeps reusable extraction recipes locally, tracks revisions,
+          provides starter site templates, and checks saved selectors for layout
+          breakage before a repeat run.
         </p>
       </section>
 
@@ -253,6 +278,16 @@ export function App() {
           in a later build.
         </small>
       </section>
+
+      {!selectedRecordGroup ? (
+        <SavedScrapersPanel
+          onApplyRecipe={(savedRecipe) => {
+            setInitialRecipe(savedRecipe);
+            setSelectedRecordGroup(savedRecipeCandidate(savedRecipe));
+            setError(null);
+          }}
+        />
+      ) : null}
 
       <div className="actionGrid">
         <button
@@ -433,6 +468,7 @@ export function App() {
                     <button
                       className="recipeStartButton"
                       onClick={() => {
+                        setInitialRecipe(null);
                         setSelectedRecordGroup(candidate);
                         setError(null);
                       }}
@@ -486,7 +522,11 @@ export function App() {
       {selectedRecordGroup ? (
         <RecipeBuilder
           candidate={selectedRecordGroup}
-          onClose={() => setSelectedRecordGroup(null)}
+          initialRecipe={initialRecipe}
+          onClose={() => {
+            setInitialRecipe(null);
+            setSelectedRecordGroup(null);
+          }}
           pickedElement={pickedElement}
         />
       ) : null}
