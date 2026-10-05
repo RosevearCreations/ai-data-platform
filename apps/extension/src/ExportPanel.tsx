@@ -202,7 +202,10 @@ export function ExportPanel({
       return {
         sourceIndex: row.sourceIndex,
         values,
-        warnings: [...row.warnings],
+        warnings:
+          valueView === "raw" && original
+            ? [...original.warnings]
+            : [...row.warnings],
         included: row.included,
         ...evidence
       };
