@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { inspectPage } from "./inspect-page";
 import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
+import { ScheduledJobsPanel } from "./ScheduledJobsPanel";
 import {
   detectRepeatingRecords,
   previewRecordGroup
@@ -254,15 +255,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">016</span>
+        <span className="build">017</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Match owned movies to permitted metadata</strong>
+        <strong>Schedule reviewed, bounded repeat jobs</strong>
         <p>
-          Build 016 imports the owned collection locally, matches permitted
-          metadata by external ID, UPC, title and year, and preserves ownership
-          fields while ambiguous enrichments remain review-gated.
+          Build 017 adds source-policy-gated schedules, due-work alarms, bounded
+          retries and local change notifications while keeping extraction
+          interactive and refusing unattended access-control bypass.
         </p>
       </section>
 
@@ -280,13 +281,22 @@ export function App() {
       </section>
 
       {!selectedRecordGroup ? (
-        <SavedScrapersPanel
-          onApplyRecipe={(savedRecipe) => {
-            setInitialRecipe(savedRecipe);
-            setSelectedRecordGroup(savedRecipeCandidate(savedRecipe));
-            setError(null);
-          }}
-        />
+        <>
+          <SavedScrapersPanel
+            onApplyRecipe={(savedRecipe) => {
+              setInitialRecipe(savedRecipe);
+              setSelectedRecordGroup(savedRecipeCandidate(savedRecipe));
+              setError(null);
+            }}
+          />
+          <ScheduledJobsPanel
+            onApplyRecipe={(scheduledRecipe) => {
+              setInitialRecipe(scheduledRecipe);
+              setSelectedRecordGroup(savedRecipeCandidate(scheduledRecipe));
+              setError(null);
+            }}
+          />
+        </>
       ) : null}
 
       <div className="actionGrid">

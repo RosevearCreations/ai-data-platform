@@ -900,3 +900,101 @@ export interface MovieMetadataQueueSummary {
   approved: number;
   rejected: number;
 }
+
+
+export type ScheduledJobCadence = "daily" | "weekly" | "interval";
+export type ScheduledJobRunStatus =
+  | "success"
+  | "failed"
+  | "change-detected";
+export type ScheduledJobNotificationStatus = "unread" | "read";
+
+export interface ScheduledSourcePolicyReview {
+  reviewedAt: string;
+  publicOrAuthorized: boolean;
+  termsReviewed: boolean;
+  noAccessControlBypass: boolean;
+  notes: string;
+}
+
+export interface ScheduledJobSchedule {
+  cadence: ScheduledJobCadence;
+  localHour: number;
+  weekday: number;
+  intervalHours: number;
+}
+
+export interface ScheduledJobLimits {
+  maxRecords: number;
+  maxRetries: number;
+  retryDelayMinutes: number;
+}
+
+export interface ScheduledJobSnapshot {
+  capturedAt: string;
+  recordCount: number;
+  signature: string;
+  rowFingerprints: string[];
+}
+
+export interface ScheduledJobRunAttempt {
+  id: string;
+  startedAt: string;
+  finishedAt: string;
+  status: ScheduledJobRunStatus;
+  recordCount: number;
+  warningCount: number;
+  error: string;
+  retryNumber: number;
+  changed: boolean;
+}
+
+export interface ScheduledJobChangeNotification {
+  id: string;
+  jobId: string;
+  detectedAt: string;
+  status: ScheduledJobNotificationStatus;
+  previousRecordCount: number;
+  currentRecordCount: number;
+  addedRows: number;
+  removedRows: number;
+}
+
+export interface ScheduledExtractionJob {
+  version: 1;
+  id: string;
+  name: string;
+  savedScraperId: string;
+  savedScraperRevision: number;
+  sourceUrl: string;
+  sourceOrigin: string;
+  recipe: ExtractionRecipe;
+  enabled: boolean;
+  due: boolean;
+  createdAt: string;
+  updatedAt: string;
+  nextRunAt: string;
+  lastRunAt: string | null;
+  consecutiveFailures: number;
+  schedule: ScheduledJobSchedule;
+  limits: ScheduledJobLimits;
+  sourcePolicy: ScheduledSourcePolicyReview;
+  lastSnapshot: ScheduledJobSnapshot | null;
+  attempts: ScheduledJobRunAttempt[];
+}
+
+export interface ScheduledJobsDataset {
+  version: 1;
+  id: "ai-data-platform-scheduled-jobs";
+  createdAt: string;
+  updatedAt: string;
+  jobs: ScheduledExtractionJob[];
+  notifications: ScheduledJobChangeNotification[];
+}
+
+export interface ScheduledJobRunComparison {
+  snapshot: ScheduledJobSnapshot;
+  changed: boolean;
+  addedRows: number;
+  removedRows: number;
+}
