@@ -114,6 +114,8 @@ AI may propose a schema, interpret ambiguous labels, normalize free text, help r
 
 Rosie Dazzlers and Devil n Dove remain independent applications. This repository owns shared acquisition/intelligence logic. Business applications consume approved outputs through explicit integration adapters rather than by sharing database tables directly.
 
+Build 018 implements that boundary as versioned adapter contracts and controlled integration packages. Each adapter transforms only reviewed domain records, can compare them with an imported current-system snapshot, strips fields marked user-owned from updates, requires approval of the exact dry-run fingerprint, and records dry-run/approval/export/cancellation audit events. No dedicated Rosie Dazzlers competitive-intelligence intake endpoint or Devil n Dove supplier-inventory intake contract is assumed by this repository; until a business app deliberately exposes the matching authenticated contract, the transport is an approved JSON package rather than an invented HTTP write.
+
 ## Deployment baseline
 
 The web application may be deployed independently of the two business sites. The extension and web app version together through this repository.

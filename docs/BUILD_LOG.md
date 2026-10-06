@@ -1184,3 +1184,136 @@ None. Build 017 uses extension-local storage plus the Chrome alarms permission d
 ### Next
 
 Build 018 — Business-System Integrations.
+
+
+## Build 018 — Business-System Integrations
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 018 pull-request path.
+
+### Goal
+
+Complete the business-system boundary with explicit, review-first adapters for Rosie Dazzlers and Devil n Dove while preventing shared-table coupling, silent overwrites and invented production credentials/endpoints.
+
+### Delivered
+
+- Business-System Integrations panel in the extension;
+- explicit adapter target selection for Rosie Dazzlers and Devil n Dove;
+- Rosie Dazzlers adapter contract `rosie-dazzlers.competitive-intelligence.v1`;
+- Devil n Dove adapter contract `devil-n-dove.supplier-inventory.v1`;
+- Rosie adapter consumes only the latest normalized Ontario competitor offerings from Build 014;
+- Devil n Dove adapter consumes only supplier staging items explicitly approved in Build 015;
+- target-specific safe payload fields;
+- source URL and retrieval-time evidence retained on every adapter operation;
+- optional current-business-system snapshot import from JSON;
+- snapshot target validation;
+- snapshot current values by stable integration key;
+- snapshot-declared `userOwnedKeys` protection;
+- deterministic dry-run create/update/unchanged/blocked classification;
+- field-level before/after diff for updates;
+- user-owned changed fields excluded from adapter payloads;
+- blocked-only records produce no exportable write;
+- dry-run fingerprint generated from target, source dataset revision, snapshot timestamp and safe payload diff;
+- local persisted integration batches;
+- explicit checkbox approval of the exact dry-run fingerprint;
+- approval rejected if the source dataset changed after dry-run generation;
+- approval rejected when the batch contains no exportable operations;
+- draft batch cancellation;
+- exported batches cannot be retroactively cancelled;
+- approved package export as formatted JSON;
+- package includes target, adapter contract, contract version, batch ID, approval timestamp, generated timestamp and package fingerprint;
+- package includes only create/update operations;
+- unchanged and blocked records never enter an approved package;
+- local append-style audit entries for dry-run creation, approval, export and cancellation;
+- maximum 30 retained integration batches;
+- maximum 250 retained audit entries;
+- extension version 0.18.0;
+- no new browser permission;
+- no business credentials stored;
+- no shared business database tables;
+- no direct production writes.
+
+### Rosie Dazzlers adapter fields
+
+The v1 Rosie contract can hand off only competitive-intelligence fields:
+
+- competitor business name;
+- offering name/type/category;
+- minimum and maximum CAD price;
+- starting-at-price flag;
+- vehicle size;
+- service areas;
+- mobile/fixed/both delivery mode;
+- canonical package-content facts;
+- source URL/scope;
+- retrieval timestamp.
+
+Customer, booking, quote, payment, staff, internal-note and other operational records are not part of this adapter.
+
+### Devil n Dove adapter fields
+
+The v1 Devil n Dove contract can hand off only approved supplier/inventory-economics fields:
+
+- supplier name;
+- product name;
+- supplier SKU;
+- supplier image URL;
+- package price and quantity;
+- stock and usage units;
+- usage units per stock unit;
+- total usage units;
+- cost per stock unit;
+- cost per usage unit;
+- source URL/scope;
+- retrieval timestamp.
+
+Unapproved supplier staging rows never enter the adapter.
+
+### Transport decision
+
+Repository and business-app review did not identify a dedicated authenticated intake endpoint for these exact new contracts. Build 018 therefore does not guess an unrelated admin endpoint, authentication model or database write. The approved transport is a versioned JSON integration package that the corresponding business application can consume once it deliberately implements the matching contract. This preserves the architecture rule that business systems remain independent and consume approved outputs through explicit adapters.
+
+### Dry-run snapshot contract
+
+An optional current-state snapshot contains:
+
+- `target`;
+- `capturedAt`;
+- `records[]`;
+- per-record stable `integrationKey`;
+- current external-field `values`;
+- `userOwnedKeys` that the adapter must never replace.
+
+Without a snapshot, candidates are deliberately classified as creates rather than pretending the platform knows current production state.
+
+### Audit and approval rules
+
+- every persisted dry run records an audit entry;
+- approval applies only to the exact batch/fingerprint;
+- approval verifies the source dataset has not changed;
+- user-owned fields remain excluded even after approval;
+- export records the controlled handoff in the audit trail;
+- cancellation is recorded before export;
+- no audit action performs a network write.
+
+### Verification target
+
+The Build 018 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Manual setup
+
+None is required to use dry-run, approval, audit and package export. Live ingestion remains intentionally unavailable until Rosie Dazzlers or Devil n Dove exposes and documents the matching authenticated v1 intake contract.
+
+### Roadmap state
+
+Build 018 completes the currently numbered roadmap. Later candidates remain explicitly deferred until the local-first product demonstrates the need.

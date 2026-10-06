@@ -301,11 +301,20 @@ Acceptance: an approved saved scraper can be scheduled locally, becomes due thro
 
 ## Build 018 — Business-System Integrations
 
-- explicit Rosie Dazzlers adapters;
-- explicit Devil n Dove adapters;
-- dry-run/diff;
-- approval;
-- audit trail.
+Status: COMPLETE (2026-10-06).
+
+- explicit Rosie Dazzlers competitive-intelligence adapter contract;
+- explicit Devil n Dove approved supplier-inventory adapter contract;
+- optional imported current-system snapshots;
+- deterministic dry-run create/update/unchanged/blocked diffs;
+- user-owned field protection;
+- exact dry-run fingerprint approval;
+- stale source-dataset approval blocking;
+- versioned approved JSON integration packages;
+- local immutable-style append-only audit history for dry-run, approval, export and cancellation;
+- no shared database tables, invented credentials or unreviewed production writes.
+
+Acceptance: reviewed platform outputs can be transformed through an explicit business-specific adapter, compared against imported current state, inspected as a dry run, explicitly approved against the same source dataset, and exported as a versioned package whose audit trail records the controlled handoff.
 
 ## Later candidates
 

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { BusinessIntegrationsPanel } from "./BusinessIntegrationsPanel";
 import { inspectPage } from "./inspect-page";
 import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
@@ -255,15 +256,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">017</span>
+        <span className="build">018</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Schedule reviewed, bounded repeat jobs</strong>
+        <strong>Approve explicit business-system handoffs</strong>
         <p>
-          Build 017 adds source-policy-gated schedules, due-work alarms, bounded
-          retries and local change notifications while keeping extraction
-          interactive and refusing unattended access-control bypass.
+          Build 018 adds Rosie Dazzlers and Devil n Dove adapter contracts,
+          dry-run diffs, user-owned field protection, explicit approval and
+          local audit trails before any controlled integration package export.
         </p>
       </section>
 
@@ -296,6 +297,7 @@ export function App() {
               setError(null);
             }}
           />
+          <BusinessIntegrationsPanel />
         </>
       ) : null}
 
