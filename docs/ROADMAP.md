@@ -267,10 +267,18 @@ Acceptance: reviewed supplier rows can be normalized into Devil n Dove inventory
 
 ## Build 016 — Movie Metadata Module
 
-- import existing collection;
-- permitted API/dataset connectors;
-- title/year/UPC/external-ID matching;
-- ownership-field preservation.
+Status: COMPLETE (2026-10-06).
+
+- local CSV/JSON import for the existing owned movie collection;
+- permitted-source intake profiles for IMDb datasets, TMDb API/export, OMDb API/export and other operator-confirmed API/dataset sources;
+- external-ID, UPC, title/year and title-similarity matching;
+- exact/strong/ambiguous/unmatched confidence classification;
+- manual owned-title assignment for ambiguous/unmatched candidates;
+- explicit approve/reject/reopen metadata review;
+- ownership-field preservation for format, shelf location, condition and personal notes;
+- metadata enrichment limited to canonical metadata and missing external IDs.
+
+Acceptance: an existing owned collection can be imported locally, reviewed metadata from a permitted API/dataset source can be mapped and matched, ambiguous results remain review-gated, and approving enrichment cannot overwrite ownership-specific fields.
 
 ## Build 017 — Scheduled & Repeatable Jobs
 

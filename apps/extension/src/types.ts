@@ -762,3 +762,141 @@ export interface DevilSupplierDefaults {
   usageUnit: string;
   usageUnitsPerStockUnit: string;
 }
+
+
+export type MovieMetadataSource =
+  | "tmdb"
+  | "omdb"
+  | "imdb-dataset"
+  | "other-permitted";
+
+export type MovieMatchConfidence =
+  | "exact"
+  | "strong"
+  | "ambiguous"
+  | "unmatched";
+
+export type MovieMatchReviewStatus = "pending" | "approved" | "rejected";
+
+export interface MovieOwnershipFields {
+  format: string;
+  shelfLocation: string;
+  condition: string;
+  notes: string;
+}
+
+export interface MovieExternalIds {
+  imdb: string;
+  tmdb: string;
+  omdb: string;
+  other: string;
+}
+
+export interface MovieMetadataFields {
+  canonicalTitle: string;
+  releaseYear: number | null;
+  genres: string[];
+  runtimeMinutes: number | null;
+  posterUrl: string;
+  overview: string;
+  provider: MovieMetadataSource | null;
+  providerRecordId: string;
+  sourceUrl: string;
+  retrievedAt: string | null;
+}
+
+export interface MovieCollectionRecord {
+  version: 1;
+  id: string;
+  title: string;
+  year: number | null;
+  upc: string;
+  externalIds: MovieExternalIds;
+  ownership: MovieOwnershipFields;
+  metadata: MovieMetadataFields;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MovieCollectionImportMapping {
+  titleKey: string;
+  yearKey: string;
+  upcKey: string;
+  imdbKey: string;
+  tmdbKey: string;
+  omdbKey: string;
+  otherExternalIdKey: string;
+  formatKey: string;
+  shelfLocationKey: string;
+  conditionKey: string;
+  notesKey: string;
+}
+
+export interface MovieMetadataMapping {
+  titleKey: string;
+  yearKey: string;
+  upcKey: string;
+  imdbKey: string;
+  tmdbKey: string;
+  omdbKey: string;
+  otherExternalIdKey: string;
+  genresKey: string;
+  runtimeKey: string;
+  posterUrlKey: string;
+  overviewKey: string;
+  providerRecordIdKey: string;
+}
+
+export interface MovieMetadataCandidate {
+  version: 1;
+  id: string;
+  provider: MovieMetadataSource;
+  providerRecordId: string;
+  title: string;
+  year: number | null;
+  upc: string;
+  externalIds: MovieExternalIds;
+  genres: string[];
+  runtimeMinutes: number | null;
+  posterUrl: string;
+  overview: string;
+  sourceUrl: string;
+  sourceIndex: number;
+  retrievedAt: string;
+}
+
+export interface MovieMatchQueueItem {
+  version: 1;
+  id: string;
+  candidate: MovieMetadataCandidate;
+  recordId: string | null;
+  recordTitle: string;
+  confidence: MovieMatchConfidence;
+  score: number;
+  reasons: string[];
+  competingRecordIds: string[];
+  reviewStatus: MovieMatchReviewStatus;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MovieMetadataModuleDataset {
+  version: 1;
+  id: "personal-movie-metadata-module";
+  createdAt: string;
+  updatedAt: string;
+  collection: MovieCollectionRecord[];
+  matchQueue: MovieMatchQueueItem[];
+}
+
+export interface MovieMetadataQueueSummary {
+  candidates: number;
+  exact: number;
+  strong: number;
+  ambiguous: number;
+  unmatched: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+}

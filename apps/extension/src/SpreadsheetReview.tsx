@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { DevilSupplierPanel } from "./DevilSupplierPanel";
 import { ExportPanel } from "./ExportPanel";
 import { HistoricalChangePanel } from "./HistoricalChangePanel";
+import { MovieMetadataPanel } from "./MovieMetadataPanel";
 import { RosieCompetitivePanel } from "./RosieCompetitivePanel";
 import type {
   ExtractionFieldRecipe,
@@ -485,6 +486,15 @@ export function SpreadsheetReview({
       />
 
       <DevilSupplierPanel
+        columns={orderedColumns}
+        rows={rows.map((row) => ({
+          ...row,
+          warnings: currentWarnings(row)
+        }))}
+        sourceUrl={run.sourceUrl}
+      />
+
+      <MovieMetadataPanel
         columns={orderedColumns}
         rows={rows.map((row) => ({
           ...row,
