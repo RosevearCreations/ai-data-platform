@@ -3149,3 +3149,331 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.movieMetadata {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(126, 231, 135, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(126, 231, 135, 0.025);
+}
+
+.movieMetadata h2 { margin: 0; font-size: 1rem; }
+
+.movieMetadataBadge {
+  border-radius: 999px;
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.movieMetadataIntro,
+.movieMetadataEmpty,
+.movieMetadataError,
+.movieMetadataMessage {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.movieCollectionImport,
+.movieMetadataIntake,
+.moviePreservationNote {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(126, 231, 135, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(126, 231, 135, 0.018);
+}
+
+.movieSubheader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.movieSubheader strong {
+  color: #d8eadb;
+  font-size: 0.68rem;
+}
+
+.movieSubheader span,
+.movieCollectionImport > small {
+  color: #7f9291;
+  font-size: 0.57rem;
+}
+
+.movieCollectionImport input[type="file"] {
+  width: 100%;
+  color: #aebfbc;
+  font-size: 0.6rem;
+}
+
+.movieMappingGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.movieMappingGrid label,
+.movieProvider {
+  display: grid;
+  gap: 0.28rem;
+  color: #c7dbca;
+  font-size: 0.61rem;
+  font-weight: 850;
+}
+
+.movieMappingGrid select,
+.movieProvider select,
+.movieManualAssign input {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.movieMappingGrid select:focus,
+.movieProvider select:focus,
+.movieManualAssign input:focus {
+  border-color: rgba(126, 231, 135, 0.45);
+}
+
+.movieProvider small {
+  color: #7b8d8b;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.movieReplace {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #9eb0ad;
+  font-size: 0.61rem;
+  line-height: 1.45;
+}
+
+.movieImportButton,
+.movieQueueButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #7ee787;
+  color: #06150a;
+  font-weight: 900;
+}
+
+.movieImportButton:not(:disabled),
+.movieQueueButton:not(:disabled),
+.movieReviewActions button:not(:disabled),
+.movieManualAssign button:not(:disabled) {
+  cursor: pointer;
+}
+
+.movieImportButton:disabled,
+.movieQueueButton:disabled,
+.movieReviewActions button:disabled,
+.movieManualAssign button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.movieCollectionStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.movieCollectionStats div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.movieCollectionStats strong {
+  color: #c7e7cb;
+  font-size: 0.78rem;
+}
+
+.movieCollectionStats span {
+  color: #7e9090;
+  font-size: 0.55rem;
+}
+
+.moviePreviewSummary {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.moviePreviewSummary strong {
+  color: #c9e5cc;
+  font-size: 0.75rem;
+}
+
+.moviePreviewSummary span {
+  color: #80918f;
+  font-size: 0.58rem;
+}
+
+.movieMatchQueue {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.movieMatchQueue article {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.movieMatchTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.movieMatchTop > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.movieMatchQueue strong,
+.movieMatchQueue b {
+  overflow-wrap: anywhere;
+  color: #dce9de;
+  font-size: 0.63rem;
+}
+
+.movieMatchQueue small {
+  color: #819391;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.movieMatchQueue ul {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding-left: 0.9rem;
+  color: #92a49f;
+  font-size: 0.55rem;
+  line-height: 1.35;
+}
+
+.movieConfidence {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.51rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.movieConfidence-exact {
+  background: rgba(126, 231, 135, 0.1);
+  color: #bcefc1;
+}
+
+.movieConfidence-strong {
+  background: rgba(93, 173, 226, 0.1);
+  color: #b9ddf5;
+}
+
+.movieConfidence-ambiguous {
+  background: rgba(255, 214, 102, 0.1);
+  color: #ffe3a0;
+}
+
+.movieConfidence-unmatched {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.movieManualAssign {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.movieManualAssign > div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.movieManualAssign button {
+  min-height: 2rem;
+  border: 1px solid rgba(126, 231, 135, 0.12);
+  border-radius: 0.5rem;
+  background: rgba(126, 231, 135, 0.03);
+  color: #b9ceb9;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+  font-size: 0.56rem;
+}
+
+.movieReviewActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.movieReviewActions button {
+  min-height: 2.05rem;
+  border: 1px solid rgba(126, 231, 135, 0.12);
+  border-radius: 0.55rem;
+  background: rgba(126, 231, 135, 0.028);
+  color: #b3c7b5;
+  font-size: 0.54rem;
+  font-weight: 850;
+}
+
+.moviePreservationNote strong {
+  color: #d5e8d8;
+  font-size: 0.66rem;
+}
+
+.moviePreservationNote p {
+  margin: 0;
+  color: #869994;
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.movieMetadataError { color: #e0a6a6; }
+.movieMetadataMessage { color: #bfe0c3; }
+
+@media (max-width: 360px) {
+  .movieMappingGrid,
+  .movieCollectionStats,
+  .movieReviewActions {
+    grid-template-columns: 1fr;
+  }
+
+  .movieSubheader,
+  .movieMatchTop {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

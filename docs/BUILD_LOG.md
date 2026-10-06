@@ -1016,3 +1016,84 @@ None. Build 015 reuses Chrome extension-local storage and requires no Devil n Do
 ### Next
 
 Build 016 — Movie Metadata Module.
+
+
+## Build 016 — Movie Metadata Module
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 016 pull-request path.
+
+### Goal
+
+Enrich a personal owned movie collection from permitted metadata sources without losing ownership-specific information or auto-accepting ambiguous matches.
+
+### Delivered
+
+- local movie metadata module embedded in the reviewed spreadsheet workflow;
+- existing owned-collection import from CSV;
+- existing owned-collection import from JSON arrays or JSON records arrays;
+- automatic collection-field mapping suggestions with operator overrides;
+- append-import mode with duplicate identity protection;
+- explicit replace-existing collection mode;
+- append imports preserve existing ownership fields and previously approved metadata;
+- owned movie identity support through IMDb ID, TMDb ID, UPC and title/year fallback;
+- owned format preservation;
+- shelf-location preservation;
+- condition preservation;
+- personal-notes preservation;
+- permitted metadata-source profiles for IMDb datasets, TMDb API/export, OMDb API/export and other operator-confirmed API/dataset sources;
+- reviewed metadata field mapping with provider-aware record-ID handling;
+- metadata candidate title/year/UPC/external-ID normalization;
+- genre, runtime, poster URL and overview normalization;
+- source URL, source row and retrieval-time evidence;
+- exact external-ID matching;
+- exact UPC matching;
+- title/year matching;
+- token-based title similarity fallback;
+- match scoring and reasons;
+- exact, strong, ambiguous and unmatched classifications;
+- competing-match detection when top owned candidates are too close;
+- local match review queue;
+- owned-title search and manual assignment for ambiguous/unmatched candidates;
+- explicit approve, reject, reopen and remove actions;
+- metadata approval may enrich canonical title, release year, genres, runtime, poster, overview, provider/source evidence and missing external IDs;
+- metadata approval never replaces owned title, owned year, owned UPC, format, shelf location, condition or notes;
+- maximum 5,000 imported collection rows per file;
+- maximum 7,500 locally retained owned movies;
+- maximum 500 reviewed metadata candidates per matching batch;
+- maximum 1,000 retained match-review items;
+- extension version 0.16.0;
+- no new Chrome permission, backend dependency or external API credential requirement.
+
+### Source and review rules
+
+- Build 016 does not silently call third-party movie APIs;
+- provider profiles identify metadata already obtained through permitted API/export/dataset workflows;
+- source terms and API/dataset permission remain an operator responsibility;
+- IMDb/TMDb/OMDb provider record IDs can populate the corresponding missing external ID for matching;
+- ambiguous candidates are never auto-approved;
+- unmatched candidates require manual owned-title assignment before approval;
+- user-owned fields remain authoritative under every enrichment path;
+- the module remains extension-local and does not modify an external movie library system.
+
+### Verification target
+
+The Build 016 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Manual setup
+
+None. CSV/JSON collection import and metadata review use existing Chrome extension-local storage. Live third-party API credentials are intentionally not required or stored by Build 016.
+
+### Next
+
+Build 017 — Scheduled & Repeatable Jobs.

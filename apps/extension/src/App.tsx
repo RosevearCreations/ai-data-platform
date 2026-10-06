@@ -254,15 +254,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">015</span>
+        <span className="build">016</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Normalize supplier and usage-unit economics</strong>
+        <strong>Match owned movies to permitted metadata</strong>
         <p>
-          Build 015 converts reviewed supplier products into package, stock-unit
-          and usage-unit costs, retains source and price observations, and stages
-          approved records locally for a later Devil n Dove integration.
+          Build 016 imports the owned collection locally, matches permitted
+          metadata by external ID, UPC, title and year, and preserves ownership
+          fields while ambiguous enrichments remain review-gated.
         </p>
       </section>
 
