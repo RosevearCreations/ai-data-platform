@@ -520,3 +520,135 @@ export interface HistoricalSeries {
   changes: HistoricalChangeItem[];
   lastSummary: HistoricalCaptureSummary;
 }
+
+
+export type OntarioDetailingOfferingKind =
+  | "package"
+  | "service"
+  | "addon"
+  | "promotion"
+  | "unknown";
+
+export type OntarioDetailingDeliveryMode =
+  | "mobile"
+  | "fixed-location"
+  | "both"
+  | "unknown";
+
+export type OntarioVehicleSize =
+  | "small"
+  | "medium"
+  | "large"
+  | "oversize"
+  | "universal"
+  | "unknown";
+
+export interface RosieCompetitiveMapping {
+  businessNameKey: string;
+  offeringNameKey: string;
+  offeringKindKey: string;
+  priceKey: string;
+  packageContentsKey: string;
+  vehicleSizeKey: string;
+  serviceAreaKey: string;
+  deliveryModeKey: string;
+}
+
+export interface OntarioPriceObservation {
+  raw: string;
+  currency: "CAD";
+  minimum: number | null;
+  maximum: number | null;
+  startingAt: boolean;
+}
+
+export interface OntarioServiceAreaObservation {
+  raw: string;
+  province: "ON";
+  locations: string[];
+}
+
+export interface OntarioCompetitorOffering {
+  id: string;
+  businessKey: string;
+  businessName: string;
+  sourceUrl: string;
+  sourceScope: string;
+  sourceIndex: number;
+  retrievedAt: string;
+  offeringKey: string;
+  offeringName: string;
+  offeringKind: OntarioDetailingOfferingKind;
+  category: string;
+  price: OntarioPriceObservation;
+  packageContents: string[];
+  vehicleSize: OntarioVehicleSize;
+  serviceArea: OntarioServiceAreaObservation;
+  deliveryMode: OntarioDetailingDeliveryMode;
+}
+
+export interface OntarioCompetitorSnapshot {
+  version: 1;
+  id: string;
+  snapshotVersion: number;
+  capturedAt: string;
+  businessKey: string;
+  businessName: string;
+  sourceUrl: string;
+  sourceScope: string;
+  offerings: OntarioCompetitorOffering[];
+}
+
+export interface OntarioCompetitorFieldChange {
+  field: string;
+  before: string;
+  after: string;
+}
+
+export interface OntarioCompetitorChange {
+  id: string;
+  kind: "added" | "removed" | "changed";
+  detectedAt: string;
+  businessKey: string;
+  businessName: string;
+  sourceScope: string;
+  offeringKey: string;
+  offeringName: string;
+  fromVersion: number | null;
+  toVersion: number;
+  fields: OntarioCompetitorFieldChange[];
+}
+
+export interface OntarioCompetitorSeries {
+  version: 1;
+  id: string;
+  seriesKey: string;
+  businessKey: string;
+  businessName: string;
+  sourceUrl: string;
+  sourceScope: string;
+  createdAt: string;
+  updatedAt: string;
+  latestVersion: number;
+  snapshots: OntarioCompetitorSnapshot[];
+  changes: OntarioCompetitorChange[];
+}
+
+export interface OntarioDetailerDataset {
+  version: 1;
+  id: "rosie-dazzlers-ontario-detailers";
+  province: "ON";
+  createdAt: string;
+  updatedAt: string;
+  series: OntarioCompetitorSeries[];
+}
+
+export interface OntarioDatasetCaptureSummary {
+  businessCount: number;
+  seriesUpdated: number;
+  snapshotsCaptured: number;
+  offeringsCaptured: number;
+  added: number;
+  removed: number;
+  changed: number;
+}

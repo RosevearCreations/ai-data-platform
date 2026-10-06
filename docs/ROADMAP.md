@@ -239,10 +239,17 @@ Acceptance: after an initial reviewed baseline, a later capture can match stable
 
 ## Build 014 — Rosie Dazzlers Competitive Intelligence
 
-- detailing-domain normalization;
-- packages/pricing/services/service-area model;
-- Ontario detailer dataset;
-- competitor change history.
+Status: COMPLETE (2026-10-06).
+
+- detailing-domain normalization from reviewed extraction rows;
+- packages/pricing/services/vehicle-size/mobile-mode/service-area model;
+- operator-verified Ontario detailer dataset in extension-local storage;
+- per-source and per-business competitor snapshots;
+- added/removed/changed offering history;
+- source URL and retrieval-time evidence retention;
+- canonical package-content facts instead of copied marketing prose.
+
+Acceptance: reviewed public Ontario auto-detailing facts can be mapped into a normalized local dataset, compared across competitors, and recaptured later to retain source-scoped price/service/package change history without writing into Rosie Dazzlers production records.
 
 ## Build 015 — Devil n Dove Supplier Intelligence
 

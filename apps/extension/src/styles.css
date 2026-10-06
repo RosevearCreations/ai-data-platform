@@ -2631,3 +2631,251 @@ h1 {
     text-align: left;
   }
 }
+
+
+.rosieCompetitive {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(93, 173, 226, 0.2);
+  border-radius: 0.9rem;
+  background: rgba(52, 152, 219, 0.035);
+}
+
+.rosieCompetitive h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.rosieCompetitiveBadge {
+  border-radius: 999px;
+  background: rgba(93, 173, 226, 0.11);
+  color: #b9ddf5 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.rosieCompetitiveIntro,
+.rosieCompetitiveEmpty,
+.rosieCompetitiveError,
+.rosieCompetitiveStatus {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.rosieMapping {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.rosieMapping label {
+  display: grid;
+  gap: 0.28rem;
+  align-content: start;
+}
+
+.rosieMapping label > span {
+  color: #c7d8e4;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.rosieMapping select {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.rosieMapping select:focus {
+  border-color: rgba(93, 173, 226, 0.5);
+}
+
+.rosieMapping small {
+  color: #768a91;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.rosieOntarioVerify {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(93, 173, 226, 0.12);
+  border-radius: 0.65rem;
+  background: rgba(93, 173, 226, 0.025);
+  color: #aabdc5;
+  font-size: 0.62rem;
+  line-height: 1.45;
+}
+
+.rosieOntarioVerify input {
+  margin-top: 0.1rem;
+}
+
+.rosiePreviewHeader,
+.rosieChangesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rosiePreviewHeader strong,
+.rosieChangesHeader strong {
+  color: #d7e7ef;
+  font-size: 0.68rem;
+}
+
+.rosiePreviewHeader span,
+.rosieChangesHeader span {
+  color: #758b94;
+  font-size: 0.57rem;
+}
+
+.rosiePreview,
+.rosieChanges {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.rosiePreview article,
+.rosieChanges article {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.rosiePreview article > div,
+.rosieChanges article > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rosiePreview strong,
+.rosieChanges strong {
+  overflow-wrap: anywhere;
+  color: #dceaf1;
+  font-size: 0.64rem;
+}
+
+.rosiePreview span,
+.rosiePreview small,
+.rosieChanges small {
+  color: #80959d;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.rosiePreview b,
+.rosieChanges b {
+  overflow-wrap: anywhere;
+  color: #bcd6e3;
+  font-size: 0.62rem;
+}
+
+.rosieSaveDataset {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #5dade2;
+  color: #07131a;
+  font-weight: 900;
+}
+
+.rosieSaveDataset:not(:disabled) {
+  cursor: pointer;
+}
+
+.rosieSaveDataset:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.rosieDatasetStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.rosieDatasetStats div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.rosieDatasetStats strong {
+  color: #c7e3f3;
+  font-size: 0.78rem;
+}
+
+.rosieDatasetStats span {
+  color: #7d929a;
+  font-size: 0.55rem;
+}
+
+.rosieChangeKind {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.52rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.rosieChangeKind-added {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.rosieChangeKind-removed {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.rosieChangeKind-changed {
+  background: rgba(93, 173, 226, 0.1);
+  color: #b9ddf5;
+}
+
+.rosieChanges ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding-left: 0.9rem;
+  color: #8fa1a7;
+  font-size: 0.55rem;
+  line-height: 1.4;
+}
+
+.rosieCompetitiveError {
+  color: #e0a6a6;
+}
+
+.rosieCompetitiveStatus {
+  color: #b9d8e8;
+}
+
+@media (max-width: 360px) {
+  .rosieMapping,
+  .rosieDatasetStats {
+    grid-template-columns: 1fr;
+  }
+}
