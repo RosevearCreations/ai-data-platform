@@ -316,13 +316,295 @@ Status: COMPLETE (2026-10-06).
 
 Acceptance: reviewed platform outputs can be transformed through an explicit business-specific adapter, compared against imported current state, inspected as a dry run, explicitly approved against the same source dataset, and exported as a versioned package whose audit trail records the controlled handoff.
 
-## Later candidates
+## Build 019 — Authenticated Workspace Binding & Extension Session Bridge
 
-- remote/cloud browser workers;
-- proxy support where lawful and necessary;
-- advanced anti-breakage recipe repair;
-- mobile barcode capture;
-- additional workspace types;
-- plugin/connector SDK.
+Status: QUEUED — NOT STARTED.
 
-These are intentionally deferred until the local-first product proves the need.
+Goal: connect the Chrome extension to the authenticated AI Data Platform workspace model so Rosie Dazzlers, Devil n Dove and Personal are real isolated contexts instead of a disabled local selector.
+
+Deliverables:
+
+- extension-to-web authenticated session bridge;
+- current authenticated user and workspace discovery;
+- workspace membership loading through the existing Better Auth/PostgreSQL boundary;
+- active-workspace selection in the extension;
+- Rosie Dazzlers, Devil n Dove and Personal workspace switching;
+- explicit signed-out, expired-session and unavailable-backend states;
+- no target-site credentials exposed to page scripts;
+- extension-origin/trusted-origin handling documented and bounded;
+- workspace ID attached to future synchronized extension records;
+- migration-safe handling of existing local-only records that have no workspace ID yet;
+- CI coverage for cross-workspace denial and expired-session fallback.
+
+Acceptance: a signed-in user can select only workspaces they are authorized to access, the extension retains the active workspace safely, signed-out/expired states fail closed, and one workspace cannot read or select another user's data.
+
+Manual input gate:
+
+This build may require one one-time browser authorization/test once the production extension ID and deployed web origin are known. If the existing environment already exposes both correctly, no manual setup is required.
+
+## Build 020 — Workspace Persistence & Cross-Device Sync Foundation
+
+Status: QUEUED — NOT STARTED.
+
+Goal: move the durable source of truth for saved recipes, reviewed datasets and core provenance from extension-local storage into the authenticated workspace backend while retaining offline/local resilience.
+
+Deliverables:
+
+- provider-portable PostgreSQL persistence for saved scrapers and templates;
+- versioned recipe persistence by workspace;
+- reviewed dataset metadata and bounded record persistence;
+- source URL/retrieval-time provenance persistence;
+- workspace-scoped synchronization endpoints;
+- local cache with explicit sync state;
+- create/update conflict detection;
+- deterministic local-versus-server merge rules;
+- offline-first queue for safe deferred sync;
+- migration/import of existing extension-local saved scrapers;
+- migration/import of existing local review snapshots;
+- no automatic destructive deletion of local data after migration;
+- RLS verification for every new workspace table.
+
+Acceptance: a saved recipe or reviewed dataset created on one authenticated device can be retrieved on another authorized device, local work remains usable during temporary backend loss, and workspace isolation is verified at the database boundary.
+
+Manual input gate:
+
+No user input expected unless the production PostgreSQL/Neon environment is missing a required connection or migration setting. If one is missing, the implementation build must stop before production mutation and provide exact dashboard steps.
+
+## Build 021 — Persistent Intelligence, History & Audit Continuity
+
+Status: QUEUED — NOT STARTED.
+
+Goal: synchronize the higher-value local intelligence modules so history, schedules, approvals and audit evidence survive browser/device loss and can be reviewed from the web application.
+
+Deliverables:
+
+- workspace persistence for Build 013 historical series/change queues;
+- workspace persistence for Build 014 Rosie competitive-intelligence series;
+- workspace persistence for Build 015 Devil n Dove supplier staging and price observations;
+- workspace persistence for Build 016 movie metadata review state where appropriate to Personal workspace;
+- workspace persistence for Build 017 scheduled-job definitions and run history;
+- workspace persistence for Build 018 integration batches and audit events;
+- append-only audit semantics for approvals/exports/cancellations;
+- local cache reconciliation after sign-in;
+- bounded retention policies mirrored server-side;
+- web-app read views for history, pending review and audit status;
+- workspace RLS coverage and migration verification.
+
+Acceptance: critical history and audit state remains available after browser reinstall or device change, local and server state reconcile predictably, and business approval evidence is not dependent on one browser profile.
+
+Manual input gate:
+
+None expected.
+
+## Build 022 — Integration Contract Verification & Consumer Readiness
+
+Status: QUEUED — NOT STARTED.
+
+Goal: make Build 018 handoffs machine-verifiable and prepare Rosie Dazzlers and Devil n Dove to consume only deliberately supported adapter contracts without guessing endpoints.
+
+Deliverables:
+
+- JSON Schema or equivalent shared schema for both v1 adapter contracts;
+- package signature/fingerprint verification;
+- replay/duplicate-package detection metadata;
+- stale-package and unsupported-version rejection rules;
+- consumer conformance test fixtures;
+- dry-run package validator in the AI Data Platform;
+- documented authenticated intake requirements for each business application;
+- Rosie Dazzlers consumer-readiness checklist;
+- Devil n Dove consumer-readiness checklist;
+- end-to-end non-production contract simulation;
+- no live write path enabled until the corresponding business application explicitly implements and proves the same contract.
+
+Acceptance: an approved integration package can be validated independently, duplicate/stale/unsupported packages are rejected deterministically, and each business application has an exact implementation checklist rather than an invented endpoint.
+
+Manual input gate:
+
+User input is required only when enabling a real business-app intake endpoint. The walkthrough is defined in the detailed plan document and must be performed separately for Rosie Dazzlers and Devil n Dove.
+
+## Build 023 — Advanced Recipe Drift Detection & Repair Workbench
+
+Status: QUEUED — NOT STARTED.
+
+Goal: reduce scraper breakage by diagnosing DOM drift and proposing reviewable recipe repairs without allowing AI to silently change operational selectors.
+
+Deliverables:
+
+- structural fingerprint comparison across saved recipe revisions;
+- field-level selector health trends;
+- broken/degraded cause classification;
+- deterministic nearby-selector candidates;
+- bounded DOM-context capture around failed selectors;
+- optional AI explanation/ranking of deterministic repair candidates;
+- side-by-side old/new selector evidence;
+- sample extraction comparison before adoption;
+- explicit operator approval before recipe revision creation;
+- rollback to prior known-good revision;
+- scheduled jobs automatically remain blocked until repaired revision is explicitly re-reviewed.
+
+Acceptance: when a saved scraper breaks, the workbench can explain the drift, propose bounded repair candidates, prove the candidate against sample records, and create a new recipe revision only after explicit approval.
+
+Manual input gate:
+
+No setup expected. Human approval of each repaired selector remains intentionally required inside the application.
+
+## Build 024 — Mobile Barcode & Camera Intake
+
+Status: QUEUED — NOT STARTED.
+
+Goal: add fast mobile capture for owned movies and supplier/inventory identifiers without weakening matching or ownership-preservation rules.
+
+Deliverables:
+
+- mobile-friendly barcode intake surface;
+- camera barcode scanning when browser/device APIs support it;
+- manual barcode entry fallback;
+- UPC/EAN normalization;
+- Personal movie-library barcode lookup handoff;
+- Devil n Dove supplier/inventory staging barcode handoff;
+- duplicate barcode detection;
+- confidence/match review before enrichment;
+- camera permission requested only on explicit user action;
+- no continuous camera access;
+- local queue for captures made while temporarily offline;
+- source/provenance labeling for scanned identifiers.
+
+Acceptance: a user can scan or type a barcode on a supported mobile device, route it to the correct workspace workflow, review the resulting match, and preserve existing ownership/internal fields.
+
+Manual input gate:
+
+A one-time browser camera permission is required on each mobile device that uses scanning. Exact walkthrough is included in the detailed plan document.
+
+## Build 025 — Remote Execution Provider Abstraction & Cloud Worker Readiness
+
+Status: QUEUED — NOT STARTED.
+
+Goal: prepare a provider-neutral remote execution architecture without immediately turning on unattended cloud crawling.
+
+Deliverables:
+
+- provider-neutral remote execution contract;
+- job lease/claim/heartbeat model;
+- workspace-scoped remote-run authorization;
+- encrypted server-side execution configuration;
+- bounded run/page/record/time budgets;
+- source-policy approval copied into the remote job;
+- same source-origin/access-control rules as local extraction;
+- idempotent result ingestion;
+- cancellation and timeout handling;
+- worker health/readiness reporting;
+- local mock worker for CI;
+- feature flag that keeps production remote execution disabled by default.
+
+Acceptance: the platform can prove the remote job lifecycle end-to-end with a mock/non-production worker while production remote crawling remains disabled until a provider is deliberately selected and configured.
+
+Manual input gate:
+
+No provider account is required to complete this readiness build. Provider selection is intentionally deferred to Build 026.
+
+## Build 026 — Controlled Remote Browser Pilot & Egress Policy
+
+Status: QUEUED — NOT STARTED.
+
+Goal: enable the first deliberately scoped remote-browser pilot with explicit egress/proxy policy, cost limits and source restrictions.
+
+Deliverables:
+
+- selected remote-browser provider adapter;
+- selected egress model: direct first, proxy only where lawful/necessary;
+- encrypted provider credentials;
+- workspace allowlist of approved remote sources;
+- per-job spend/time/page/record budgets;
+- concurrency limits;
+- robots/terms/source-policy evidence attached to remote jobs;
+- no CAPTCHA solving or authentication bypass;
+- optional proxy configuration only for approved use cases;
+- provider health/failure telemetry;
+- kill switch;
+- pilot limited to explicitly approved non-sensitive sources;
+- cost and reliability report before broader enablement.
+
+Acceptance: one approved source can complete a bounded remote run through the provider adapter, with cost/limits/audit evidence visible, and the kill switch can stop remote execution immediately.
+
+Manual input gate:
+
+This build requires the user's provider choice and one-time credential setup. Do not request credentials in chat. Follow the dashboard walkthrough in the detailed plan document.
+
+## Build 027 — Configurable Workspace Types & Domain Profiles
+
+Status: QUEUED — NOT STARTED.
+
+Goal: generalize the platform beyond the three seeded workspaces without turning every new domain into custom code.
+
+Deliverables:
+
+- workspace-type/profile schema;
+- configurable normalization fields and review dimensions;
+- reusable provenance/history/review policies;
+- profile-scoped templates;
+- profile-specific integration capability flags;
+- admin create/edit/archive workspace-type flow;
+- safe defaults for unknown/custom domains;
+- migration of Rosie Dazzlers, Devil n Dove and Personal into explicit built-in profiles;
+- no cross-profile data leakage;
+- documentation for adding a new domain profile without changing extractor core logic.
+
+Acceptance: an authorized owner can create a new workspace using a supported profile, extraction/review/history remain isolated, and existing three workspaces retain their current behavior.
+
+Manual input gate:
+
+No setup required. The user will choose the name/purpose of any first new workspace when they actually create one.
+
+## Build 028 — Plugin & Connector SDK Foundation
+
+Status: QUEUED — NOT STARTED.
+
+Goal: provide a versioned extension point so new import, enrichment and approved-export connectors can be added without modifying core extraction logic.
+
+Deliverables:
+
+- connector manifest schema;
+- capability model for import/enrichment/export;
+- versioned connector contract;
+- workspace permission/capability declaration;
+- connector configuration schema;
+- secret-reference model that keeps credentials out of client storage;
+- sandboxed/isolated server execution boundary for connectors;
+- test harness and example no-secret connector;
+- compatibility/version checks;
+- connector enable/disable controls;
+- audit events for connector execution;
+- documentation and starter template.
+
+Acceptance: a sample connector can be registered, configured, tested and disabled through the SDK without modifying extractor core code, and connectors cannot access workspaces/capabilities they were not granted.
+
+Manual input gate:
+
+No external account is required for the SDK foundation. Any future real connector that uses a third-party account will require explicit connection at the time that connector is added.
+
+## Build 029 — Production Learning, Cost Review & Roadmap Renewal
+
+Status: QUEUED — NOT STARTED.
+
+Goal: measure the completed local/authenticated/remote-capable platform, close reliability gaps, and generate the next evidence-based roadmap instead of extending the queue indefinitely by assumption.
+
+Deliverables:
+
+- usage and outcome review across Builds 019–028;
+- sync conflict/error analysis;
+- recipe repair success/failure analysis;
+- barcode workflow adoption review;
+- remote pilot cost/reliability analysis;
+- integration package/consumer readiness review;
+- workspace/profile adoption review;
+- connector SDK readiness review;
+- storage/retention/cost review;
+- security and permission review;
+- documented unresolved evidence gaps;
+- prioritized next roadmap based on measured need.
+
+Acceptance: the platform has an evidence-backed operational review, known risks are documented with owners/actions, and the next numbered roadmap is generated from observed usage and reliability rather than speculation.
+
+Manual input gate:
+
+The user may be asked to confirm business priorities after the measured review is presented. No infrastructure setup is required.

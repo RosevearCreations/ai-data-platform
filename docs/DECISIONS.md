@@ -164,3 +164,22 @@ Users choose reviewed versus original extracted values, included versus all rows
 XLSX is generated as a real Office Open XML workbook. CSV formula-like string values are neutralized before download to reduce spreadsheet formula-injection risk.
 
 Reason: export should preserve the user's explicit review decisions, remain portable/offline, and avoid unnecessary upload or server processing of scraped datasets.
+
+
+## D0022 — Finish authenticated continuity before remote execution
+
+Decision: after Build 018, the roadmap prioritizes authenticated workspace binding, durable cross-device persistence and persistent audit continuity before enabling remote/cloud browser execution.
+
+Reason: the platform already has a provider-portable PostgreSQL/Better Auth foundation, while many valuable extension workflows remain browser-local. Moving directly to remote crawling would add operational cost and complexity before the core workspace/session/persistence boundary is complete.
+
+## D0023 — Remote execution remains provider-neutral and disabled until a bounded pilot
+
+Decision: remote execution is split into a provider-neutral readiness build and a later controlled provider pilot. Production remote crawling remains feature-flagged off until the provider, source allowlist, budgets, credentials and egress policy are explicitly approved.
+
+Reason: this preserves the local-first architecture, avoids premature vendor lock-in and makes cost/access-policy controls testable before unattended execution exists.
+
+## D0024 — Integration consumers must implement the contract deliberately
+
+Decision: Build 018 JSON packages are not upgraded into guessed HTTP writes. A business application must explicitly implement, authenticate and validate the shared adapter contract before live ingestion is enabled.
+
+Reason: independent applications should not inherit hidden coupling or accidental write semantics. Contract verification and replay/staleness rules must exist before transport activation.

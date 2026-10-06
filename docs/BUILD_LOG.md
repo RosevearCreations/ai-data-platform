@@ -1317,3 +1317,43 @@ None is required to use dry-run, approval, audit and package export. Live ingest
 ### Roadmap state
 
 Build 018 completes the currently numbered roadmap. Later candidates remain explicitly deferred until the local-first product demonstrates the need.
+
+
+## Roadmap Planning — Builds 019–029
+
+Date: 2026-10-06
+
+Status: PLANNED — QUEUED.
+
+Build 018 completed the original numbered roadmap. The next execution sequence is now deliberately defined rather than leaving the deferred-candidate list unordered.
+
+### Ordered queue
+
+1. Build 019 — Authenticated Workspace Binding & Extension Session Bridge
+2. Build 020 — Workspace Persistence & Cross-Device Sync Foundation
+3. Build 021 — Persistent Intelligence, History & Audit Continuity
+4. Build 022 — Integration Contract Verification & Consumer Readiness
+5. Build 023 — Advanced Recipe Drift Detection & Repair Workbench
+6. Build 024 — Mobile Barcode & Camera Intake
+7. Build 025 — Remote Execution Provider Abstraction & Cloud Worker Readiness
+8. Build 026 — Controlled Remote Browser Pilot & Egress Policy
+9. Build 027 — Configurable Workspace Types & Domain Profiles
+10. Build 028 — Plugin & Connector SDK Foundation
+11. Build 029 — Production Learning, Cost Review & Roadmap Renewal
+
+### Sequencing decision
+
+Authenticated workspace/session binding and durable persistence come before remote browser infrastructure because the platform already has Better Auth/PostgreSQL/RLS while many extension workflows remain browser-local. Remote execution is split into provider-neutral readiness and a later controlled provider pilot so cost, credentials, egress and source policy are explicit before unattended execution exists.
+
+### Manual-input gates
+
+- Build 019: possible one-time extension origin/trusted-origin and production sign-in proof;
+- Build 022: no live business-app intake activation until the consuming app implements the exact shared contract;
+- Build 024: one-time mobile camera permission only when barcode scanning is used;
+- Build 026: explicit remote-browser provider selection and encrypted credential setup; secrets must never be pasted into chat or committed to GitHub.
+
+Detailed implementation order, acceptance criteria and manual walkthroughs are maintained in `docs/NEXT_BUILDS_019_029.md`.
+
+### Promotion rule
+
+Every numbered build remains subject to the established exact-tree path: dev implementation → full Verify GREEN → protected dev→main PR → PR-context Verify GREEN → SHA-pinned merge → exact dev/main tree confirmation → main Production Verify GREEN.
