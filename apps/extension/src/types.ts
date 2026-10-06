@@ -998,3 +998,134 @@ export interface ScheduledJobRunComparison {
   addedRows: number;
   removedRows: number;
 }
+
+
+export type BusinessIntegrationTarget =
+  | "rosie-dazzlers"
+  | "devil-n-dove";
+
+export type BusinessIntegrationBatchStatus =
+  | "draft"
+  | "approved"
+  | "exported"
+  | "cancelled";
+
+export type BusinessIntegrationDiffAction =
+  | "create"
+  | "update"
+  | "unchanged"
+  | "blocked";
+
+export type BusinessIntegrationAuditAction =
+  | "dry-run-created"
+  | "approved"
+  | "exported"
+  | "cancelled";
+
+export interface BusinessSnapshotRecord {
+  integrationKey: string;
+  values: Record<string, string | number | boolean | null>;
+  userOwnedKeys: string[];
+}
+
+export interface BusinessSystemSnapshot {
+  version: 1;
+  target: BusinessIntegrationTarget;
+  capturedAt: string;
+  records: BusinessSnapshotRecord[];
+}
+
+export interface BusinessIntegrationCandidate {
+  integrationKey: string;
+  values: Record<string, string | number | boolean | null>;
+  sourceEvidence: {
+    sourceUrl: string;
+    retrievedAt: string;
+  };
+}
+
+export interface BusinessIntegrationFieldDiff {
+  key: string;
+  before: string | number | boolean | null;
+  after: string | number | boolean | null;
+}
+
+export interface BusinessIntegrationDiff {
+  id: string;
+  integrationKey: string;
+  action: BusinessIntegrationDiffAction;
+  changedFields: BusinessIntegrationFieldDiff[];
+  blockedFields: string[];
+  payload: Record<string, string | number | boolean | null>;
+  sourceEvidence: {
+    sourceUrl: string;
+    retrievedAt: string;
+  };
+}
+
+export interface BusinessIntegrationBatchSummary {
+  create: number;
+  update: number;
+  unchanged: number;
+  blocked: number;
+  exportableOperations: number;
+}
+
+export interface BusinessIntegrationBatch {
+  version: 1;
+  id: string;
+  target: BusinessIntegrationTarget;
+  adapterContract: string;
+  contractVersion: 1;
+  createdAt: string;
+  updatedAt: string;
+  approvedAt: string | null;
+  exportedAt: string | null;
+  cancelledAt: string | null;
+  status: BusinessIntegrationBatchStatus;
+  sourceDatasetUpdatedAt: string;
+  snapshotCapturedAt: string | null;
+  dryRunFingerprint: string;
+  summary: BusinessIntegrationBatchSummary;
+  diffs: BusinessIntegrationDiff[];
+}
+
+export interface BusinessIntegrationAuditEntry {
+  version: 1;
+  id: string;
+  batchId: string;
+  target: BusinessIntegrationTarget;
+  action: BusinessIntegrationAuditAction;
+  occurredAt: string;
+  fingerprint: string;
+  details: string;
+}
+
+export interface BusinessIntegrationState {
+  version: 1;
+  id: "ai-data-platform-business-integrations";
+  createdAt: string;
+  updatedAt: string;
+  batches: BusinessIntegrationBatch[];
+  audit: BusinessIntegrationAuditEntry[];
+}
+
+export interface BusinessIntegrationPackage {
+  version: 1;
+  target: BusinessIntegrationTarget;
+  adapterContract: string;
+  contractVersion: 1;
+  batchId: string;
+  approvedAt: string;
+  generatedAt: string;
+  fingerprint: string;
+  operations: Array<{
+    action: "create" | "update";
+    integrationKey: string;
+    values: Record<string, string | number | boolean | null>;
+    sourceEvidence: {
+      sourceUrl: string;
+      retrievedAt: string;
+    };
+  }>;
+}

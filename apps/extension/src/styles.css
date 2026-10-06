@@ -3773,3 +3773,327 @@ h1 {
     flex-direction: column;
   }
 }
+
+
+.businessIntegrations {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 138, 101, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(255, 138, 101, 0.025);
+}
+
+.businessIntegrations h2 { margin: 0; font-size: 1rem; }
+
+.integrationBadge {
+  border-radius: 999px;
+  background: rgba(255, 138, 101, 0.1);
+  color: #ffd0c0 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.integrationIntro,
+.integrationEmpty,
+.integrationMessage,
+.integrationSnapshot p,
+.integrationBoundary p {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.integrationTarget {
+  display: grid;
+  gap: 0.3rem;
+  color: #d8c0b9;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.integrationTarget select,
+.integrationSnapshot input {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.integrationTarget select:focus {
+  border-color: rgba(255, 138, 101, 0.45);
+}
+
+.integrationSourceStats,
+.integrationSummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.integrationSourceStats div,
+.integrationSummary div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.integrationSourceStats strong,
+.integrationSummary strong {
+  color: #f0cfc5;
+  font-size: 0.78rem;
+}
+
+.integrationSourceStats span,
+.integrationSummary span {
+  color: #7e8e94;
+  font-size: 0.55rem;
+}
+
+.integrationSnapshot,
+.integrationBatch,
+.integrationBoundary {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 138, 101, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(255, 138, 101, 0.018);
+}
+
+.integrationSubheader,
+.integrationBatchTop,
+.integrationAudit article > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.integrationSubheader strong,
+.integrationBoundary strong,
+.integrationBatchTop strong {
+  color: #ead2ca;
+  font-size: 0.68rem;
+}
+
+.integrationSubheader span,
+.integrationBatchTop small {
+  color: #7f8f91;
+  font-size: 0.56rem;
+}
+
+.integrationSnapshot input[type="file"] {
+  color: #aebfbc;
+  font-size: 0.6rem;
+}
+
+.integrationSnapshot button,
+.integrationBatchActions button,
+.integrationExportButton {
+  min-height: 2.2rem;
+  border: 1px solid rgba(255, 138, 101, 0.13);
+  border-radius: 0.55rem;
+  background: rgba(255, 138, 101, 0.035);
+  color: #d8b5aa;
+  font-size: 0.56rem;
+  font-weight: 850;
+}
+
+.integrationSnapshot button:not(:disabled),
+.integrationBatchActions button:not(:disabled),
+.integrationExportButton:not(:disabled),
+.integrationDryRunButton:not(:disabled) {
+  cursor: pointer;
+}
+
+.integrationSnapshot details summary {
+  color: #c8aaa1;
+  font-size: 0.57rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.integrationSnapshot pre {
+  max-height: 15rem;
+  overflow: auto;
+  margin: 0.45rem 0 0;
+  padding: 0.6rem;
+  border-radius: 0.55rem;
+  background: rgba(0, 0, 0, 0.16);
+  color: #aebebc;
+  font-size: 0.52rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.integrationDryRunButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #ff9e7f;
+  color: #180a05;
+  font-weight: 900;
+}
+
+.integrationDryRunButton:disabled,
+.integrationSnapshot button:disabled,
+.integrationBatchActions button:disabled,
+.integrationExportButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.integrationBatchTop > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.integrationStatus,
+.integrationAction {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.51rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.integrationStatus-draft,
+.integrationAction-update {
+  background: rgba(255, 214, 102, 0.1);
+  color: #ffe3a0;
+}
+
+.integrationStatus-approved,
+.integrationAction-create {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.integrationStatus-exported,
+.integrationAction-unchanged {
+  background: rgba(93, 173, 226, 0.1);
+  color: #b9ddf5;
+}
+
+.integrationStatus-cancelled,
+.integrationAction-blocked {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.integrationDiffs,
+.integrationAudit {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.integrationDiffs article,
+.integrationAudit article {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.integrationDiffs article > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.integrationDiffs strong,
+.integrationAudit strong {
+  color: #e8d8d2;
+  font-size: 0.62rem;
+  overflow-wrap: anywhere;
+}
+
+.integrationDiffs small,
+.integrationAudit small,
+.integrationAudit span {
+  color: #819192;
+  font-size: 0.55rem;
+  line-height: 1.4;
+}
+
+.integrationDiffs ul {
+  display: grid;
+  gap: 0.18rem;
+  margin: 0;
+  padding-left: 0.9rem;
+  color: #9daaa7;
+  font-size: 0.54rem;
+  line-height: 1.35;
+}
+
+.integrationApprovalCheck {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #a9b4b3;
+  font-size: 0.6rem;
+  line-height: 1.45;
+}
+
+.integrationApprovalCheck input {
+  margin-top: 0.12rem;
+}
+
+.integrationBatchActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.integrationExportButton {
+  min-height: 2.55rem;
+  background: rgba(126, 231, 135, 0.07);
+  border-color: rgba(126, 231, 135, 0.16);
+  color: #bcefc1;
+}
+
+.integrationAudit p {
+  margin: 0;
+  color: #8e9b9a;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.integrationBoundary {
+  border-color: rgba(93, 173, 226, 0.1);
+  background: rgba(93, 173, 226, 0.018);
+}
+
+.integrationMessage {
+  color: #e7c5ba;
+}
+
+@media (max-width: 360px) {
+  .integrationSourceStats,
+  .integrationSummary,
+  .integrationBatchActions {
+    grid-template-columns: 1fr;
+  }
+
+  .integrationSubheader,
+  .integrationBatchTop,
+  .integrationAudit article > div,
+  .integrationDiffs article > div {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
