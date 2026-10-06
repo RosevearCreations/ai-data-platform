@@ -799,3 +799,72 @@ None. Chrome grants the extension-local storage capability from the updated mani
 ### Next
 
 Build 013 — Historical Change Detection.
+
+
+## Build 013 — Historical Change Detection
+
+Date: 2026-10-05
+
+Status: COMPLETE. Promotion is performed through the Build 013 exact-tree production path.
+
+### Goal
+
+Compare reviewed extraction results over time without silently treating every new scrape as authoritative.
+
+### Delivered
+
+- historical change detection embedded in the Build 007 reviewed spreadsheet workflow;
+- explicit identity-field selection from currently visible reviewed columns;
+- validation that every included row has a non-empty unique identity;
+- explicit baseline capture;
+- explicit subsequent version capture;
+- local historical series keyed by source scope, recipe name and identity field;
+- record-version snapshots;
+- per-record field observations for every retained visible field;
+- added record detection;
+- removed record detection;
+- changed-field detection for records with stable identities;
+- unchanged record counting without review-queue noise;
+- per-capture added/removed/changed/unchanged summary;
+- pending change review queue;
+- mark-reviewed, dismiss and reopen queue actions;
+- per-change before/after field observations;
+- retained version list with record counts and timestamps;
+- clear-history control scoped to the selected identity field;
+- maximum 500 included records per snapshot;
+- maximum 20 retained snapshots per historical series;
+- maximum 1,000 retained change events per series;
+- maximum 30 historical series in extension-local storage;
+- extension version 0.13.0;
+- no backend historical database or scheduled job dependency.
+
+### Verification target
+
+The Build 013 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Security and data-handling notes
+
+- historical captures are user-triggered, never automatic;
+- only included reviewed rows and visible reviewed fields are captured;
+- history remains in Chrome extension-local storage;
+- no historical observation is written to Rosie Dazzlers, Devil n Dove or PostgreSQL;
+- source query strings and fragments are excluded from the history series scope;
+- detected changes remain pending until the user reviews or dismisses them;
+- Build 013 introduces no new Chrome host permission.
+
+### Manual setup
+
+None. Build 013 reuses the Chrome local-storage permission already introduced by Build 012.
+
+### Next
+
+Build 014 — Rosie Dazzlers Competitive Intelligence.

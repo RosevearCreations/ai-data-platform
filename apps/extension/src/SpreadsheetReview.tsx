@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { ExportPanel } from "./ExportPanel";
+import { HistoricalChangePanel } from "./HistoricalChangePanel";
 import type {
   ExtractionFieldRecipe,
   ExtractionRunResult,
@@ -461,6 +462,16 @@ export function SpreadsheetReview({
       {!visibleRows.length ? (
         <p className="reviewEmpty">No rows match the current review filter.</p>
       ) : null}
+
+      <HistoricalChangePanel
+        columns={orderedColumns}
+        recipeName={recipeName}
+        rows={rows.map((row) => ({
+          ...row,
+          warnings: currentWarnings(row)
+        }))}
+        sourceUrl={run.sourceUrl}
+      />
 
       <ExportPanel
         columns={orderedColumns}

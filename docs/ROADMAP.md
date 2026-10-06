@@ -226,10 +226,16 @@ Acceptance: a user can save an extraction recipe, reopen it without rebuilding s
 
 ## Build 013 — Historical Change Detection
 
-- record versions;
-- field observations;
-- change summaries;
-- review queue.
+Status: COMPLETE (2026-10-05).
+
+- explicit reviewed record versions;
+- per-version field observations;
+- added/removed/changed/unchanged summaries;
+- pending/reviewed/dismissed change review queue;
+- user-selected stable identity field;
+- bounded local history retention.
+
+Acceptance: after an initial reviewed baseline, a later capture can match stable record identities, preserve field observations for each retained version, summarize changes, and require explicit review of detected additions, removals and field changes.
 
 ## Build 014 — Rosie Dazzlers Competitive Intelligence
 

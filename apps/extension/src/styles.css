@@ -2273,3 +2273,361 @@ h1 {
   .savedCreate,
   .savedFieldHealth { grid-template-columns: 1fr; }
 }
+
+
+.historyPanel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 214, 102, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(255, 193, 7, 0.03);
+}
+
+.historyPanel h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.historyBadge {
+  border-radius: 999px;
+  background: rgba(255, 214, 102, 0.1);
+  color: #ffe8a6 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.historyIntro,
+.historyEmpty,
+.historyStatus {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.historyIdentity {
+  display: grid;
+  gap: 0.3rem;
+  color: #d4caa9;
+  font-size: 0.65rem;
+  font-weight: 850;
+}
+
+.historyIdentity select {
+  width: 100%;
+  min-height: 2.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.6rem;
+}
+
+.historyIdentity select:focus {
+  border-color: rgba(255, 214, 102, 0.5);
+}
+
+.historyIdentity small {
+  color: #7f8f91;
+  font-size: 0.59rem;
+  line-height: 1.45;
+}
+
+.historyCaptureInfo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.historyCaptureInfo span {
+  padding: 0.45rem 0.3rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.018);
+  color: #9ea9aa;
+  font-size: 0.58rem;
+  text-align: center;
+}
+
+.historyCaptureButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #ffd666;
+  color: #171205;
+  font-weight: 900;
+}
+
+.historyCaptureButton:not(:disabled) {
+  cursor: pointer;
+}
+
+.historyCaptureButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.historySummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.historySummary div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.historySummary strong {
+  color: #ffe4a0;
+  font-size: 0.78rem;
+}
+
+.historySummary span {
+  color: #849496;
+  font-size: 0.56rem;
+}
+
+.historyVersions {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.historyVersionsHeader,
+.historyQueueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.historyVersionsHeader strong,
+.historyQueueHeader strong {
+  color: #e7dcc0;
+  font-size: 0.68rem;
+}
+
+.historyVersionsHeader span,
+.historyQueueHeader span {
+  color: #7f9092;
+  font-size: 0.58rem;
+}
+
+.historyVersions > div:not(.historyVersionsHeader) {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.historyVersions > div > strong {
+  color: #ffe3a0;
+  font-size: 0.62rem;
+}
+
+.historyVersions > div > span,
+.historyVersions > div > small {
+  color: #839294;
+  font-size: 0.57rem;
+}
+
+.historyVersions > div > small {
+  text-align: right;
+}
+
+.historyQueueHeader > div:first-child {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.historyQueueHeader > div:last-child {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.historyQueueHeader button {
+  min-height: 1.9rem;
+  border: 1px solid rgba(255, 214, 102, 0.12);
+  border-radius: 999px;
+  background: transparent;
+  color: #9da7a8;
+  padding: 0 0.6rem;
+  font-size: 0.57rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.historyQueueHeader button.active {
+  background: rgba(255, 214, 102, 0.1);
+  color: #ffe4a0;
+}
+
+.historyQueue {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.historyQueue article {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.historyChangeTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.historyChangeTop > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.historyChangeTop strong {
+  max-width: 220px;
+  overflow-wrap: anywhere;
+  color: #e9e2d1;
+  font-size: 0.67rem;
+}
+
+.historyChangeTop small {
+  color: #7f8f91;
+  font-size: 0.55rem;
+  text-align: right;
+}
+
+.historyKind {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.53rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.historyKind-added {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.historyKind-removed {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.historyKind-changed {
+  background: rgba(255, 214, 102, 0.09);
+  color: #ffe09a;
+}
+
+.historyFieldChanges {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.historyFieldChanges > div {
+  display: grid;
+  grid-template-columns: minmax(70px, 0.7fr) minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.3rem;
+  align-items: start;
+  padding: 0.35rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.035);
+}
+
+.historyFieldChanges strong,
+.historyFieldChanges span,
+.historyFieldChanges b,
+.historyFieldChanges small {
+  overflow-wrap: anywhere;
+  font-size: 0.56rem;
+  line-height: 1.35;
+}
+
+.historyFieldChanges strong {
+  color: #b8b09c;
+}
+
+.historyFieldChanges span {
+  color: #8d9b9d;
+}
+
+.historyFieldChanges b {
+  color: #c4ad6b;
+}
+
+.historyFieldChanges > small {
+  color: #758486;
+}
+
+.historyReviewActions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.historyReviewActions button,
+.historyClear {
+  min-height: 2.15rem;
+  border: 1px solid rgba(255, 214, 102, 0.12);
+  border-radius: 0.55rem;
+  background: rgba(255, 214, 102, 0.035);
+  color: #cbbd96;
+  font-size: 0.57rem;
+  font-weight: 850;
+}
+
+.historyReviewActions button:not(:disabled),
+.historyClear:not(:disabled) {
+  cursor: pointer;
+}
+
+.historyReviewActions button:disabled,
+.historyClear:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.historyClear {
+  border-color: rgba(255, 151, 151, 0.14);
+  background: rgba(255, 151, 151, 0.035);
+  color: #d9aaaa;
+}
+
+.historyStatus {
+  color: #d9cda9;
+}
+
+@media (max-width: 360px) {
+  .historyCaptureInfo,
+  .historySummary,
+  .historyReviewActions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .historyFieldChanges > div {
+    grid-template-columns: 1fr;
+  }
+
+  .historyVersions > div:not(.historyVersionsHeader) {
+    grid-template-columns: auto 1fr;
+  }
+
+  .historyVersions > div > small {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}

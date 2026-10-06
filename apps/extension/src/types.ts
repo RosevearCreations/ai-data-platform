@@ -447,3 +447,76 @@ export interface ScraperTemplate {
   description: string;
   recipe: ExtractionRecipe;
 }
+
+
+export type HistoryReviewStatus = "pending" | "reviewed" | "dismissed";
+export type HistoricalChangeKind = "added" | "removed" | "changed";
+
+export interface HistoricalFieldDefinition {
+  key: string;
+  label: string;
+}
+
+export interface HistoricalRecordVersion {
+  identity: string;
+  sourceIndex: number;
+  observedAt: string;
+  values: Record<string, string | number | null>;
+}
+
+export interface HistoricalSnapshot {
+  version: 1;
+  snapshotVersion: number;
+  id: string;
+  capturedAt: string;
+  recipeName: string;
+  sourceUrl: string;
+  sourceScope: string;
+  identityKey: string;
+  fields: HistoricalFieldDefinition[];
+  records: HistoricalRecordVersion[];
+}
+
+export interface HistoricalFieldChange {
+  key: string;
+  label: string;
+  before: string | number | null;
+  after: string | number | null;
+}
+
+export interface HistoricalChangeItem {
+  id: string;
+  kind: HistoricalChangeKind;
+  identity: string;
+  detectedAt: string;
+  fromVersion: number | null;
+  toVersion: number;
+  fields: HistoricalFieldChange[];
+  reviewStatus: HistoryReviewStatus;
+}
+
+export interface HistoricalCaptureSummary {
+  snapshotVersion: number;
+  baseline: boolean;
+  added: number;
+  removed: number;
+  changed: number;
+  unchanged: number;
+  pendingQueue: number;
+}
+
+export interface HistoricalSeries {
+  version: 1;
+  id: string;
+  seriesKey: string;
+  recipeName: string;
+  sourceUrl: string;
+  sourceScope: string;
+  identityKey: string;
+  createdAt: string;
+  updatedAt: string;
+  latestVersion: number;
+  snapshots: HistoricalSnapshot[];
+  changes: HistoricalChangeItem[];
+  lastSummary: HistoricalCaptureSummary;
+}
