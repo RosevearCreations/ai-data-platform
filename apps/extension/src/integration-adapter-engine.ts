@@ -41,7 +41,7 @@ function stableObject(
   );
 }
 
-function stableJson(value: unknown) {
+function stableJson(value: unknown): string {
   if (Array.isArray(value)) {
     return "[" + value.map((item) => stableJson(item)).join(",") + "]";
   }
@@ -56,7 +56,7 @@ function stableJson(value: unknown) {
       "}"
     );
   }
-  return JSON.stringify(value);
+  return JSON.stringify(value) ?? "null";
 }
 
 function sameValue(
