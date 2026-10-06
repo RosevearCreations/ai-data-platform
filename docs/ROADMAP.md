@@ -253,10 +253,17 @@ Acceptance: reviewed public Ontario auto-detailing facts can be mapped into a no
 
 ## Build 015 — Devil n Dove Supplier Intelligence
 
-- supplier product model;
-- package/unit normalization;
-- cost-per-usage-unit calculations;
-- reviewed inventory integration staging.
+Status: COMPLETE (2026-10-06).
+
+- reviewed supplier product model with source evidence;
+- package quantity, stock-unit and usage-unit normalization;
+- common compatible-unit conversion inference;
+- cost-per-stock-unit and cost-per-usage-unit calculations;
+- bounded supplier price observations;
+- reviewed local inventory-integration staging with pending/approved/rejected states;
+- approved records automatically return to pending when refreshed supplier facts change.
+
+Acceptance: reviewed supplier rows can be normalized into Devil n Dove inventory economics, staged locally with source/price evidence, explicitly approved or rejected, and prepared for a later integration adapter without writing into production inventory.
 
 ## Build 016 — Movie Metadata Module
 

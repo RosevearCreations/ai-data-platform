@@ -2879,3 +2879,273 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.devilSupplier {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(207, 147, 255, 0.2);
+  border-radius: 0.9rem;
+  background: rgba(141, 83, 191, 0.035);
+}
+
+.devilSupplier h2 { margin: 0; font-size: 1rem; }
+
+.devilSupplierBadge {
+  border-radius: 999px;
+  background: rgba(207, 147, 255, 0.1);
+  color: #e2c3f8 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.devilSupplierIntro,
+.devilSupplierEmpty,
+.devilSupplierError,
+.devilSupplierMessage {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.devilSupplierMapping {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.devilSupplierMapping label,
+.devilSupplierDefaults label {
+  display: grid;
+  gap: 0.28rem;
+  align-content: start;
+  color: #d9c9e4;
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+.devilSupplierMapping select,
+.devilSupplierDefaults select,
+.devilSupplierDefaults input {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.devilSupplierMapping select:focus,
+.devilSupplierDefaults select:focus,
+.devilSupplierDefaults input:focus {
+  border-color: rgba(207, 147, 255, 0.48);
+}
+
+.devilSupplierMapping small,
+.devilSupplierDefaults small {
+  color: #7d8990;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.devilSupplierDefaults {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(207, 147, 255, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(207, 147, 255, 0.02);
+}
+
+.devilSupplierDefaults > strong {
+  color: #e1d0eb;
+  font-size: 0.67rem;
+}
+
+.devilSupplierDefaults > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.devilSupplierPreviewHeader,
+.devilSupplierQueueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.devilSupplierPreviewHeader strong,
+.devilSupplierQueueHeader strong {
+  color: #e4d9ea;
+  font-size: 0.68rem;
+}
+
+.devilSupplierPreviewHeader span,
+.devilSupplierQueueHeader span {
+  color: #7f8b91;
+  font-size: 0.57rem;
+}
+
+.devilSupplierPreview,
+.devilSupplierQueue {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.devilSupplierPreview article,
+.devilSupplierQueue article {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.devilSupplierPreview article > div,
+.devilSupplierQueueTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.devilSupplierPreview strong,
+.devilSupplierQueue strong {
+  color: #e8dded;
+  font-size: 0.64rem;
+  overflow-wrap: anywhere;
+}
+
+.devilSupplierPreview b,
+.devilSupplierQueue b {
+  color: #d0bbdd;
+  font-size: 0.62rem;
+  overflow-wrap: anywhere;
+}
+
+.devilSupplierPreview span,
+.devilSupplierPreview small,
+.devilSupplierQueue small {
+  color: #85949a;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.devilSupplierPreview ul {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding-left: 0.9rem;
+  color: #b59da9;
+  font-size: 0.54rem;
+  line-height: 1.35;
+}
+
+.devilSupplierStageButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #cf93ff;
+  color: #120719;
+  font-weight: 900;
+}
+
+.devilSupplierStageButton:not(:disabled),
+.devilSupplierQueueActions button:not(:disabled) {
+  cursor: pointer;
+}
+
+.devilSupplierStageButton:disabled,
+.devilSupplierQueueActions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.devilSupplierStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.devilSupplierStats div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.5rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.devilSupplierStats strong {
+  color: #dfc4ef;
+  font-size: 0.78rem;
+}
+
+.devilSupplierStats span {
+  color: #7e8e94;
+  font-size: 0.55rem;
+}
+
+.devilSupplierQueueTop > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.devilSupplierStatus {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.52rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.devilSupplierStatus-pending {
+  background: rgba(255, 214, 102, 0.09);
+  color: #ffe3a0;
+}
+
+.devilSupplierStatus-approved {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.devilSupplierStatus-rejected {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.devilSupplierQueueActions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.devilSupplierQueueActions button {
+  min-height: 2.05rem;
+  border: 1px solid rgba(207, 147, 255, 0.12);
+  border-radius: 0.55rem;
+  background: rgba(207, 147, 255, 0.035);
+  color: #cbb4d8;
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
+.devilSupplierError { color: #e0a6a6; }
+.devilSupplierMessage { color: #d8bce8; }
+
+@media (max-width: 360px) {
+  .devilSupplierMapping,
+  .devilSupplierDefaults > div,
+  .devilSupplierStats,
+  .devilSupplierQueueActions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -254,15 +254,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">014</span>
+        <span className="build">015</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Normalize Ontario detailing intelligence</strong>
+        <strong>Normalize supplier and usage-unit economics</strong>
         <p>
-          Build 014 turns reviewed public Ontario detailer facts into comparable
-          package, pricing, service, vehicle-size and service-area records while
-          retaining source evidence and competitor change history.
+          Build 015 converts reviewed supplier products into package, stock-unit
+          and usage-unit costs, retains source and price observations, and stages
+          approved records locally for a later Devil n Dove integration.
         </p>
       </section>
 

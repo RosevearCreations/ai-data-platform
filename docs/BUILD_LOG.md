@@ -941,3 +941,78 @@ None. Build 014 reuses the Chrome local-storage permission already granted for s
 ### Next
 
 Build 015 — Devil n Dove Supplier Intelligence.
+
+
+## Build 015 — Devil n Dove Supplier Intelligence
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 015 pull-request path.
+
+### Goal
+
+Turn reviewed public supplier product facts into normalized Devil n Dove package and usage economics while preserving a hard review boundary before any inventory integration.
+
+### Delivered
+
+- Devil n Dove supplier-intelligence panel inside the reviewed spreadsheet workflow;
+- automatic field-mapping suggestions with operator overrides;
+- supplier-name normalization with source-hostname fallback;
+- required product-name mapping;
+- supplier SKU capture and stable SKU-first staging identity;
+- supplier image URL capture with HTTP/HTTPS validation;
+- CAD package-price normalization;
+- stock-units-per-package normalization;
+- stock-unit and usage-unit normalization;
+- operator defaults when supplier pages omit package or unit metadata;
+- common conversion inference for litre→millilitre, kilogram→gram, metre→centimetre and pound→ounce;
+- explicit usage-units-per-stock-unit mapping when supplier/catalog data provides it;
+- total usage-unit calculation;
+- cost-per-stock-unit calculation;
+- cost-per-usage-unit calculation;
+- normalization warnings for incomplete supplier economics;
+- source URL, source scope, source row and retrieval timestamp evidence;
+- local supplier inventory-integration staging dataset;
+- pending, approved and rejected staging review states;
+- approved items automatically return to pending when refreshed material supplier facts change;
+- bounded price-observation history for refreshed staged products;
+- local removal and review reopening controls;
+- maximum 300 included reviewed supplier rows per staging capture;
+- maximum 500 staged supplier items;
+- maximum 24 retained price observations per staged item;
+- extension version 0.15.0;
+- no new Chrome permission, backend service or Devil n Dove production write path.
+
+### Data-handling and integration rules
+
+- only included reviewed spreadsheet rows can be staged;
+- external supplier facts retain source URL and retrieval time;
+- internal/user-owned Devil n Dove fields are not overwritten by this build;
+- approval marks a record ready only for future integration staging;
+- approval never performs a Devil n Dove API/database write;
+- materially changed supplier facts invalidate prior approval and return the item to pending review;
+- missing or ambiguous unit information is surfaced as a warning instead of silently inventing a conversion;
+- package quantity defaults can be supplied by the operator and mapped supplier values take precedence;
+- repeated observations retain bounded supplier price history;
+- Build 018 remains the explicit business-system adapter boundary.
+
+### Verification target
+
+The Build 015 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Manual setup
+
+None. Build 015 reuses Chrome extension-local storage and requires no Devil n Dove API key or production credential.
+
+### Next
+
+Build 016 — Movie Metadata Module.

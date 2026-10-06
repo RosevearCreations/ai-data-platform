@@ -652,3 +652,113 @@ export interface OntarioDatasetCaptureSummary {
   removed: number;
   changed: number;
 }
+
+
+export type SupplierUnit =
+  | "each"
+  | "piece"
+  | "pair"
+  | "pack"
+  | "box"
+  | "bottle"
+  | "jar"
+  | "tube"
+  | "roll"
+  | "sheet"
+  | "millilitre"
+  | "litre"
+  | "gram"
+  | "kilogram"
+  | "centimetre"
+  | "metre"
+  | "foot"
+  | "ounce"
+  | "pound"
+  | "other";
+
+export type SupplierStageStatus = "pending" | "approved" | "rejected";
+
+export interface DevilSupplierMapping {
+  supplierNameKey: string;
+  productNameKey: string;
+  skuKey: string;
+  imageUrlKey: string;
+  packagePriceKey: string;
+  packageQuantityKey: string;
+  stockUnitKey: string;
+  usageUnitKey: string;
+  usageUnitsPerStockUnitKey: string;
+}
+
+export interface SupplierPriceObservation {
+  observedAt: string;
+  currency: "CAD";
+  packagePrice: number | null;
+  rawPrice: string;
+}
+
+export interface NormalizedSupplierProduct {
+  version: 1;
+  id: string;
+  stagingKey: string;
+  supplierName: string;
+  productName: string;
+  sku: string;
+  imageUrl: string;
+  sourceUrl: string;
+  sourceScope: string;
+  sourceIndex: number;
+  retrievedAt: string;
+  currency: "CAD";
+  rawPrice: string;
+  packagePrice: number | null;
+  packageQuantity: number | null;
+  stockUnit: SupplierUnit;
+  stockUnitRaw: string;
+  usageUnit: SupplierUnit;
+  usageUnitRaw: string;
+  usageUnitsPerStockUnit: number | null;
+  usageUnitsPerStockUnitSource: "mapped" | "inferred" | "unavailable";
+  totalUsageUnits: number | null;
+  costPerStockUnit: number | null;
+  costPerUsageUnit: number | null;
+  warnings: string[];
+}
+
+export interface SupplierInventoryStageItem {
+  version: 1;
+  id: string;
+  stagingKey: string;
+  createdAt: string;
+  updatedAt: string;
+  reviewStatus: SupplierStageStatus;
+  reviewedAt: string | null;
+  product: NormalizedSupplierProduct;
+  priceHistory: SupplierPriceObservation[];
+}
+
+export interface SupplierInventoryStagingDataset {
+  version: 1;
+  id: "devil-n-dove-supplier-staging";
+  createdAt: string;
+  updatedAt: string;
+  items: SupplierInventoryStageItem[];
+}
+
+export interface SupplierStageSummary {
+  staged: number;
+  created: number;
+  updated: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+  calculableUsageCost: number;
+}
+
+
+export interface DevilSupplierDefaults {
+  packageQuantity: string;
+  stockUnit: string;
+  usageUnit: string;
+  usageUnitsPerStockUnit: string;
+}

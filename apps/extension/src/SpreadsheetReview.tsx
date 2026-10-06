@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 
+import { DevilSupplierPanel } from "./DevilSupplierPanel";
 import { ExportPanel } from "./ExportPanel";
 import { HistoricalChangePanel } from "./HistoricalChangePanel";
 import { RosieCompetitivePanel } from "./RosieCompetitivePanel";
@@ -475,6 +476,15 @@ export function SpreadsheetReview({
       />
 
       <RosieCompetitivePanel
+        columns={orderedColumns}
+        rows={rows.map((row) => ({
+          ...row,
+          warnings: currentWarnings(row)
+        }))}
+        sourceUrl={run.sourceUrl}
+      />
+
+      <DevilSupplierPanel
         columns={orderedColumns}
         rows={rows.map((row) => ({
           ...row,
