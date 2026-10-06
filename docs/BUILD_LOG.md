@@ -868,3 +868,76 @@ None. Build 013 reuses the Chrome local-storage permission already introduced by
 ### Next
 
 Build 014 — Rosie Dazzlers Competitive Intelligence.
+
+
+## Build 014 — Rosie Dazzlers Competitive Intelligence
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 014 pull-request path.
+
+### Goal
+
+Turn reviewed public Ontario auto-detailing facts into a reusable, evidence-preserving competitive-intelligence dataset for Rosie Dazzlers.
+
+### Delivered
+
+- Rosie Dazzlers competitive-intelligence panel inside the reviewed spreadsheet workflow;
+- automatic field-mapping suggestions with operator overrides;
+- explicit Ontario-detailer verification gate before dataset writes;
+- business-name normalization with source-hostname fallback;
+- service/package/add-on/promotion classification;
+- detailing category normalization;
+- CAD price and price-range normalization;
+- starting-at price detection;
+- vehicle-size normalization;
+- mobile/fixed-location/both normalization;
+- Ontario service-area normalization;
+- package-content conversion to canonical detailing facts rather than retained marketing prose;
+- source URL, source scope, source row and retrieval-time evidence on normalized offerings;
+- local Ontario detailer dataset;
+- latest dataset statistics for detailers, source series, offerings and changes;
+- source-scoped competitor snapshot series;
+- added offering detection;
+- removed offering detection;
+- changed normalized-field detection;
+- recent competitor change-history review;
+- maximum 300 included reviewed rows per capture;
+- maximum 75 retained source/business series;
+- maximum 12 snapshots per source/business series;
+- maximum 500 change events per source/business series;
+- extension version 0.14.0;
+- no new Chrome permission, backend service or Rosie Dazzlers production write path.
+
+### Data-handling rules
+
+- only included reviewed rows can enter the Ontario dataset;
+- the operator must explicitly verify the businesses are Ontario auto detailers;
+- the dataset contains public business facts for internal research and comparison only;
+- package-content prose is converted to canonical detailing features;
+- customer or personal information is outside this model and must not be mapped;
+- every normalized offering retains its public source URL and retrieval time;
+- query strings and URL fragments are removed from comparison scope;
+- repeated captures compare only the same source scope and business identity, preventing unrelated competitors from being marked removed;
+- nothing writes directly into rosiedazzlers.ca, its production database, or another business system.
+
+### Verification target
+
+The Build 014 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Manual setup
+
+None. Build 014 reuses the Chrome local-storage permission already granted for saved scraper and history features.
+
+### Next
+
+Build 015 — Devil n Dove Supplier Intelligence.

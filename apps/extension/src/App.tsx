@@ -254,15 +254,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">013</span>
+        <span className="build">014</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Track reviewed records over time</strong>
+        <strong>Normalize Ontario detailing intelligence</strong>
         <p>
-          Build 013 captures explicit local record versions, compares field
-          observations between runs, summarizes additions/removals/changes, and
-          keeps detected differences in a review queue.
+          Build 014 turns reviewed public Ontario detailer facts into comparable
+          package, pricing, service, vehicle-size and service-area records while
+          retaining source evidence and competitor change history.
         </p>
       </section>
 

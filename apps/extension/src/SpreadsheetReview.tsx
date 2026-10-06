@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { ExportPanel } from "./ExportPanel";
 import { HistoricalChangePanel } from "./HistoricalChangePanel";
+import { RosieCompetitivePanel } from "./RosieCompetitivePanel";
 import type {
   ExtractionFieldRecipe,
   ExtractionRunResult,
@@ -466,6 +467,15 @@ export function SpreadsheetReview({
       <HistoricalChangePanel
         columns={orderedColumns}
         recipeName={recipeName}
+        rows={rows.map((row) => ({
+          ...row,
+          warnings: currentWarnings(row)
+        }))}
+        sourceUrl={run.sourceUrl}
+      />
+
+      <RosieCompetitivePanel
+        columns={orderedColumns}
         rows={rows.map((row) => ({
           ...row,
           warnings: currentWarnings(row)
