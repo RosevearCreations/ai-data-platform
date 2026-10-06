@@ -2,8 +2,31 @@ import Link from "next/link";
 
 import { AuthForm } from "./auth-form";
 
-export default function SignInPage() {
+function safeCallbackUrl(value: string | undefined) {
+  if (!value) return "/";
+
+  try {
+    const base = new URL(process.env.BETTER_AUTH_URL ?? "http://localhost:3000");
+    const target = new URL(value, base);
+
+    if (target.origin !== base.origin) {
+      return "/";
+    }
+
+    return target.pathname + target.search + target.hash;
+  } catch {
+    return "/";
+  }
+}
+
+export default async function SignInPage({
+  searchParams
+}: {
+  searchParams: Promise<{ callbackUrl?: string }>;
+}) {
   const allowSignUp = process.env.AUTH_ALLOW_SIGN_UP === "true";
+  const params = await searchParams;
+  const callbackUrl = safeCallbackUrl(params.callbackUrl);
 
   return (
     <main className="shell authShell">
@@ -19,7 +42,7 @@ export default function SignInPage() {
         </Link>
       </section>
 
-      <AuthForm allowSignUp={allowSignUp} />
+      <AuthForm allowSignUp={allowSignUp} callbackUrl={callbackUrl} />
     </main>
   );
 }

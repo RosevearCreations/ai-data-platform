@@ -121,3 +121,14 @@ Build 018 implements that boundary as versioned adapter contracts and controlled
 The web application may be deployed independently of the two business sites. The extension and web app version together through this repository.
 
 The database design remains provider-portable PostgreSQL. Neon is the initial managed host, but application schemas, migrations and authentication do not depend on Neon-specific database features.
+
+
+## Build 019 authenticated extension boundary
+
+The Chrome extension does not copy or reuse Better Auth session cookies. A user-initiated Chrome Identity web-auth flow opens the AI Data Platform's authenticated `/api/extension/connect` endpoint. Once the ordinary web session is authenticated, the server issues a random short-lived bearer token and stores only its SHA-256 hash in `app.extension_sessions`.
+
+The extension stores that bearer token in extension-local storage, never in page-accessible DOM state. Bearer-session resolution returns the authenticated user identity, then workspace membership is loaded through the same `listWorkspacesForUser` transaction-local runtime-role/RLS boundary used by the web application.
+
+The active workspace ID can only be selected from the returned authorized memberships. New saved scrapers and reviewed datasets are tagged with that workspace ID. Existing records with no workspace ID remain unassigned migration candidates for Build 020.
+
+The bridge deliberately has explicit signed-out, expired, unavailable-backend and authenticated-no-workspace states. Revoked/expired bearer sessions resolve as unauthorized. Extension-session rows are not granted to `ai_data_runtime`; only the narrowly scoped server bridge resolves them.

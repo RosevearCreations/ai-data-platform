@@ -52,6 +52,74 @@ export interface WorkspaceSummary extends QueryResultRow {
   role: WorkspaceRole;
 }
 
+
+export interface ExtensionSessionPrincipal extends QueryResultRow {
+  userId: string;
+  name: string;
+  email: string;
+  extensionId: string;
+  expiresAt: Date;
+}
+
+export async function createExtensionSession(input: {
+  userId: string;
+  tokenHash: string;
+  extensionId: string;
+  expiresAt: Date;
+}) {
+  await appPool.query(
+    `
+      insert into app.extension_sessions (
+        user_id,
+        token_hash,
+        extension_id,
+        expires_at
+      )
+      values ($1, $2, $3, $4)
+    `,
+    [
+      input.userId,
+      input.tokenHash,
+      input.extensionId,
+      input.expiresAt
+    ]
+  );
+}
+
+export async function resolveExtensionSession(tokenHash: string) {
+  const result = await appPool.query<ExtensionSessionPrincipal>(
+    `
+      update app.extension_sessions es
+      set last_used_at = now()
+      from auth."user" u
+      where es.token_hash = $1
+        and es.user_id = u.id
+        and es.revoked_at is null
+        and es.expires_at > now()
+      returning
+        es.user_id as "userId",
+        u.name,
+        u.email,
+        es.extension_id as "extensionId",
+        es.expires_at as "expiresAt"
+    `,
+    [tokenHash]
+  );
+
+  return result.rows[0] ?? null;
+}
+
+export async function revokeExtensionSession(tokenHash: string) {
+  await appPool.query(
+    `
+      update app.extension_sessions
+      set revoked_at = coalesce(revoked_at, now())
+      where token_hash = $1
+    `,
+    [tokenHash]
+  );
+}
+
 export async function withUserDatabase<T>(
   userId: string,
   operation: (client: PoolClient) => Promise<T>

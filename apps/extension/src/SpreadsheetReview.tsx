@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { DevilSupplierPanel } from "./DevilSupplierPanel";
+import { requireActiveWorkspaceId } from "./workspace-session";
 import { ExportPanel } from "./ExportPanel";
 import { HistoricalChangePanel } from "./HistoricalChangePanel";
 import { MovieMetadataPanel } from "./MovieMetadataPanel";
@@ -245,11 +246,15 @@ export function SpreadsheetReview({
     setSaveMessage(null);
   }
 
-  function saveReviewedDataset() {
+  async function saveReviewedDataset() {
     const updatedAt = new Date().toISOString();
-    const dataset: ReviewedDataset = {
+
+    try {
+      const workspaceId = await requireActiveWorkspaceId();
+      const dataset: ReviewedDataset = {
       version: 1,
       id: datasetId,
+      workspaceId,
       recipeName,
       sourceUrl: run.sourceUrl,
       createdAt,
@@ -260,9 +265,8 @@ export function SpreadsheetReview({
         warnings: currentWarnings(row)
       })),
       stats
-    };
+      };
 
-    try {
       const savedCount = saveDatasetLocally(dataset);
       setSaveMessage(
         `Saved locally · ${stats.includedRows} included rows · ${savedCount} reviewed dataset${savedCount === 1 ? "" : "s"} retained`

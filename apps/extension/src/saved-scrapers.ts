@@ -1,3 +1,4 @@
+import { requireActiveWorkspaceId } from "./workspace-session";
 import type {
   ExtractionFieldRecipe,
   ExtractionRecipe,
@@ -74,10 +75,12 @@ export async function createSavedScraper(
   kind: SavedScraperKind
 ) {
   const items = await loadSavedScrapers();
+  const workspaceId = await requireActiveWorkspaceId();
   const now = new Date().toISOString();
   const saved: SavedScraper = {
     version: 1,
     id: nextId(kind),
+    workspaceId,
     kind,
     name: recipe.name.trim() || "Untitled extraction recipe",
     sourceUrl,
