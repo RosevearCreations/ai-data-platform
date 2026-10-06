@@ -4097,3 +4097,146 @@ h1 {
     flex-direction: column;
   }
 }
+
+
+.workspaceSession {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(98, 194, 255, 0.16);
+  border-radius: 0.75rem;
+  background: rgba(98, 194, 255, 0.025);
+}
+
+.workspaceSessionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.workspaceSessionHeader > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.workspaceSession label,
+.workspaceOrigin {
+  color: #aebfc4;
+  font-size: 0.58rem;
+  font-weight: 850;
+}
+
+.workspaceSessionHeader strong {
+  color: #d8edf5;
+  font-size: 0.7rem;
+}
+
+.workspaceSession select,
+.workspaceOrigin input {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.workspaceSession select:focus,
+.workspaceOrigin input:focus {
+  border-color: rgba(98, 194, 255, 0.5);
+}
+
+.workspaceSession small,
+.workspaceSessionMessage,
+.workspaceMigration {
+  margin: 0;
+  color: #85989c;
+  font-size: 0.56rem;
+  line-height: 1.45;
+}
+
+.workspaceSessionStatus {
+  border-radius: 999px;
+  padding: 0.2rem 0.42rem;
+  font-size: 0.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.status-connected {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.status-loading,
+.status-unavailable {
+  background: rgba(255, 214, 102, 0.09);
+  color: #ffe3a0;
+}
+
+.status-signed-out,
+.status-expired,
+.status-no-access {
+  background: rgba(255, 151, 151, 0.08);
+  color: #ffc4c4;
+}
+
+.workspaceOrigin {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.workspaceSessionActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.workspaceSessionActions button {
+  min-height: 2.15rem;
+  border: 1px solid rgba(98, 194, 255, 0.14);
+  border-radius: 0.55rem;
+  background: rgba(98, 194, 255, 0.03);
+  color: #b8d2da;
+  font-size: 0.56rem;
+  font-weight: 850;
+}
+
+.workspaceSessionActions .workspaceConnect {
+  background: rgba(98, 194, 255, 0.12);
+  color: #d6f2fb;
+}
+
+.workspaceSessionActions button:not(:disabled) {
+  cursor: pointer;
+}
+
+.workspaceSessionActions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.workspaceMigration {
+  padding: 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 214, 102, 0.045);
+  color: #d3b978;
+}
+
+.workspaceSessionMessage {
+  color: #b9dbe5;
+}
+
+@media (max-width: 360px) {
+  .workspaceSessionHeader,
+  .workspaceSessionActions {
+    grid-template-columns: 1fr;
+  }
+
+  .workspaceSessionHeader {
+    flex-direction: column;
+  }
+}

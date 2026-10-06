@@ -138,3 +138,29 @@ To use it:
 12. Click **Remove site access** when you no longer want the optional grant retained.
 
 Detail fetches omit target-site cookies and credentials. No GitHub, database, Vercel, AI-provider or command-line setup is required for Build 010.
+
+
+## Build 019 authenticated workspace bridge
+
+Extension development can optionally define:
+
+```text
+VITE_PLATFORM_ORIGIN=http://localhost:3000
+```
+
+Use `apps/extension/.env.example` as the reference. Production extension packaging should set this to the deployed AI Data Platform origin when that origin is known. If it is omitted, the side panel provides a local Platform URL field and stores the chosen origin in extension-local storage.
+
+First production-browser connection:
+
+1. Open the AI Data Platform extension side panel.
+2. Under **Authenticated workspace**, confirm the **AI Data Platform URL** is the deployed web-app origin. Enter it and choose **Save URL** if necessary.
+3. Choose **Connect / sign in**.
+4. Chrome asks for access only to that platform host. Choose **Allow**.
+5. The Chrome Identity window opens the platform. If already signed in, it completes automatically; otherwise sign in with the normal AI Data Platform form.
+6. The extension receives a short-lived bridge token through Chrome's `chromiumapp.org` redirect. Do not copy or manually handle this token.
+7. Confirm the workspace selector lists only authorized workspaces.
+8. Select Rosie Dazzlers, Devil n Dove or Personal as required.
+9. To test fail-closed behavior, choose **Disconnect** and confirm workspace-scoped saves require reconnection.
+10. Reconnect. Older local records shown as migration candidates remain untouched until Build 020.
+
+No `BETTER_AUTH_TRUSTED_ORIGINS` change is required for the Build 019 bridge. The web session is used only inside the user-visible identity flow; subsequent extension requests use the short-lived bearer token.

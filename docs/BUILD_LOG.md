@@ -1357,3 +1357,73 @@ Detailed implementation order, acceptance criteria and manual walkthroughs are m
 ### Promotion rule
 
 Every numbered build remains subject to the established exact-tree path: dev implementation → full Verify GREEN → protected dev→main PR → PR-context Verify GREEN → SHA-pinned merge → exact dev/main tree confirmation → main Production Verify GREEN.
+
+
+## Build 019 — Authenticated Workspace Binding & Extension Session Bridge
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 019 pull-request path.
+
+### Goal
+
+Replace the extension's disabled hard-coded workspace selector with a real authenticated/RLS-authorized workspace context while keeping web-session secrets and target-site credentials out of page-accessible extension state.
+
+### Delivered
+
+- database migration `0002_extension_session_bridge.sql`;
+- `app.extension_sessions` table for hashed short-lived bridge sessions;
+- 8-hour bridge session expiry;
+- extension ID binding recorded per issued session;
+- session revocation and last-used timestamps;
+- no `ai_data_runtime` grant on extension-session records;
+- authenticated `/api/extension/connect` Chrome Identity bridge endpoint;
+- strict `https://<32-character-extension-id>.chromiumapp.org` redirect validation;
+- state nonce validation against login-response substitution;
+- safe sign-in callback support;
+- authenticated bearer `/api/extension/session` endpoint;
+- session GET and explicit DELETE/revoke;
+- workspace membership loaded using existing transaction-local runtime-role RLS;
+- Chrome `identity` permission added;
+- optional host permission requested only for the configured platform host;
+- configurable `VITE_PLATFORM_ORIGIN` with local UI fallback;
+- connected/signed-out/expired/unavailable/no-access workspace states;
+- authorized workspace selector;
+- active workspace retained in extension-local storage;
+- unauthorized workspace IDs rejected by the selector helper;
+- new saved scrapers tagged with active workspace ID;
+- new reviewed datasets tagged with active workspace ID;
+- workspace-scoped saves require a non-expired bridge session;
+- existing unscoped saved scrapers and review datasets counted as migration candidates;
+- no automatic assignment of legacy local records;
+- database acceptance tests for restricted-user isolation, expiry and revocation;
+- extension version 0.19.0.
+
+### Security boundary
+
+- Better Auth cookies stay in the web application;
+- the extension never reads or copies Better Auth cookies;
+- raw bridge tokens are not stored in PostgreSQL;
+- extension bridge tokens are random and short-lived;
+- source-site cookies/passwords are not part of the bridge;
+- membership authorization is recalculated from the authenticated user ID through RLS-safe queries;
+- revoked/expired tokens cannot resolve a principal;
+- old local records are not silently attributed to the currently selected workspace.
+
+### Manual setup
+
+Repository/CI promotion requires no manual input. For the first real production-browser connection, the operator may need to enter the deployed AI Data Platform URL in the side panel if the extension package was not built with `VITE_PLATFORM_ORIGIN`. The extension then requests one-site Chrome access and opens the normal web sign-in flow. No token, cookie or secret is copied manually.
+
+### Verification target
+
+- application migration creates the bridge-session table;
+- owner extension session resolves and receives only owner memberships;
+- restricted user extension session resolves but receives no unauthorized workspace;
+- expired bridge session resolves as invalid;
+- revoked bridge session resolves as invalid;
+- TypeScript/lint/build/test matrix remains green;
+- extension production build includes Chrome Identity support.
+
+### Next
+
+Build 020 — Workspace Persistence & Cross-Device Sync Foundation.

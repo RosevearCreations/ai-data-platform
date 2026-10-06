@@ -6,9 +6,10 @@ import { authClient } from "@/lib/auth-client";
 
 interface AuthFormProps {
   allowSignUp: boolean;
+  callbackUrl: string;
 }
 
-export function AuthForm({ allowSignUp }: AuthFormProps) {
+export function AuthForm({ allowSignUp, callbackUrl }: AuthFormProps) {
   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
   const [message, setMessage] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -41,7 +42,7 @@ export function AuthForm({ allowSignUp }: AuthFormProps) {
         return;
       }
 
-      window.location.assign("/");
+      window.location.assign(callbackUrl);
     } catch {
       setMessage("Authentication is temporarily unavailable.");
     } finally {

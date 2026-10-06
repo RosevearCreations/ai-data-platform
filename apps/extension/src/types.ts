@@ -193,6 +193,7 @@ export interface ReviewRow {
 export interface ReviewedDataset {
   version: 1;
   id: string;
+  workspaceId?: string | null;
   recipeName: string;
   sourceUrl: string;
   createdAt: string;
@@ -429,6 +430,7 @@ export interface SavedScraperRevision {
 export interface SavedScraper {
   version: 1;
   id: string;
+  workspaceId?: string | null;
   kind: SavedScraperKind;
   name: string;
   sourceUrl: string;
@@ -1128,4 +1130,37 @@ export interface BusinessIntegrationPackage {
       retrievedAt: string;
     };
   }>;
+}
+
+
+export type WorkspaceRole = "owner" | "admin" | "member";
+
+export interface WorkspaceSummary {
+  id: string;
+  slug: string;
+  name: string;
+  type: "business" | "personal";
+  role: WorkspaceRole;
+}
+
+export type WorkspaceBridgeStatus =
+  | "loading"
+  | "connected"
+  | "signed-out"
+  | "expired"
+  | "unavailable"
+  | "no-access";
+
+export interface WorkspaceBridgeState {
+  status: WorkspaceBridgeStatus;
+  platformOrigin: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  } | null;
+  workspaces: WorkspaceSummary[];
+  activeWorkspaceId: string | null;
+  expiresAt: string | null;
+  message: string;
 }

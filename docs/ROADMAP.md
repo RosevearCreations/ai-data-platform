@@ -318,29 +318,34 @@ Acceptance: reviewed platform outputs can be transformed through an explicit bus
 
 ## Build 019 — Authenticated Workspace Binding & Extension Session Bridge
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-06).
 
 Goal: connect the Chrome extension to the authenticated AI Data Platform workspace model so Rosie Dazzlers, Devil n Dove and Personal are real isolated contexts instead of a disabled local selector.
 
-Deliverables:
+Delivered:
 
-- extension-to-web authenticated session bridge;
-- current authenticated user and workspace discovery;
-- workspace membership loading through the existing Better Auth/PostgreSQL boundary;
-- active-workspace selection in the extension;
-- Rosie Dazzlers, Devil n Dove and Personal workspace switching;
-- explicit signed-out, expired-session and unavailable-backend states;
+- Chrome Identity web-auth bridge into the existing Better Auth session;
+- short-lived 8-hour extension bearer session with only SHA-256 token hashes stored server-side;
+- dedicated `app.extension_sessions` table with revocation/expiry tracking and no runtime-role grants;
+- current authenticated user and workspace discovery through the existing RLS-safe membership query;
+- active authorized workspace selection retained in extension-local storage;
+- real Rosie Dazzlers, Devil n Dove and Personal workspace switching;
+- explicit connected, signed-out, expired, unavailable and no-access UI states;
+- session revocation on extension disconnect;
+- extension source-host permission requested only for the configured AI Data Platform origin;
+- no Better Auth cookie copied into extension storage;
 - no target-site credentials exposed to page scripts;
-- extension-origin/trusted-origin handling documented and bounded;
-- workspace ID attached to future synchronized extension records;
-- migration-safe handling of existing local-only records that have no workspace ID yet;
-- CI coverage for cross-workspace denial and expired-session fallback.
+- saved-scraper and reviewed-dataset workspace IDs on newly created records;
+- older unscoped local records detected as Build 020 migration candidates and never silently assigned;
+- CI verification for owner/restricted workspace isolation, extension-session expiry and revocation;
+- callback-safe web sign-in return for the Chrome identity bridge;
+- extension version 0.19.0.
 
-Acceptance: a signed-in user can select only workspaces they are authorized to access, the extension retains the active workspace safely, signed-out/expired states fail closed, and one workspace cannot read or select another user's data.
+Acceptance: a signed-in user can select only workspaces they are authorized to access, the extension retains the active workspace safely, signed-out/expired states fail closed for new workspace-scoped saves, and one workspace/user cannot read or select another user's unauthorized data.
 
 Manual input gate:
 
-This build may require one one-time browser authorization/test once the production extension ID and deployed web origin are known. If the existing environment already exposes both correctly, no manual setup is required.
+No server trusted-origin change is required by this implementation because the extension does not depend on cross-site Better Auth cookies. On the first production-browser connection, enter the deployed AI Data Platform URL in the extension if the extension package was not built with `VITE_PLATFORM_ORIGIN`, click Connect / sign in, approve the one-site Chrome permission, sign in normally if prompted, and choose the authorized workspace.
 
 ## Build 020 — Workspace Persistence & Cross-Device Sync Foundation
 

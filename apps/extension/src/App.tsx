@@ -5,6 +5,7 @@ import { inspectPage } from "./inspect-page";
 import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import { ScheduledJobsPanel } from "./ScheduledJobsPanel";
+import { WorkspaceSessionPanel } from "./WorkspaceSessionPanel";
 import {
   detectRepeatingRecords,
   previewRecordGroup
@@ -256,30 +257,20 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">018</span>
+        <span className="build">019</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Approve explicit business-system handoffs</strong>
+        <strong>Bind the extension to authenticated workspaces</strong>
         <p>
-          Build 018 adds Rosie Dazzlers and Devil n Dove adapter contracts,
-          dry-run diffs, user-owned field protection, explicit approval and
-          local audit trails before any controlled integration package export.
+          Build 019 connects the extension to the Better Auth workspace model
+          through a short-lived Chrome identity bridge, loads only authorized
+          memberships, and fails closed when the session expires or access is
+          unavailable.
         </p>
       </section>
 
-      <section className="workspace">
-        <label htmlFor="workspace">Workspace</label>
-        <select id="workspace" defaultValue="rosiedazzlers" disabled>
-          <option value="rosiedazzlers">Rosie Dazzlers</option>
-          <option value="devilndove">Devil n Dove</option>
-          <option value="personal">Personal</option>
-        </select>
-        <small>
-          Workspace binding will be connected to the authenticated web session
-          in a later build.
-        </small>
-      </section>
+      <WorkspaceSessionPanel />
 
       {!selectedRecordGroup ? (
         <>

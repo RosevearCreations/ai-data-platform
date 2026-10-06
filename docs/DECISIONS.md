@@ -183,3 +183,10 @@ Reason: this preserves the local-first architecture, avoids premature vendor loc
 Decision: Build 018 JSON packages are not upgraded into guessed HTTP writes. A business application must explicitly implement, authenticate and validate the shared adapter contract before live ingestion is enabled.
 
 Reason: independent applications should not inherit hidden coupling or accidental write semantics. Contract verification and replay/staleness rules must exist before transport activation.
+
+
+## D0025 — Extension auth uses a short-lived bearer bridge, not shared browser cookies
+
+Decision: the Chrome extension authenticates through a user-initiated Chrome Identity web flow. The existing Better Auth web session authorizes issuance of a random short-lived extension token; only its hash is stored server-side. The extension then presents that bearer token to a narrow session/workspace endpoint.
+
+Reason: relying on cross-site Better Auth cookies from a `chrome-extension://` context is fragile under SameSite/third-party-cookie policy and would blur the boundary between the web session and extension. The bearer bridge keeps ordinary web credentials in the web app, gives the extension an explicit revocable lifetime, and preserves RLS-based workspace authorization.
