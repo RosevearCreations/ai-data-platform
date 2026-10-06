@@ -254,15 +254,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">012</span>
+        <span className="build">013</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Reuse saved scrapers and site templates</strong>
+        <strong>Track reviewed records over time</strong>
         <p>
-          Build 012 keeps reusable extraction recipes locally, tracks revisions,
-          provides starter site templates, and checks saved selectors for layout
-          breakage before a repeat run.
+          Build 013 captures explicit local record versions, compares field
+          observations between runs, summarizes additions/removals/changes, and
+          keeps detected differences in a review queue.
         </p>
       </section>
 
