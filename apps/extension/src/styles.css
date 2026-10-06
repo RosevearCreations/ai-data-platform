@@ -3477,3 +3477,299 @@ h1 {
     flex-direction: column;
   }
 }
+
+
+.scheduledJobs {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 193, 7, 0.17);
+  border-radius: 0.9rem;
+  background: rgba(255, 193, 7, 0.025);
+}
+
+.scheduledJobs h2 { margin: 0; font-size: 1rem; }
+
+.scheduledBadge {
+  border-radius: 999px;
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffe5a2 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.scheduledIntro,
+.scheduledEmpty,
+.scheduledStatus,
+.scheduledWarning {
+  margin: 0;
+  color: #9daeb0;
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.scheduledCreate {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 193, 7, 0.1);
+  border-radius: 0.7rem;
+  background: rgba(255, 193, 7, 0.018);
+}
+
+.scheduledCreate > strong,
+.scheduledListHeader strong {
+  color: #e9dfbf;
+  font-size: 0.68rem;
+}
+
+.scheduledCreate > label,
+.scheduledGrid label {
+  display: grid;
+  gap: 0.28rem;
+  color: #cfc5a6;
+  font-size: 0.61rem;
+  font-weight: 850;
+}
+
+.scheduledCreate select,
+.scheduledCreate input,
+.scheduledCreate textarea,
+.scheduledGrid select,
+.scheduledGrid input {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.scheduledCreate textarea {
+  min-height: 3.6rem;
+  padding: 0.55rem;
+  resize: vertical;
+}
+
+.scheduledCreate select:focus,
+.scheduledCreate input:focus,
+.scheduledCreate textarea:focus {
+  border-color: rgba(255, 193, 7, 0.45);
+}
+
+.scheduledGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.scheduledPolicy {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.65rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.scheduledPolicy > strong {
+  color: #dfd3b2;
+  font-size: 0.64rem;
+}
+
+.scheduledPolicy label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  color: #9eaaab;
+  font-size: 0.59rem;
+  line-height: 1.42;
+}
+
+.scheduledPolicy input[type="checkbox"] {
+  width: auto;
+  min-height: auto;
+  margin-top: 0.12rem;
+}
+
+.scheduledCreateButton {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #ffd666;
+  color: #171205;
+  font-weight: 900;
+}
+
+.scheduledCreateButton:not(:disabled),
+.scheduledActions button:not(:disabled),
+.scheduledNotifications button:not(:disabled) {
+  cursor: pointer;
+}
+
+.scheduledCreateButton:disabled,
+.scheduledActions button:disabled,
+.scheduledNotifications button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.scheduledListHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.scheduledListHeader span {
+  color: #7f8f91;
+  font-size: 0.57rem;
+}
+
+.scheduledList,
+.scheduledNotifications {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.scheduledList article,
+.scheduledNotifications article {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.scheduledJobTop,
+.scheduledNotifications article > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.scheduledJobTop > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.scheduledJobTop strong,
+.scheduledNotifications strong {
+  color: #e9e2d1;
+  font-size: 0.64rem;
+  overflow-wrap: anywhere;
+}
+
+.scheduledList article > span,
+.scheduledList small,
+.scheduledNotifications span,
+.scheduledNotifications small {
+  color: #839294;
+  font-size: 0.56rem;
+  line-height: 1.4;
+}
+
+.scheduledSource {
+  overflow-wrap: anywhere;
+}
+
+.scheduledState {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.4rem;
+  font-size: 0.51rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.scheduledState-enabled {
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1;
+}
+
+.scheduledState-due {
+  background: rgba(255, 214, 102, 0.11);
+  color: #ffe3a0;
+}
+
+.scheduledState-paused {
+  background: rgba(255, 255, 255, 0.055);
+  color: #a9b0b2;
+}
+
+.scheduledWarning {
+  color: #e3bc77;
+}
+
+.scheduledActions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.scheduledActions button,
+.scheduledNotifications button {
+  min-height: 2.05rem;
+  border: 1px solid rgba(255, 193, 7, 0.12);
+  border-radius: 0.55rem;
+  background: rgba(255, 193, 7, 0.03);
+  color: #c9bd98;
+  font-size: 0.54rem;
+  font-weight: 850;
+}
+
+.scheduledActions .scheduledDelete {
+  border-color: rgba(255, 151, 151, 0.13);
+  background: rgba(255, 151, 151, 0.025);
+  color: #d9aaaa;
+}
+
+.scheduledAttempts summary {
+  color: #baa978;
+  font-size: 0.56rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.scheduledAttempts > div {
+  display: grid;
+  gap: 0.2rem;
+  padding-top: 0.35rem;
+}
+
+.scheduledAttempts span {
+  color: #7e8d8f;
+  font-size: 0.54rem;
+}
+
+.scheduledNotifications .scheduledUnread {
+  border-color: rgba(255, 214, 102, 0.16);
+  background: rgba(255, 214, 102, 0.028);
+}
+
+.scheduledNotifications button {
+  width: fit-content;
+  padding: 0 0.7rem;
+}
+
+.scheduledStatus {
+  color: #dfd1a2;
+}
+
+@media (max-width: 360px) {
+  .scheduledGrid,
+  .scheduledActions {
+    grid-template-columns: 1fr;
+  }
+
+  .scheduledListHeader,
+  .scheduledJobTop,
+  .scheduledNotifications article > div {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

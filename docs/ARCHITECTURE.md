@@ -104,6 +104,8 @@ Web page
 
 The first useful version does not require a large remote scraping cluster. The browser extension performs interactive extraction in the user's own browser. Cloud crawling, proxies and remote scheduled browsers are deferred until a demonstrated need exists.
 
+Build 017 scheduling remains local-first: Chrome alarms mark reviewed saved-scraper jobs due, but the service worker never performs unattended DOM extraction. The user must be present on the approved source origin to execute a due job. Scheduled jobs pin a saved scraper revision, require a new source-policy review after recipe revision changes, enforce bounded record/retry limits, and compare successful local snapshots to create local change notifications.
+
 ## AI boundary
 
 AI may propose a schema, interpret ambiguous labels, normalize free text, help repair a recipe and classify/match records. It should not be invoked for every row when a deterministic selector or transform can do the same work.

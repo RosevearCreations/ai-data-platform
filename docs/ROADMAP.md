@@ -282,11 +282,22 @@ Acceptance: an existing owned collection can be imported locally, reviewed metad
 
 ## Build 017 — Scheduled & Repeatable Jobs
 
-- only after source-policy review;
-- scheduling;
-- run limits;
-- failure/retry controls;
-- change notifications.
+Status: COMPLETE (2026-10-06).
+
+- explicit source-policy review gate before a saved scraper can be scheduled;
+- local daily, weekly and bounded interval schedules;
+- Chrome alarm-backed due-work state without unattended crawling;
+- interactive same-origin execution only while the user is present;
+- pinned saved-scraper revisions with stale-revision blocking;
+- explicit refresh + source-policy re-review after scraper revision changes;
+- per-run record limits;
+- bounded retry counts and retry delays;
+- bounded run history;
+- deterministic local snapshot comparison;
+- local unread/read change notifications and browser-action NEW/DUE badge;
+- no remote browser workers, access-control bypass or business-system writes.
+
+Acceptance: an approved saved scraper can be scheduled locally, becomes due through a Chrome alarm, executes only interactively on its approved source origin, respects record/retry limits, records failures, and produces local change notifications when a successful snapshot differs from its prior baseline.
 
 ## Build 018 — Business-System Integrations
 

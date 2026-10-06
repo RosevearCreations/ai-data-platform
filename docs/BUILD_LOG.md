@@ -1097,3 +1097,90 @@ None. CSV/JSON collection import and metadata review use existing Chrome extensi
 ### Next
 
 Build 017 — Scheduled & Repeatable Jobs.
+
+
+## Build 017 — Scheduled & Repeatable Jobs
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 017 pull-request path.
+
+### Goal
+
+Make saved extraction recipes repeatable on a schedule without turning the local-first extension into an unattended crawler or weakening source-policy and access-control boundaries.
+
+### Delivered
+
+- scheduled-jobs panel beside the saved scraper library;
+- scheduling only for saved scraper items, not unconfigured templates;
+- explicit source-policy review gate before job creation;
+- source must be public or explicitly authorized;
+- operator confirmation that applicable source terms and robots/crawl directives were reviewed where relevant;
+- operator confirmation that the job does not require bypassing login, paywall, CAPTCHA or technical access controls;
+- optional source-policy notes and review timestamp;
+- daily scheduling by local hour;
+- weekly scheduling by local weekday and hour;
+- bounded interval scheduling from 1 hour to 30 days;
+- one-shot Chrome alarms for due-work state;
+- alarm reconciliation after extension install/update and browser startup;
+- browser-action DUE badge when scheduled work is due;
+- interactive same-origin execution only while the user is present;
+- saved source-origin validation before execution;
+- pinned saved-scraper revision on every job;
+- stale-revision blocking when a saved scraper has changed;
+- explicit Refresh + re-review flow to adopt a newer scraper revision;
+- maximum 500 records per scheduled run;
+- configurable per-job record cap;
+- maximum 3 retries;
+- configurable retry delay from 5 minutes to 24 hours;
+- retry alarms without immediate false-due state;
+- successful-run baseline snapshots;
+- deterministic row fingerprints and dataset signature;
+- duplicate-aware added/removed row counts between successful snapshots;
+- local change notification when a subsequent snapshot differs;
+- browser-action NEW badge for unread change notifications;
+- unread/read notification state;
+- bounded 30-attempt run history per job;
+- bounded 100 retained change notifications;
+- maximum 50 local scheduled jobs;
+- pause/enable/delete controls;
+- manual Run now support for testing a scheduled job under the same policy and source-origin boundary;
+- local run outcome recording for success, detected change and failure;
+- extension version 0.17.0;
+- Chrome alarms permission added;
+- no remote scheduled browser, cloud crawling worker, proxy, automatic CAPTCHA handling or business-system integration.
+
+### Scheduling and safety rules
+
+- Chrome alarms only mark a job due; they do not scrape pages in the background;
+- extraction requires an active user-visible source page on the job's approved origin;
+- jobs remain pinned to the reviewed scraper revision;
+- a newer scraper revision must be explicitly adopted with a fresh source-policy review;
+- no job can be created until every source-policy gate passes;
+- failed extraction attempts never cause access-control workarounds;
+- retries are bounded by both count and delay;
+- the first successful run is a baseline and does not generate a false change notification;
+- change notifications compare deterministic local snapshots and stay local;
+- no scheduled result writes directly into Rosie Dazzlers, Devil n Dove or another external system;
+- Build 018 remains the explicit integration-adapter boundary.
+
+### Verification target
+
+The Build 017 promotion gate must pass the complete repository verification matrix:
+
+- PostgreSQL 18 service initialization;
+- Better Auth and application migrations;
+- workspace RLS acceptance;
+- TypeScript checks;
+- lint/static checks;
+- Next.js production build;
+- Chrome extension production build;
+- existing tests including AI suggestion checks.
+
+### Manual setup
+
+None. Build 017 uses extension-local storage plus the Chrome alarms permission declared by extension version 0.17.0. No external scheduler, API key or server-side cron service is required.
+
+### Next
+
+Build 018 — Business-System Integrations.
