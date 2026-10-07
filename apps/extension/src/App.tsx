@@ -5,6 +5,7 @@ import { inspectPage } from "./inspect-page";
 import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import { ScheduledJobsPanel } from "./ScheduledJobsPanel";
+import { SourcePolicyRegistryPanel } from "./SourcePolicyRegistryPanel";
 import { WorkspaceSessionPanel } from "./WorkspaceSessionPanel";
 import { IntelligenceContinuityPanel } from "./IntelligenceContinuityPanel";
 import { WorkspaceSyncPanel } from "./WorkspaceSyncPanel";
@@ -259,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">024</span>
+        <span className="build">025</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Capture barcodes from mobile without weakening review</strong>
+        <strong>Govern every recurring source before crawl automation expands</strong>
         <p>
-          Build 024 adds authenticated web-based UPC/EAN/GTIN camera/manual
-          intake for Personal movies and Devil n Dove supplier staging. Camera
-          use is explicit, offline captures queue locally, and every handoff
-          remains review-gated.
+          Build 025 adds a workspace-scoped source policy registry with terms,
+          robots/crawl evidence, approved collection method, sensitivity,
+          bounded rate/page/record budgets, expiry and exact policy fingerprints.
+          Scheduled jobs fail closed when the approved policy changes or expires.
         </p>
       </section>
 
@@ -278,6 +279,7 @@ export function App() {
 
       {!selectedRecordGroup ? (
         <>
+          <SourcePolicyRegistryPanel />
           <SavedScrapersPanel
             onApplyRecipe={(savedRecipe) => {
               setInitialRecipe(savedRecipe);
