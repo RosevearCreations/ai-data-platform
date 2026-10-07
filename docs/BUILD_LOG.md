@@ -1587,3 +1587,20 @@ Barcode approval intentionally does not overwrite Personal ownership fields or D
 No new environment variables are required. Camera users must grant the browser's one-time/site camera permission on each mobile device. Manual entry requires no permission.
 
 Next: Build 025 — Source Policy Registry & Crawl Governance.
+
+
+## Build 025 — Source Policy Registry & Crawl Governance
+
+Date: 2026-10-07
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Delivered a workspace-scoped source policy registry with normalized origins, collection-method and purpose evidence, terms/robots review, access-control and sensitivity restrictions, minimum-delay/page/record budgets, review expiry, lifecycle status, monotonic revisions and stable policy fingerprints.
+
+Build 017 scheduled jobs now pin the exact current Build 025 policy revision. Job creation, refresh, re-enable and execution fail closed when the source is unregistered, blocked, expired, materially revised, restricted/private, robots-disallowed/unknown for public-web crawling, or dependent on access-control bypass. Source-policy state synchronizes through the existing RLS-protected Build 021 intelligence continuity layer.
+
+Migration 0006_source_policy_registry.sql extends the workspace-intelligence module constraint. CI verifies governance logic plus durable source-policy persistence and workspace isolation. Extension version is 0.25.0.
+
+No external account, credential or environment variable is required. Real source approval intentionally remains a human policy-review action.
+
+Next: Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness.
