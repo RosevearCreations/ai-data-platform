@@ -12,11 +12,11 @@ import {
 } from "./intelligence-sync";
 import type {
   IntelligenceSyncConflict,
-  IntelligenceSyncLocalState
+  IntelligenceSyncState
 } from "./types";
 
 export function IntelligenceContinuityPanel() {
-  const [state, setState] = useState<IntelligenceSyncLocalState | null>(null);
+  const [state, setState] = useState<IntelligenceSyncState | null>(null);
   const [legacy, setLegacy] = useState({ history: 0, jobs: 0, total: 0 });
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);

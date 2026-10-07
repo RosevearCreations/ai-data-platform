@@ -9,7 +9,7 @@ import {
 import type {
   IntelligenceServerRecord,
   IntelligenceSyncConflict,
-  IntelligenceSyncLocalState,
+  IntelligenceSyncState,
   IntelligenceSyncMetadata,
   IntelligenceSyncQueueItem,
   IntelligenceSyncSummary
@@ -27,7 +27,7 @@ function itemKey(workspaceId: string, moduleKey: string) {
   return workspaceId + "::" + moduleKey;
 }
 
-function emptyState(): IntelligenceSyncLocalState {
+function emptyState(): IntelligenceSyncState {
   return {
     version: 1,
     id: "ai-data-platform-intelligence-sync",
@@ -39,15 +39,15 @@ function emptyState(): IntelligenceSyncLocalState {
   };
 }
 
-function normalizeState(value: unknown): IntelligenceSyncLocalState {
+function normalizeState(value: unknown): IntelligenceSyncState {
   if (!value || typeof value !== "object") return emptyState();
-  const candidate = value as Partial<IntelligenceSyncLocalState>;
+  const candidate = value as Partial<IntelligenceSyncState>;
   return candidate.version === 1 &&
     candidate.id === "ai-data-platform-intelligence-sync" &&
     Array.isArray(candidate.metadata) &&
     Array.isArray(candidate.queue) &&
     Array.isArray(candidate.conflicts)
-    ? (candidate as IntelligenceSyncLocalState)
+    ? (candidate as IntelligenceSyncState)
     : emptyState();
 }
 
@@ -56,14 +56,14 @@ export async function loadIntelligenceSyncState() {
   return normalizeState(stored[STATE_KEY]);
 }
 
-async function writeState(state: IntelligenceSyncLocalState) {
+async function writeState(state: IntelligenceSyncState) {
   const next = { ...state, updatedAt: nowIso() };
   await chrome.storage.local.set({ [STATE_KEY]: next });
   return next;
 }
 
 function metadataFor(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   workspaceId: string,
   moduleKey: string
 ) {
@@ -72,7 +72,7 @@ function metadataFor(
 }
 
 function replaceMetadata(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   item: IntelligenceSyncMetadata
 ) {
   return {
@@ -82,7 +82,7 @@ function replaceMetadata(
 }
 
 function replaceQueue(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   item: IntelligenceSyncQueueItem
 ) {
   const key = itemKey(item.workspaceId, item.moduleKey);
@@ -98,7 +98,7 @@ function replaceQueue(
 }
 
 function removeQueue(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   workspaceId: string,
   moduleKey: string
 ) {
@@ -112,7 +112,7 @@ function removeQueue(
 }
 
 function replaceConflict(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   conflict: IntelligenceSyncConflict
 ) {
   return {
@@ -125,7 +125,7 @@ function replaceConflict(
 }
 
 function removeConflict(
-  state: IntelligenceSyncLocalState,
+  state: IntelligenceSyncState,
   workspaceId: string,
   moduleKey: string
 ) {
