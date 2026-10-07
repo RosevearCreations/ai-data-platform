@@ -147,3 +147,14 @@ The local queue is written before a network attempt. Temporary backend loss ther
 Legacy Build 019 unscoped records are never silently claimed. Build 020 provides an explicit migration action that creates a workspace-scoped copy and leaves the original local record intact.
 
 Reviewed datasets remain full fidelity locally. Their synchronized server representation is bounded to 500 rows per dataset to keep early cross-device persistence predictable and economical; the UI reports when the server copy is bounded.
+
+
+## Build 021 intelligence continuity boundary
+
+Build 021 adds one versioned workspace module-state table for the stable bounded dataset contracts created in Builds 013–018. This avoids duplicating six persistence stacks while preserving module-specific payloads and summaries.
+
+Module state uses optimistic server versions. Local module writes remain authoritative in the extension cache first, then are queued for authenticated synchronization. Fresh-device recovery enumerates all authorized workspaces after Build 019 sign-in and restores newer server module state when no local queue/conflict blocks it.
+
+Rosie competitive intelligence maps to the rosiedazzlers workspace, Devil n Dove supplier intelligence maps to devilndove, movie metadata maps to personal, and business integration state is split by target before persistence. Historical series and scheduled jobs are stamped with their active/source workspace. Older unscoped history/jobs are never silently assigned.
+
+Business-integration audit evidence is duplicated into a separate append-only table. The runtime database role has SELECT/INSERT only on that table; it has no UPDATE/DELETE grant. Duplicate audit IDs are idempotent via the workspace/audit primary key.

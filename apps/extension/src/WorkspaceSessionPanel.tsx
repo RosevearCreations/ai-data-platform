@@ -8,6 +8,7 @@ import {
   setActiveWorkspace,
   setPlatformOrigin
 } from "./workspace-session";
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
 import type { WorkspaceBridgeState } from "./types";
 
 const EMPTY_STATE: WorkspaceBridgeState = {
@@ -54,6 +55,7 @@ export function WorkspaceSessionPanel() {
     try {
       const state = await connectWorkspaceSession(originDraft);
       setBridge(state);
+      scheduleIntelligenceSyncAttempt();
       setMessage("Extension workspace session connected.");
     } catch (reason) {
       setMessage(

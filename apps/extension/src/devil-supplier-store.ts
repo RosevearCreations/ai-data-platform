@@ -9,6 +9,8 @@ import type {
   SupplierStageSummary
 } from "./types";
 
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+
 const STORAGE_KEY = "ai-data-platform-devil-supplier-staging-v1";
 const DATASET_ID = "devil-n-dove-supplier-staging";
 const MAX_ITEMS = 500;
@@ -50,6 +52,7 @@ async function writeSupplierInventoryStaging(
   dataset: SupplierInventoryStagingDataset
 ) {
   await chrome.storage.local.set({ [STORAGE_KEY]: dataset });
+  scheduleIntelligenceSyncAttempt();
 }
 
 function summarize(

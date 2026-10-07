@@ -3,6 +3,7 @@ import type { WorkspaceBridgeState, WorkspaceSummary } from "./types";
 const SESSION_KEY = "ai-data-platform:workspace-session:v1";
 const ACTIVE_WORKSPACE_KEY = "ai-data-platform:active-workspace:v1";
 const PLATFORM_ORIGIN_KEY = "ai-data-platform:platform-origin:v1";
+const WORKSPACE_CACHE_KEY = "ai-data-platform:workspace-cache:v1";
 const SAVED_SCRAPERS_KEY = "ai-data-platform-saved-scrapers-v1";
 const REVIEWED_DATASETS_KEY = "ai-data-platform:reviewed-datasets:v1";
 
@@ -46,7 +47,7 @@ async function storedSession() {
 }
 
 async function clearStoredSession() {
-  await chrome.storage.local.remove([SESSION_KEY, ACTIVE_WORKSPACE_KEY]);
+  await chrome.storage.local.remove([SESSION_KEY, ACTIVE_WORKSPACE_KEY, WORKSPACE_CACHE_KEY]);
 }
 
 export async function getPlatformOrigin() {
@@ -225,6 +226,10 @@ export async function refreshWorkspaceSession(): Promise<WorkspaceBridgeState> {
           payload.workspaces[0]?.id ??
           null;
 
+    await chrome.storage.local.set({
+      [WORKSPACE_CACHE_KEY]: payload.workspaces
+    });
+
     if (preferred) {
       await chrome.storage.local.set({ [ACTIVE_WORKSPACE_KEY]: preferred });
     } else {
@@ -286,6 +291,32 @@ export async function setActiveWorkspace(
   }
 
   await chrome.storage.local.set({ [ACTIVE_WORKSPACE_KEY]: workspaceId });
+}
+
+export async function getCachedAuthorizedWorkspaces() {
+  const stored = await chrome.storage.local.get(WORKSPACE_CACHE_KEY);
+  const value = stored[WORKSPACE_CACHE_KEY];
+
+  if (!Array.isArray(value)) return [];
+
+  return value.filter((item): item is WorkspaceSummary => {
+    if (!item || typeof item !== "object") return false;
+    const candidate = item as Partial<WorkspaceSummary>;
+    return (
+      typeof candidate.id === "string" &&
+      typeof candidate.slug === "string" &&
+      typeof candidate.name === "string" &&
+      (candidate.type === "business" || candidate.type === "personal") &&
+      (candidate.role === "owner" ||
+        candidate.role === "admin" ||
+        candidate.role === "member")
+    );
+  });
+}
+
+export async function getCachedWorkspaceIdForSlug(slug: string) {
+  const workspaces = await getCachedAuthorizedWorkspaces();
+  return workspaces.find((workspace) => workspace.slug === slug)?.id ?? null;
 }
 
 export async function getActiveWorkspaceId() {

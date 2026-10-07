@@ -10,6 +10,8 @@ import type {
   RosieCompetitiveMapping
 } from "./types";
 
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+
 const STORAGE_KEY = "ai-data-platform-rosie-ontario-detailers-v1";
 const DATASET_ID = "rosie-dazzlers-ontario-detailers";
 const MAX_SERIES = 75;
@@ -53,6 +55,7 @@ async function writeOntarioDetailerDataset(dataset: OntarioDetailerDataset) {
   await chrome.storage.local.set({
     [STORAGE_KEY]: dataset
   });
+  scheduleIntelligenceSyncAttempt();
 }
 
 export async function saveOntarioCompetitiveCapture(input: {
@@ -138,5 +141,6 @@ export async function saveOntarioCompetitiveCapture(input: {
 
 export async function clearOntarioDetailerDataset() {
   await chrome.storage.local.remove(STORAGE_KEY);
+  scheduleIntelligenceSyncAttempt();
   return emptyDataset();
 }

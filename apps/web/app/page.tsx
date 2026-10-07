@@ -103,6 +103,15 @@ export default async function HomePage() {
         )}
       </section>
 
+      {session ? (
+        <div className="heroActions">
+          <Link className="primaryLink" href="/intelligence">
+            Review persistent intelligence
+          </Link>
+          <span>History, pending review and audit evidence are available across devices.</span>
+        </div>
+      ) : null}
+
       {session ? <AiFieldSuggestions /> : null}
 
       <section className="principles" aria-labelledby="principles-heading">

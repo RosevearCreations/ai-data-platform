@@ -513,6 +513,7 @@ export interface HistoricalCaptureSummary {
 
 export interface HistoricalSeries {
   version: 1;
+  workspaceId?: string | null;
   id: string;
   seriesKey: string;
   recipeName: string;
@@ -968,6 +969,7 @@ export interface ScheduledJobChangeNotification {
 
 export interface ScheduledExtractionJob {
   version: 1;
+  workspaceId?: string | null;
   id: string;
   name: string;
   savedScraperId: string;
@@ -1243,5 +1245,75 @@ export interface WorkspaceSyncSummary {
   deleted: number;
   conflicts: number;
   queued: number;
+  lastSyncAt: string | null;
+}
+
+
+export type IntelligenceModuleKey =
+  | "history"
+  | "rosie-competitive"
+  | "devil-supplier"
+  | "movie-metadata"
+  | "scheduled-jobs"
+  | "business-integrations";
+
+export interface IntelligenceSyncMetadata {
+  key: string;
+  workspaceId: string;
+  moduleKey: IntelligenceModuleKey;
+  serverVersion: number | null;
+  state: "clean" | "queued" | "conflict";
+  localUpdatedAt: string;
+  lastSyncedAt: string | null;
+  error: string;
+}
+
+export interface IntelligenceSyncQueueItem {
+  id: string;
+  workspaceId: string;
+  moduleKey: IntelligenceModuleKey;
+  expectedServerVersion: number | null;
+  clientUpdatedAt: string;
+  summary: Record<string, unknown>;
+  payload: Record<string, unknown>;
+  auditEntries: BusinessIntegrationAuditEntry[];
+  enqueuedAt: string;
+  attempts: number;
+}
+
+export interface IntelligenceServerRecord {
+  workspaceId: string;
+  moduleKey: IntelligenceModuleKey;
+  serverVersion: number;
+  clientUpdatedAt: string;
+  summary: Record<string, unknown>;
+  payload: Record<string, unknown>;
+}
+
+export interface IntelligenceSyncConflict {
+  key: string;
+  workspaceId: string;
+  moduleKey: IntelligenceModuleKey;
+  detectedAt: string;
+  localPayload: Record<string, unknown>;
+  serverRecord: IntelligenceServerRecord;
+}
+
+export interface IntelligenceSyncState {
+  version: 1;
+  id: "ai-data-platform-intelligence-sync";
+  updatedAt: string;
+  lastSyncAt: string | null;
+  metadata: IntelligenceSyncMetadata[];
+  queue: IntelligenceSyncQueueItem[];
+  conflicts: IntelligenceSyncConflict[];
+}
+
+export interface IntelligenceSyncSummary {
+  pushed: number;
+  pulled: number;
+  conflicts: number;
+  queued: number;
+  auditInserted: number;
   lastSyncAt: string | null;
 }

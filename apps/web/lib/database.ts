@@ -701,6 +701,380 @@ export async function applyWorkspaceSyncMutation(
   });
 }
 
+
+export type IntelligenceModuleKey =
+  | "history"
+  | "rosie-competitive"
+  | "devil-supplier"
+  | "movie-metadata"
+  | "scheduled-jobs"
+  | "business-integrations";
+
+export interface WorkspaceIntelligenceModuleRecord extends QueryResultRow {
+  workspaceId: string;
+  moduleKey: IntelligenceModuleKey;
+  serverVersion: number;
+  clientUpdatedAt: Date;
+  summary: Record<string, unknown>;
+  payload: Record<string, unknown>;
+  updatedAt: Date;
+}
+
+export interface WorkspaceIntelligenceAuditRecord extends QueryResultRow {
+  workspaceId: string;
+  auditId: string;
+  batchId: string;
+  target: "rosie-dazzlers" | "devil-n-dove";
+  action: "dry-run-created" | "approved" | "exported" | "cancelled";
+  occurredAt: Date;
+  fingerprint: string;
+  details: string;
+  payload: Record<string, unknown>;
+}
+
+export interface WorkspaceIntelligenceMutation {
+  moduleKey: IntelligenceModuleKey;
+  expectedServerVersion: number | null;
+  clientUpdatedAt: string;
+  summary: Record<string, unknown>;
+  payload: Record<string, unknown>;
+}
+
+export interface WorkspaceIntelligenceMutationResult {
+  status: "applied" | "conflict";
+  record: WorkspaceIntelligenceModuleRecord;
+}
+
+function intelligenceRow(
+  row: {
+    workspace_id: string;
+    module_key: IntelligenceModuleKey;
+    server_version: string | number;
+    client_updated_at: Date;
+    summary: Record<string, unknown>;
+    payload: Record<string, unknown>;
+    updated_at: Date;
+  }
+): WorkspaceIntelligenceModuleRecord {
+  return {
+    workspaceId: row.workspace_id,
+    moduleKey: row.module_key,
+    serverVersion: Number(row.server_version),
+    clientUpdatedAt: row.client_updated_at,
+    summary: row.summary,
+    payload: row.payload,
+    updatedAt: row.updated_at
+  };
+}
+
+function auditRow(
+  row: {
+    workspace_id: string;
+    audit_id: string;
+    batch_id: string;
+    target: "rosie-dazzlers" | "devil-n-dove";
+    action: "dry-run-created" | "approved" | "exported" | "cancelled";
+    occurred_at: Date;
+    fingerprint: string;
+    details: string;
+    payload: Record<string, unknown>;
+  }
+): WorkspaceIntelligenceAuditRecord {
+  return {
+    workspaceId: row.workspace_id,
+    auditId: row.audit_id,
+    batchId: row.batch_id,
+    target: row.target,
+    action: row.action,
+    occurredAt: row.occurred_at,
+    fingerprint: row.fingerprint,
+    details: row.details,
+    payload: row.payload
+  };
+}
+
+export async function listWorkspaceIntelligence(
+  userId: string,
+  workspaceId: string
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, workspaceId);
+
+    const [modules, audit] = await Promise.all([
+      client.query<{
+        workspace_id: string;
+        module_key: IntelligenceModuleKey;
+        server_version: string;
+        client_updated_at: Date;
+        summary: Record<string, unknown>;
+        payload: Record<string, unknown>;
+        updated_at: Date;
+      }>(
+        `
+          select
+            workspace_id,
+            module_key,
+            server_version,
+            client_updated_at,
+            summary,
+            payload,
+            updated_at
+          from app.workspace_intelligence_modules
+          where workspace_id = $1
+          order by module_key
+        `,
+        [workspaceId]
+      ),
+      client.query<{
+        workspace_id: string;
+        audit_id: string;
+        batch_id: string;
+        target: "rosie-dazzlers" | "devil-n-dove";
+        action: "dry-run-created" | "approved" | "exported" | "cancelled";
+        occurred_at: Date;
+        fingerprint: string;
+        details: string;
+        payload: Record<string, unknown>;
+      }>(
+        `
+          select
+            workspace_id,
+            audit_id,
+            batch_id,
+            target,
+            action,
+            occurred_at,
+            fingerprint,
+            details,
+            payload
+          from app.workspace_intelligence_audit
+          where workspace_id = $1
+          order by occurred_at desc
+          limit 250
+        `,
+        [workspaceId]
+      )
+    ]);
+
+    return {
+      modules: modules.rows.map(intelligenceRow),
+      audit: audit.rows.map(auditRow)
+    };
+  });
+}
+
+export async function listIntelligenceOverviewForUser(userId: string) {
+  const workspaces = await listWorkspacesForUser(userId);
+  const overviews = [];
+
+  for (const workspace of workspaces) {
+    const state = await listWorkspaceIntelligence(userId, workspace.id);
+    overviews.push({
+      workspace,
+      modules: state.modules,
+      audit: state.audit
+    });
+  }
+
+  return overviews;
+}
+
+export async function upsertWorkspaceIntelligenceModule(
+  userId: string,
+  workspaceId: string,
+  mutation: WorkspaceIntelligenceMutation
+): Promise<WorkspaceIntelligenceMutationResult> {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, workspaceId);
+
+    const existing = await client.query<{
+      workspace_id: string;
+      module_key: IntelligenceModuleKey;
+      server_version: string;
+      client_updated_at: Date;
+      summary: Record<string, unknown>;
+      payload: Record<string, unknown>;
+      updated_at: Date;
+    }>(
+      `
+        select
+          workspace_id,
+          module_key,
+          server_version,
+          client_updated_at,
+          summary,
+          payload,
+          updated_at
+        from app.workspace_intelligence_modules
+        where workspace_id = $1
+          and module_key = $2
+        for update
+      `,
+      [workspaceId, mutation.moduleKey]
+    );
+
+    const current = existing.rows[0] ?? null;
+    const currentVersion = current ? Number(current.server_version) : null;
+
+    if (
+      currentVersion !== null &&
+      mutation.expectedServerVersion !== currentVersion
+    ) {
+      return {
+        status: "conflict",
+        record: intelligenceRow(current)
+      };
+    }
+
+    if (
+      currentVersion === null &&
+      mutation.expectedServerVersion !== null
+    ) {
+      throw new Error("intelligence_version_missing");
+    }
+
+    if (current) {
+      const result = await client.query<{
+        workspace_id: string;
+        module_key: IntelligenceModuleKey;
+        server_version: string;
+        client_updated_at: Date;
+        summary: Record<string, unknown>;
+        payload: Record<string, unknown>;
+        updated_at: Date;
+      }>(
+        `
+          update app.workspace_intelligence_modules
+          set
+            client_updated_at = $3,
+            summary = $4::jsonb,
+            payload = $5::jsonb,
+            server_version = server_version + 1,
+            updated_at = now()
+          where workspace_id = $1
+            and module_key = $2
+          returning
+            workspace_id,
+            module_key,
+            server_version,
+            client_updated_at,
+            summary,
+            payload,
+            updated_at
+        `,
+        [
+          workspaceId,
+          mutation.moduleKey,
+          mutation.clientUpdatedAt,
+          JSON.stringify(mutation.summary),
+          JSON.stringify(mutation.payload)
+        ]
+      );
+
+      return {
+        status: "applied",
+        record: intelligenceRow(result.rows[0])
+      };
+    }
+
+    const result = await client.query<{
+      workspace_id: string;
+      module_key: IntelligenceModuleKey;
+      server_version: string;
+      client_updated_at: Date;
+      summary: Record<string, unknown>;
+      payload: Record<string, unknown>;
+      updated_at: Date;
+    }>(
+      `
+        insert into app.workspace_intelligence_modules (
+          workspace_id,
+          module_key,
+          client_updated_at,
+          summary,
+          payload
+        )
+        values ($1, $2, $3, $4::jsonb, $5::jsonb)
+        returning
+          workspace_id,
+          module_key,
+          server_version,
+          client_updated_at,
+          summary,
+          payload,
+          updated_at
+      `,
+      [
+        workspaceId,
+        mutation.moduleKey,
+        mutation.clientUpdatedAt,
+        JSON.stringify(mutation.summary),
+        JSON.stringify(mutation.payload)
+      ]
+    );
+
+    return {
+      status: "applied",
+      record: intelligenceRow(result.rows[0])
+    };
+  });
+}
+
+export async function appendWorkspaceIntelligenceAudit(
+  userId: string,
+  workspaceId: string,
+  entries: Array<{
+    auditId: string;
+    batchId: string;
+    target: "rosie-dazzlers" | "devil-n-dove";
+    action: "dry-run-created" | "approved" | "exported" | "cancelled";
+    occurredAt: string;
+    fingerprint: string;
+    details: string;
+    payload: Record<string, unknown>;
+  }>
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, workspaceId);
+
+    let inserted = 0;
+
+    for (const entry of entries.slice(0, 250)) {
+      const result = await client.query(
+        `
+          insert into app.workspace_intelligence_audit (
+            workspace_id,
+            audit_id,
+            batch_id,
+            target,
+            action,
+            occurred_at,
+            fingerprint,
+            details,
+            payload
+          )
+          values ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb)
+          on conflict (workspace_id, audit_id) do nothing
+        `,
+        [
+          workspaceId,
+          entry.auditId,
+          entry.batchId,
+          entry.target,
+          entry.action,
+          entry.occurredAt,
+          entry.fingerprint,
+          entry.details.slice(0, 1000),
+          JSON.stringify(entry.payload)
+        ]
+      );
+      inserted += result.rowCount ?? 0;
+    }
+
+    return inserted;
+  });
+}
+
 export async function bootstrapFirstOwner(userId: string) {
   const client = await appPool.connect();
 

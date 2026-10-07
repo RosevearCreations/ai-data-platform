@@ -6,6 +6,7 @@ import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import { ScheduledJobsPanel } from "./ScheduledJobsPanel";
 import { WorkspaceSessionPanel } from "./WorkspaceSessionPanel";
+import { IntelligenceContinuityPanel } from "./IntelligenceContinuityPanel";
 import { WorkspaceSyncPanel } from "./WorkspaceSyncPanel";
 import {
   detectRepeatingRecords,
@@ -258,21 +259,21 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">020</span>
+        <span className="build">021</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Persist workspace data across devices</strong>
+        <strong>Preserve intelligence, history and audit evidence</strong>
         <p>
-          Build 020 synchronizes saved scrapers, templates and reviewed datasets
-          through workspace-scoped PostgreSQL storage while retaining a durable
-          offline queue, explicit conflict handling and non-destructive legacy
-          migration.
+          Build 021 synchronizes history, competitive intelligence, supplier
+          staging, movie review state, scheduled-job evidence and business
+          integration audit state into authenticated workspace storage.
         </p>
       </section>
 
       <WorkspaceSessionPanel />
       <WorkspaceSyncPanel />
+      <IntelligenceContinuityPanel />
 
       {!selectedRecordGroup ? (
         <>

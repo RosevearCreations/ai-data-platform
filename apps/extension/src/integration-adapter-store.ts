@@ -6,6 +6,8 @@ import type {
   BusinessIntegrationTarget
 } from "./types";
 
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+
 const STORAGE_KEY = "ai-data-platform-business-integrations-v1";
 const STATE_ID = "ai-data-platform-business-integrations";
 const MAX_BATCHES = 30;
@@ -47,6 +49,7 @@ export async function loadBusinessIntegrationState() {
 
 async function writeState(state: BusinessIntegrationState) {
   await chrome.storage.local.set({ [STORAGE_KEY]: state });
+  scheduleIntelligenceSyncAttempt();
 }
 
 function auditEntry(
