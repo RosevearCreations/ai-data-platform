@@ -259,16 +259,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">023</span>
+        <span className="build">024</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Diagnose recipe drift and repair selectors safely</strong>
+        <strong>Capture barcodes from mobile without weakening review</strong>
         <p>
-          Build 023 tracks structural and field-level selector drift, proposes
-          bounded deterministic repairs with sample evidence, optionally explains
-          candidate rankings with AI, and creates a new revision only after
-          explicit operator approval.
+          Build 024 adds authenticated web-based UPC/EAN/GTIN camera/manual
+          intake for Personal movies and Devil n Dove supplier staging. Camera
+          use is explicit, offline captures queue locally, and every handoff
+          remains review-gated.
         </p>
       </section>
 

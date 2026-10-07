@@ -1572,3 +1572,18 @@ The repair engine never writes a selector automatically. AI is optional and cann
 No manual environment setup is required.
 
 Next: Build 024 — Mobile Barcode & Camera Intake.
+
+
+## Build 024 — Mobile Barcode & Camera Intake
+
+Date: 2026-10-07
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Delivered authenticated mobile web capture, explicit on-demand camera scanning, manual fallback, UPC/EAN/GTIN normalization/checksum evidence, workspace RLS persistence, Personal movie and Devil n Dove supplier matching, duplicate detection, review-gated handoffs, bounded offline local queue and privacy/permission verification.
+
+Barcode approval intentionally does not overwrite Personal ownership fields or Devil n Dove internal inventory fields. The capture is a reviewed identifier handoff for the existing lookup/staging workflow.
+
+No new environment variables are required. Camera users must grant the browser's one-time/site camera permission on each mobile device. Manual entry requires no permission.
+
+Next: Build 025 — Source Policy Registry & Crawl Governance.

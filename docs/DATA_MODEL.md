@@ -412,3 +412,34 @@ Key fields:
 - created_at
 
 The runtime role can SELECT and INSERT only. Approval/export/cancellation evidence cannot be rewritten or deleted through the normal application runtime.
+
+
+## Build 024 mobile barcode intake
+
+### workspace_barcode_captures
+
+Workspace-scoped reviewed identifier handoffs.
+
+Key fields:
+
+- workspace_id
+- capture_id
+- target: personal-movie | devil-supplier
+- raw_code
+- normalized_code
+- barcode_format
+- capture_method: camera | manual
+- captured_at
+- provenance
+- match_status: exact | unmatched | duplicate
+- match_payload
+- review_status: pending | approved | rejected
+- reviewed_at
+- created_at
+- updated_at
+
+The canonical normalized code left-pads UPC-A/EAN-13/EAN-8/GTIN-14 digits to GTIN-14 for equality comparison. UPC-E is retained with an explicit upce: prefix rather than being incorrectly expanded without a verified conversion.
+
+Match payloads are intentionally bounded. Personal movie exact matches expose only record ID/title/year, not ownership notes or shelf data. Devil n Dove exact matches expose staging item ID, supplier/product name, supplier SKU and staging review status, not internal inventory/location/business fields.
+
+The normal application runtime role has SELECT/INSERT/UPDATE but no DELETE grant on barcode captures. RLS requires workspace membership.

@@ -1,13 +1,21 @@
 import { auth } from "../lib/auth";
 import {
+  barcodeProvenance,
+  matchBarcodeAgainstIntelligence,
+  normalizeBarcode
+} from "../lib/barcodes";
+import {
   appendWorkspaceIntelligenceAudit,
   applyWorkspaceSyncMutation,
+  createWorkspaceBarcodeCapture,
   closeDatabasePools,
   createExtensionSession,
+  listWorkspaceBarcodeCaptures,
   listWorkspaceIntelligence,
   listWorkspaceSyncRecords,
   listWorkspacesForUser,
   resolveExtensionSession,
+  reviewWorkspaceBarcodeCapture,
   revokeExtensionSession,
   upsertWorkspaceIntelligenceModule,
   withUserDatabase
@@ -497,8 +505,186 @@ async function main() {
     throw new Error("Build 021 audit table unexpectedly allowed runtime updates.");
   }
 
+
+  const personalWorkspace = ownerWorkspaces.find(
+    (workspace) => workspace.slug === "personal"
+  );
+  if (!personalWorkspace) {
+    throw new Error("Build 024 Personal workspace fixture is missing.");
+  }
+
+  const movieUpdatedAt = new Date().toISOString();
+  const movieModule = await upsertWorkspaceIntelligenceModule(
+    ownerId,
+    personalWorkspace.id,
+    {
+      moduleKey: "movie-metadata",
+      expectedServerVersion: null,
+      clientUpdatedAt: movieUpdatedAt,
+      summary: { collection: 1, pending: 0, approved: 0 },
+      payload: {
+        version: 1,
+        id: "personal-movie-metadata-module",
+        createdAt: movieUpdatedAt,
+        updatedAt: movieUpdatedAt,
+        collection: [
+          {
+            version: 1,
+            id: "movie-build024",
+            title: "Build 024 Fixture Movie",
+            year: 2026,
+            upc: "036000291452",
+            externalIds: {
+              imdb: "",
+              tmdb: "",
+              omdb: "",
+              other: ""
+            },
+            ownership: {
+              format: "Blu-ray",
+              shelfLocation: "A1",
+              condition: "Owned",
+              notes: "Must not be overwritten by barcode intake."
+            },
+            metadata: {
+              canonicalTitle: "",
+              releaseYear: null,
+              genres: [],
+              runtimeMinutes: null,
+              posterUrl: "",
+              overview: "",
+              provider: null,
+              providerRecordId: "",
+              sourceUrl: "",
+              retrievedAt: null
+            },
+            createdAt: movieUpdatedAt,
+            updatedAt: movieUpdatedAt
+          }
+        ],
+        matchQueue: []
+      }
+    }
+  );
+
+  if (movieModule.status !== "applied") {
+    throw new Error("Build 024 movie intelligence fixture could not be created.");
+  }
+
+  const normalizedBarcode = normalizeBarcode("036000291452", "upc_a");
+  const captureInput = {
+    workspaceId: personalWorkspace.id,
+    captureId: "24000000-0000-4000-8000-000000000001",
+    target: "personal-movie" as const,
+    rawCode: normalizedBarcode.rawDigits,
+    normalizedCode: normalizedBarcode.normalizedCode,
+    barcodeFormat: normalizedBarcode.format,
+    captureMethod: "manual" as const,
+    capturedAt: new Date().toISOString(),
+    provenance: barcodeProvenance({
+      workspaceId: personalWorkspace.id,
+      target: "personal-movie",
+      rawCode: normalizedBarcode.rawDigits,
+      formatHint: "upc_a",
+      captureMethod: "manual",
+      capturedAt: new Date().toISOString(),
+      offlineQueuedAt: null
+    }),
+    matchSuggestion: (payload: Record<string, unknown> | null) =>
+      matchBarcodeAgainstIntelligence({
+        target: "personal-movie" as const,
+        normalizedCode: normalizedBarcode.normalizedCode,
+        intelligencePayload: payload
+      })
+  };
+
+  const capture = await createWorkspaceBarcodeCapture(ownerId, captureInput);
+  if (
+    capture.matchStatus !== "exact" ||
+    capture.matchPayload.recordId !== "movie-build024" ||
+    capture.reviewStatus !== "pending"
+  ) {
+    throw new Error("Build 024 exact movie barcode matching failed.");
+  }
+
+  const approvedCapture = await reviewWorkspaceBarcodeCapture(ownerId, {
+    workspaceId: personalWorkspace.id,
+    captureId: capture.captureId,
+    reviewStatus: "approved"
+  });
+  if (approvedCapture.reviewStatus !== "approved") {
+    throw new Error("Build 024 barcode review approval failed.");
+  }
+
+  const duplicateCapture = await createWorkspaceBarcodeCapture(ownerId, {
+    ...captureInput,
+    captureId: "24000000-0000-4000-8000-000000000002"
+  });
+  if (duplicateCapture.matchStatus !== "duplicate") {
+    throw new Error("Build 024 duplicate barcode detection failed.");
+  }
+
+  let duplicateApprovalBlocked = false;
+  try {
+    await reviewWorkspaceBarcodeCapture(ownerId, {
+      workspaceId: personalWorkspace.id,
+      captureId: duplicateCapture.captureId,
+      reviewStatus: "approved"
+    });
+  } catch (error) {
+    duplicateApprovalBlocked =
+      error instanceof Error &&
+      error.message === "duplicate_barcode_cannot_be_approved";
+  }
+  if (!duplicateApprovalBlocked) {
+    throw new Error("Build 024 duplicate approval was not blocked.");
+  }
+
+  const barcodeCaptures = await listWorkspaceBarcodeCaptures(
+    ownerId,
+    personalWorkspace.id
+  );
+  if (
+    !barcodeCaptures.some((item) => item.captureId === capture.captureId) ||
+    !barcodeCaptures.some(
+      (item) => item.captureId === duplicateCapture.captureId
+    )
+  ) {
+    throw new Error("Build 024 durable barcode retrieval failed.");
+  }
+
+  let barcodeIsolationDenied = false;
+  try {
+    await listWorkspaceBarcodeCaptures(restrictedId, personalWorkspace.id);
+  } catch (error) {
+    barcodeIsolationDenied =
+      error instanceof Error &&
+      error.message === "workspace_access_denied";
+  }
+  if (!barcodeIsolationDenied) {
+    throw new Error(
+      "Build 024 RLS isolation failed: restricted user reached barcode captures."
+    );
+  }
+
+  let targetMismatchDenied = false;
+  try {
+    await createWorkspaceBarcodeCapture(ownerId, {
+      ...captureInput,
+      captureId: "24000000-0000-4000-8000-000000000003",
+      target: "devil-supplier"
+    });
+  } catch (error) {
+    targetMismatchDenied =
+      error instanceof Error &&
+      error.message === "barcode_target_workspace_mismatch";
+  }
+  if (!targetMismatchDenied) {
+    throw new Error("Build 024 target/workspace mismatch was not blocked.");
+  }
+
   console.log(
-    "Build 002/019/020/021 database isolation, workspace sync and intelligence continuity acceptance passed."
+    "Build 002/019/020/021/024 database isolation, barcode review and workspace-target acceptance passed."
   );
 }
 

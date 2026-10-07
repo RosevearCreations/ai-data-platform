@@ -236,3 +236,19 @@ Build 011 generates export files locally from the extension review workspace.
 - operator approval is required before a new recipe revision is created;
 - repair revisions invalidate scheduled-job revision pins until explicit re-review;
 - the workbench does not bypass login, paywall, CAPTCHA or technical access controls.
+
+
+## Build 024 mobile camera and barcode security
+
+- camera permission is requested only by the Start camera button;
+- no camera permission is required for manual entry;
+- camera tracks stop after successful scan, explicit Stop camera and component cleanup;
+- no continuous background camera mode exists;
+- no geolocation API is requested or stored;
+- only barcode digits/format, target, method and timestamps are sent;
+- offline captures stay in bounded local device storage until explicitly sent;
+- barcode targets are restricted to the authorized Personal or Devil n Dove workspace slug/type;
+- RLS prevents another account from reading or reviewing workspace captures;
+- duplicate captures cannot be approved;
+- match payloads exclude Personal ownership notes and Devil n Dove internal inventory fields;
+- approval records a handoff and never directly mutates ownership/inventory data.

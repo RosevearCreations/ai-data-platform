@@ -240,3 +240,35 @@ Manual browser acceptance for a repair:
 10. confirm the saved scraper revision increments;
 11. confirm any scheduled job pinned to the previous revision shows blocked/stale status;
 12. complete **Refresh + re-review** only after reviewing the repaired recipe/source policy.
+
+
+## Build 024 mobile barcode intake
+
+Migration:
+
+- db/migrations/0005_mobile_barcode_intake.sql
+
+Web entrypoint:
+
+- /capture
+- /api/barcode-captures
+
+No new environment variables are required.
+
+CI runs apps/web/scripts/verify-barcode-intake.ts. It verifies UPC/EAN canonical equivalence, valid/invalid GTIN checksums, input bounds, provenance privacy, exact Personal movie matching, exact Devil n Dove supplier-SKU matching, exclusion of user-owned/internal fields from match payloads, one explicit getUserMedia acquisition path, camera track stop behavior and absence of geolocation calls.
+
+The database isolation suite also verifies exact movie barcode matching, approval, duplicate detection, duplicate approval blocking, durable retrieval, RLS denial and target/workspace mismatch rejection.
+
+Camera permission walkthrough:
+
+1. Sign in to the deployed AI Data Platform from the phone.
+2. Open /capture.
+3. Select the intended target.
+4. Press Start camera.
+5. Allow camera access when the browser prompts.
+6. Scan the barcode.
+7. Review the result and approve/reject.
+8. Press Stop camera if ending before a scan.
+9. If permission was denied, use browser Site settings > Camera > Allow for the AI Data Platform site, reload, and try again.
+
+Manual entry requires no camera permission.

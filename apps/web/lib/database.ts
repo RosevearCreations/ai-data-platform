@@ -1075,6 +1075,366 @@ export async function appendWorkspaceIntelligenceAudit(
   });
 }
 
+
+export interface WorkspaceBarcodeCapture extends QueryResultRow {
+  workspaceId: string;
+  captureId: string;
+  target: "personal-movie" | "devil-supplier";
+  rawCode: string;
+  normalizedCode: string;
+  barcodeFormat: string;
+  captureMethod: "camera" | "manual";
+  capturedAt: Date;
+  provenance: Record<string, unknown>;
+  matchStatus: "exact" | "unmatched" | "duplicate";
+  matchPayload: Record<string, unknown>;
+  reviewStatus: "pending" | "approved" | "rejected";
+  reviewedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+function barcodeCaptureRow(row: {
+  workspace_id: string;
+  capture_id: string;
+  target: "personal-movie" | "devil-supplier";
+  raw_code: string;
+  normalized_code: string;
+  barcode_format: string;
+  capture_method: "camera" | "manual";
+  captured_at: Date;
+  provenance: Record<string, unknown>;
+  match_status: "exact" | "unmatched" | "duplicate";
+  match_payload: Record<string, unknown>;
+  review_status: "pending" | "approved" | "rejected";
+  reviewed_at: Date | null;
+  created_at: Date;
+  updated_at: Date;
+}): WorkspaceBarcodeCapture {
+  return {
+    workspaceId: row.workspace_id,
+    captureId: row.capture_id,
+    target: row.target,
+    rawCode: row.raw_code,
+    normalizedCode: row.normalized_code,
+    barcodeFormat: row.barcode_format,
+    captureMethod: row.capture_method,
+    capturedAt: row.captured_at,
+    provenance: row.provenance,
+    matchStatus: row.match_status,
+    matchPayload: row.match_payload,
+    reviewStatus: row.review_status,
+    reviewedAt: row.reviewed_at,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+
+async function requireBarcodeTargetWorkspace(
+  client: PoolClient,
+  workspaceId: string,
+  target: "personal-movie" | "devil-supplier"
+) {
+  await requireWorkspaceAccess(client, workspaceId);
+
+  const result = await client.query<{ slug: string; type: "business" | "personal" }>(
+    "select slug, type from app.workspaces where id = $1",
+    [workspaceId]
+  );
+  const workspace = result.rows[0];
+
+  const allowed =
+    target === "personal-movie"
+      ? workspace?.slug === "personal" && workspace.type === "personal"
+      : workspace?.slug === "devilndove" && workspace.type === "business";
+
+  if (!allowed) {
+    throw new Error("barcode_target_workspace_mismatch");
+  }
+}
+
+export async function listWorkspaceBarcodeCaptures(
+  userId: string,
+  workspaceId: string
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, workspaceId);
+    const result = await client.query<{
+      workspace_id: string;
+      capture_id: string;
+      target: "personal-movie" | "devil-supplier";
+      raw_code: string;
+      normalized_code: string;
+      barcode_format: string;
+      capture_method: "camera" | "manual";
+      captured_at: Date;
+      provenance: Record<string, unknown>;
+      match_status: "exact" | "unmatched" | "duplicate";
+      match_payload: Record<string, unknown>;
+      review_status: "pending" | "approved" | "rejected";
+      reviewed_at: Date | null;
+      created_at: Date;
+      updated_at: Date;
+    }>(
+      `
+        select
+          workspace_id,
+          capture_id,
+          target,
+          raw_code,
+          normalized_code,
+          barcode_format,
+          capture_method,
+          captured_at,
+          provenance,
+          match_status,
+          match_payload,
+          review_status,
+          reviewed_at,
+          created_at,
+          updated_at
+        from app.workspace_barcode_captures
+        where workspace_id = $1
+        order by created_at desc
+        limit 250
+      `,
+      [workspaceId]
+    );
+
+    return result.rows.map(barcodeCaptureRow);
+  });
+}
+
+export async function createWorkspaceBarcodeCapture(
+  userId: string,
+  input: {
+    workspaceId: string;
+    captureId: string;
+    target: "personal-movie" | "devil-supplier";
+    rawCode: string;
+    normalizedCode: string;
+    barcodeFormat: string;
+    captureMethod: "camera" | "manual";
+    capturedAt: string;
+    provenance: Record<string, unknown>;
+    matchSuggestion: (payload: Record<string, unknown> | null) => {
+      status: "exact" | "unmatched";
+      payload: Record<string, unknown>;
+    };
+  }
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireBarcodeTargetWorkspace(
+      client,
+      input.workspaceId,
+      input.target
+    );
+
+    const duplicate = await client.query<{ capture_id: string }>(
+      `
+        select capture_id
+        from app.workspace_barcode_captures
+        where workspace_id = $1
+          and target = $2
+          and normalized_code = $3
+          and review_status <> 'rejected'
+        order by created_at desc
+        limit 1
+      `,
+      [input.workspaceId, input.target, input.normalizedCode]
+    );
+
+    let matchStatus: "exact" | "unmatched" | "duplicate";
+    let matchPayload: Record<string, unknown>;
+
+    if (duplicate.rows[0]) {
+      matchStatus = "duplicate";
+      matchPayload = {
+        reason:
+          "This normalized barcode already exists in the active intake queue.",
+        duplicateCaptureId: duplicate.rows[0].capture_id
+      };
+    } else {
+      const moduleKey =
+        input.target === "personal-movie"
+          ? "movie-metadata"
+          : "devil-supplier";
+      const intelligence = await client.query<{
+        payload: Record<string, unknown>;
+      }>(
+        `
+          select payload
+          from app.workspace_intelligence_modules
+          where workspace_id = $1
+            and module_key = $2
+          limit 1
+        `,
+        [input.workspaceId, moduleKey]
+      );
+      const suggestion = input.matchSuggestion(
+        intelligence.rows[0]?.payload ?? null
+      );
+      matchStatus = suggestion.status;
+      matchPayload = suggestion.payload;
+    }
+
+    const result = await client.query<{
+      workspace_id: string;
+      capture_id: string;
+      target: "personal-movie" | "devil-supplier";
+      raw_code: string;
+      normalized_code: string;
+      barcode_format: string;
+      capture_method: "camera" | "manual";
+      captured_at: Date;
+      provenance: Record<string, unknown>;
+      match_status: "exact" | "unmatched" | "duplicate";
+      match_payload: Record<string, unknown>;
+      review_status: "pending" | "approved" | "rejected";
+      reviewed_at: Date | null;
+      created_at: Date;
+      updated_at: Date;
+    }>(
+      `
+        insert into app.workspace_barcode_captures (
+          workspace_id,
+          capture_id,
+          target,
+          raw_code,
+          normalized_code,
+          barcode_format,
+          capture_method,
+          captured_at,
+          provenance,
+          match_status,
+          match_payload
+        )
+        values ($1, $2, $3, $4, $5, $6, $7, $8, $9::jsonb, $10, $11::jsonb)
+        returning
+          workspace_id,
+          capture_id,
+          target,
+          raw_code,
+          normalized_code,
+          barcode_format,
+          capture_method,
+          captured_at,
+          provenance,
+          match_status,
+          match_payload,
+          review_status,
+          reviewed_at,
+          created_at,
+          updated_at
+      `,
+      [
+        input.workspaceId,
+        input.captureId,
+        input.target,
+        input.rawCode,
+        input.normalizedCode,
+        input.barcodeFormat,
+        input.captureMethod,
+        input.capturedAt,
+        JSON.stringify(input.provenance),
+        matchStatus,
+        JSON.stringify(matchPayload)
+      ]
+    );
+
+    return barcodeCaptureRow(result.rows[0]);
+  });
+}
+
+export async function reviewWorkspaceBarcodeCapture(
+  userId: string,
+  input: {
+    workspaceId: string;
+    captureId: string;
+    reviewStatus: "approved" | "rejected";
+  }
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, input.workspaceId);
+
+    const current = await client.query<{
+      target: "personal-movie" | "devil-supplier";
+      match_status: "exact" | "unmatched" | "duplicate";
+    }>(
+      `
+        select target, match_status
+        from app.workspace_barcode_captures
+        where workspace_id = $1
+          and capture_id = $2
+        for update
+      `,
+      [input.workspaceId, input.captureId]
+    );
+
+    if (!current.rows[0]) {
+      throw new Error("barcode_capture_not_found");
+    }
+    await requireBarcodeTargetWorkspace(
+      client,
+      input.workspaceId,
+      current.rows[0].target
+    );
+    if (
+      input.reviewStatus === "approved" &&
+      current.rows[0].match_status === "duplicate"
+    ) {
+      throw new Error("duplicate_barcode_cannot_be_approved");
+    }
+
+    const result = await client.query<{
+      workspace_id: string;
+      capture_id: string;
+      target: "personal-movie" | "devil-supplier";
+      raw_code: string;
+      normalized_code: string;
+      barcode_format: string;
+      capture_method: "camera" | "manual";
+      captured_at: Date;
+      provenance: Record<string, unknown>;
+      match_status: "exact" | "unmatched" | "duplicate";
+      match_payload: Record<string, unknown>;
+      review_status: "pending" | "approved" | "rejected";
+      reviewed_at: Date | null;
+      created_at: Date;
+      updated_at: Date;
+    }>(
+      `
+        update app.workspace_barcode_captures
+        set
+          review_status = $3,
+          reviewed_at = now(),
+          updated_at = now()
+        where workspace_id = $1
+          and capture_id = $2
+        returning
+          workspace_id,
+          capture_id,
+          target,
+          raw_code,
+          normalized_code,
+          barcode_format,
+          capture_method,
+          captured_at,
+          provenance,
+          match_status,
+          match_payload,
+          review_status,
+          reviewed_at,
+          created_at,
+          updated_at
+      `,
+      [input.workspaceId, input.captureId, input.reviewStatus]
+    );
+
+    return barcodeCaptureRow(result.rows[0]);
+  });
+}
+
 export async function bootstrapFirstOwner(userId: string) {
   const client = await appPool.connect();
 
