@@ -1,4 +1,4 @@
-# Detailed Build Plan — Builds 019–029
+# Detailed Build Plan — Builds 019–030
 
 Date: 2026-10-06
 
@@ -12,11 +12,12 @@ This document is the execution order after Build 018. Each build should be compl
 4. Build 022 — Integration Contract Verification & Consumer Readiness
 5. Build 023 — Advanced Recipe Drift Detection & Repair Workbench
 6. Build 024 — Mobile Barcode & Camera Intake
-7. Build 025 — Remote Execution Provider Abstraction & Cloud Worker Readiness
-8. Build 026 — Controlled Remote Browser Pilot & Egress Policy
-9. Build 027 — Configurable Workspace Types & Domain Profiles
-10. Build 028 — Plugin & Connector SDK Foundation
-11. Build 029 — Production Learning, Cost Review & Roadmap Renewal
+7. Build 025 — Source Policy Registry & Crawl Governance
+8. Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness
+9. Build 027 — Controlled Remote Browser Pilot & Egress Policy
+10. Build 028 — Configurable Workspace Types & Domain Profiles
+11. Build 029 — Plugin & Connector SDK Foundation
+12. Build 030 — Production Learning, Cost Review & Roadmap Renewal
 
 ## Why this order
 
@@ -26,13 +27,15 @@ Build 022 hardens business-system handoffs before enabling live intake.
 
 Builds 023–024 improve day-to-day usability without adding remote infrastructure.
 
-Build 025 proves the remote execution lifecycle without provider lock-in or production crawling.
+Build 025 establishes a durable source-policy registry so local scheduling and future remote execution share the same reviewed governance evidence and fail-closed rules.
 
-Build 026 is the first point where a real remote-browser provider and credentials are intentionally required.
+Build 026 proves the remote execution lifecycle without provider lock-in or production crawling.
+
+Build 027 is the first point where a real remote-browser provider and credentials are intentionally required.
 
 Builds 027–028 generalize the product only after the original three workspace use cases and remote boundary are proven.
 
-Build 029 stops the roadmap from becoming assumption-driven and requires measured evidence before defining another long queue.
+Build 030 stops the roadmap from becoming assumption-driven and requires measured evidence before defining another long queue.
 
 ## Build 019 detailed plan
 
@@ -175,6 +178,26 @@ No camera permission is needed if manual barcode entry is used.
 
 ## Build 025 detailed plan
 
+Status: COMPLETE (2026-10-07).
+
+Implementation sequence:
+
+1. Add a workspace-scoped source policy registry keyed by normalized HTTP/HTTPS origin.
+2. Record source name, factual collection purpose and preferred collection method.
+3. Record public/authorized status, applicable terms review and robots/crawl evidence.
+4. Block restricted/private crawler use and any login/paywall/CAPTCHA/technical access-control bypass.
+5. Add conservative minimum delay plus page/record budgets and review expiry.
+6. Add approved, review-required and blocked lifecycle states.
+7. Add monotonic revisions and a deterministic policy fingerprint.
+8. Synchronize registry state through the existing Build 021 workspace intelligence/RLS path.
+9. Pin Build 017 scheduled jobs to the exact registry policy ID/revision/fingerprint and fail closed on drift/expiry/blocking.
+10. Add pure governance acceptance tests and database persistence/isolation verification.
+11. Bump the extension to 0.25.0 and document the operator review workflow.
+
+No external account, credential or environment variable is required. Human review of each real source's applicable terms/API conditions and crawl rules remains intentional.
+
+## Build 026 detailed plan
+
 Implementation sequence:
 
 1. Define provider-neutral remote worker interface.
@@ -190,7 +213,7 @@ Implementation sequence:
 
 No provider account or user credential setup is required.
 
-## Build 026 detailed plan
+## Build 027 detailed plan
 
 Before implementation, the user must choose the provider from the options presented by the build based on current price, browser support, region, reliability and security. The implementation should research current options at that time rather than hard-code today's assumption.
 
@@ -202,7 +225,7 @@ Provider credential walkthrough:
 4. Limit its permissions/scope if the provider supports this.
 5. Do not paste the key into ChatGPT or commit it to GitHub.
 6. Open the production hosting environment used by the AI Data Platform web/backend.
-7. Add the secret under the exact variable name given by Build 026.
+7. Add the secret under the exact variable name given by Build 027.
 8. Save it as an encrypted production secret.
 9. Add a separate non-production key/secret if the provider supports environment separation.
 10. Return to AI Data Platform Admin → Remote Execution.
@@ -215,7 +238,7 @@ Provider credential walkthrough:
 
 Proxy credentials, if ever needed, follow the same rule: provider dashboard → dedicated limited credential → encrypted production secret → never paste into chat.
 
-## Build 027 detailed plan
+## Build 028 detailed plan
 
 Implementation sequence:
 
@@ -232,7 +255,7 @@ Implementation sequence:
 
 No setup is required. The user supplies a name/purpose only when actually creating a new workspace.
 
-## Build 028 detailed plan
+## Build 029 detailed plan
 
 Implementation sequence:
 
@@ -249,20 +272,21 @@ Implementation sequence:
 
 No external account is required for the foundation build.
 
-## Build 029 detailed plan
+## Build 030 detailed plan
 
 Implementation sequence:
 
-1. Collect platform operational evidence from Builds 019–028.
+1. Collect platform operational evidence from Builds 019–029.
 2. Review synchronization reliability and storage.
 3. Review recipe-repair outcomes.
 4. Review mobile capture outcomes.
-5. Review remote worker costs and failure rates.
-6. Review integration/consumer readiness.
-7. Review additional workspace/profile adoption.
-8. Review connector SDK readiness.
-9. Review security/permissions/retention.
-10. Produce the next prioritized build sequence with evidence gaps and explicit user decisions.
+5. Review source-policy adoption, expiry/staleness and blocked-run outcomes.
+6. Review remote worker costs and failure rates.
+7. Review integration/consumer readiness.
+8. Review additional workspace/profile adoption.
+9. Review connector SDK readiness.
+10. Review security/permissions/retention.
+11. Produce the next prioritized build sequence with evidence gaps and explicit user decisions.
 
 No infrastructure setup is required. The user may be asked to choose among business priorities after the evidence report is complete.
 
