@@ -88,6 +88,29 @@ export function validateSourcePolicy(
       "Scheduled jobs cannot require bypassing login, paywall, CAPTCHA or technical access controls."
     );
   }
+  if (
+    !policy.registryPolicyId ||
+    !policy.registryPolicyFingerprint ||
+    !Number.isInteger(policy.registryPolicyRevision) ||
+    Number(policy.registryPolicyRevision) < 1
+  ) {
+    reasons.push(
+      "A current Build 025 source-policy registry revision is required before scheduling."
+    );
+  }
+  if (
+    !policy.reviewExpiresAt ||
+    !Number.isFinite(Date.parse(policy.reviewExpiresAt)) ||
+    Date.parse(policy.reviewExpiresAt) <= Date.now()
+  ) {
+    reasons.push("The source-policy review has expired.");
+  }
+  if (
+    typeof policy.minimumDelayMs !== "number" ||
+    policy.minimumDelayMs < 500
+  ) {
+    reasons.push("The registered minimum crawl delay must be at least 500 ms.");
+  }
 
   return {
     allowed: reasons.length === 0,
