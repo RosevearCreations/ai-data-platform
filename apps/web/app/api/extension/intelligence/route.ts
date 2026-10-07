@@ -178,7 +178,7 @@ export async function POST(request: Request) {
     return [{
       auditId: entry.id,
       batchId: entry.batchId,
-      target,
+      target: target as "rosie-dazzlers" | "devil-n-dove",
       action: action as "dry-run-created" | "approved" | "exported" | "cancelled",
       occurredAt: entry.occurredAt,
       fingerprint: entry.fingerprint,
