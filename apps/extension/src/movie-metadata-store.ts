@@ -14,6 +14,8 @@ import type {
 } from "./types";
 import type { MovieReviewedRow, TabularRow } from "./movie-metadata-engine";
 
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+
 const STORAGE_KEY = "ai-data-platform-personal-movie-metadata-v1";
 const DATASET_ID = "personal-movie-metadata-module";
 const MAX_COLLECTION = 7500;
@@ -46,6 +48,7 @@ function normalizeDataset(value: unknown): MovieMetadataModuleDataset | null {
 
 async function writeDataset(dataset: MovieMetadataModuleDataset) {
   await chrome.storage.local.set({ [STORAGE_KEY]: dataset });
+  scheduleIntelligenceSyncAttempt();
 }
 
 export async function loadMovieMetadataModule() {

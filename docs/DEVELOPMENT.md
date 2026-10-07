@@ -188,3 +188,12 @@ Normal extension behavior:
 8. Existing unscoped pre-Build-019 records are migrated only through **Copy legacy records into this workspace**; originals remain local.
 
 No manual database/dashboard setup is expected.
+
+
+## Build 021 persistent intelligence
+
+No new environment variables are required. Migration 0004_intelligence_continuity.sql creates the module-state and append-only audit tables.
+
+The extension automatically attempts intelligence synchronization after local module writes and after authenticated connection. The Build 021 panel provides a manual retry, conflict resolution and explicit adoption of legacy unscoped history/scheduled jobs.
+
+The web application exposes /intelligence for authenticated read-only review of module summaries, pending-review counts and recent append-only integration audit evidence.

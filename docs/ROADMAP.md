@@ -387,25 +387,29 @@ None. Build 020 uses the existing Build 019 authenticated bridge and PostgreSQL 
 
 ## Build 021 — Persistent Intelligence, History & Audit Continuity
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-06).
 
-Goal: synchronize the higher-value local intelligence modules so history, schedules, approvals and audit evidence survive browser/device loss and can be reviewed from the web application.
+Goal: synchronize higher-value local intelligence so history, schedules, approvals and audit evidence survive browser/device loss and remain reviewable from the web application.
 
-Deliverables:
+Delivered:
 
 - workspace persistence for Build 013 historical series/change queues;
-- workspace persistence for Build 014 Rosie competitive-intelligence series;
+- workspace persistence for Build 014 Rosie competitive intelligence;
 - workspace persistence for Build 015 Devil n Dove supplier staging and price observations;
-- workspace persistence for Build 016 movie metadata review state where appropriate to Personal workspace;
-- workspace persistence for Build 017 scheduled-job definitions and run history;
-- workspace persistence for Build 018 integration batches and audit events;
-- append-only audit semantics for approvals/exports/cancellations;
-- local cache reconciliation after sign-in;
-- bounded retention policies mirrored server-side;
-- web-app read views for history, pending review and audit status;
-- workspace RLS coverage and migration verification.
+- Personal-workspace persistence for Build 016 movie metadata review state;
+- workspace persistence for Build 017 scheduled jobs and run history;
+- target/workspace persistence for Build 018 integration batches;
+- append-only server audit rows for dry-run, approval, export and cancellation evidence;
+- module-level optimistic concurrency and explicit conflict handling;
+- fresh-device pull across every authorized workspace;
+- automatic reconciliation after extension sign-in;
+- server-side enforcement of the existing local retention caps;
+- explicit adoption for pre-workspace historical series and scheduled jobs;
+- authenticated read-only web view at /intelligence;
+- RLS on module state and audit evidence;
+- extension version 0.21.0.
 
-Acceptance: critical history and audit state remains available after browser reinstall or device change, local and server state reconcile predictably, and business approval evidence is not dependent on one browser profile.
+Acceptance: critical intelligence survives device/browser loss, authorized fresh devices can restore it after sign-in, stale concurrent module writes become explicit conflicts, append-only approval evidence cannot be updated by the runtime role, and unauthorized users cannot read another workspace's intelligence.
 
 Manual input gate:
 

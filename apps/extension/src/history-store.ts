@@ -1,4 +1,6 @@
 import { captureHistoricalVersion, historicalSeriesKey } from "./history-engine";
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+import { getActiveWorkspaceId } from "./workspace-session";
 import type { HistoricalCaptureRow } from "./history-engine";
 import type {
   HistoricalCaptureSummary,
@@ -44,20 +46,36 @@ function normalizeStored(value: unknown): HistoricalSeries[] {
   });
 }
 
-export async function loadHistoricalSeries() {
+async function loadAllHistoricalSeries() {
   const stored = await chrome.storage.local.get(STORAGE_KEY);
-  return normalizeStored(stored[STORAGE_KEY]).sort((left, right) =>
-    right.updatedAt.localeCompare(left.updatedAt)
-  );
+  return normalizeStored(stored[STORAGE_KEY]);
 }
 
-async function writeHistoricalSeries(series: HistoricalSeries[]) {
+export async function loadHistoricalSeries() {
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) return [];
+
+  return (await loadAllHistoricalSeries())
+    .filter((item) => item.workspaceId === workspaceId)
+    .sort((left, right) => right.updatedAt.localeCompare(left.updatedAt))
+    .slice(0, MAX_SERIES);
+}
+
+async function writeHistoricalSeries(
+  workspaceId: string,
+  series: HistoricalSeries[]
+) {
+  const all = await loadAllHistoricalSeries();
   const stored: StoredHistory = {
     version: 1,
-    series: series.slice(0, MAX_SERIES)
+    series: [
+      ...series.slice(0, MAX_SERIES),
+      ...all.filter((item) => item.workspaceId !== workspaceId)
+    ]
   };
 
   await chrome.storage.local.set({ [STORAGE_KEY]: stored });
+  scheduleIntelligenceSyncAttempt();
 }
 
 export async function findHistoricalSeries(
@@ -80,6 +98,10 @@ export async function saveHistoricalCapture(input: {
   series: HistoricalSeries;
   summary: HistoricalCaptureSummary;
 }> {
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) {
+    throw new Error("Select an authenticated workspace before saving historical captures.");
+  }
   const all = await loadHistoricalSeries();
   const key = historicalSeriesKey(
     input.recipeName,
@@ -88,12 +110,13 @@ export async function saveHistoricalCapture(input: {
   );
   const current = all.find((item) => item.seriesKey === key) ?? null;
   const result = captureHistoricalVersion(current, input);
+  result.series.workspaceId = workspaceId;
   const next = [
     result.series,
     ...all.filter((item) => item.seriesKey !== key)
   ];
 
-  await writeHistoricalSeries(next);
+  await writeHistoricalSeries(workspaceId, next);
   return result;
 }
 
@@ -102,6 +125,8 @@ export async function updateHistoricalReviewStatus(
   changeId: string,
   reviewStatus: HistoryReviewStatus
 ): Promise<HistoricalSeries> {
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) throw new Error("Select an authenticated workspace first.");
   const all = await loadHistoricalSeries();
   const index = all.findIndex((series) => series.id === seriesId);
 
@@ -128,11 +153,16 @@ export async function updateHistoricalReviewStatus(
   const next = [...all];
   next[index] = updated;
 
-  await writeHistoricalSeries(next);
+  await writeHistoricalSeries(workspaceId, next);
   return updated;
 }
 
 export async function deleteHistoricalSeries(seriesId: string) {
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) throw new Error("Select an authenticated workspace first.");
   const all = await loadHistoricalSeries();
-  await writeHistoricalSeries(all.filter((series) => series.id !== seriesId));
+  await writeHistoricalSeries(
+    workspaceId,
+    all.filter((series) => series.id !== seriesId)
+  );
 }

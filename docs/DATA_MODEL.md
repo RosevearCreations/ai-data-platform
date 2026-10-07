@@ -373,3 +373,42 @@ The primary key is `(workspace_id, dataset_id)`. The synchronized payload is lim
 ### Build 020 RLS rule
 
 Both concrete synchronization tables enable PostgreSQL row-level security and grant the runtime role only membership-scoped read/write access. Selection, creation, update and deletion all require a matching `app.workspace_members` row for the transaction's `app.user_id`.
+
+
+## Build 021 concrete intelligence continuity tables
+
+### workspace_intelligence_modules
+
+One bounded versioned snapshot per workspace/module.
+
+Key fields:
+
+- workspace_id
+- module_key: history | rosie-competitive | devil-supplier | movie-metadata | scheduled-jobs | business-integrations
+- client_updated_at
+- server_version
+- summary
+- payload
+- created_at
+- updated_at
+
+The primary key is (workspace_id, module_key). Server-side API validation mirrors local retention limits: history 30 series/20 snapshots/1000 changes, Rosie 75 series, supplier staging 500 items/24 price observations, movie collection 7500 plus 1000 match-queue entries, scheduled jobs 50 with 30 attempts and 100 notifications, integration state 30 batches/250 local audit entries.
+
+### workspace_intelligence_audit
+
+Append-only integration evidence.
+
+Key fields:
+
+- workspace_id
+- audit_id
+- batch_id
+- target
+- action
+- occurred_at
+- fingerprint
+- details
+- payload
+- created_at
+
+The runtime role can SELECT and INSERT only. Approval/export/cancellation evidence cannot be rewritten or deleted through the normal application runtime.

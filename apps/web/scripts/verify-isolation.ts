@@ -1,12 +1,16 @@
 import { auth } from "../lib/auth";
 import {
+  appendWorkspaceIntelligenceAudit,
   applyWorkspaceSyncMutation,
   closeDatabasePools,
   createExtensionSession,
+  listWorkspaceIntelligence,
   listWorkspaceSyncRecords,
   listWorkspacesForUser,
   resolveExtensionSession,
-  revokeExtensionSession
+  revokeExtensionSession,
+  upsertWorkspaceIntelligenceModule,
+  withUserDatabase
 } from "../lib/database";
 
 async function createUser(name: string, email: string) {
@@ -336,8 +340,165 @@ async function main() {
     throw new Error("Build 020 tombstone synchronization failed.");
   }
 
+  const intelligenceUpdatedAt = new Date().toISOString();
+  const createdIntelligence = await upsertWorkspaceIntelligenceModule(
+    ownerId,
+    syncWorkspaceId,
+    {
+      moduleKey: "history",
+      expectedServerVersion: null,
+      clientUpdatedAt: intelligenceUpdatedAt,
+      summary: { series: 1, pendingReview: 1 },
+      payload: {
+        version: 1,
+        series: [
+          {
+            version: 1,
+            id: "build021-history",
+            workspaceId: syncWorkspaceId,
+            seriesKey: "build021::history",
+            recipeName: "Build 021",
+            sourceUrl: "https://example.test/history",
+            sourceScope: "https://example.test/history",
+            identityKey: "id",
+            createdAt: intelligenceUpdatedAt,
+            updatedAt: intelligenceUpdatedAt,
+            latestVersion: 1,
+            snapshots: [],
+            changes: [],
+            lastSummary: {
+              version: 1,
+              capturedAt: intelligenceUpdatedAt,
+              records: 0,
+              added: 0,
+              removed: 0,
+              changed: 0,
+              unchanged: 0,
+              pendingQueue: 0
+            }
+          }
+        ]
+      }
+    }
+  );
+
+  if (
+    createdIntelligence.status !== "applied" ||
+    createdIntelligence.record.serverVersion !== 1
+  ) {
+    throw new Error("Build 021 intelligence module creation failed.");
+  }
+
+  const intelligenceConflict = await upsertWorkspaceIntelligenceModule(
+    ownerId,
+    syncWorkspaceId,
+    {
+      moduleKey: "history",
+      expectedServerVersion: 99,
+      clientUpdatedAt: new Date().toISOString(),
+      summary: { series: 2 },
+      payload: { version: 1, series: [] }
+    }
+  );
+
+  if (
+    intelligenceConflict.status !== "conflict" ||
+    intelligenceConflict.record.serverVersion !== 1
+  ) {
+    throw new Error("Build 021 intelligence concurrency conflict was not detected.");
+  }
+
+  const updatedIntelligence = await upsertWorkspaceIntelligenceModule(
+    ownerId,
+    syncWorkspaceId,
+    {
+      moduleKey: "history",
+      expectedServerVersion: 1,
+      clientUpdatedAt: new Date().toISOString(),
+      summary: { series: 1, pendingReview: 0 },
+      payload: { version: 1, series: [] }
+    }
+  );
+
+  if (
+    updatedIntelligence.status !== "applied" ||
+    updatedIntelligence.record.serverVersion !== 2
+  ) {
+    throw new Error("Build 021 intelligence module versioning failed.");
+  }
+
+  const auditEntry = {
+    auditId: "build021-audit",
+    batchId: "build021-batch",
+    target: "rosie-dazzlers" as const,
+    action: "approved" as const,
+    occurredAt: new Date().toISOString(),
+    fingerprint: "build021-fingerprint",
+    details: "Build 021 append-only audit acceptance.",
+    payload: { version: 1, evidence: "approved" }
+  };
+
+  const insertedAudit = await appendWorkspaceIntelligenceAudit(
+    ownerId,
+    syncWorkspaceId,
+    [auditEntry]
+  );
+  const duplicateAudit = await appendWorkspaceIntelligenceAudit(
+    ownerId,
+    syncWorkspaceId,
+    [auditEntry]
+  );
+
+  if (insertedAudit !== 1 || duplicateAudit !== 0) {
+    throw new Error("Build 021 append-only audit idempotency failed.");
+  }
+
+  const intelligenceState = await listWorkspaceIntelligence(
+    ownerId,
+    syncWorkspaceId
+  );
+  if (
+    !intelligenceState.modules.some(
+      (item) => item.moduleKey === "history" && item.serverVersion === 2
+    ) ||
+    !intelligenceState.audit.some(
+      (item) => item.auditId === auditEntry.auditId
+    )
+  ) {
+    throw new Error("Build 021 durable intelligence retrieval failed.");
+  }
+
+  let intelligenceDenied = false;
+  try {
+    await listWorkspaceIntelligence(restrictedId, syncWorkspaceId);
+  } catch (error) {
+    intelligenceDenied =
+      error instanceof Error &&
+      error.message === "workspace_access_denied";
+  }
+  if (!intelligenceDenied) {
+    throw new Error(
+      "Build 021 RLS isolation failed: restricted user reached intelligence state."
+    );
+  }
+
+  let auditImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.workspace_intelligence_audit set details = 'changed' where workspace_id = $1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    auditImmutable = true;
+  }
+  if (!auditImmutable) {
+    throw new Error("Build 021 audit table unexpectedly allowed runtime updates.");
+  }
+
   console.log(
-    "Build 002/019/020 database isolation, extension-session and workspace-sync acceptance passed."
+    "Build 002/019/020/021 database isolation, workspace sync and intelligence continuity acceptance passed."
   );
 }
 

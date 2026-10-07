@@ -203,3 +203,16 @@ Reason: the extension must remain usable during temporary network loss, but cros
 Decision: existing local records with no workspace ID are not automatically attributed to the currently active workspace. The user must explicitly copy them into a selected authenticated workspace; the original unscoped local record remains retained.
 
 Reason: Build 019 could not prove which historical workspace owned an unscoped record. Silent assignment would create a cross-workspace provenance risk.
+
+
+## D0028 — Persist stable intelligence modules as versioned workspace snapshots
+
+Decision: Builds 013–018 use a shared workspace intelligence snapshot boundary rather than six separate backend persistence implementations. Module payload contracts remain domain-specific and bounded; server versions provide optimistic concurrency.
+
+Reason: the existing modules already have explicit local schemas and retention limits. A shared durable envelope minimizes schema duplication while preserving workspace isolation and conflict visibility.
+
+## D0029 — Business approval audit is append-only outside mutable module state
+
+Decision: integration audit entries are persisted both inside the bounded local module snapshot and in a dedicated append-only server table. Runtime code has no update/delete privilege on the append-only table.
+
+Reason: approval, export and cancellation evidence must survive browser loss and must not be erasable by replacing the latest module snapshot.

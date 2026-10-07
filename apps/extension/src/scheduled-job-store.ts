@@ -1,3 +1,4 @@
+import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
 import {
   compareScheduledJobRun,
   nextScheduledRunAt,
@@ -60,6 +61,7 @@ export async function loadScheduledJobsDataset() {
 async function writeDataset(dataset: ScheduledJobsDataset) {
   await chrome.storage.local.set({ [STORAGE_KEY]: dataset });
   await refreshScheduledJobBadge(dataset);
+  scheduleIntelligenceSyncAttempt();
 }
 
 function alarmName(jobId: string) {
@@ -139,6 +141,7 @@ export async function createScheduledJob(input: {
   const job: ScheduledExtractionJob = {
     version: 1,
     id: "scheduled-job-" + crypto.randomUUID(),
+    workspaceId: input.savedScraper.workspaceId ?? null,
     name: input.savedScraper.name,
     savedScraperId: input.savedScraper.id,
     savedScraperRevision: input.savedScraper.revision,

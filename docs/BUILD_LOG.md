@@ -1519,3 +1519,26 @@ None expected.
 ### Next
 
 Build 021 — Persistent Intelligence, History & Audit Continuity.
+
+
+## Build 021 — Persistent Intelligence, History & Audit Continuity
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Delivered migration 0004_intelligence_continuity.sql, workspace module snapshots for Builds 013–018, module optimistic concurrency, automatic sign-in reconciliation, fresh-device recovery, explicit legacy history/job adoption, bounded server retention validation, append-only integration audit persistence, authenticated /intelligence web read views, RLS verification, and extension version 0.21.0.
+
+Security/continuity rules:
+
+- module records are workspace-scoped through RLS;
+- fixed-domain modules map only to their known authorized workspace slug;
+- integration state is split by target before persistence;
+- old unscoped history/jobs remain local until explicitly adopted;
+- audit INSERT is idempotent by workspace/audit ID;
+- runtime audit UPDATE/DELETE is not granted;
+- conflicts never silently overwrite local or server module state.
+
+No manual setup is expected.
+
+Next: Build 022 — Integration Contract Verification & Consumer Readiness.
