@@ -708,6 +708,7 @@ export type IntelligenceModuleKey =
   | "devil-supplier"
   | "movie-metadata"
   | "scheduled-jobs"
+  | "source-policy"
   | "business-integrations";
 
 export interface WorkspaceIntelligenceModuleRecord extends QueryResultRow {
