@@ -252,3 +252,18 @@ Build 011 generates export files locally from the extension review workspace.
 - duplicate captures cannot be approved;
 - match payloads exclude Personal ownership notes and Devil n Dove internal inventory fields;
 - approval records a handoff and never directly mutates ownership/inventory data.
+
+
+## Build 025 source policy security controls
+
+- source policies are workspace-scoped and synchronized through existing authenticated/RLS-protected intelligence persistence;
+- origins are normalized to HTTP/HTTPS origins before registry matching;
+- public webpage automation requires resolved robots/crawl review; disallowed or unknown blocks execution;
+- restricted/private sensitivity blocks crawler use;
+- login, paywall, CAPTCHA, ban or technical access-control bypass is never an approvable mode;
+- approved policies expire and require renewed review;
+- a minimum request delay floor and bounded page/record budgets are stored with policy evidence;
+- every material policy/status revision receives a new revision/fingerprint;
+- scheduled jobs pin the exact policy ID/revision/fingerprint and fail closed after policy drift;
+- re-enabling a paused job revalidates the current registry policy;
+- future remote workers must inherit, not override, the approved source policy.
