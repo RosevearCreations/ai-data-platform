@@ -16,6 +16,7 @@ const MODULES = new Set<IntelligenceModuleKey>([
   "devil-supplier",
   "movie-metadata",
   "scheduled-jobs",
+  "source-policy",
   "business-integrations"
 ]);
 
@@ -79,6 +80,9 @@ function withinBounds(moduleKey: IntelligenceModuleKey, payload: Record<string, 
     return jobs.length <= 50 &&
       arrayLength(payload, "notifications") <= 100 &&
       jobs.every((job) => arrayLength(job, "attempts") <= 30);
+  }
+  if (moduleKey === "source-policy") {
+    return arrayLength(payload, "entries") <= 150;
   }
   return arrayLength(payload, "batches") <= 30 &&
     arrayLength(payload, "audit") <= 250;
