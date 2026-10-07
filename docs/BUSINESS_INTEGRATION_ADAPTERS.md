@@ -129,3 +129,44 @@ An approved package has this top-level shape:
 ```
 
 The consuming application is responsible for authenticating its import surface, verifying the contract/version, applying its own authorization and validation rules, recording its own write audit, and rejecting unsupported or stale packages.
+
+
+## Build 022 contract verification metadata
+
+Approved v1 packages now also require:
+
+- schemaId;
+- packageId;
+- replayKey;
+- sourceDatasetUpdatedAt;
+- expiresAt.
+
+The canonical fingerprint covers target, adapter contract, contract version, batch ID, approval timestamp, source dataset timestamp and the ordered create/update operations including source evidence.
+
+A package is rejected when:
+
+- package or contract version is unsupported;
+- schema ID/adapter contract does not match target;
+- fingerprint, packageId or replayKey does not recompute;
+- integration key prefix is wrong;
+- a values object contains a non-allowlisted field;
+- source evidence is invalid;
+- packageId is already consumed;
+- package is expired;
+- source dataset is stale;
+- generation time is materially in the future.
+
+Default freshness limits are 30 days for source data and 24 hours for package handoff.
+
+Machine-readable schemas:
+
+- packages/contracts/schemas/rosie-dazzlers.competitive-intelligence.v1.schema.json
+- packages/contracts/schemas/devil-n-dove.supplier-inventory.v1.schema.json
+
+Conformance fixtures:
+
+- packages/contracts/fixtures/rosie-valid-v1.json
+- packages/contracts/fixtures/devil-valid-v1.json
+- packages/contracts/fixtures/unsupported-version.json
+
+See docs/INTEGRATION_CONSUMER_READINESS.md for receiver implementation and live-activation gates.

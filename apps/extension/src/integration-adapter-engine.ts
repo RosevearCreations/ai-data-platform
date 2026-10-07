@@ -1,3 +1,11 @@
+import {
+  INTEGRATION_CONTRACTS,
+  INTEGRATION_PACKAGE_TTL_MS,
+  businessIntegrationFingerprint,
+  businessIntegrationPackageId,
+  businessIntegrationReplayKey,
+  validateBusinessIntegrationPackage
+} from "./integration-contract-validator";
 import type {
   BusinessIntegrationBatch,
   BusinessIntegrationCandidate,
@@ -344,25 +352,58 @@ export function buildApprovedIntegrationPackage(
       values: { ...diff.payload },
       sourceEvidence: { ...diff.sourceEvidence }
     }));
-  const fingerprint = hashText(
-    stableJson({
-      batchId: batch.id,
-      approvedAt: batch.approvedAt,
-      operations
-    })
-  );
-
-  return {
-    version: 1,
+  const contract = INTEGRATION_CONTRACTS[batch.target];
+  const fingerprint = businessIntegrationFingerprint({
     target: batch.target,
     adapterContract: batch.adapterContract,
     contractVersion: 1,
     batchId: batch.id,
     approvedAt: batch.approvedAt,
+    sourceDatasetUpdatedAt: batch.sourceDatasetUpdatedAt,
+    operations
+  });
+  const packageId = businessIntegrationPackageId({
+    target: batch.target,
+    batchId: batch.id,
+    approvedAt: batch.approvedAt,
+    fingerprint
+  });
+  const replayKey = businessIntegrationReplayKey({
+    target: batch.target,
+    packageId,
+    fingerprint
+  });
+  const integrationPackage: BusinessIntegrationPackage = {
+    version: 1,
+    schemaId: contract.schemaId,
+    target: batch.target,
+    adapterContract: batch.adapterContract,
+    contractVersion: 1,
+    packageId,
+    replayKey,
+    batchId: batch.id,
+    approvedAt: batch.approvedAt,
+    sourceDatasetUpdatedAt: batch.sourceDatasetUpdatedAt,
     generatedAt,
+    expiresAt: new Date(
+      new Date(generatedAt).getTime() + INTEGRATION_PACKAGE_TTL_MS
+    ).toISOString(),
     fingerprint,
     operations
   };
+  const verification = validateBusinessIntegrationPackage(
+    integrationPackage
+  );
+  if (!verification.valid) {
+    throw new Error(
+      "Generated integration package failed contract verification: " +
+        verification.code +
+        " — " +
+        verification.errors.join(" ")
+    );
+  }
+
+  return integrationPackage;
 }
 
 export function integrationPackageBlob(

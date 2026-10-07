@@ -1118,24 +1118,60 @@ export interface BusinessIntegrationState {
   audit: BusinessIntegrationAuditEntry[];
 }
 
+export interface BusinessIntegrationOperation {
+  action: "create" | "update";
+  integrationKey: string;
+  values: Record<string, string | number | boolean | null>;
+  sourceEvidence: {
+    sourceUrl: string;
+    retrievedAt: string;
+  };
+}
+
 export interface BusinessIntegrationPackage {
   version: 1;
+  schemaId: string;
   target: BusinessIntegrationTarget;
   adapterContract: string;
   contractVersion: 1;
+  packageId: string;
+  replayKey: string;
   batchId: string;
   approvedAt: string;
+  sourceDatasetUpdatedAt: string;
   generatedAt: string;
+  expiresAt: string;
   fingerprint: string;
-  operations: Array<{
-    action: "create" | "update";
-    integrationKey: string;
-    values: Record<string, string | number | boolean | null>;
-    sourceEvidence: {
-      sourceUrl: string;
-      retrievedAt: string;
-    };
-  }>;
+  operations: BusinessIntegrationOperation[];
+}
+
+export type BusinessIntegrationValidationCode =
+  | "valid"
+  | "invalid-json"
+  | "invalid-shape"
+  | "unsupported-version"
+  | "wrong-contract"
+  | "wrong-schema"
+  | "invalid-package-id"
+  | "invalid-replay-key"
+  | "fingerprint-mismatch"
+  | "duplicate"
+  | "stale"
+  | "expired"
+  | "future-dated"
+  | "unexpected-field"
+  | "invalid-operation"
+  | "invalid-evidence";
+
+export interface BusinessIntegrationValidationResult {
+  valid: boolean;
+  code: BusinessIntegrationValidationCode;
+  errors: string[];
+  warnings: string[];
+  packageId: string;
+  replayKey: string;
+  fingerprint: string;
+  target: BusinessIntegrationTarget | null;
 }
 
 

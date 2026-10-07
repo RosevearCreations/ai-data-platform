@@ -197,3 +197,22 @@ No new environment variables are required. Migration 0004_intelligence_continuit
 The extension automatically attempts intelligence synchronization after local module writes and after authenticated connection. The Build 021 panel provides a manual retry, conflict resolution and explicit adoption of legacy unscoped history/scheduled jobs.
 
 The web application exposes /intelligence for authenticated read-only review of module summaries, pending-review counts and recent append-only integration audit evidence.
+
+
+## Build 022 integration contract conformance
+
+No new environment variables or external accounts are required.
+
+Shared contract implementation:
+
+- `packages/contracts/src/index.ts`;
+- `packages/contracts/schemas/rosie-dazzlers.competitive-intelligence.v1.schema.json`;
+- `packages/contracts/schemas/devil-n-dove.supplier-inventory.v1.schema.json`;
+- `packages/contracts/fixtures/*.json`;
+- `packages/contracts/tests/contracts.test.mjs`.
+
+The extension's Business-system integrations panel can run the same validation rules against an exported JSON package using **Build 022 consumer simulation**. Accepted package IDs are stored only in a local test replay registry so a second submission proves duplicate rejection. **Clear simulation replay registry** resets that test state.
+
+A production business-app receiver must not reuse the simulation registry. It must maintain its own durable consumed-package registry and audit log.
+
+No live business-system receiver should be configured until the consuming repository implements the checklist in `docs/INTEGRATION_CONSUMER_READINESS.md`.

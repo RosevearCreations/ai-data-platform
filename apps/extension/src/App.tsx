@@ -259,15 +259,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">021</span>
+        <span className="build">022</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Preserve intelligence, history and audit evidence</strong>
+        <strong>Verify integration contracts before any business-system intake</strong>
         <p>
-          Build 021 synchronizes history, competitive intelligence, supplier
-          staging, movie review state, scheduled-job evidence and business
-          integration audit state into authenticated workspace storage.
+          Build 022 publishes machine-readable v1 Rosie Dazzlers and Devil n
+          Dove contracts, verifies package identity/fingerprint/freshness, and
+          simulates consumer acceptance and replay rejection without live writes.
         </p>
       </section>
 

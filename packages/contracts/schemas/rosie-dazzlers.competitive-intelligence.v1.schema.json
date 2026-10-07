@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rosevear.ai/contracts/rosie-dazzlers.competitive-intelligence.v1.schema.json",
+  "title": "rosie-dazzlers.competitive-intelligence.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "schemaId",
+    "target",
+    "adapterContract",
+    "contractVersion",
+    "packageId",
+    "replayKey",
+    "batchId",
+    "approvedAt",
+    "sourceDatasetUpdatedAt",
+    "generatedAt",
+    "expiresAt",
+    "fingerprint",
+    "operations"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "schemaId": {
+      "const": "https://rosevear.ai/contracts/rosie-dazzlers.competitive-intelligence.v1.schema.json"
+    },
+    "target": {
+      "const": "rosie-dazzlers"
+    },
+    "adapterContract": {
+      "const": "rosie-dazzlers.competitive-intelligence.v1"
+    },
+    "contractVersion": {
+      "const": 1
+    },
+    "packageId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replayKey": {
+      "type": "string",
+      "minLength": 1
+    },
+    "batchId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approvedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceDatasetUpdatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}$"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "action",
+          "integrationKey",
+          "values",
+          "sourceEvidence"
+        ],
+        "properties": {
+          "action": {
+            "enum": [
+              "create",
+              "update"
+            ]
+          },
+          "integrationKey": {
+            "type": "string",
+            "pattern": "^rosie-competitor::"
+          },
+          "values": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "competitorBusinessName": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "offeringName": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "offeringKind": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "category": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "priceMinimumCad": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "priceMaximumCad": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "priceStartingAt": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "vehicleSize": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "serviceAreas": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "deliveryMode": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "packageContents": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "sourceUrl": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "sourceScope": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              },
+              "retrievedAt": {
+                "type": [
+                  "string",
+                  "number",
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          },
+          "sourceEvidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sourceUrl",
+              "retrievedAt"
+            ],
+            "properties": {
+              "sourceUrl": {
+                "type": "string",
+                "pattern": "^https?://"
+              },
+              "retrievedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
