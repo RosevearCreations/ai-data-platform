@@ -216,3 +216,16 @@ Reason: the existing modules already have explicit local schemas and retention l
 Decision: integration audit entries are persisted both inside the bounded local module snapshot and in a dedicated append-only server table. Runtime code has no update/delete privilege on the append-only table.
 
 Reason: approval, export and cancellation evidence must survive browser loss and must not be erasable by replacing the latest module snapshot.
+
+
+## D0030 — Integration package identity excludes transport time
+
+Decision: package fingerprint/packageId are derived from approved business content and approval/source timestamps, not generatedAt/expiresAt. Re-exporting the same approved batch therefore keeps the same package identity and replay key.
+
+Reason: a repeated export of the same approved decision is a replay from the consumer's perspective and must not gain a new identity merely because it was downloaded again.
+
+## D0031 — Consumer contracts are fail-closed and allowlist-only
+
+Decision: v1 receivers must reject unknown versions, wrong schema IDs/contracts, unexpected fields, invalid evidence, stale/expired packages, fingerprint mismatch and duplicate package IDs. Unknown fields are never ignored into a write path.
+
+Reason: consumer readiness requires deterministic compatibility and prevents future platform fields from silently changing an older business application's mutation semantics.

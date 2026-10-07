@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { loadSupplierInventoryStaging } from "./devil-supplier-store";
+import {
+  clearBusinessIntegrationSimulationRegistry,
+  simulateBusinessIntegrationConsumer
+} from "./integration-contract-validator";
 import { downloadBlob } from "./export-engine";
 import {
   buildApprovedIntegrationPackage,
@@ -23,6 +27,7 @@ import { loadOntarioDetailerDataset } from "./rosie-competitive-store";
 import type {
   BusinessIntegrationBatch,
   BusinessIntegrationState,
+  BusinessIntegrationValidationResult,
   BusinessIntegrationTarget,
   BusinessSystemSnapshot,
   OntarioDetailerDataset,
@@ -45,6 +50,9 @@ export function BusinessIntegrationsPanel() {
   const [approvalChecked, setApprovalChecked] = useState(false);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [verification, setVerification] =
+    useState<BusinessIntegrationValidationResult | null>(null);
+  const [verificationFile, setVerificationFile] = useState("");
 
   async function refresh() {
     const [nextRosie, nextDevil, nextState] = await Promise.all([
@@ -244,6 +252,52 @@ export function BusinessIntegrationsPanel() {
     }
   }
 
+  async function verifyPackageFile(file: File | undefined) {
+    if (!file) return;
+
+    setPending(true);
+    setVerification(null);
+    setVerificationFile(file.name);
+    setMessage(null);
+
+    try {
+      const result = await simulateBusinessIntegrationConsumer(
+        await file.text()
+      );
+      setVerification(result);
+      setMessage(
+        result.valid
+          ? "Non-production consumer simulation accepted this package. Uploading the same package again will prove replay/duplicate rejection."
+          : "Consumer simulation rejected the package: " +
+              result.code +
+              (result.errors.length ? " — " + result.errors.join(" ") : "")
+      );
+    } catch (reason) {
+      setMessage(
+        reason instanceof Error
+          ? reason.message
+          : "Unable to run package verification."
+      );
+    } finally {
+      setPending(false);
+    }
+  }
+
+  async function resetSimulationRegistry() {
+    setPending(true);
+    setMessage(null);
+    try {
+      await clearBusinessIntegrationSimulationRegistry();
+      setVerification(null);
+      setVerificationFile("");
+      setMessage(
+        "Non-production replay registry cleared. No business application data was changed."
+      );
+    } finally {
+      setPending(false);
+    }
+  }
+
   async function cancelBatch(batchId: string) {
     setPending(true);
     setMessage(null);
@@ -268,7 +322,7 @@ export function BusinessIntegrationsPanel() {
     <section className="businessIntegrations">
       <div className="sectionHeader">
         <div>
-          <p className="eyebrow">Build 018</p>
+          <p className="eyebrow">Build 018 → 022</p>
           <h2>Business-system integrations</h2>
         </div>
         <span className="integrationBadge">Approval gate</span>
@@ -567,13 +621,78 @@ export function BusinessIntegrationsPanel() {
         </p>
       )}
 
+      <div className="integrationSnapshot integrationVerifier">
+        <div className="integrationSubheader">
+          <strong>Build 022 consumer simulation</strong>
+          <span>{verificationFile || "no package loaded"}</span>
+        </div>
+        <p>
+          Upload an approved integration package to run the same v1 contract,
+          schema, fingerprint, freshness, expiry and replay checks expected of a
+          future Rosie Dazzlers or Devil n Dove receiver. This simulation never
+          writes either business application.
+        </p>
+        <input
+          accept=".json,application/json"
+          disabled={pending}
+          onChange={(event) =>
+            void verifyPackageFile(event.target.files?.[0])
+          }
+          type="file"
+        />
+        <button
+          disabled={pending}
+          onClick={() => void resetSimulationRegistry()}
+          type="button"
+        >
+          Clear simulation replay registry
+        </button>
+
+        {verification ? (
+          <div
+            className={
+              "integrationVerificationResult " +
+              (verification.valid
+                ? "integrationVerificationValid"
+                : "integrationVerificationInvalid")
+            }
+          >
+            <strong>
+              {verification.valid ? "ACCEPTED" : "REJECTED"} ·{" "}
+              {verification.code}
+            </strong>
+            <small>
+              {verification.packageId || "no package ID"}
+              {verification.fingerprint
+                ? " · fingerprint " + verification.fingerprint
+                : ""}
+            </small>
+            {verification.errors.length ? (
+              <ul>
+                {verification.errors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            ) : null}
+            {verification.warnings.length ? (
+              <ul>
+                {verification.warnings.map((warning) => (
+                  <li key={warning}>{warning}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
       <div className="integrationBoundary">
         <strong>Transport boundary</strong>
         <p>
-          Build 018 exports an approved, versioned adapter package for the
-          business application to consume. It does not invent a production
-          endpoint, store business credentials, or write directly into Rosie
-          Dazzlers or Devil n Dove databases.
+          Build 022 exports and independently verifies an approved v1 package,
+          including stable package/replay identity and freshness metadata. It
+          still does not invent a production endpoint, store business
+          credentials, or write directly into Rosie Dazzlers or Devil n Dove
+          databases.
         </p>
       </div>
 

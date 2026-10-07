@@ -4425,3 +4425,44 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.integrationVerifier {
+  border-color: rgba(126, 231, 135, 0.14);
+  background: rgba(126, 231, 135, 0.025);
+}
+
+.integrationVerificationResult {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.65rem;
+  border-radius: 0.6rem;
+  font-size: 0.56rem;
+}
+
+.integrationVerificationResult strong {
+  font-size: 0.62rem;
+}
+
+.integrationVerificationResult small {
+  color: #8ca19a;
+  overflow-wrap: anywhere;
+}
+
+.integrationVerificationResult ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #9cafaa;
+}
+
+.integrationVerificationValid {
+  border: 1px solid rgba(126, 231, 135, 0.18);
+  background: rgba(126, 231, 135, 0.05);
+  color: #c9f2cf;
+}
+
+.integrationVerificationInvalid {
+  border: 1px solid rgba(255, 151, 151, 0.18);
+  background: rgba(255, 151, 151, 0.045);
+  color: #ffc5c5;
+}

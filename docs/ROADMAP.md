@@ -417,29 +417,40 @@ None expected.
 
 ## Build 022 — Integration Contract Verification & Consumer Readiness
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-07).
 
-Goal: make Build 018 handoffs machine-verifiable and prepare Rosie Dazzlers and Devil n Dove to consume only deliberately supported adapter contracts without guessing endpoints.
+Goal: make Build 018 handoffs independently machine-verifiable and prepare Rosie Dazzlers and Devil n Dove to consume only deliberately supported contracts without guessing endpoints.
 
-Deliverables:
+Delivered:
 
-- JSON Schema or equivalent shared schema for both v1 adapter contracts;
-- package signature/fingerprint verification;
-- replay/duplicate-package detection metadata;
-- stale-package and unsupported-version rejection rules;
-- consumer conformance test fixtures;
-- dry-run package validator in the AI Data Platform;
-- documented authenticated intake requirements for each business application;
-- Rosie Dazzlers consumer-readiness checklist;
-- Devil n Dove consumer-readiness checklist;
-- end-to-end non-production contract simulation;
-- no live write path enabled until the corresponding business application explicitly implements and proves the same contract.
+- executable shared v1 contract definitions in @rosevear/ai-data-contracts;
+- standalone JSON Schema files for Rosie Dazzlers and Devil n Dove;
+- target-specific field allowlists and integration-key prefixes;
+- canonical package fingerprint verification;
+- deterministic packageId and replayKey metadata;
+- 24-hour package handoff expiry;
+- 30-day default source-data freshness policy;
+- future-dated package rejection;
+- duplicate/replay rejection support;
+- unsupported-version rejection;
+- schema/contract mismatch rejection;
+- unexpected-field rejection;
+- invalid source-evidence rejection;
+- valid Rosie and Devil n Dove fixtures;
+- invalid unsupported-version fixture;
+- CI conformance tests for valid, tampered, duplicate, expired, stale and unexpected-field cases;
+- extension package self-verification before export;
+- non-production consumer simulator with local replay registry;
+- exact Rosie Dazzlers consumer-readiness checklist;
+- exact Devil n Dove consumer-readiness checklist;
+- documented authenticated intake requirements and future activation walkthrough;
+- no live receiver URL, credential or production write path enabled.
 
-Acceptance: an approved integration package can be validated independently, duplicate/stale/unsupported packages are rejected deterministically, and each business application has an exact implementation checklist rather than an invented endpoint.
+Acceptance: an approved integration package can be validated independently, duplicate/stale/tampered/unsupported packages are rejected deterministically, and each business app has an exact implementation checklist rather than an invented endpoint.
 
 Manual input gate:
 
-User input is required only when enabling a real business-app intake endpoint. The walkthrough is defined in the detailed plan document and must be performed separately for Rosie Dazzlers and Devil n Dove.
+None for Build 022. User input is required only in a future consumer implementation when a real business-app receiver is deliberately enabled.
 
 ## Build 023 — Advanced Recipe Drift Detection & Repair Workbench
 
