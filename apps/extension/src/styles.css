@@ -4783,3 +4783,223 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+
+.sourcePolicyRegistry {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(94, 200, 170, 0.18);
+  border-radius: 0.9rem;
+  background: rgba(94, 200, 170, 0.025);
+}
+
+.sourcePolicyRegistry h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sourcePolicyBadge {
+  border-radius: 999px;
+  background: rgba(94, 200, 170, 0.11);
+  color: #c9f3e7 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.62rem !important;
+  font-weight: 900 !important;
+}
+
+.sourcePolicyIntro,
+.sourcePolicyEmpty,
+.sourcePolicyWarning,
+.sourcePolicyCaution,
+.sourcePolicyMessage {
+  margin: 0;
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+
+.sourcePolicyIntro,
+.sourcePolicyEmpty {
+  color: #9daeb0;
+}
+
+.sourcePolicyWarning {
+  color: #edb3b3;
+}
+
+.sourcePolicyCaution {
+  color: #e2d2a1;
+}
+
+.sourcePolicyMessage {
+  color: #bfe0c3;
+}
+
+.sourcePolicyEditor,
+.sourcePolicyList article {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.7rem;
+  border: 1px solid rgba(94, 200, 170, 0.11);
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.sourcePolicyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.sourcePolicyEditor label {
+  display: grid;
+  gap: 0.28rem;
+  color: #aebdbe;
+  font-size: 0.59rem;
+}
+
+.sourcePolicyEditor input,
+.sourcePolicyEditor select,
+.sourcePolicyEditor textarea {
+  width: 100%;
+  min-height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.6rem;
+  outline: none;
+  background: #101922;
+  color: #edf6f7;
+  padding: 0 0.55rem;
+}
+
+.sourcePolicyEditor textarea {
+  min-height: 3.6rem;
+  padding: 0.55rem;
+  resize: vertical;
+}
+
+.sourcePolicyOriginRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.sourcePolicyOriginRow button,
+.sourcePolicyActions button {
+  min-height: 2.35rem;
+}
+
+.sourcePolicyChecks {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.6rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.sourcePolicyChecks label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  line-height: 1.42;
+}
+
+.sourcePolicyChecks input[type="checkbox"] {
+  width: auto;
+  min-height: auto;
+  margin-top: 0.12rem;
+}
+
+.sourcePolicySave {
+  min-height: 2.7rem;
+  border: 0;
+  border-radius: 0.7rem;
+  background: #bfe6da;
+  color: #0d1a17;
+  font-weight: 900;
+}
+
+.sourcePolicyListHeader,
+.sourcePolicyTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.sourcePolicyListHeader {
+  color: #b9c7c7;
+  font-size: 0.62rem;
+}
+
+.sourcePolicyList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.sourcePolicyTop > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.sourcePolicyTop strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sourcePolicyState {
+  border-radius: 999px;
+  padding: 0.2rem 0.42rem;
+  font-size: 0.52rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.sourcePolicyState-approved {
+  background: rgba(86, 191, 145, 0.12);
+  color: #bce8d2;
+}
+
+.sourcePolicyState-review {
+  background: rgba(255, 193, 7, 0.12);
+  color: #f0dda3;
+}
+
+.sourcePolicyState-blocked {
+  background: rgba(220, 90, 90, 0.12);
+  color: #efb0b0;
+}
+
+.sourcePolicyOrigin {
+  overflow-wrap: anywhere;
+  color: #abc5bf;
+  font-size: 0.61rem;
+}
+
+.sourcePolicyList small {
+  color: #85999a;
+  font-size: 0.56rem;
+  line-height: 1.45;
+}
+
+.sourcePolicyActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+@media (max-width: 360px) {
+  .sourcePolicyGrid,
+  .sourcePolicyOriginRow {
+    grid-template-columns: 1fr;
+  }
+
+  .sourcePolicyTop,
+  .sourcePolicyListHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
