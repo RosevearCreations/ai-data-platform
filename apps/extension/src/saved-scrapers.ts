@@ -200,34 +200,32 @@ export async function updateSavedScraperCheck(
 ) {
   const workspaceId = await requireActiveWorkspaceId();
   const items = await loadAllSavedScrapers();
-  const now = new Date().toISOString();
-  let updated: SavedScraper | null = null;
+  const target = items.find(
+    (item) => item.id === id && item.workspaceId === workspaceId
+  );
 
-  const next = items.map((item) => {
-    if (item.id !== id || item.workspaceId !== workspaceId) {
-      return item;
-    }
+  if (!target) {
+    return;
+  }
 
-    updated = {
-      ...item,
-      lastCheck: report,
-      updatedAt: now
-    };
-    return updated;
-  });
+  const updated: SavedScraper = {
+    ...target,
+    lastCheck: report,
+    updatedAt: new Date().toISOString()
+  };
+  const next = items.map((item) =>
+    item.id === id && item.workspaceId === workspaceId ? updated : item
+  );
 
   await writeSavedScrapers(next);
-
-  if (updated) {
-    await queueWorkspaceSyncUpsert({
-      workspaceId,
-      resource: "saved-scraper",
-      recordId: updated.id,
-      clientUpdatedAt: updated.updatedAt,
-      payload: JSON.parse(JSON.stringify(updated)) as Record<string, unknown>
-    });
-    scheduleWorkspaceSyncAttempt();
-  }
+  await queueWorkspaceSyncUpsert({
+    workspaceId,
+    resource: "saved-scraper",
+    recordId: updated.id,
+    clientUpdatedAt: updated.updatedAt,
+    payload: JSON.parse(JSON.stringify(updated)) as Record<string, unknown>
+  });
+  scheduleWorkspaceSyncAttempt();
 }
 
 function field(
