@@ -191,3 +191,14 @@ The server normalizes the identifier and compares it against the latest synchron
 Barcode intake is persisted separately from mutable movie/supplier intelligence. Approving a capture marks a reviewed downstream handoff; it does not rewrite the module payload. This avoids cross-device last-write conflicts and preserves movie ownership / Devil n Dove internal fields.
 
 Offline captures are stored in localStorage on the device with a 100-item bound and are not treated as matched/reviewed until explicitly sent to the authenticated server.
+
+
+## Build 025 source policy governance boundary
+
+Build 025 turns source review into a durable workspace-scoped control plane. A registry entry is keyed by authorized workspace plus normalized HTTP/HTTPS origin and records collection method, purpose, terms/robots evidence, access-control rule, sensitivity, bounded delay/page/record budgets, expiry and lifecycle status.
+
+Each saved recurring source is matched by exact workspace and origin. Approved policy state is converted into a scheduled-job review carrying the registry policy ID, revision and stable fingerprint. Job creation, refresh, re-enable and execution compare that pin against the current registry record and fail closed on drift, expiry or blocking.
+
+Registry state synchronizes through the existing authenticated Build 021 intelligence endpoint as the source-policy module. PostgreSQL RLS remains the durable workspace boundary; Build 025 does not create a second authorization system.
+
+This registry is also the governance contract for future remote execution. Build 026 may copy an exact approved policy revision into a remote job, but it may not weaken or infer around the Build 025 restrictions.
