@@ -1,4 +1,9 @@
 import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
+import {
+  evaluateSourcePolicyEntry,
+  normalizeSourcePolicyOrigin,
+  sourcePolicyFingerprint
+} from "./source-policy-governance";
 import { sourceOriginFor } from "./saved-scrapers";
 import {
   getActiveWorkspaceId,
@@ -11,7 +16,6 @@ import type {
   SourcePolicyCollectionMethod,
   SourcePolicyDataSensitivity,
   SourcePolicyEntry,
-  SourcePolicyEvaluation,
   SourcePolicyRegistryDataset,
   SourcePolicyRobotsDecision,
   SourcePolicyStatus
@@ -22,6 +26,12 @@ export const SOURCE_POLICY_STORAGE_KEY =
 
 const DATASET_ID = "ai-data-platform-source-policy-registry";
 const MAX_ENTRIES = 150;
+
+export {
+  evaluateSourcePolicyEntry,
+  normalizeSourcePolicyOrigin,
+  sourcePolicyFingerprint
+} from "./source-policy-governance";
 
 function nowIso() {
   return new Date().toISOString();
@@ -41,61 +51,6 @@ function emptyDataset(): SourcePolicyRegistryDataset {
     updatedAt: now,
     entries: []
   };
-}
-
-export function normalizeSourcePolicyOrigin(value: string) {
-  let url: URL;
-  try {
-    url = new URL(value);
-  } catch {
-    throw new Error("Enter a valid HTTP/HTTPS source URL or origin.");
-  }
-
-  if (url.protocol !== "http:" && url.protocol !== "https:") {
-    throw new Error("Source policy origins must use HTTP or HTTPS.");
-  }
-
-  return url.origin;
-}
-
-function normalizedText(value: string, limit: number) {
-  return value.trim().replace(/\s+/g, " ").slice(0, limit);
-}
-
-function hashText(value: string) {
-  let hash = 2166136261;
-  for (let index = 0; index < value.length; index += 1) {
-    hash ^= value.charCodeAt(index);
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0).toString(16).padStart(8, "0");
-}
-
-export function sourcePolicyFingerprint(
-  policy: Omit<SourcePolicyEntry, "fingerprint">
-) {
-  const canonical = JSON.stringify({
-    workspaceId: policy.workspaceId,
-    origin: policy.origin,
-    displayName: policy.displayName,
-    purpose: policy.purpose,
-    collectionMethod: policy.collectionMethod,
-    publicOrAuthorized: policy.publicOrAuthorized,
-    termsReviewed: policy.termsReviewed,
-    termsUrl: policy.termsUrl,
-    robotsDecision: policy.robotsDecision,
-    robotsUrl: policy.robotsUrl,
-    noAccessControlBypass: policy.noAccessControlBypass,
-    dataSensitivity: policy.dataSensitivity,
-    minimumDelayMs: policy.minimumDelayMs,
-    maxPagesPerRun: policy.maxPagesPerRun,
-    maxRecordsPerRun: policy.maxRecordsPerRun,
-    reviewExpiresAt: policy.reviewExpiresAt,
-    status: policy.status,
-    notes: policy.notes,
-    revision: policy.revision
-  });
-  return "sp1-" + hashText(canonical);
 }
 
 function normalizeDataset(value: unknown): SourcePolicyRegistryDataset | null {
