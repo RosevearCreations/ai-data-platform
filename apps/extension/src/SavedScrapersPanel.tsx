@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { RecipeRepairWorkbench } from "./RecipeRepairWorkbench";
 import { inspectSavedScraperCompatibility } from "./saved-scraper-engine";
 import {
   BUILT_IN_SCRAPER_TEMPLATES,
@@ -7,6 +8,7 @@ import {
   createSavedScraper,
   deleteSavedScraper,
   loadSavedScrapers,
+  rollbackSavedScraperRevision,
   sourceOriginFor,
   updateSavedScraper,
   updateSavedScraperCheck
@@ -126,6 +128,36 @@ export function SavedScrapersPanel({
     }
   }
 
+  async function rollbackRevision(revisionNumber: number) {
+    if (!selected) return;
+    setPending(true);
+    setStatus(null);
+    try {
+      const updated = await rollbackSavedScraperRevision(
+        selected.id,
+        revisionNumber
+      );
+      onApplyRecipe(cloneExtractionRecipe(updated.recipe));
+      setCheck(null);
+      await refresh(updated.id);
+      setStatus(
+        "Rolled back revision " +
+          revisionNumber +
+          " as new revision " +
+          updated.revision +
+          ". Scheduled jobs remain pinned to the prior revision until Refresh + re-review."
+      );
+    } catch (reason) {
+      setStatus(
+        reason instanceof Error
+          ? reason.message
+          : "Unable to roll back the saved scraper."
+      );
+    } finally {
+      setPending(false);
+    }
+  }
+
   async function removeSelected() {
     if (!selected) return;
     setPending(true);
@@ -151,7 +183,7 @@ export function SavedScrapersPanel({
       const injection = {
         target: { tabId: tab.id! },
         func: inspectSavedScraperCompatibility,
-        args: [selected.recipe]
+        args: [selected.recipe, selected.lastCheck]
       } as unknown as Parameters<typeof chrome.scripting.executeScript>[0];
       const results = await chrome.scripting.executeScript(injection);
       const report = results[0]?.result as ScraperCompatibilityReport | undefined;
@@ -178,15 +210,17 @@ export function SavedScrapersPanel({
     <section className="savedScrapers">
       <div className="sectionHeader">
         <div>
-          <p className="eyebrow">Build 012</p>
+          <p className="eyebrow">Build 012 → 023</p>
           <h2>Saved scrapers & templates</h2>
         </div>
         <span className="savedBadge">{items.length} saved</span>
       </div>
 
       <p className="savedIntro">
-        Recipes stay in Chrome local storage. Saved revisions can be loaded again,
-        and selector health can be checked before a repeat extraction.
+        Saved recipes are workspace-persistent with local offline copies. Build
+        023 tracks selector-health trends and structural drift, proposes bounded
+        deterministic repairs, and requires explicit approval before a repair
+        becomes a new revision.
       </p>
 
       {siteMatches.length ? (
@@ -249,13 +283,37 @@ export function SavedScrapersPanel({
                     {[...selected.revisions]
                       .sort((left, right) => right.revision - left.revision)
                       .map((revision) => (
-                        <button
+                        <div
+                          className="savedRevisionRow"
                           key={revision.revision}
-                          onClick={() => onApplyRecipe(cloneExtractionRecipe(revision.recipe))}
-                          type="button"
                         >
-                          Load r{revision.revision} · {new Date(revision.savedAt).toLocaleString()}
-                        </button>
+                          <button
+                            onClick={() =>
+                              onApplyRecipe(
+                                cloneExtractionRecipe(revision.recipe)
+                              )
+                            }
+                            type="button"
+                          >
+                            Load r{revision.revision} ·{" "}
+                            {new Date(revision.savedAt).toLocaleString()}
+                            {revision.compatibility?.status === "healthy"
+                              ? " · known-good"
+                              : ""}
+                            {revision.revisionKind
+                              ? " · " + revision.revisionKind
+                              : ""}
+                          </button>
+                          <button
+                            disabled={pending}
+                            onClick={() =>
+                              void rollbackRevision(revision.revision)
+                            }
+                            type="button"
+                          >
+                            Roll back as new revision
+                          </button>
+                        </div>
                       ))}
                   </div>
                 </details>
@@ -277,8 +335,18 @@ export function SavedScrapersPanel({
             <div className="savedFieldHealth">
               {check.fields.map((field) => (
                 <div key={field.key}>
-                  <span>{field.label}</span>
-                  <strong>{Math.round(field.coverage * 100)}%</strong>
+                  <span>
+                    {field.label}
+                    <small>{field.trend}</small>
+                  </span>
+                  <strong>
+                    {Math.round(field.coverage * 100)}%
+                    {field.previousCoverage !== null
+                      ? " ← " +
+                        Math.round(field.previousCoverage * 100) +
+                        "%"
+                      : ""}
+                  </strong>
                 </div>
               ))}
             </div>
@@ -287,6 +355,19 @@ export function SavedScrapersPanel({
             <ul>{check.warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>
           ) : null}
         </div>
+      ) : null}
+
+      {check && selected && check.issues.length ? (
+        <RecipeRepairWorkbench
+          onApplyRecipe={onApplyRecipe}
+          onRepaired={(updated, message) => {
+            setCheck(null);
+            setStatus(message);
+            void refresh(updated.id);
+          }}
+          report={check}
+          scraper={selected}
+        />
       ) : null}
 
       <div className="savedTemplates">

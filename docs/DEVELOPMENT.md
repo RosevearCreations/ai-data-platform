@@ -216,3 +216,27 @@ The extension's Business-system integrations panel can run the same validation r
 A production business-app receiver must not reuse the simulation registry. It must maintain its own durable consumed-package registry and audit log.
 
 No live business-system receiver should be configured until the consuming repository implements the checklist in `docs/INTEGRATION_CONSUMER_READINESS.md`.
+
+
+## Build 023 recipe repair verification
+
+No new environment variables are required.
+
+The workbench uses the existing optional `AI_GATEWAY_API_KEY` / `AI_SUGGESTION_MODEL` configuration when available. If no AI key is configured, deterministic repair ranking and explanation remain fully usable.
+
+CI now runs `apps/web/scripts/verify-recipe-repair.ts` in addition to the existing AI-suggestion verification. The script verifies bounded repair request parsing, deterministic score ordering, unknown/invented AI candidate IDs being discarded, rejection of AI output containing no allowed candidate IDs, and rejection of empty deterministic candidate sets before any AI request.
+
+Manual browser acceptance for a repair:
+
+1. open the source page for a saved scraper;
+2. run **Check on this page**;
+3. inspect each drift cause, current selector, structural context and sample evidence;
+4. select one or more deterministic candidates;
+5. optionally request **Explain / rank (optional AI)**;
+6. verify AI output only references already displayed candidate IDs;
+7. review the proposed old → new selector list;
+8. tick the explicit approval checkbox;
+9. click **Approve repair revision**;
+10. confirm the saved scraper revision increments;
+11. confirm any scheduled job pinned to the previous revision shows blocked/stale status;
+12. complete **Refresh + re-review** only after reviewing the repaired recipe/source policy.

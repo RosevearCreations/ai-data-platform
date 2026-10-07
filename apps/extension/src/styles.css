@@ -4466,3 +4466,320 @@ h1 {
   background: rgba(255, 151, 151, 0.045);
   color: #ffc5c5;
 }
+
+
+.savedRevisionRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+  align-items: stretch;
+}
+
+.savedRevisionRow button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.savedFieldHealth span {
+  display: grid;
+  gap: 0.08rem;
+}
+
+.savedFieldHealth small {
+  color: #72837e;
+  font-size: 0.48rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.repairWorkbench {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(255, 190, 110, 0.18);
+  border-radius: 0.8rem;
+  background: rgba(255, 190, 110, 0.025);
+}
+
+.repairWorkbenchHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.repairWorkbenchHeader > div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.repairWorkbenchHeader strong {
+  color: #f0dcc4;
+  font-size: 0.75rem;
+}
+
+.repairWorkbenchHeader > span {
+  color: #a58e72;
+  font-size: 0.52rem;
+}
+
+.repairIntro,
+.repairStructuralWarning,
+.repairNoCandidate,
+.repairMessage {
+  margin: 0;
+  font-size: 0.57rem;
+  line-height: 1.5;
+}
+
+.repairIntro {
+  color: #9ca8a4;
+}
+
+.repairStructuralWarning {
+  padding: 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 190, 110, 0.055);
+  color: #d7b98f;
+}
+
+.repairIssues {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.repairIssue {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.014);
+}
+
+.repairIssueTop,
+.repairCandidateHeader,
+.repairCandidateTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.repairIssueTop > div {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.repairIssueTop strong,
+.repairCandidateHeader strong {
+  color: #e7ddd1;
+  font-size: 0.61rem;
+}
+
+.repairIssueTop small {
+  color: #8e9a96;
+  font-size: 0.5rem;
+}
+
+.repairSeverity {
+  border-radius: 999px;
+  padding: 0.18rem 0.34rem;
+  font-size: 0.46rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.repairSeverity-broken {
+  background: rgba(255, 139, 139, 0.1);
+  color: #ffc4c4;
+}
+
+.repairSeverity-warning {
+  background: rgba(255, 202, 113, 0.1);
+  color: #efd09a;
+}
+
+.repairOldEvidence,
+.repairSamples,
+.repairContext {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.repairOldEvidence > span,
+.repairSamples > span,
+.repairContext > span {
+  color: #7f8e89;
+  font-size: 0.5rem;
+  font-weight: 800;
+}
+
+.repairOldEvidence code,
+.repairSamples code,
+.repairContext code,
+.repairApproval code,
+.repairCandidateTop code {
+  display: block;
+  padding: 0.27rem 0.35rem;
+  border-radius: 0.35rem;
+  background: rgba(0, 0, 0, 0.16);
+  color: #b8c8c1;
+  font-size: 0.51rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.repairOldEvidence > small,
+.repairCandidate small {
+  color: #81908b;
+  font-size: 0.5rem;
+}
+
+.repairCandidateHeader button,
+.repairApproveButton {
+  min-height: 2rem;
+  border: 1px solid rgba(255, 190, 110, 0.16);
+  border-radius: 0.5rem;
+  background: rgba(255, 190, 110, 0.055);
+  color: #e0c59e;
+  font-size: 0.52rem;
+  font-weight: 850;
+}
+
+.repairCandidateHeader button:not(:disabled),
+.repairApproveButton:not(:disabled) {
+  cursor: pointer;
+}
+
+.repairCandidates {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.repairCandidate {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  padding: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.repairCandidateSelected {
+  border-color: rgba(126, 231, 135, 0.2);
+  background: rgba(126, 231, 135, 0.035);
+}
+
+.repairCandidate > input {
+  margin-top: 0.12rem;
+}
+
+.repairCandidate > div {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.repairCandidateTop strong {
+  color: #bcd7c3;
+  font-size: 0.52rem;
+  white-space: nowrap;
+}
+
+.repairCandidate ul,
+.repairApproval ul,
+.repairVerificationResult ul {
+  margin: 0;
+  padding-left: 1rem;
+  color: #899b95;
+  font-size: 0.51rem;
+}
+
+.repairAiReason {
+  margin: 0;
+  padding: 0.4rem;
+  border-radius: 0.45rem;
+  background: rgba(125, 177, 255, 0.04);
+  color: #aabdd9;
+  font-size: 0.52rem;
+  line-height: 1.45;
+}
+
+.repairExplanation {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: rgba(125, 177, 255, 0.025);
+}
+
+.repairExplanation strong {
+  color: #b8c9e0;
+  font-size: 0.57rem;
+}
+
+.repairExplanation p,
+.repairExplanation small {
+  margin: 0;
+  color: #8999ad;
+  font-size: 0.51rem;
+  line-height: 1.45;
+}
+
+.repairNoCandidate {
+  color: #b4947d;
+}
+
+.repairApproval {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(126, 231, 135, 0.14);
+  border-radius: 0.65rem;
+  background: rgba(126, 231, 135, 0.025);
+}
+
+.repairApproval > strong {
+  color: #cae7d0;
+  font-size: 0.63rem;
+}
+
+.repairApproval label {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: flex-start;
+  color: #9eb2a4;
+  font-size: 0.55rem;
+  line-height: 1.45;
+}
+
+.repairApproveButton {
+  background: rgba(126, 231, 135, 0.1);
+  color: #d4f1da;
+}
+
+.repairApproveButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.repairMessage {
+  color: #c4dcc9;
+}
+
+@media (max-width: 360px) {
+  .repairWorkbenchHeader,
+  .repairIssueTop,
+  .repairCandidateHeader,
+  .repairCandidateTop {
+    flex-direction: column;
+  }
+
+  .savedRevisionRow {
+    grid-template-columns: 1fr;
+  }
+}

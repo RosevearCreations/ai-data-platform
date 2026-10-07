@@ -221,3 +221,18 @@ Build 011 generates export files locally from the extension review workspace.
 - XLSX is generated as a valid Office Open XML ZIP package rather than by renaming another file type;
 - filenames are sanitized before local download;
 - Build 011 requires no download host permission, backend export service, AI provider or business-system write.
+
+
+## Build 023 repair-workbench security
+
+- repair candidate discovery runs locally in the active page;
+- the workbench does not send the full DOM to the server or model;
+- structural context is limited to tag/class summaries;
+- candidate/sample counts and string lengths are bounded before optional AI use;
+- optional AI is authenticated through the extension workspace session;
+- AI receives only deterministic candidate IDs and cannot introduce a new selector;
+- server sanitization rejects AI rankings for unknown candidate IDs;
+- no repair is applied automatically;
+- operator approval is required before a new recipe revision is created;
+- repair revisions invalidate scheduled-job revision pins until explicit re-review;
+- the workbench does not bypass login, paywall, CAPTCHA or technical access controls.
