@@ -1,5 +1,9 @@
 import { scheduleIntelligenceSyncAttempt } from "./intelligence-sync";
 import {
+  assertCurrentSourcePolicyReview,
+  assertScheduledJobPolicy
+} from "./source-policy-registry";
+import {
   compareScheduledJobRun,
   nextScheduledRunAt,
   retryRunAt,
@@ -119,6 +123,10 @@ export async function createScheduledJob(input: {
   if (!policy.allowed) {
     throw new Error(policy.reasons.join(" "));
   }
+  const registryPolicy = await assertCurrentSourcePolicyReview(
+    input.savedScraper,
+    input.sourcePolicy
+  );
   if (!input.savedScraper.sourceOrigin) {
     throw new Error("The saved scraper needs a valid HTTP/HTTPS source URL before it can be scheduled.");
   }
@@ -163,7 +171,14 @@ export async function createScheduledJob(input: {
     consecutiveFailures: 0,
     schedule: input.schedule,
     limits: {
-      maxRecords: Math.max(1, Math.min(500, Math.round(input.limits.maxRecords))),
+      maxRecords: Math.max(
+        1,
+        Math.min(
+          500,
+          registryPolicy.maxRecordsPerRun,
+          Math.round(input.limits.maxRecords)
+        )
+      ),
       maxRetries: Math.max(0, Math.min(3, Math.round(input.limits.maxRetries))),
       retryDelayMinutes: Math.max(
         5,
@@ -213,6 +228,7 @@ export async function refreshScheduledJobRecipe(input: {
   if (!policy.allowed) {
     throw new Error(policy.reasons.join(" "));
   }
+  await assertCurrentSourcePolicyReview(input.savedScraper, input.sourcePolicy);
 
   const dataset = await loadScheduledJobsDataset();
   const now = nowIso();
@@ -266,6 +282,11 @@ export async function setScheduledJobEnabled(
   enabled: boolean
 ) {
   const dataset = await loadScheduledJobsDataset();
+  const target = dataset.jobs.find((job) => job.id === jobId);
+  if (!target) throw new Error("The scheduled job no longer exists.");
+  if (enabled) {
+    await assertScheduledJobPolicy(target);
+  }
   const now = nowIso();
   let updatedJob: ScheduledExtractionJob | null = null;
 
