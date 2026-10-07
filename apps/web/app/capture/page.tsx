@@ -30,25 +30,33 @@ export default async function CapturePage() {
   }
 
   const workspaces = await listWorkspacesForUser(session.user.id);
-  const targets = workspaces.flatMap((workspace) => {
+  const targets: Array<{
+    target: "personal-movie" | "devil-supplier";
+    workspaceId: string;
+    workspaceName: string;
+    label: string;
+  }> = [];
+
+  for (const workspace of workspaces) {
     if (workspace.slug === "personal" && workspace.type === "personal") {
-      return [{
-        target: "personal-movie" as const,
+      targets.push({
+        target: "personal-movie",
         workspaceId: workspace.id,
         workspaceName: workspace.name,
         label: "Personal movie library"
-      }];
-    }
-    if (workspace.slug === "devilndove" && workspace.type === "business") {
-      return [{
-        target: "devil-supplier" as const,
+      });
+    } else if (
+      workspace.slug === "devilndove" &&
+      workspace.type === "business"
+    ) {
+      targets.push({
+        target: "devil-supplier",
         workspaceId: workspace.id,
         workspaceName: workspace.name,
         label: "Devil n Dove supplier / inventory"
-      }];
+      });
     }
-    return [];
-  });
+  }
 
   return (
     <main className="shell captureShell">
