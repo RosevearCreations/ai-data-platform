@@ -42,6 +42,10 @@ function clampInteger(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, Math.round(value)));
 }
 
+function normalizedText(value: string, limit: number) {
+  return value.trim().replace(/\s+/g, " ").slice(0, limit);
+}
+
 function emptyDataset(): SourcePolicyRegistryDataset {
   const now = nowIso();
   return {
@@ -75,74 +79,6 @@ async function writeRegistry(dataset: SourcePolicyRegistryDataset) {
   await chrome.storage.local.set({ [SOURCE_POLICY_STORAGE_KEY]: dataset });
   scheduleIntelligenceSyncAttempt();
   return dataset;
-}
-
-export function evaluateSourcePolicyEntry(
-  policy: SourcePolicyEntry,
-  at = new Date()
-): SourcePolicyEvaluation {
-  const reasons: string[] = [];
-  const warnings: string[] = [];
-
-  if (policy.status !== "approved") {
-    reasons.push(
-      policy.status === "blocked"
-        ? "This source policy is blocked."
-        : "This source policy still requires review."
-    );
-  }
-  if (!policy.publicOrAuthorized) {
-    reasons.push("The source must be public or explicitly authorized.");
-  }
-  if (!policy.termsReviewed) {
-    reasons.push("Applicable source terms must be reviewed.");
-  }
-  if (!policy.noAccessControlBypass) {
-    reasons.push(
-      "The collection plan must not require bypassing login, paywall, CAPTCHA or technical access controls."
-    );
-  }
-  if (policy.dataSensitivity === "restricted") {
-    reasons.push("Restricted/private data is not approved for crawler collection.");
-  }
-
-  if (policy.collectionMethod === "public-webpage") {
-    if (policy.robotsDecision === "disallowed") {
-      reasons.push("Robots/crawl directives disallow the intended public-webpage crawl.");
-    } else if (policy.robotsDecision === "unknown") {
-      reasons.push("Robots/crawl directives have not been resolved for this webpage source.");
-    }
-  }
-
-  const expires = Date.parse(policy.reviewExpiresAt);
-  if (!Number.isFinite(expires) || expires <= at.getTime()) {
-    reasons.push("The source-policy review has expired.");
-  }
-
-  if (policy.minimumDelayMs < 500) {
-    reasons.push("The minimum crawl delay must be at least 500 ms.");
-  }
-  if (policy.maxPagesPerRun < 1 || policy.maxPagesPerRun > 50) {
-    reasons.push("The page budget must be between 1 and 50 pages per run.");
-  }
-  if (policy.maxRecordsPerRun < 1 || policy.maxRecordsPerRun > 5000) {
-    reasons.push("The record budget must be between 1 and 5,000 records per run.");
-  }
-
-  if (
-    policy.collectionMethod === "public-webpage" &&
-    policy.robotsDecision === "not-applicable"
-  ) {
-    warnings.push(
-      "Robots directives are marked not applicable for a webpage source; confirm that decision before high-volume use."
-    );
-  }
-
-  return {
-    allowed: reasons.length === 0,
-    reasons,
-    warnings
-  };
 }
 
 export async function listWorkspaceSourcePolicies(workspaceId?: string | null) {
