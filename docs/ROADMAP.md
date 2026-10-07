@@ -454,25 +454,38 @@ None for Build 022. User input is required only in a future consumer implementat
 
 ## Build 023 — Advanced Recipe Drift Detection & Repair Workbench
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-07).
 
 Goal: reduce scraper breakage by diagnosing DOM drift and proposing reviewable recipe repairs without allowing AI to silently change operational selectors.
 
-Deliverables:
+Delivered:
 
-- structural fingerprint comparison across saved recipe revisions;
-- field-level selector health trends;
+- structural fingerprints persisted on compatibility reports and archived recipe revisions;
+- bounded compatibility-check history for field health trends;
+- per-field coverage trend labels: new, stable, improved, degraded and broken;
 - broken/degraded cause classification;
-- deterministic nearby-selector candidates;
-- bounded DOM-context capture around failed selectors;
-- optional AI explanation/ranking of deterministic repair candidates;
+- invalid record-selector and record-boundary drift detection;
+- low-record-count and structural-drift detection;
+- invalid/missing field-selector and coverage-drop detection;
+- deterministic nearby record-selector candidates;
+- deterministic nearby field-selector candidates;
+- bounded structural context containing tag/class structure only;
+- bounded current/candidate sample-value comparison;
+- deterministic candidate scoring from coverage, structural evidence, selector-token retention and source-element fit;
+- optional authenticated AI explanation/ranking of only the deterministic candidate IDs;
+- deterministic fallback when AI Gateway is unavailable;
+- server sanitizer that discards invented AI candidate IDs;
 - side-by-side old/new selector evidence;
-- sample extraction comparison before adoption;
-- explicit operator approval before recipe revision creation;
-- rollback to prior known-good revision;
-- scheduled jobs automatically remain blocked until repaired revision is explicitly re-reviewed.
+- explicit operator approval checkbox before any repair revision;
+- repair revisions append history rather than rewriting an existing revision;
+- historical revision metadata including archived compatibility/structural fingerprint when available;
+- rollback of retained prior revisions as a new rollback revision;
+- known-good revision labeling when archived compatibility was healthy;
+- scheduled jobs remain pinned to their previous revision and blocked until Refresh + re-review;
+- extension version 0.23.0;
+- CI verification for bounded repair request parsing, deterministic ranking and AI candidate allowlisting.
 
-Acceptance: when a saved scraper breaks, the workbench can explain the drift, propose bounded repair candidates, prove the candidate against sample records, and create a new recipe revision only after explicit approval.
+Acceptance: when a saved scraper breaks, the workbench classifies the drift, proposes bounded deterministic candidates, presents structural/sample evidence, optionally explains candidate ranking without inventing selectors, and creates a new recipe revision only after explicit operator approval.
 
 Manual input gate:
 

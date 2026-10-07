@@ -402,15 +402,62 @@ export interface PreparedExport {
 
 export type SavedScraperKind = "scraper" | "template";
 export type ScraperHealth = "healthy" | "degraded" | "broken";
+export type ScraperRevisionKind = "initial" | "manual" | "repair" | "rollback";
+export type ScraperFieldTrend =
+  | "new"
+  | "stable"
+  | "improved"
+  | "degraded"
+  | "broken";
+export type ScraperDriftCause =
+  | "invalid-record-selector"
+  | "record-boundary-drift"
+  | "low-record-count"
+  | "invalid-field-selector"
+  | "field-selector-missing"
+  | "coverage-drop"
+  | "structural-drift";
 
 export interface RecipeFieldCompatibility {
   key: string;
   label: string;
+  selector: string;
   matchedRecords: number;
   sampledRecords: number;
   coverage: number;
+  previousCoverage: number | null;
+  trend: ScraperFieldTrend;
   required: boolean;
   validSelector: boolean;
+  samples: string[];
+}
+
+export interface ScraperRepairCandidate {
+  id: string;
+  target: "record" | "field";
+  fieldKey: string | null;
+  selector: string;
+  score: number;
+  matchedRecords: number;
+  sampledRecords: number;
+  coverage: number;
+  reasons: string[];
+  context: string[];
+  samples: string[];
+}
+
+export interface ScraperDriftIssue {
+  id: string;
+  severity: "warning" | "broken";
+  cause: ScraperDriftCause;
+  target: "record" | "field" | "structure";
+  fieldKey: string | null;
+  label: string;
+  currentSelector: string;
+  previousCoverage: number | null;
+  currentCoverage: number | null;
+  context: string[];
+  candidates: ScraperRepairCandidate[];
 }
 
 export interface ScraperCompatibilityReport {
@@ -419,7 +466,12 @@ export interface ScraperCompatibilityReport {
   status: ScraperHealth;
   recordMatches: number;
   sampledRecords: number;
+  structuralFingerprint: string;
+  previousStructuralFingerprint: string | null;
+  structuralChanged: boolean;
   fields: RecipeFieldCompatibility[];
+  issues: ScraperDriftIssue[];
+  repairCandidateCount: number;
   warnings: string[];
 }
 
@@ -427,6 +479,9 @@ export interface SavedScraperRevision {
   revision: number;
   savedAt: string;
   sourceUrl: string;
+  revisionKind?: ScraperRevisionKind;
+  structuralFingerprint?: string | null;
+  compatibility?: ScraperCompatibilityReport | null;
   recipe: ExtractionRecipe;
 }
 
@@ -442,9 +497,12 @@ export interface SavedScraper {
   createdAt: string;
   updatedAt: string;
   revision: number;
+  revisionKind?: ScraperRevisionKind;
+  structuralFingerprint?: string | null;
   recipe: ExtractionRecipe;
   revisions: SavedScraperRevision[];
   lastCheck: ScraperCompatibilityReport | null;
+  checkHistory?: ScraperCompatibilityReport[];
 }
 
 export interface ScraperTemplate {

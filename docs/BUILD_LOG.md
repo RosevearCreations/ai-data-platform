@@ -1557,3 +1557,18 @@ The Build 022 receiver simulation is intentionally no-write. It accepts a valid 
 No live endpoint or secret is introduced by this build. Future receiver activation remains a separate business-application implementation and explicit enablement gate.
 
 Next: Build 023 — Advanced Recipe Drift Detection & Repair Workbench.
+
+
+## Build 023 — Advanced Recipe Drift Detection & Repair Workbench
+
+Date: 2026-10-07
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Delivered structural fingerprints, bounded compatibility history, field-level coverage trends, drift-cause classification, deterministic record/field selector candidates, bounded structural/sample evidence, explicit repair selection/approval, repair revisions, rollback-as-new-revision, known-good revision labeling, scheduled-job re-review continuity, and optional authenticated AI explanation/ranking restricted to deterministic candidate IDs.
+
+The repair engine never writes a selector automatically. AI is optional and cannot invent selectors. An approved repair creates a new saved-scraper revision, which intentionally leaves Build 017 scheduled jobs stale until their existing Refresh + re-review gate is completed.
+
+No manual environment setup is required.
+
+Next: Build 024 — Mobile Barcode & Camera Intake.

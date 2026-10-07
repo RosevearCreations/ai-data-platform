@@ -259,15 +259,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">022</span>
+        <span className="build">023</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Verify integration contracts before any business-system intake</strong>
+        <strong>Diagnose recipe drift and repair selectors safely</strong>
         <p>
-          Build 022 publishes machine-readable v1 Rosie Dazzlers and Devil n
-          Dove contracts, verifies package identity/fingerprint/freshness, and
-          simulates consumer acceptance and replay rejection without live writes.
+          Build 023 tracks structural and field-level selector drift, proposes
+          bounded deterministic repairs with sample evidence, optionally explains
+          candidate rankings with AI, and creates a new revision only after
+          explicit operator approval.
         </p>
       </section>
 

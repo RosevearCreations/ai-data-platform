@@ -535,7 +535,11 @@ export function ScheduledJobsPanel({
         <div className="scheduledList">
           {jobs.map((job) => {
             const saved = scrapers.find((item) => item.id === job.savedScraperId);
-            const stale = Boolean(saved && saved.revision !== job.savedScraperRevision);
+            const stale = Boolean(
+              saved && saved.revision !== job.savedScraperRevision
+            );
+            const repairedRevision =
+              stale && saved?.revisionKind === "repair";
             const lastAttempt = job.attempts[job.attempts.length - 1];
 
             return (
@@ -568,7 +572,15 @@ export function ScheduledJobsPanel({
 
                 {stale ? (
                   <p className="scheduledWarning">
-                    Saved scraper is now revision {saved?.revision}. Refresh + re-review before running this job.
+                    {repairedRevision
+                      ? "Saved scraper revision " +
+                        saved?.revision +
+                        " was created by the Build 023 repair workbench. This job remains blocked on revision " +
+                        job.savedScraperRevision +
+                        " until Refresh + re-review."
+                      : "Saved scraper is now revision " +
+                        saved?.revision +
+                        ". Refresh + re-review before running this job."}
                   </p>
                 ) : null}
 

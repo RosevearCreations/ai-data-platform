@@ -167,3 +167,16 @@ The shared contracts package is the machine-readable source of truth for integra
 A v1 package has stable approved-content identity: fingerprint -> packageId -> replayKey. generatedAt/expiresAt are transport metadata and deliberately do not change package identity. Consumers must persist consumed package IDs to enforce replay protection.
 
 Build 022 remains transport-neutral and no-write. A business application's future authenticated receiver is responsible for authn/authz, transaction/idempotency, its own audit log, dry-run support and a disabled-by-default live mutation gate.
+
+
+## Build 023 recipe drift and repair boundary
+
+Build 023 extends saved-scraper compatibility checks into a page-local repair workbench. The injected compatibility function is self-contained and operates only on the active page. It samples at most 100 matched records, bounds candidate discovery, captures structural tag/class summaries rather than full DOM HTML, and returns at most five candidates per issue.
+
+Field repair ranking uses deterministic coverage, overlap with prior selector tokens, required-field coverage and source-element fit. Record-boundary ranking uses repeated-element count, retained selector tokens and support from existing recipe fields.
+
+Compatibility reports carry a structural fingerprint and per-field coverage trend. Saved scrapers retain a bounded check history. When a recipe revision is replaced, the previous revision archives the last compatibility report/fingerprint when available.
+
+Optional AI ranking is server-side and authenticated through the Build 019 extension bearer session. The model receives only bounded repair evidence and deterministic candidate IDs. It cannot create or approve selectors; sanitization removes unknown candidate IDs and deterministic fallback remains available without AI credentials.
+
+Approved repair and rollback operations always create a new revision. Scheduled jobs remain pinned to their prior saved-scraper revision, so Build 017's existing Refresh + re-review flow is required before a repaired recipe can run.
