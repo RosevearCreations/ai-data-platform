@@ -12,6 +12,7 @@ const labels: Record<string, string> = {
   "devil-supplier": "Devil n Dove supplier intelligence",
   "movie-metadata": "Personal movie metadata",
   "scheduled-jobs": "Scheduled jobs & run history",
+  "source-policy": "Source policy registry & crawl governance",
   "business-integrations": "Business integration approvals"
 };
 
