@@ -2,6 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 
 import { executeExtractionRecipe } from "./recipe-engine";
 import {
+  assertScheduledJobPolicy,
+  evaluateSourcePolicyEntry,
+  policyForSavedScraper,
+  sourcePolicyReviewFromEntry
+} from "./source-policy-registry";
+import {
   createScheduledJob,
   deleteScheduledJob,
   loadScheduledJobsDataset,
@@ -19,7 +25,8 @@ import type {
   ScheduledExtractionJob,
   ScheduledJobCadence,
   ScheduledJobsDataset,
-  ScheduledSourcePolicyReview
+  ScheduledSourcePolicyReview,
+  SourcePolicyEntry
 } from "./types";
 
 interface ScheduledJobsPanelProps {
@@ -56,10 +63,6 @@ function scheduleLabel(job: ScheduledExtractionJob) {
   return (weekdays[job.schedule.weekday] ?? "Weekly") + " at " + time;
 }
 
-function clonePolicy(policy: ScheduledSourcePolicyReview) {
-  return { ...policy, reviewedAt: new Date().toISOString() };
-}
-
 export function ScheduledJobsPanel({
   onApplyRecipe
 }: ScheduledJobsPanelProps) {
@@ -80,6 +83,7 @@ export function ScheduledJobsPanel({
     noAccessControlBypass: false,
     notes: ""
   });
+  const [policyEntry, setPolicyEntry] = useState<SourcePolicyEntry | null>(null);
   const [pending, setPending] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
@@ -118,6 +122,46 @@ export function ScheduledJobsPanel({
     () => scrapers.find((item) => item.id === savedScraperId) ?? null,
     [savedScraperId, scrapers]
   );
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      const entry = selectedScraper
+        ? await policyForSavedScraper(selectedScraper)
+        : null;
+      if (cancelled) return;
+      setPolicyEntry(entry);
+      if (!entry) {
+        setPolicy({
+          reviewedAt: "",
+          publicOrAuthorized: false,
+          termsReviewed: false,
+          noAccessControlBypass: false,
+          notes: ""
+        });
+        return;
+      }
+      try {
+        setPolicy(sourcePolicyReviewFromEntry(entry));
+      } catch {
+        setPolicy({
+          reviewedAt: "",
+          publicOrAuthorized: entry.publicOrAuthorized,
+          termsReviewed: entry.termsReviewed,
+          noAccessControlBypass: entry.noAccessControlBypass,
+          notes: entry.notes
+        });
+      }
+    })().catch(() => undefined);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedScraper]);
+
+  const policyReady = Boolean(
+    policyEntry && evaluateSourcePolicyEntry(policyEntry).allowed
+  );
   const jobs = dataset?.jobs ?? [];
   const notifications = dataset?.notifications ?? [];
   const dueCount = jobs.filter((job) => job.enabled && job.due).length;
@@ -131,6 +175,13 @@ export function ScheduledJobsPanel({
     setStatus(null);
 
     try {
+      const currentPolicy = await policyForSavedScraper(selectedScraper);
+      if (!currentPolicy) {
+        throw new Error(
+          "Register this source in Build 025 Source Policy Registry before scheduling it."
+        );
+      }
+      const sourcePolicy = sourcePolicyReviewFromEntry(currentPolicy);
       await createScheduledJob({
         savedScraper: selectedScraper,
         schedule: {
@@ -144,7 +195,7 @@ export function ScheduledJobsPanel({
           maxRetries,
           retryDelayMinutes
         },
-        sourcePolicy: clonePolicy(policy)
+        sourcePolicy
       });
       await refresh();
       setStatus(
@@ -172,6 +223,17 @@ export function ScheduledJobsPanel({
           ", while the saved scraper is revision " +
           saved.revision +
           ". Refresh + re-review the job before running it."
+      );
+      return;
+    }
+
+    try {
+      await assertScheduledJobPolicy(job);
+    } catch (reason) {
+      setStatus(
+        reason instanceof Error
+          ? reason.message
+          : "The registered source policy is no longer valid."
       );
       return;
     }
@@ -281,10 +343,17 @@ export function ScheduledJobsPanel({
     setPending(true);
     setStatus(null);
     try {
+      const currentPolicy = await policyForSavedScraper(saved);
+      if (!currentPolicy) {
+        throw new Error(
+          "Register and approve this source in Build 025 before refreshing the job."
+        );
+      }
+      const sourcePolicy = sourcePolicyReviewFromEntry(currentPolicy);
       const updated = await refreshScheduledJobRecipe({
         jobId: job.id,
         savedScraper: saved,
-        sourcePolicy: clonePolicy(policy)
+        sourcePolicy
       });
       setDataset(updated);
       setStatus(
@@ -456,17 +525,20 @@ export function ScheduledJobsPanel({
         </div>
 
         <div className="scheduledPolicy">
-          <strong>Required source-policy review</strong>
+          <strong>Build 025 registered source-policy review</strong>
+          <small>
+            {policyEntry
+              ? policyEntry.origin +
+                " · r" +
+                policyEntry.revision +
+                " · " +
+                policyEntry.fingerprint
+              : "No registry policy matches the selected scraper origin."}
+          </small>
           <label>
             <input
               checked={policy.publicOrAuthorized}
-              disabled={pending}
-              onChange={(event) =>
-                setPolicy((current) => ({
-                  ...current,
-                  publicOrAuthorized: event.target.checked
-                }))
-              }
+              disabled
               type="checkbox"
             />
             <span>The source is public or I am explicitly authorized to access it.</span>
@@ -474,13 +546,7 @@ export function ScheduledJobsPanel({
           <label>
             <input
               checked={policy.termsReviewed}
-              disabled={pending}
-              onChange={(event) =>
-                setPolicy((current) => ({
-                  ...current,
-                  termsReviewed: event.target.checked
-                }))
-              }
+              disabled
               type="checkbox"
             />
             <span>I reviewed applicable source terms and robots/crawl directives where relevant.</span>
@@ -488,26 +554,30 @@ export function ScheduledJobsPanel({
           <label>
             <input
               checked={policy.noAccessControlBypass}
-              disabled={pending}
-              onChange={(event) =>
-                setPolicy((current) => ({
-                  ...current,
-                  noAccessControlBypass: event.target.checked
-                }))
-              }
+              disabled
               type="checkbox"
             />
             <span>This job does not require bypassing login, paywall, CAPTCHA or technical access controls.</span>
           </label>
           <textarea
-            disabled={pending}
-            onChange={(event) =>
-              setPolicy((current) => ({ ...current, notes: event.target.value }))
-            }
-            placeholder="Optional source-policy notes"
+            disabled
+            placeholder="Registry policy notes"
             rows={2}
             value={policy.notes}
           />
+          <small>
+            {policyEntry
+              ? "Review expires " +
+                new Date(policyEntry.reviewExpiresAt).toLocaleDateString() +
+                " · min delay " +
+                policyEntry.minimumDelayMs +
+                " ms · max " +
+                policyEntry.maxPagesPerRun +
+                " pages / " +
+                policyEntry.maxRecordsPerRun +
+                " records"
+              : "Create or approve the source above in the Source Policy Registry."}
+          </small>
         </div>
 
         <button
@@ -515,9 +585,7 @@ export function ScheduledJobsPanel({
           disabled={
             pending ||
             !selectedScraper ||
-            !policy.publicOrAuthorized ||
-            !policy.termsReviewed ||
-            !policy.noAccessControlBypass
+            !policyReady
           }
           onClick={createJob}
           type="button"
@@ -612,9 +680,7 @@ export function ScheduledJobsPanel({
                     <button
                       disabled={
                         pending ||
-                        !policy.publicOrAuthorized ||
-                        !policy.termsReviewed ||
-                        !policy.noAccessControlBypass
+                        !policyReady
                       }
                       onClick={() => refreshJob(job)}
                       type="button"
@@ -661,7 +727,7 @@ export function ScheduledJobsPanel({
         </div>
       ) : (
         <p className="scheduledEmpty">
-          No scheduled jobs yet. Save a scraper first, complete the source-policy review, and choose a bounded cadence.
+          No scheduled jobs yet. Save a scraper, register and approve its source in Build 025, then choose a bounded cadence.
         </p>
       )}
 
