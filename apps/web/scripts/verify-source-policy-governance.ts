@@ -43,7 +43,9 @@ assert(
   "Build 025 origin normalization failed."
 );
 
-const { fingerprint: _ignored, ...fingerprintInput } = base;
+const fingerprintInput = Object.fromEntries(
+  Object.entries(base).filter(([key]) => key !== "fingerprint")
+) as Omit<SourcePolicyEntry, "fingerprint">;
 const fingerprint = sourcePolicyFingerprint(fingerprintInput);
 assert(/^sp1-[0-9a-f]{8}$/.test(fingerprint), "Build 025 fingerprint format failed.");
 
