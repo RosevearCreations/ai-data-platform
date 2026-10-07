@@ -443,3 +443,30 @@ The canonical normalized code left-pads UPC-A/EAN-13/EAN-8/GTIN-14 digits to GTI
 Match payloads are intentionally bounded. Personal movie exact matches expose only record ID/title/year, not ownership notes or shelf data. Devil n Dove exact matches expose staging item ID, supplier/product name, supplier SKU and staging review status, not internal inventory/location/business fields.
 
 The normal application runtime role has SELECT/INSERT/UPDATE but no DELETE grant on barcode captures. RLS requires workspace membership.
+
+
+## Build 025 source policy registry
+
+Source-policy state is persisted as the source-policy entry in app.workspace_intelligence_modules, preserving the existing one-versioned-snapshot-per-workspace/module model and RLS boundary.
+
+Each registry payload is version 1 and contains at most 150 entries. Each SourcePolicyEntry includes:
+
+- id and workspaceId;
+- normalized origin;
+- displayName and collection purpose;
+- collectionMethod;
+- publicOrAuthorized;
+- termsReviewed and optional termsUrl;
+- robotsDecision and optional robotsUrl;
+- noAccessControlBypass;
+- dataSensitivity;
+- minimumDelayMs;
+- maxPagesPerRun and maxRecordsPerRun;
+- reviewExpiresAt;
+- status;
+- notes;
+- monotonic revision;
+- stable fingerprint;
+- createdAt and updatedAt.
+
+Scheduled jobs retain a policy pin containing the registry policy ID, revision, fingerprint, expiry and relevant budgets. A later policy revision does not silently mutate that historical approval; the job must pass explicit Refresh + re-review.

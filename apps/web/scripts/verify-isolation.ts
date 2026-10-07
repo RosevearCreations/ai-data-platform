@@ -461,6 +461,65 @@ async function main() {
     throw new Error("Build 021 append-only audit idempotency failed.");
   }
 
+  const policyUpdatedAt = new Date().toISOString();
+  const sourcePolicy = await upsertWorkspaceIntelligenceModule(
+    ownerId,
+    syncWorkspaceId,
+    {
+      moduleKey: "source-policy",
+      expectedServerVersion: null,
+      clientUpdatedAt: policyUpdatedAt,
+      summary: {
+        sources: 1,
+        approved: 1,
+        blocked: 0,
+        reviewRequired: 0,
+        expired: 0
+      },
+      payload: {
+        version: 1,
+        id: "ai-data-platform-source-policy-registry",
+        createdAt: policyUpdatedAt,
+        updatedAt: policyUpdatedAt,
+        entries: [
+          {
+            version: 1,
+            id: "build025-source-policy",
+            workspaceId: syncWorkspaceId,
+            origin: "https://example.test",
+            displayName: "Build 025 fixture",
+            purpose: "Verify durable workspace-scoped source policy persistence.",
+            collectionMethod: "public-webpage",
+            publicOrAuthorized: true,
+            termsReviewed: true,
+            termsUrl: "https://example.test/terms",
+            robotsDecision: "allowed",
+            robotsUrl: "https://example.test/robots.txt",
+            noAccessControlBypass: true,
+            dataSensitivity: "public-facts",
+            minimumDelayMs: 1500,
+            maxPagesPerRun: 10,
+            maxRecordsPerRun: 500,
+            reviewExpiresAt: "2027-01-01T00:00:00.000Z",
+            status: "approved",
+            notes: "CI fixture.",
+            revision: 1,
+            fingerprint: "sp1-build025",
+            createdAt: policyUpdatedAt,
+            updatedAt: policyUpdatedAt
+          }
+        ]
+      }
+    }
+  );
+
+  if (
+    sourcePolicy.status !== "applied" ||
+    sourcePolicy.record.moduleKey !== "source-policy"
+  ) {
+    throw new Error("Build 025 source-policy module persistence failed.");
+  }
+
   const intelligenceState = await listWorkspaceIntelligence(
     ownerId,
     syncWorkspaceId
@@ -468,6 +527,9 @@ async function main() {
   if (
     !intelligenceState.modules.some(
       (item) => item.moduleKey === "history" && item.serverVersion === 2
+    ) ||
+    !intelligenceState.modules.some(
+      (item) => item.moduleKey === "source-policy" && item.serverVersion === 1
     ) ||
     !intelligenceState.audit.some(
       (item) => item.auditId === auditEntry.auditId
@@ -684,7 +746,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024 database isolation, barcode review and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025 database isolation, source-policy persistence, barcode review and workspace-target acceptance passed."
   );
 }
 

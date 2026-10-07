@@ -12,6 +12,8 @@ import type {
   OntarioDetailerDataset,
   ScheduledExtractionJob,
   ScheduledJobsDataset,
+  SourcePolicyEntry,
+  SourcePolicyRegistryDataset,
   SupplierInventoryStagingDataset
 } from "./types";
 
@@ -21,6 +23,7 @@ export const INTELLIGENCE_KEYS = {
   devil: "ai-data-platform-devil-supplier-staging-v1",
   movie: "ai-data-platform-personal-movie-metadata-v1",
   scheduled: "ai-data-platform-scheduled-jobs-v1",
+  sourcePolicy: "ai-data-platform-source-policy-registry-v1",
   integration: "ai-data-platform-business-integrations-v1"
 } as const;
 
@@ -58,6 +61,16 @@ function scheduledSummary(dataset: ScheduledJobsDataset) {
     due: dataset.jobs.filter((job) => job.due).length,
     unread: dataset.notifications.filter((item) => item.status === "unread").length,
     attempts: dataset.jobs.reduce((sum, job) => sum + job.attempts.length, 0)
+  };
+}
+
+function sourcePolicySummary(entries: SourcePolicyEntry[]) {
+  return {
+    sources: entries.length,
+    approved: entries.filter((entry) => entry.status === "approved").length,
+    blocked: entries.filter((entry) => entry.status === "blocked").length,
+    reviewRequired: entries.filter((entry) => entry.status === "review-required").length,
+    expired: entries.filter((entry) => Date.parse(entry.reviewExpiresAt) <= Date.now()).length
   };
 }
 
@@ -171,6 +184,35 @@ export async function buildLocalIntelligenceSnapshots() {
     }
   }
 
+  const sourcePolicies = stored[INTELLIGENCE_KEYS.sourcePolicy] as
+    | SourcePolicyRegistryDataset
+    | undefined;
+  if (sourcePolicies?.version === 1) {
+    const groups = new Map<string, SourcePolicyEntry[]>();
+    for (const entry of sourcePolicies.entries) {
+      if (!entry.workspaceId) continue;
+      const entries = groups.get(entry.workspaceId) ?? [];
+      entries.push(entry);
+      groups.set(entry.workspaceId, entries);
+    }
+    for (const [workspaceId, entries] of groups) {
+      const scoped: SourcePolicyRegistryDataset = {
+        ...sourcePolicies,
+        entries
+      };
+      snapshots.push({
+        workspaceId,
+        moduleKey: "source-policy",
+        clientUpdatedAt:
+          [...entries].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0]
+            ?.updatedAt ?? sourcePolicies.updatedAt,
+        summary: sourcePolicySummary(entries),
+        payload: payload(scoped),
+        auditEntries: []
+      });
+    }
+  }
+
   const integrations = stored[INTELLIGENCE_KEYS.integration] as
     | BusinessIntegrationState
     | undefined;
@@ -253,6 +295,21 @@ export async function applyIntelligenceServerRecord(record: IntelligenceServerRe
           ...incoming.notifications,
           ...(current?.notifications.filter((item) => otherIds.has(item.jobId)) ?? [])
         ]
+      }
+    });
+    return;
+  }
+
+  if (record.moduleKey === "source-policy") {
+    const stored = await chrome.storage.local.get(keys.sourcePolicy);
+    const current = stored[keys.sourcePolicy] as SourcePolicyRegistryDataset | undefined;
+    const incoming = record.payload as unknown as SourcePolicyRegistryDataset;
+    const others =
+      current?.entries.filter((entry) => entry.workspaceId !== record.workspaceId) ?? [];
+    await chrome.storage.local.set({
+      [keys.sourcePolicy]: {
+        ...incoming,
+        entries: [...incoming.entries, ...others].slice(0, 150)
       }
     });
     return;

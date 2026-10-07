@@ -548,7 +548,46 @@ Camera walkthrough:
 11. If permission was denied accidentally, open the browser's site permissions for the AI Data Platform site, change **Camera** to **Allow**, reload, and try again.
 12. If camera barcode detection is unsupported, use the manual numeric field instead.
 
-## Build 025 — Remote Execution Provider Abstraction & Cloud Worker Readiness
+## Build 025 — Source Policy Registry & Crawl Governance
+
+Status: COMPLETE (2026-10-07).
+
+Goal: replace one-off scheduling checkboxes with a durable, workspace-scoped governance record that can be reused by local jobs and future remote execution without weakening source restrictions.
+
+Delivered:
+
+- workspace-scoped source policy registry synchronized through the existing authenticated intelligence continuity layer;
+- normalized HTTP/HTTPS source origins;
+- explicit collection method: official API, official dataset/feed, user-authorized export/file or public webpage;
+- documented collection purpose and source name;
+- public-or-explicitly-authorized requirement;
+- applicable terms/policy review evidence;
+- robots/crawl decision and optional evidence URL;
+- explicit prohibition on login, paywall, CAPTCHA, ban or technical access-control bypass;
+- public-facts, user-authorized and restricted/private sensitivity classification;
+- restricted/private crawler use blocked;
+- minimum request delay with a 500 ms hard floor;
+- bounded page and record budgets;
+- time-limited policy review expiry;
+- approved, review-required and blocked lifecycle states;
+- monotonic policy revisions and stable governance fingerprints;
+- policy status/revision changes invalidate older scheduled-job approvals;
+- scheduled job create, refresh, re-enable and execution fail closed unless the exact current approved policy revision is pinned;
+- scheduled max-record budget is capped by the stricter registry policy;
+- cross-device source-policy persistence through Build 021 RLS-protected workspace intelligence;
+- migration 0006_source_policy_registry.sql extends the permitted intelligence module set;
+- authenticated intelligence overview visibility for source-policy state;
+- pure governance acceptance verification for normalization, fingerprint drift, robots decisions, expiry, sensitivity and access-control rules;
+- database acceptance coverage for source-policy persistence and workspace isolation;
+- extension version 0.25.0.
+
+Acceptance: an authorized workspace can register a recurring source, preserve review evidence and bounded crawl rules, and schedule/run a saved scraper only while the exact policy revision remains approved and unexpired. Blocking, expiring or materially revising the policy makes prior job approval stale and requires explicit re-review.
+
+Manual input gate:
+
+No external account, credential or environment variable is required. Human policy review remains intentional: before approving a real recurring source, review its applicable terms/API conditions and robots/crawl rules and enter the evidence in the registry.
+
+## Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness
 
 Status: QUEUED — NOT STARTED.
 
@@ -561,7 +600,7 @@ Deliverables:
 - workspace-scoped remote-run authorization;
 - encrypted server-side execution configuration;
 - bounded run/page/record/time budgets;
-- source-policy approval copied into the remote job;
+- exact Build 025 source-policy revision/fingerprint copied into each remote job;
 - same source-origin/access-control rules as local extraction;
 - idempotent result ingestion;
 - cancellation and timeout handling;
@@ -573,9 +612,9 @@ Acceptance: the platform can prove the remote job lifecycle end-to-end with a mo
 
 Manual input gate:
 
-No provider account is required to complete this readiness build. Provider selection is intentionally deferred to Build 026.
+No provider account is required to complete this readiness build. Provider selection is intentionally deferred to Build 027.
 
-## Build 026 — Controlled Remote Browser Pilot & Egress Policy
+## Build 027 — Controlled Remote Browser Pilot & Egress Policy
 
 Status: QUEUED — NOT STARTED.
 
@@ -589,7 +628,7 @@ Deliverables:
 - workspace allowlist of approved remote sources;
 - per-job spend/time/page/record budgets;
 - concurrency limits;
-- robots/terms/source-policy evidence attached to remote jobs;
+- exact Build 025 robots/terms/source-policy evidence attached to remote jobs;
 - no CAPTCHA solving or authentication bypass;
 - optional proxy configuration only for approved use cases;
 - provider health/failure telemetry;
@@ -603,7 +642,7 @@ Manual input gate:
 
 This build requires the user's provider choice and one-time credential setup. Do not request credentials in chat. Follow the dashboard walkthrough in the detailed plan document.
 
-## Build 027 — Configurable Workspace Types & Domain Profiles
+## Build 028 — Configurable Workspace Types & Domain Profiles
 
 Status: QUEUED — NOT STARTED.
 
@@ -628,7 +667,7 @@ Manual input gate:
 
 No setup required. The user will choose the name/purpose of any first new workspace when they actually create one.
 
-## Build 028 — Plugin & Connector SDK Foundation
+## Build 029 — Plugin & Connector SDK Foundation
 
 Status: QUEUED — NOT STARTED.
 
@@ -655,7 +694,7 @@ Manual input gate:
 
 No external account is required for the SDK foundation. Any future real connector that uses a third-party account will require explicit connection at the time that connector is added.
 
-## Build 029 — Production Learning, Cost Review & Roadmap Renewal
+## Build 030 — Production Learning, Cost Review & Roadmap Renewal
 
 Status: QUEUED — NOT STARTED.
 
@@ -663,10 +702,11 @@ Goal: measure the completed local/authenticated/remote-capable platform, close r
 
 Deliverables:
 
-- usage and outcome review across Builds 019–028;
+- usage and outcome review across Builds 019–029;
 - sync conflict/error analysis;
 - recipe repair success/failure analysis;
 - barcode workflow adoption review;
+- source-policy registry adoption, stale-policy and blocked-run review;
 - remote pilot cost/reliability analysis;
 - integration package/consumer readiness review;
 - workspace/profile adoption review;

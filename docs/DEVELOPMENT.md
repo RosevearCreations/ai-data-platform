@@ -272,3 +272,41 @@ Camera permission walkthrough:
 9. If permission was denied, use browser Site settings > Camera > Allow for the AI Data Platform site, reload, and try again.
 
 Manual entry requires no camera permission.
+
+
+## Build 025 source policy registry and crawl governance
+
+Migration:
+
+- db/migrations/0006_source_policy_registry.sql
+
+Extension modules:
+
+- src/source-policy-governance.ts — pure deterministic governance rules;
+- src/source-policy-registry.ts — workspace-local persistence, synchronization and exact policy pin checks;
+- src/SourcePolicyRegistryPanel.tsx — review/evidence UI.
+
+No new environment variables or third-party accounts are required.
+
+Acceptance verification:
+
+- apps/web/scripts/verify-source-policy-governance.ts verifies origin normalization, stable fingerprints, fingerprint drift on revision/material changes, robots decisions, expiry, restricted sensitivity and access-control fail-closed behavior;
+- apps/web/scripts/verify-isolation.ts verifies the source-policy intelligence module is accepted by PostgreSQL after migration, persists durably and remains protected by workspace RLS;
+- the normal root pnpm verify gate still runs typecheck, lint, production builds and tests.
+
+Operator workflow for a real recurring source:
+
+1. connect the extension and select the intended workspace;
+2. open the source and choose Use active tab, or enter its URL/origin;
+3. select the actual collection method;
+4. describe the factual collection purpose;
+5. review applicable source terms/API conditions and record evidence;
+6. for public webpage extraction, resolve applicable robots/crawl directives and record the decision/evidence;
+7. confirm the source is public or explicitly authorized;
+8. confirm no login, paywall, CAPTCHA, ban or technical access control must be bypassed;
+9. choose the sensitivity and conservative delay/page/record budgets;
+10. choose a review-validity period and Approved only if every requirement is satisfied;
+11. save the policy revision;
+12. create or Refresh + re-review the scheduled job. It pins that exact policy fingerprint.
+
+Changing, blocking or allowing a policy to expire intentionally invalidates older scheduled-job approval.
