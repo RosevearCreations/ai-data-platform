@@ -967,6 +967,69 @@ export interface MovieMetadataQueueSummary {
 }
 
 
+export type SourcePolicyCollectionMethod =
+  | "official-api"
+  | "official-dataset"
+  | "user-export"
+  | "public-webpage";
+
+export type SourcePolicyRobotsDecision =
+  | "allowed"
+  | "disallowed"
+  | "not-applicable"
+  | "unknown";
+
+export type SourcePolicyDataSensitivity =
+  | "public-facts"
+  | "user-authorized"
+  | "restricted";
+
+export type SourcePolicyStatus =
+  | "approved"
+  | "review-required"
+  | "blocked";
+
+export interface SourcePolicyEntry {
+  version: 1;
+  id: string;
+  workspaceId: string;
+  origin: string;
+  displayName: string;
+  purpose: string;
+  collectionMethod: SourcePolicyCollectionMethod;
+  publicOrAuthorized: boolean;
+  termsReviewed: boolean;
+  termsUrl: string;
+  robotsDecision: SourcePolicyRobotsDecision;
+  robotsUrl: string;
+  noAccessControlBypass: boolean;
+  dataSensitivity: SourcePolicyDataSensitivity;
+  minimumDelayMs: number;
+  maxPagesPerRun: number;
+  maxRecordsPerRun: number;
+  reviewExpiresAt: string;
+  status: SourcePolicyStatus;
+  notes: string;
+  revision: number;
+  fingerprint: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SourcePolicyRegistryDataset {
+  version: 1;
+  id: "ai-data-platform-source-policy-registry";
+  createdAt: string;
+  updatedAt: string;
+  entries: SourcePolicyEntry[];
+}
+
+export interface SourcePolicyEvaluation {
+  allowed: boolean;
+  reasons: string[];
+  warnings: string[];
+}
+
 export type ScheduledJobCadence = "daily" | "weekly" | "interval";
 export type ScheduledJobRunStatus =
   | "success"
@@ -980,6 +1043,13 @@ export interface ScheduledSourcePolicyReview {
   termsReviewed: boolean;
   noAccessControlBypass: boolean;
   notes: string;
+  registryPolicyId?: string;
+  registryPolicyRevision?: number;
+  registryPolicyFingerprint?: string;
+  reviewExpiresAt?: string;
+  minimumDelayMs?: number;
+  maxPagesPerRun?: number;
+  maxRecordsPerRun?: number;
 }
 
 export interface ScheduledJobSchedule {
@@ -1349,6 +1419,7 @@ export type IntelligenceModuleKey =
   | "devil-supplier"
   | "movie-metadata"
   | "scheduled-jobs"
+  | "source-policy"
   | "business-integrations";
 
 export interface IntelligenceSyncMetadata {
