@@ -349,31 +349,41 @@ No server trusted-origin change is required by this implementation because the e
 
 ## Build 020 — Workspace Persistence & Cross-Device Sync Foundation
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-06).
 
 Goal: move the durable source of truth for saved recipes, reviewed datasets and core provenance from extension-local storage into the authenticated workspace backend while retaining offline/local resilience.
 
-Deliverables:
+Delivered:
 
 - provider-portable PostgreSQL persistence for saved scrapers and templates;
-- versioned recipe persistence by workspace;
-- reviewed dataset metadata and bounded record persistence;
-- source URL/retrieval-time provenance persistence;
-- workspace-scoped synchronization endpoints;
-- local cache with explicit sync state;
-- create/update conflict detection;
-- deterministic local-versus-server merge rules;
-- offline-first queue for safe deferred sync;
-- migration/import of existing extension-local saved scrapers;
-- migration/import of existing local review snapshots;
-- no automatic destructive deletion of local data after migration;
-- RLS verification for every new workspace table.
+- provider-portable PostgreSQL persistence for reviewed datasets;
+- workspace ID on every synchronized record;
+- versioned server records with optimistic concurrency;
+- soft-delete tombstones for cross-device deletion continuity;
+- reviewed-dataset server copies bounded to 500 rows while full local copies remain untouched;
+- source URL and retrieval-time provenance persisted with reviewed datasets;
+- RLS policies for read, insert, update and delete on every Build 020 table;
+- authenticated extension sync GET/POST endpoint using the Build 019 bearer bridge;
+- explicit unauthorized-workspace rejection;
+- durable extension-local sync metadata;
+- durable offline/deferred operation queue;
+- automatic safe sync attempt after local saves;
+- deterministic clean-cache server merge;
+- create/update conflict detection through expected server versions;
+- explicit Use server / Keep local conflict resolution;
+- active-workspace local saved-scraper filtering;
+- cross-device pull of saved scrapers/templates and reviewed datasets;
+- explicit non-destructive legacy migration that copies unscoped records into the active workspace and retains the original local record;
+- per-workspace reviewed-dataset local retention;
+- versioned deletion/tombstone propagation;
+- CI coverage for create, update, conflict, retrieval, deletion and unauthorized workspace denial;
+- extension version 0.20.0.
 
-Acceptance: a saved recipe or reviewed dataset created on one authenticated device can be retrieved on another authorized device, local work remains usable during temporary backend loss, and workspace isolation is verified at the database boundary.
+Acceptance: a saved scraper/template or reviewed dataset created in one authenticated workspace can be synchronized and retrieved on another authorized device; local work remains available and queued during backend loss; stale concurrent writes become explicit conflicts rather than silent overwrites; and RLS prevents access outside membership.
 
 Manual input gate:
 
-No user input expected unless the production PostgreSQL/Neon environment is missing a required connection or migration setting. If one is missing, the implementation build must stop before production mutation and provide exact dashboard steps.
+None. Build 020 uses the existing Build 019 authenticated bridge and PostgreSQL connection. No new provider account, secret or dashboard configuration is required.
 
 ## Build 021 — Persistent Intelligence, History & Audit Continuity
 

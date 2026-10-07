@@ -164,3 +164,27 @@ First production-browser connection:
 10. Reconnect. Older local records shown as migration candidates remain untouched until Build 020.
 
 No `BETTER_AUTH_TRUSTED_ORIGINS` change is required for the Build 019 bridge. The web session is used only inside the user-visible identity flow; subsequent extension requests use the short-lived bearer token.
+
+
+## Build 020 workspace synchronization
+
+Build 020 requires no new environment variables. It reuses:
+
+- `DATABASE_URL`;
+- the Build 019 extension bearer-session bridge;
+- the configured extension `VITE_PLATFORM_ORIGIN` or locally selected platform URL.
+
+The migration adds `app.workspace_saved_scrapers` and `app.workspace_reviewed_datasets`. GitHub CI verifies the migration, optimistic concurrency, tombstones and RLS denial against ephemeral PostgreSQL.
+
+Normal extension behavior:
+
+1. Local save completes first.
+2. The operation is placed in the extension sync queue.
+3. The extension attempts authenticated synchronization.
+4. If the backend is unavailable, the queue remains and can be retried with **Sync workspace now**.
+5. A stale server version becomes an explicit conflict.
+6. **Use server** replaces the local cache for that record.
+7. **Keep local** retries the current local value against the latest server version.
+8. Existing unscoped pre-Build-019 records are migrated only through **Copy legacy records into this workspace**; originals remain local.
+
+No manual database/dashboard setup is expected.

@@ -190,3 +190,16 @@ Reason: independent applications should not inherit hidden coupling or accidenta
 Decision: the Chrome extension authenticates through a user-initiated Chrome Identity web flow. The existing Better Auth web session authorizes issuance of a random short-lived extension token; only its hash is stored server-side. The extension then presents that bearer token to a narrow session/workspace endpoint.
 
 Reason: relying on cross-site Better Auth cookies from a `chrome-extension://` context is fragile under SameSite/third-party-cookie policy and would blur the boundary between the web session and extension. The bearer bridge keeps ordinary web credentials in the web app, gives the extension an explicit revocable lifetime, and preserves RLS-based workspace authorization.
+
+
+## D0026 — Local-first cache with optimistic workspace synchronization
+
+Decision: saved scrapers/templates and reviewed datasets remain available in the extension's local cache while PostgreSQL becomes their durable authenticated cross-device store. Each server record has a monotonically increasing version and deletions use tombstones. Concurrent stale writes are surfaced as conflicts rather than merged silently.
+
+Reason: the extension must remain usable during temporary network loss, but cross-device continuity requires a server source of truth. Queue-before-network plus optimistic versions preserves offline operation without adopting last-write-wins data loss.
+
+## D0027 — Legacy local records migrate by explicit copy, never implicit reassignment
+
+Decision: existing local records with no workspace ID are not automatically attributed to the currently active workspace. The user must explicitly copy them into a selected authenticated workspace; the original unscoped local record remains retained.
+
+Reason: Build 019 could not prove which historical workspace owned an unscoped record. Silent assignment would create a cross-workspace provenance risk.

@@ -194,6 +194,9 @@ export interface ReviewedDataset {
   version: 1;
   id: string;
   workspaceId?: string | null;
+  retrievedAt?: string;
+  syncTruncated?: boolean;
+  legacyMigrationCompletedFor?: string[];
   recipeName: string;
   sourceUrl: string;
   createdAt: string;
@@ -431,6 +434,7 @@ export interface SavedScraper {
   version: 1;
   id: string;
   workspaceId?: string | null;
+  legacyMigrationCompletedFor?: string[];
   kind: SavedScraperKind;
   name: string;
   sourceUrl: string;
@@ -1163,4 +1167,81 @@ export interface WorkspaceBridgeState {
   activeWorkspaceId: string | null;
   expiresAt: string | null;
   message: string;
+}
+
+
+export type WorkspaceSyncResource =
+  | "saved-scraper"
+  | "reviewed-dataset";
+
+export type WorkspaceSyncEntryState =
+  | "clean"
+  | "dirty"
+  | "queued"
+  | "conflict"
+  | "deleted";
+
+export interface WorkspaceSyncMetadataEntry {
+  key: string;
+  workspaceId: string;
+  resource: WorkspaceSyncResource;
+  recordId: string;
+  serverVersion: number | null;
+  state: WorkspaceSyncEntryState;
+  localUpdatedAt: string;
+  lastSyncedAt: string | null;
+  error: string;
+}
+
+export interface WorkspaceSyncQueueItem {
+  id: string;
+  workspaceId: string;
+  resource: WorkspaceSyncResource;
+  recordId: string;
+  action: "upsert" | "delete";
+  expectedServerVersion: number | null;
+  clientUpdatedAt: string;
+  payload: Record<string, unknown> | null;
+  enqueuedAt: string;
+  attempts: number;
+}
+
+export interface WorkspaceSyncServerRecord {
+  resource: WorkspaceSyncResource;
+  recordId: string;
+  workspaceId: string;
+  serverVersion: number;
+  clientUpdatedAt: string;
+  deleted: boolean;
+  payload: Record<string, unknown>;
+}
+
+export interface WorkspaceSyncConflict {
+  key: string;
+  workspaceId: string;
+  resource: WorkspaceSyncResource;
+  recordId: string;
+  detectedAt: string;
+  localPayload: Record<string, unknown> | null;
+  serverRecord: WorkspaceSyncServerRecord | null;
+}
+
+export interface WorkspaceSyncLocalState {
+  version: 1;
+  id: "ai-data-platform-workspace-sync";
+  updatedAt: string;
+  lastSyncAt: string | null;
+  metadata: WorkspaceSyncMetadataEntry[];
+  queue: WorkspaceSyncQueueItem[];
+  conflicts: WorkspaceSyncConflict[];
+}
+
+export interface WorkspaceSyncSummary {
+  workspaceId: string;
+  pushed: number;
+  pulled: number;
+  deleted: number;
+  conflicts: number;
+  queued: number;
+  lastSyncAt: string | null;
 }

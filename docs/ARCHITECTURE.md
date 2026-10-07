@@ -132,3 +132,18 @@ The extension stores that bearer token in extension-local storage, never in page
 The active workspace ID can only be selected from the returned authorized memberships. New saved scrapers and reviewed datasets are tagged with that workspace ID. Existing records with no workspace ID remain unassigned migration candidates for Build 020.
 
 The bridge deliberately has explicit signed-out, expired, unavailable-backend and authenticated-no-workspace states. Revoked/expired bearer sessions resolve as unauthorized. Extension-session rows are not granted to `ai_data_runtime`; only the narrowly scoped server bridge resolves them.
+
+
+## Build 020 workspace persistence and sync boundary
+
+Build 020 keeps extension-local storage as the offline working cache while introducing PostgreSQL as the durable cross-device source of truth for saved scrapers/templates and reviewed datasets.
+
+Every synchronized object is scoped by `workspace_id` and protected by PostgreSQL RLS for read, insert, update and delete. The extension uses the Build 019 short-lived bearer session; the sync endpoint resolves the authenticated principal and performs all database work through the existing transaction-local runtime role.
+
+Server rows carry a monotonically increasing `server_version`. Local sync metadata records the last server version seen. Updates and deletes include an expected server version. If it no longer matches, the server returns a conflict and the extension preserves both local and server evidence until the operator explicitly chooses **Use server** or **Keep local**.
+
+The local queue is written before a network attempt. Temporary backend loss therefore does not discard local work. Successful pulls update only records that are not locally queued/conflicted. Server tombstones prevent deleted records from reappearing on another device.
+
+Legacy Build 019 unscoped records are never silently claimed. Build 020 provides an explicit migration action that creates a workspace-scoped copy and leaves the original local record intact.
+
+Reviewed datasets remain full fidelity locally. Their synchronized server representation is bounded to 500 rows per dataset to keep early cross-device persistence predictable and economical; the UI reports when the server copy is bounded.

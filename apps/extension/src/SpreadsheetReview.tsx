@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { DevilSupplierPanel } from "./DevilSupplierPanel";
 import { requireActiveWorkspaceId } from "./workspace-session";
+import { queueReviewedDatasetForSync } from "./workspace-sync";
 import { ExportPanel } from "./ExportPanel";
 import { HistoricalChangePanel } from "./HistoricalChangePanel";
 import { MovieMetadataPanel } from "./MovieMetadataPanel";
@@ -69,11 +70,22 @@ function saveDatasetLocally(dataset: ReviewedDataset) {
     }
   }
 
-  const withoutCurrent = existing.filter((item) => item.id !== dataset.id);
-  const next = [dataset, ...withoutCurrent].slice(0, MAX_SAVED_DATASETS);
+  const otherWorkspaces = existing.filter(
+    (item) => item.workspaceId !== dataset.workspaceId
+  );
+  const currentWorkspace = existing.filter(
+    (item) =>
+      item.workspaceId === dataset.workspaceId &&
+      item.id !== dataset.id
+  );
+  const retainedWorkspace = [dataset, ...currentWorkspace].slice(
+    0,
+    MAX_SAVED_DATASETS
+  );
+  const next = [...retainedWorkspace, ...otherWorkspaces];
   localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
 
-  return next.length;
+  return retainedWorkspace.length;
 }
 
 export function SpreadsheetReview({
@@ -259,6 +271,7 @@ export function SpreadsheetReview({
       sourceUrl: run.sourceUrl,
       createdAt,
       updatedAt,
+      retrievedAt: createdAt,
       columns: orderedColumns,
       rows: rows.map((row) => ({
         ...row,
@@ -268,8 +281,9 @@ export function SpreadsheetReview({
       };
 
       const savedCount = saveDatasetLocally(dataset);
+      const syncResult = await queueReviewedDatasetForSync(dataset);
       setSaveMessage(
-        `Saved locally · ${stats.includedRows} included rows · ${savedCount} reviewed dataset${savedCount === 1 ? "" : "s"} retained`
+        `Saved locally · ${stats.includedRows} included rows · ${savedCount} reviewed dataset${savedCount === 1 ? "" : "s"} retained · ${syncResult.queuedRows} row${syncResult.queuedRows === 1 ? "" : "s"} queued for workspace sync${syncResult.truncated ? " (server copy bounded to 500 rows)" : ""}`
       );
     } catch (reason) {
       setSaveMessage(

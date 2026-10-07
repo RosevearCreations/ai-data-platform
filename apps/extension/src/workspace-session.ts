@@ -294,6 +294,29 @@ export async function getActiveWorkspaceId() {
   return typeof value === "string" && value ? value : null;
 }
 
+export async function getWorkspaceSyncCredentials() {
+  const session = await storedSession();
+
+  if (!session || new Date(session.expiresAt).getTime() <= Date.now()) {
+    await clearStoredSession();
+    throw new Error(
+      "Connect the extension to an authenticated AI Data Platform session before synchronizing."
+    );
+  }
+
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) {
+    throw new Error("Select an authorized workspace before synchronizing.");
+  }
+
+  return {
+    token: session.token,
+    platformOrigin: session.platformOrigin,
+    workspaceId,
+    expiresAt: session.expiresAt
+  };
+}
+
 export async function requireActiveWorkspaceId() {
   const session = await storedSession();
   if (!session || new Date(session.expiresAt).getTime() <= Date.now()) {

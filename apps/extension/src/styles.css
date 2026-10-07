@@ -4240,3 +4240,188 @@ h1 {
     flex-direction: column;
   }
 }
+
+
+.workspaceSync {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(126, 231, 135, 0.16);
+  border-radius: 0.8rem;
+  background: rgba(126, 231, 135, 0.022);
+}
+
+.workspaceSync h2 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.workspaceSyncHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.workspaceSyncBadge {
+  border-radius: 999px;
+  background: rgba(126, 231, 135, 0.09);
+  color: #bcefc1 !important;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.56rem !important;
+  font-weight: 900 !important;
+}
+
+.workspaceSyncIntro,
+.workspaceSyncMigration,
+.workspaceSyncMessage,
+.workspaceSyncConflicts p {
+  margin: 0;
+  color: #91a39f;
+  font-size: 0.59rem;
+  line-height: 1.48;
+}
+
+.workspaceSyncStats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.workspaceSyncStats div {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.48rem 0.2rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.018);
+  text-align: center;
+}
+
+.workspaceSyncStats strong {
+  color: #d9ede1;
+  font-size: 0.72rem;
+}
+
+.workspaceSyncStats span {
+  color: #788b86;
+  font-size: 0.51rem;
+}
+
+.workspaceSyncActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.workspaceSyncActions button,
+.workspaceSyncConflictActions button {
+  min-height: 2.2rem;
+  border: 1px solid rgba(126, 231, 135, 0.14);
+  border-radius: 0.55rem;
+  background: rgba(126, 231, 135, 0.035);
+  color: #b6d8be;
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
+.workspaceSyncActions .workspaceSyncPrimary {
+  background: rgba(126, 231, 135, 0.12);
+  color: #d7f5dc;
+}
+
+.workspaceSyncActions button:not(:disabled),
+.workspaceSyncConflictActions button:not(:disabled) {
+  cursor: pointer;
+}
+
+.workspaceSyncActions button:disabled,
+.workspaceSyncConflictActions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.workspaceSyncMigration {
+  padding: 0.55rem;
+  border-radius: 0.55rem;
+  background: rgba(255, 214, 102, 0.04);
+  color: #c7b47d;
+}
+
+.workspaceSyncQueue summary {
+  color: #a9c8b0;
+  font-size: 0.57rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.workspaceSyncQueue > div {
+  display: grid;
+  gap: 0.2rem;
+  padding-top: 0.4rem;
+}
+
+.workspaceSyncQueue span {
+  color: #788c84;
+  font-size: 0.52rem;
+  overflow-wrap: anywhere;
+}
+
+.workspaceSyncConflicts {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.workspaceSyncConflicts > strong {
+  color: #e6c9a1;
+  font-size: 0.63rem;
+}
+
+.workspaceSyncConflicts article {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 181, 113, 0.12);
+  border-radius: 0.65rem;
+  background: rgba(255, 181, 113, 0.025);
+}
+
+.workspaceSyncConflicts article > div:first-child {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.45rem;
+}
+
+.workspaceSyncConflicts article span,
+.workspaceSyncConflicts article small {
+  color: #8d9c97;
+  font-size: 0.52rem;
+}
+
+.workspaceSyncConflicts article strong {
+  color: #e2d1b6;
+  font-size: 0.58rem;
+  overflow-wrap: anywhere;
+}
+
+.workspaceSyncConflictActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.workspaceSyncMessage {
+  color: #b7d9c0;
+}
+
+@media (max-width: 360px) {
+  .workspaceSyncHeader {
+    flex-direction: column;
+  }
+
+  .workspaceSyncStats,
+  .workspaceSyncActions,
+  .workspaceSyncConflictActions {
+    grid-template-columns: 1fr;
+  }
+}
