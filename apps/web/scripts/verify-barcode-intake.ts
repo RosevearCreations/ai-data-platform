@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 
 import {
   barcodeProvenance,
@@ -105,7 +105,7 @@ assert.equal(supplierMatch.status, "exact");
 assert.equal(supplierMatch.payload.stagingItemId, "supplier-stage-1");
 assert.equal("internalLocation" in supplierMatch.payload, false);
 
-const captureSource = await readFile(
+const captureSource = readFileSync(
   new URL("../app/capture/barcode-capture-client.tsx", import.meta.url),
   "utf8"
 );
