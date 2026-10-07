@@ -1427,3 +1427,95 @@ Repository/CI promotion requires no manual input. For the first real production-
 ### Next
 
 Build 020 — Workspace Persistence & Cross-Device Sync Foundation.
+
+
+## Build 020 — Workspace Persistence & Cross-Device Sync Foundation
+
+Date: 2026-10-06
+
+Status: COMPLETE. Promotion is performed through the protected Build 020 pull-request path.
+
+### Goal
+
+Make saved scrapers/templates and reviewed datasets durable across authenticated devices without sacrificing local/offline operation or silently overwriting concurrent edits.
+
+### Delivered
+
+- migration `0003_workspace_sync_foundation.sql`;
+- `app.workspace_saved_scrapers`;
+- `app.workspace_reviewed_datasets`;
+- RLS membership policies for select/insert/update/delete;
+- runtime grants limited by RLS;
+- composite workspace/record primary keys;
+- server-side optimistic concurrency versions;
+- soft-delete tombstones;
+- source URL persistence;
+- reviewed-dataset retrieval timestamp persistence;
+- 500-row reviewed-dataset server bound;
+- authenticated `/api/extension/sync` GET/POST endpoint;
+- bearer-session validation through Build 019;
+- invalid/unauthorized workspace denial;
+- saved-scraper/template create/update/delete persistence;
+- reviewed-dataset persistence;
+- cross-device server-state retrieval;
+- extension-local sync metadata;
+- queue-before-network offline behavior;
+- safe retry after temporary backend loss;
+- automatic sync attempt after normal local saves;
+- deterministic server pull for clean cache entries;
+- explicit version-conflict detection;
+- conflict UI with Use server / Keep local;
+- local active-workspace scraper filtering;
+- local scraper refresh when workspace storage changes;
+- versioned deletion propagation;
+- explicit non-destructive legacy copy migration;
+- legacy originals retained;
+- per-workspace reviewed-dataset local retention;
+- extension version 0.20.0.
+
+### Conflict rules
+
+- local records with no server version are created with expected version null;
+- updates/deletes require the last observed server version;
+- if the server version changed, no write is applied;
+- the extension retains the local value and server conflict evidence;
+- Use server replaces/removes the local cached record according to server state;
+- Keep local retries the local value using the newest server version;
+- no automatic last-write-wins merge is used.
+
+### Offline rules
+
+- local save succeeds independently of network availability;
+- sync operation is persisted locally before a network attempt;
+- network errors leave operations queued;
+- manual Sync workspace now retries queued operations;
+- server pulls do not overwrite queued/conflicted local records.
+
+### Migration rules
+
+- pre-Build-019 records with no workspace ID remain unscoped;
+- migration is explicit;
+- migration copies into the selected workspace;
+- original local records remain retained;
+- migrated copies enter the ordinary sync queue.
+
+### Verification target
+
+The Build 020 gate verifies:
+
+- PostgreSQL migration success;
+- saved-scraper create at server version 1;
+- stale-version conflict detection;
+- correct-version update and version increment;
+- reviewed-dataset persistence/retrieval;
+- unauthorized user denial through RLS;
+- deletion tombstone/version increment;
+- full TypeScript/lint/build/test matrix.
+
+### Manual setup
+
+None expected.
+
+### Next
+
+Build 021 — Persistent Intelligence, History & Audit Continuity.

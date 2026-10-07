@@ -324,3 +324,52 @@ Every exposed table containing workspace data must enforce row-level authorizati
 ## Migration rule
 
 Schema changes are migration-driven and reviewed as part of a numbered build. No undocumented production-only schema changes.
+
+
+## Build 020 concrete sync tables
+
+### workspace_saved_scrapers
+
+Durable workspace-scoped copy of extension saved scrapers and saved templates.
+
+Key fields:
+
+- workspace_id
+- scraper_id
+- kind: scraper | template
+- name
+- source_url
+- source_origin
+- client_updated_at
+- server_version
+- payload
+- deleted_at
+- created_at
+- updated_at
+
+The primary key is `(workspace_id, scraper_id)`. `server_version` is used for optimistic concurrency. `deleted_at` is a synchronization tombstone.
+
+### workspace_reviewed_datasets
+
+Durable bounded workspace-scoped reviewed dataset snapshot.
+
+Key fields:
+
+- workspace_id
+- dataset_id
+- recipe_name
+- source_url
+- retrieved_at
+- client_updated_at
+- row_count
+- server_version
+- payload
+- deleted_at
+- created_at
+- updated_at
+
+The primary key is `(workspace_id, dataset_id)`. The synchronized payload is limited to 500 rows in Build 020; this bound does not truncate the extension's full local reviewed dataset.
+
+### Build 020 RLS rule
+
+Both concrete synchronization tables enable PostgreSQL row-level security and grant the runtime role only membership-scoped read/write access. Selection, creation, update and deletion all require a matching `app.workspace_members` row for the transaction's `app.user_id`.

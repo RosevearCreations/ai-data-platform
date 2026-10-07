@@ -1,7 +1,9 @@
 import { auth } from "../lib/auth";
 import {
+  applyWorkspaceSyncMutation,
   closeDatabasePools,
   createExtensionSession,
+  listWorkspaceSyncRecords,
   listWorkspacesForUser,
   resolveExtensionSession,
   revokeExtensionSession
@@ -119,8 +121,223 @@ async function main() {
     throw new Error("Build 019 revoked extension session remained valid.");
   }
 
+  const syncWorkspaceId = ownerWorkspaces[0].id;
+  const scraperPayload = {
+    version: 1,
+    id: "build020-scraper",
+    workspaceId: syncWorkspaceId,
+    kind: "scraper",
+    name: "Build 020 sync scraper",
+    sourceUrl: "https://example.test/products",
+    sourceOrigin: "https://example.test",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    revision: 1,
+    recipe: {
+      version: 1,
+      name: "Build 020 sync scraper",
+      sourceUrl: "https://example.test/products",
+      recordSelector: ".product",
+      fields: []
+    },
+    revisions: [],
+    lastCheck: null
+  };
+
+  const createdSync = await applyWorkspaceSyncMutation(
+    ownerId,
+    syncWorkspaceId,
+    {
+      resource: "saved-scraper",
+      action: "upsert",
+      recordId: scraperPayload.id,
+      expectedServerVersion: null,
+      clientUpdatedAt: scraperPayload.updatedAt,
+      payload: scraperPayload,
+      kind: "scraper",
+      name: scraperPayload.name,
+      sourceUrl: scraperPayload.sourceUrl,
+      sourceOrigin: scraperPayload.sourceOrigin
+    }
+  );
+
+  if (
+    createdSync.status !== "applied" ||
+    createdSync.record?.serverVersion !== 1
+  ) {
+    throw new Error("Build 020 failed to create a versioned saved scraper.");
+  }
+
+  const conflictSync = await applyWorkspaceSyncMutation(
+    ownerId,
+    syncWorkspaceId,
+    {
+      resource: "saved-scraper",
+      action: "upsert",
+      recordId: scraperPayload.id,
+      expectedServerVersion: 99,
+      clientUpdatedAt: new Date().toISOString(),
+      payload: { ...scraperPayload, name: "Conflicting local edit" },
+      kind: "scraper",
+      name: "Conflicting local edit",
+      sourceUrl: scraperPayload.sourceUrl,
+      sourceOrigin: scraperPayload.sourceOrigin
+    }
+  );
+
+  if (
+    conflictSync.status !== "conflict" ||
+    conflictSync.record?.serverVersion !== 1
+  ) {
+    throw new Error("Build 020 optimistic concurrency conflict was not detected.");
+  }
+
+  const updatedAt = new Date().toISOString();
+  const updatedSync = await applyWorkspaceSyncMutation(
+    ownerId,
+    syncWorkspaceId,
+    {
+      resource: "saved-scraper",
+      action: "upsert",
+      recordId: scraperPayload.id,
+      expectedServerVersion: 1,
+      clientUpdatedAt: updatedAt,
+      payload: {
+        ...scraperPayload,
+        name: "Build 020 updated scraper",
+        updatedAt
+      },
+      kind: "scraper",
+      name: "Build 020 updated scraper",
+      sourceUrl: scraperPayload.sourceUrl,
+      sourceOrigin: scraperPayload.sourceOrigin
+    }
+  );
+
+  if (
+    updatedSync.status !== "applied" ||
+    updatedSync.record?.serverVersion !== 2
+  ) {
+    throw new Error("Build 020 versioned saved-scraper update failed.");
+  }
+
+  const datasetUpdatedAt = new Date().toISOString();
+  const datasetPayload = {
+    version: 1,
+    id: "build020-review",
+    workspaceId: syncWorkspaceId,
+    recipeName: "Build 020 review",
+    sourceUrl: "https://example.test/products",
+    createdAt: datasetUpdatedAt,
+    updatedAt: datasetUpdatedAt,
+    retrievedAt: datasetUpdatedAt,
+    columns: [],
+    rows: [
+      {
+        id: "row-0",
+        sourceIndex: 0,
+        included: true,
+        values: { name: "Example" },
+        warnings: [],
+        editedKeys: []
+      }
+    ],
+    stats: {
+      totalRows: 1,
+      includedRows: 1,
+      excludedRows: 0,
+      visibleColumns: 0,
+      droppedColumns: 0,
+      editedCells: 0,
+      warningRows: 0
+    }
+  };
+
+  const datasetSync = await applyWorkspaceSyncMutation(
+    ownerId,
+    syncWorkspaceId,
+    {
+      resource: "reviewed-dataset",
+      action: "upsert",
+      recordId: datasetPayload.id,
+      expectedServerVersion: null,
+      clientUpdatedAt: datasetUpdatedAt,
+      payload: datasetPayload,
+      recipeName: datasetPayload.recipeName,
+      sourceUrl: datasetPayload.sourceUrl,
+      retrievedAt: datasetPayload.retrievedAt,
+      rowCount: datasetPayload.rows.length
+    }
+  );
+
+  if (
+    datasetSync.status !== "applied" ||
+    datasetSync.record?.serverVersion !== 1
+  ) {
+    throw new Error("Build 020 reviewed-dataset persistence failed.");
+  }
+
+  const syncedRecords = await listWorkspaceSyncRecords(
+    ownerId,
+    syncWorkspaceId
+  );
+  if (
+    !syncedRecords.some(
+      (record) =>
+        record.resource === "saved-scraper" &&
+        record.recordId === scraperPayload.id
+    ) ||
+    !syncedRecords.some(
+      (record) =>
+        record.resource === "reviewed-dataset" &&
+        record.recordId === datasetPayload.id
+    )
+  ) {
+    throw new Error("Build 020 cross-device retrieval query missed persisted records.");
+  }
+
+  let restrictedDenied = false;
+  try {
+    await listWorkspaceSyncRecords(restrictedId, syncWorkspaceId);
+  } catch (error) {
+    restrictedDenied =
+      error instanceof Error &&
+      error.message === "workspace_access_denied";
+  }
+
+  if (!restrictedDenied) {
+    throw new Error(
+      "Build 020 RLS isolation failed: restricted user reached workspace sync records."
+    );
+  }
+
+  const deletedSync = await applyWorkspaceSyncMutation(
+    ownerId,
+    syncWorkspaceId,
+    {
+      resource: "saved-scraper",
+      action: "delete",
+      recordId: scraperPayload.id,
+      expectedServerVersion: 2,
+      clientUpdatedAt: new Date().toISOString(),
+      payload: null,
+      kind: "scraper",
+      name: "",
+      sourceUrl: "",
+      sourceOrigin: ""
+    }
+  );
+
+  if (
+    deletedSync.status !== "applied" ||
+    !deletedSync.record?.deleted ||
+    deletedSync.record.serverVersion !== 3
+  ) {
+    throw new Error("Build 020 tombstone synchronization failed.");
+  }
+
   console.log(
-    "Build 002/019 database isolation and extension-session acceptance passed."
+    "Build 002/019/020 database isolation, extension-session and workspace-sync acceptance passed."
   );
 }
 

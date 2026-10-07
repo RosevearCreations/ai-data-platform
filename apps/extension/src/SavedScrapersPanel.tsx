@@ -59,6 +59,18 @@ export function SavedScrapersPanel({
   useEffect(() => {
     void refresh();
     void getActiveTab().then((tab) => setCurrentUrl(tab.url ?? "")).catch(() => setCurrentUrl(""));
+
+    const listener = (
+      _changes: Record<string, chrome.storage.StorageChange>,
+      areaName: string
+    ) => {
+      if (areaName === "local") {
+        void refresh();
+      }
+    };
+
+    chrome.storage.onChanged.addListener(listener);
+    return () => chrome.storage.onChanged.removeListener(listener);
   }, []);
 
   const selected = useMemo(

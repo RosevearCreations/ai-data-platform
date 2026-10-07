@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import {
   connectWorkspaceSession,
-  countUnscopedMigrationCandidates,
   disconnectWorkspaceSession,
   getPlatformOrigin,
   refreshWorkspaceSession,
@@ -24,18 +23,15 @@ const EMPTY_STATE: WorkspaceBridgeState = {
 export function WorkspaceSessionPanel() {
   const [bridge, setBridge] = useState<WorkspaceBridgeState>(EMPTY_STATE);
   const [originDraft, setOriginDraft] = useState("");
-  const [migrationCount, setMigrationCount] = useState(0);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   async function refresh() {
-    const [state, migration, origin] = await Promise.all([
+    const [state, origin] = await Promise.all([
       refreshWorkspaceSession(),
-      countUnscopedMigrationCandidates(),
       getPlatformOrigin()
     ]);
     setBridge(state);
-    setMigrationCount(migration.total);
     setOriginDraft(origin);
   }
 
@@ -58,8 +54,6 @@ export function WorkspaceSessionPanel() {
     try {
       const state = await connectWorkspaceSession(originDraft);
       setBridge(state);
-      const migration = await countUnscopedMigrationCandidates();
-      setMigrationCount(migration.total);
       setMessage("Extension workspace session connected.");
     } catch (reason) {
       setMessage(
@@ -200,14 +194,6 @@ export function WorkspaceSessionPanel() {
           <small>{bridge.message}</small>
         </>
       )}
-
-      {migrationCount ? (
-        <p className="workspaceMigration">
-          {migrationCount} older local record{migrationCount === 1 ? "" : "s"}{" "}
-          have no workspace ID. They are flagged as Build 020 migration candidates
-          and have not been assigned automatically.
-        </p>
-      ) : null}
 
       {message ? (
         <p className="workspaceSessionMessage" role="status">

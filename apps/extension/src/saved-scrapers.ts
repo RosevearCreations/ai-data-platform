@@ -1,4 +1,12 @@
-import { requireActiveWorkspaceId } from "./workspace-session";
+import {
+  getActiveWorkspaceId,
+  requireActiveWorkspaceId
+} from "./workspace-session";
+import {
+  queueWorkspaceSyncDelete,
+  queueWorkspaceSyncUpsert,
+  scheduleWorkspaceSyncAttempt
+} from "./workspace-sync";
 import type {
   ExtractionFieldRecipe,
   ExtractionRecipe,
@@ -58,11 +66,20 @@ function normalizeItems(value: unknown): SavedScraper[] {
   });
 }
 
-export async function loadSavedScrapers() {
+async function loadAllSavedScrapers() {
   const stored = await chrome.storage.local.get(STORAGE_KEY);
-  return normalizeItems(stored[STORAGE_KEY]).sort((left, right) =>
-    right.updatedAt.localeCompare(left.updatedAt)
-  );
+  return normalizeItems(stored[STORAGE_KEY]);
+}
+
+export async function loadSavedScrapers() {
+  const workspaceId = await getActiveWorkspaceId();
+  if (!workspaceId) return [];
+
+  return (await loadAllSavedScrapers())
+    .filter((item) => item.workspaceId === workspaceId)
+    .sort((left, right) =>
+      right.updatedAt.localeCompare(left.updatedAt)
+    );
 }
 
 async function writeSavedScrapers(items: SavedScraper[]) {
@@ -74,7 +91,7 @@ export async function createSavedScraper(
   sourceUrl: string,
   kind: SavedScraperKind
 ) {
-  const items = await loadSavedScrapers();
+  const items = await loadAllSavedScrapers();
   const workspaceId = await requireActiveWorkspaceId();
   const now = new Date().toISOString();
   const saved: SavedScraper = {
@@ -93,6 +110,14 @@ export async function createSavedScraper(
     lastCheck: null
   };
   await writeSavedScrapers([saved, ...items]);
+  await queueWorkspaceSyncUpsert({
+    workspaceId,
+    resource: "saved-scraper",
+    recordId: saved.id,
+    clientUpdatedAt: saved.updatedAt,
+    payload: JSON.parse(JSON.stringify(saved)) as Record<string, unknown>
+  });
+  scheduleWorkspaceSyncAttempt();
   return saved;
 }
 
@@ -101,8 +126,11 @@ export async function updateSavedScraper(
   recipe: ExtractionRecipe,
   sourceUrl: string
 ): Promise<SavedScraper> {
-  const items = await loadSavedScrapers();
-  const index = items.findIndex((item) => item.id === id);
+  const workspaceId = await requireActiveWorkspaceId();
+  const items = await loadAllSavedScrapers();
+  const index = items.findIndex(
+    (item) => item.id === id && item.workspaceId === workspaceId
+  );
 
   if (index < 0) {
     throw new Error("The selected saved scraper no longer exists.");
@@ -131,22 +159,75 @@ export async function updateSavedScraper(
   const next = [...items];
   next[index] = updated;
   await writeSavedScrapers(next);
+  await queueWorkspaceSyncUpsert({
+    workspaceId,
+    resource: "saved-scraper",
+    recordId: updated.id,
+    clientUpdatedAt: updated.updatedAt,
+    payload: JSON.parse(JSON.stringify(updated)) as Record<string, unknown>
+  });
+  scheduleWorkspaceSyncAttempt();
   return updated;
 }
 
 export async function deleteSavedScraper(id: string) {
-  const items = await loadSavedScrapers();
-  await writeSavedScrapers(items.filter((item) => item.id !== id));
+  const workspaceId = await requireActiveWorkspaceId();
+  const items = await loadAllSavedScrapers();
+  const existing = items.find(
+    (item) => item.id === id && item.workspaceId === workspaceId
+  );
+
+  await writeSavedScrapers(
+    items.filter(
+      (item) => !(item.id === id && item.workspaceId === workspaceId)
+    )
+  );
+
+  if (existing) {
+    await queueWorkspaceSyncDelete({
+      workspaceId,
+      resource: "saved-scraper",
+      recordId: id,
+      clientUpdatedAt: new Date().toISOString()
+    });
+    scheduleWorkspaceSyncAttempt();
+  }
 }
 
 export async function updateSavedScraperCheck(
   id: string,
   report: ScraperCompatibilityReport
 ) {
-  const items = await loadSavedScrapers();
-  await writeSavedScrapers(
-    items.map((item) => (item.id === id ? { ...item, lastCheck: report } : item))
-  );
+  const workspaceId = await requireActiveWorkspaceId();
+  const items = await loadAllSavedScrapers();
+  const now = new Date().toISOString();
+  let updated: SavedScraper | null = null;
+
+  const next = items.map((item) => {
+    if (item.id !== id || item.workspaceId !== workspaceId) {
+      return item;
+    }
+
+    updated = {
+      ...item,
+      lastCheck: report,
+      updatedAt: now
+    };
+    return updated;
+  });
+
+  await writeSavedScrapers(next);
+
+  if (updated) {
+    await queueWorkspaceSyncUpsert({
+      workspaceId,
+      resource: "saved-scraper",
+      recordId: updated.id,
+      clientUpdatedAt: updated.updatedAt,
+      payload: JSON.parse(JSON.stringify(updated)) as Record<string, unknown>
+    });
+    scheduleWorkspaceSyncAttempt();
+  }
 }
 
 function field(

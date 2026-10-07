@@ -6,6 +6,7 @@ import { RecipeBuilder } from "./RecipeBuilder";
 import { SavedScrapersPanel } from "./SavedScrapersPanel";
 import { ScheduledJobsPanel } from "./ScheduledJobsPanel";
 import { WorkspaceSessionPanel } from "./WorkspaceSessionPanel";
+import { WorkspaceSyncPanel } from "./WorkspaceSyncPanel";
 import {
   detectRepeatingRecords,
   previewRecordGroup
@@ -257,20 +258,21 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">019</span>
+        <span className="build">020</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Bind the extension to authenticated workspaces</strong>
+        <strong>Persist workspace data across devices</strong>
         <p>
-          Build 019 connects the extension to the Better Auth workspace model
-          through a short-lived Chrome identity bridge, loads only authorized
-          memberships, and fails closed when the session expires or access is
-          unavailable.
+          Build 020 synchronizes saved scrapers, templates and reviewed datasets
+          through workspace-scoped PostgreSQL storage while retaining a durable
+          offline queue, explicit conflict handling and non-destructive legacy
+          migration.
         </p>
       </section>
 
       <WorkspaceSessionPanel />
+      <WorkspaceSyncPanel />
 
       {!selectedRecordGroup ? (
         <>
