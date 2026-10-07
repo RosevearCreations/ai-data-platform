@@ -280,7 +280,7 @@ export async function listWorkspaceSyncRecords(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           select
             workspace_id,
             scraper_id,
@@ -292,7 +292,7 @@ export async function listWorkspaceSyncRecords(
           where workspace_id = $1
           order by updated_at desc
           limit 1000
-        \`,
+        `,
         [workspaceId]
       ),
       client.query<{
@@ -303,7 +303,7 @@ export async function listWorkspaceSyncRecords(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           select
             workspace_id,
             dataset_id,
@@ -315,7 +315,7 @@ export async function listWorkspaceSyncRecords(
           where workspace_id = $1
           order by updated_at desc
           limit 250
-        \`,
+        `,
         [workspaceId]
       )
     ]);
@@ -344,7 +344,7 @@ export async function applyWorkspaceSyncMutation(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           select
             workspace_id,
             scraper_id,
@@ -356,7 +356,7 @@ export async function applyWorkspaceSyncMutation(
           where workspace_id = $1
             and scraper_id = $2
           for update
-        \`,
+        `,
         [workspaceId, mutation.recordId]
       );
 
@@ -393,7 +393,7 @@ export async function applyWorkspaceSyncMutation(
           deleted_at: Date | null;
           payload: Record<string, unknown>;
         }>(
-          \`
+          `
             update app.workspace_saved_scrapers
             set
               server_version = server_version + 1,
@@ -409,7 +409,7 @@ export async function applyWorkspaceSyncMutation(
               client_updated_at,
               deleted_at,
               payload
-          \`,
+          `,
           [workspaceId, mutation.recordId, mutation.clientUpdatedAt]
         );
 
@@ -432,7 +432,7 @@ export async function applyWorkspaceSyncMutation(
           deleted_at: Date | null;
           payload: Record<string, unknown>;
         }>(
-          \`
+          `
             update app.workspace_saved_scrapers
             set
               kind = $3,
@@ -453,7 +453,7 @@ export async function applyWorkspaceSyncMutation(
               client_updated_at,
               deleted_at,
               payload
-          \`,
+          `,
           [
             workspaceId,
             mutation.recordId,
@@ -480,7 +480,7 @@ export async function applyWorkspaceSyncMutation(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           insert into app.workspace_saved_scrapers (
             workspace_id,
             scraper_id,
@@ -499,7 +499,7 @@ export async function applyWorkspaceSyncMutation(
             client_updated_at,
             deleted_at,
             payload
-        \`,
+        `,
         [
           workspaceId,
           mutation.recordId,
@@ -526,7 +526,7 @@ export async function applyWorkspaceSyncMutation(
       deleted_at: Date | null;
       payload: Record<string, unknown>;
     }>(
-      \`
+      `
         select
           workspace_id,
           dataset_id,
@@ -538,7 +538,7 @@ export async function applyWorkspaceSyncMutation(
         where workspace_id = $1
           and dataset_id = $2
         for update
-      \`,
+      `,
       [workspaceId, mutation.recordId]
     );
 
@@ -575,7 +575,7 @@ export async function applyWorkspaceSyncMutation(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           update app.workspace_reviewed_datasets
           set
             server_version = server_version + 1,
@@ -591,7 +591,7 @@ export async function applyWorkspaceSyncMutation(
             client_updated_at,
             deleted_at,
             payload
-        \`,
+        `,
         [workspaceId, mutation.recordId, mutation.clientUpdatedAt]
       );
 
@@ -614,7 +614,7 @@ export async function applyWorkspaceSyncMutation(
         deleted_at: Date | null;
         payload: Record<string, unknown>;
       }>(
-        \`
+        `
           update app.workspace_reviewed_datasets
           set
             recipe_name = $3,
@@ -635,7 +635,7 @@ export async function applyWorkspaceSyncMutation(
             client_updated_at,
             deleted_at,
             payload
-        \`,
+        `,
         [
           workspaceId,
           mutation.recordId,
@@ -662,7 +662,7 @@ export async function applyWorkspaceSyncMutation(
       deleted_at: Date | null;
       payload: Record<string, unknown>;
     }>(
-      \`
+      `
         insert into app.workspace_reviewed_datasets (
           workspace_id,
           dataset_id,
@@ -681,7 +681,7 @@ export async function applyWorkspaceSyncMutation(
           client_updated_at,
           deleted_at,
           payload
-      \`,
+      `,
       [
         workspaceId,
         mutation.recordId,
