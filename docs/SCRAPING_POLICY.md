@@ -90,3 +90,14 @@ Monitoring must compare newly observed public facts with prior observations. A c
 ## Review
 
 New source classes and high-volume recurring jobs require a policy review before activation.
+
+
+## Build 025 registry enforcement
+
+Reusable and scheduled sources must now have a workspace-scoped Source Policy Registry entry before activation.
+
+The registry records the source origin, collection method, factual purpose, authorization state, terms/policy review, robots/crawl decision where applicable, access-control boundary, sensitivity, conservative delay/page/record budgets, review expiry, status and review notes/evidence.
+
+For public webpage extraction, a robots/crawl decision of unknown or disallowed is not runnable. Restricted/private data is not an approved crawler sensitivity. Login, paywall, CAPTCHA, ban or other technical access-control bypass remains prohibited regardless of registry status.
+
+Approval is revisioned. A material edit, block or expiry invalidates scheduled jobs pinned to the prior policy fingerprint and requires explicit re-review. Future remote execution must copy and enforce the exact approved registry policy rather than inventing or loosening its own source rules.
