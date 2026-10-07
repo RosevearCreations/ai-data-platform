@@ -242,3 +242,22 @@ Reason: AI can improve explanation and prioritization without becoming an author
 Decision: approved repair and rollback operations append a new saved-scraper revision. Existing revision history is not rewritten. The previous revision archives its last compatibility report and structural fingerprint when available.
 
 Reason: drift repair needs auditable provenance and a reversible path. Appending a revision also preserves Build 017's scheduled-job revision pinning so repaired recipes cannot enter scheduled execution without explicit re-review.
+
+
+## D0034 — Mobile camera capture belongs to the authenticated web app
+
+Decision: Build 024 camera/manual capture is implemented at /capture in the web application rather than relying on the Chrome extension.
+
+Reason: mobile Chrome environments do not provide the same desktop extension surface. The authenticated web app gives the phone a first-class capture path while reusing workspace membership, PostgreSQL RLS and cross-device durable intelligence.
+
+## D0035 — Barcode approval is a reviewed handoff, not a direct inventory/ownership mutation
+
+Decision: a barcode capture may propose an exact existing movie/supplier match, but approval records a reviewed handoff only. It does not update movie ownership fields or Devil n Dove internal inventory fields.
+
+Reason: scanning an identifier is evidence, not authorization to overwrite user-owned operational data. Existing Build 015/016 review rules remain authoritative.
+
+## D0036 — Camera access is explicit and non-continuous
+
+Decision: getUserMedia is called only from the Start camera user action. Camera tracks are stopped on successful detection, explicit Stop camera and component cleanup. No geolocation API is used.
+
+Reason: barcode capture needs a narrow camera capability, not persistent device surveillance or location data.

@@ -180,3 +180,14 @@ Compatibility reports carry a structural fingerprint and per-field coverage tren
 Optional AI ranking is server-side and authenticated through the Build 019 extension bearer session. The model receives only bounded repair evidence and deterministic candidate IDs. It cannot create or approve selectors; sanitization removes unknown candidate IDs and deterministic fallback remains available without AI credentials.
 
 Approved repair and rollback operations always create a new revision. Scheduled jobs remain pinned to their prior saved-scraper revision, so Build 017's existing Refresh + re-review flow is required before a repaired recipe can run.
+
+
+## Build 024 mobile barcode intake boundary
+
+The /capture web route is the mobile entrypoint. It uses authenticated Better Auth session cookies and workspace RLS. The browser performs camera detection locally through BarcodeDetector when the API exists; only detected/typed digits, format hint, capture method and timestamps are sent to the server.
+
+The server normalizes the identifier and compares it against the latest synchronized intelligence snapshot for that target workspace. Personal matching reads only movie collection UPC values. Devil n Dove matching reads only supplier staging supplierSku values that normalize as barcode identifiers.
+
+Barcode intake is persisted separately from mutable movie/supplier intelligence. Approving a capture marks a reviewed downstream handoff; it does not rewrite the module payload. This avoids cross-device last-write conflicts and preserves movie ownership / Devil n Dove internal fields.
+
+Offline captures are stored in localStorage on the device with a 100-item bound and are not treated as matched/reviewed until explicitly sent to the authenticated server.

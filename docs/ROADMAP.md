@@ -493,30 +493,60 @@ No setup expected. Human approval of each repaired selector remains intentionall
 
 ## Build 024 — Mobile Barcode & Camera Intake
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE (2026-10-07).
 
-Goal: add fast mobile capture for owned movies and supplier/inventory identifiers without weakening matching or ownership-preservation rules.
+Goal: add fast mobile capture for owned movies and supplier/inventory identifiers without weakening matching, workspace isolation or ownership/internal-field preservation.
 
-Deliverables:
+Delivered:
 
-- mobile-friendly barcode intake surface;
-- camera barcode scanning when browser/device APIs support it;
-- manual barcode entry fallback;
-- UPC/EAN normalization;
-- Personal movie-library barcode lookup handoff;
-- Devil n Dove supplier/inventory staging barcode handoff;
-- duplicate barcode detection;
-- confidence/match review before enrichment;
-- camera permission requested only on explicit user action;
-- no continuous camera access;
-- local queue for captures made while temporarily offline;
-- source/provenance labeling for scanned identifiers.
+- authenticated mobile-friendly web capture page at /capture;
+- Personal movie and Devil n Dove supplier/inventory target selection limited to authorized workspaces;
+- explicit camera capability detection;
+- camera permission requested only after Start camera is pressed;
+- BarcodeDetector-based camera scanning when supported;
+- manual barcode entry fallback requiring no camera permission;
+- explicit Stop camera control;
+- automatic camera-track release after a successful detection;
+- UPC-A, EAN-8, EAN-13 and GTIN-14 normalization to canonical GTIN identity;
+- UPC-E provenance preservation when the detector reports UPC-E;
+- checksum validation surfaced as review warning rather than silent correction;
+- durable workspace-scoped barcode intake table protected by RLS;
+- exact matching against synchronized Personal movie UPCs;
+- exact matching against Devil n Dove supplier staging SKUs when they contain a barcode identifier;
+- duplicate normalized-barcode detection inside active intake;
+- duplicate approval blocking;
+- exact/unmatched/duplicate review status;
+- explicit approve/reject handoff review;
+- approved Personal captures route to the existing movie lookup/review workflow without changing ownership fields;
+- approved Devil n Dove captures route to supplier/inventory lookup staging without changing internal inventory fields;
+- bounded match payloads that omit movie ownership notes and non-contract supplier fields;
+- browser-local offline queue capped at 100 captures;
+- manual Send offline queue action after connectivity returns;
+- provenance labeling for camera/manual method, capture timestamp and offline queue timestamp;
+- no geolocation request or storage;
+- extension version 0.24.0;
+- CI coverage for normalization, checksum behavior, privacy, matching, explicit camera acquisition path, RLS, target/workspace enforcement and duplicate approval blocking.
 
-Acceptance: a user can scan or type a barcode on a supported mobile device, route it to the correct workspace workflow, review the resulting match, and preserve existing ownership/internal fields.
+Acceptance: an authorized user can scan or type an 8/12/13/14-digit barcode on a supported mobile browser, route it to Personal movie or Devil n Dove supplier intake, review an exact/unmatched suggestion, approve/reject the handoff, recover temporarily offline captures, and preserve existing ownership/internal fields.
 
 Manual input gate:
 
-A one-time browser camera permission is required on each mobile device that uses scanning. Exact walkthrough is included in the detailed plan document.
+Camera scanning requires a one-time browser camera permission on each mobile device/site combination. Manual barcode entry requires no permission.
+
+Camera walkthrough:
+
+1. Open the deployed AI Data Platform and sign in.
+2. Open **Scan / enter barcode**.
+3. Choose **Personal movie library** or **Devil n Dove supplier / inventory**.
+4. Tap **Start camera**.
+5. When the browser asks for camera permission, choose **Allow while using this site** or the equivalent site/one-time permission.
+6. Point the rear camera at the UPC/EAN barcode.
+7. When detected, the application stops the camera automatically and submits the digits for review.
+8. Review exact/unmatched/duplicate status and the proposed handoff.
+9. Choose **Approve handoff** or **Reject**.
+10. If you want to stop before detection, tap **Stop camera**; camera tracks are released.
+11. If permission was denied accidentally, open the browser's site permissions for the AI Data Platform site, change **Camera** to **Allow**, reload, and try again.
+12. If camera barcode detection is unsupported, use the manual numeric field instead.
 
 ## Build 025 — Remote Execution Provider Abstraction & Cloud Worker Readiness
 

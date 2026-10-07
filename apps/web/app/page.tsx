@@ -105,10 +105,13 @@ export default async function HomePage() {
 
       {session ? (
         <div className="heroActions">
-          <Link className="primaryLink" href="/intelligence">
+          <Link className="primaryLink" href="/capture">
+            Scan / enter barcode
+          </Link>
+          <Link className="secondaryButton" href="/intelligence">
             Review persistent intelligence
           </Link>
-          <span>History, pending review and audit evidence are available across devices.</span>
+          <span>Mobile barcode intake and durable intelligence are available across devices.</span>
         </div>
       ) : null}
 
