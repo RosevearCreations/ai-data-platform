@@ -261,3 +261,22 @@ Reason: scanning an identifier is evidence, not authorization to overwrite user-
 Decision: getUserMedia is called only from the Start camera user action. Camera tracks are stopped on successful detection, explicit Stop camera and component cleanup. No geolocation API is used.
 
 Reason: barcode capture needs a narrow camera capability, not persistent device surveillance or location data.
+
+
+## D0037 — Recurring-source approval is a durable registry record
+
+Decision: Build 025 replaces reusable scheduling-only source checkboxes with a workspace-scoped source policy registry keyed by normalized origin.
+
+Reason: terms, robots/crawl decisions, authorization, sensitivity and crawl budgets are properties of a reviewed source relationship, not ephemeral form state. A durable registry makes the same evidence available to local jobs, cross-device recovery and future remote workers.
+
+## D0038 — Scheduled jobs pin an exact policy revision and fingerprint
+
+Decision: scheduled job approval stores the Build 025 registry policy ID, revision and fingerprint. Create, refresh, re-enable and run paths fail closed if the current policy is missing, blocked, expired or different.
+
+Reason: silently inheriting a later policy edit would let operational permission change without explicit job review. Exact pinning keeps governance auditable and makes policy changes intentionally invalidate prior approval.
+
+## D0039 — Public webpage crawling requires resolved robots/crawl review
+
+Decision: public-webpage policy entries cannot become runnable while robots/crawl status is unknown or disallowed. Official API/dataset and user-export methods may mark robots as not applicable while remaining subject to their own terms and authorization.
+
+Reason: governance should prefer permitted structured sources and must not treat technical accessibility as blanket permission to automate collection.
