@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">025</span>
+        <span className="build">026</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Govern every recurring source before crawl automation expands</strong>
+        <strong>Remote execution is staged, governed and disabled by default</strong>
         <p>
-          Build 025 adds a workspace-scoped source policy registry with terms,
-          robots/crawl evidence, approved collection method, sensitivity,
-          bounded rate/page/record budgets, expiry and exact policy fingerprints.
-          Scheduled jobs fail closed when the approved policy changes or expires.
+          Build 026 adds a provider-neutral worker contract with exact Build 025
+          policy pins, bounded budgets, leases, heartbeats, cancellation,
+          timeouts and idempotent results. The CI mock worker has no network
+          access, and live provider execution remains disabled until Build 027.
         </p>
       </section>
 

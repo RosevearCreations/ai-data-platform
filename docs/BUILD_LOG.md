@@ -1604,3 +1604,18 @@ Migration 0006_source_policy_registry.sql extends the workspace-intelligence mod
 No external account, credential or environment variable is required. Real source approval intentionally remains a human policy-review action.
 
 Next: Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness.
+
+
+## Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness
+
+Date: 2026-10-07
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Delivered provider-neutral worker contracts, workspace/RLS-scoped durable job state, prepared/queue/lease/heartbeat lifecycle, cancellation and timeout handling, encrypted-configuration references, exact Build 025 policy evidence copied into every job, bounded page/record/time/rate budgets, append-only idempotent result evidence, authenticated readiness reporting and a deterministic no-network mock worker.
+
+Production provider execution remains disabled by default through REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED. Migration 0007_remote_execution_foundation.sql adds the job/result control plane. CI covers policy drift, secret-reference rules, budgets, mock worker behavior, durable lifecycle, duplicate result replay, timeout/cancellation, result immutability and workspace isolation. Extension version is 0.26.0.
+
+No provider account, credential or manual setup is required.
+
+Next: Build 027 — Controlled Remote Browser Pilot & Egress Policy.

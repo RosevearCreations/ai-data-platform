@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AI Data Platform",
   "description": "Local-first browser extraction companion for the Rosevear Creations AI Data Platform.",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "minimum_chrome_version": "114",
   "permissions": [
     "sidePanel",

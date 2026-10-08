@@ -202,3 +202,12 @@ Each saved recurring source is matched by exact workspace and origin. Approved p
 Registry state synchronizes through the existing authenticated Build 021 intelligence endpoint as the source-policy module. PostgreSQL RLS remains the durable workspace boundary; Build 025 does not create a second authorization system.
 
 This registry is also the governance contract for future remote execution. Build 026 may copy an exact approved policy revision into a remote job, but it may not weaken or infer around the Build 025 restrictions.
+
+
+## Build 026 remote execution boundary
+
+Build 026 adds a provider-neutral remote execution control plane without selecting a live crawling provider. Every job is workspace-scoped, begins in prepared state and copies the exact approved Build 025 source-policy ID, revision, fingerprint, expiry, evidence and budgets.
+
+The lifecycle is prepared -> queued -> leased -> running -> terminal. Queueing and leasing require REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true; the default/unset production posture is disabled. Leases are bounded, heartbeats establish active ownership, cancellation is durable, timeout transitions close stale work, and result ingestion is append-only/idempotent by job plus idempotency key with a canonical result fingerprint.
+
+Jobs never store raw provider secrets. They may carry only an enc-config://remote-execution/... reference to encrypted server configuration. Provider selection, credential storage and real egress are deliberately deferred to Build 027. The Build 026 mock provider performs no network access.
