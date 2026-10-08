@@ -589,7 +589,7 @@ No external account, credential or environment variable is required. Human polic
 
 ## Build 026 — Remote Execution Provider Abstraction & Cloud Worker Readiness
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Promotion uses the protected exact-tree path.
 
 Goal: prepare a provider-neutral remote execution architecture without immediately turning on unattended cloud crawling.
 
@@ -608,7 +608,7 @@ Deliverables:
 - local mock worker for CI;
 - feature flag that keeps production remote execution disabled by default.
 
-Acceptance: the platform can prove the remote job lifecycle end-to-end with a mock/non-production worker while production remote crawling remains disabled until a provider is deliberately selected and configured.
+Acceptance: PASSED when the provider-neutral lifecycle, exact source-policy copy, bounded budgets, lease/heartbeat/cancellation/timeout behavior, append-only idempotent result evidence, RLS isolation and no-network mock worker pass CI while production remote execution remains disabled by default.
 
 Manual input gate:
 

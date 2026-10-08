@@ -20,6 +20,16 @@ import {
   upsertWorkspaceIntelligenceModule,
   withUserDatabase
 } from "../lib/database";
+import {
+  completeWorkspaceRemoteExecutionJob,
+  createWorkspaceRemoteExecutionJob,
+  enqueueWorkspaceRemoteExecutionJob,
+  expireWorkspaceRemoteExecutionJob,
+  heartbeatWorkspaceRemoteExecutionJob,
+  leaseWorkspaceRemoteExecutionJob,
+  listWorkspaceRemoteExecutionJobs,
+  requestWorkspaceRemoteExecutionCancellation
+} from "../lib/remote-execution-database";
 
 async function createUser(name: string, email: string) {
   const result = await auth.api.signUpEmail({
@@ -568,6 +578,202 @@ async function main() {
   }
 
 
+  const priorRemoteExecutionFlag =
+    process.env.REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED;
+  const remoteJobId = "26000000-0000-4000-8000-000000000001";
+  const remoteTimeoutJobId = "26000000-0000-4000-8000-000000000002";
+  const remoteCancelledJobId = "26000000-0000-4000-8000-000000000003";
+
+  const remotePrepared = await createWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteJobId,
+    savedScraperId: "build026-scraper",
+    providerKey: "mock",
+    sourceUrl: "https://example.test/catalog",
+    sourcePolicyPin: {
+      policyId: "build025-source-policy",
+      policyRevision: 1,
+      policyFingerprint: "sp1-build025"
+    },
+    requestedBudget: {
+      maxPages: 3,
+      maxRecords: 25,
+      maxRuntimeSeconds: 60,
+      minimumDelayMs: 1000
+    }
+  });
+  if (
+    remotePrepared.status !== "prepared" ||
+    remotePrepared.sourcePolicyFingerprint !== "sp1-build025" ||
+    remotePrepared.budget.minimumDelayMs !== 1500
+  ) {
+    throw new Error("Build 026 remote preparation/policy copy failed.");
+  }
+
+  delete process.env.REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED;
+  let remoteDisabled = false;
+  try {
+    await enqueueWorkspaceRemoteExecutionJob(ownerId, syncWorkspaceId, remoteJobId);
+  } catch (error) {
+    remoteDisabled = error instanceof Error &&
+      error.message === "remote_provider_execution_disabled";
+  }
+  if (!remoteDisabled) {
+    throw new Error("Build 026 provider execution was not disabled by default.");
+  }
+
+  process.env.REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED = "true";
+  await enqueueWorkspaceRemoteExecutionJob(ownerId, syncWorkspaceId, remoteJobId);
+  const leasedRemote = await leaseWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteJobId,
+    workerId: "mock-ci",
+    leaseSeconds: 60
+  });
+  if (leasedRemote.status !== "leased" || leasedRemote.attemptCount !== 1) {
+    throw new Error("Build 026 lease acquisition failed.");
+  }
+  const runningRemote = await heartbeatWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteJobId,
+    workerId: "mock-ci"
+  });
+  if (runningRemote.status !== "running" || !runningRemote.heartbeatAt) {
+    throw new Error("Build 026 heartbeat transition failed.");
+  }
+
+  const resultPayload = {
+    pagesProcessed: 1,
+    recordsCollected: 0,
+    records: [],
+    warnings: ["Database lifecycle acceptance result."]
+  };
+  const completedRemote = await completeWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteJobId,
+    workerId: "mock-ci",
+    idempotencyKey: "build026-result-1",
+    payload: resultPayload
+  });
+  const duplicateRemote = await completeWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteJobId,
+    workerId: "mock-ci",
+    idempotencyKey: "build026-result-1",
+    payload: resultPayload
+  });
+  if (
+    completedRemote.job.status !== "succeeded" ||
+    completedRemote.duplicate ||
+    !duplicateRemote.duplicate
+  ) {
+    throw new Error("Build 026 idempotent result ingestion failed.");
+  }
+
+  await createWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteCancelledJobId,
+    savedScraperId: "build026-cancel",
+    providerKey: "mock",
+    sourceUrl: "https://example.test/cancel",
+    sourcePolicyPin: {
+      policyId: "build025-source-policy",
+      policyRevision: 1,
+      policyFingerprint: "sp1-build025"
+    }
+  });
+  const cancelledRemote = await requestWorkspaceRemoteExecutionCancellation(
+    ownerId,
+    syncWorkspaceId,
+    remoteCancelledJobId
+  );
+  if (cancelledRemote.status !== "cancelled") {
+    throw new Error("Build 026 cancellation failed.");
+  }
+
+  await createWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteTimeoutJobId,
+    savedScraperId: "build026-timeout",
+    providerKey: "mock",
+    sourceUrl: "https://example.test/timeout",
+    sourcePolicyPin: {
+      policyId: "build025-source-policy",
+      policyRevision: 1,
+      policyFingerprint: "sp1-build025"
+    },
+    requestedBudget: { maxRuntimeSeconds: 30 }
+  });
+  await enqueueWorkspaceRemoteExecutionJob(
+    ownerId,
+    syncWorkspaceId,
+    remoteTimeoutJobId
+  );
+  await leaseWorkspaceRemoteExecutionJob(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: remoteTimeoutJobId,
+    workerId: "mock-timeout",
+    leaseSeconds: 30
+  });
+  await withUserDatabase(ownerId, async (client) => {
+    await client.query(
+      "update app.remote_execution_jobs set lease_expires_at = now() - interval '1 second' where workspace_id = $1 and job_id = $2",
+      [syncWorkspaceId, remoteTimeoutJobId]
+    );
+  });
+  const timedOutRemote = await expireWorkspaceRemoteExecutionJob(
+    ownerId,
+    syncWorkspaceId,
+    remoteTimeoutJobId
+  );
+  if (timedOutRemote.status !== "timed-out") {
+    throw new Error("Build 026 timeout transition failed.");
+  }
+
+  const remoteJobs = await listWorkspaceRemoteExecutionJobs(
+    ownerId,
+    syncWorkspaceId
+  );
+  if (!remoteJobs.some((job) =>
+    job.jobId === remoteJobId && job.status === "succeeded"
+  )) {
+    throw new Error("Build 026 durable remote job retrieval failed.");
+  }
+
+  let remoteIsolationDenied = false;
+  try {
+    await listWorkspaceRemoteExecutionJobs(restrictedId, syncWorkspaceId);
+  } catch (error) {
+    remoteIsolationDenied = error instanceof Error &&
+      error.message === "workspace_access_denied";
+  }
+  if (!remoteIsolationDenied) {
+    throw new Error("Build 026 remote job RLS isolation failed.");
+  }
+
+  let remoteResultsImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.remote_execution_results set result_fingerprint = 'changed' where workspace_id = $1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    remoteResultsImmutable = true;
+  }
+  if (!remoteResultsImmutable) {
+    throw new Error("Build 026 remote results allowed runtime updates.");
+  }
+
+  if (priorRemoteExecutionFlag === undefined) {
+    delete process.env.REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED;
+  } else {
+    process.env.REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED =
+      priorRemoteExecutionFlag;
+  }
+
+
   const personalWorkspace = ownerWorkspaces.find(
     (workspace) => workspace.slug === "personal"
   );
@@ -746,7 +952,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025 database isolation, source-policy persistence, barcode review and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026 database isolation, source-policy persistence, barcode review, remote execution lifecycle and workspace-target acceptance passed."
   );
 }
 

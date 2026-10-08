@@ -198,6 +198,8 @@ No external account, credential or environment variable is required. Human revie
 
 ## Build 026 detailed plan
 
+Status: COMPLETE. RLS-scoped remote jobs, exact Build 025 policy evidence, bounded budgets, lease/heartbeat/cancellation/timeout handling, encrypted-config references, idempotent results, readiness reporting and a no-network mock worker are implemented. Live provider execution remains disabled by default.
+
 Implementation sequence:
 
 1. Define provider-neutral remote worker interface.
