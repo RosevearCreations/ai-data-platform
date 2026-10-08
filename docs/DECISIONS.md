@@ -299,3 +299,22 @@ Reason: the first remote run should validate the execution boundary, policy evid
 Decision: live execution requires the Build 026 execution flag, a global kill switch explicitly set false, and an enabled workspace whose kill switch is false.
 
 Reason: provider credentials or a single UI toggle must never be sufficient to start remote browsing. Layered kill gates make accidental activation and emergency shutdown predictable.
+
+
+## D0046 — Workspace slugs are identity; profiles are behavior
+
+Decision: Build 028 keeps stable workspace IDs/slugs but moves configurable domain behavior into reusable workspace_profiles.
+
+Reason: adding a new domain must not require another branch of slug-specific extractor code. Profiles provide normalization, review, provenance/history policy, templates and capabilities while RLS continues to isolate workspace data.
+
+## D0047 — Custom profiles begin conservative
+
+Decision: generic/custom profiles enable history and source-policy governance but keep scheduling, remote execution, barcode intake and business-integration writes disabled until explicitly configured.
+
+Reason: an unknown domain should inherit evidence/review protections without silently inheriting higher-risk automation.
+
+## D0048 — Built-in specialized behavior keys from profile identity
+
+Decision: existing Personal barcode behavior is tied to personal-media and Devil n Dove barcode behavior to maker-commerce rather than merely checking legacy slugs.
+
+Reason: workspace slugs can now expand freely. Specialized workflows need an explicit capability/domain contract instead of accidental string identity.

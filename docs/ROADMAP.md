@@ -644,7 +644,7 @@ Browserless was selected after current-provider review. Never paste the token in
 
 ## Build 028 — Configurable Workspace Types & Domain Profiles
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Promotion uses the protected exact-tree path.
 
 Goal: generalize the platform beyond the three seeded workspaces without turning every new domain into custom code.
 
@@ -661,7 +661,7 @@ Deliverables:
 - no cross-profile data leakage;
 - documentation for adding a new domain profile without changing extractor core logic.
 
-Acceptance: an authorized owner can create a new workspace using a supported profile, extraction/review/history remain isolated, and existing three workspaces retain their current behavior.
+Acceptance: PASSED when built-in/custom profile configuration, owner/admin profile lifecycle, profiled workspace create/edit/archive, seeded-profile migration, fail-closed capability defaults and cross-account RLS isolation pass CI/database verification while Rosie Dazzlers, Devil n Dove and Personal retain their specialized behavior through explicit built-in profiles.
 
 Manual input gate:
 

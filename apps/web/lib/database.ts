@@ -49,6 +49,11 @@ export interface WorkspaceSummary extends QueryResultRow {
   slug: string;
   name: string;
   type: "business" | "personal";
+  purpose: string;
+  profileKey: string;
+  profileName: string;
+  profileDescription: string;
+  profileCapabilities: Record<string, boolean>;
   role: WorkspaceRole;
 }
 
@@ -151,10 +156,18 @@ export async function listWorkspacesForUser(userId: string) {
         w.slug,
         w.name,
         w.type,
+        w.purpose,
+        p.profile_key as "profileKey",
+        p.name as "profileName",
+        p.description as "profileDescription",
+        p.capabilities as "profileCapabilities",
         wm.role
       from app.workspaces w
       inner join app.workspace_members wm
         on wm.workspace_id = w.id
+      inner join app.workspace_profiles p
+        on p.profile_key = w.profile_key
+      where w.archived_at is null
       order by w.name
     `);
 
@@ -1138,16 +1151,16 @@ async function requireBarcodeTargetWorkspace(
 ) {
   await requireWorkspaceAccess(client, workspaceId);
 
-  const result = await client.query<{ slug: string; type: "business" | "personal" }>(
-    "select slug, type from app.workspaces where id = $1",
+  const result = await client.query<{ profile_key: string }>(
+    "select profile_key from app.workspaces where id = $1",
     [workspaceId]
   );
   const workspace = result.rows[0];
 
   const allowed =
     target === "personal-movie"
-      ? workspace?.slug === "personal" && workspace.type === "personal"
-      : workspace?.slug === "devilndove" && workspace.type === "business";
+      ? workspace?.profile_key === "personal-media"
+      : workspace?.profile_key === "maker-commerce";
 
   if (!allowed) {
     throw new Error("barcode_target_workspace_mismatch");

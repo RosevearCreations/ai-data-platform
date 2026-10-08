@@ -485,3 +485,21 @@ Exact workspace + normalized source-origin allowlist. Each row pins the Build 02
 ### remote_execution_provider_events
 
 Append-only provider/audit evidence. Stores event type, optional job ID, Browserless region, direct egress, estimated billing units, duration, target response code and bounded JSON details. The runtime role can SELECT/INSERT only.
+
+
+## Build 028 workspace profiles
+
+### workspace_profiles
+
+Reusable domain definitions keyed by profile_key. Each profile stores name/description, compatibility workspace_type, normalization_fields, review_dimensions, provenance_policy, history_policy, review_policy, profile-scoped templates, capability flags, built-in/custom status, creator and archive timestamps.
+
+Built-ins are immutable. Custom profiles are archive-only and RLS-scoped.
+
+### workspaces additions
+
+- profile_key — required reference to workspace_profiles;
+- purpose — operator-readable workspace purpose;
+- archived_at — soft-archive lifecycle;
+- created_by — creator evidence for newly profiled workspaces.
+
+The original type column remains business/personal for compatibility. Profile identity is authoritative for specialized domain behavior.

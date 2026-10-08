@@ -285,3 +285,17 @@ Build 011 generates export files locally from the extension review workspace.
 - rendered HTML is not persisted; evidence stores only bounded metadata and a SHA-256 hash;
 - provider audit rows are append-only to the normal runtime role;
 - an in-flight provider request is aborted if global/workspace kill state becomes active.
+
+
+## Build 028 workspace profile security
+
+- built-in profiles are immutable application definitions;
+- custom profiles are visible only to their creator or members of workspaces already using them;
+- custom profile create/edit/archive requires an owner/admin context and normal runtime RLS;
+- generic/custom capabilities default fail-closed for scheduling, remote execution, barcode intake and business integrations;
+- review policy requires human approval and disallows automatic downstream writes;
+- provenance defaults require source URL and retrieval time;
+- new workspace creation uses a SECURITY DEFINER function that re-checks current user identity, owner/admin eligibility and profile visibility before atomically assigning the creator as owner;
+- the runtime role is not granted arbitrary INSERT access to workspace/member tables;
+- archived workspaces leave the active workspace list while retained data remains protected by existing workspace RLS;
+- barcode target authorization uses explicit personal-media/maker-commerce profile identity rather than assuming all future workspace slugs are known.

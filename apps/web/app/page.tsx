@@ -28,11 +28,11 @@ export default async function HomePage() {
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Build 008</p>
+        <p className="eyebrow">Build 028</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
-          Shared extraction and intelligence infrastructure for Rosie Dazzlers,
-          Devil n Dove and approved personal datasets.
+          Shared extraction and intelligence infrastructure with reusable,
+          configurable domain profiles for business and personal workspaces.
         </p>
 
         {session ? (
@@ -67,12 +67,10 @@ export default async function HomePage() {
               {workspaces.map((workspace) => (
                 <article className="card" key={workspace.id}>
                   <h3>{workspace.name}</h3>
-                  <p>
-                    {workspace.type === "business"
-                      ? "Business intelligence workspace."
-                      : "Private personal-data workspace."}
-                  </p>
-                  <span className="badge">{workspace.role}</span>
+                  <p>{workspace.purpose || workspace.profileDescription}</p>
+                  <span className="badge">
+                    {workspace.profileName} · {workspace.role}
+                  </span>
                 </article>
               ))}
             </div>
@@ -113,6 +111,9 @@ export default async function HomePage() {
           </Link>
           <Link className="secondaryButton" href="/remote-execution">
             Remote execution pilot
+          </Link>
+          <Link className="secondaryButton" href="/workspace-profiles">
+            Workspace profiles
           </Link>
           <span>Mobile barcode intake and durable intelligence are available across devices.</span>
         </div>

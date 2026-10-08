@@ -244,6 +244,8 @@ Proxy credentials, if ever needed, follow the same rule: provider dashboard → 
 
 ## Build 028 detailed plan
 
+Status: COMPLETE. Five built-in profiles (three specialized plus conservative generic business/personal), custom owner/admin-managed profiles, profiled workspace lifecycle, RLS isolation and compatibility migration are implemented.
+
 Implementation sequence:
 
 1. Add workspace profile schema.

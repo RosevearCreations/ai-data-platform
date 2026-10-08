@@ -39,6 +39,15 @@ import {
   setRemotePilotControl,
   upsertRemotePilotAllowlist
 } from "../lib/remote-pilot-database";
+import {
+  archiveCustomWorkspaceProfile,
+  archiveWorkspace,
+  createCustomWorkspaceProfile,
+  createWorkspaceFromProfile,
+  listWorkspaceProfilesForUser,
+  updateCustomWorkspaceProfile,
+  updateWorkspaceMetadata
+} from "../lib/workspace-profile-database";
 
 async function createUser(name: string, email: string) {
   const result = await auth.api.signUpEmail({
@@ -93,6 +102,20 @@ async function main() {
     throw new Error(
       "RLS isolation failed: second user could read workspaces without membership."
     );
+  }
+
+  const initialProfiles = await listWorkspaceProfilesForUser(ownerId);
+  const initialProfileKeys = new Set(initialProfiles.map((profile) => profile.profileKey));
+  for (const key of ["rosie-detailing","maker-commerce","personal-media","generic-business","generic-personal"]) {
+    if (!initialProfileKeys.has(key)) throw new Error("Build 028 missing built-in profile: " + key);
+  }
+  const profileBySlug = new Map(ownerWorkspaces.map((workspace) => [workspace.slug, workspace.profileKey]));
+  if (
+    profileBySlug.get("rosiedazzlers") !== "rosie-detailing" ||
+    profileBySlug.get("devilndove") !== "maker-commerce" ||
+    profileBySlug.get("personal") !== "personal-media"
+  ) {
+    throw new Error("Build 028 seeded workspace profile migration failed.");
   }
 
   const extensionId = "a".repeat(32);
@@ -1129,8 +1152,114 @@ async function main() {
     throw new Error("Build 024 target/workspace mismatch was not blocked.");
   }
 
+  const customProfile = await createCustomWorkspaceProfile(ownerId, {
+    name: "Build 028 Outdoor Research",
+    description: "Custom profile acceptance fixture.",
+    workspaceType: "business",
+    normalizationFields: ["product name","sku","source url"],
+    reviewDimensions: ["identity","pricing","source evidence"],
+    capabilities: {
+      history:true,sourcePolicy:true,scheduledJobs:false,
+      remoteExecution:false,barcodeIntake:false,businessIntegrations:false
+    }
+  });
+  if (customProfile.isBuiltin || customProfile.capabilities.remoteExecution) {
+    throw new Error("Build 028 custom profile safe defaults/config failed.");
+  }
+
+  const updatedProfile = await updateCustomWorkspaceProfile(
+    ownerId,
+    customProfile.profileKey,
+    {
+      name:"Build 028 Outdoor Equipment",
+      description:"Updated custom profile acceptance fixture.",
+      workspaceType:"business",
+      normalizationFields:["product name","sku","price","source url"],
+      reviewDimensions:["identity","pricing","source evidence"],
+      capabilities:{
+        history:true,sourcePolicy:true,scheduledJobs:true,
+        remoteExecution:false,barcodeIntake:false,businessIntegrations:false
+      }
+    }
+  );
+  if (!updatedProfile.capabilities.scheduledJobs) {
+    throw new Error("Build 028 custom profile edit failed.");
+  }
+
+  const customWorkspace = await createWorkspaceFromProfile(ownerId, {
+    name:"Build 028 Outdoor Workspace",
+    purpose:"Verify a new workspace can use a custom profile.",
+    profileKey:customProfile.profileKey
+  });
+  if (
+    customWorkspace.profileKey !== customProfile.profileKey ||
+    customWorkspace.role !== "owner"
+  ) {
+    throw new Error("Build 028 profiled workspace creation failed.");
+  }
+
+  await updateWorkspaceMetadata(ownerId,{
+    workspaceId:customWorkspace.id,
+    name:"Build 028 Outdoor Workspace Updated",
+    purpose:"Updated workspace purpose."
+  });
+  const ownerAfterCreate=await listWorkspacesForUser(ownerId);
+  const updatedWorkspace=ownerAfterCreate.find((workspace)=>workspace.id===customWorkspace.id);
+  if (
+    !updatedWorkspace ||
+    updatedWorkspace.name !== "Build 028 Outdoor Workspace Updated" ||
+    updatedWorkspace.purpose !== "Updated workspace purpose."
+  ) {
+    throw new Error("Build 028 workspace edit failed.");
+  }
+
+  const restrictedProfiles=await listWorkspaceProfilesForUser(restrictedId);
+  if (restrictedProfiles.some((profile)=>profile.profileKey===customProfile.profileKey)) {
+    throw new Error("Build 028 custom profile leaked across accounts.");
+  }
+  if ((await listWorkspacesForUser(restrictedId)).some((workspace)=>workspace.id===customWorkspace.id)) {
+    throw new Error("Build 028 custom workspace leaked across accounts.");
+  }
+
+  let restrictedProfileCreateDenied=false;
+  try {
+    await createCustomWorkspaceProfile(restrictedId,{
+      name:"Unauthorized Profile",workspaceType:"business"
+    });
+  } catch(error) {
+    restrictedProfileCreateDenied=
+      error instanceof Error && error.message==="workspace_profile_manager_required";
+  }
+  if(!restrictedProfileCreateDenied) {
+    throw new Error("Build 028 profile manager authorization failed.");
+  }
+
+  let restrictedWorkspaceEditDenied=false;
+  try {
+    await updateWorkspaceMetadata(restrictedId,{
+      workspaceId:customWorkspace.id,name:"Unauthorized edit",purpose:""
+    });
+  } catch(error) {
+    restrictedWorkspaceEditDenied=
+      error instanceof Error && error.message==="workspace_admin_required";
+  }
+  if(!restrictedWorkspaceEditDenied) {
+    throw new Error("Build 028 workspace admin authorization failed.");
+  }
+
+  await archiveWorkspace(ownerId,customWorkspace.id);
+  if ((await listWorkspacesForUser(ownerId)).some((workspace)=>workspace.id===customWorkspace.id)) {
+    throw new Error("Build 028 workspace archive failed.");
+  }
+
+  await archiveCustomWorkspaceProfile(ownerId,customProfile.profileKey);
+  const archivedProfiles=await listWorkspaceProfilesForUser(ownerId,{includeArchived:true});
+  if (!archivedProfiles.some((profile)=>profile.profileKey===customProfile.profileKey && profile.archivedAt)) {
+    throw new Error("Build 028 profile archive evidence failed.");
+  }
+
   console.log(
-    "Build 002/019/020/021/024/025/026/027 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles and workspace-target acceptance passed."
   );
 }
 
