@@ -1619,3 +1619,20 @@ Production provider execution remains disabled by default through REMOTE_EXECUTI
 No provider account, credential or manual setup is required.
 
 Next: Build 027 — Controlled Remote Browser Pilot & Egress Policy.
+
+
+## Build 027 — Controlled Remote Browser Pilot & Egress Policy
+
+Date: 2026-10-08
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Selected Browserless Cloud after current provider review and implemented a direct-egress /content REST adapter with no browser SDK dependency. The pilot is restricted to exact Build 025 approved public-webpage/public-facts sources, one concurrent run, one page, at most 60 seconds and at most two Browserless billing units.
+
+Migration 0008_controlled_remote_pilot.sql adds workspace kill/enable controls, exact source-policy allowlisting and append-only provider telemetry. Global execution additionally requires REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true, REMOTE_EXECUTION_KILL_SWITCH=false and an encrypted BROWSERLESS_API_TOKEN. No proxy, stealth, CAPTCHA-solving, authenticated-profile or access-control-bypass capability is used by the pilot code path.
+
+The authenticated /remote-execution page exposes readiness, workspace controls, approved policy candidates, allowlisting, one-page pilot action, provider-unit/reliability summaries and recent audit evidence. CI verifies Browserless request shape/redaction plus database RLS, admin mutation gates, concurrency, kill-switch behavior, exact policy pins and append-only telemetry. Extension version is 0.27.0.
+
+Production remains fail-closed until the Browserless token and execution flags are deliberately configured outside chat.
+
+Next: Build 028 — Configurable Workspace Types & Domain Profiles.

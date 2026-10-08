@@ -217,7 +217,9 @@ No provider account or user credential setup is required.
 
 ## Build 027 detailed plan
 
-Before implementation, the user must choose the provider from the options presented by the build based on current price, browser support, region, reliability and security. The implementation should research current options at that time rather than hard-code today's assumption.
+Status: COMPLETE. Browserless Cloud was selected after current-provider review because the controlled /content REST path uses a real rendered browser without adding a browser SDK dependency, has a free entry tier, regional endpoints and billing-unit telemetry, while allowing this pilot to omit proxies, stealth and CAPTCHA capabilities entirely.
+
+The pilot is direct egress only, one concurrent run, one page, at most 60 seconds and at most two Browserless provider units. Global and workspace kill switches default active.
 
 Provider credential walkthrough:
 

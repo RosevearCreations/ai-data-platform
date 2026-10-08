@@ -211,3 +211,14 @@ Build 026 adds a provider-neutral remote execution control plane without selecti
 The lifecycle is prepared -> queued -> leased -> running -> terminal. Queueing and leasing require REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true; the default/unset production posture is disabled. Leases are bounded, heartbeats establish active ownership, cancellation is durable, timeout transitions close stale work, and result ingestion is append-only/idempotent by job plus idempotency key with a canonical result fingerprint.
 
 Jobs never store raw provider secrets. They may carry only an enc-config://remote-execution/... reference to encrypted server configuration. Provider selection, credential storage and real egress are deliberately deferred to Build 027. The Build 026 mock provider performs no network access.
+
+
+## Build 027 controlled remote-browser boundary
+
+Build 027 selects Browserless Cloud for the first provider-specific pilot. The adapter uses only the Browserless /content REST endpoint to obtain fully rendered HTML from a real remote browser. The application does not call BrowserQL, unblock, stealth, CAPTCHA-solving, authenticated-profile or proxy features.
+
+Pilot egress is direct only. The request is restricted to the approved source hostname, rejects heavy image/media/font resources, caps the browser session to 60 seconds and permits exactly one page. The response body is never persisted; only a SHA-256 content hash, byte count, title, final URL, target response code, duration and estimated Browserless billing units are retained as evidence.
+
+Three independent execution gates apply: the Build 026 REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED flag, the global REMOTE_EXECUTION_KILL_SWITCH (active unless explicitly false), and a workspace control row whose kill_switch defaults true. Workspace concurrency is one active slot. Polling during the provider request aborts the live HTTP request if the workspace or global kill gate becomes active.
+
+Allowlist rows pin the exact Build 025 policy ID/revision/fingerprint and accept only approved public-webpage, public-facts sources with robots allowed. Any policy drift, expiry, sensitivity change or workspace kill state fails closed.

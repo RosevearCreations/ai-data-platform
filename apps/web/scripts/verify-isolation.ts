@@ -30,6 +30,15 @@ import {
   listWorkspaceRemoteExecutionJobs,
   requestWorkspaceRemoteExecutionCancellation
 } from "../lib/remote-execution-database";
+import {
+  appendRemotePilotEvent,
+  assertRemotePilotAuthorized,
+  listWorkspaceRemotePilotState,
+  releaseRemotePilotSlot,
+  reserveRemotePilotSlot,
+  setRemotePilotControl,
+  upsertRemotePilotAllowlist
+} from "../lib/remote-pilot-database";
 
 async function createUser(name: string, email: string) {
   const result = await auth.api.signUpEmail({
@@ -774,6 +783,175 @@ async function main() {
   }
 
 
+  const pilotControl = await setRemotePilotControl(ownerId, {
+    workspaceId: syncWorkspaceId,
+    enabled: true,
+    killSwitch: false,
+    region: "us-east",
+    maxUnitsPerRun: 2
+  });
+  if (
+    !pilotControl.enabled ||
+    pilotControl.killSwitch ||
+    pilotControl.maxConcurrency !== 1
+  ) {
+    throw new Error("Build 027 workspace pilot control failed.");
+  }
+
+  const pilotAllowlist = await upsertRemotePilotAllowlist(ownerId, {
+    workspaceId: syncWorkspaceId,
+    sourceUrl: "https://example.test/",
+    policyPin: {
+      policyId: "build025-source-policy",
+      policyRevision: 1,
+      policyFingerprint: "sp1-build025"
+    },
+    maxRecords: 50,
+    maxRuntimeSeconds: 60,
+    maxUnitsPerRun: 2
+  });
+  if (
+    pilotAllowlist.sourceOrigin !== "https://example.test" ||
+    pilotAllowlist.maxPages !== 1 ||
+    pilotAllowlist.maxUnitsPerRun !== 2
+  ) {
+    throw new Error("Build 027 remote source allowlist failed.");
+  }
+
+  const pilotAuthorization = await assertRemotePilotAuthorized(ownerId, {
+    workspaceId: syncWorkspaceId,
+    sourceUrl: "https://example.test/catalog",
+    policyPin: {
+      policyId: "build025-source-policy",
+      policyRevision: 1,
+      policyFingerprint: "sp1-build025"
+    }
+  });
+  if (
+    pilotAuthorization.policy.dataSensitivity !== "public-facts" ||
+    pilotAuthorization.policy.robotsDecision !== "allowed"
+  ) {
+    throw new Error("Build 027 exact policy authorization failed.");
+  }
+
+  const pilotSlotJob = "27000000-0000-4000-8000-000000000001";
+  await reserveRemotePilotSlot(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: pilotSlotJob
+  });
+  let concurrencyBlocked = false;
+  try {
+    await reserveRemotePilotSlot(ownerId, {
+      workspaceId: syncWorkspaceId,
+      jobId: "27000000-0000-4000-8000-000000000002"
+    });
+  } catch (error) {
+    concurrencyBlocked =
+      error instanceof Error &&
+      error.message === "remote_pilot_concurrency_limit_reached";
+  }
+  if (!concurrencyBlocked) {
+    throw new Error("Build 027 concurrency cap did not fail closed.");
+  }
+  await releaseRemotePilotSlot(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: pilotSlotJob
+  });
+
+  await appendRemotePilotEvent(ownerId, {
+    workspaceId: syncWorkspaceId,
+    jobId: pilotSlotJob,
+    eventType: "run-succeeded",
+    region: "us-east",
+    unitsEstimated: 1,
+    durationMs: 900,
+    responseCode: 200,
+    details: { acceptance: "build027" }
+  });
+  const pilotState = await listWorkspaceRemotePilotState(
+    ownerId,
+    syncWorkspaceId
+  );
+  if (
+    pilotState.report.runs !== 1 ||
+    pilotState.report.successes !== 1 ||
+    pilotState.report.providerUnits !== 1
+  ) {
+    throw new Error("Build 027 cost/reliability evidence failed.");
+  }
+
+  let pilotIsolationDenied = false;
+  try {
+    await listWorkspaceRemotePilotState(restrictedId, syncWorkspaceId);
+  } catch (error) {
+    pilotIsolationDenied =
+      error instanceof Error &&
+      error.message === "workspace_access_denied";
+  }
+  if (!pilotIsolationDenied) {
+    throw new Error("Build 027 remote pilot RLS isolation failed.");
+  }
+
+  let pilotAdminDenied = false;
+  try {
+    await setRemotePilotControl(restrictedId, {
+      workspaceId: syncWorkspaceId,
+      enabled: false,
+      killSwitch: true,
+      region: "us-east"
+    });
+  } catch (error) {
+    pilotAdminDenied =
+      error instanceof Error &&
+      (error.message === "workspace_access_denied" ||
+        error.message === "workspace_admin_required");
+  }
+  if (!pilotAdminDenied) {
+    throw new Error("Build 027 non-admin control mutation was not blocked.");
+  }
+
+  let pilotEventsImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.remote_execution_provider_events set event_type = 'run-failed' where workspace_id = $1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    pilotEventsImmutable = true;
+  }
+  if (!pilotEventsImmutable) {
+    throw new Error("Build 027 provider audit unexpectedly allowed runtime updates.");
+  }
+
+  await setRemotePilotControl(ownerId, {
+    workspaceId: syncWorkspaceId,
+    enabled: false,
+    killSwitch: true,
+    region: "us-east"
+  });
+  let workspaceKillBlocked = false;
+  try {
+    await assertRemotePilotAuthorized(ownerId, {
+      workspaceId: syncWorkspaceId,
+      sourceUrl: "https://example.test/",
+      policyPin: {
+        policyId: "build025-source-policy",
+        policyRevision: 1,
+        policyFingerprint: "sp1-build025"
+      }
+    });
+  } catch (error) {
+    workspaceKillBlocked =
+      error instanceof Error &&
+      error.message === "remote_workspace_kill_switch_active";
+  }
+  if (!workspaceKillBlocked) {
+    throw new Error("Build 027 workspace kill switch did not fail closed.");
+  }
+
+
   const personalWorkspace = ownerWorkspaces.find(
     (workspace) => workspace.slug === "personal"
   );
@@ -952,7 +1130,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026 database isolation, source-policy persistence, barcode review, remote execution lifecycle and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails and workspace-target acceptance passed."
   );
 }
 

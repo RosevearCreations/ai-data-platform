@@ -470,3 +470,18 @@ Each registry payload is version 1 and contains at most 150 entries. Each Source
 - createdAt and updatedAt.
 
 Scheduled jobs retain a policy pin containing the registry policy ID, revision, fingerprint, expiry and relevant budgets. A later policy revision does not silently mutate that historical approval; the job must pass explicit Refresh + re-review.
+
+
+## Build 027 controlled remote pilot
+
+### remote_execution_controls
+
+One row per workspace. Stores the selected Browserless provider, region, enable state, workspace kill switch, direct-only egress mode, one-run concurrency limit, two-unit ceiling and the currently reserved pilot slot. New rows default disabled/killed.
+
+### remote_execution_source_allowlist
+
+Exact workspace + normalized source-origin allowlist. Each row pins the Build 025 policy ID, revision and fingerprint and carries stricter pilot limits: one page, at most 500 records of downstream capacity, at most 60 seconds and at most two provider units.
+
+### remote_execution_provider_events
+
+Append-only provider/audit evidence. Stores event type, optional job ID, Browserless region, direct egress, estimated billing units, duration, target response code and bounded JSON details. The runtime role can SELECT/INSERT only.
