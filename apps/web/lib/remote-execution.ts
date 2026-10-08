@@ -164,13 +164,13 @@ export function validateEncryptedConfigReference(
 }
 
 export function isRemoteProviderExecutionEnabled(
-  env: NodeJS.ProcessEnv = process.env
+  env: Readonly<Record<string, string | undefined>> = process.env
 ) {
   return env[REMOTE_EXECUTION_PROVIDER_FLAG] === "true";
 }
 
 export function remoteExecutionReadiness(
-  env: NodeJS.ProcessEnv = process.env
+  env: Readonly<Record<string, string | undefined>> = process.env
 ) {
   return {
     build: 26,
