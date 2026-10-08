@@ -104,35 +104,42 @@ assert(isRemoteProviderExecutionEnabled({
   REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED: "true"
 }), "Explicit execution flag was not recognized.");
 
-const mock = new MockRemoteExecutionProvider();
-assert((await mock.readiness()).ready, "Mock worker is not ready.");
-assert((await mock.dispatch(job)).accepted, "Mock dispatch failed.");
-validateRemoteExecutionResultPayload(await mock.execute(job), job.budget);
+async function run() {
+  const mock = new MockRemoteExecutionProvider();
+  assert((await mock.readiness()).ready, "Mock worker is not ready.");
+  assert((await mock.dispatch(job)).accepted, "Mock dispatch failed.");
+  validateRemoteExecutionResultPayload(await mock.execute(job), job.budget);
 
-const fingerprintA = remoteExecutionResultFingerprint({
-  recordsCollected: 0,
-  pagesProcessed: 1,
-  records: []
-});
-const fingerprintB = remoteExecutionResultFingerprint({
-  records: [],
-  pagesProcessed: 1,
-  recordsCollected: 0
-});
-assert(fingerprintA === fingerprintB, "Fingerprint is not canonical.");
+  const fingerprintA = remoteExecutionResultFingerprint({
+    recordsCollected: 0,
+    pagesProcessed: 1,
+    records: []
+  });
+  const fingerprintB = remoteExecutionResultFingerprint({
+    records: [],
+    pagesProcessed: 1,
+    recordsCollected: 0
+  });
+  assert(fingerprintA === fingerprintB, "Fingerprint is not canonical.");
 
-let pageBudgetBlocked = false;
-try {
-  validateRemoteExecutionResultPayload(
-    { pagesProcessed: 4, recordsCollected: 0 },
-    job.budget
+  let pageBudgetBlocked = false;
+  try {
+    validateRemoteExecutionResultPayload(
+      { pagesProcessed: 4, recordsCollected: 0 },
+      job.budget
+    );
+  } catch (error) {
+    pageBudgetBlocked = error instanceof Error &&
+      error.message === "remote_result_page_budget_exceeded";
+  }
+  assert(pageBudgetBlocked, "Page overrun was not blocked.");
+
+  console.log(
+    "Build 026 remote execution contract, policy pins, budgets, mock worker and disabled-by-default gate passed."
   );
-} catch (error) {
-  pageBudgetBlocked = error instanceof Error &&
-    error.message === "remote_result_page_budget_exceeded";
 }
-assert(pageBudgetBlocked, "Page overrun was not blocked.");
 
-console.log(
-  "Build 026 remote execution contract, policy pins, budgets, mock worker and disabled-by-default gate passed."
-);
+void run().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});
