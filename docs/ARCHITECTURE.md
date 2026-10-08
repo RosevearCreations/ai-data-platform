@@ -222,3 +222,14 @@ Pilot egress is direct only. The request is restricted to the approved source ho
 Three independent execution gates apply: the Build 026 REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED flag, the global REMOTE_EXECUTION_KILL_SWITCH (active unless explicitly false), and a workspace control row whose kill_switch defaults true. Workspace concurrency is one active slot. Polling during the provider request aborts the live HTTP request if the workspace or global kill gate becomes active.
 
 Allowlist rows pin the exact Build 025 policy ID/revision/fingerprint and accept only approved public-webpage, public-facts sources with robots allowed. Any policy drift, expiry, sensitivity change or workspace kill state fails closed.
+
+
+## Build 028 configurable workspace profile boundary
+
+Workspace identity and domain behavior are now separate concepts. app.workspaces retains stable IDs/slugs and the compatibility business/personal class, while profile_key references app.workspace_profiles for normalization fields, review dimensions, provenance/history/review policies, extraction templates and capability flags.
+
+Rosie Dazzlers maps to rosie-detailing, Devil n Dove maps to maker-commerce and Personal maps to personal-media. Existing specialized modules continue to use those explicit profile identities. generic-business and generic-personal provide conservative starting points for new workspaces without changing extractor core code.
+
+Custom profiles are RLS-scoped: built-ins are readable to authenticated runtime users, while custom profiles are visible to their creator and members of workspaces already using them. Built-ins are immutable. Custom profiles are edit/archive only by their authorized creator while they retain an owner/admin context.
+
+New workspace creation uses app.create_profiled_workspace, a SECURITY DEFINER boundary that explicitly re-checks the current authenticated user, owner/admin eligibility and profile visibility before atomically creating the workspace and owner membership. The runtime role therefore does not receive broad INSERT rights on workspace/member tables.

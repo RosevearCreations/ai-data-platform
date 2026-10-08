@@ -343,3 +343,24 @@ Production secret/setup:
 12. Do not enable proxy, CAPTCHA, stealth or authenticated-profile Browserless features for Build 027.
 
 CI does not require a real Browserless token. apps/web/scripts/verify-controlled-remote-pilot.ts uses an injected fetch implementation to prove endpoint, region, host restriction, no-proxy request shape, unit limits, redirect blocking and secret/raw-HTML redaction.
+
+
+## Build 028 configurable workspace profiles
+
+Migration:
+
+- db/migrations/0009_workspace_profiles.sql
+
+Server modules:
+
+- apps/web/lib/workspace-profiles.ts — deterministic safe defaults, normalization/review configuration and capability rules;
+- apps/web/lib/workspace-profile-database.ts — profile CRUD, profiled workspace lifecycle and authorization;
+- /api/workspace-profiles — authenticated profile list/create/edit/archive;
+- /api/workspaces — existing list plus profiled create/edit/archive;
+- /workspace-profiles — owner/admin profile/workspace management UI.
+
+Built-in profile keys are rosie-detailing, maker-commerce, personal-media, generic-business and generic-personal.
+
+To add a new domain, use a conservative generic profile or create a custom profile, define normalization fields/review dimensions, leave unnecessary capabilities disabled, and create the workspace from that profile. New domains do not require extractor-core changes or new slug conditionals.
+
+No environment variables or third-party setup are required.

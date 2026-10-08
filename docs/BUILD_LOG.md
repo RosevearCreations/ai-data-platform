@@ -1636,3 +1636,20 @@ The authenticated /remote-execution page exposes readiness, workspace controls, 
 Production remains fail-closed until the Browserless token and execution flags are deliberately configured outside chat.
 
 Next: Build 028 — Configurable Workspace Types & Domain Profiles.
+
+
+## Build 028 — Configurable Workspace Types & Domain Profiles
+
+Date: 2026-10-08
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Added app.workspace_profiles and migrated every workspace to an explicit profile key. Rosie Dazzlers now uses rosie-detailing, Devil n Dove uses maker-commerce and Personal uses personal-media. Conservative generic-business and generic-personal profiles support new domains without enabling higher-risk automation by default.
+
+Profiles carry configurable normalization fields, review dimensions, provenance/history/review policies, profile-scoped templates and capability flags. Owners/admins can create/edit/archive custom profiles and create/edit/archive workspaces from supported profiles through /workspace-profiles. Built-ins remain immutable and custom profile/workspace state remains RLS isolated.
+
+Migration 0009_workspace_profiles.sql preserves existing workspace IDs/slugs/type compatibility, updates barcode target checks to explicit profile identity and provides an atomic create_profiled_workspace database boundary. CI verifies safe defaults, stable normalization keys, immutable profile class, seeded migration, owner/admin controls, custom workspace lifecycle and cross-account isolation. Extension version is 0.28.0.
+
+No external account, secret or manual setup is required.
+
+Next: Build 029 — Plugin & Connector SDK Foundation.
