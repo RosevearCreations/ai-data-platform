@@ -456,7 +456,7 @@ export class MockRemoteExecutionProvider implements RemoteExecutionProvider {
     return { accepted: true, providerJobId: "mock-" + job.jobId };
   }
 
-  async cancel(_providerJobId: string) {
+  async cancel() {
     return { cancelled: true };
   }
 
