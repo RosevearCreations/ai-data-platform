@@ -280,3 +280,22 @@ Reason: silently inheriting a later policy edit would let operational permission
 Decision: public-webpage policy entries cannot become runnable while robots/crawl status is unknown or disallowed. Official API/dataset and user-export methods may mark robots as not applicable while remaining subject to their own terms and authorization.
 
 Reason: governance should prefer permitted structured sources and must not treat technical accessibility as blanket permission to automate collection.
+
+
+## D0043 — Browserless Cloud is the first controlled remote-browser provider
+
+Decision: Build 027 selects Browserless Cloud and uses only its plain /content REST endpoint for the pilot.
+
+Reason: current provider review showed a low-friction free entry tier, regional service and a rendered-browser REST call that requires no new browser SDK dependency. This lets the pilot prove real remote rendering while keeping Browserless proxy, stealth, CAPTCHA and authentication-bypass capabilities outside the code path.
+
+## D0044 — The first provider pilot is direct egress only
+
+Decision: no Browserless proxy, external proxy, BrowserQL, unblock, stealth or CAPTCHA feature is enabled in Build 027.
+
+Reason: the first remote run should validate the execution boundary, policy evidence, costs and kill controls rather than add evasion complexity. Proxy use remains a future explicit review if a lawful business need exists.
+
+## D0045 — Remote pilot activation requires three independent gates
+
+Decision: live execution requires the Build 026 execution flag, a global kill switch explicitly set false, and an enabled workspace whose kill switch is false.
+
+Reason: provider credentials or a single UI toggle must never be sufficient to start remote browsing. Layered kill gates make accidental activation and emergency shutdown predictable.

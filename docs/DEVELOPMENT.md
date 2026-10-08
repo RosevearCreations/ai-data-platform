@@ -310,3 +310,36 @@ Operator workflow for a real recurring source:
 12. create or Refresh + re-review the scheduled job. It pins that exact policy fingerprint.
 
 Changing, blocking or allowing a policy to expire intentionally invalidates older scheduled-job approval.
+
+
+## Build 027 Browserless controlled pilot
+
+Migration:
+
+- db/migrations/0008_controlled_remote_pilot.sql
+
+Server modules:
+
+- apps/web/lib/browserless-provider.ts — Browserless /content adapter, regional endpoints, kill-gate readiness, direct-egress enforcement, unit accounting and response redaction;
+- apps/web/lib/remote-pilot-database.ts — workspace controls, exact source allowlist, one-slot concurrency reservation and append-only provider telemetry;
+- /api/remote-execution/control — admin workspace enable/kill controls;
+- /api/remote-execution/allowlist — admin exact Build 025 source allowlisting;
+- /api/remote-execution/pilot — synchronous one-page controlled pilot;
+- /remote-execution — authenticated readiness, control, allowlist, run and evidence view.
+
+Production secret/setup:
+
+1. Create/sign in to a Browserless account. A free plan is sufficient for the initial pilot.
+2. In the Browserless account dashboard, copy/create the API token.
+3. Do not paste that token into ChatGPT, GitHub, source files or screenshots.
+4. In the production hosting environment, add BROWSERLESS_API_TOKEN as an encrypted secret.
+5. Set REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true.
+6. Leave REMOTE_EXECUTION_KILL_SWITCH=true until the source policy and workspace allowlist are reviewed.
+7. Open /remote-execution, choose the intended workspace, and allowlist only an existing Build 025 approved public-facts/public-webpage source.
+8. Arm the workspace pilot. This changes only the workspace kill gate; the global kill switch still wins.
+9. Set REMOTE_EXECUTION_KILL_SWITCH=false in production only for the controlled pilot window.
+10. Run one allowlisted one-page pilot and review provider units, duration, response code, final URL/hash and audit events.
+11. Use Kill remote execution immediately after the pilot or whenever behavior is unexpected.
+12. Do not enable proxy, CAPTCHA, stealth or authenticated-profile Browserless features for Build 027.
+
+CI does not require a real Browserless token. apps/web/scripts/verify-controlled-remote-pilot.ts uses an injected fetch implementation to prove endpoint, region, host restriction, no-proxy request shape, unit limits, redirect blocking and secret/raw-HTML redaction.

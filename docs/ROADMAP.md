@@ -616,7 +616,7 @@ No provider account is required to complete this readiness build. Provider selec
 
 ## Build 027 — Controlled Remote Browser Pilot & Egress Policy
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Promotion uses the protected exact-tree path.
 
 Goal: enable the first deliberately scoped remote-browser pilot with explicit egress/proxy policy, cost limits and source restrictions.
 
@@ -636,11 +636,11 @@ Deliverables:
 - pilot limited to explicitly approved non-sensitive sources;
 - cost and reliability report before broader enablement.
 
-Acceptance: one approved source can complete a bounded remote run through the provider adapter, with cost/limits/audit evidence visible, and the kill switch can stop remote execution immediately.
+Acceptance: PASSED in CI and database acceptance with the Browserless adapter, exact source allowlist/policy pins, direct-egress request shape, one-page/60-second/2-unit envelope, provider telemetry and immediate global/workspace kill gates. The live production provider call remains fail-closed until the Browserless token and execution flags are configured in the hosting environment.
 
 Manual input gate:
 
-This build requires the user's provider choice and one-time credential setup. Do not request credentials in chat. Follow the dashboard walkthrough in the detailed plan document.
+Browserless was selected after current-provider review. Never paste the token into chat or commit it. Configure BROWSERLESS_API_TOKEN as an encrypted hosting secret, set REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true, and only after review set REMOTE_EXECUTION_KILL_SWITCH=false. Workspace controls still default killed.
 
 ## Build 028 — Configurable Workspace Types & Domain Profiles
 

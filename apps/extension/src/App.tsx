@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">026</span>
+        <span className="build">027</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Remote execution is staged, governed and disabled by default</strong>
+        <strong>Controlled Browserless pilot with direct egress only</strong>
         <p>
-          Build 026 adds a provider-neutral worker contract with exact Build 025
-          policy pins, bounded budgets, leases, heartbeats, cancellation,
-          timeouts and idempotent results. The CI mock worker has no network
-          access, and live provider execution remains disabled until Build 027.
+          Build 027 selects Browserless for a one-page pilot behind global and
+          workspace kill switches. Only exact Build 025 approved public sources
+          may run; proxy, stealth, CAPTCHA solving and authentication bypass are
+          excluded from the pilot path.
         </p>
       </section>
 

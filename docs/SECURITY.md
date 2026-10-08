@@ -267,3 +267,21 @@ Build 011 generates export files locally from the extension review workspace.
 - scheduled jobs pin the exact policy ID/revision/fingerprint and fail closed after policy drift;
 - re-enabling a paused job revalidates the current registry policy;
 - future remote workers must inherit, not override, the approved source policy.
+
+
+## Build 027 controlled Browserless pilot security
+
+- Browserless is the only selected provider in this build;
+- the pilot calls only the plain /content REST endpoint;
+- proxy, external proxy, stealth, BrowserQL/unblock and CAPTCHA-solving parameters are never sent;
+- target navigation is restricted to the exact allowlisted hostname and cross-origin final redirects fail closed;
+- only HTTPS, public-facts, public-webpage policies with robots explicitly allowed may be allowlisted;
+- allowlist rows pin the exact Build 025 policy ID/revision/fingerprint and drift invalidates authorization;
+- global execution requires the Build 026 execution flag plus REMOTE_EXECUTION_KILL_SWITCH=false;
+- every workspace defaults disabled with its own kill switch active;
+- workspace concurrency is exactly one active pilot slot;
+- the request is capped to one page, 60 seconds and two Browserless billing units;
+- BROWSERLESS_API_TOKEN is read only from the server environment and is never stored in PostgreSQL, result payloads or audit details;
+- rendered HTML is not persisted; evidence stores only bounded metadata and a SHA-256 hash;
+- provider audit rows are append-only to the normal runtime role;
+- an in-flight provider request is aborted if global/workspace kill state becomes active.

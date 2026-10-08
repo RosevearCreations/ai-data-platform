@@ -111,6 +111,9 @@ export default async function HomePage() {
           <Link className="secondaryButton" href="/intelligence">
             Review persistent intelligence
           </Link>
+          <Link className="secondaryButton" href="/remote-execution">
+            Remote execution pilot
+          </Link>
           <span>Mobile barcode intake and durable intelligence are available across devices.</span>
         </div>
       ) : null}
