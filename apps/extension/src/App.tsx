@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">027</span>
+        <span className="build">028</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Controlled Browserless pilot with direct egress only</strong>
+        <strong>Reusable workspace profiles now define domain behavior</strong>
         <p>
-          Build 027 selects Browserless for a one-page pilot behind global and
-          workspace kill switches. Only exact Build 025 approved public sources
-          may run; proxy, stealth, CAPTCHA solving and authentication bypass are
-          excluded from the pilot path.
+          Build 028 adds explicit domain profiles for normalization, review,
+          provenance, history, templates and capability flags. Existing Rosie,
+          Devil n Dove and Personal workspaces keep their specialized behavior,
+          while new domains can use conservative built-in or custom profiles.
         </p>
       </section>
 

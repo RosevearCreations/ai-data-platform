@@ -1310,6 +1310,11 @@ export interface WorkspaceSummary {
   slug: string;
   name: string;
   type: "business" | "personal";
+  purpose?: string;
+  profileKey?: string;
+  profileName?: string;
+  profileDescription?: string;
+  profileCapabilities?: Record<string, boolean>;
   role: WorkspaceRole;
 }
 

@@ -307,6 +307,9 @@ export async function getCachedAuthorizedWorkspaces() {
       typeof candidate.slug === "string" &&
       typeof candidate.name === "string" &&
       (candidate.type === "business" || candidate.type === "personal") &&
+      (candidate.profileKey === undefined || typeof candidate.profileKey === "string") &&
+      (candidate.profileName === undefined || typeof candidate.profileName === "string") &&
+      (candidate.purpose === undefined || typeof candidate.purpose === "string") &&
       (candidate.role === "owner" ||
         candidate.role === "admin" ||
         candidate.role === "member")

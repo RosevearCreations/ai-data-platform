@@ -38,7 +38,7 @@ export default async function CapturePage() {
   }> = [];
 
   for (const workspace of workspaces) {
-    if (workspace.slug === "personal" && workspace.type === "personal") {
+    if (workspace.profileKey === "personal-media") {
       targets.push({
         target: "personal-movie",
         workspaceId: workspace.id,
@@ -46,8 +46,7 @@ export default async function CapturePage() {
         label: "Personal movie library"
       });
     } else if (
-      workspace.slug === "devilndove" &&
-      workspace.type === "business"
+      workspace.profileKey === "maker-commerce"
     ) {
       targets.push({
         target: "devil-supplier",

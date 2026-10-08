@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:verify": "tsx scripts/verify-isolation.ts",
-    "test": "tsx scripts/verify-ai-suggestions.ts && tsx scripts/verify-recipe-repair.ts && tsx scripts/verify-barcode-intake.ts && tsx scripts/verify-source-policy-governance.ts && tsx scripts/verify-remote-execution.ts && tsx scripts/verify-controlled-remote-pilot.ts"
+    "test": "tsx scripts/verify-ai-suggestions.ts && tsx scripts/verify-recipe-repair.ts && tsx scripts/verify-barcode-intake.ts && tsx scripts/verify-source-policy-governance.ts && tsx scripts/verify-remote-execution.ts && tsx scripts/verify-controlled-remote-pilot.ts && tsx scripts/verify-workspace-profiles.ts"
   },
   "dependencies": {
     "better-auth": "1.7.7",
