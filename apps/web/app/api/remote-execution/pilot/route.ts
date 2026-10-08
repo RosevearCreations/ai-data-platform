@@ -169,13 +169,27 @@ export async function POST(request: Request) {
       token: process.env.BROWSERLESS_API_TOKEN ?? "",
       region: authorization.control.region
     });
-    const result = await provider.execute(job, {
-      maxProviderUnits: Math.min(
-        authorization.control.maxUnitsPerRun,
-        authorization.allowlist.maxUnitsPerRun
-      ),
-      signal: controller.signal
-    });
+    const result = await provider.execute(
+      {
+        jobId: job.jobId,
+        workspaceId: job.workspaceId,
+        savedScraperId: job.savedScraperId,
+        providerKey: job.providerKey,
+        configRef: job.configRef,
+        sourceUrl: job.sourceUrl,
+        sourceOrigin: job.sourceOrigin,
+        policy: job.sourcePolicySnapshot,
+        budget: job.budget,
+        createdAt: job.createdAt.toISOString()
+      },
+      {
+        maxProviderUnits: Math.min(
+          authorization.control.maxUnitsPerRun,
+          authorization.allowlist.maxUnitsPerRun
+        ),
+        signal: controller.signal
+      }
+    );
 
     if (
       isGlobalRemoteKillSwitchActive() ||
@@ -191,7 +205,7 @@ export async function POST(request: Request) {
         jobId,
         workerId,
         idempotencyKey: "browserless:" + jobId + ":v1",
-        payload: result
+        payload: result as unknown as Record<string, unknown>
       }
     );
 
@@ -228,7 +242,8 @@ export async function POST(request: Request) {
         workspaceId,
         jobId,
         status:
-          message === "remote_pilot_killed" || message === "AbortError"
+          message === "remote_pilot_killed" ||
+          (error instanceof Error && error.name === "AbortError")
             ? "cancelled"
             : "failed",
         failureCode: message
