@@ -94,8 +94,9 @@ function normalizedTokenList(value: unknown, fallback: string[]) {
 }
 
 export function defaultCapabilities(
-  _workspaceType: WorkspaceType
+  workspaceType: WorkspaceType
 ): Record<WorkspaceProfileCapability, boolean> {
+  void workspaceType;
   return {
     history: true,
     sourcePolicy: true,
