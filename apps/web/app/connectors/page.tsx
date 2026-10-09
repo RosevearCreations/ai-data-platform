@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { listConnectorOverviewForUser } from "@/lib/connector-database";
 
 import { ConnectorManager } from "./ConnectorManager";
+import { HelpInfo } from "../help/HelpInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ export default async function ConnectorsPage() {
     return (
       <main className="shell">
         <section className="hero">
+          <HelpInfo topic="connectors-overview" />
           <p className="eyebrow">Build 029</p>
           <h1>Plugin & connector SDK</h1>
           <p className="lead">
@@ -31,6 +33,7 @@ export default async function ConnectorsPage() {
   return (
     <main className="shell">
       <section className="hero">
+        <HelpInfo topic="connectors-overview" />
         <p className="eyebrow">Build 029</p>
         <h1>Plugin & connector SDK</h1>
         <p className="lead">

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { HelpInfo } from "../help/HelpInfo";
+
 type Candidate = {
   id: string;
   origin: string;
@@ -75,6 +77,7 @@ export function RemotePilotAdminPanel({
       <div className="sectionHeading">
         <p className="eyebrow">Controlled pilot</p>
         <h2 id="pilot-admin-heading">Workspace controls</h2>
+        <HelpInfo topic="remote-controls" />
       </div>
 
       {message ? <p className="barcodeMessage">{message}</p> : null}

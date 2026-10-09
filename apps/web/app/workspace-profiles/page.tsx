@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { listWorkspacesForUser } from "@/lib/database";
 import { listWorkspaceProfilesForUser } from "@/lib/workspace-profile-database";
 import { WorkspaceProfileManager } from "./WorkspaceProfileManager";
+import { HelpInfo } from "../help/HelpInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,7 @@ export default async function WorkspaceProfilesPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     return <main className="shell"><section className="hero">
+      <HelpInfo topic="profiles-overview" />
       <p className="eyebrow">Build 028</p><h1>Workspace profiles</h1>
       <p className="lead">Sign in to manage domain profiles and workspaces.</p>
       <Link className="primaryLink" href="/sign-in?callbackUrl=/workspace-profiles">Sign in</Link>
@@ -25,6 +27,7 @@ export default async function WorkspaceProfilesPage() {
 
   return <main className="shell">
     <section className="hero">
+      <HelpInfo topic="profiles-overview" />
       <p className="eyebrow">Build 028</p>
       <h1>Configurable workspace profiles</h1>
       <p className="lead">

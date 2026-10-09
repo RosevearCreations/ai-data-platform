@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { AuthForm } from "./auth-form";
+import { HelpInfo } from "../help/HelpInfo";
 
 function safeCallbackUrl(value: string | undefined) {
   if (!value) return "/";
@@ -31,6 +32,7 @@ export default async function SignInPage({
   return (
     <main className="shell authShell">
       <section className="authIntro">
+        <HelpInfo topic="sign-in" />
         <p className="eyebrow">AI Data Platform</p>
         <h1>Secure workspace access</h1>
         <p className="lead">

@@ -813,3 +813,141 @@ h3 {
     padding: 0.85rem;
   }
 }
+
+
+/* Contextual help system */
+.hero,
+.authIntro,
+.sectionHeading,
+.principles,
+.barcodeControls,
+.barcodeReview,
+.helpCard {
+  position: relative;
+}
+
+.sectionHeading {
+  padding-right: 3rem;
+}
+
+.helpInfo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 30;
+}
+
+.helpInfo > summary {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(125, 226, 216, 0.45);
+  border-radius: 50%;
+  background: rgba(125, 226, 216, 0.08);
+  color: #9ff2ea;
+  cursor: pointer;
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 800;
+  list-style: none;
+  user-select: none;
+}
+
+.helpInfo > summary::-webkit-details-marker {
+  display: none;
+}
+
+.helpInfo > summary:hover,
+.helpInfo > summary:focus-visible {
+  border-color: #7de2d8;
+  background: rgba(125, 226, 216, 0.16);
+  outline: none;
+}
+
+.helpPopover {
+  position: absolute;
+  top: 2.45rem;
+  right: 0;
+  width: min(460px, calc(100vw - 2rem));
+  max-height: min(70vh, 680px);
+  overflow: auto;
+  border: 1px solid rgba(125, 226, 216, 0.24);
+  border-radius: 0.9rem;
+  background: #0b171f;
+  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.45);
+  color: #d9e8ea;
+  padding: 1rem;
+}
+
+.helpPopover > strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: #effcfc;
+  font-size: 1.05rem;
+}
+
+.helpPopover p,
+.helpPopover li {
+  color: #afc2c4;
+  line-height: 1.55;
+}
+
+.helpPopover p {
+  margin-bottom: 0.85rem;
+}
+
+.helpPopover h4 {
+  margin: 1rem 0 0.4rem;
+  color: #dff7f4;
+}
+
+.helpPopover ol,
+.helpPopover ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.helpPopover .textLink {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.helpInfoInline {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.75rem;
+}
+
+.helpInfoInline .helpPopover {
+  left: 0;
+  right: auto;
+}
+
+.helpCard {
+  min-height: 250px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 640px) {
+  .helpPopover {
+    position: fixed;
+    top: 4.5rem;
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    max-height: calc(100vh - 6rem);
+  }
+}

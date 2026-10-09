@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { HelpInfo } from "../help/HelpInfo";
+
 type Manifest = {
   key: string;
   version: string;
@@ -105,6 +107,7 @@ export function ConnectorManager({
         <div className="sectionHeading">
           <p className="eyebrow">Registry</p>
           <h2>Available connector manifests</h2>
+          <HelpInfo topic="connector-registry" />
         </div>
         <div className="grid">
           {manifests.map((manifest) => (
@@ -125,6 +128,7 @@ export function ConnectorManager({
           <div className="sectionHeading">
             <p className="eyebrow">Workspace connectors</p>
             <h2>{workspace.name}</h2>
+            <HelpInfo topic="connector-workspace" />
           </div>
           <div className="grid">
             {manifests.map((manifest) => {
@@ -220,6 +224,7 @@ export function ConnectorManager({
           <div className="sectionHeading">
             <p className="eyebrow">Append-only audit</p>
             <h2>Recent connector executions</h2>
+            <HelpInfo topic="connector-audit" />
           </div>
           {workspace.audit.length ? (
             <div className="grid">

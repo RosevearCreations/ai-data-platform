@@ -7,6 +7,7 @@ import { listIntelligenceOverviewForUser } from "@/lib/database";
 import { listRemotePilotOverviewForUser } from "@/lib/remote-pilot-database";
 
 import { RemotePilotAdminPanel } from "./RemotePilotAdminPanel";
+import { HelpInfo } from "../help/HelpInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,7 @@ export default async function RemoteExecutionPage() {
     return (
       <main className="shell">
         <section className="hero">
+          <HelpInfo topic="remote-overview" />
           <p className="eyebrow">Build 027</p>
           <h1>Controlled remote browser pilot</h1>
           <p className="lead">Sign in to review the Browserless pilot controls.</p>
@@ -107,6 +109,7 @@ export default async function RemoteExecutionPage() {
   return (
     <main className="shell">
       <section className="hero">
+        <HelpInfo topic="remote-overview" />
         <p className="eyebrow">Build 027</p>
         <h1>Controlled remote browser pilot</h1>
         <p className="lead">
@@ -126,6 +129,7 @@ export default async function RemoteExecutionPage() {
         <div className="sectionHeading">
           <p className="eyebrow">Global gate</p>
           <h2>Production readiness</h2>
+          <HelpInfo topic="remote-readiness" />
         </div>
         <div className="grid">
           <article className="card">
@@ -157,6 +161,7 @@ export default async function RemoteExecutionPage() {
           <div className="sectionHeading">
             <p className="eyebrow">Evidence</p>
             <h2>{entry.workspace.name}</h2>
+            <HelpInfo topic="remote-evidence" />
           </div>
           <div className="grid">
             <article className="card">
