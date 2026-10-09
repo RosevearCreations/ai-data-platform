@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { Pool, type PoolClient, type QueryResultRow } from "pg";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -234,6 +236,181 @@ async function requireWorkspaceAccess(
   }
 }
 
+export type OperationalOutcomeEventType =
+  | "sync-applied"
+  | "sync-conflict"
+  | "sync-noop"
+  | "sync-deleted"
+  | "sync-error"
+  | "repair-proposed"
+  | "repair-approved"
+  | "repair-rejected"
+  | "repair-rolled-back"
+  | "repair-compatibility";
+
+export interface OperationalOutcomeInput {
+  workspaceId: string;
+  eventType: OperationalOutcomeEventType;
+  resource?: WorkspaceSyncResource | null;
+  recordId: string;
+  revision?: number | null;
+  relatedRevision?: number | null;
+  compatibilityStatus?: "healthy" | "degraded" | "broken" | null;
+  eventKey?: string | null;
+  details?: Record<string, unknown>;
+  occurredAt?: string | null;
+}
+
+function operationalEventFamily(eventType: OperationalOutcomeEventType) {
+  return eventType.startsWith("sync-") ? "sync" : "recipe-repair";
+}
+
+function boundedOperationalDetails(value: Record<string, unknown> | undefined) {
+  const details = value ?? {};
+  const encoded = JSON.stringify(details);
+  if (Buffer.byteLength(encoded, "utf8") > 4096) {
+    throw new Error("operational_outcome_details_too_large");
+  }
+  return encoded;
+}
+
+async function appendOperationalOutcomeWithClient(
+  client: PoolClient,
+  userId: string,
+  input: OperationalOutcomeInput
+) {
+  await client.query(
+    `
+      insert into app.workspace_operational_outcomes (
+        workspace_id,
+        event_id,
+        event_key,
+        event_family,
+        event_type,
+        resource,
+        record_id,
+        revision,
+        related_revision,
+        compatibility_status,
+        actor_user_id,
+        details,
+        occurred_at
+      )
+      values (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::jsonb,
+        coalesce($13::timestamptz, now())
+      )
+      on conflict (workspace_id, event_key) do nothing
+    `,
+    [
+      input.workspaceId,
+      randomUUID(),
+      input.eventKey ?? null,
+      operationalEventFamily(input.eventType),
+      input.eventType,
+      input.resource ?? null,
+      input.recordId.slice(0, 256),
+      input.revision ?? null,
+      input.relatedRevision ?? null,
+      input.compatibilityStatus ?? null,
+      userId,
+      boundedOperationalDetails(input.details),
+      input.occurredAt ?? null
+    ]
+  );
+}
+
+export async function appendOperationalOutcome(
+  userId: string,
+  input: OperationalOutcomeInput
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, input.workspaceId);
+    await appendOperationalOutcomeWithClient(client, userId, input);
+  });
+}
+
+function operationalInteger(value: unknown) {
+  const number = Number(value);
+  return Number.isInteger(number) && number >= 1 && number <= 1_000_000
+    ? number
+    : null;
+}
+
+function operationalRecord(value: unknown): Record<string, unknown> | null {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+async function recordRepairLifecycleFromSync(
+  userId: string,
+  workspaceId: string,
+  mutation: WorkspaceSyncMutation,
+  result: WorkspaceSyncMutationResult
+) {
+  if (
+    mutation.resource !== "saved-scraper" ||
+    mutation.action !== "upsert" ||
+    result.status !== "applied" ||
+    !mutation.payload
+  ) {
+    return;
+  }
+
+  const revision = operationalInteger(mutation.payload.revision);
+  const revisionKind = mutation.payload.revisionKind;
+  if (!revision || (revisionKind !== "repair" && revisionKind !== "rollback")) {
+    return;
+  }
+
+  await appendOperationalOutcome(userId, {
+    workspaceId,
+    eventType:
+      revisionKind === "repair" ? "repair-approved" : "repair-rolled-back",
+    resource: "saved-scraper",
+    recordId: mutation.recordId,
+    revision,
+    eventKey:
+      (revisionKind === "repair" ? "repair-approved:" : "repair-rolled-back:") +
+      mutation.recordId +
+      ":" +
+      revision,
+    details: { revisionKind }
+  });
+
+  const lastCheck = operationalRecord(mutation.payload.lastCheck);
+  const compatibilityStatus = lastCheck?.status;
+  const checkedAt = lastCheck?.checkedAt;
+  if (
+    (compatibilityStatus === "healthy" ||
+      compatibilityStatus === "degraded" ||
+      compatibilityStatus === "broken") &&
+    typeof checkedAt === "string"
+  ) {
+    await appendOperationalOutcome(userId, {
+      workspaceId,
+      eventType: "repair-compatibility",
+      resource: "saved-scraper",
+      recordId: mutation.recordId,
+      revision,
+      compatibilityStatus,
+      eventKey:
+        "repair-compatibility:" +
+        mutation.recordId +
+        ":" +
+        revision +
+        ":" +
+        checkedAt.slice(0, 64),
+      details: {
+        checkedAt: checkedAt.slice(0, 64),
+        revisionKind,
+        structuralChanged: lastCheck?.structuralChanged === true
+      }
+    });
+  }
+}
+
 function savedScraperRowToSyncRecord(
   row: {
     workspace_id: string;
@@ -339,7 +516,7 @@ export async function listWorkspaceSyncRecords(
   });
 }
 
-export async function applyWorkspaceSyncMutation(
+async function applyWorkspaceSyncMutationCore(
   userId: string,
   workspaceId: string,
   mutation: WorkspaceSyncMutation
@@ -711,6 +888,76 @@ export async function applyWorkspaceSyncMutation(
       record: reviewedDatasetRowToSyncRecord(result.rows[0])
     };
   });
+}
+
+
+export async function applyWorkspaceSyncMutation(
+  userId: string,
+  workspaceId: string,
+  mutation: WorkspaceSyncMutation
+): Promise<WorkspaceSyncMutationResult> {
+  try {
+    const result = await applyWorkspaceSyncMutationCore(
+      userId,
+      workspaceId,
+      mutation
+    );
+
+    try {
+      const eventType: OperationalOutcomeEventType =
+        result.status === "conflict"
+          ? "sync-conflict"
+          : result.status === "noop"
+            ? "sync-noop"
+            : mutation.action === "delete"
+              ? "sync-deleted"
+              : "sync-applied";
+
+      await appendOperationalOutcome(userId, {
+        workspaceId,
+        eventType,
+        resource: mutation.resource,
+        recordId: mutation.recordId,
+        details: {
+          action: mutation.action,
+          expectedServerVersion: mutation.expectedServerVersion,
+          serverVersion: result.record?.serverVersion ?? null
+        }
+      });
+
+      await recordRepairLifecycleFromSync(
+        userId,
+        workspaceId,
+        mutation,
+        result
+      );
+    } catch (telemetryError) {
+      console.error("Operational outcome telemetry write failed.", telemetryError);
+    }
+
+    return result;
+  } catch (reason) {
+    try {
+      const code =
+        reason &&
+        typeof reason === "object" &&
+        "code" in reason &&
+        typeof (reason as { code?: unknown }).code === "string"
+          ? String((reason as { code: string }).code).slice(0, 64)
+          : "sync_failure";
+
+      await appendOperationalOutcome(userId, {
+        workspaceId,
+        eventType: "sync-error",
+        resource: mutation.resource,
+        recordId: mutation.recordId,
+        details: { action: mutation.action, code }
+      });
+    } catch {
+      // Preserve the original sync failure even when telemetry cannot be written.
+    }
+    throw reason;
+  }
 }
 
 
