@@ -725,7 +725,7 @@ No infrastructure setup is required to complete Build 030. A real Browserless pr
 
 ## Build 031 — Operational Outcome Telemetry & Review Snapshot Continuity
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Append-only operational telemetry, revision-linked repair outcomes, RLS/retention and persisted changed-evidence review snapshots are implemented.
 
 Goal: close the two Build 030 P0 evidence gaps so synchronization and recipe-repair reliability can be measured rather than inferred.
 
@@ -738,7 +738,7 @@ Deliverables:
 - workspace/RLS isolation and retention limits;
 - production-learning trend cards for sync conflict and repair success/rollback rates.
 
-Acceptance: Build 030's sync/repair GAP findings become measurable from durable evidence without storing raw page DOM or sensitive content.
+Acceptance: PASSED when sync/repair GAP findings are replaced by durable measured rates, operational rows remain append-only under runtime permissions, review snapshots persist only changed evidence, and cross-account RLS isolation passes.
 
 Manual input gate:
 

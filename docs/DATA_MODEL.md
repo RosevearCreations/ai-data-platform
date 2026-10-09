@@ -547,4 +547,18 @@ Build 030 adds no new PostgreSQL table. It derives an authenticated read model f
 - workspace_connector_installations / workspace_connector_audit — installations, enabled state, execution outcomes and evidence bytes;
 - workspace_members / workspace_profiles — accountability and profile adoption.
 
-The payload-byte total is an application storage proxy, not the provider's billed database size. Build 030 intentionally has no field for sync-conflict rate or recipe-repair success rate because those outcomes are not yet durable server telemetry.
+The payload-byte total is an application storage proxy, not the provider's billed database size. Build 031 adds bounded durable operational outcome rows, so sync-conflict and recipe-repair rates are now measured directly instead of inferred from asset versions.
+
+## Build 031 operational outcome telemetry
+
+### workspace_operational_outcomes
+
+Append-only, workspace-scoped bounded events for synchronization and recipe-repair outcomes. Sync events record applied/conflict/noop/deleted/error status. Repair events record proposed/approved/rejected/rolled-back and post-repair compatibility status. Event details are capped at 4 KiB and exclude raw page DOM and selector payloads.
+
+Runtime permissions are SELECT/INSERT only. RLS requires workspace membership and binds inserted actor identity to `app.user_id`. Retention keeps at most 180 days and 2,000 events per workspace/event family.
+
+### production_learning_review_snapshots
+
+Changed-evidence snapshots preserve the counts required for before/after sync-conflict and repair-health comparisons. A SHA-256 evidence fingerprint prevents repeated page reads from creating duplicate unchanged snapshots. Retention keeps at most 365 days and 60 snapshots per workspace.
+
+Runtime permissions are SELECT/INSERT only and RLS remains workspace-scoped.

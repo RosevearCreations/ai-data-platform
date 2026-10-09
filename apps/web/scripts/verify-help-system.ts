@@ -58,7 +58,7 @@ async function main() {
     "manual" in learning &&
       learning.manual.some((step) => step.includes("BROWSERLESS_API_TOKEN")) &&
       learning.manual.some((step) => step.includes("REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED")),
-    "Build 030 production-learning help must retain the Browserless deployment sequence."
+    "Build 031 production-learning help must retain the Browserless deployment sequence for queued Build 032."
   );
 
   console.log(

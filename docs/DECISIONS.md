@@ -362,3 +362,21 @@ Reason: learning/metrics must not weaken the same workspace isolation that prote
 Decision: Build 030 renews the queue only through Build 036. Build 036 must repeat production learning before another long roadmap is created.
 
 Reason: the platform should close observed reliability/cost/adoption gaps before adding speculative feature depth.
+
+## D0056 — Operational outcome telemetry is bounded and append-only
+
+Decision: Build 031 records only terminal synchronization outcomes and bounded recipe-repair lifecycle metadata in a workspace-scoped append-only table. Runtime code can SELECT and INSERT but cannot UPDATE or DELETE these events.
+
+Reason: reliability rates need durable event counts, but copying full synchronized payloads, DOM evidence or selector content would unnecessarily increase storage and privacy risk.
+
+## D0057 — Repair approval and compatibility evidence are derived from synchronized revision state
+
+Decision: repair approval/rollback events are inferred server-side from saved-scraper revision kinds after successful synchronization, while proposal/rejection events may be submitted through the bounded extension endpoint.
+
+Reason: the server already receives the durable revision state. Deriving material terminal outcomes there reduces client spoofing and avoids a second source of truth.
+
+## D0058 — Production-learning snapshots persist only changed evidence
+
+Decision: Build 031 fingerprints the outcome counts used for trend comparison and stores a new review snapshot only when that fingerprint changes.
+
+Reason: dashboard refreshes are not operational events. Deduplicating unchanged reviews preserves useful before/after continuity without unbounded read-generated history.

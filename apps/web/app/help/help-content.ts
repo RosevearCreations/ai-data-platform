@@ -168,7 +168,7 @@ export const HELP_TOPICS = {
       "Inspect recent events for blocked, cancelled or failed work.",
       "Keep the pilot disabled if evidence is incomplete or unexpected."
     ],
-    notes: ["Build 030 will use this evidence for the production-learning review."]
+    notes: ["Build 031 production learning includes this evidence and preserves changed-evidence snapshots for later comparison."]
   },
   "profiles-overview": {
     title: "Workspace profiles",
@@ -281,7 +281,7 @@ export const HELP_TOPICS = {
   },
   "learning-overview": {
     title: "Production learning & cost review",
-    summary: "Build 030 reads live RLS-scoped operational evidence across the platform and turns measured outcomes plus explicit evidence gaps into the next roadmap.",
+    summary: "Build 031 extends the RLS-scoped production-learning review with bounded append-only sync and recipe-repair outcomes plus persisted changed-evidence snapshots.",
     steps: [
       "Review the current evidence cards before relying on any trend.",
       "Treat provider units and measured payload bytes as cost proxies, not hard-coded currency billing.",
@@ -290,7 +290,7 @@ export const HELP_TOPICS = {
     ],
     notes: [
       "The page never displays Browserless API-token values.",
-      "Sync-conflict frequency and recipe-repair success/failure are explicitly marked as gaps until durable outcome telemetry exists."
+      "Sync-conflict frequency, recipe-repair approvals/rejections/rollbacks and post-repair compatibility are now measured from bounded append-only telemetry."
     ]
   },
   "learning-evidence": {
@@ -352,9 +352,9 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Builds 031–036 are ordered from Build 030 findings instead of extending the queue from assumptions.",
+    summary: "Build 031 closed the P0 telemetry gaps; the active evidence-driven queue is now Builds 032–036.",
     steps: [
-      "Build 031 closes telemetry gaps needed for future reliability claims.",
+      "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline.",
       "Build 033 proves consumer-side integration acceptance.",
       "Build 034 adds retention/storage enforcement.",

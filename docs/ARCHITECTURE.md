@@ -264,8 +264,16 @@ The review separates evidence into three classes:
 2. runtime readiness signals such as Browserless token-configured/execution/kill booleans;
 3. explicit evidence gaps where no durable outcome event exists.
 
-A missing measurement is never converted to zero. Build 030 therefore marks synchronization conflict outcomes and recipe-repair outcome rates as GAP until Build 031 adds append-only outcome telemetry.
+A missing measurement is never converted to zero. Build 031 now records synchronization and recipe-repair outcomes as bounded append-only workspace events, allowing production learning to report measured rates while still distinguishing a true zero from no observed attempts.
 
 Cost review uses durable provider units/duration and measured PostgreSQL JSON payload bytes as proxies. It does not hard-code a dollar price because provider pricing and database billing can change independently of application code.
 
-The renewed roadmap is generated deterministically from current evidence and known gaps. Build 031 closes measurement gaps first, Build 032 establishes the controlled Browserless production baseline, and later builds address consumer delivery, retention and adoption before the next production-learning renewal.
+The renewed roadmap is generated deterministically from current evidence and known gaps. Build 031 closed the measurement gaps; Build 032 establishes the controlled Browserless production baseline, and later builds address consumer delivery, retention and adoption before the next production-learning renewal.
+
+## Build 031 operational-outcome boundary
+
+Build 031 adds a narrow evidence layer rather than a general event bus. Workspace synchronization emits terminal applied/conflict/noop/deleted/error outcomes after the existing optimistic-concurrency operation. Telemetry failure never changes the original synchronization result.
+
+Recipe-repair proposal/rejection intake accepts only bounded primitive metadata. Approved repair and rollback events are derived server-side from the synchronized saved-scraper revision kind, and a later compatibility check is linked to that revision. Raw DOM, candidate selectors and page payloads are not copied into operational telemetry.
+
+Production-learning snapshots are persisted only when the outcome-count fingerprint changes. This preserves before/after continuity without turning each dashboard read into unbounded history. All event/snapshot reads and inserts use the normal `ai_data_runtime` + `app.user_id` RLS boundary.

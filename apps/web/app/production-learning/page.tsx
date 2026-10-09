@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 030</p>
+          <p className="eyebrow">Build 031</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,7 +45,7 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 030</p>
+        <p className="eyebrow">Build 031</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
           Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
@@ -94,6 +94,26 @@ export default async function ProductionLearningPage() {
             <span className="badge">
               token {review.evidence.browserless.tokenConfigured ? "configured" : "not configured"}
             </span>
+          </article>
+          <article className="card">
+            <h3>{totals.syncEvents} sync outcomes</h3>
+            <p>
+              {totals.syncConflicts} conflicts · {totals.syncErrors} errors ·{" "}
+              {totals.syncConflictRate === null
+                ? "rate awaiting evidence"
+                : Math.round(totals.syncConflictRate * 100) + "% conflict rate"}.
+            </p>
+            <span className="badge">append-only telemetry</span>
+          </article>
+          <article className="card">
+            <h3>{totals.repairCompatibilityChecks} repair checks</h3>
+            <p>
+              {totals.repairApprovals} approvals · {totals.repairRollbacks} rollbacks ·{" "}
+              {totals.repairSuccessRate === null
+                ? "health awaiting evidence"
+                : Math.round(totals.repairSuccessRate * 100) + "% healthy"}.
+            </p>
+            <span className="badge">revision-linked outcomes</span>
           </article>
           <article className="card">
             <h3>{totals.connectorExecutions} connector executions</h3>
@@ -162,7 +182,13 @@ export default async function ProductionLearningPage() {
                 <h3>{workspace.workspaceName}</h3>
                 <p>{workspace.profileName} · {workspace.role}</p>
                 <p>
-                  Sync: {workspace.sync.activeScrapers} scrapers · {workspace.sync.reviewedDatasets} datasets · {workspace.sync.versionChanges} version changes
+                  Sync: {workspace.sync.activeScrapers} scrapers · {workspace.sync.reviewedDatasets} datasets · {workspace.outcomes.sync.events} outcomes · {workspace.outcomes.sync.conflicts} conflicts
+                </p>
+                <p>
+                  Repair: {workspace.outcomes.repair.proposed} proposed · {workspace.outcomes.repair.approved} approved · {workspace.outcomes.repair.rolledBack} rolled back · {workspace.outcomes.repair.healthy}/{workspace.outcomes.repair.compatibilityChecks} healthy checks
+                </p>
+                <p>
+                  Snapshot continuity: {workspace.continuity.previousSnapshotAt ? "previous changed snapshot available" : "baseline snapshot"}
                 </p>
                 <p>
                   Barcode: {workspace.barcode.captures} captures · {workspace.barcode.pending} pending
@@ -189,7 +215,7 @@ export default async function ProductionLearningPage() {
       <section>
         <div className="sectionHeading">
           <p className="eyebrow">Renewed roadmap</p>
-          <h2>Builds 031–036</h2>
+          <h2>Builds 032–036</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
         <div className="grid">

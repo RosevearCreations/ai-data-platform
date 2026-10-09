@@ -264,12 +264,12 @@ export function App() {
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Production learning now closes the Builds 019–029 loop</strong>
+        <strong>Operational outcomes now have durable review continuity</strong>
         <p>
-          Build 030 reviews synchronized workspace evidence, source-policy
-          health, barcode outcomes, remote provider units, integration audit,
-          connector readiness and storage signals. Missing outcome telemetry is
-          reported as an evidence gap rather than guessed.
+          Build 031 records bounded append-only synchronization and recipe-repair
+          outcomes, links repaired revisions to later compatibility checks and
+          persists production-learning snapshots so rate changes can be compared
+          without storing raw page DOM or sensitive content.
         </p>
       </section>
 
