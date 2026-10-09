@@ -344,3 +344,16 @@ Contextual help explicitly identifies actions that require manual external setup
 - production-learning snapshots are fingerprint-deduplicated and bounded by age/count;
 - telemetry write failure never changes the underlying sync success/conflict/error semantics;
 - cross-account isolation and append-only runtime behavior are covered by database acceptance verification.
+
+## Build 032 Browserless live-baseline security
+
+- `BROWSERLESS_API_TOKEN` is verified by configuration presence only; its value is never read into application UI, source control, build logs or ChatGPT;
+- the provider master flag may be enabled while the global kill switch remains active, preserving a fail-closed production state;
+- no remote run is eligible without an approved and unexpired public-webpage/public-facts Source Policy with robots allowed and no access-control bypass;
+- exact policy ID/revision/fingerprint must be copied into the remote allowlist before execution;
+- a workspace must be explicitly armed and still remains subordinate to the global kill switch;
+- Build 032 does not introduce an authentication bypass, service credential, backdoor pilot endpoint or privileged cross-workspace runner;
+- terminal provider evidence excludes raw rendered HTML and stores only bounded metadata/hash evidence;
+- provider cost reporting remains units/runtime rather than a hard-coded currency price;
+- a live baseline is not synthesized from CI fixtures or readiness booleans;
+- the production kill switch must be restored after the explicitly approved one-page run unless continued live testing is separately approved.
