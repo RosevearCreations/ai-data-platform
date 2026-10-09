@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+import { recordRecipeRepairInteractionBestEffort } from "./operational-outcomes";
 import { explainRepairCandidates } from "./repair-explanation-client";
 import { applySavedScraperRepair } from "./saved-scrapers";
 import type {
@@ -39,6 +40,7 @@ export function RecipeRepairWorkbench({
   const [pendingIssue, setPendingIssue] = useState("");
   const [applying, setApplying] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const lastProposalSignature = useRef("");
   const [explanations, setExplanations] = useState<
     Record<
       string,
@@ -51,6 +53,7 @@ export function RecipeRepairWorkbench({
     setApproved(false);
     setMessage(null);
     setExplanations({});
+    lastProposalSignature.current = "";
   }, [report.checkedAt, scraper.id]);
 
   const selectedRepairs = useMemo(() => {
@@ -69,6 +72,43 @@ export function RecipeRepairWorkbench({
     }
     return repairs;
   }, [report.issues, selected]);
+
+  useEffect(() => {
+    if (!selectedRepairs.length) return;
+
+    const signature =
+      report.checkedAt +
+      "|" +
+      selectedRepairs
+        .map(({ issue, candidate }) => issue.id + ":" + candidate.id)
+        .sort()
+        .join("|");
+
+    if (lastProposalSignature.current === signature) return;
+    lastProposalSignature.current = signature;
+
+    void recordRecipeRepairInteractionBestEffort({
+      workspaceId: scraper.workspaceId,
+      eventType: "repair-proposed",
+      recordId: scraper.id,
+      revision: scraper.revision,
+      details: {
+        issueCount: report.issues.length,
+        selectedCount: selectedRepairs.length,
+        candidateCount: report.repairCandidateCount,
+        reportStatus: report.status
+      }
+    });
+  }, [
+    report.checkedAt,
+    report.issues.length,
+    report.repairCandidateCount,
+    report.status,
+    scraper.id,
+    scraper.revision,
+    scraper.workspaceId,
+    selectedRepairs
+  ]);
 
   async function explain(issue: ScraperDriftIssue) {
     setPendingIssue(issue.id);
@@ -93,6 +133,28 @@ export function RecipeRepairWorkbench({
     } finally {
       setPendingIssue("");
     }
+  }
+
+  async function rejectRepairProposal() {
+    if (!selectedRepairs.length) return;
+
+    await recordRecipeRepairInteractionBestEffort({
+      workspaceId: scraper.workspaceId,
+      eventType: "repair-rejected",
+      recordId: scraper.id,
+      revision: scraper.revision,
+      details: {
+        issueCount: report.issues.length,
+        selectedCount: selectedRepairs.length,
+        candidateCount: report.repairCandidateCount,
+        reportStatus: report.status
+      }
+    });
+
+    setSelected({});
+    setApproved(false);
+    lastProposalSignature.current = "";
+    setMessage("Proposed repair rejected. No saved-scraper revision was changed.");
   }
 
   async function applyRepair() {
@@ -363,14 +425,23 @@ export function RecipeRepairWorkbench({
               the selected repairs.
             </span>
           </label>
-          <button
-            className="repairApproveButton"
-            disabled={!approved || applying}
-            onClick={() => void applyRepair()}
-            type="button"
-          >
-            {applying ? "Creating repair revision…" : "Approve repair revision"}
-          </button>
+          <div className="heroActions">
+            <button
+              disabled={applying}
+              onClick={() => void rejectRepairProposal()}
+              type="button"
+            >
+              Reject proposed repair
+            </button>
+            <button
+              className="repairApproveButton"
+              disabled={!approved || applying}
+              onClick={() => void applyRepair()}
+              type="button"
+            >
+              {applying ? "Creating repair revision…" : "Approve repair revision"}
+            </button>
+          </div>
         </div>
       ) : null}
 
