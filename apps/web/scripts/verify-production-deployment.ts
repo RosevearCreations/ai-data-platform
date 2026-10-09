@@ -23,6 +23,10 @@ async function main() {
     "Better Auth must explicitly qualify the auth schema for pooled PostgreSQL connections."
   );
   assert(
+    !database.includes('options: "-c search_path=auth,public"'),
+    "Pooled Better Auth connections must not depend on PostgreSQL startup search_path options."
+  );
+  assert(
     database.includes("checkProductionDatabaseReadiness"),
     "Database readiness helper is missing."
   );

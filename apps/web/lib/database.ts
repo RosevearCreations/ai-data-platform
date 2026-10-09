@@ -29,8 +29,7 @@ function createAuthPool() {
   return new Pool({
     connectionString: requireDatabaseUrl(),
     max: 5,
-    application_name: "ai-data-platform-auth",
-    options: "-c search_path=auth,public"
+    application_name: "ai-data-platform-auth"
   });
 }
 
