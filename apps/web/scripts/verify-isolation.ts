@@ -5,6 +5,7 @@ import {
   normalizeBarcode
 } from "../lib/barcodes";
 import {
+  appendOperationalOutcome,
   appendWorkspaceIntelligenceAudit,
   applyWorkspaceSyncMutation,
   createWorkspaceBarcodeCapture,
@@ -61,7 +62,7 @@ async function createUser(name: string, email: string) {
     body: {
       name,
       email,
-      password: "Build002-Strong-Test-Password!"
+      password: "build-002-ci-fixture-password-not-a-secret"
     }
   });
 
@@ -1388,6 +1389,50 @@ async function main() {
     throw new Error("Build 029 disabled connector still executed.");
   }
 
+  await appendOperationalOutcome(ownerId, {
+    workspaceId: syncWorkspaceId,
+    eventType: "repair-proposed",
+    resource: "saved-scraper",
+    recordId: "build-031-repair",
+    revision: 2,
+    details: { candidateCount: 2, selectedCount: 1 }
+  });
+  await appendOperationalOutcome(ownerId, {
+    workspaceId: syncWorkspaceId,
+    eventType: "repair-approved",
+    resource: "saved-scraper",
+    recordId: "build-031-repair",
+    revision: 2,
+    eventKey: "verify-repair-approved:build-031-repair:2"
+  });
+  await appendOperationalOutcome(ownerId, {
+    workspaceId: syncWorkspaceId,
+    eventType: "repair-compatibility",
+    resource: "saved-scraper",
+    recordId: "build-031-repair",
+    revision: 2,
+    compatibilityStatus: "healthy",
+    eventKey: "verify-repair-compatibility:build-031-repair:2",
+    details: { structuralChanged: false }
+  });
+
+  let operationalAuditImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.workspace_operational_outcomes set event_type='sync-error' where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    operationalAuditImmutable = true;
+  }
+  if (!operationalAuditImmutable) {
+    throw new Error(
+      "Build 031 operational outcome audit unexpectedly allowed runtime updates."
+    );
+  }
+
   const productionLearning = await buildProductionLearningReview(ownerId);
   const learningWorkspace = productionLearning.evidence.workspaces.find(
     (workspace) => workspace.workspaceId === syncWorkspaceId
@@ -1402,17 +1447,32 @@ async function main() {
     learningWorkspace.connectors.installations < 1 ||
     learningWorkspace.connectors.succeeded < 1 ||
     learningWorkspace.connectors.blocked < 1 ||
-    productionLearning.roadmap[0]?.build !== 31
+    productionLearning.roadmap[0]?.build !== 32
   ) {
     throw new Error("Build 030 production-learning evidence/roadmap aggregation failed.");
   }
   if (
     !productionLearning.findings.some(
       (finding) =>
-        finding.key === "sync-outcome-telemetry" && finding.status === "gap"
+        finding.key === "sync-outcome-telemetry" && finding.status !== "gap"
+    ) ||
+    !productionLearning.findings.some(
+      (finding) =>
+        finding.key === "repair-outcome-telemetry" && finding.status !== "gap"
     )
   ) {
-    throw new Error("Build 030 did not preserve explicit telemetry gaps.");
+    throw new Error("Build 031 did not convert telemetry gaps into measured outcomes.");
+  }
+
+  const snapshotCount = await withUserDatabase(ownerId, async (client) => {
+    const result = await client.query<{ count: string }>(
+      "select count(*)::text as count from app.production_learning_review_snapshots where workspace_id=$1",
+      [syncWorkspaceId]
+    );
+    return Number(result.rows[0]?.count ?? 0);
+  });
+  if (snapshotCount < 1) {
+    throw new Error("Build 031 production-learning review snapshot was not persisted.");
   }
 
   const restrictedLearning = await buildProductionLearningReview(restrictedId);
@@ -1421,7 +1481,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, production-learning aggregation and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, operational outcome telemetry, review snapshots and workspace-target acceptance passed."
   );
 }
 
