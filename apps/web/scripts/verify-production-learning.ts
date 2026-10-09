@@ -102,6 +102,8 @@ const evidence: ProductionLearningEvidence = {
         providerFailures: 0,
         providerUnits: 0,
         averageDurationMs: null,
+        approvedPublicSources: 1,
+        lastRun: null,
         allowlistedSources: 1,
         workspaceEnabled: false,
         workspaceKilled: true,
@@ -155,9 +157,54 @@ assert(
 assert(
   review.roadmap[0]?.build === 32 &&
     review.roadmap.some((item) => item.build === 32 && item.priority === "P0"),
-  "Build 031 completion must advance the roadmap to Build 032."
+  "Build 032 must remain P0 until a real provider baseline exists."
+);
+
+const baselineEvidence: ProductionLearningEvidence = {
+  ...evidence,
+  browserless: {
+    tokenConfigured: true,
+    executionEnabled: true,
+    globalKillSwitchActive: true,
+    readyForLivePilot: false
+  },
+  workspaces: evidence.workspaces.map((workspace) => ({
+    ...workspace,
+    remote: {
+      ...workspace.remote,
+      jobs: 2,
+      succeededJobs: 1,
+      providerRuns: 1,
+      providerSuccesses: 1,
+      providerFailures: 0,
+      providerUnits: 1,
+      averageDurationMs: 12000,
+      approvedPublicSources: 1,
+      allowlistedSources: 1,
+      workspaceEnabled: false,
+      workspaceKilled: true,
+      lastRun: {
+        status: "succeeded",
+        units: 1,
+        durationMs: 12000,
+        responseCode: 200,
+        finalUrl: "https://example.com/",
+        contentSha256:
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  }))
+};
+const baselineReview = buildProductionLearningAssessment(baselineEvidence);
+assert(
+  baselineReview.totals.browserlessBaselineDecision === "go-bounded",
+  "Successful one-page Browserless evidence must produce the bounded go decision."
+);
+assert(
+  !baselineReview.roadmap.some((item) => item.build === 32),
+  "Build 032 must leave the active roadmap after a real provider baseline exists."
 );
 
 console.log(
-  "Build 031 production-learning outcome rates, snapshot comparison and renewed roadmap verification passed."
+  "Build 032 Browserless prerequisite states, provider cost baseline and bounded go/no-go verification passed."
 );
