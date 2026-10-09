@@ -32,6 +32,34 @@ const evidence: ProductionLearningEvidence = {
         versionChanges: 3,
         storageBytes: 12000
       },
+      outcomes: {
+        storageBytes: 800,
+        sync: {
+          events: 20,
+          applied: 15,
+          deleted: 1,
+          conflicts: 2,
+          noops: 2,
+          errors: 0
+        },
+        repair: {
+          proposed: 4,
+          approved: 3,
+          rejected: 1,
+          rolledBack: 0,
+          compatibilityChecks: 3,
+          healthy: 3,
+          degraded: 0,
+          broken: 0
+        }
+      },
+      continuity: {
+        previousSnapshotAt: "2026-10-08T12:00:00.000Z",
+        previousSyncEvents: 10,
+        previousSyncConflicts: 2,
+        previousRepairCompatibilityChecks: 2,
+        previousRepairHealthyChecks: 1
+      },
       intelligence: {
         modules: 2,
         storageBytes: 5000,
@@ -98,15 +126,19 @@ assert(review.totals.barcodeCaptures === 4, "Barcode total is incorrect.");
 assert(review.totals.providerRuns === 0, "Provider run total is incorrect.");
 assert(
   review.findings.some(
-    (finding) => finding.key === "sync-outcome-telemetry" && finding.status === "gap"
+    (finding) =>
+      finding.key === "sync-outcome-telemetry" &&
+      finding.status === "healthy"
   ),
-  "Sync telemetry gap must remain explicit."
+  "Sync telemetry must be measured from durable outcomes."
 );
 assert(
   review.findings.some(
-    (finding) => finding.key === "repair-outcome-telemetry" && finding.status === "gap"
+    (finding) =>
+      finding.key === "repair-outcome-telemetry" &&
+      finding.status === "healthy"
   ),
-  "Repair telemetry gap must remain explicit."
+  "Repair telemetry must be measured from durable outcomes."
 );
 assert(
   review.findings.some(
@@ -121,11 +153,11 @@ assert(
   "Remote cost/reliability finding is missing."
 );
 assert(
-  review.roadmap[0]?.build === 31 &&
+  review.roadmap[0]?.build === 32 &&
     review.roadmap.some((item) => item.build === 32 && item.priority === "P0"),
-  "Roadmap priority did not reflect evidence gaps."
+  "Build 031 completion must advance the roadmap to Build 032."
 );
 
 console.log(
-  "Build 030 production-learning totals, evidence-gap classification and renewed roadmap verification passed."
+  "Build 031 production-learning outcome rates, snapshot comparison and renewed roadmap verification passed."
 );
