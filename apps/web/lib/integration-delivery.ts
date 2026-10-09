@@ -161,15 +161,14 @@ export function integrationPackageId(input: {
 }) {
   return (
     "integration-package-" +
-    hashText({
-      toString: () =>
-        stableJson({
-          target: input.target,
-          batchId: input.batchId,
-          approvedAt: input.approvedAt,
-          fingerprint: input.fingerprint
-        })
-    }.toString())
+    hashText(
+      stableJson({
+        target: input.target,
+        batchId: input.batchId,
+        approvedAt: input.approvedAt,
+        fingerprint: input.fingerprint
+      })
+    )
   );
 }
 
