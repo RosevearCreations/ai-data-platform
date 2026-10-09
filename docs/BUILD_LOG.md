@@ -1739,3 +1739,28 @@ Delivered:
 Production evidence review found zero existing Source Policy modules, zero allowlisted sources and zero Browserless terminal provider runs across the three workspaces. No policy approval was fabricated. The production global kill switch remains active.
 
 The remaining live acceptance step requires an operator to create/review and synchronize one eligible public-facts/public-webpage Source Policy with robots allowed, allowlist the exact policy revision/fingerprint, arm one workspace, authorize a single kill-switch-off window, run exactly one page, then restore the global kill switch.
+
+## Build 033 — Integration Consumer Acceptance & Delivery Observability
+
+Date: 2026-10-09
+
+Status: IMPLEMENTATION COMPLETE — LIVE BUSINESS-CONSUMER ACKNOWLEDGEMENT GATED.
+
+Delivered:
+
+- migration `0012_integration_delivery_observability.sql`;
+- append-only `app.integration_delivery_events` for handshake, attempt, accepted, rejected and transport-error evidence;
+- append-only `app.integration_consumer_receipts` replay registry for conformance acceptance;
+- independent server-side v1 validator for target/schema/contract/fingerprint/packageId/replayKey/freshness/evidence/field rules;
+- authenticated `/api/integrations/consumer-conformance` receiver with valid acceptance and duplicate rejection;
+- fail-closed `/api/integrations/delivery` external handshake and package sender;
+- external transport restricted to configured HTTPS endpoints and server-only bearer credentials;
+- sender forces Build 033 external packages to `dryRun=true`; a consumer acknowledgement claiming a live mutation is rejected;
+- no endpoint URL is accepted from a browser request, preventing arbitrary outbound delivery targets;
+- operator page `/integration-delivery` with conformance, handshake and dry-run controls plus recent append-only evidence;
+- Production learning distinguishes conformance acceptance from a real live business-consumer acknowledgement;
+- Build 033 remains on the evidence-driven roadmap until a supported external consumer returns a live dry-run acknowledgement;
+- extension version 0.33.0;
+- detailed help/manual setup workflow.
+
+Repository discovery confirmed that neither Rosie Dazzlers nor Devil n Dove currently implements the exact Build 022 v1 receiver contract. Build 033 therefore does not invent an endpoint, credential or downstream write. External controls remain fail-closed until the selected business repository deliberately implements and approves that receiver.
