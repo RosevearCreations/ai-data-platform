@@ -20,6 +20,7 @@ async function main() {
     "../app/workspace-profiles/WorkspaceProfileManager.tsx",
     "../app/connectors/page.tsx",
     "../app/connectors/ConnectorManager.tsx",
+    "../app/production-learning/page.tsx",
     "../app/help/page.tsx"
   ];
 
@@ -32,7 +33,7 @@ async function main() {
   }
 
   assert(
-    Object.keys(HELP_TOPICS).length >= 24,
+    Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
   );
 
@@ -52,8 +53,16 @@ async function main() {
     "Connector help must explain both no-setup sample behavior and future secret setup."
   );
 
+  const learning = HELP_TOPICS["learning-browserless"];
+  assert(
+    "manual" in learning &&
+      learning.manual.some((step) => step.includes("BROWSERLESS_API_TOKEN")) &&
+      learning.manual.some((step) => step.includes("REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED")),
+    "Build 030 production-learning help must retain the Browserless deployment sequence."
+  );
+
   console.log(
-    "Build 029 contextual help coverage, Browserless manual variables and connector intervention guidance passed."
+    "Build 030 contextual help coverage, Browserless manual variables, connector intervention guidance and production-learning help passed."
   );
 
 }
