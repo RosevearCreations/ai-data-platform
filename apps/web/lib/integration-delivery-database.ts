@@ -206,7 +206,7 @@ export async function listIntegrationDeliveryOverviewForUser(userId: string) {
         `,
         [workspace.id]
       );
-      const module = await client.query<{ payload: Record<string, unknown> }>(
+      const moduleResult = await client.query<{ payload: Record<string, unknown> }>(
         `
           select payload
           from app.workspace_intelligence_modules
@@ -215,8 +215,8 @@ export async function listIntegrationDeliveryOverviewForUser(userId: string) {
         `,
         [workspace.id]
       );
-      const batches = Array.isArray(module.rows[0]?.payload?.batches)
-        ? module.rows[0].payload.batches
+      const batches = Array.isArray(moduleResult.rows[0]?.payload?.batches)
+        ? moduleResult.rows[0].payload.batches
         : [];
       const eligibleBatches = batches.flatMap((raw) => {
         if (!raw || typeof raw !== "object" || Array.isArray(raw)) return [];
