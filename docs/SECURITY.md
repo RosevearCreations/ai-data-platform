@@ -331,3 +331,16 @@ Contextual help explicitly identifies actions that require manual external setup
 - workspace owner/admin/member counts are evidence for permission review, not authority to change membership automatically;
 - the renewed roadmap does not enable remote execution, connectors or downstream writes;
 - Browserless live execution remains controlled by the existing master flag, global kill switch, workspace kill/enable state, exact source-policy allowlist and one-page/unit limits.
+
+## Build 031 operational telemetry security
+
+- operational outcomes remain workspace-scoped under the existing `ai_data_runtime` / `app.user_id` RLS boundary;
+- runtime grants on outcome and snapshot tables are SELECT/INSERT only;
+- repair proposal/rejection intake accepts only bounded primitive metadata and rejects raw object/array payload expansion;
+- sync approval/rollback and post-repair compatibility outcomes are derived from successfully synchronized saved-scraper state;
+- telemetry rows do not store raw DOM, candidate selector values, session tokens, connector secrets or Browserless credentials;
+- event details are capped at 4 KiB;
+- retention is bounded by both age and per-workspace/event-family row count;
+- production-learning snapshots are fingerprint-deduplicated and bounded by age/count;
+- telemetry write failure never changes the underlying sync success/conflict/error semantics;
+- cross-account isolation and append-only runtime behavior are covered by database acceptance verification.
