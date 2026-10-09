@@ -364,3 +364,48 @@ Built-in profile keys are rosie-detailing, maker-commerce, personal-media, gener
 To add a new domain, use a conservative generic profile or create a custom profile, define normalization fields/review dimensions, leave unnecessary capabilities disabled, and create the workspace from that profile. New domains do not require extractor-core changes or new slug conditionals.
 
 No environment variables or third-party setup are required.
+
+
+## Build 029 connector SDK development
+
+Package:
+
+- packages/connector-sdk — SDK v1 contracts, validation, tests and starter template.
+
+Server:
+
+- apps/web/lib/connectors/registry.ts — static trusted connector registration;
+- apps/web/lib/connectors/sandbox.ts — bounded capability-limited execution;
+- apps/web/lib/connector-database.ts — workspace configuration/grants/audit;
+- /api/connectors — list/configure/enable-disable/test;
+- /connectors — management and evidence UI;
+- db/migrations/0010_connector_sdk_foundation.sql — installations/audit/RLS.
+
+### Add a new no-secret connector
+
+1. Copy packages/connector-sdk/examples/no-secret-connector.ts into a server connector module.
+2. Give the manifest a stable lowercase key and semantic version.
+3. Declare only required import/enrichment/export capabilities.
+4. Define bounded config fields and execution/input/output limits.
+5. Keep secrets as an empty array.
+6. Register the definition in apps/web/lib/connectors/registry.ts.
+7. Add SDK/unit tests and an end-to-end workspace-grant acceptance case.
+8. Verify on dev before enabling it in any workspace.
+
+### Add a future credentialed connector
+
+1. Register/create the required account or developer application with the external provider using that connector's documented provider link.
+2. Declare each logical secret in the connector manifest with one exact uppercase environmentVariable name.
+3. In the production hosting provider, create that exact environment variable as an encrypted secret.
+4. Paste the provider credential only into the hosting secret field. Never paste it into ChatGPT, GitHub, source files, browser/client storage or connector config JSON.
+5. Configure the workspace installation with the manifest-approved secret reference; the stored reference contains the variable name, not the value.
+6. Grant only required capabilities and keep the connector disabled.
+7. Run validation/bounded test in a safe environment.
+8. Enable only after successful evidence is reviewed.
+9. Disable immediately if audit evidence is unexpected.
+
+Build 029's included example connector requires none of these external steps.
+
+### Website contextual help
+
+Help topics live in apps/web/app/help/help-content.ts and render through HelpInfo. New major website sections must add a circled ⓘ topic and, when external setup is required, a Manual intervention block with exact variable names, service/application links in documentation, and ordered steps. scripts/verify-help-system.ts protects coverage.

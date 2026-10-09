@@ -6,6 +6,7 @@ import { listWorkspacesForUser } from "@/lib/database";
 
 import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { SignOutButton } from "./sign-out-button";
+import { HelpInfo } from "./help/HelpInfo";
 
 const foundations = [
   "PostgreSQL row-level workspace isolation",
@@ -28,7 +29,8 @@ export default async function HomePage() {
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Build 028</p>
+        <HelpInfo topic="platform-overview" />
+        <p className="eyebrow">Build 029</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure with reusable,
@@ -59,6 +61,7 @@ export default async function HomePage() {
           <h2 id="workspace-heading">
             {session ? "Your authorized workspaces" : "One engine, isolated contexts"}
           </h2>
+          <HelpInfo topic="workspaces" />
         </div>
 
         {session ? (
@@ -115,6 +118,12 @@ export default async function HomePage() {
           <Link className="secondaryButton" href="/workspace-profiles">
             Workspace profiles
           </Link>
+          <Link className="secondaryButton" href="/connectors">
+            Connectors
+          </Link>
+          <Link className="secondaryButton" href="/help">
+            Help center
+          </Link>
           <span>Mobile barcode intake and durable intelligence are available across devices.</span>
         </div>
       ) : null}
@@ -122,6 +131,7 @@ export default async function HomePage() {
       {session ? <AiFieldSuggestions /> : null}
 
       <section className="principles" aria-labelledby="principles-heading">
+        <HelpInfo topic="guardrails" />
         <div>
           <p className="eyebrow">Guardrails</p>
           <h2 id="principles-heading">Designed for traceable data</h2>

@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { HelpInfo } from "../help/HelpInfo";
+
 type BarcodeTarget = "personal-movie" | "devil-supplier";
 type CaptureMethod = "camera" | "manual";
 
@@ -469,6 +471,11 @@ export function BarcodeCaptureClient({
   return (
     <div className="barcodeCapture">
       <section className="barcodeControls">
+        <div className="sectionHeading">
+          <p className="eyebrow">Capture</p>
+          <h2>Barcode capture controls</h2>
+          <HelpInfo topic="barcode-capture" />
+        </div>
         <label>
           Route barcode to
           <select
@@ -573,6 +580,7 @@ export function BarcodeCaptureClient({
         <div className="sectionHeading">
           <p className="eyebrow">Review queue</p>
           <h2>{selected?.workspaceName}</h2>
+          <HelpInfo topic="barcode-review" />
         </div>
 
         {captures.length ? (

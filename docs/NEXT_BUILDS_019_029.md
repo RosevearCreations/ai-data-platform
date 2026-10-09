@@ -263,6 +263,8 @@ No setup is required. The user supplies a name/purpose only when actually creati
 
 ## Build 029 detailed plan
 
+Status: COMPLETE. SDK v1, connector manifests/config/secrets/grants, isolated bounded execution, example connector, management controls, immutable audit evidence and website-wide contextual help are implemented.
+
 Implementation sequence:
 
 1. Define connector manifest/capabilities.

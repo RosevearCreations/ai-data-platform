@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { listIntelligenceOverviewForUser } from "@/lib/database";
+import { HelpInfo } from "../help/HelpInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,7 @@ export default async function IntelligencePage() {
     return (
       <main className="shell">
         <section className="hero">
+          <HelpInfo topic="intelligence-overview" />
           <p className="eyebrow">Build 021</p>
           <h1>Persistent intelligence</h1>
           <p className="lead">
@@ -47,6 +49,7 @@ export default async function IntelligencePage() {
   return (
     <main className="shell">
       <section className="hero">
+        <HelpInfo topic="intelligence-overview" />
         <p className="eyebrow">Build 021</p>
         <h1>Persistent intelligence & audit</h1>
         <p className="lead">
@@ -63,6 +66,7 @@ export default async function IntelligencePage() {
           <div className="sectionHeading">
             <p className="eyebrow">{workspace.type} workspace</p>
             <h2 id={"workspace-" + workspace.id}>{workspace.name}</h2>
+            <HelpInfo topic="intelligence-workspace" />
           </div>
 
           {modules.length ? (
@@ -98,6 +102,7 @@ export default async function IntelligencePage() {
           <div className="sectionHeading">
             <p className="eyebrow">Append-only audit</p>
             <h2>Recent integration evidence</h2>
+            <HelpInfo topic="intelligence-audit" />
           </div>
 
           {audit.length ? (

@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">028</span>
+        <span className="build">029</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Reusable workspace profiles now define domain behavior</strong>
+        <strong>Connector SDK foundation is available server-side</strong>
         <p>
-          Build 028 adds explicit domain profiles for normalization, review,
-          provenance, history, templates and capability flags. Existing Rosie,
-          Devil n Dove and Personal workspaces keep their specialized behavior,
-          while new domains can use conservative built-in or custom profiles.
+          Build 029 adds versioned import, enrichment and approved-export
+          connector contracts with workspace grants, bounded execution, secret
+          references and append-only audit evidence. The extension does not
+          receive connector credentials.
         </p>
       </section>
 

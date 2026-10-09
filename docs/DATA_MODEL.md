@@ -503,3 +503,32 @@ Built-ins are immutable. Custom profiles are archive-only and RLS-scoped.
 - created_by — creator evidence for newly profiled workspaces.
 
 The original type column remains business/personal for compatibility. Profile identity is authoritative for specialized domain behavior.
+
+
+## Build 029 connector SDK data
+
+### workspace_connector_installations
+
+Workspace-scoped connector installation state keyed by workspace_id + connector_key:
+
+- manifest_version / connector_version;
+- enabled;
+- config JSON (non-secret configuration only);
+- granted_capabilities JSON array;
+- secret_refs JSON object containing references only;
+- installed_by and timestamps.
+
+RLS permits workspace members to read, while owner/admin context is required to insert/update.
+
+### workspace_connector_audit
+
+Append-only connector execution evidence:
+
+- workspace_id + audit_id;
+- connector_key and requested capability;
+- succeeded/failed/blocked status;
+- actor and start/completion/duration;
+- bounded input/output summaries;
+- sanitized error_code.
+
+The runtime role has no UPDATE/DELETE grant on this table.

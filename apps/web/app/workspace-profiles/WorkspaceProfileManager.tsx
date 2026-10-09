@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { HelpInfo } from "../help/HelpInfo";
+
 const capabilityKeys = [
   "history","sourcePolicy","scheduledJobs","remoteExecution",
   "barcodeIntake","businessIntegrations"
@@ -166,7 +168,7 @@ export function WorkspaceProfileManager({
 
   return <>
     <section>
-      <div className="sectionHeading"><p className="eyebrow">Profiles</p><h2>Domain configuration</h2></div>
+      <div className="sectionHeading"><p className="eyebrow">Profiles</p><h2>Domain configuration</h2><HelpInfo topic="profiles-existing" /></div>
       <div className="grid">
         {profiles.map((profile)=>(
           <article className="card" key={profile.profileKey}>
@@ -179,7 +181,7 @@ export function WorkspaceProfileManager({
     </section>
 
     <section>
-      <div className="sectionHeading"><p className="eyebrow">Custom profile</p><h2>Create a reusable domain profile</h2></div>
+      <div className="sectionHeading"><p className="eyebrow">Custom profile</p><h2>Create a reusable domain profile</h2><HelpInfo topic="profiles-custom" /></div>
       <form className="authForm card" onSubmit={async (event)=>{
         event.preventDefault(); setProfileBusy(true);
         try {
@@ -206,7 +208,7 @@ export function WorkspaceProfileManager({
     </section>
 
     <section>
-      <div className="sectionHeading"><p className="eyebrow">New workspace</p><h2>Create from a supported profile</h2></div>
+      <div className="sectionHeading"><p className="eyebrow">New workspace</p><h2>Create from a supported profile</h2><HelpInfo topic="workspace-create" /></div>
       <form className="authForm card" onSubmit={async (event)=>{
         event.preventDefault(); setWorkspaceBusy(true);
         try {
@@ -226,7 +228,7 @@ export function WorkspaceProfileManager({
     </section>
 
     <section>
-      <div className="sectionHeading"><p className="eyebrow">Active workspaces</p><h2>Edit or archive</h2></div>
+      <div className="sectionHeading"><p className="eyebrow">Active workspaces</p><h2>Edit or archive</h2><HelpInfo topic="workspace-manage" /></div>
       <div className="grid">
         {workspaces.map((workspace)=>(
           <article className="card" key={workspace.id}>

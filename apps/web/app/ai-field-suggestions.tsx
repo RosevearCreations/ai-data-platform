@@ -2,6 +2,8 @@
 
 import { FormEvent, useMemo, useState } from "react";
 
+import { HelpInfo } from "./help/HelpInfo";
+
 import type {
   AiSuggestionRequest,
   AiSuggestionResponse
@@ -113,6 +115,7 @@ export function AiFieldSuggestions() {
       <div className="sectionHeading">
         <p className="eyebrow">Build 008</p>
         <h2 id="ai-suggestions-heading">AI suggested fields</h2>
+        <HelpInfo topic="ai-fields" />
       </div>
 
       <p className="aiSuggestionIntro">

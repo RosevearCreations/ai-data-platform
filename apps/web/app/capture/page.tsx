@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { listWorkspacesForUser } from "@/lib/database";
 
 import { BarcodeCaptureClient } from "./barcode-capture-client";
+import { HelpInfo } from "../help/HelpInfo";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ export default async function CapturePage() {
     return (
       <main className="shell">
         <section className="hero">
+          <HelpInfo topic="barcode-overview" />
           <p className="eyebrow">Build 024</p>
           <h1>Mobile barcode intake</h1>
           <p className="lead">
@@ -60,6 +62,7 @@ export default async function CapturePage() {
   return (
     <main className="shell captureShell">
       <section className="hero captureHero">
+        <HelpInfo topic="barcode-overview" />
         <p className="eyebrow">Build 024</p>
         <h1>Mobile barcode intake</h1>
         <p className="lead">
