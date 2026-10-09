@@ -478,3 +478,22 @@ Live acceptance sequence once an eligible Source Policy has been reviewed:
 10. review `/production-learning` for status, units/run, duration, HTTP response, final URL/hash evidence and the pending/go-bounded/no-go result.
 
 CI uses deterministic provider fixtures and never spends Browserless units.
+
+## Build 033 integration consumer acceptance
+
+Local/CI verification:
+
+1. apply `0012_integration_delivery_observability.sql`;
+2. run `verify-integration-delivery.ts` for valid acceptance plus duplicate, stale, wrong-contract and wrong-target rejection;
+3. run database isolation verification for append-only delivery events, idempotent replay receipts and cross-account denial;
+4. confirm Production learning keeps Build 033 active for conformance-only evidence and closes it only for live consumer acknowledgement;
+5. verify the website/operator/help surfaces compile without exposing receiver secrets.
+
+External activation remains fail-closed because neither supported business repository currently exposes the exact v1 receiver.
+
+When a receiver is implemented:
+
+- Rosie Dazzlers: set `INTEGRATION_CONSUMER_ROSIE_DAZZLERS_URL` and encrypted `INTEGRATION_CONSUMER_ROSIE_DAZZLERS_TOKEN`;
+- Devil n Dove: set `INTEGRATION_CONSUMER_DEVIL_N_DOVE_URL` and encrypted `INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN`.
+
+Configure only one deliberately selected receiver first. Never copy bearer credentials into source, browser fields, logs or chat. Use `/integration-delivery` in this order: Run conformance → Test handshake → Send dry-run. Build 033 does not enable consumer-side live mutation.

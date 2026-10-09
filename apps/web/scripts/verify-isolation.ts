@@ -48,6 +48,12 @@ import {
 } from "../lib/connector-database";
 import { buildProductionLearningReview } from "../lib/production-learning-database";
 import {
+  appendIntegrationDeliveryEvent,
+  hasIntegrationConsumerReceipt,
+  recordIntegrationConsumerReceipt
+} from "../lib/integration-delivery-database";
+import { buildIntegrationPackageFromPersistedBatch } from "../lib/integration-delivery";
+import {
   archiveCustomWorkspaceProfile,
   archiveWorkspace,
   createCustomWorkspaceProfile,
@@ -1433,6 +1439,124 @@ async function main() {
     );
   }
 
+  const build033Package = buildIntegrationPackageFromPersistedBatch(
+    {
+      batches: [
+        {
+          id: "integration-batch-build033-isolation",
+          target: "rosie-dazzlers",
+          status: "approved",
+          approvedAt: new Date().toISOString(),
+          sourceDatasetUpdatedAt: new Date().toISOString(),
+          diffs: [
+            {
+              action: "create",
+              integrationKey: "rosie-competitor::build033-isolation",
+              payload: {
+                competitorBusinessName: "Build 033",
+                offeringName: "Isolation fixture",
+                sourceUrl: "https://example.test/build033",
+                retrievedAt: new Date().toISOString()
+              },
+              sourceEvidence: {
+                sourceUrl: "https://example.test/build033",
+                retrievedAt: new Date().toISOString()
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      target: "rosie-dazzlers",
+      batchId: "integration-batch-build033-isolation"
+    }
+  );
+
+  await appendIntegrationDeliveryEvent(ownerId, {
+    workspaceId: syncWorkspaceId,
+    consumerId: "platform-conformance-v1",
+    target: "rosie-dazzlers",
+    transportMode: "conformance",
+    eventType: "delivery-attempted",
+    batchId: build033Package.batchId,
+    packageId: build033Package.packageId,
+    replayKey: build033Package.replayKey,
+    fingerprint: build033Package.fingerprint,
+    validationCode: "attempted",
+    details: { dryRun: true }
+  });
+  const firstReceipt = await recordIntegrationConsumerReceipt(ownerId, {
+    workspaceId: syncWorkspaceId,
+    consumerId: "platform-conformance-v1",
+    package: build033Package
+  });
+  const secondReceipt = await recordIntegrationConsumerReceipt(ownerId, {
+    workspaceId: syncWorkspaceId,
+    consumerId: "platform-conformance-v1",
+    package: build033Package
+  });
+  if (
+    !firstReceipt ||
+    secondReceipt ||
+    !(await hasIntegrationConsumerReceipt(ownerId, {
+      workspaceId: syncWorkspaceId,
+      consumerId: "platform-conformance-v1",
+      target: "rosie-dazzlers",
+      packageId: build033Package.packageId
+    }))
+  ) {
+    throw new Error("Build 033 consumer replay registry did not preserve idempotent receipt evidence.");
+  }
+  await appendIntegrationDeliveryEvent(ownerId, {
+    workspaceId: syncWorkspaceId,
+    consumerId: "platform-conformance-v1",
+    target: "rosie-dazzlers",
+    transportMode: "conformance",
+    eventType: "delivery-accepted",
+    batchId: build033Package.batchId,
+    packageId: build033Package.packageId,
+    replayKey: build033Package.replayKey,
+    fingerprint: build033Package.fingerprint,
+    validationCode: "valid",
+    details: { dryRun: true, liveMutationEnabled: false }
+  });
+
+  let deliveryAuditImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.integration_delivery_events set validation_code='tampered' where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    deliveryAuditImmutable = true;
+  }
+  if (!deliveryAuditImmutable) {
+    throw new Error("Build 033 delivery evidence unexpectedly allowed runtime updates.");
+  }
+
+  let restrictedDeliveryDenied = false;
+  try {
+    await appendIntegrationDeliveryEvent(restrictedId, {
+      workspaceId: syncWorkspaceId,
+      consumerId: "platform-conformance-v1",
+      target: "rosie-dazzlers",
+      transportMode: "conformance",
+      eventType: "delivery-rejected",
+      validationCode: "unauthorized-test"
+    });
+  } catch (error) {
+    restrictedDeliveryDenied =
+      error instanceof Error &&
+      (error.message === "workspace_admin_required" ||
+        error.message === "workspace_not_found");
+  }
+  if (!restrictedDeliveryDenied) {
+    throw new Error("Build 033 delivery evidence crossed the workspace authorization boundary.");
+  }
+
   const productionLearning = await buildProductionLearningReview(ownerId);
   const learningWorkspace = productionLearning.evidence.workspaces.find(
     (workspace) => workspace.workspaceId === syncWorkspaceId
@@ -1450,10 +1574,14 @@ async function main() {
     learningWorkspace.remote.providerRuns !== 1 ||
     learningWorkspace.remote.providerSuccesses !== 1 ||
     learningWorkspace.remote.approvedPublicSources !== 1 ||
+    learningWorkspace.integrations.conformanceAccepted !== 1 ||
+    learningWorkspace.integrations.liveAccepted !== 0 ||
+    productionLearning.totals.integrationConformanceAccepted !== 1 ||
+    productionLearning.totals.integrationLiveAccepted !== 0 ||
     productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
     productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 032 production-learning provider baseline/roadmap aggregation failed.");
+    throw new Error("Build 033 production-learning consumer conformance/live-delivery aggregation failed.");
   }
   if (
     !productionLearning.findings.some(

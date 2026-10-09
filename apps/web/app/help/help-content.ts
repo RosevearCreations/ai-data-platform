@@ -329,6 +329,31 @@ export const HELP_TOPICS = {
       "Review /production-learning for the terminal provider event and bounded go/no-go result."
     ]
   },
+  "integration-delivery": {
+    title: "Integration consumer acceptance & delivery",
+    summary: "Build 033 proves package validation and replay rejection locally, records every delivery outcome append-only, and keeps external business-app delivery fail-closed until a documented receiver URL and dedicated bearer credential are configured.",
+    steps: [
+      "Start with an approved or exported business-integration batch.",
+      "Run conformance to prove valid acceptance plus duplicate, stale, wrong-contract and wrong-target rejection without contacting a business application.",
+      "Configure a business receiver only after that application has implemented the exact Build 022 v1 contract.",
+      "Use Test handshake to verify bearer authentication, target/schema identity, dry-run support and live-mutation state.",
+      "Use Send dry-run for one package only; Build 033 never authorizes an automatic downstream operational write.",
+      "Review the append-only acknowledgement evidence here and in Production learning before considering any broader transport."
+    ],
+    notes: [
+      "Conformance acceptance and live business-consumer acceptance are deliberately separate evidence classes.",
+      "Receiver secrets are presence-only server configuration and are never returned to the browser."
+    ],
+    manual: [
+      "Choose one target only after its application exposes the documented v1 receiver: Rosie Dazzlers or Devil n Dove.",
+      "In that target application's production settings, create a dedicated receiver credential and keep live mutation disabled.",
+      "Copy the receiver HTTPS URL into the matching AI Data Platform Vercel variable: INTEGRATION_CONSUMER_ROSIE_DAZZLERS_URL or INTEGRATION_CONSUMER_DEVIL_N_DOVE_URL.",
+      "Store the dedicated bearer secret in the matching encrypted Vercel secret: INTEGRATION_CONSUMER_ROSIE_DAZZLERS_TOKEN or INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN. Never paste the token into chat, GitHub or browser fields.",
+      "Redeploy the AI Data Platform production environment if Vercel requires a new deployment for the variable change.",
+      "Open /integration-delivery, run conformance, then Test handshake, then Send dry-run for exactly one approved package.",
+      "Confirm the consumer returns an accepted dry-run acknowledgement and records the same packageId/replayKey before any separate live-mutation approval."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -353,7 +378,7 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 032 is the active P0 production gate until one real Browserless terminal run exists; after that the evidence-driven queue advances to Builds 033–036.",
+    summary: "Build 033 is the active integration-delivery gate after the Browserless baseline layer: conformance can be proven internally, but the roadmap does not close consumer delivery until a supported business application returns a live dry-run acknowledgement.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
@@ -401,6 +426,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Connectors",
     topics: ["connectors-overview", "connector-registry", "connector-workspace", "connector-audit"]
+  },
+  {
+    title: "Integration delivery",
+    topics: ["integration-delivery"]
   },
   {
     title: "Production learning",

@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">032</span>
+        <span className="build">033</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Browserless live execution remains fail-closed</strong>
+        <strong>Business integration delivery remains review-gated</strong>
         <p>
-          Build 032 requires an approved, unexpired Source Policy, exact remote
-          allowlist, armed workspace and explicit global kill-switch window before
-          a one-page Browserless pilot can run. Provider evidence stays bounded and
-          the Browserless token is never exposed to the extension UI.
+          Build 033 adds consumer conformance and delivery acknowledgement evidence.
+          The extension still prepares approved packages only; external receiver
+          credentials stay server-side and no downstream business mutation is
+          authorized from this UI.
         </p>
       </section>
 

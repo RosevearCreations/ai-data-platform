@@ -767,7 +767,7 @@ BROWSERLESS_API_TOKEN already exists as an encrypted Vercel secret. REMOTE_EXECU
 
 ## Build 033 — Integration Consumer Acceptance & Delivery Observability
 
-Status: QUEUED — NOT STARTED.
+Status: IMPLEMENTED — LIVE BUSINESS-CONSUMER ACKNOWLEDGEMENT GATED. Conformance receiver, authenticated sender handshake, dry-run transport and durable acknowledgement evidence are implemented; no supported business repository currently exposes the v1 receiver endpoint.
 
 Goal: prove one real consumer-side handoff instead of treating package-contract conformance as delivery success.
 
@@ -779,11 +779,11 @@ Deliverables:
 - explicit accepted/rejected consumer acknowledgement;
 - dashboard visibility without automatic operational writes.
 
-Acceptance: one supported consumer can accept a valid package, reject replay/stale/wrong-contract packages, and return durable acknowledgement evidence.
+Acceptance: implementation/CI passes when valid acceptance plus replay/stale/wrong-contract/wrong-target rejection, append-only delivery evidence and workspace isolation are proven. Live acceptance remains open until Rosie Dazzlers or Devil n Dove exposes the documented receiver and returns one authenticated dry-run acknowledgement.
 
 Manual input gate:
 
-Any target business application must expose or approve its documented consumer endpoint/credentials before live delivery is enabled.
+No business receiver exists yet. When one target application implements the documented v1 receiver, configure only its HTTPS endpoint and dedicated encrypted bearer credential in Vercel, run conformance, test the handshake, then send exactly one dry-run package. Build 033 does not authorize live downstream mutation.
 
 ## Build 034 — Retention, Storage Budgets & Cleanup Automation
 

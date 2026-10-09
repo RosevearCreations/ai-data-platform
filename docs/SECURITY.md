@@ -357,3 +357,18 @@ Contextual help explicitly identifies actions that require manual external setup
 - provider cost reporting remains units/runtime rather than a hard-coded currency price;
 - a live baseline is not synthesized from CI fixtures or readiness booleans;
 - the production kill switch must be restored after the explicitly approved one-page run unless continued live testing is separately approved.
+
+## Build 033 integration delivery security
+
+- external receiver URLs are never accepted from client requests; they come only from target-specific server environment configuration;
+- configured receiver URLs must be HTTPS and cannot contain embedded username/password credentials;
+- dedicated bearer credentials remain server-only and are never returned in readiness or operator responses;
+- every live delivery route requires a normal authenticated AI Data Platform session and workspace owner/admin authorization;
+- packages are rebuilt from persisted approved/exported integration batches rather than trusting an arbitrary browser package for live transport;
+- the sender independently verifies target, schema, adapter contract, version, fingerprint, packageId, replayKey, fields, source evidence, expiry and source freshness;
+- the conformance receiver persists accepted package IDs and rejects replay;
+- delivery/receipt tables are append-only to the runtime role and protected by workspace RLS;
+- delivery detail JSON is bounded to 4 KiB and excludes package bodies, bearer tokens and consumer response secrets;
+- external requests use one configured endpoint, no redirect following, a 15-second timeout and no automatic retry;
+- Build 033 external delivery is always `dryRun=true`; acknowledgements claiming a live mutation are rejected;
+- no Build 033 path writes into Rosie Dazzlers or Devil n Dove operational databases.

@@ -398,3 +398,21 @@ Reason: deployment configuration cannot prove network reliability, duration or p
 Decision: the first provider baseline can produce only pending, go-bounded or no-go. A go-bounded result preserves the existing one-page, two-unit and explicit-kill-window constraints.
 
 Reason: one successful sample is sufficient to establish a baseline, not sufficient to justify unattended or broader crawling.
+
+## D0062 — Conformance acceptance is not live consumer acceptance
+
+Decision: Build 033 stores internal conformance acceptance and external business-consumer acceptance as separate transport modes. Production learning closes the Build 033 roadmap item only after a live external consumer returns an authenticated dry-run acknowledgement.
+
+Reason: validating our own receiver semantics is valuable CI evidence, but it cannot prove that an independent business application has implemented the contract correctly.
+
+## D0063 — Live integration delivery uses configured target endpoints only
+
+Decision: the delivery API never accepts a destination URL or bearer credential from the browser. Each supported target has a dedicated server environment URL/secret pair.
+
+Reason: allowing arbitrary client-selected destinations would turn the integration sender into an SSRF/credential-forwarding surface.
+
+## D0064 — Build 033 transport is dry-run only
+
+Decision: the sender sets `dryRun=true` and rejects a consumer acknowledgement that reports a live mutation. Enabling downstream mutation requires a later explicit consumer-side approval/build.
+
+Reason: proving authenticated delivery and acknowledgement should not silently convert an evidence pipeline into an operational write path.

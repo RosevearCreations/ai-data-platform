@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 032</p>
+          <p className="eyebrow">Build 033</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,7 +45,7 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 032</p>
+        <p className="eyebrow">Build 033</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
           Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
@@ -117,6 +117,17 @@ export default async function ProductionLearningPage() {
                 : Math.round(totals.repairSuccessRate * 100) + "% healthy"}.
             </p>
             <span className="badge">revision-linked outcomes</span>
+          </article>
+          <article className="card">
+            <h3>{totals.integrationLiveAccepted} live consumer acknowledgements</h3>
+            <p>
+              {totals.integrationConformanceAccepted} conformance accepted ·{" "}
+              {totals.integrationDeliveryRejected} rejected ·{" "}
+              {totals.integrationTransportErrors} transport errors.
+            </p>
+            <span className="badge">
+              {totals.integrationLiveAccepted > 0 ? "live dry-run proven" : "external consumer gated"}
+            </span>
           </article>
           <article className="card">
             <h3>{totals.connectorExecutions} connector executions</h3>
@@ -203,6 +214,9 @@ export default async function ProductionLearningPage() {
                 </p>
                 <p>
                   Remote: {workspace.remote.providerRuns} runs · {workspace.remote.providerUnits} units · {workspace.remote.approvedPublicSources} approved public sources · {workspace.remote.allowlistedSources} allowlisted
+                </p>
+                <p>
+                  Integration delivery: {workspace.integrations.conformanceAccepted} conformance accepted · {workspace.integrations.liveAccepted} live accepted · {workspace.integrations.deliveryRejected} rejected
                 </p>
                 {workspace.remote.lastRun ? (
                   <p>

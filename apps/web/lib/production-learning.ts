@@ -68,6 +68,14 @@ export interface ProductionLearningWorkspaceEvidence {
     approved: number;
     exported: number;
     cancelled: number;
+    deliveryAttempts: number;
+    conformanceAccepted: number;
+    liveAccepted: number;
+    deliveryRejected: number;
+    transportErrors: number;
+    handshakeAccepted: number;
+    handshakeRejected: number;
+    storageBytes: number;
   };
   barcode: {
     captures: number;
@@ -199,6 +207,30 @@ export function summarizeProductionLearningEvidence(
     0
   );
   const integrationExports = sum(evidence, (w) => w.integrations.exported);
+  const integrationDeliveryAttempts = sum(
+    evidence,
+    (w) => w.integrations.deliveryAttempts
+  );
+  const integrationConformanceAccepted = sum(
+    evidence,
+    (w) => w.integrations.conformanceAccepted
+  );
+  const integrationLiveAccepted = sum(
+    evidence,
+    (w) => w.integrations.liveAccepted
+  );
+  const integrationDeliveryRejected = sum(
+    evidence,
+    (w) => w.integrations.deliveryRejected
+  );
+  const integrationTransportErrors = sum(
+    evidence,
+    (w) => w.integrations.transportErrors
+  );
+  const integrationHandshakeAccepted = sum(
+    evidence,
+    (w) => w.integrations.handshakeAccepted
+  );
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
     evidence,
@@ -239,6 +271,7 @@ export function summarizeProductionLearningEvidence(
       w.intelligence.storageBytes +
       w.barcode.storageBytes +
       w.remote.storageBytes +
+      w.integrations.storageBytes +
       w.connectors.storageBytes +
       w.outcomes.storageBytes
   );
@@ -273,6 +306,17 @@ export function summarizeProductionLearningEvidence(
           ? "go-bounded"
           : "no-go",
     integrationExports,
+    integrationDeliveryAttempts,
+    integrationConformanceAccepted,
+    integrationLiveAccepted,
+    integrationDeliveryRejected,
+    integrationTransportErrors,
+    integrationHandshakeAccepted,
+    integrationDeliveryAcceptanceRate:
+      integrationDeliveryAttempts === 0
+        ? null
+        : (integrationConformanceAccepted + integrationLiveAccepted) /
+          integrationDeliveryAttempts,
     connectorInstallations,
     connectorExecutions,
     syncEvents,
@@ -513,19 +557,36 @@ export function buildProductionLearningAssessment(
   findings.push({
     key: "integration-consumer-readiness",
     category: "Business integrations",
-    status: totals.integrationExports > 0 ? "healthy" : "gap",
+    status:
+      totals.integrationLiveAccepted > 0
+        ? "healthy"
+        : totals.integrationDeliveryAttempts > 0 ||
+            totals.integrationConformanceAccepted > 0
+          ? "watch"
+          : "gap",
     title:
-      totals.integrationExports > 0
-        ? "Approved integration export evidence exists."
-        : "Consumer-side delivery evidence is still missing.",
+      totals.integrationLiveAccepted > 0
+        ? "A live consumer has durably acknowledged a package."
+        : totals.integrationConformanceAccepted > 0
+          ? "Consumer conformance is proven; live business-app acknowledgement is still gated."
+          : "Consumer-side delivery evidence is still missing.",
     evidence:
-      totals.integrationExports > 0
-        ? String(totals.integrationExports) + " approved export events are visible."
-        : "Contract conformance exists, but no durable exported event is visible in the authorized workspaces.",
+      String(totals.integrationExports) +
+      " approved exports · " +
+      String(totals.integrationConformanceAccepted) +
+      " conformance acceptances · " +
+      String(totals.integrationLiveAccepted) +
+      " live acceptances · " +
+      String(totals.integrationDeliveryRejected) +
+      " rejections · " +
+      String(totals.integrationTransportErrors) +
+      " transport errors.",
     action:
-      totals.integrationExports > 0
-        ? "Verify downstream consumer acceptance/replay evidence before enabling automated delivery."
-        : "Complete one explicit consumer acceptance path before adding transport automation.",
+      totals.integrationLiveAccepted > 0
+        ? "Keep live delivery dry-run/review gated and monitor replay/rejection evidence before enabling any consumer mutation."
+        : totals.integrationConformanceAccepted > 0
+          ? "Implement and approve the documented receiver in one business application, configure its endpoint/credential, then prove one live dry-run acknowledgement."
+          : "Run the authenticated Build 033 conformance receiver before any external transport is configured.",
     owner: "platform"
   });
 
@@ -600,14 +661,19 @@ export function buildProductionLearningAssessment(
           evidenceKeys: ["remote-cost-reliability", "source-policy-health"]
         }]
       : []),
-    {
-      build: 33,
-      priority: totals.integrationExports === 0 ? "P1" : "P2",
-      title: "Integration Consumer Acceptance & Delivery Observability",
-      rationale:
-        "Contract readiness exists, but consumer acceptance/replay/delivery evidence must be proven before automated transport.",
-      evidenceKeys: ["integration-consumer-readiness"]
-    },
+    ...(totals.integrationLiveAccepted === 0
+      ? [{
+          build: 33,
+          priority:
+            totals.integrationConformanceAccepted > 0 ? "P2" as const : "P1" as const,
+          title: "Integration Consumer Acceptance & Delivery Observability",
+          rationale:
+            totals.integrationConformanceAccepted > 0
+              ? "Build 033 conformance is proven, but no supported business application has returned a live dry-run acknowledgement yet."
+              : "Contract readiness exists, but consumer acceptance/replay/delivery evidence must be proven before automated transport.",
+          evidenceKeys: ["integration-consumer-readiness"]
+        }]
+      : []),
     {
       build: 34,
       priority: totals.storageBytes >= 25_000_000 ? "P1" : "P2",

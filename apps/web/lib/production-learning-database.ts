@@ -128,6 +128,27 @@ async function workspaceEvidence(
       [workspace.id]
     );
 
+    const integrationDeliveryResult = await client.query(
+      `
+        select
+          count(*) filter (where event_type='delivery-attempted')::int as delivery_attempts,
+          count(*) filter (
+            where event_type='delivery-accepted' and transport_mode='conformance'
+          )::int as conformance_accepted,
+          count(*) filter (
+            where event_type='delivery-accepted' and transport_mode='live'
+          )::int as live_accepted,
+          count(*) filter (where event_type='delivery-rejected')::int as delivery_rejected,
+          count(*) filter (where event_type='transport-error')::int as transport_errors,
+          count(*) filter (where event_type='handshake-accepted')::int as handshake_accepted,
+          count(*) filter (where event_type='handshake-rejected')::int as handshake_rejected,
+          coalesce(sum(pg_column_size(details)),0)::bigint as storage_bytes
+        from app.integration_delivery_events
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
     const barcodeResult = await client.query(
       `
         select
@@ -260,6 +281,8 @@ async function workspaceEvidence(
     const sync = syncResult.rows[0] as Record<string, unknown>;
     const outcomes = outcomeResult.rows[0] as Record<string, unknown>;
     const barcode = barcodeResult.rows[0] as Record<string, unknown>;
+    const integrationDelivery =
+      integrationDeliveryResult.rows[0] as Record<string, unknown>;
     const remoteJobs = remoteJobResult.rows[0] as Record<string, unknown>;
     const remote = remotePilotResult.rows[0] as Record<string, unknown>;
     const connectors = connectorResult.rows[0] as Record<string, unknown>;
@@ -431,7 +454,15 @@ async function workspaceEvidence(
         dryRuns: numeric(integrationCounts["dry-run-created"]),
         approved: numeric(integrationCounts.approved),
         exported: numeric(integrationCounts.exported),
-        cancelled: numeric(integrationCounts.cancelled)
+        cancelled: numeric(integrationCounts.cancelled),
+        deliveryAttempts: numeric(integrationDelivery.delivery_attempts),
+        conformanceAccepted: numeric(integrationDelivery.conformance_accepted),
+        liveAccepted: numeric(integrationDelivery.live_accepted),
+        deliveryRejected: numeric(integrationDelivery.delivery_rejected),
+        transportErrors: numeric(integrationDelivery.transport_errors),
+        handshakeAccepted: numeric(integrationDelivery.handshake_accepted),
+        handshakeRejected: numeric(integrationDelivery.handshake_rejected),
+        storageBytes: numeric(integrationDelivery.storage_bytes)
       },
       barcode: {
         captures: numeric(barcode.captures),

@@ -30,7 +30,7 @@ export default async function HomePage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="platform-overview" />
-        <p className="eyebrow">Build 032</p>
+        <p className="eyebrow">Build 033</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure with reusable domain
@@ -120,6 +120,9 @@ export default async function HomePage() {
           </Link>
           <Link className="secondaryButton" href="/connectors">
             Connectors
+          </Link>
+          <Link className="secondaryButton" href="/integration-delivery">
+            Integration delivery
           </Link>
           <Link className="secondaryButton" href="/production-learning">
             Production learning
