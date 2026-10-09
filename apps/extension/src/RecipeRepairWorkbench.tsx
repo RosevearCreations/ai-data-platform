@@ -75,6 +75,8 @@ export function RecipeRepairWorkbench({
 
   useEffect(() => {
     if (!selectedRepairs.length) return;
+    const workspaceId = scraper.workspaceId;
+    if (!workspaceId) return;
 
     const signature =
       report.checkedAt +
@@ -88,7 +90,7 @@ export function RecipeRepairWorkbench({
     lastProposalSignature.current = signature;
 
     void recordRecipeRepairInteractionBestEffort({
-      workspaceId: scraper.workspaceId,
+      workspaceId,
       eventType: "repair-proposed",
       recordId: scraper.id,
       revision: scraper.revision,
@@ -137,9 +139,14 @@ export function RecipeRepairWorkbench({
 
   async function rejectRepairProposal() {
     if (!selectedRepairs.length) return;
+    const workspaceId = scraper.workspaceId;
+    if (!workspaceId) {
+      setMessage("This legacy scraper is not assigned to a workspace, so no repair telemetry was recorded.");
+      return;
+    }
 
     await recordRecipeRepairInteractionBestEffort({
-      workspaceId: scraper.workspaceId,
+      workspaceId,
       eventType: "repair-rejected",
       recordId: scraper.id,
       revision: scraper.revision,
