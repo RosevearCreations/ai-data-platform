@@ -40,6 +40,12 @@ import {
   upsertRemotePilotAllowlist
 } from "../lib/remote-pilot-database";
 import {
+  configureWorkspaceConnector,
+  executeWorkspaceConnector,
+  listConnectorOverviewForUser,
+  setWorkspaceConnectorEnabled
+} from "../lib/connector-database";
+import {
   archiveCustomWorkspaceProfile,
   archiveWorkspace,
   createCustomWorkspaceProfile,
@@ -1258,8 +1264,131 @@ async function main() {
     throw new Error("Build 028 profile archive evidence failed.");
   }
 
+  const connectorKey = "example.no-secret-normalizer";
+  const configuredConnector = await configureWorkspaceConnector(ownerId, {
+    workspaceId: syncWorkspaceId,
+    connectorKey,
+    config: { trim: true, case: "upper" },
+    grantedCapabilities: ["import"],
+    secretRefs: {}
+  });
+  if (configuredConnector.enabled || configuredConnector.grantedCapabilities.join(",") !== "import") {
+    throw new Error("Build 029 connector configuration/grant persistence failed.");
+  }
+
+  let restrictedConfigureDenied = false;
+  try {
+    await configureWorkspaceConnector(restrictedId, {
+      workspaceId: syncWorkspaceId,
+      connectorKey,
+      config: { trim: true, case: "upper" },
+      grantedCapabilities: ["import"],
+      secretRefs: {}
+    });
+  } catch (error) {
+    restrictedConfigureDenied =
+      error instanceof Error && error.message === "workspace_admin_required";
+  }
+  if (!restrictedConfigureDenied) {
+    throw new Error("Build 029 connector workspace-admin boundary failed.");
+  }
+
+  await setWorkspaceConnectorEnabled(ownerId, {
+    workspaceId: syncWorkspaceId,
+    connectorKey,
+    enabled: true
+  });
+
+  const connectorResult = await executeWorkspaceConnector(ownerId, {
+    workspaceId: syncWorkspaceId,
+    connectorKey,
+    capability: "import",
+    payload: { records: [{ name: "  build   029  ", kind: " test " }] }
+  });
+  const outputObject = connectorResult.output as {
+    records?: Array<Record<string, unknown>>;
+  };
+  if (outputObject.records?.[0]?.name !== "BUILD 029") {
+    throw new Error("Build 029 example connector execution returned unexpected output.");
+  }
+
+  let ungrantedBlocked = false;
+  try {
+    await executeWorkspaceConnector(ownerId, {
+      workspaceId: syncWorkspaceId,
+      connectorKey,
+      capability: "enrichment",
+      payload: { records: [] }
+    });
+  } catch (error) {
+    ungrantedBlocked =
+      error instanceof Error && error.message === "connector_capability_not_granted";
+  }
+  if (!ungrantedBlocked) {
+    throw new Error("Build 029 connector exceeded its workspace capability grant.");
+  }
+
+  const restrictedConnectorOverview = await listConnectorOverviewForUser(restrictedId);
+  if (restrictedConnectorOverview.workspaces.length !== 0) {
+    throw new Error("Build 029 connector state leaked to a non-member account.");
+  }
+
+  const connectorOverview = await listConnectorOverviewForUser(ownerId);
+  const connectorWorkspace = connectorOverview.workspaces.find(
+    (entry) => entry.workspace.id === syncWorkspaceId
+  );
+  if (
+    !connectorWorkspace?.audit.some(
+      (entry) => entry.connectorKey === connectorKey && entry.status === "succeeded"
+    ) ||
+    !connectorWorkspace.audit.some(
+      (entry) =>
+        entry.connectorKey === connectorKey &&
+        entry.status === "blocked" &&
+        entry.errorCode === "connector_capability_not_granted"
+    )
+  ) {
+    throw new Error("Build 029 connector append-only execution evidence is incomplete.");
+  }
+
+  let connectorAuditImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.workspace_connector_audit set error_code='tampered' where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    connectorAuditImmutable = true;
+  }
+  if (!connectorAuditImmutable) {
+    throw new Error("Build 029 connector audit unexpectedly allowed runtime updates.");
+  }
+
+  await setWorkspaceConnectorEnabled(ownerId, {
+    workspaceId: syncWorkspaceId,
+    connectorKey,
+    enabled: false
+  });
+  let disabledBlocked = false;
+  try {
+    await executeWorkspaceConnector(ownerId, {
+      workspaceId: syncWorkspaceId,
+      connectorKey,
+      capability: "import",
+      payload: { records: [] }
+    });
+  } catch (error) {
+    disabledBlocked =
+      error instanceof Error && error.message === "connector_disabled";
+  }
+  if (!disabledBlocked) {
+    throw new Error("Build 029 disabled connector still executed.");
+  }
+
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit and workspace-target acceptance passed."
   );
 }
 
