@@ -1481,6 +1481,52 @@ export async function bootstrapFirstOwner(userId: string) {
   }
 }
 
+
+export async function checkProductionDatabaseReadiness() {
+  const client = await authPool.connect();
+
+  try {
+    const authSchema = await client.query<{ user_table: string | null }>(
+      `
+        select to_regclass('auth."user"')::text as user_table
+      `
+    );
+
+    const applicationSchema = await appPool.query<{
+      migration_table: string | null;
+      migration_count: string;
+      latest_migration: string | null;
+    }>(
+      `
+        select
+          to_regclass('app.schema_migrations')::text as migration_table,
+          case
+            when to_regclass('app.schema_migrations') is null then '0'
+            else (select count(*)::text from app.schema_migrations)
+          end as migration_count,
+          case
+            when to_regclass('app.schema_migrations') is null then null
+            else (select max(name) from app.schema_migrations)
+          end as latest_migration
+      `
+    );
+
+    const authReady = authSchema.rows[0]?.user_table === "auth.user";
+    const appReady =
+      applicationSchema.rows[0]?.migration_table === "app.schema_migrations";
+
+    return {
+      ready: authReady && appReady,
+      authSchemaReady: authReady,
+      applicationSchemaReady: appReady,
+      migrationCount: Number(applicationSchema.rows[0]?.migration_count ?? 0),
+      latestMigration: applicationSchema.rows[0]?.latest_migration ?? null
+    };
+  } finally {
+    client.release();
+  }
+}
+
 export async function closeDatabasePools() {
   await Promise.all([appPool.end(), authPool.end()]);
 }
