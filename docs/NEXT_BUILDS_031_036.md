@@ -23,6 +23,8 @@ Manual intervention: none.
 
 ## Build 032 — Browserless Live Pilot & Provider Cost Baseline
 
+Status: IMPLEMENTED — LIVE BASELINE PENDING APPROVED SOURCE POLICY.
+
 Priority: P0 until a real production pilot baseline exists.
 
 Purpose: convert the built Browserless boundary into measured production evidence.
@@ -41,7 +43,7 @@ Implementation sequence:
 10. Restore REMOTE_EXECUTION_KILL_SWITCH=true unless continued testing is explicitly approved.
 11. Record the baseline in /production-learning and make a go/no-go decision for any later expansion.
 
-Manual intervention: required for the production secret/environment variables. Never provide the token through chat or GitHub.
+Manual intervention: the production Browserless secret already exists and the master flag/kill switch are in the safe Build 032 state. Approve/synchronize one eligible Source Policy, allowlist and arm one workspace, then explicitly authorize exactly one kill-switch-off pilot window. Never provide the token through chat or GitHub.
 
 ## Build 033 — Integration Consumer Acceptance & Delivery Observability
 
