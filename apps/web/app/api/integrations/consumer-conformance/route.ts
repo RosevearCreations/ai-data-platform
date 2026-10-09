@@ -4,10 +4,12 @@ import { auth } from "@/lib/auth";
 import {
   appendIntegrationDeliveryEvent,
   hasIntegrationConsumerReceipt,
+  loadIntegrationModulePayload,
   recordIntegrationConsumerReceipt
 } from "@/lib/integration-delivery-database";
 import {
   INTEGRATION_CONSUMER_PROTOCOL,
+  buildIntegrationPackageFromPersistedBatch,
   type IntegrationPackageV1,
   type IntegrationTarget,
   validateIntegrationPackage
@@ -33,10 +35,29 @@ export async function POST(request: Request) {
     body.target === "rosie-dazzlers" || body.target === "devil-n-dove"
       ? body.target
       : null;
-  const integrationPackage = body.package;
+  const batchId = typeof body.batchId === "string" ? body.batchId : "";
+  let integrationPackage = body.package;
 
-  if (!workspaceId || !target || !integrationPackage) {
+  if (!workspaceId || !target || (!integrationPackage && !batchId)) {
     return Response.json({ error: "invalid_conformance_request" }, { status: 400 });
+  }
+
+  if (!integrationPackage && batchId) {
+    const payload = await loadIntegrationModulePayload(current.user.id, workspaceId);
+    if (!payload) {
+      return Response.json({ error: "business_integration_module_missing" }, { status: 404 });
+    }
+    try {
+      integrationPackage = buildIntegrationPackageFromPersistedBatch(payload, {
+        target,
+        batchId
+      });
+    } catch (error) {
+      return Response.json(
+        { error: error instanceof Error ? error.message : "package_build_failed" },
+        { status: 409 }
+      );
+    }
   }
 
   const preliminary = validateIntegrationPackage(integrationPackage, {
