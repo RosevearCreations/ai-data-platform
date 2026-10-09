@@ -89,7 +89,7 @@ const stalePayload = {
 const stalePackage = buildIntegrationPackageFromPersistedBatch(stalePayload, {
   target: "rosie-dazzlers",
   batchId: "integration-batch-build033",
-  now
+  now: new Date("2026-08-02T00:00:00.000Z")
 });
 const stale = validateIntegrationPackage(stalePackage, {
   now,
