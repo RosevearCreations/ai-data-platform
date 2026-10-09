@@ -289,3 +289,13 @@ The latest terminal Browserless event contributes only bounded evidence already 
 The Build 032 go/no-go result is deterministic. With no real terminal provider run it remains pending. A bounded go requires all observed terminal runs to succeed and average estimated provider units to remain within the existing two-unit envelope; otherwise the result is no-go. This decision does not automatically expand remote execution.
 
 The global kill switch remains active outside an explicitly authorized one-run production window. Build 032 intentionally fails closed when no approved source policy exists.
+
+## Build 033 consumer-delivery boundary
+
+Build 033 keeps the business applications independent. AI Data Platform reconstructs a v1 package only from a persisted approved/exported business-integration batch, validates it again with an independent server-side validator, and never accepts an arbitrary browser-supplied delivery URL.
+
+The internal conformance receiver is authenticated through the normal AI Data Platform session and exists to prove receiver semantics without touching a business application. It persists an accepted package ID in a scoped replay registry so the same package is rejected on a later submission. Conformance acceptance is not treated as live business-consumer acceptance.
+
+External delivery is server-to-server only. The target endpoint and bearer credential come from target-specific server environment variables. The handshake must return the exact protocol, target, schema, contract version, bearer-authentication declaration and dry-run support. Package acknowledgements must echo packageId, replayKey and fingerprint. Build 033 forces dry-run transport and rejects acknowledgements that claim a live mutation.
+
+Every handshake/delivery terminal outcome is appended to workspace-scoped delivery evidence. Production learning reports conformance and live acceptance separately; Build 033 remains open until one supported business application returns a real authenticated dry-run acknowledgement.
