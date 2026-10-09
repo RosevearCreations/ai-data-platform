@@ -440,3 +440,16 @@ The Browserless API key must not be pasted into ChatGPT, GitHub, source files, s
 11. Restore REMOTE_EXECUTION_KILL_SWITCH=true after the pilot unless continued live testing is deliberately approved.
 
 The GitHub/CI Build 030 gate does not need the Browserless secret. This conversation's Vercel connector currently exposes no team/project and the Neon connector exposes no projects, so production secret/database changes are not performed automatically from chat.
+
+## Build 031 operational telemetry and snapshot continuity
+
+Server/database components:
+
+- `db/migrations/0011_operational_outcome_telemetry.sql` — append-only outcome and review-snapshot tables, RLS and bounded retention;
+- `apps/web/lib/database.ts` — sync outcome recording and server-derived repair approval/rollback/compatibility linkage;
+- `/api/extension/operational-outcomes` — authenticated bounded repair proposal/rejection intake;
+- `apps/web/lib/production-learning-database.ts` — outcome aggregation and changed-evidence snapshot persistence;
+- `apps/web/lib/production-learning.ts` — conflict/error, repair-health and rollback-rate assessment;
+- `apps/extension/src/operational-outcomes.ts` — best-effort extension telemetry client.
+
+Normal development verification must prove migrations, typecheck/lint/build/tests, workspace RLS isolation, append-only runtime behavior and snapshot persistence. Build 031 requires no external account or secret.
