@@ -318,3 +318,22 @@ Reason: an unknown domain should inherit evidence/review protections without sil
 Decision: existing Personal barcode behavior is tied to personal-media and Devil n Dove barcode behavior to maker-commerce rather than merely checking legacy slugs.
 
 Reason: workspace slugs can now expand freely. Specialized workflows need an explicit capability/domain contract instead of accidental string identity.
+
+
+## D0049 — Connector code is statically registered, not uploaded
+
+Decision: SDK v1 accepts code changes through the repository/release process rather than arbitrary runtime JavaScript uploads.
+
+Reason: workspace capability grants are useful only if the executable itself has passed repository review and CI. This also prevents an SDK feature from becoming a general remote-code-execution path.
+
+## D0050 — Connector secrets are references to exact manifest-declared environment variables
+
+Decision: workspace configuration may store a secret reference but never a credential value or arbitrary environment-variable name.
+
+Reason: credentials must remain in encrypted server environment storage, and a connector must not be able to request unrelated application secrets such as DATABASE_URL.
+
+## D0051 — Contextual help is a required website contract
+
+Decision: every major website section exposes a circled ⓘ with detailed operating guidance; external setup appears as ordered Manual intervention instructions.
+
+Reason: operational safety depends on explaining workspace selection, review gates, kill switches, credentials and variables at the point of use rather than only in developer documentation.

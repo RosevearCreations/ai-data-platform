@@ -669,7 +669,7 @@ No setup required. The user will choose the name/purpose of any first new worksp
 
 ## Build 029 — Plugin & Connector SDK Foundation
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Promotion uses the protected exact-tree path.
 
 Goal: provide a versioned extension point so new import, enrichment and approved-export connectors can be added without modifying core extraction logic.
 
@@ -688,7 +688,7 @@ Deliverables:
 - audit events for connector execution;
 - documentation and starter template.
 
-Acceptance: a sample connector can be registered, configured, tested and disabled through the SDK without modifying extractor core code, and connectors cannot access workspaces/capabilities they were not granted.
+Acceptance: PASSED when the no-secret sample connector registers through SDK v1, persists workspace-scoped configuration/grants, runs through the bounded server execution boundary, records append-only audit evidence, fails closed on ungranted capabilities/disabled state, remains RLS isolated, and the website-wide contextual help coverage test confirms detailed ⓘ guidance on every major section.
 
 Manual input gate:
 

@@ -233,3 +233,22 @@ Rosie Dazzlers maps to rosie-detailing, Devil n Dove maps to maker-commerce and 
 Custom profiles are RLS-scoped: built-ins are readable to authenticated runtime users, while custom profiles are visible to their creator and members of workspaces already using them. Built-ins are immutable. Custom profiles are edit/archive only by their authorized creator while they retain an owner/admin context.
 
 New workspace creation uses app.create_profiled_workspace, a SECURITY DEFINER boundary that explicitly re-checks the current authenticated user, owner/admin eligibility and profile visibility before atomically creating the workspace and owner membership. The runtime role therefore does not receive broad INSERT rights on workspace/member tables.
+
+
+## Build 029 connector SDK boundary
+
+The connector SDK lives in packages/connector-sdk and defines manifest/SDK version 1, import/enrichment/export capabilities, bounded configuration fields, exact environment-variable secret declarations, and execution size/time limits.
+
+Connectors are statically registered server code in apps/web/lib/connectors/registry.ts. Build 029 does not execute user-uploaded JavaScript. The web runtime resolves an installation only after the authenticated actor passes workspace owner/admin checks and RLS. The requested capability must be supported by the manifest and present in the workspace grant.
+
+apps/web/lib/connectors/sandbox.ts is the capability-limited execution boundary. It structured-clones/freezes input/config, enforces input/output byte bounds, supplies an AbortSignal/timeout, and exposes only a secret(key) resolver. No database client, session cookie or unrestricted process.env object enters connector context.
+
+Secret declarations bind each logical secret key to one exact environment-variable name. workspace_connector_installations stores only a reference object; secret values remain in the server environment. The resolver refuses undeclared keys, mismatched environment names and missing values.
+
+The included example.no-secret-normalizer connector requires no service or credentials and exercises configuration, grants, enable/disable, execution and audit end to end.
+
+## Contextual help architecture
+
+apps/web/app/help/help-content.ts is the central section-help registry. HelpInfo renders an accessible native details/summary control styled as the requested circled i. Every major page and interactive section uses a topic-specific control, and /help renders the consolidated help center.
+
+Manual-intervention instructions live with the relevant topic. Browserless help preserves exact Build 027 variables and fail-closed sequencing; connector help distinguishes the no-setup sample from future credentialed connectors. CI verifies coverage and required manual-intervention language.

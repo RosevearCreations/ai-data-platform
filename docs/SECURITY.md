@@ -299,3 +299,22 @@ Build 011 generates export files locally from the extension review workspace.
 - the runtime role is not granted arbitrary INSERT access to workspace/member tables;
 - archived workspaces leave the active workspace list while retained data remains protected by existing workspace RLS;
 - barcode target authorization uses explicit personal-media/maker-commerce profile identity rather than assuming all future workspace slugs are known.
+
+
+## Build 029 connector SDK security
+
+- arbitrary uploaded connector code is not accepted or executed;
+- only statically registered server connectors can run;
+- manifest and SDK versions must be compatible;
+- a workspace grant must be a subset of manifest capabilities;
+- owner/admin authorization plus workspace RLS is required for configure/enable/disable/test actions;
+- connectors receive cloned/frozen bounded input/config, workspace ID, one requested capability, AbortSignal and a narrow secret resolver only;
+- database clients, auth cookies and the unrestricted process environment are not provided to connector executors;
+- secret references bind to exact environment-variable names declared in the manifest and never contain the secret value;
+- input/output size and runtime limits fail closed;
+- connector audit stores bounded summaries/error codes, not secret values;
+- runtime can SELECT/INSERT connector audit records but has no UPDATE/DELETE grant.
+
+## Build 029 help-system security
+
+Contextual help explicitly identifies actions that require manual external setup. Browserless instructions tell operators to store tokens only in encrypted production environment settings and never in ChatGPT, GitHub, source code or client storage. Future credentialed connectors must document the exact provider registration link/environment variable with their manifest before enablement.

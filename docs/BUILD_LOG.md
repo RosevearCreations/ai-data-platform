@@ -1653,3 +1653,22 @@ Migration 0009_workspace_profiles.sql preserves existing workspace IDs/slugs/typ
 No external account, secret or manual setup is required.
 
 Next: Build 029 — Plugin & Connector SDK Foundation.
+
+
+## Build 029 — Plugin & Connector SDK Foundation
+
+Date: 2026-10-08/09
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Added @rosevear/ai-data-connector-sdk v0.29.0 with manifest/SDK compatibility checks, import/enrichment/export capabilities, typed configuration fields, exact environment-variable secret declarations, workspace capability grants, input/output/time limits and a starter template.
+
+Added the server registry and bounded execution boundary, example.no-secret-normalizer, workspace connector installation/configuration, enable/disable/test controls, migration 0010_connector_sdk_foundation.sql, RLS policies and append-only workspace_connector_audit evidence. Connector code receives no database handle, session cookie or unrestricted environment object.
+
+Expanded database acceptance verifies owner/admin configuration, non-member denial, successful example execution, ungranted capability blocking, disabled-state blocking, cross-account isolation and runtime audit immutability.
+
+Added /connectors and a website-wide contextual help system. Every major site section now exposes a circled ⓘ with detailed operating steps. /help consolidates all topics. Browserless manual help records BROWSERLESS_API_TOKEN, REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED and REMOTE_EXECUTION_KILL_SWITCH setup while preserving the current fail-closed state during the provider login issue.
+
+Build 029 itself requires no external account, secret or manual setup because the shipped acceptance connector is intentionally no-secret.
+
+Next: Build 030 — Production Learning, Cost Review & Roadmap Renewal.

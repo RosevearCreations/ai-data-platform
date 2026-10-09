@@ -25,6 +25,7 @@ export default function HelpPage() {
           <div className="sectionHeading">
             <p className="eyebrow">Help topics</p>
             <h2>{group.title}</h2>
+            <HelpInfo topic="help-index" />
           </div>
           <div className="grid">
             {group.topics.map((topic) => (
