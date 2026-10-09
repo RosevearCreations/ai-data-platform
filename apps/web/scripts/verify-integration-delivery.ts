@@ -2,6 +2,9 @@ import {
   INTEGRATION_CONSUMER_PROTOCOL,
   INTEGRATION_CONTRACTS,
   buildIntegrationPackageFromPersistedBatch,
+  integrationFingerprint,
+  integrationPackageId,
+  integrationReplayKey,
   validateConsumerAcknowledgement,
   validateConsumerHandshake,
   validateIntegrationPackage
@@ -78,19 +81,33 @@ assert(
   "Wrong-target package was not rejected."
 );
 
-const stalePayload = {
-  batches: [
-    {
-      ...payload.batches[0],
-      sourceDatasetUpdatedAt: "2026-08-01T00:00:00.000Z"
-    }
-  ]
-};
-const stalePackage = buildIntegrationPackageFromPersistedBatch(stalePayload, {
-  target: "rosie-dazzlers",
-  batchId: "integration-batch-build033",
-  now: new Date("2026-08-02T00:00:00.000Z")
+const staleSourceDatasetUpdatedAt = "2026-08-01T00:00:00.000Z";
+const staleFingerprint = integrationFingerprint({
+  target: integrationPackage.target,
+  adapterContract: integrationPackage.adapterContract,
+  contractVersion: integrationPackage.contractVersion,
+  batchId: integrationPackage.batchId,
+  approvedAt: integrationPackage.approvedAt,
+  sourceDatasetUpdatedAt: staleSourceDatasetUpdatedAt,
+  operations: integrationPackage.operations
 });
+const stalePackageId = integrationPackageId({
+  target: integrationPackage.target,
+  batchId: integrationPackage.batchId,
+  approvedAt: integrationPackage.approvedAt,
+  fingerprint: staleFingerprint
+});
+const stalePackage = {
+  ...integrationPackage,
+  sourceDatasetUpdatedAt: staleSourceDatasetUpdatedAt,
+  fingerprint: staleFingerprint,
+  packageId: stalePackageId,
+  replayKey: integrationReplayKey({
+    target: integrationPackage.target,
+    packageId: stalePackageId,
+    fingerprint: staleFingerprint
+  })
+};
 const stale = validateIntegrationPackage(stalePackage, {
   now,
   expectedTarget: "rosie-dazzlers"
