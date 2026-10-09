@@ -1,3 +1,5 @@
+import { createHash, randomUUID } from "node:crypto";
+
 import { browserlessPilotReadiness } from "./browserless-provider";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
 import {
@@ -39,6 +41,36 @@ async function workspaceEvidence(
             coalesce((select sum(pg_column_size(payload)) from app.workspace_saved_scrapers where workspace_id=$1),0) +
             coalesce((select sum(pg_column_size(payload)) from app.workspace_reviewed_datasets where workspace_id=$1),0)
           )::bigint as storage_bytes
+      `,
+      [workspace.id]
+    );
+
+    const outcomeResult = await client.query(
+      `
+        select
+          count(*) filter (where event_family='sync')::int as sync_events,
+          count(*) filter (where event_type='sync-applied')::int as sync_applied,
+          count(*) filter (where event_type='sync-deleted')::int as sync_deleted,
+          count(*) filter (where event_type='sync-conflict')::int as sync_conflicts,
+          count(*) filter (where event_type='sync-noop')::int as sync_noops,
+          count(*) filter (where event_type='sync-error')::int as sync_errors,
+          count(*) filter (where event_type='repair-proposed')::int as repair_proposed,
+          count(*) filter (where event_type='repair-approved')::int as repair_approved,
+          count(*) filter (where event_type='repair-rejected')::int as repair_rejected,
+          count(*) filter (where event_type='repair-rolled-back')::int as repair_rolled_back,
+          count(*) filter (where event_type='repair-compatibility')::int as repair_compatibility_checks,
+          count(*) filter (
+            where event_type='repair-compatibility' and compatibility_status='healthy'
+          )::int as repair_healthy,
+          count(*) filter (
+            where event_type='repair-compatibility' and compatibility_status='degraded'
+          )::int as repair_degraded,
+          count(*) filter (
+            where event_type='repair-compatibility' and compatibility_status='broken'
+          )::int as repair_broken,
+          coalesce(sum(pg_column_size(details)),0)::bigint as storage_bytes
+        from app.workspace_operational_outcomes
+        where workspace_id=$1
       `,
       [workspace.id]
     );
@@ -151,6 +183,7 @@ async function workspaceEvidence(
     );
 
     const sync = syncResult.rows[0] as Record<string, unknown>;
+    const outcomes = outcomeResult.rows[0] as Record<string, unknown>;
     const barcode = barcodeResult.rows[0] as Record<string, unknown>;
     const remoteJobs = remoteJobResult.rows[0] as Record<string, unknown>;
     const remote = remotePilotResult.rows[0] as Record<string, unknown>;
@@ -168,6 +201,81 @@ async function workspaceEvidence(
       memberResult.rows.map((row) => [row.role, numeric(row.count)])
     );
 
+    const snapshotCounts = {
+      syncEvents: numeric(outcomes.sync_events),
+      syncConflicts: numeric(outcomes.sync_conflicts),
+      syncErrors: numeric(outcomes.sync_errors),
+      repairTerminalEvents:
+        numeric(outcomes.repair_approved) +
+        numeric(outcomes.repair_rejected) +
+        numeric(outcomes.repair_rolled_back),
+      repairCompatibilityChecks: numeric(outcomes.repair_compatibility_checks),
+      repairHealthyChecks: numeric(outcomes.repair_healthy),
+      repairRollbacks: numeric(outcomes.repair_rolled_back)
+    };
+    const evidenceFingerprint = createHash("sha256")
+      .update(JSON.stringify(snapshotCounts))
+      .digest("hex");
+
+    const previousSnapshotResult = await client.query<{
+      generated_at: Date;
+      sync_events: number;
+      sync_conflicts: number;
+      repair_compatibility_checks: number;
+      repair_healthy_checks: number;
+    }>(
+      `
+        select
+          generated_at,
+          sync_events,
+          sync_conflicts,
+          repair_compatibility_checks,
+          repair_healthy_checks
+        from app.production_learning_review_snapshots
+        where workspace_id=$1
+          and evidence_fingerprint<>$2
+        order by generated_at desc
+        limit 1
+      `,
+      [workspace.id, evidenceFingerprint]
+    );
+
+    await client.query(
+      `
+        insert into app.production_learning_review_snapshots (
+          workspace_id,
+          snapshot_id,
+          evidence_fingerprint,
+          sync_events,
+          sync_conflicts,
+          sync_errors,
+          repair_terminal_events,
+          repair_compatibility_checks,
+          repair_healthy_checks,
+          repair_rollbacks,
+          created_by,
+          generated_at
+        )
+        values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,now())
+        on conflict (workspace_id, evidence_fingerprint) do nothing
+      `,
+      [
+        workspace.id,
+        randomUUID(),
+        evidenceFingerprint,
+        snapshotCounts.syncEvents,
+        snapshotCounts.syncConflicts,
+        snapshotCounts.syncErrors,
+        snapshotCounts.repairTerminalEvents,
+        snapshotCounts.repairCompatibilityChecks,
+        snapshotCounts.repairHealthyChecks,
+        snapshotCounts.repairRollbacks,
+        userId
+      ]
+    );
+
+    const previousSnapshot = previousSnapshotResult.rows[0] ?? null;
+
     return {
       workspaceId: workspace.id,
       workspaceName: workspace.name,
@@ -182,6 +290,44 @@ async function workspaceEvidence(
         reviewedRows: numeric(sync.reviewed_rows),
         versionChanges: numeric(sync.version_changes),
         storageBytes: numeric(sync.storage_bytes)
+      },
+      outcomes: {
+        storageBytes: numeric(outcomes.storage_bytes),
+        sync: {
+          events: numeric(outcomes.sync_events),
+          applied: numeric(outcomes.sync_applied),
+          deleted: numeric(outcomes.sync_deleted),
+          conflicts: numeric(outcomes.sync_conflicts),
+          noops: numeric(outcomes.sync_noops),
+          errors: numeric(outcomes.sync_errors)
+        },
+        repair: {
+          proposed: numeric(outcomes.repair_proposed),
+          approved: numeric(outcomes.repair_approved),
+          rejected: numeric(outcomes.repair_rejected),
+          rolledBack: numeric(outcomes.repair_rolled_back),
+          compatibilityChecks: numeric(outcomes.repair_compatibility_checks),
+          healthy: numeric(outcomes.repair_healthy),
+          degraded: numeric(outcomes.repair_degraded),
+          broken: numeric(outcomes.repair_broken)
+        }
+      },
+      continuity: {
+        previousSnapshotAt: previousSnapshot
+          ? previousSnapshot.generated_at.toISOString()
+          : null,
+        previousSyncEvents: previousSnapshot
+          ? numeric(previousSnapshot.sync_events)
+          : 0,
+        previousSyncConflicts: previousSnapshot
+          ? numeric(previousSnapshot.sync_conflicts)
+          : 0,
+        previousRepairCompatibilityChecks: previousSnapshot
+          ? numeric(previousSnapshot.repair_compatibility_checks)
+          : 0,
+        previousRepairHealthyChecks: previousSnapshot
+          ? numeric(previousSnapshot.repair_healthy_checks)
+          : 0
       },
       intelligence: {
         modules: intelligenceResult.rows.length,
