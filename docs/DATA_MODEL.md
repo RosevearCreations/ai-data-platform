@@ -562,3 +562,40 @@ Runtime permissions are SELECT/INSERT only. RLS requires workspace membership an
 Changed-evidence snapshots preserve the counts required for before/after sync-conflict and repair-health comparisons. A SHA-256 evidence fingerprint prevents repeated page reads from creating duplicate unchanged snapshots. Retention keeps at most 365 days and 60 snapshots per workspace.
 
 Runtime permissions are SELECT/INSERT only and RLS remains workspace-scoped.
+
+### integration_delivery_events
+
+Append-only Build 033 evidence for consumer handshake and package delivery.
+
+Key fields:
+
+- workspace_id;
+- event_id;
+- consumer_id;
+- target: rosie-dazzlers | devil-n-dove;
+- transport_mode: conformance | live;
+- event_type: handshake-accepted | handshake-rejected | delivery-attempted | delivery-accepted | delivery-rejected | transport-error;
+- batch_id / package_id / replay_key / fingerprint;
+- validation_code / optional HTTP status;
+- bounded details JSON;
+- actor_user_id;
+- occurred_at / created_at.
+
+Runtime access is SELECT + INSERT only under workspace RLS. Details are capped at 4 KiB and retention is bounded to 365 days / 2,000 events per workspace.
+
+### integration_consumer_receipts
+
+Append-only replay registry used by the Build 033 conformance receiver.
+
+Key fields:
+
+- workspace_id;
+- consumer_id;
+- target;
+- package_id;
+- replay_key;
+- fingerprint;
+- actor_user_id;
+- received_at / created_at.
+
+The composite primary key prevents the same package ID being accepted twice by the same scoped consumer.
