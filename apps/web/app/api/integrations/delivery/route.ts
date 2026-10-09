@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import {
   appendIntegrationDeliveryEvent,
+  assertIntegrationDeliveryAdmin,
   loadIntegrationModulePayload
 } from "@/lib/integration-delivery-database";
 import {
@@ -61,6 +62,12 @@ export async function POST(request: Request) {
 
   if (!workspaceId || !selectedTarget || !action) {
     return Response.json({ error: "invalid_delivery_request" }, { status: 400 });
+  }
+
+  try {
+    await assertIntegrationDeliveryAdmin(current.user.id, workspaceId);
+  } catch {
+    return Response.json({ error: "workspace_admin_required" }, { status: 403 });
   }
 
   const config = integrationConsumerConfiguration(selectedTarget);
