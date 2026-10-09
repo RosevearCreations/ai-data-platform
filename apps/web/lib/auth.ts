@@ -26,6 +26,14 @@ export const auth = betterAuth({
     enabled: true,
     disableSignUp: process.env.AUTH_ALLOW_SIGN_UP !== "true"
   },
+  advanced: {
+    database: {
+      // Production schema is controlled by db:migrate + CI db:verify.
+      // Disable Better Auth's eager live metadata validation so a Next/Vercel
+      // build never depends on database metadata access merely to compile pages.
+      validateSchema: false
+    }
+  },
   databaseHooks: {
     user: {
       create: {
