@@ -27,6 +27,16 @@ async function requireWorkspaceAdmin(client: PoolClient, workspaceId: string) {
   }
 }
 
+export async function assertIntegrationDeliveryAdmin(
+  userId: string,
+  workspaceId: string
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAdmin(client, workspaceId);
+    return true;
+  });
+}
+
 export type IntegrationDeliveryEventType =
   | "handshake-accepted"
   | "handshake-rejected"
