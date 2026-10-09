@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import {
   appendIntegrationDeliveryEvent,
+  assertIntegrationDeliveryAdmin,
   hasIntegrationConsumerReceipt,
   loadIntegrationModulePayload,
   recordIntegrationConsumerReceipt
@@ -42,6 +43,12 @@ export async function POST(request: Request) {
     return Response.json({ error: "invalid_conformance_request" }, { status: 400 });
   }
 
+  try {
+    await assertIntegrationDeliveryAdmin(current.user.id, workspaceId);
+  } catch {
+    return Response.json({ error: "workspace_admin_required" }, { status: 403 });
+  }
+
   if (!integrationPackage && batchId) {
     const payload = await loadIntegrationModulePayload(current.user.id, workspaceId);
     if (!payload) {
@@ -59,6 +66,36 @@ export async function POST(request: Request) {
       );
     }
   }
+
+  const packageIdentity =
+    integrationPackage && typeof integrationPackage === "object" && !Array.isArray(integrationPackage)
+      ? (integrationPackage as Record<string, unknown>)
+      : {};
+  await appendIntegrationDeliveryEvent(current.user.id, {
+    workspaceId,
+    consumerId: CONSUMER_ID,
+    target,
+    transportMode: "conformance",
+    eventType: "delivery-attempted",
+    batchId:
+      typeof packageIdentity.batchId === "string"
+        ? packageIdentity.batchId
+        : batchId || null,
+    packageId:
+      typeof packageIdentity.packageId === "string"
+        ? packageIdentity.packageId
+        : null,
+    replayKey:
+      typeof packageIdentity.replayKey === "string"
+        ? packageIdentity.replayKey
+        : null,
+    fingerprint:
+      typeof packageIdentity.fingerprint === "string"
+        ? packageIdentity.fingerprint
+        : null,
+    validationCode: "attempted",
+    details: { dryRun: true }
+  });
 
   const preliminary = validateIntegrationPackage(integrationPackage, {
     expectedTarget: target
