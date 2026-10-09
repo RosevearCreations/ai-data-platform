@@ -277,3 +277,15 @@ Build 031 adds a narrow evidence layer rather than a general event bus. Workspac
 Recipe-repair proposal/rejection intake accepts only bounded primitive metadata. Approved repair and rollback events are derived server-side from the synchronized saved-scraper revision kind, and a later compatibility check is linked to that revision. Raw DOM, candidate selectors and page payloads are not copied into operational telemetry.
 
 Production-learning snapshots are persisted only when the outcome-count fingerprint changes. This preserves before/after continuity without turning each dashboard read into unbounded history. All event/snapshot reads and inserts use the normal `ai_data_runtime` + `app.user_id` RLS boundary.
+
+## Build 032 Browserless production-baseline boundary
+
+Build 032 does not create a second remote-execution mechanism. It promotes the existing Build 027 one-page Browserless boundary into an evidence-driven production gate. The production-learning layer independently measures: encrypted-token readiness, provider master flag, global kill state, eligible approved Source Policies, exact remote allowlists, armed workspaces and terminal provider evidence.
+
+An eligible Build 032 source is counted from the actual Source Policy payload only when it is approved, public-webpage/public-facts, explicitly public-or-authorized, terms-reviewed, robots allowed, access-control-bypass prohibited and unexpired. Summary counters alone cannot make a source eligible.
+
+The latest terminal Browserless event contributes only bounded evidence already permitted by Build 027: succeeded/failed state, estimated provider units, duration, target response code, final URL and content SHA-256. Raw HTML and the Browserless credential are never copied into production learning.
+
+The Build 032 go/no-go result is deterministic. With no real terminal provider run it remains pending. A bounded go requires all observed terminal runs to succeed and average estimated provider units to remain within the existing two-unit envelope; otherwise the result is no-go. This decision does not automatically expand remote execution.
+
+The global kill switch remains active outside an explicitly authorized one-run production window. Build 032 intentionally fails closed when no approved source policy exists.
