@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">029</span>
+        <span className="build">030</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Connector SDK foundation is available server-side</strong>
+        <strong>Production learning now closes the Builds 019–029 loop</strong>
         <p>
-          Build 029 adds versioned import, enrichment and approved-export
-          connector contracts with workspace grants, bounded execution, secret
-          references and append-only audit evidence. The extension does not
-          receive connector credentials.
+          Build 030 reviews synchronized workspace evidence, source-policy
+          health, barcode outcomes, remote provider units, integration audit,
+          connector readiness and storage signals. Missing outcome telemetry is
+          reported as an evidence gap rather than guessed.
         </p>
       </section>
 

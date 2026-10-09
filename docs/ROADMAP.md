@@ -696,7 +696,7 @@ No external account is required for the SDK foundation. Any future real connecto
 
 ## Build 030 — Production Learning, Cost Review & Roadmap Renewal
 
-Status: QUEUED — NOT STARTED.
+Status: COMPLETE. Promotion uses the protected exact-tree path.
 
 Goal: measure the completed local/authenticated/remote-capable platform, close reliability gaps, and generate the next evidence-based roadmap instead of extending the queue indefinitely by assumption.
 
@@ -716,8 +716,136 @@ Deliverables:
 - documented unresolved evidence gaps;
 - prioritized next roadmap based on measured need.
 
-Acceptance: the platform has an evidence-backed operational review, known risks are documented with owners/actions, and the next numbered roadmap is generated from observed usage and reliability rather than speculation.
+Acceptance: PASSED when authenticated /production-learning and /api/production-learning derive RLS-scoped evidence from Builds 019–029, distinguish measured zero from missing telemetry, expose Browserless readiness without secret values, classify risks with owners/actions, pass cross-account database acceptance, and generate the evidence-driven Builds 031–036 queue.
 
 Manual input gate:
 
-The user may be asked to confirm business priorities after the measured review is presented. No infrastructure setup is required.
+No infrastructure setup is required to complete Build 030. A real Browserless production-cost baseline remains an explicit next-step gate: the user now has a Browserless API key, but it must be entered only in the production host's encrypted environment settings before the controlled pilot.
+
+
+## Build 031 — Operational Outcome Telemetry & Review Snapshot Continuity
+
+Status: QUEUED — NOT STARTED.
+
+Goal: close the two Build 030 P0 evidence gaps so synchronization and recipe-repair reliability can be measured rather than inferred.
+
+Deliverables:
+
+- append-only workspace sync outcome events for applied/conflict/noop/deleted/error;
+- bounded recipe-repair attempt/approval/rollback/outcome telemetry;
+- post-repair compatibility outcome linkage;
+- review snapshot persistence for production-learning comparisons;
+- workspace/RLS isolation and retention limits;
+- production-learning trend cards for sync conflict and repair success/rollback rates.
+
+Acceptance: Build 030's sync/repair GAP findings become measurable from durable evidence without storing raw page DOM or sensitive content.
+
+Manual input gate:
+
+No external account or secret is required.
+
+## Build 032 — Browserless Live Pilot & Provider Cost Baseline
+
+Status: QUEUED — NOT STARTED.
+
+Goal: establish the first real controlled Browserless production baseline now that the user has obtained an API key.
+
+Deliverables:
+
+- safe production secret/readiness verification;
+- one approved public-source pilot under existing Build 025/027 gates;
+- provider units, duration, success/failure and response evidence;
+- explicit post-pilot kill-switch restoration;
+- first cost/reliability baseline in /production-learning;
+- go/no-go evidence for any broader remote usage.
+
+Acceptance: at least one deliberately approved one-page production pilot completes or fails with durable provider evidence, no secret value is exposed, and the global/workspace kill gates remain controllable.
+
+Manual input gate:
+
+The user must place BROWSERLESS_API_TOKEN into the production host's encrypted secret settings and control REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED / REMOTE_EXECUTION_KILL_SWITCH. The token must never be pasted into chat or GitHub.
+
+## Build 033 — Integration Consumer Acceptance & Delivery Observability
+
+Status: QUEUED — NOT STARTED.
+
+Goal: prove one real consumer-side handoff instead of treating package-contract conformance as delivery success.
+
+Deliverables:
+
+- authenticated consumer acceptance handshake;
+- replay/staleness rejection evidence;
+- delivery attempt/status audit;
+- explicit accepted/rejected consumer acknowledgement;
+- dashboard visibility without automatic operational writes.
+
+Acceptance: one supported consumer can accept a valid package, reject replay/stale/wrong-contract packages, and return durable acknowledgement evidence.
+
+Manual input gate:
+
+Any target business application must expose or approve its documented consumer endpoint/credentials before live delivery is enabled.
+
+## Build 034 — Retention, Storage Budgets & Cleanup Automation
+
+Status: QUEUED — NOT STARTED.
+
+Goal: convert Build 030's storage proxy into enforceable retention and cleanup outcomes.
+
+Deliverables:
+
+- per-module retention budgets;
+- archive/delete eligibility preview;
+- explicit cleanup policy;
+- bounded automated cleanup for eligible evidence;
+- before/after storage measurement;
+- retention exceptions for append-only/security-critical evidence.
+
+Acceptance: storage growth is measurable and bounded without deleting evidence that the security/audit model requires to remain immutable.
+
+Manual input gate:
+
+No external account is required. Any destructive cleanup policy requires explicit operator approval before first live execution.
+
+## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
+
+Status: QUEUED — NOT STARTED.
+
+Goal: determine which generalized features are actually used and whether privileges remain proportionate.
+
+Deliverables:
+
+- profile/workspace adoption trends;
+- feature-capability usage by profile;
+- connector installation/grant/use outcomes;
+- owner/admin/member permission review;
+- stale/unused capability recommendations;
+- barcode and scheduled-job adoption comparison.
+
+Acceptance: adoption and least-privilege recommendations are derived from durable workspace evidence and never broaden permissions automatically.
+
+Manual input gate:
+
+The user may choose which business domains/connectors deserve further investment after the evidence is presented.
+
+## Build 036 — Production Learning II & Roadmap Renewal
+
+Status: QUEUED — NOT STARTED.
+
+Goal: repeat the Build 030 review after Builds 031–035 and renew the roadmap only from measured reliability, cost, adoption and unresolved gaps.
+
+Deliverables:
+
+- before/after comparison against Build 030;
+- sync/repair trend review;
+- Browserless cost/reliability review;
+- integration delivery outcomes;
+- retention/storage outcomes;
+- adoption/permission outcomes;
+- new evidence gaps;
+- next prioritized roadmap.
+
+Acceptance: the next queue is justified by measured changes since Build 030, with unresolved risks/actions named explicitly.
+
+Manual input gate:
+
+No infrastructure setup is required; the user may confirm business priorities after the evidence review.

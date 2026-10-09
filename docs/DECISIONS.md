@@ -337,3 +337,28 @@ Reason: credentials must remain in encrypted server environment storage, and a c
 Decision: every major website section exposes a circled ⓘ with detailed operating guidance; external setup appears as ordered Manual intervention instructions.
 
 Reason: operational safety depends on explaining workspace selection, review gates, kill switches, credentials and variables at the point of use rather than only in developer documentation.
+
+
+## D0052 — Missing production telemetry is an evidence gap, not zero
+
+Decision: Build 030 labels an operational outcome GAP when the platform does not durably record the event required to calculate it.
+
+Reason: a zero conflict rate or zero repair failure rate would be misleading when conflicts/repair outcomes are not stored as durable production events. This directly prioritizes Build 031.
+
+## D0053 — Cost review uses durable units and storage proxies, not hard-coded prices
+
+Decision: remote cost evidence records Browserless estimated units/duration and storage review uses measured bounded payload bytes. The application does not convert these into a permanent dollar price.
+
+Reason: external provider/database pricing changes independently of release code. Durable usage units can be combined with current billing data operationally without making stale pricing part of the evidence model.
+
+## D0054 — Production-learning queries remain inside the normal RLS boundary
+
+Decision: /production-learning is a normal authenticated workspace view, not a privileged cross-account analytics console.
+
+Reason: learning/metrics must not weaken the same workspace isolation that protects the operational data being measured.
+
+## D0055 — Roadmap renewal is evidence-driven and finite
+
+Decision: Build 030 renews the queue only through Build 036. Build 036 must repeat production learning before another long roadmap is created.
+
+Reason: the platform should close observed reliability/cost/adoption gaps before adding speculative feature depth.

@@ -45,6 +45,7 @@ import {
   listConnectorOverviewForUser,
   setWorkspaceConnectorEnabled
 } from "../lib/connector-database";
+import { buildProductionLearningReview } from "../lib/production-learning-database";
 import {
   archiveCustomWorkspaceProfile,
   archiveWorkspace,
@@ -1387,8 +1388,40 @@ async function main() {
     throw new Error("Build 029 disabled connector still executed.");
   }
 
+  const productionLearning = await buildProductionLearningReview(ownerId);
+  const learningWorkspace = productionLearning.evidence.workspaces.find(
+    (workspace) => workspace.workspaceId === syncWorkspaceId
+  );
+  if (!learningWorkspace) {
+    throw new Error("Build 030 production-learning review omitted an authorized workspace.");
+  }
+  if (
+    learningWorkspace.sync.deletedScrapers < 1 ||
+    learningWorkspace.sync.reviewedDatasets < 1 ||
+    learningWorkspace.sync.versionChanges < 2 ||
+    learningWorkspace.connectors.installations < 1 ||
+    learningWorkspace.connectors.succeeded < 1 ||
+    learningWorkspace.connectors.blocked < 1 ||
+    productionLearning.roadmap[0]?.build !== 31
+  ) {
+    throw new Error("Build 030 production-learning evidence/roadmap aggregation failed.");
+  }
+  if (
+    !productionLearning.findings.some(
+      (finding) =>
+        finding.key === "sync-outcome-telemetry" && finding.status === "gap"
+    )
+  ) {
+    throw new Error("Build 030 did not preserve explicit telemetry gaps.");
+  }
+
+  const restrictedLearning = await buildProductionLearningReview(restrictedId);
+  if (restrictedLearning.evidence.workspaces.length !== 0) {
+    throw new Error("Build 030 production-learning evidence leaked across accounts.");
+  }
+
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, production-learning aggregation and workspace-target acceptance passed."
   );
 }
 

@@ -1672,3 +1672,20 @@ Added /connectors and a website-wide contextual help system. Every major site se
 Build 029 itself requires no external account, secret or manual setup because the shipped acceptance connector is intentionally no-secret.
 
 Next: Build 030 — Production Learning, Cost Review & Roadmap Renewal.
+
+
+## Build 030 — Production Learning, Cost Review & Roadmap Renewal
+
+Date: 2026-10-09
+
+Status: COMPLETE. Promotion uses the protected exact-tree path.
+
+Added authenticated /production-learning and /api/production-learning. The review reads only workspaces authorized to the signed-in user and aggregates existing durable evidence from synchronized scrapers/datasets, intelligence/source-policy summaries, business-integration audit, barcode captures, remote jobs/provider events, connector installations/audit, profiles and memberships.
+
+Build 030 intentionally distinguishes a measured zero from an evidence gap. Durable server evidence currently supports barcode outcomes, source-policy health, integration events, Browserless provider events/units, connector outcomes, storage proxies and workspace permission counts. Sync conflict outcome frequency and recipe-repair success/rollback outcomes are not yet durable server telemetry, so the review marks both as GAP rather than inventing trend numbers.
+
+Browserless readiness reports only booleans: token configured, execution enabled, global kill switch active and ready-for-pilot. The API key value is never returned. The user has obtained a Browserless API key, but production configuration remains a manual encrypted-host step and is not required for Build 030 promotion.
+
+CI verifies production-learning classification, renewed roadmap priority, help coverage, live-table aggregation against the Build 019–029 database fixture, tombstone/version evidence, connector audit evidence and cross-account isolation. Extension version is 0.30.0. Build 030 adds no schema migration; it reviews the existing durable evidence model.
+
+Renewed queue: Build 031 Operational Outcome Telemetry & Review Snapshot Continuity; Build 032 Browserless Live Pilot & Provider Cost Baseline; Build 033 Integration Consumer Acceptance & Delivery Observability; Build 034 Retention, Storage Budgets & Cleanup Automation; Build 035 Workspace, Profile & Connector Adoption / Permission Outcomes; Build 036 Production Learning II & Roadmap Renewal.
