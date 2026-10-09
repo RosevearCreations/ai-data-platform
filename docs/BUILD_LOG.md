@@ -1689,3 +1689,29 @@ Browserless readiness reports only booleans: token configured, execution enabled
 CI verifies production-learning classification, renewed roadmap priority, help coverage, live-table aggregation against the Build 019–029 database fixture, tombstone/version evidence, connector audit evidence and cross-account isolation. Extension version is 0.30.0. Build 030 adds no schema migration; it reviews the existing durable evidence model.
 
 Renewed queue: Build 031 Operational Outcome Telemetry & Review Snapshot Continuity; Build 032 Browserless Live Pilot & Provider Cost Baseline; Build 033 Integration Consumer Acceptance & Delivery Observability; Build 034 Retention, Storage Budgets & Cleanup Automation; Build 035 Workspace, Profile & Connector Adoption / Permission Outcomes; Build 036 Production Learning II & Roadmap Renewal.
+
+## Build 031 — Operational Outcome Telemetry & Review Snapshot Continuity
+
+Date: 2026-10-09
+
+Status: COMPLETE — awaiting protected promotion verification.
+
+Delivered:
+
+- migration `0011_operational_outcome_telemetry.sql`;
+- bounded append-only `app.workspace_operational_outcomes` for sync and recipe-repair outcomes;
+- automatic server-side sync applied/conflict/noop/deleted/error telemetry;
+- repair proposed/rejected intake without selectors, DOM or raw page content;
+- server-derived repair approval/rollback events linked to saved-scraper revisions;
+- post-repair compatibility events linked to repaired revisions;
+- RLS isolation plus runtime SELECT/INSERT-only append boundary;
+- 180-day / 2,000-event bounded operational retention per workspace/event family;
+- persisted `app.production_learning_review_snapshots` with changed-evidence fingerprint deduplication;
+- 365-day / 60-snapshot continuity retention per workspace;
+- sync conflict/error and recipe success/rollback measurements in production learning;
+- extension version 0.31.0;
+- contextual help and dashboard updated to the measured Build 031 state.
+
+Build 031 stores bounded operational metadata only. It does not persist raw DOM, repair selector values, Browserless secrets or session tokens.
+
+Queue after Build 031: Build 032 Browserless Live Pilot & Provider Cost Baseline; Build 033 Integration Consumer Acceptance & Delivery Observability; Build 034 Retention, Storage Budgets & Cleanup Automation; Build 035 Workspace, Profile & Connector Adoption / Permission Outcomes; Build 036 Production Learning II & Roadmap Renewal.
