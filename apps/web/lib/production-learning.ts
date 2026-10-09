@@ -90,6 +90,15 @@ export interface ProductionLearningWorkspaceEvidence {
     providerFailures: number;
     providerUnits: number;
     averageDurationMs: number | null;
+    approvedPublicSources: number;
+    lastRun: {
+      status: "succeeded" | "failed";
+      units: number;
+      durationMs: number | null;
+      responseCode: number | null;
+      finalUrl: string | null;
+      contentSha256: string | null;
+    } | null;
     allowlistedSources: number;
     workspaceEnabled: boolean;
     workspaceKilled: boolean;
@@ -167,6 +176,28 @@ export function summarizeProductionLearningEvidence(
   const providerRuns = sum(evidence, (w) => w.remote.providerRuns);
   const providerSuccesses = sum(evidence, (w) => w.remote.providerSuccesses);
   const providerUnits = sum(evidence, (w) => w.remote.providerUnits);
+  const approvedPublicSources = sum(
+    evidence,
+    (w) => w.remote.approvedPublicSources
+  );
+  const allowlistedSources = sum(
+    evidence,
+    (w) => w.remote.allowlistedSources
+  );
+  const armedWorkspaces = evidence.workspaces.filter(
+    (workspace) =>
+      workspace.remote.workspaceEnabled && !workspace.remote.workspaceKilled
+  ).length;
+  const durationSamples = evidence.workspaces
+    .filter((workspace) => workspace.remote.providerRuns > 0)
+    .map((workspace) => ({
+      runs: workspace.remote.providerRuns,
+      duration: workspace.remote.averageDurationMs ?? 0
+    }));
+  const weightedDurationTotal = durationSamples.reduce(
+    (total, item) => total + item.runs * item.duration,
+    0
+  );
   const integrationExports = sum(evidence, (w) => w.integrations.exported);
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
@@ -227,6 +258,20 @@ export function summarizeProductionLearningEvidence(
     providerSuccessRate:
       providerRuns === 0 ? null : providerSuccesses / providerRuns,
     providerUnits,
+    providerAverageUnitsPerRun:
+      providerRuns === 0 ? null : providerUnits / providerRuns,
+    providerAverageDurationMs:
+      providerRuns === 0 ? null : Math.round(weightedDurationTotal / providerRuns),
+    approvedPublicSources,
+    allowlistedSources,
+    armedWorkspaces,
+    browserlessBaselineDecision:
+      providerRuns === 0
+        ? "pending"
+        : providerSuccesses === providerRuns &&
+            providerUnits / providerRuns <= 2
+          ? "go-bounded"
+          : "no-go",
     integrationExports,
     connectorInstallations,
     connectorExecutions,
@@ -398,32 +443,62 @@ export function buildProductionLearningAssessment(
   let remoteStatus: LearningStatus = "gap";
   let remoteEvidence = "No completed Browserless provider runs are visible.";
   let remoteAction =
-    "Configure the production Browserless secret and controlled gates, then run one allowlisted pilot to establish the first real cost/reliability baseline.";
+    "Complete the fail-closed production pilot prerequisites before enabling the global run window.";
   if (totals.providerRuns > 0) {
     remoteStatus =
-      (totals.providerSuccessRate ?? 0) < 0.8 ? "action" : "healthy";
+      totals.browserlessBaselineDecision === "go-bounded" ? "healthy" : "action";
     remoteEvidence =
       String(totals.providerRuns) +
       " provider runs; " +
       percent(totals.providerSuccessRate) +
       " success; " +
       String(totals.providerUnits) +
-      " estimated provider units.";
+      " estimated provider units; average " +
+      String(totals.providerAverageUnitsPerRun?.toFixed(2) ?? "n/a") +
+      " units/run and " +
+      String(totals.providerAverageDurationMs ?? 0) +
+      " ms/run. Baseline decision: " +
+      totals.browserlessBaselineDecision +
+      ".";
     remoteAction =
-      remoteStatus === "action"
-        ? "Keep the pilot gated and investigate failures before increasing usage."
-        : "Retain the one-page pilot limits and accumulate a larger evidence sample before expansion.";
+      totals.browserlessBaselineDecision === "go-bounded"
+        ? "Keep the global kill switch active outside explicit pilot windows and retain one-page/two-unit limits."
+        : "Keep the pilot gated and investigate the failed or over-budget baseline before any expansion.";
+  } else if (totals.approvedPublicSources === 0) {
+    remoteStatus = "action";
+    remoteEvidence =
+      "Browserless production prerequisites are fail-closed: no approved public-facts/public-webpage source policy exists yet.";
+    remoteAction =
+      "Approve one owned or otherwise authorized public source policy with robots allowed; then allowlist and arm exactly one workspace.";
+  } else if (totals.allowlistedSources === 0) {
+    remoteStatus = "watch";
+    remoteEvidence =
+      String(totals.approvedPublicSources) +
+      " approved public source policies exist, but none is allowlisted for the controlled pilot.";
+    remoteAction =
+      "Allowlist one exact policy revision/fingerprint for one workspace while the global kill switch remains active.";
+  } else if (totals.armedWorkspaces === 0) {
+    remoteStatus = "watch";
+    remoteEvidence =
+      String(totals.allowlistedSources) +
+      " pilot sources are allowlisted, but no workspace is armed.";
+    remoteAction =
+      "Arm one workspace, verify provider readiness, then open only the one-run global pilot window.";
   } else if (
     evidence.browserless.tokenConfigured &&
     evidence.browserless.executionEnabled
   ) {
     remoteStatus = "watch";
     remoteEvidence =
-      "Browserless token and execution flag are configured, but no completed provider run is visible.";
+      "Browserless token, execution flag and workspace/source gates are prepared; no completed provider run is visible.";
+    remoteAction =
+      "Temporarily disable the global kill switch for exactly one one-page run, then restore it immediately.";
   } else if (evidence.browserless.tokenConfigured) {
     remoteStatus = "watch";
     remoteEvidence =
-      "Browserless token is configured, but live provider execution remains gated.";
+      "Browserless token is configured, but provider execution remains disabled.";
+    remoteAction =
+      "Enable the provider execution master flag while keeping the global kill switch active.";
   }
   findings.push({
     key: "remote-cost-reliability",
@@ -513,19 +588,18 @@ export function buildProductionLearningAssessment(
   });
 
   const roadmap: RoadmapRecommendation[] = [
-    {
-      build: 32,
-      priority:
-        totals.providerRuns === 0 || (totals.providerSuccessRate ?? 1) < 0.8
-          ? "P0"
-          : "P1",
-      title: "Browserless Live Pilot & Provider Cost Baseline",
-      rationale:
-        totals.providerRuns === 0
-          ? "The provider boundary is built but has no completed production-run baseline yet."
-          : "Existing provider runs need a larger bounded sample before remote execution can expand.",
-      evidenceKeys: ["remote-cost-reliability", "source-policy-health"]
-    },
+    ...(totals.providerRuns === 0
+      ? [{
+          build: 32,
+          priority: "P0" as const,
+          title: "Browserless Live Pilot & Provider Cost Baseline",
+          rationale:
+            totals.approvedPublicSources === 0
+              ? "The provider boundary is ready, but production has no approved public source policy for the one-run baseline."
+              : "The provider boundary is ready but has no completed production-run baseline yet.",
+          evidenceKeys: ["remote-cost-reliability", "source-policy-health"]
+        }]
+      : []),
     {
       build: 33,
       priority: totals.integrationExports === 0 ? "P1" : "P2",

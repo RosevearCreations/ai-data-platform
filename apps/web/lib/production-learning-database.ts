@@ -20,6 +20,32 @@ function summaryNumber(
   return numeric(value?.[key]);
 }
 
+function approvedPublicSourceCount(payload: unknown, at = Date.now()) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) return 0;
+  const entries = (payload as { entries?: unknown }).entries;
+  if (!Array.isArray(entries)) return 0;
+
+  return entries.filter((entry) => {
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) return false;
+    const policy = entry as Record<string, unknown>;
+    const expires =
+      typeof policy.reviewExpiresAt === "string"
+        ? Date.parse(policy.reviewExpiresAt)
+        : Number.NaN;
+    return (
+      policy.status === "approved" &&
+      policy.collectionMethod === "public-webpage" &&
+      policy.dataSensitivity === "public-facts" &&
+      policy.publicOrAuthorized === true &&
+      policy.termsReviewed === true &&
+      policy.noAccessControlBypass === true &&
+      policy.robotsDecision === "allowed" &&
+      Number.isFinite(expires) &&
+      expires > at
+    );
+  }).length;
+}
+
 async function workspaceEvidence(
   userId: string,
   workspace: Awaited<ReturnType<typeof listWorkspacesForUser>>[number]
@@ -78,10 +104,11 @@ async function workspaceEvidence(
     const intelligenceResult = await client.query<{
       module_key: string;
       summary: Record<string, unknown>;
+      payload: Record<string, unknown>;
       payload_bytes: number;
     }>(
       `
-        select module_key, summary, pg_column_size(payload)::int as payload_bytes
+        select module_key, summary, payload, pg_column_size(payload)::int as payload_bytes
         from app.workspace_intelligence_modules
         where workspace_id=$1
       `,
@@ -147,6 +174,54 @@ async function workspaceEvidence(
           count(*) filter (where event_type='run-failed')::int as provider_failures,
           coalesce(sum(units_estimated) filter (where event_type in ('run-succeeded','run-failed')),0)::bigint as provider_units,
           round(avg(duration_ms) filter (where event_type in ('run-succeeded','run-failed') and duration_ms is not null))::int as average_duration_ms,
+          (
+            select event_type
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type in ('run-succeeded','run-failed')
+            order by latest.created_at desc
+            limit 1
+          ) as latest_event_type,
+          (
+            select units_estimated
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type in ('run-succeeded','run-failed')
+            order by latest.created_at desc
+            limit 1
+          )::int as latest_units,
+          (
+            select duration_ms
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type in ('run-succeeded','run-failed')
+            order by latest.created_at desc
+            limit 1
+          )::int as latest_duration_ms,
+          (
+            select response_code
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type in ('run-succeeded','run-failed')
+            order by latest.created_at desc
+            limit 1
+          )::int as latest_response_code,
+          (
+            select details->>'finalUrl'
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type='run-succeeded'
+            order by latest.created_at desc
+            limit 1
+          ) as latest_final_url,
+          (
+            select details->>'contentSha256'
+            from app.remote_execution_provider_events latest
+            where latest.workspace_id=$1
+              and latest.event_type='run-succeeded'
+            order by latest.created_at desc
+            limit 1
+          ) as latest_content_sha256,
           coalesce(sum(pg_column_size(details)),0)::bigint as storage_bytes
         from app.remote_execution_provider_events
         where workspace_id=$1
@@ -382,6 +457,33 @@ async function workspaceEvidence(
           remote.average_duration_ms === null
             ? null
             : numeric(remote.average_duration_ms),
+        approvedPublicSources: approvedPublicSourceCount(sourcePolicy?.payload),
+        lastRun:
+          remote.latest_event_type
+            ? {
+                status:
+                  remote.latest_event_type === "run-succeeded"
+                    ? "succeeded"
+                    : "failed",
+                units: numeric(remote.latest_units),
+                durationMs:
+                  remote.latest_duration_ms === null
+                    ? null
+                    : numeric(remote.latest_duration_ms),
+                responseCode:
+                  remote.latest_response_code === null
+                    ? null
+                    : numeric(remote.latest_response_code),
+                finalUrl:
+                  typeof remote.latest_final_url === "string"
+                    ? remote.latest_final_url
+                    : null,
+                contentSha256:
+                  typeof remote.latest_content_sha256 === "string"
+                    ? remote.latest_content_sha256
+                    : null
+              }
+            : null,
         allowlistedSources: numeric(remote.allowlisted_sources),
         workspaceEnabled: Boolean(remote.workspace_enabled),
         workspaceKilled: Boolean(remote.workspace_killed),

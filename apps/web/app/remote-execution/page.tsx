@@ -30,6 +30,12 @@ function candidates(payload: Record<string, unknown> | undefined): Candidate[] {
       item.dataSensitivity !== "public-facts" ||
       item.collectionMethod !== "public-webpage" ||
       item.robotsDecision !== "allowed" ||
+      item.publicOrAuthorized !== true ||
+      item.termsReviewed !== true ||
+      item.noAccessControlBypass !== true ||
+      typeof item.reviewExpiresAt !== "string" ||
+      !Number.isFinite(Date.parse(item.reviewExpiresAt)) ||
+      Date.parse(item.reviewExpiresAt) <= Date.now() ||
       typeof item.id !== "string" ||
       typeof item.origin !== "string" ||
       typeof item.revision !== "number" ||
@@ -57,8 +63,8 @@ export default async function RemoteExecutionPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="remote-overview" />
-          <p className="eyebrow">Build 027</p>
-          <h1>Controlled remote browser pilot</h1>
+          <p className="eyebrow">Build 032</p>
+          <h1>Browserless live pilot & provider cost baseline</h1>
           <p className="lead">Sign in to review the Browserless pilot controls.</p>
           <Link className="primaryLink" href="/sign-in?callbackUrl=/remote-execution">
             Sign in
@@ -110,12 +116,12 @@ export default async function RemoteExecutionPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="remote-overview" />
-        <p className="eyebrow">Build 027</p>
-        <h1>Controlled remote browser pilot</h1>
+        <p className="eyebrow">Build 032</p>
+        <h1>Browserless live pilot & provider cost baseline</h1>
         <p className="lead">
-          Browserless is selected for a one-page, direct-egress pilot. Proxy,
-          stealth, CAPTCHA solving and authenticated-profile features are not
-          used by this execution path.
+          Build 032 uses the existing one-page Browserless boundary to establish
+          a real production reliability and provider-unit baseline. The global
+          kill switch remains fail-closed outside an explicitly approved run window.
         </p>
         <div className="heroActions">
           <Link className="primaryLink" href="/">Back to workspaces</Link>

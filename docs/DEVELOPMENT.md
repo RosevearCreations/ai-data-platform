@@ -439,7 +439,7 @@ The Browserless API key must not be pasted into ChatGPT, GitHub, source files, s
 10. Run one pilot and review provider units, duration, status, response evidence and /production-learning.
 11. Restore REMOTE_EXECUTION_KILL_SWITCH=true after the pilot unless continued live testing is deliberately approved.
 
-The GitHub/CI Build 030 gate does not need the Browserless secret. This conversation's Vercel connector currently exposes no team/project and the Neon connector exposes no projects, so production secret/database changes are not performed automatically from chat.
+The GitHub/CI verification does not need the Browserless secret. Build 032 verified the connected Vercel project and Neon production project directly; secret values remain redacted and no live source approval is fabricated.
 
 ## Build 031 operational telemetry and snapshot continuity
 
@@ -453,3 +453,27 @@ Server/database components:
 - `apps/extension/src/operational-outcomes.ts` — best-effort extension telemetry client.
 
 Normal development verification must prove migrations, typecheck/lint/build/tests, workspace RLS isolation, append-only runtime behavior and snapshot persistence. Build 031 requires no external account or secret.
+
+## Build 032 Browserless production baseline workflow
+
+Current production-safe configuration:
+
+1. `BROWSERLESS_API_TOKEN` exists as a Vercel secret; never copy its value into logs, source control or chat.
+2. `REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true`.
+3. `REMOTE_EXECUTION_KILL_SWITCH=true` until the exact one-page run window.
+4. Production learning computes eligible Source Policy entries from their current payloads and reports approved / allowlisted / armed prerequisite counts.
+5. The live route still requires a normal authenticated owner/admin session; there is no automation bypass endpoint.
+
+Live acceptance sequence once an eligible Source Policy has been reviewed:
+
+1. synchronize the approved policy into one workspace;
+2. open `/remote-execution`;
+3. allowlist the exact policy ID/revision/fingerprint;
+4. arm that workspace;
+5. confirm the global kill switch is still active;
+6. change the production global kill switch to false for the approved one-run window and deploy the environment change if required;
+7. run exactly one page;
+8. restore the global kill switch to true;
+9. review `/production-learning` for status, units/run, duration, HTTP response, final URL/hash evidence and the pending/go-bounded/no-go result.
+
+CI uses deterministic provider fixtures and never spends Browserless units.

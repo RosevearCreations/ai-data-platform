@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 031</p>
+          <p className="eyebrow">Build 032</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,7 +45,7 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 031</p>
+        <p className="eyebrow">Build 032</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
           Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
@@ -89,10 +89,13 @@ export default async function ProductionLearningPage() {
               {totals.providerUnits} estimated provider units ·{" "}
               {totals.providerSuccessRate === null
                 ? "no success baseline"
-                : Math.round(totals.providerSuccessRate * 100) + "% success"}.
+                : Math.round(totals.providerSuccessRate * 100) + "% success"} ·{" "}
+              {totals.providerAverageUnitsPerRun === null
+                ? "units/run pending"
+                : totals.providerAverageUnitsPerRun.toFixed(2) + " units/run"}.
             </p>
             <span className="badge">
-              token {review.evidence.browserless.tokenConfigured ? "configured" : "not configured"}
+              baseline {totals.browserlessBaselineDecision}
             </span>
           </article>
           <article className="card">
@@ -147,6 +150,11 @@ export default async function ProductionLearningPage() {
             <h3>Global kill switch</h3>
             <p>{review.evidence.browserless.globalKillSwitchActive ? "ACTIVE — fail closed." : "Off for an approved pilot window."}</p>
           </article>
+          <article className="card">
+            <h3>Approved public sources</h3>
+            <p>{totals.approvedPublicSources} eligible · {totals.allowlistedSources} allowlisted · {totals.armedWorkspaces} armed workspaces.</p>
+            <span className="badge">pilot prerequisites</span>
+          </article>
         </div>
       </section>
 
@@ -194,8 +202,14 @@ export default async function ProductionLearningPage() {
                   Barcode: {workspace.barcode.captures} captures · {workspace.barcode.pending} pending
                 </p>
                 <p>
-                  Remote: {workspace.remote.providerRuns} runs · {workspace.remote.providerUnits} units
+                  Remote: {workspace.remote.providerRuns} runs · {workspace.remote.providerUnits} units · {workspace.remote.approvedPublicSources} approved public sources · {workspace.remote.allowlistedSources} allowlisted
                 </p>
+                {workspace.remote.lastRun ? (
+                  <p>
+                    Latest provider result: {workspace.remote.lastRun.status} · {workspace.remote.lastRun.units} units · {workspace.remote.lastRun.durationMs ?? "n/a"} ms · HTTP {workspace.remote.lastRun.responseCode ?? "n/a"}
+                    {workspace.remote.lastRun.contentSha256 ? " · hash " + workspace.remote.lastRun.contentSha256.slice(0, 12) + "…" : ""}
+                  </p>
+                ) : null}
                 <p>
                   Connectors: {workspace.connectors.installations} installed · {workspace.connectors.enabled} enabled
                 </p>
@@ -215,7 +229,7 @@ export default async function ProductionLearningPage() {
       <section>
         <div className="sectionHeading">
           <p className="eyebrow">Renewed roadmap</p>
-          <h2>Builds 032–036</h2>
+          <h2>Builds 032–036 — evidence driven</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
         <div className="grid">

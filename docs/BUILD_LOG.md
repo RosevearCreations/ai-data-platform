@@ -1715,3 +1715,27 @@ Delivered:
 Build 031 stores bounded operational metadata only. It does not persist raw DOM, repair selector values, Browserless secrets or session tokens.
 
 Queue after Build 031: Build 032 Browserless Live Pilot & Provider Cost Baseline; Build 033 Integration Consumer Acceptance & Delivery Observability; Build 034 Retention, Storage Budgets & Cleanup Automation; Build 035 Workspace, Profile & Connector Adoption / Permission Outcomes; Build 036 Production Learning II & Roadmap Renewal.
+
+## Build 032 — Browserless Live Pilot & Provider Cost Baseline
+
+Date: 2026-10-09
+
+Status: IMPLEMENTATION COMPLETE — LIVE PROVIDER BASELINE GATED BY SOURCE APPROVAL.
+
+Delivered:
+
+- verified that `BROWSERLESS_API_TOKEN` already exists in Vercel as a secret without retrieving or exposing its value;
+- set `REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true`;
+- kept `REMOTE_EXECUTION_KILL_SWITCH=true` as the production fail-closed state;
+- added explicit production-learning prerequisite states for approved source policy, allowlist and armed workspace;
+- added an eligible public-source count derived from current Source Policy payloads rather than summary claims;
+- retained latest terminal Browserless result evidence: status, provider units, duration, target response code, final URL and content SHA-256;
+- added provider average units/run and weighted average duration;
+- added deterministic Build 032 baseline decisions: pending, go-bounded or no-go;
+- Build 032 leaves the active roadmap only after a real terminal provider run exists;
+- production-learning and remote-execution operator pages now show Build 032 evidence and blockers;
+- extension version 0.32.0.
+
+Production evidence review found zero existing Source Policy modules, zero allowlisted sources and zero Browserless terminal provider runs across the three workspaces. No policy approval was fabricated. The production global kill switch remains active.
+
+The remaining live acceptance step requires an operator to create/review and synchronize one eligible public-facts/public-webpage Source Policy with robots allowed, allowlist the exact policy revision/fingerprint, arm one workspace, authorize a single kill-switch-off window, run exactly one page, then restore the global kill switch.

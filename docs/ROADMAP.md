@@ -746,7 +746,7 @@ No external account or secret is required.
 
 ## Build 032 — Browserless Live Pilot & Provider Cost Baseline
 
-Status: QUEUED — NOT STARTED.
+Status: IMPLEMENTED — PRODUCTION PILOT GATED. The code, safe Vercel readiness state and baseline/go-no-go evidence layer are complete; the single live run is blocked until an operator approves and synchronizes one eligible Source Policy.
 
 Goal: establish the first real controlled Browserless production baseline now that the user has obtained an API key.
 
@@ -759,11 +759,11 @@ Deliverables:
 - first cost/reliability baseline in /production-learning;
 - go/no-go evidence for any broader remote usage.
 
-Acceptance: at least one deliberately approved one-page production pilot completes or fails with durable provider evidence, no secret value is exposed, and the global/workspace kill gates remain controllable.
+Acceptance: implementation/CI is complete when the provider prerequisite states and go/no-go logic pass; live acceptance remains open until one deliberately approved one-page production pilot produces a durable terminal provider event. The token must never be exposed and global/workspace kill gates must remain controllable.
 
 Manual input gate:
 
-The user must place BROWSERLESS_API_TOKEN into the production host's encrypted secret settings and control REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED / REMOTE_EXECUTION_KILL_SWITCH. The token must never be pasted into chat or GitHub.
+BROWSERLESS_API_TOKEN already exists as an encrypted Vercel secret. REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED is set true and REMOTE_EXECUTION_KILL_SWITCH is intentionally true. Manual intervention is now limited to approving/synchronizing one eligible Source Policy and authorizing the exact one-run kill-switch window. The token must never be pasted into chat or GitHub.
 
 ## Build 033 — Integration Consumer Acceptance & Delivery Observability
 

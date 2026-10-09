@@ -1447,9 +1447,13 @@ async function main() {
     learningWorkspace.connectors.installations < 1 ||
     learningWorkspace.connectors.succeeded < 1 ||
     learningWorkspace.connectors.blocked < 1 ||
-    productionLearning.roadmap[0]?.build !== 32
+    learningWorkspace.remote.providerRuns !== 1 ||
+    learningWorkspace.remote.providerSuccesses !== 1 ||
+    learningWorkspace.remote.approvedPublicSources !== 1 ||
+    productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
+    productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 030 production-learning evidence/roadmap aggregation failed.");
+    throw new Error("Build 032 production-learning provider baseline/roadmap aggregation failed.");
   }
   if (
     !productionLearning.findings.some(

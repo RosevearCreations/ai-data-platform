@@ -380,3 +380,21 @@ Reason: the server already receives the durable revision state. Deriving materia
 Decision: Build 031 fingerprints the outcome counts used for trend comparison and stores a new review snapshot only when that fingerprint changes.
 
 Reason: dashboard refreshes are not operational events. Deduplicating unchanged reviews preserves useful before/after continuity without unbounded read-generated history.
+
+## D0059 — Build 032 source eligibility is computed from current policy payloads
+
+Decision: a Browserless pilot source is eligible only when the current Source Policy payload itself satisfies the public-webpage/public-facts approval, terms, robots, expiry and no-bypass gates. Summary counts do not authorize execution.
+
+Reason: the live provider gate must be tied to the actual reviewed policy revision, not a stale or malformed summary.
+
+## D0060 — Provider readiness is not a production baseline
+
+Decision: token-configured, provider-enabled, allowlisted and armed states are prerequisites only. Build 032 remains pending until a real terminal Browserless provider event exists.
+
+Reason: deployment configuration cannot prove network reliability, duration or provider consumption.
+
+## D0061 — Build 032 go/no-go does not expand remote execution automatically
+
+Decision: the first provider baseline can produce only pending, go-bounded or no-go. A go-bounded result preserves the existing one-page, two-unit and explicit-kill-window constraints.
+
+Reason: one successful sample is sufficient to establish a baseline, not sufficient to justify unattended or broader crawling.

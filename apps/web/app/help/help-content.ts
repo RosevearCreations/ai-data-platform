@@ -168,7 +168,7 @@ export const HELP_TOPICS = {
       "Inspect recent events for blocked, cancelled or failed work.",
       "Keep the pilot disabled if evidence is incomplete or unexpected."
     ],
-    notes: ["Build 031 production learning includes this evidence and preserves changed-evidence snapshots for later comparison."]
+    notes: ["Build 032 retains the latest terminal Browserless evidence and reports provider units, duration, response code, result hash and the bounded go/no-go decision."]
   },
   "profiles-overview": {
     title: "Workspace profiles",
@@ -306,26 +306,27 @@ export const HELP_TOPICS = {
   },
   "learning-browserless": {
     title: "Browserless production evidence gate",
-    summary: "Build 030 reports whether the token, master execution flag and global kill switch are configured, without reading the token value into the UI.",
+    summary: "Build 032 reports the encrypted-token readiness state, approved source-policy prerequisites, allowlist/workspace gates and durable provider baseline without exposing the Browserless token.",
     steps: [
-      "Store BROWSERLESS_API_TOKEN only in the production host's encrypted server environment.",
-      "Set REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true only when preparing the controlled pilot.",
-      "Keep REMOTE_EXECUTION_KILL_SWITCH=true while source policy and workspace allowlisting are prepared.",
+      "Confirm BROWSERLESS_API_TOKEN exists only in the production host's encrypted server environment.",
+      "Keep REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true while REMOTE_EXECUTION_KILL_SWITCH remains true.",
+      "Approve one public-facts/public-webpage Source Policy with robots allowed and a future review expiry.",
+      "Allowlist that exact policy revision/fingerprint and arm only the intended workspace.",
       "Set REMOTE_EXECUTION_KILL_SWITCH=false only for the approved one-page pilot window.",
-      "After the pilot, review provider units/success evidence and restore the kill switch unless continued live testing is approved."
+      "After exactly one run, restore REMOTE_EXECUTION_KILL_SWITCH=true and review provider units, duration, response evidence and the Build 032 go/no-go result."
     ],
     notes: [
       "A token existing in your Browserless account is not the same as being configured in the deployed application.",
       "This page reports configured/not configured only; it never exposes the secret."
     ],
     manual: [
-      "Open the production hosting provider for the AI Data Platform project.",
-      "Create or update the encrypted server secret BROWSERLESS_API_TOKEN with the Browserless API key.",
-      "Create/update REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED with value true for the intended production environment.",
-      "Create/update REMOTE_EXECUTION_KILL_SWITCH with value true initially.",
-      "Redeploy or restart the production application if the hosting provider requires it for environment-variable changes.",
-      "Open /remote-execution and confirm Token configured = yes, execution enabled = yes and the global kill switch is still active.",
-      "Prepare the approved Source Policy/workspace allowlist, then temporarily set REMOTE_EXECUTION_KILL_SWITCH=false for the controlled pilot."
+      "Open /intelligence and create or review one Source Policy for a source we are authorized to collect.",
+      "Set Collection method = public webpage, Data sensitivity = public facts, and Status = approved only after reviewing the source terms and robots/crawl directives.",
+      "Confirm robots/crawl decision = allowed, no access-control bypass is required, and the review expiry is in the future.",
+      "Synchronize the Source Policy into the intended workspace.",
+      "Open /remote-execution, allowlist the exact approved policy and arm only that workspace.",
+      "Temporarily set REMOTE_EXECUTION_KILL_SWITCH=false in the production Vercel environment, redeploy if required, run one page, then immediately restore the value to true.",
+      "Review /production-learning for the terminal provider event and bounded go/no-go result."
     ]
   },
   "learning-gaps": {
@@ -352,10 +353,10 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 031 closed the P0 telemetry gaps; the active evidence-driven queue is now Builds 032–036.",
+    summary: "Build 032 is the active P0 production gate until one real Browserless terminal run exists; after that the evidence-driven queue advances to Builds 033–036.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
-      "Build 032 establishes a real Browserless cost/reliability baseline.",
+      "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
       "Build 033 proves consumer-side integration acceptance.",
       "Build 034 adds retention/storage enforcement.",
       "Build 035 reviews adoption and permission outcomes.",
