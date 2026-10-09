@@ -15,6 +15,34 @@ export interface ProductionLearningWorkspaceEvidence {
     versionChanges: number;
     storageBytes: number;
   };
+  outcomes: {
+    storageBytes: number;
+    sync: {
+      events: number;
+      applied: number;
+      deleted: number;
+      conflicts: number;
+      noops: number;
+      errors: number;
+    };
+    repair: {
+      proposed: number;
+      approved: number;
+      rejected: number;
+      rolledBack: number;
+      compatibilityChecks: number;
+      healthy: number;
+      degraded: number;
+      broken: number;
+    };
+  };
+  continuity: {
+    previousSnapshotAt: string | null;
+    previousSyncEvents: number;
+    previousSyncConflicts: number;
+    previousRepairCompatibilityChecks: number;
+    previousRepairHealthyChecks: number;
+  };
   intelligence: {
     modules: number;
     storageBytes: number;
@@ -145,6 +173,34 @@ export function summarizeProductionLearningEvidence(
     evidence,
     (w) => w.connectors.succeeded + w.connectors.failed + w.connectors.blocked
   );
+  const syncEvents = sum(evidence, (w) => w.outcomes.sync.events);
+  const syncConflicts = sum(evidence, (w) => w.outcomes.sync.conflicts);
+  const syncErrors = sum(evidence, (w) => w.outcomes.sync.errors);
+  const repairProposals = sum(evidence, (w) => w.outcomes.repair.proposed);
+  const repairApprovals = sum(evidence, (w) => w.outcomes.repair.approved);
+  const repairRejections = sum(evidence, (w) => w.outcomes.repair.rejected);
+  const repairRollbacks = sum(evidence, (w) => w.outcomes.repair.rolledBack);
+  const repairCompatibilityChecks = sum(
+    evidence,
+    (w) => w.outcomes.repair.compatibilityChecks
+  );
+  const repairHealthyChecks = sum(evidence, (w) => w.outcomes.repair.healthy);
+  const previousSyncEvents = sum(
+    evidence,
+    (w) => w.continuity.previousSyncEvents
+  );
+  const previousSyncConflicts = sum(
+    evidence,
+    (w) => w.continuity.previousSyncConflicts
+  );
+  const previousRepairCompatibilityChecks = sum(
+    evidence,
+    (w) => w.continuity.previousRepairCompatibilityChecks
+  );
+  const previousRepairHealthyChecks = sum(
+    evidence,
+    (w) => w.continuity.previousRepairHealthyChecks
+  );
   const storageBytes = sum(
     evidence,
     (w) =>
@@ -152,7 +208,8 @@ export function summarizeProductionLearningEvidence(
       w.intelligence.storageBytes +
       w.barcode.storageBytes +
       w.remote.storageBytes +
-      w.connectors.storageBytes
+      w.connectors.storageBytes +
+      w.outcomes.storageBytes
   );
   const ownerlessWorkspaces = evidence.workspaces.filter(
     (workspace) => workspace.security.owners === 0
@@ -173,6 +230,32 @@ export function summarizeProductionLearningEvidence(
     integrationExports,
     connectorInstallations,
     connectorExecutions,
+    syncEvents,
+    syncConflicts,
+    syncErrors,
+    syncConflictRate: syncEvents === 0 ? null : syncConflicts / syncEvents,
+    repairProposals,
+    repairApprovals,
+    repairRejections,
+    repairRollbacks,
+    repairCompatibilityChecks,
+    repairHealthyChecks,
+    repairSuccessRate:
+      repairCompatibilityChecks === 0
+        ? null
+        : repairHealthyChecks / repairCompatibilityChecks,
+    repairRollbackRate:
+      repairApprovals + repairRollbacks === 0
+        ? null
+        : repairRollbacks / (repairApprovals + repairRollbacks),
+    previousSyncConflictRate:
+      previousSyncEvents === 0
+        ? null
+        : previousSyncConflicts / previousSyncEvents,
+    previousRepairSuccessRate:
+      previousRepairCompatibilityChecks === 0
+        ? null
+        : previousRepairHealthyChecks / previousRepairCompatibilityChecks,
     storageBytes,
     ownerlessWorkspaces
   };
@@ -187,24 +270,72 @@ export function buildProductionLearningAssessment(
   findings.push({
     key: "sync-outcome-telemetry",
     category: "Synchronization",
-    status: "gap",
-    title: "Sync records are durable, but conflict outcomes are not yet durably counted.",
+    status:
+      totals.syncEvents === 0
+        ? "watch"
+        : totals.syncErrors > 0 || (totals.syncConflictRate ?? 0) > 0.1
+          ? "action"
+          : "healthy",
+    title:
+      totals.syncEvents === 0
+        ? "Sync outcome telemetry is active; no production attempts are recorded yet."
+        : "Synchronization outcomes are durably measurable.",
     evidence:
-      "Server versions and tombstones are measurable across saved scrapers and reviewed datasets, but conflict/noop/applied outcome frequency is not stored as an append-only production metric.",
+      String(totals.syncEvents) +
+      " append-only sync outcomes; " +
+      String(totals.syncConflicts) +
+      " conflicts and " +
+      String(totals.syncErrors) +
+      " errors. Conflict rate: " +
+      percent(totals.syncConflictRate) +
+      (totals.previousSyncConflictRate === null
+        ? "."
+        : "; previous changed snapshot: " +
+          percent(totals.previousSyncConflictRate) +
+          "."),
     action:
-      "Add append-only synchronization outcome telemetry before making reliability claims from production usage.",
+      totals.syncErrors > 0 || (totals.syncConflictRate ?? 0) > 0.1
+        ? "Review recent conflict/error outcomes before expanding synchronization volume."
+        : "Keep monitoring bounded append-only outcomes and investigate material rate changes.",
     owner: "platform"
   });
 
   findings.push({
     key: "repair-outcome-telemetry",
     category: "Recipe repair",
-    status: "gap",
-    title: "Recipe repair quality cannot yet be measured across sessions.",
+    status:
+      totals.repairCompatibilityChecks === 0
+        ? "watch"
+        : (totals.repairSuccessRate ?? 0) < 0.8 || totals.repairRollbacks > 0
+          ? "action"
+          : "healthy",
+    title:
+      totals.repairCompatibilityChecks === 0
+        ? "Recipe-repair telemetry is active; post-repair compatibility evidence is still accumulating."
+        : "Recipe-repair outcomes are durably measurable.",
     evidence:
-      "Repair revisions are auditable in saved scraper state, but repair attempts, accepted candidates, rollback frequency and post-repair success/failure are not durably aggregated server-side.",
+      String(totals.repairProposals) +
+      " proposals · " +
+      String(totals.repairApprovals) +
+      " approvals · " +
+      String(totals.repairRejections) +
+      " rejections · " +
+      String(totals.repairRollbacks) +
+      " rollbacks · " +
+      String(totals.repairCompatibilityChecks) +
+      " compatibility checks; healthy rate " +
+      percent(totals.repairSuccessRate) +
+      (totals.previousRepairSuccessRate === null
+        ? "."
+        : "; previous changed snapshot " +
+          percent(totals.previousRepairSuccessRate) +
+          "."),
     action:
-      "Persist bounded repair outcome events and compare repaired revision health over time.",
+      totals.repairCompatibilityChecks === 0
+        ? "Run normal compatibility checks after repaired revisions; do not create synthetic evidence."
+        : (totals.repairSuccessRate ?? 0) < 0.8 || totals.repairRollbacks > 0
+          ? "Review degraded/broken post-repair checks and rollback evidence before broadening automated repair guidance."
+          : "Continue explicit approval and post-repair compatibility review.",
     owner: "platform"
   });
 
@@ -382,14 +513,6 @@ export function buildProductionLearningAssessment(
   });
 
   const roadmap: RoadmapRecommendation[] = [
-    {
-      build: 31,
-      priority: "P0",
-      title: "Operational Outcome Telemetry & Review Snapshot Continuity",
-      rationale:
-        "Build 030 found that sync conflicts and recipe-repair outcomes are not durably measurable. Close those gaps before relying on trend claims.",
-      evidenceKeys: ["sync-outcome-telemetry", "repair-outcome-telemetry"]
-    },
     {
       build: 32,
       priority:
