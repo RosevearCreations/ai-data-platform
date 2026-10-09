@@ -91,6 +91,14 @@ export interface ProductionLearningWorkspaceEvidence {
     providerUnits: number;
     averageDurationMs: number | null;
     approvedPublicSources: number;
+    lastRun: {
+      status: "succeeded" | "failed";
+      units: number;
+      durationMs: number | null;
+      responseCode: number | null;
+      finalUrl: string | null;
+      contentSha256: string | null;
+    } | null;
     allowlistedSources: number;
     workspaceEnabled: boolean;
     workspaceKilled: boolean;
