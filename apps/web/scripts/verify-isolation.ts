@@ -1396,8 +1396,12 @@ async function main() {
     throw new Error("Build 030 production-learning review omitted an authorized workspace.");
   }
   if (
-    learningWorkspace.sync.activeScrapers < 1 ||
+    learningWorkspace.sync.deletedScrapers < 1 ||
+    learningWorkspace.sync.reviewedDatasets < 1 ||
+    learningWorkspace.sync.versionChanges < 2 ||
     learningWorkspace.connectors.installations < 1 ||
+    learningWorkspace.connectors.succeeded < 1 ||
+    learningWorkspace.connectors.blocked < 1 ||
     productionLearning.roadmap[0]?.build !== 31
   ) {
     throw new Error("Build 030 production-learning evidence/roadmap aggregation failed.");

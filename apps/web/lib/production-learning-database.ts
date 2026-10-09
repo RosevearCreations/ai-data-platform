@@ -23,133 +23,132 @@ async function workspaceEvidence(
   workspace: Awaited<ReturnType<typeof listWorkspacesForUser>>[number]
 ): Promise<ProductionLearningWorkspaceEvidence> {
   return withUserDatabase(userId, async (client) => {
-    const [
-      syncResult,
-      intelligenceResult,
-      integrationResult,
-      barcodeResult,
-      remoteJobResult,
-      remotePilotResult,
-      connectorResult,
-      memberResult
-    ] = await Promise.all([
-      client.query(
-        `
-          select
-            (select count(*) from app.workspace_saved_scrapers where workspace_id=$1 and deleted_at is null)::int as active_scrapers,
-            (select count(*) from app.workspace_saved_scrapers where workspace_id=$1 and deleted_at is not null)::int as deleted_scrapers,
-            (select count(*) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is null)::int as reviewed_datasets,
-            (select count(*) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is not null)::int as deleted_datasets,
-            coalesce((select sum(row_count) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is null),0)::bigint as reviewed_rows,
-            (
-              coalesce((select sum(greatest(server_version - 1,0)) from app.workspace_saved_scrapers where workspace_id=$1),0) +
-              coalesce((select sum(greatest(server_version - 1,0)) from app.workspace_reviewed_datasets where workspace_id=$1),0)
-            )::bigint as version_changes,
-            (
-              coalesce((select sum(pg_column_size(payload)) from app.workspace_saved_scrapers where workspace_id=$1),0) +
-              coalesce((select sum(pg_column_size(payload)) from app.workspace_reviewed_datasets where workspace_id=$1),0)
-            )::bigint as storage_bytes
-        `,
-        [workspace.id]
-      ),
-      client.query<{
-        module_key: string;
-        summary: Record<string, unknown>;
-        payload_bytes: number;
-      }>(
-        `
-          select module_key, summary, pg_column_size(payload)::int as payload_bytes
-          from app.workspace_intelligence_modules
-          where workspace_id=$1
-        `,
-        [workspace.id]
-      ),
-      client.query<{ action: string; count: string }>(
-        `
-          select action, count(*)::text as count
-          from app.workspace_intelligence_audit
-          where workspace_id=$1
-          group by action
-        `,
-        [workspace.id]
-      ),
-      client.query(
-        `
-          select
-            count(*)::int as captures,
-            count(*) filter (where review_status='pending')::int as pending,
-            count(*) filter (where review_status='approved')::int as approved,
-            count(*) filter (where review_status='rejected')::int as rejected,
-            count(*) filter (where match_status='duplicate')::int as duplicates,
-            count(*) filter (where capture_method='camera')::int as camera,
-            count(*) filter (where capture_method='manual')::int as manual,
-            coalesce(sum(pg_column_size(provenance)+pg_column_size(match_payload)),0)::bigint as storage_bytes
-          from app.workspace_barcode_captures
-          where workspace_id=$1
-        `,
-        [workspace.id]
-      ),
-      client.query(
-        `
-          select
-            count(*)::int as jobs,
-            count(*) filter (where status='succeeded')::int as succeeded_jobs,
-            count(*) filter (where status='failed')::int as failed_jobs,
-            count(*) filter (where status='cancelled')::int as cancelled_jobs,
-            count(*) filter (where status='timed-out')::int as timed_out_jobs,
-            (
-              coalesce((select sum(pg_column_size(source_policy_snapshot)) from app.remote_execution_jobs where workspace_id=$1),0) +
-              coalesce((select sum(pg_column_size(payload)) from app.remote_execution_results where workspace_id=$1),0)
-            )::bigint as storage_bytes
-          from app.remote_execution_jobs
-          where workspace_id=$1
-        `,
-        [workspace.id]
-      ),
-      client.query(
-        `
-          select
-            (select count(*) from app.remote_execution_source_allowlist where workspace_id=$1 and enabled=true)::int as allowlisted_sources,
-            coalesce((select enabled from app.remote_execution_controls where workspace_id=$1),false) as workspace_enabled,
-            coalesce((select kill_switch from app.remote_execution_controls where workspace_id=$1),true) as workspace_killed,
-            count(*) filter (where event_type in ('run-succeeded','run-failed'))::int as provider_runs,
-            count(*) filter (where event_type='run-succeeded')::int as provider_successes,
-            count(*) filter (where event_type='run-failed')::int as provider_failures,
-            coalesce(sum(units_estimated) filter (where event_type in ('run-succeeded','run-failed')),0)::bigint as provider_units,
-            round(avg(duration_ms) filter (where event_type in ('run-succeeded','run-failed') and duration_ms is not null))::int as average_duration_ms,
-            coalesce(sum(pg_column_size(details)),0)::bigint as storage_bytes
-          from app.remote_execution_provider_events
-          where workspace_id=$1
-        `,
-        [workspace.id]
-      ),
-      client.query(
-        `
-          select
-            (select count(*) from app.workspace_connector_installations where workspace_id=$1)::int as installations,
-            (select count(*) from app.workspace_connector_installations where workspace_id=$1 and enabled=true)::int as enabled,
-            count(*) filter (where status='succeeded')::int as succeeded,
-            count(*) filter (where status='failed')::int as failed,
-            count(*) filter (where status='blocked')::int as blocked,
-            (
-              coalesce((select sum(pg_column_size(config)+pg_column_size(granted_capabilities)+pg_column_size(secret_refs)) from app.workspace_connector_installations where workspace_id=$1),0) +
-              coalesce(sum(pg_column_size(input_summary)+pg_column_size(output_summary)),0)
-            )::bigint as storage_bytes
-          from app.workspace_connector_audit
-          where workspace_id=$1
-        `,
-        [workspace.id]
-      ),
-      client.query<{ role: string; count: string }>(
-        `
-          select role, count(*)::text as count
-          from app.workspace_members
-          where workspace_id=$1
-          group by role
-        `,
-        [workspace.id]
-      )
-    ]);
+    const syncResult = await client.query(
+      `
+        select
+          (select count(*) from app.workspace_saved_scrapers where workspace_id=$1 and deleted_at is null)::int as active_scrapers,
+          (select count(*) from app.workspace_saved_scrapers where workspace_id=$1 and deleted_at is not null)::int as deleted_scrapers,
+          (select count(*) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is null)::int as reviewed_datasets,
+          (select count(*) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is not null)::int as deleted_datasets,
+          coalesce((select sum(row_count) from app.workspace_reviewed_datasets where workspace_id=$1 and deleted_at is null),0)::bigint as reviewed_rows,
+          (
+            coalesce((select sum(greatest(server_version - 1,0)) from app.workspace_saved_scrapers where workspace_id=$1),0) +
+            coalesce((select sum(greatest(server_version - 1,0)) from app.workspace_reviewed_datasets where workspace_id=$1),0)
+          )::bigint as version_changes,
+          (
+            coalesce((select sum(pg_column_size(payload)) from app.workspace_saved_scrapers where workspace_id=$1),0) +
+            coalesce((select sum(pg_column_size(payload)) from app.workspace_reviewed_datasets where workspace_id=$1),0)
+          )::bigint as storage_bytes
+      `,
+      [workspace.id]
+    );
+
+    const intelligenceResult = await client.query<{
+      module_key: string;
+      summary: Record<string, unknown>;
+      payload_bytes: number;
+    }>(
+      `
+        select module_key, summary, pg_column_size(payload)::int as payload_bytes
+        from app.workspace_intelligence_modules
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
+    const integrationResult = await client.query<{
+      action: string;
+      count: string;
+    }>(
+      `
+        select action, count(*)::text as count
+        from app.workspace_intelligence_audit
+        where workspace_id=$1
+        group by action
+      `,
+      [workspace.id]
+    );
+
+    const barcodeResult = await client.query(
+      `
+        select
+          count(*)::int as captures,
+          count(*) filter (where review_status='pending')::int as pending,
+          count(*) filter (where review_status='approved')::int as approved,
+          count(*) filter (where review_status='rejected')::int as rejected,
+          count(*) filter (where match_status='duplicate')::int as duplicates,
+          count(*) filter (where capture_method='camera')::int as camera,
+          count(*) filter (where capture_method='manual')::int as manual,
+          coalesce(sum(pg_column_size(provenance)+pg_column_size(match_payload)),0)::bigint as storage_bytes
+        from app.workspace_barcode_captures
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
+    const remoteJobResult = await client.query(
+      `
+        select
+          count(*)::int as jobs,
+          count(*) filter (where status='succeeded')::int as succeeded_jobs,
+          count(*) filter (where status='failed')::int as failed_jobs,
+          count(*) filter (where status='cancelled')::int as cancelled_jobs,
+          count(*) filter (where status='timed-out')::int as timed_out_jobs,
+          (
+            coalesce((select sum(pg_column_size(source_policy_snapshot)) from app.remote_execution_jobs where workspace_id=$1),0) +
+            coalesce((select sum(pg_column_size(payload)) from app.remote_execution_results where workspace_id=$1),0)
+          )::bigint as storage_bytes
+        from app.remote_execution_jobs
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
+    const remotePilotResult = await client.query(
+      `
+        select
+          (select count(*) from app.remote_execution_source_allowlist where workspace_id=$1 and enabled=true)::int as allowlisted_sources,
+          coalesce((select enabled from app.remote_execution_controls where workspace_id=$1),false) as workspace_enabled,
+          coalesce((select kill_switch from app.remote_execution_controls where workspace_id=$1),true) as workspace_killed,
+          count(*) filter (where event_type in ('run-succeeded','run-failed'))::int as provider_runs,
+          count(*) filter (where event_type='run-succeeded')::int as provider_successes,
+          count(*) filter (where event_type='run-failed')::int as provider_failures,
+          coalesce(sum(units_estimated) filter (where event_type in ('run-succeeded','run-failed')),0)::bigint as provider_units,
+          round(avg(duration_ms) filter (where event_type in ('run-succeeded','run-failed') and duration_ms is not null))::int as average_duration_ms,
+          coalesce(sum(pg_column_size(details)),0)::bigint as storage_bytes
+        from app.remote_execution_provider_events
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
+    const connectorResult = await client.query(
+      `
+        select
+          (select count(*) from app.workspace_connector_installations where workspace_id=$1)::int as installations,
+          (select count(*) from app.workspace_connector_installations where workspace_id=$1 and enabled=true)::int as enabled,
+          count(*) filter (where status='succeeded')::int as succeeded,
+          count(*) filter (where status='failed')::int as failed,
+          count(*) filter (where status='blocked')::int as blocked,
+          (
+            coalesce((select sum(pg_column_size(config)+pg_column_size(granted_capabilities)+pg_column_size(secret_refs)) from app.workspace_connector_installations where workspace_id=$1),0) +
+            coalesce(sum(pg_column_size(input_summary)+pg_column_size(output_summary)),0)
+          )::bigint as storage_bytes
+        from app.workspace_connector_audit
+        where workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
+    const memberResult = await client.query<{ role: string; count: string }>(
+      `
+        select role, count(*)::text as count
+        from app.workspace_members
+        where workspace_id=$1
+        group by role
+      `,
+      [workspace.id]
+    );
 
     const sync = syncResult.rows[0] as Record<string, unknown>;
     const barcode = barcodeResult.rows[0] as Record<string, unknown>;
