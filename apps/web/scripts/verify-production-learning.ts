@@ -80,7 +80,20 @@ const evidence: ProductionLearningEvidence = {
           attempts: 2
         }
       },
-      integrations: { dryRuns: 1, approved: 1, exported: 0, cancelled: 0 },
+      integrations: {
+        dryRuns: 1,
+        approved: 1,
+        exported: 0,
+        cancelled: 0,
+        deliveryAttempts: 0,
+        conformanceAccepted: 0,
+        liveAccepted: 0,
+        deliveryRejected: 0,
+        transportErrors: 0,
+        handshakeAccepted: 0,
+        handshakeRejected: 0,
+        storageBytes: 0
+      },
       barcode: {
         captures: 4,
         pending: 2,
@@ -204,7 +217,62 @@ assert(
   !baselineReview.roadmap.some((item) => item.build === 32),
   "Build 032 must leave the active roadmap after a real provider baseline exists."
 );
+assert(
+  baselineReview.roadmap.some((item) => item.build === 33),
+  "Build 033 must remain active until a live consumer acknowledgement exists."
+);
+
+const conformanceEvidence: ProductionLearningEvidence = {
+  ...baselineEvidence,
+  workspaces: baselineEvidence.workspaces.map((workspace) => ({
+    ...workspace,
+    integrations: {
+      ...workspace.integrations,
+      deliveryAttempts: 1,
+      conformanceAccepted: 1
+    }
+  }))
+};
+const conformanceReview = buildProductionLearningAssessment(conformanceEvidence);
+assert(
+  conformanceReview.findings.some(
+    (finding) =>
+      finding.key === "integration-consumer-readiness" &&
+      finding.status === "watch"
+  ),
+  "Conformance-only consumer evidence must remain WATCH until a live business consumer acknowledges."
+);
+assert(
+  conformanceReview.roadmap.some((item) => item.build === 33),
+  "Build 033 must remain active after conformance-only acceptance."
+);
+
+const liveConsumerEvidence: ProductionLearningEvidence = {
+  ...conformanceEvidence,
+  workspaces: conformanceEvidence.workspaces.map((workspace) => ({
+    ...workspace,
+    integrations: {
+      ...workspace.integrations,
+      deliveryAttempts: 2,
+      liveAccepted: 1,
+      handshakeAccepted: 1
+    }
+  }))
+};
+const liveConsumerReview = buildProductionLearningAssessment(liveConsumerEvidence);
+assert(
+  liveConsumerReview.findings.some(
+    (finding) =>
+      finding.key === "integration-consumer-readiness" &&
+      finding.status === "healthy"
+  ),
+  "Live dry-run consumer acknowledgement must close the Build 033 delivery gap."
+);
+assert(
+  !liveConsumerReview.roadmap.some((item) => item.build === 33),
+  "Build 033 must leave the active roadmap only after live consumer acknowledgement evidence exists."
+);
 
 console.log(
-  "Build 032 Browserless prerequisite states, provider cost baseline and bounded go/no-go verification passed."
+  "Build 033 production-learning distinguishes conformance from live consumer acknowledgement and advances the roadmap only on real delivery evidence."
 );
