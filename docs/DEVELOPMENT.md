@@ -466,14 +466,15 @@ Current production-safe configuration:
 
 Live acceptance sequence once an eligible Source Policy has been reviewed:
 
-1. synchronize the approved policy into one workspace;
-2. open `/remote-execution`;
-3. allowlist the exact policy ID/revision/fingerprint;
-4. arm that workspace;
-5. confirm the global kill switch is still active;
-6. change the production global kill switch to false for the approved one-run window and deploy the environment change if required;
-7. run exactly one page;
-8. restore the global kill switch to true;
-9. review `/production-learning` for status, units/run, duration, HTTP response, final URL/hash evidence and the pending/go-bounded/no-go result.
+1. in the Chrome extension, connect/select the target workspace, open Source Policy Registry & crawl governance, review the intended public source and save the approved policy revision;
+2. synchronize that approved Source Policy into the workspace;
+3. open `/remote-execution`;
+4. allowlist the exact policy ID/revision/fingerprint;
+5. arm that workspace;
+6. confirm the global kill switch is still active;
+7. change the production global kill switch to false for the approved one-run window and deploy the environment change if required;
+8. run exactly one page;
+9. restore the global kill switch to true;
+10. review `/production-learning` for status, units/run, duration, HTTP response, final URL/hash evidence and the pending/go-bounded/no-go result.
 
 CI uses deterministic provider fixtures and never spends Browserless units.

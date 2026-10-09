@@ -320,8 +320,8 @@ export const HELP_TOPICS = {
       "This page reports configured/not configured only; it never exposes the secret."
     ],
     manual: [
-      "Open /intelligence and create or review one Source Policy for a source we are authorized to collect.",
-      "Set Collection method = public webpage, Data sensitivity = public facts, and Status = approved only after reviewing the source terms and robots/crawl directives.",
+      "In the Chrome extension, connect/select the intended workspace and open Source policy registry & crawl governance.",
+      "Open the intended public source in Chrome, use Active tab/origin, then set Collection method = public webpage, Data sensitivity = public facts, and Status = approved only after reviewing the source terms and robots/crawl directives.",
       "Confirm robots/crawl decision = allowed, no access-control bypass is required, and the review expiry is in the future.",
       "Synchronize the Source Policy into the intended workspace.",
       "Open /remote-execution, allowlist the exact approved policy and arm only that workspace.",

@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">030</span>
+        <span className="build">032</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Operational outcomes now have durable review continuity</strong>
+        <strong>Browserless live execution remains fail-closed</strong>
         <p>
-          Build 031 records bounded append-only synchronization and recipe-repair
-          outcomes, links repaired revisions to later compatibility checks and
-          persists production-learning snapshots so rate changes can be compared
-          without storing raw page DOM or sensitive content.
+          Build 032 requires an approved, unexpired Source Policy, exact remote
+          allowlist, armed workspace and explicit global kill-switch window before
+          a one-page Browserless pilot can run. Provider evidence stays bounded and
+          the Browserless token is never exposed to the extension UI.
         </p>
       </section>
 
