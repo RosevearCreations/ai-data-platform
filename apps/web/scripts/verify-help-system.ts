@@ -56,13 +56,15 @@ async function main() {
   const learning = HELP_TOPICS["learning-browserless"];
   assert(
     "manual" in learning &&
-      learning.manual.some((step) => step.includes("BROWSERLESS_API_TOKEN")) &&
-      learning.manual.some((step) => step.includes("REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED")),
-    "Build 031 production-learning help must retain the Browserless deployment sequence for queued Build 032."
+      learning.manual.some((step) => step.includes("Source Policy")) &&
+      learning.manual.some((step) => step.includes("REMOTE_EXECUTION_KILL_SWITCH")) &&
+      learning.steps.some((step) => step.includes("BROWSERLESS_API_TOKEN")) &&
+      learning.steps.some((step) => step.includes("REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED")),
+    "Build 032 production-learning help must retain the encrypted-token readiness sequence, source-policy approval gate and one-run kill-switch workflow."
   );
 
   console.log(
-    "Build 030 contextual help coverage, Browserless manual variables, connector intervention guidance and production-learning help passed."
+    "Build 032 contextual help coverage, Browserless safety variables, source-policy pilot gate, connector intervention guidance and production-learning help passed."
   );
 
 }
