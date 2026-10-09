@@ -30,6 +30,12 @@ function candidates(payload: Record<string, unknown> | undefined): Candidate[] {
       item.dataSensitivity !== "public-facts" ||
       item.collectionMethod !== "public-webpage" ||
       item.robotsDecision !== "allowed" ||
+      item.publicOrAuthorized !== true ||
+      item.termsReviewed !== true ||
+      item.noAccessControlBypass !== true ||
+      typeof item.reviewExpiresAt !== "string" ||
+      !Number.isFinite(Date.parse(item.reviewExpiresAt)) ||
+      Date.parse(item.reviewExpiresAt) <= Date.now() ||
       typeof item.id !== "string" ||
       typeof item.origin !== "string" ||
       typeof item.revision !== "number" ||
@@ -111,7 +117,7 @@ export default async function RemoteExecutionPage() {
       <section className="hero">
         <HelpInfo topic="remote-overview" />
         <p className="eyebrow">Build 032</p>
-        <h1>Controlled remote browser pilot</h1>
+        <h1>Browserless live pilot & provider cost baseline</h1>
         <p className="lead">
           Build 032 uses the existing one-page Browserless boundary to establish
           a real production reliability and provider-unit baseline. The global
