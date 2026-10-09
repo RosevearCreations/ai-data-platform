@@ -20,6 +20,7 @@ async function main() {
     "../app/workspace-profiles/WorkspaceProfileManager.tsx",
     "../app/connectors/page.tsx",
     "../app/connectors/ConnectorManager.tsx",
+    "../app/integration-delivery/page.tsx",
     "../app/production-learning/page.tsx",
     "../app/help/page.tsx"
   ];
@@ -63,8 +64,17 @@ async function main() {
     "Build 032 production-learning help must retain the encrypted-token readiness sequence, source-policy approval gate and one-run kill-switch workflow."
   );
 
+  const delivery = HELP_TOPICS["integration-delivery"];
+  assert(
+    "manual" in delivery &&
+      delivery.manual.some((step) => step.includes("INTEGRATION_CONSUMER_ROSIE_DAZZLERS_URL")) &&
+      delivery.manual.some((step) => step.includes("INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN")) &&
+      delivery.steps.some((step) => step.includes("Run conformance")),
+    "Build 033 help must retain consumer conformance, endpoint and encrypted credential instructions."
+  );
+
   console.log(
-    "Build 032 contextual help coverage, Browserless safety variables, source-policy pilot gate, connector intervention guidance and production-learning help passed."
+    "Build 033 contextual help coverage, Browserless safety variables, consumer delivery manual variables and integration conformance guidance passed."
   );
 
 }
