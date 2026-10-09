@@ -18,6 +18,11 @@ async function main() {
     "Production auth must not perform eager Better Auth schema validation during builds."
   );
   assert(
+    auth.includes('schemaName: "auth"') &&
+      auth.includes('new PostgresDialect({ pool: authPool })'),
+    "Better Auth must explicitly qualify the auth schema for pooled PostgreSQL connections."
+  );
+  assert(
     database.includes("checkProductionDatabaseReadiness"),
     "Database readiness helper is missing."
   );

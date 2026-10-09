@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { PostgresDialect } from "kysely";
 
 import { authPool, bootstrapFirstOwner } from "./database";
 
@@ -18,7 +19,11 @@ const trustedOrigins = (process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
   .filter(Boolean);
 
 export const auth = betterAuth({
-  database: authPool,
+  database: {
+    dialect: new PostgresDialect({ pool: authPool }),
+    type: "postgres",
+    schemaName: "auth"
+  },
   secret: requireServerEnv("BETTER_AUTH_SECRET"),
   baseURL: requireServerEnv("BETTER_AUTH_URL"),
   trustedOrigins,
