@@ -130,7 +130,7 @@ export const HELP_TOPICS = {
       "Until the production token and execution gates are deliberately configured, leave this workflow fail-closed."
     ],
     manual: [
-      "Sign in to Browserless and obtain the API token. If you already have the token, continue without pasting it into ChatGPT, GitHub or screenshots."
+      "Sign in to Browserless and obtain the API token. If you already have the token, continue without pasting it into ChatGPT, GitHub or screenshots.",
       "Copy the Browserless API token into the production host's encrypted secret store as BROWSERLESS_API_TOKEN. Do not put the token in ChatGPT or GitHub.",
       "Set REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true in the production environment.",
       "Keep REMOTE_EXECUTION_KILL_SWITCH=true until the workspace/source controls are ready.",
