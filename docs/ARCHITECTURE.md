@@ -252,3 +252,20 @@ The included example.no-secret-normalizer connector requires no service or crede
 apps/web/app/help/help-content.ts is the central section-help registry. HelpInfo renders an accessible native details/summary control styled as the requested circled i. Every major page and interactive section uses a topic-specific control, and /help renders the consolidated help center.
 
 Manual-intervention instructions live with the relevant topic. Browserless help preserves exact Build 027 variables and fail-closed sequencing; connector help distinguishes the no-setup sample from future credentialed connectors. CI verifies coverage and required manual-intervention language.
+
+
+## Build 030 production-learning boundary
+
+Build 030 is a read/assessment layer over the existing Builds 019–029 evidence stores. It does not create a privileged analytics database or bypass workspace authorization. /production-learning and /api/production-learning authenticate normally, call listWorkspacesForUser, and execute each workspace aggregate through withUserDatabase so the ai_data_runtime role and app.user_id RLS boundary remain authoritative.
+
+The review separates evidence into three classes:
+
+1. durable measured outcomes already available from PostgreSQL;
+2. runtime readiness signals such as Browserless token-configured/execution/kill booleans;
+3. explicit evidence gaps where no durable outcome event exists.
+
+A missing measurement is never converted to zero. Build 030 therefore marks synchronization conflict outcomes and recipe-repair outcome rates as GAP until Build 031 adds append-only outcome telemetry.
+
+Cost review uses durable provider units/duration and measured PostgreSQL JSON payload bytes as proxies. It does not hard-code a dollar price because provider pricing and database billing can change independently of application code.
+
+The renewed roadmap is generated deterministically from current evidence and known gaps. Build 031 closes measurement gaps first, Build 032 establishes the controlled Browserless production baseline, and later builds address consumer delivery, retention and adoption before the next production-learning renewal.

@@ -532,3 +532,19 @@ Append-only connector execution evidence:
 - sanitized error_code.
 
 The runtime role has no UPDATE/DELETE grant on this table.
+
+
+## Build 030 production-learning view
+
+Build 030 adds no new PostgreSQL table. It derives an authenticated read model from existing workspace-scoped evidence:
+
+- workspace_saved_scrapers / workspace_reviewed_datasets — active/tombstoned assets, row counts, server-version changes and payload bytes;
+- workspace_intelligence_modules — module adoption plus scheduled/source-policy summaries;
+- workspace_intelligence_audit — dry-run/approved/exported/cancelled business-integration evidence;
+- workspace_barcode_captures — capture/review/match/method counts and bounded payload bytes;
+- remote_execution_jobs / remote_execution_results — lifecycle counts and payload bytes;
+- remote_execution_controls / remote_execution_source_allowlist / remote_execution_provider_events — readiness, allowlist count, provider run outcomes, estimated units, average duration and evidence bytes;
+- workspace_connector_installations / workspace_connector_audit — installations, enabled state, execution outcomes and evidence bytes;
+- workspace_members / workspace_profiles — accountability and profile adoption.
+
+The payload-byte total is an application storage proxy, not the provider's billed database size. Build 030 intentionally has no field for sync-conflict rate or recipe-repair success rate because those outcomes are not yet durable server telemetry.

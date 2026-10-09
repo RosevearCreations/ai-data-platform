@@ -318,3 +318,16 @@ Build 011 generates export files locally from the extension review workspace.
 ## Build 029 help-system security
 
 Contextual help explicitly identifies actions that require manual external setup. Browserless instructions tell operators to store tokens only in encrypted production environment settings and never in ChatGPT, GitHub, source code or client storage. Future credentialed connectors must document the exact provider registration link/environment variable with their manifest before enablement.
+
+
+## Build 030 production-learning security
+
+- production-learning reads only workspaces already visible through normal authenticated membership and PostgreSQL RLS;
+- no cross-workspace/global administrative query path is introduced for ordinary users;
+- Browserless readiness exposes tokenConfigured as a boolean only and never returns BROWSERLESS_API_TOKEN;
+- the review never stores or displays raw connector secrets, session tokens or Browserless credentials;
+- cost reporting uses provider units/runtime and bounded payload-byte measurements rather than embedding external billing credentials;
+- missing telemetry is labelled GAP rather than inferred from unrelated fields;
+- workspace owner/admin/member counts are evidence for permission review, not authority to change membership automatically;
+- the renewed roadmap does not enable remote execution, connectors or downstream writes;
+- Browserless live execution remains controlled by the existing master flag, global kill switch, workspace kill/enable state, exact source-policy allowlist and one-page/unit limits.

@@ -409,3 +409,34 @@ Build 029's included example connector requires none of these external steps.
 ### Website contextual help
 
 Help topics live in apps/web/app/help/help-content.ts and render through HelpInfo. New major website sections must add a circled ⓘ topic and, when external setup is required, a Manual intervention block with exact variable names, service/application links in documentation, and ordered steps. scripts/verify-help-system.ts protects coverage.
+
+
+## Build 030 production learning
+
+Server modules:
+
+- apps/web/lib/production-learning.ts — pure totals, finding classification and evidence-driven roadmap logic;
+- apps/web/lib/production-learning-database.ts — RLS-scoped aggregation from Builds 019–029 durable tables;
+- /api/production-learning — authenticated machine-readable evidence;
+- /production-learning — operational baseline, Browserless readiness, findings/gaps, workspace footprint and Builds 031–036 roadmap;
+- apps/web/scripts/verify-production-learning.ts — deterministic classification/roadmap test.
+
+Build 030 introduces no database migration.
+
+### Browserless production setup after obtaining the API key
+
+The Browserless API key must not be pasted into ChatGPT, GitHub, source files, screenshots or browser/client configuration.
+
+1. Open the production hosting provider for the deployed AI Data Platform project.
+2. Create/update encrypted server secret BROWSERLESS_API_TOKEN with the key.
+3. Set REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true for the intended production environment.
+4. Set REMOTE_EXECUTION_KILL_SWITCH=true initially.
+5. Redeploy/restart the production application if the hosting platform requires environment changes to trigger a deployment.
+6. Open /remote-execution and verify Token configured = yes and execution enabled = yes while the global kill switch remains active.
+7. Review/create an approved Build 025 public-webpage/public-facts source policy with robots allowed.
+8. Allowlist that exact source for the intended workspace and arm only that workspace.
+9. Set REMOTE_EXECUTION_KILL_SWITCH=false only for the bounded one-page pilot.
+10. Run one pilot and review provider units, duration, status, response evidence and /production-learning.
+11. Restore REMOTE_EXECUTION_KILL_SWITCH=true after the pilot unless continued live testing is deliberately approved.
+
+The GitHub/CI Build 030 gate does not need the Browserless secret. This conversation's Vercel connector currently exposes no team/project and the Neon connector exposes no projects, so production secret/database changes are not performed automatically from chat.
