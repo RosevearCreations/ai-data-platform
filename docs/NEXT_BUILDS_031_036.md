@@ -47,6 +47,8 @@ Manual intervention: the production Browserless secret already exists and the ma
 
 ## Build 033 — Integration Consumer Acceptance & Delivery Observability
 
+Status: IMPLEMENTED — LIVE BUSINESS-CONSUMER ACKNOWLEDGEMENT PENDING.
+
 Priority: P1 until a real consumer acknowledges a package.
 
 Purpose: prove the consumer side of the Build 022 contracts.
@@ -61,7 +63,7 @@ Implementation sequence:
 6. Verify valid acceptance plus replay/stale/wrong-target rejection.
 7. Surface delivery outcomes in production learning.
 
-Manual intervention: target consumer endpoint/credential approval may be required.
+Manual intervention: no supported receiver endpoint exists in Rosie Dazzlers or Devil n Dove yet. Once one is implemented, configure its documented HTTPS URL and dedicated encrypted bearer credential in Vercel, then use /integration-delivery for conformance → handshake → one dry-run acknowledgement.
 
 ## Build 034 — Retention, Storage Budgets & Cleanup Automation
 
