@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 033</p>
+          <p className="eyebrow">Build 034</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,7 +45,7 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 033</p>
+        <p className="eyebrow">Build 034</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
           Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
@@ -139,6 +139,17 @@ export default async function ProductionLearningPage() {
             <p>Measured durable JSON/evidence payloads across authorized workspaces.</p>
             <span className="badge">storage proxy</span>
           </article>
+          <article className="card">
+            <h3>{totals.retentionBudgetBreaches} retention budget breaches</h3>
+            <p>
+              {totals.retentionDeleteEligibleRows} delete-eligible ·{" "}
+              {totals.retentionArchiveEligibleRows} manual-archive candidates ·{" "}
+              {totals.retentionCleanupRuns} cleanup runs.
+            </p>
+            <span className="badge">
+              {totals.retentionBudgetBreaches > 0 ? "review required" : "budgets enforced"}
+            </span>
+          </article>
         </div>
       </section>
 
@@ -224,6 +235,9 @@ export default async function ProductionLearningPage() {
                     {workspace.remote.lastRun.contentSha256 ? " · hash " + workspace.remote.lastRun.contentSha256.slice(0, 12) + "…" : ""}
                   </p>
                 ) : null}
+                <p>
+                  Retention: {workspace.retention.budgetBreaches} budget breaches · {workspace.retention.deleteEligibleRows} delete-eligible · {workspace.retention.cleanupRuns} cleanup runs
+                </p>
                 <p>
                   Connectors: {workspace.connectors.installations} installed · {workspace.connectors.enabled} enabled
                 </p>

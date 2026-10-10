@@ -77,6 +77,17 @@ export interface ProductionLearningWorkspaceEvidence {
     handshakeRejected: number;
     storageBytes: number;
   };
+  retention: {
+    policyPresent: boolean;
+    cleanupApproved: boolean;
+    archiveEligibleRows: number;
+    deleteEligibleRows: number;
+    deleteEligibleBytes: number;
+    cleanupRuns: number;
+    deletedRows: number;
+    failedRuns: number;
+    budgetBreaches: number;
+  };
   barcode: {
     captures: number;
     pending: number;
@@ -231,6 +242,15 @@ export function summarizeProductionLearningEvidence(
     evidence,
     (w) => w.integrations.handshakeAccepted
   );
+  const retentionPolicies = sum(evidence, (w) => (w.retention.policyPresent ? 1 : 0));
+  const retentionApprovedWorkspaces = sum(evidence, (w) => (w.retention.cleanupApproved ? 1 : 0));
+  const retentionArchiveEligibleRows = sum(evidence, (w) => w.retention.archiveEligibleRows);
+  const retentionDeleteEligibleRows = sum(evidence, (w) => w.retention.deleteEligibleRows);
+  const retentionDeleteEligibleBytes = sum(evidence, (w) => w.retention.deleteEligibleBytes);
+  const retentionCleanupRuns = sum(evidence, (w) => w.retention.cleanupRuns);
+  const retentionDeletedRows = sum(evidence, (w) => w.retention.deletedRows);
+  const retentionFailedRuns = sum(evidence, (w) => w.retention.failedRuns);
+  const retentionBudgetBreaches = sum(evidence, (w) => w.retention.budgetBreaches);
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
     evidence,
@@ -317,6 +337,15 @@ export function summarizeProductionLearningEvidence(
         ? null
         : (integrationConformanceAccepted + integrationLiveAccepted) /
           integrationDeliveryAttempts,
+    retentionPolicies,
+    retentionApprovedWorkspaces,
+    retentionArchiveEligibleRows,
+    retentionDeleteEligibleRows,
+    retentionDeleteEligibleBytes,
+    retentionCleanupRuns,
+    retentionDeletedRows,
+    retentionFailedRuns,
+    retentionBudgetBreaches,
     connectorInstallations,
     connectorExecutions,
     syncEvents,
@@ -616,19 +645,39 @@ export function buildProductionLearningAssessment(
     key: "storage-retention",
     category: "Storage & retention",
     status:
-      totals.storageBytes >= 25_000_000
+      totals.retentionBudgetBreaches > 0 || totals.retentionFailedRuns > 0
         ? "action"
-        : totals.storageBytes >= 5_000_000
+        : totals.retentionDeleteEligibleRows > 0 ||
+            totals.retentionArchiveEligibleRows > 0
           ? "watch"
           : "healthy",
-    title: "Approximate durable payload storage is measurable.",
+    title:
+      totals.retentionBudgetBreaches > 0
+        ? "One or more retention classes exceed their workspace storage budget."
+        : "Build 034 retention budgets and cleanup eligibility are measurable.",
     evidence:
       String(totals.storageBytes) +
-      " bytes of measured JSON/evidence payload storage are visible across authorized workspaces. This is a storage proxy, not provider billing.",
+      " bytes of legacy storage proxy · " +
+      String(totals.retentionBudgetBreaches) +
+      " class budget breaches · " +
+      String(totals.retentionDeleteEligibleRows) +
+      " bounded-delete candidates (" +
+      String(totals.retentionDeleteEligibleBytes) +
+      " bytes) · " +
+      String(totals.retentionArchiveEligibleRows) +
+      " manual-archive candidates · " +
+      String(totals.retentionCleanupRuns) +
+      " cleanup runs · " +
+      String(totals.retentionDeletedRows) +
+      " rows deleted.",
     action:
-      totals.storageBytes >= 5_000_000
-        ? "Add retention/cleanup budgets before payload growth becomes a recurring cost."
-        : "Keep bounded retention limits and re-measure after meaningful production adoption.",
+      totals.retentionBudgetBreaches > 0
+        ? "Review /retention and reduce only eligible low-risk data; protected append-only/security evidence stays excluded."
+        : totals.retentionDeleteEligibleRows > 0
+          ? "Preview candidates in /retention. Destructive cleanup remains fail-closed until an owner/admin explicitly approves it."
+          : totals.retentionArchiveEligibleRows > 0
+            ? "Review old synchronized tombstones for manual archive; Build 034 does not auto-delete them."
+            : "Keep the fixed class budgets and age gates; no destructive production cleanup is currently required.",
     owner: "operations"
   });
 
@@ -674,14 +723,22 @@ export function buildProductionLearningAssessment(
           evidenceKeys: ["integration-consumer-readiness"]
         }]
       : []),
-    {
-      build: 34,
-      priority: totals.storageBytes >= 25_000_000 ? "P1" : "P2",
-      title: "Retention, Storage Budgets & Cleanup Automation",
-      rationale:
-        "Build 030 can measure payload size but the platform does not yet have a durable retention/cleanup outcome loop.",
-      evidenceKeys: ["storage-retention"]
-    },
+    ...(totals.retentionBudgetBreaches > 0 ||
+    totals.retentionDeleteEligibleRows > 0 ||
+    totals.retentionFailedRuns > 0
+      ? [{
+          build: 34,
+          priority: totals.retentionBudgetBreaches > 0 ? "P1" as const : "P2" as const,
+          title: "Retention, Storage Budgets & Cleanup Automation",
+          rationale:
+            totals.retentionBudgetBreaches > 0
+              ? "Retention controls are implemented, but one or more class budgets are currently exceeded."
+              : totals.retentionFailedRuns > 0
+                ? "Retention controls are implemented, but a cleanup failure requires review."
+                : "Retention controls are implemented and delete-eligible rows are waiting for explicit operator approval/execution.",
+          evidenceKeys: ["storage-retention"]
+        }]
+      : []),
     {
       build: 35,
       priority: "P2",

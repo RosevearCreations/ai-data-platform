@@ -3,6 +3,11 @@ import { createHash, randomUUID } from "node:crypto";
 import { browserlessPilotReadiness } from "./browserless-provider";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
 import {
+  RETENTION_BUDGETS,
+  retentionBudgetBreaches,
+  type RetentionClassKey
+} from "./retention";
+import {
   buildProductionLearningAssessment,
   type ProductionLearningEvidence,
   type ProductionLearningWorkspaceEvidence
@@ -149,6 +154,23 @@ async function workspaceEvidence(
       [workspace.id]
     );
 
+    const retentionResult = await client.query(
+      `
+        select
+          metrics.*,
+          (policy.workspace_id is not null) as policy_present,
+          coalesce(policy.cleanup_approved,false) as cleanup_approved,
+          coalesce((select count(*) from app.workspace_retention_cleanup_runs r where r.workspace_id=$1),0)::int as cleanup_runs,
+          coalesce((select sum(r.deleted_barcode_rows+r.deleted_remote_jobs) from app.workspace_retention_cleanup_runs r where r.workspace_id=$1 and r.status='completed'),0)::bigint as deleted_rows,
+          coalesce((select count(*) from app.workspace_retention_cleanup_runs r where r.workspace_id=$1 and r.status='failed'),0)::int as failed_runs
+        from app.workspace_retention_metrics metrics
+        left join app.workspace_retention_policies policy
+          on policy.workspace_id=metrics.workspace_id
+        where metrics.workspace_id=$1
+      `,
+      [workspace.id]
+    );
+
     const barcodeResult = await client.query(
       `
         select
@@ -281,6 +303,7 @@ async function workspaceEvidence(
     const sync = syncResult.rows[0] as Record<string, unknown>;
     const outcomes = outcomeResult.rows[0] as Record<string, unknown>;
     const barcode = barcodeResult.rows[0] as Record<string, unknown>;
+    const retention = retentionResult.rows[0] as Record<string, unknown>;
     const integrationDelivery =
       integrationDeliveryResult.rows[0] as Record<string, unknown>;
     const remoteJobs = remoteJobResult.rows[0] as Record<string, unknown>;
@@ -463,6 +486,36 @@ async function workspaceEvidence(
         handshakeAccepted: numeric(integrationDelivery.handshake_accepted),
         handshakeRejected: numeric(integrationDelivery.handshake_rejected),
         storageBytes: numeric(integrationDelivery.storage_bytes)
+      },
+      retention: {
+        policyPresent: Boolean(retention.policy_present),
+        cleanupApproved: Boolean(retention.cleanup_approved),
+        archiveEligibleRows: numeric(retention.sync_archive_eligible_rows),
+        deleteEligibleRows:
+          numeric(retention.barcode_delete_eligible_rows) +
+          numeric(retention.remote_delete_eligible_jobs),
+        deleteEligibleBytes:
+          numeric(retention.barcode_delete_eligible_bytes) +
+          numeric(retention.remote_delete_eligible_bytes),
+        cleanupRuns: numeric(retention.cleanup_runs),
+        deletedRows: numeric(retention.deleted_rows),
+        failedRuns: numeric(retention.failed_runs),
+        budgetBreaches: retentionBudgetBreaches(
+          {
+            "sync-payloads": numeric(retention.sync_payload_bytes),
+            "intelligence-modules": numeric(retention.intelligence_module_bytes),
+            "barcode-terminal": numeric(retention.barcode_bytes),
+            "remote-terminal": numeric(retention.remote_bytes),
+            "intelligence-audit": numeric(retention.intelligence_audit_bytes),
+            "remote-provider-audit": numeric(retention.provider_audit_bytes),
+            "connector-audit": numeric(retention.connector_bytes),
+            "operational-outcomes": numeric(retention.operational_bytes),
+            "production-learning-snapshots": numeric(retention.snapshot_bytes),
+            "integration-delivery-audit": numeric(retention.delivery_audit_bytes),
+            "retention-control-audit": numeric(retention.retention_audit_bytes)
+          } satisfies Record<RetentionClassKey, number>,
+          RETENTION_BUDGETS
+        ).length
       },
       barcode: {
         captures: numeric(barcode.captures),

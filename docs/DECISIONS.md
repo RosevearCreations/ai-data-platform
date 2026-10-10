@@ -416,3 +416,21 @@ Reason: allowing arbitrary client-selected destinations would turn the integrati
 Decision: the sender sets `dryRun=true` and rejects a consumer acknowledgement that reports a live mutation. Enabling downstream mutation requires a later explicit consumer-side approval/build.
 
 Reason: proving authenticated delivery and acknowledgement should not silently convert an evidence pipeline into an operational write path.
+
+## D0065 — Retention cleanup is a narrow capability, not a DELETE grant
+
+Decision: Build 034 keeps general runtime DELETE permissions unchanged and exposes one security-definer cleanup function limited to approved workspace owners/admins, two low-risk age-gated data families and a bounded row count.
+
+Reason: storage management should not weaken the existing append-only/security audit model.
+
+## D0066 — Production cleanup approval is separate from deployment approval
+
+Decision: deploying Build 034 never sets `cleanup_approved=true` and never runs the cleanup function. An operator must review /retention, approve a workspace, and separately confirm one cleanup batch.
+
+Reason: the roadmap explicitly requires approval before destructive production cleanup, and software release approval is not equivalent to data-deletion approval.
+
+## D0067 — Archive candidates are preview-only in Build 034
+
+Decision: synchronized tombstones older than 180 days are surfaced as manual-archive candidates but are not auto-deleted or moved by Build 034.
+
+Reason: synchronized records can carry business/repair continuity semantics that should not be destroyed merely to satisfy storage pressure.
