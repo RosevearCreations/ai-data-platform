@@ -354,6 +354,28 @@ export const HELP_TOPICS = {
       "Confirm the consumer returns an accepted dry-run acknowledgement and records the same packageId/replayKey before any separate live-mutation approval."
     ]
   },
+  "retention-overview": {
+    title: "Retention, storage budgets & cleanup",
+    summary: "Build 034 assigns explicit storage budgets to each durable evidence class, previews archive/delete eligibility and keeps destructive cleanup fail-closed until an owner/admin explicitly approves it.",
+    steps: [
+      "Review each workspace's measured bytes against its class budget.",
+      "Treat manual-archive candidates as review-only; Build 034 never auto-deletes synchronized tombstones.",
+      "Protected append-only/security-critical evidence is excluded from Build 034 destructive cleanup.",
+      "Only reviewed barcode captures older than 90 days and terminal remote jobs older than 30 days can enter bounded-delete eligibility.",
+      "An owner/admin must explicitly approve cleanup before the Run cleanup control can operate.",
+      "Each cleanup run is capped, records before/after rows and storage bytes, and writes append-only completion/failure evidence.",
+      "Revoke approval whenever cleanup should return to fail-closed mode."
+    ],
+    notes: [
+      "No destructive production cleanup is run merely by deploying Build 034.",
+      "Existing database retention on operational outcomes, production-learning snapshots and integration delivery evidence remains independent and protected."
+    ],
+    manual: [
+      "There is no external account or paid service requirement.",
+      "The first destructive production cleanup requires an owner/admin to open /retention, review the eligibility preview, click Approve bounded cleanup, then separately confirm Run one cleanup batch.",
+      "Do not approve cleanup merely to test the button; CI verifies deletion behavior against disposable fixtures."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -378,7 +400,7 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 033 is the active integration-delivery gate after the Browserless baseline layer: conformance can be proven internally, but the roadmap does not close consumer delivery until a supported business application returns a live dry-run acknowledgement.",
+    summary: "Build 034 adds enforceable retention budgets, protected-evidence exceptions and explicit bounded cleanup evidence. Earlier Browserless/integration gates remain evidence-driven and can stay visible independently.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
@@ -430,6 +452,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Integration delivery",
     topics: ["integration-delivery"]
+  },
+  {
+    title: "Retention & cleanup",
+    topics: ["retention-overview"]
   },
   {
     title: "Production learning",

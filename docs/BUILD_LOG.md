@@ -1764,3 +1764,27 @@ Delivered:
 - detailed help/manual setup workflow.
 
 Repository discovery confirmed that neither Rosie Dazzlers nor Devil n Dove currently implements the exact Build 022 v1 receiver contract. Build 033 therefore does not invent an endpoint, credential or downstream write. External controls remain fail-closed until the selected business repository deliberately implements and approves that receiver.
+
+## Build 034 — Retention, Storage Budgets & Cleanup Automation
+
+Date: 2026-10-10
+
+Status: IMPLEMENTED — PRODUCTION DESTRUCTIVE CLEANUP REMAINS EXPLICITLY APPROVAL-GATED.
+
+Delivered:
+
+- migration `0013_retention_storage_cleanup.sql`;
+- per-workspace retention policy with fixed per-class storage budgets;
+- security-invoker `workspace_retention_metrics` view;
+- manual-archive preview for old synchronized tombstones;
+- bounded-delete preview for reviewed barcode captures older than 90 days and terminal remote jobs older than 30 days;
+- protected-evidence exceptions for append-only/security-critical audit families;
+- owner/admin-only approval/revocation with append-only policy events;
+- security-definer cleanup function capped to 100 rows by default / 250 hard maximum;
+- append-only before/after cleanup-run row/storage evidence plus bounded failure codes;
+- /retention operator UI and contextual help;
+- Production learning retention findings and evidence-driven Build 034 queue closure;
+- disposable CI/database acceptance proving default fail-closed state, authorization isolation, bounded cleanup, protected evidence and cleanup-run immutability;
+- extension version 0.34.0.
+
+No destructive production cleanup is part of the deployment. A live run requires a separate owner/admin approval and explicit run confirmation after reviewing the candidate preview.

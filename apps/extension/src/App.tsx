@@ -260,16 +260,15 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">033</span>
+        <span className="build">034</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Business integration delivery remains review-gated</strong>
+        <strong>Retention cleanup remains server-side and approval-gated</strong>
         <p>
-          Build 033 adds consumer conformance and delivery acknowledgement evidence.
-          The extension still prepares approved packages only; external receiver
-          credentials stay server-side and no downstream business mutation is
-          authorized from this UI.
+          Build 034 adds workspace storage budgets and bounded cleanup evidence.
+          The extension does not delete durable server records; protected audit
+          evidence remains outside the cleanup path.
         </p>
       </section>
 

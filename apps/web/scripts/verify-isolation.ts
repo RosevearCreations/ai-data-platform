@@ -54,6 +54,11 @@ import {
 } from "../lib/integration-delivery-database";
 import { buildIntegrationPackageFromPersistedBatch } from "../lib/integration-delivery";
 import {
+  executeRetentionCleanup,
+  listRetentionOverviewForUser,
+  setRetentionCleanupApproval
+} from "../lib/retention-database";
+import {
   archiveCustomWorkspaceProfile,
   archiveWorkspace,
   createCustomWorkspaceProfile,
@@ -1557,6 +1562,130 @@ async function main() {
     throw new Error("Build 033 delivery evidence crossed the workspace authorization boundary.");
   }
 
+  const retentionFixtureJobId = "00000000-0000-4000-8000-000000000034";
+  await withUserDatabase(ownerId, async (client) => {
+    await client.query(
+      `
+        insert into app.workspace_barcode_captures (
+          workspace_id,capture_id,target,raw_code,normalized_code,barcode_format,
+          capture_method,captured_at,provenance,match_status,match_payload,
+          review_status,reviewed_at,created_at,updated_at
+        )
+        values (
+          $1,'00000000-0000-4000-8000-000000000035','personal-movie',
+          '034TEST','034TEST','manual','manual',
+          now()-interval '100 days','{}'::jsonb,'unmatched','{}'::jsonb,
+          'rejected',now()-interval '100 days',now()-interval '100 days',
+          now()-interval '100 days'
+        )
+      `,
+      [syncWorkspaceId]
+    );
+    await client.query(
+      `
+        insert into app.remote_execution_jobs (
+          workspace_id,job_id,saved_scraper_id,provider_key,source_url,source_origin,
+          source_policy_id,source_policy_revision,source_policy_fingerprint,
+          source_policy_snapshot,max_pages,max_records,max_runtime_seconds,
+          minimum_delay_ms,status,completed_at,created_by,created_at,updated_at
+        )
+        values (
+          $1,$2,'build034-retention','browserless','https://example.test/old',
+          'https://example.test','build034-policy',1,'build034-fingerprint',
+          '{}'::jsonb,1,10,60,1000,'failed',now()-interval '40 days',$3,
+          now()-interval '40 days',now()-interval '40 days'
+        )
+      `,
+      [syncWorkspaceId, retentionFixtureJobId, ownerId]
+    );
+    await client.query(
+      `
+        insert into app.remote_execution_results (
+          workspace_id,job_id,idempotency_key,result_fingerprint,payload,created_at
+        )
+        values ($1,$2,'build034-result','build034-result-fingerprint','{"rows":[1]}'::jsonb,now()-interval '40 days')
+      `,
+      [syncWorkspaceId, retentionFixtureJobId]
+    );
+  });
+
+  const retentionBefore = (await listRetentionOverviewForUser(ownerId)).find(
+    (item) => item.workspace.id === syncWorkspaceId
+  );
+  if (
+    !retentionBefore ||
+    retentionBefore.cleanupApproved ||
+    retentionBefore.deleteEligibleRows < 2
+  ) {
+    throw new Error("Build 034 retention preview did not find bounded cleanup candidates in fail-closed state.");
+  }
+
+  let restrictedRetentionDenied = false;
+  try {
+    await setRetentionCleanupApproval(restrictedId, {
+      workspaceId: syncWorkspaceId,
+      approved: true,
+      confirmation: "APPROVE CLEANUP"
+    });
+  } catch (error) {
+    restrictedRetentionDenied =
+      error instanceof Error && error.message === "workspace_admin_required";
+  }
+  if (!restrictedRetentionDenied) {
+    throw new Error("Build 034 cleanup approval crossed the workspace authorization boundary.");
+  }
+
+  await setRetentionCleanupApproval(ownerId, {
+    workspaceId: syncWorkspaceId,
+    approved: true,
+    confirmation: "APPROVE CLEANUP"
+  });
+  const cleanupResult = await executeRetentionCleanup(ownerId, {
+    workspaceId: syncWorkspaceId,
+    confirmation: "RUN CLEANUP",
+    maxRows: 10
+  });
+  if (
+    cleanupResult.status !== "completed" ||
+    Number(cleanupResult.deletedBarcodeRows ?? 0) < 1 ||
+    Number(cleanupResult.deletedRemoteJobs ?? 0) < 1
+  ) {
+    throw new Error("Build 034 bounded cleanup did not delete the expected disposable fixtures.");
+  }
+
+  const retentionAfter = (await listRetentionOverviewForUser(ownerId)).find(
+    (item) => item.workspace.id === syncWorkspaceId
+  );
+  if (
+    !retentionAfter ||
+    retentionAfter.deleteEligibleRows !== 0 ||
+    retentionAfter.recentRuns.length < 1 ||
+    retentionAfter.recentRuns[0]?.status !== "completed"
+  ) {
+    throw new Error("Build 034 cleanup preview/evidence did not reflect the completed bounded run.");
+  }
+
+  let retentionRunImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.workspace_retention_cleanup_runs set status='failed' where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    retentionRunImmutable = true;
+  }
+  if (!retentionRunImmutable) {
+    throw new Error("Build 034 cleanup evidence unexpectedly allowed runtime updates.");
+  }
+
+  await setRetentionCleanupApproval(ownerId, {
+    workspaceId: syncWorkspaceId,
+    approved: false,
+    confirmation: "REVOKE CLEANUP"
+  });
+
   const productionLearning = await buildProductionLearningReview(ownerId);
   const learningWorkspace = productionLearning.evidence.workspaces.find(
     (workspace) => workspace.workspaceId === syncWorkspaceId
@@ -1578,10 +1707,13 @@ async function main() {
     learningWorkspace.integrations.liveAccepted !== 0 ||
     productionLearning.totals.integrationConformanceAccepted !== 1 ||
     productionLearning.totals.integrationLiveAccepted !== 0 ||
+    productionLearning.totals.retentionCleanupRuns < 1 ||
+    productionLearning.totals.retentionDeleteEligibleRows !== 0 ||
     productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
+    productionLearning.roadmap.some((item) => item.build === 34) ||
     productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 033 production-learning consumer conformance/live-delivery aggregation failed.");
+    throw new Error("Build 034 production-learning retention/consumer aggregation failed.");
   }
   if (
     !productionLearning.findings.some(
@@ -1613,7 +1745,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030/031 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, operational outcome telemetry, review snapshots and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, append-only cleanup evidence and workspace-target acceptance passed."
   );
 }
 

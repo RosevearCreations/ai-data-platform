@@ -21,6 +21,7 @@ async function main() {
     "../app/connectors/page.tsx",
     "../app/connectors/ConnectorManager.tsx",
     "../app/integration-delivery/page.tsx",
+    "../app/retention/page.tsx",
     "../app/production-learning/page.tsx",
     "../app/help/page.tsx"
   ];
@@ -73,8 +74,18 @@ async function main() {
     "Build 033 help must retain consumer conformance, endpoint and encrypted credential instructions."
   );
 
+  const retention = HELP_TOPICS["retention-overview"];
+  assert(
+    "manual" in retention &&
+      retention.manual.some((step) => step.includes("/retention")) &&
+      retention.steps.some((step) => step.includes("90 days")) &&
+      retention.steps.some((step) => step.includes("30 days")) &&
+      retention.notes.some((note) => note.includes("No destructive production cleanup")),
+    "Build 034 help must preserve explicit approval, age gates and no-cleanup-on-deploy guidance."
+  );
+
   console.log(
-    "Build 033 contextual help coverage, Browserless safety variables, consumer delivery manual variables and integration conformance guidance passed."
+    "Build 034 contextual help coverage, consumer delivery guidance and explicit retention-cleanup approval instructions passed."
   );
 
 }

@@ -67,6 +67,8 @@ Manual intervention: no supported receiver endpoint exists in Rosie Dazzlers or 
 
 ## Build 034 — Retention, Storage Budgets & Cleanup Automation
 
+Status: IMPLEMENTED — PRODUCTION DESTRUCTIVE CLEANUP APPROVAL-GATED.
+
 Priority: P2 unless Build 030/031 storage evidence crosses the watch/action threshold.
 
 Purpose: make storage growth enforceable and reviewable.
@@ -82,7 +84,7 @@ Implementation sequence:
 7. Add failure/retry/exception evidence.
 8. Surface retention outcomes in production learning.
 
-Manual intervention: explicit approval before first destructive production cleanup.
+Manual intervention: open /retention, review candidates, explicitly approve bounded cleanup, then separately confirm one cleanup batch. No cleanup is run automatically by deployment.
 
 ## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
 

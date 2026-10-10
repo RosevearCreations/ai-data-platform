@@ -599,3 +599,30 @@ Key fields:
 - received_at / created_at.
 
 The composite primary key prevents the same package ID being accepted twice by the same scoped consumer.
+
+## Build 034 retention and cleanup
+
+### workspace_retention_policies
+
+Workspace-scoped policy state for Build 034. The default policy is fail-closed (`cleanup_approved=false`) with a maximum 100 rows per cleanup run and explicit per-class byte budgets. Only owners/admins may approve or revoke cleanup. The budget map is bounded JSON and Build 034 does not expose arbitrary budget editing.
+
+### workspace_retention_policy_events
+
+Append-only approval/revocation evidence. Runtime access is SELECT/INSERT only under workspace RLS; updates/deletes are not granted.
+
+### workspace_retention_cleanup_runs
+
+Append-only before/after cleanup evidence recording measured rows/bytes, eligible rows/bytes, deleted reviewed-barcode rows, deleted terminal remote jobs and bounded failure codes. Runtime access is SELECT only; the security-definer cleanup function is the only writer.
+
+### workspace_retention_metrics
+
+RLS-invoker view that reports row and storage proxies for synchronized payloads, intelligence modules, barcode intake, remote jobs/results, intelligence audit, provider audit, connectors, operational outcomes, production-learning snapshots, integration delivery evidence and retention-control evidence. It also reports manual-archive and bounded-delete candidate counts.
+
+### execute_workspace_retention_cleanup
+
+Security-definer function callable only after normal session/workspace admin validation and a durable `cleanup_approved=true` policy. Each call is capped to the policy maximum (100 by default; hard ceiling 250). Build 034 can delete only:
+
+- reviewed barcode captures older than 90 days; and
+- terminal remote jobs older than 30 days (with their result rows through the existing FK cascade).
+
+Pending barcode captures, active remote jobs, synchronized tombstones, and all protected append-only/security evidence are excluded.

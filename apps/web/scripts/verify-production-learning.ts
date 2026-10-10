@@ -94,6 +94,17 @@ const evidence: ProductionLearningEvidence = {
         handshakeRejected: 0,
         storageBytes: 0
       },
+      retention: {
+        policyPresent: true,
+        cleanupApproved: false,
+        archiveEligibleRows: 0,
+        deleteEligibleRows: 0,
+        deleteEligibleBytes: 0,
+        cleanupRuns: 0,
+        deletedRows: 0,
+        failedRuns: 0,
+        budgetBreaches: 0
+      },
       barcode: {
         captures: 4,
         pending: 2,
@@ -272,7 +283,56 @@ assert(
   !liveConsumerReview.roadmap.some((item) => item.build === 33),
   "Build 033 must leave the active roadmap only after live consumer acknowledgement evidence exists."
 );
+assert(
+  !liveConsumerReview.roadmap.some((item) => item.build === 34),
+  "Build 034 must leave the active roadmap when budgets are healthy and no delete-eligible rows exist."
+);
+
+const retentionPressureEvidence: ProductionLearningEvidence = {
+  ...liveConsumerEvidence,
+  workspaces: liveConsumerEvidence.workspaces.map((workspace) => ({
+    ...workspace,
+    retention: {
+      ...workspace.retention,
+      deleteEligibleRows: 3,
+      deleteEligibleBytes: 4096
+    }
+  }))
+};
+const retentionPressureReview =
+  buildProductionLearningAssessment(retentionPressureEvidence);
+assert(
+  retentionPressureReview.findings.some(
+    (finding) =>
+      finding.key === "storage-retention" && finding.status === "watch"
+  ),
+  "Delete-eligible rows must produce a WATCH retention finding."
+);
+assert(
+  retentionPressureReview.roadmap.some((item) => item.build === 34),
+  "Build 034 must remain active while bounded-delete candidates await approval/execution."
+);
+
+const retentionBreachEvidence: ProductionLearningEvidence = {
+  ...liveConsumerEvidence,
+  workspaces: liveConsumerEvidence.workspaces.map((workspace) => ({
+    ...workspace,
+    retention: {
+      ...workspace.retention,
+      budgetBreaches: 1
+    }
+  }))
+};
+const retentionBreachReview =
+  buildProductionLearningAssessment(retentionBreachEvidence);
+assert(
+  retentionBreachReview.findings.some(
+    (finding) =>
+      finding.key === "storage-retention" && finding.status === "action"
+  ),
+  "A retention budget breach must produce an ACTION finding."
+);
 
 console.log(
-  "Build 033 production-learning distinguishes conformance from live consumer acknowledgement and advances the roadmap only on real delivery evidence."
+  "Build 034 production-learning distinguishes healthy budgets, bounded cleanup candidates and storage-budget breaches."
 );

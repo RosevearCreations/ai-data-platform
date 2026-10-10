@@ -497,3 +497,20 @@ When a receiver is implemented:
 - Devil n Dove: set `INTEGRATION_CONSUMER_DEVIL_N_DOVE_URL` and encrypted `INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN`.
 
 Configure only one deliberately selected receiver first. Never copy bearer credentials into source, browser fields, logs or chat. Use `/integration-delivery` in this order: Run conformance → Test handshake → Send dry-run. Build 033 does not enable consumer-side live mutation.
+
+## Build 034 retention verification
+
+CI/database acceptance must:
+
+1. apply `0013_retention_storage_cleanup.sql`;
+2. validate positive class budgets and protected-evidence exclusions;
+3. seed disposable reviewed-barcode and terminal-remote fixtures beyond the age gates;
+4. prove the default policy is fail closed;
+5. prove a non-member cannot approve cleanup;
+6. explicitly approve cleanup in the disposable CI workspace;
+7. execute one bounded batch and verify the disposable candidates are removed;
+8. verify append-only cleanup-run evidence cannot be updated by the runtime role;
+9. revoke cleanup approval again;
+10. verify Production learning reports the run and removes Build 034 from the active roadmap once no delete candidate/budget breach/failure remains.
+
+Production differs from CI: deployment applies the schema/control plane only. Never approve or execute destructive production cleanup automatically.

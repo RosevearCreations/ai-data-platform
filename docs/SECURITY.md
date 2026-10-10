@@ -372,3 +372,18 @@ Contextual help explicitly identifies actions that require manual external setup
 - external requests use one configured endpoint, no redirect following, a 15-second timeout and no automatic retry;
 - Build 033 external delivery is always `dryRun=true`; acknowledgements claiming a live mutation are rejected;
 - no Build 033 path writes into Rosie Dazzlers or Devil n Dove operational databases.
+
+## Build 034 retention security
+
+- deployment never implies destructive-cleanup approval;
+- cleanup defaults fail closed for every workspace;
+- only owner/admin sessions can approve, revoke or execute cleanup;
+- approval and execution require separate explicit confirmations in the operator UI/API;
+- browser requests cannot choose tables, SQL predicates or retention ages;
+- each run is capped by the workspace policy and a hard 250-row ceiling;
+- only reviewed barcode rows older than 90 days and terminal remote jobs older than 30 days are delete-eligible;
+- pending barcode intake and non-terminal remote jobs are never eligible;
+- synchronized tombstones are previewed for manual archive only, not auto-deleted;
+- intelligence audit, provider audit, connector audit, operational outcomes, production-learning snapshots, integration delivery/replay evidence, and retention-control evidence are protected from Build 034 destructive cleanup;
+- cleanup-run evidence is append-only to the runtime role and stores bounded counts/bytes rather than deleted payload bodies;
+- the metrics view uses security-invoker semantics so normal workspace RLS remains authoritative.

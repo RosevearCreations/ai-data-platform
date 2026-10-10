@@ -299,3 +299,11 @@ The internal conformance receiver is authenticated through the normal AI Data Pl
 External delivery is server-to-server only. The target endpoint and bearer credential come from target-specific server environment variables. The handshake must return the exact protocol, target, schema, contract version, bearer-authentication declaration and dry-run support. Package acknowledgements must echo packageId, replayKey and fingerprint. Build 033 forces dry-run transport and rejects acknowledgements that claim a live mutation.
 
 Every handshake/delivery terminal outcome is appended to workspace-scoped delivery evidence. Production learning reports conformance and live acceptance separately; Build 033 remains open until one supported business application returns a real authenticated dry-run acknowledgement.
+
+## Build 034 retention boundary
+
+Retention is a workspace-scoped control plane, not a broad DELETE permission. A security-invoker metrics view measures each durable evidence class against a fixed budget. The operator can see manual-archive candidates and bounded-delete candidates before any cleanup authorization exists.
+
+Destructive cleanup is intentionally narrow. The normal runtime role still has no general DELETE grant on remote jobs/results or barcode intake. A security-definer function verifies the current session identity, owner/admin membership and an explicitly approved workspace retention policy, then deletes at most one bounded batch. The function only targets terminal low-risk operational rows by age and records before/after storage proxies in append-only cleanup evidence.
+
+Append-only/security-critical classes remain outside this cleanup function. Existing table-specific retention functions from earlier builds continue to own their bounded audit retention; Build 034 does not broaden or bypass them.

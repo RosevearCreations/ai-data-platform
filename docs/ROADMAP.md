@@ -787,7 +787,7 @@ No business receiver exists yet. When one target application implements the docu
 
 ## Build 034 — Retention, Storage Budgets & Cleanup Automation
 
-Status: QUEUED — NOT STARTED.
+Status: IMPLEMENTED — PRODUCTION DESTRUCTIVE CLEANUP REMAINS EXPLICITLY APPROVAL-GATED.
 
 Goal: convert Build 030's storage proxy into enforceable retention and cleanup outcomes.
 
@@ -800,11 +800,11 @@ Deliverables:
 - before/after storage measurement;
 - retention exceptions for append-only/security-critical evidence.
 
-Acceptance: storage growth is measurable and bounded without deleting evidence that the security/audit model requires to remain immutable.
+Acceptance: class budgets, archive/delete eligibility, fail-closed approval, bounded cleanup execution, before/after measurements, failure evidence and protected-evidence exclusions pass CI/database isolation. Production deployment itself does not authorize or run destructive cleanup.
 
 Manual input gate:
 
-No external account is required. Any destructive cleanup policy requires explicit operator approval before first live execution.
+No external account is required. The /retention page must show candidate rows first. A workspace owner/admin must explicitly approve bounded cleanup and separately confirm a cleanup run. Build 034 deployment alone never performs destructive production cleanup.
 
 ## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
 
