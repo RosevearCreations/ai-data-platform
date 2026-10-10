@@ -400,3 +400,14 @@ Contextual help explicitly identifies actions that require manual external setup
 - excess admins, unused high-risk capability slots and unused connector grants are review recommendations only;
 - Build 035 never adds/removes members, promotes/demotes roles, enables/disables profile capabilities, or changes connector grants automatically;
 - investment recommendations follow durable usage and never create synthetic activity.
+
+## Build 036 renewal security
+
+- Build 036 reads only workspaces authorized by normal membership/RLS;
+- renewal snapshots contain compact counts/flags only, never raw business payloads, secrets or credentials;
+- runtime access to renewal snapshots is SELECT/INSERT only; UPDATE/DELETE are not granted;
+- unchanged evidence is fingerprint-deduplicated;
+- retention is capped at 365 days / 30 snapshots per workspace;
+- missing Build 030 measurements remain explicitly unmeasured instead of being backfilled or inferred;
+- roadmap recommendations never mutate roles, profile capabilities, connector grants, remote gates or integration receiver settings;
+- no synthetic provider run, barcode capture, sync outcome or business delivery event is created to improve a metric.

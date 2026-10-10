@@ -35,6 +35,15 @@ const evidence: ProductionLearningEvidence = {
     remoteWorkspaces: 0,
     integrationWorkspaces: 0
   },
+  renewal: {
+    cycleSnapshots: 0,
+    baselineSnapshots: 0,
+    baselineGeneratedAt: null,
+    baselineSyncEvents: 0,
+    baselineSyncConflicts: 0,
+    baselineRepairChecks: 0,
+    baselineRepairHealthy: 0
+  },
   workspaces: [
     {
       workspaceId: "11111111-1111-4111-8111-111111111111",
@@ -411,6 +420,64 @@ assert(
   "Observed use of disabled profile capabilities must require action."
 );
 
+const renewalEvidence: ProductionLearningEvidence = {
+  ...adoptionEvidence,
+  renewal: {
+    cycleSnapshots: 1,
+    baselineSnapshots: 1,
+    baselineGeneratedAt: "2026-10-09T12:00:00.000Z",
+    baselineSyncEvents: 10,
+    baselineSyncConflicts: 2,
+    baselineRepairChecks: 2,
+    baselineRepairHealthy: 1
+  }
+};
+const renewalReview = buildProductionLearningAssessment(renewalEvidence);
+assert(
+  !renewalReview.roadmap.some((item) => item.build === 36),
+  "Build 036 must leave the active roadmap after a durable renewal cycle snapshot exists."
+);
+assert(
+  renewalReview.roadmap.some((item) => item.build === 38),
+  "Build 038 trend validation must become the finite follow-up checkpoint after Build 036."
+);
+assert(
+  renewalReview.renewal.build030Comparison.length === 6,
+  "Build 036 must compare sync/repair, Browserless, delivery, retention and adoption against the Build 030 review."
+);
+assert(
+  renewalReview.renewal.build030Comparison.some(
+    (item) =>
+      item.key === "sync-reliability" &&
+      item.baseline.includes("Earliest durable baseline")
+  ),
+  "Build 036 must use the earliest durable post-Build-030 sync snapshot when one exists."
+);
+
+const noAdoptionRenewal: ProductionLearningEvidence = {
+  ...renewalEvidence,
+  adoption: {
+    ...renewalEvidence.adoption,
+    activeWorkspaces: 0,
+    noActivityWorkspaces: 1
+  }
+};
+const noAdoptionReview = buildProductionLearningAssessment(noAdoptionRenewal);
+assert(
+  noAdoptionReview.roadmap.some(
+    (item) =>
+      item.build === 37 &&
+      item.title === "Guided Production Adoption & First-Evidence Runbook"
+  ),
+  "Build 036 must prioritize guided production adoption when no workspace has durable activity."
+);
+assert(
+  noAdoptionReview.renewal.evidenceGaps.some((gap) =>
+    gap.includes("No workspace shows durable operational adoption")
+  ),
+  "Build 036 must name the operational-adoption evidence gap explicitly."
+);
+
 console.log(
-  "Build 035 production-learning advances only after durable adoption snapshots and surfaces least-privilege mismatches without changing permissions."
+  "Build 036 production-learning renewal preserves non-fabricated Build 030 comparisons, closes itself after durable cycle evidence and emits a finite evidence-driven roadmap."
 );

@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 035</p>
+          <p className="eyebrow">Build 036</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,11 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 035</p>
+        <p className="eyebrow">Build 036</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
-          provider/storage cost proxies and an evidence-driven renewed roadmap.
+          Build 036 re-runs the production review after Builds 031–035, compares
+          durable evidence against the Build 030 review, names unresolved gaps and
+          renews only a finite evidence-driven roadmap.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -196,6 +197,45 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
+          <p className="eyebrow">Build 030 → Build 036</p>
+          <h2>Before / after evidence comparison</h2>
+          <HelpInfo topic="learning-renewal" />
+        </div>
+        <div className="grid">
+          {review.renewal.build030Comparison.map((item) => (
+            <article className="card" key={item.key}>
+              <h3>{item.label}</h3>
+              <p><strong>Build 030:</strong> {item.build030}</p>
+              <p><strong>Current:</strong> {item.current}</p>
+              <p><strong>Baseline:</strong> {item.baseline}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <p className="eyebrow">Unresolved evidence</p>
+          <h2>Gaps that still affect operating decisions</h2>
+        </div>
+        {review.renewal.evidenceGaps.length ? (
+          <div className="grid">
+            {review.renewal.evidenceGaps.map((gap) => (
+              <article className="card" key={gap}>
+                <span className="badge">WATCH</span>
+                <p>{gap}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="emptyState">
+            <p>No unresolved Build 036 evidence gaps are currently visible.</p>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <div className="sectionHeading">
           <p className="eyebrow">Findings</p>
           <h2>Measured results and evidence gaps</h2>
           <HelpInfo topic="learning-gaps" />
@@ -271,7 +311,7 @@ export default async function ProductionLearningPage() {
       <section>
         <div className="sectionHeading">
           <p className="eyebrow">Renewed roadmap</p>
-          <h2>Builds 032–036 — evidence driven</h2>
+          <h2>Finite renewed queue — evidence driven</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
         <div className="grid">

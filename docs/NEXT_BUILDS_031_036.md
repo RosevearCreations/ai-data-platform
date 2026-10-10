@@ -109,6 +109,8 @@ Manual intervention: none for infrastructure. Review /adoption and choose future
 
 ## Build 036 — Production Learning II & Roadmap Renewal
 
+Status: IMPLEMENTED — DURABLE RENEWAL CYCLE / FINITE ROADMAP ACTIVE.
+
 Priority: P2, mandatory before another long feature queue.
 
 Purpose: compare the platform against the Build 030 baseline.
@@ -124,4 +126,13 @@ Implementation sequence:
 7. List unresolved evidence gaps.
 8. Produce the next finite roadmap from measured needs only.
 
-Manual intervention: no infrastructure setup; business-priority confirmation may follow the evidence report.
+Manual intervention: no infrastructure setup. Review /production-learning after deployment; business-priority confirmation may follow, but missing measurements are never fabricated and the default next queue stays finite.
+
+## Renewed finite queue after Build 036
+
+- unresolved Build 032 remains visible until one approved Browserless production run creates a terminal provider baseline;
+- unresolved Build 033 remains visible until one supported business receiver returns a live dry-run acknowledgement;
+- Build 037 — Guided Production Adoption & First-Evidence Runbook is P1 only when Build 036 measures zero durable operational adoption;
+- Build 038 — Production Learning III & Trend Validation is the P2 checkpoint after real operating activity or a material gate change.
+
+Do not extend this into another long speculative feature queue before the next evidence checkpoint.

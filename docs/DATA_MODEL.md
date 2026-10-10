@@ -645,3 +645,20 @@ Workspace-scoped, append-only adoption snapshots capture the smallest durable co
 A SHA-256 evidence fingerprint prevents repeated reads from creating duplicate unchanged snapshots. Runtime permissions are SELECT/INSERT only under workspace RLS. Retention is bounded to 365 days and 60 snapshots per workspace.
 
 Build 035 never stores connector secret values, raw extracted datasets or membership credentials in adoption snapshots.
+
+## Build 036 production-learning cycle snapshots
+
+### production_learning_cycle_snapshots
+
+Workspace-scoped append-only renewal evidence for the Build 036 review. Each row stores compact counts only:
+
+- sync events/conflicts/errors;
+- repair checks/healthy/rollbacks;
+- provider runs/successes/units;
+- integration attempts/live accepts/rejections/transport errors;
+- retention budget breaches/delete-eligible rows/cleanup failures;
+- adoption activity/used capabilities/high-risk unused capabilities;
+- connector unused-grant count;
+- whether permission review is required.
+
+Rows are SHA-256 fingerprint-deduplicated per workspace/cycle, RLS scoped, runtime SELECT/INSERT only, and bounded to 365 days / 30 snapshots per workspace.

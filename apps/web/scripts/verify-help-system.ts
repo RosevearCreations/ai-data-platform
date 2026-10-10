@@ -95,8 +95,18 @@ async function main() {
     "Build 035 help must preserve durable adoption, stale-grant and no-automatic-permission-change guidance."
   );
 
+  const renewal = HELP_TOPICS["learning-renewal"];
+  assert(
+    "manual" in renewal &&
+      renewal.manual.some((step) => step.includes("No infrastructure setup")) &&
+      renewal.steps.some((step) => step.includes("never invents")) &&
+      renewal.steps.some((step) => step.includes("Build 038")) &&
+      renewal.notes.some((note) => note.includes("365 days / 30 snapshots")),
+    "Build 036 help must preserve non-fabricated baseline, finite-roadmap and bounded renewal-snapshot guidance."
+  );
+
   console.log(
-    "Build 035 contextual help coverage, retention approval guidance and adoption/least-privilege instructions passed."
+    "Build 036 contextual help coverage, adoption/retention guidance and finite production-learning renewal instructions passed."
   );
 
 }
