@@ -317,3 +317,9 @@ Connector grant review compares workspace installation grants with append-only c
 Permission review combines owner/admin/member distribution with unused high-risk capability slots, connector grant outcomes and profile configuration mismatches. The result is advisory. No Build 035 code path can add/remove workspace members, change roles, change profile capability flags or rewrite connector grants.
 
 Fingerprint-deduplicated adoption snapshots provide before/after continuity for Build 036 without copying raw business data.
+
+## Build 036 renewal architecture
+
+The Build 036 review has two comparison layers. Sync/repair can use the earliest durable post-Build-030 `production_learning_review_snapshots` row as a numeric continuity baseline. Browserless cost, consumer delivery, enforceable retention and durable adoption did not have equivalent Build 030 numeric snapshots, so the review labels those as qualitative Build 030 evidence gaps and reports only current durable values.
+
+After collecting the current RLS-scoped workspace evidence, Build 036 writes one compact `production_learning_cycle_snapshots` row per changed workspace fingerprint. The report then derives unresolved gaps and a finite roadmap. It does not generate activity, modify permissions, or broaden provider/integration gates.

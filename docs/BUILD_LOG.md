@@ -1815,3 +1815,26 @@ Delivered:
 - CI/database isolation proving RLS, snapshot immutability and durable connector/profile adoption evidence.
 
 Build 035 makes recommendations only. It never changes workspace roles, profile capability flags or connector grants automatically.
+
+## Build 036 — Production Learning II & Roadmap Renewal
+
+Date: 2026-10-10
+
+Status: IMPLEMENTED — DURABLE RENEWAL CYCLE / FINITE ROADMAP ACTIVE.
+
+Delivered:
+
+- migration `0015_production_learning_renewal.sql`;
+- compact RLS-scoped, append-only Build 036 cycle snapshots;
+- fingerprint deduplication and 365-day / 30-snapshot retention;
+- six-part Build 030 → Build 036 comparison covering sync, repair, Browserless, delivery, retention and adoption;
+- earliest durable post-Build-030 numeric baseline for sync/repair only;
+- explicit non-fabrication of historical provider/delivery/retention/adoption numbers;
+- unresolved evidence-gap list;
+- current security/permission re-review;
+- finite roadmap renewal that removes Build 036 after durable evidence;
+- conditional Build 037 for zero operational adoption;
+- Build 038 Production Learning III trend-validation checkpoint;
+- contextual help and extension 0.36.0 messaging.
+
+No permission, provider gate, integration receiver or business record is changed by the renewal review.

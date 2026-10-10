@@ -829,7 +829,7 @@ No infrastructure setup is required. The /adoption review presents evidence and 
 
 ## Build 036 — Production Learning II & Roadmap Renewal
 
-Status: QUEUED — NOT STARTED.
+Status: IMPLEMENTED — DURABLE RENEWAL CYCLE / FINITE ROADMAP ACTIVE.
 
 Goal: repeat the Build 030 review after Builds 031–035 and renew the roadmap only from measured reliability, cost, adoption and unresolved gaps.
 
@@ -844,8 +844,29 @@ Deliverables:
 - new evidence gaps;
 - next prioritized roadmap.
 
-Acceptance: the next queue is justified by measured changes since Build 030, with unresolved risks/actions named explicitly.
+Acceptance: PASSED when the authenticated review records bounded Build 036 cycle snapshots, compares sync/repair against the earliest durable post-Build-030 baseline without fabricating missing historical numbers, reports current Browserless/delivery/retention/adoption outcomes, names unresolved evidence gaps explicitly and replaces Build 036 with a finite evidence-driven queue.
 
 Manual input gate:
 
-No infrastructure setup is required; the user may confirm business priorities after the evidence review.
+No infrastructure setup is required. Business priorities may be adjusted after reviewing /production-learning, but the default queue remains finite and evidence-driven.
+
+
+## Build 037 — Guided Production Adoption & First-Evidence Runbook
+
+Status: EVIDENCE-CONDITIONAL — QUEUED only when Build 036 sees zero durable operational adoption.
+
+Goal: use existing safe workflows to generate real production evidence before adding more platform features.
+
+Priority: P1 when no workspace has durable activity.
+
+Scope: guided first-use sequences for sync, source-policy, barcode/scheduled workflows where profile-appropriate, with explicit review gates and no synthetic activity.
+
+## Build 038 — Production Learning III & Trend Validation
+
+Status: QUEUED AFTER BUILD 036.
+
+Goal: repeat the finite review after real operating activity or after unresolved Browserless/integration gates materially change.
+
+Priority: P2.
+
+Scope: validate trends, close or retain evidence gaps, and renew the queue again only from observed outcomes.

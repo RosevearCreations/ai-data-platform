@@ -533,3 +533,20 @@ CI/database acceptance must:
 12. verify recommendations do not mutate roles, profile capabilities or connector grants.
 
 No production action is required to manufacture adoption. After deployment, the operator may use /adoption to decide where future investment is justified.
+
+## Build 036 renewal verification
+
+CI/database acceptance must:
+
+1. apply `0015_production_learning_renewal.sql`;
+2. persist changed Build 036 cycle snapshots for authorized workspaces;
+3. prove another account cannot read those snapshots;
+4. prove runtime UPDATE/DELETE is denied;
+5. compare sync/repair with the earliest durable post-Build-030 snapshot when present;
+6. leave historical provider/delivery/retention/adoption values explicitly unmeasured when no Build 030 numeric baseline exists;
+7. name unresolved provider, consumer, adoption and operational-sample gaps;
+8. remove Build 036 from the active roadmap after durable renewal evidence exists;
+9. conditionally add Build 037 only for zero operational adoption;
+10. always add Build 038 as the finite trend-validation checkpoint after the renewal cycle.
+
+No external service or environment variable is required.

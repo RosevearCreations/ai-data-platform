@@ -1756,12 +1756,16 @@ async function main() {
     productionLearning.totals.adoptionActiveWorkspaces < 1 ||
     productionLearning.totals.adoptionConnectorUsedGrants !== 1 ||
     productionLearning.totals.adoptionConnectorUnusedGrants !== 0 ||
+    productionLearning.totals.renewalCycleSnapshots < 3 ||
+    productionLearning.totals.renewalBaselineSnapshots < 3 ||
     productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
     productionLearning.roadmap.some((item) => item.build === 34) ||
     productionLearning.roadmap.some((item) => item.build === 35) ||
+    productionLearning.roadmap.some((item) => item.build === 36) ||
+    !productionLearning.roadmap.some((item) => item.build === 38) ||
     productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 035 production-learning retention/adoption/consumer aggregation failed.");
+    throw new Error("Build 036 production-learning renewal/adoption/consumer aggregation failed.");
   }
   if (
     !productionLearning.findings.some(
@@ -1787,13 +1791,39 @@ async function main() {
     throw new Error("Build 031 production-learning review snapshot was not persisted.");
   }
 
+  const renewalSnapshotCount = await withUserDatabase(ownerId, async (client) => {
+    const result = await client.query<{ count: string }>(
+      "select count(*)::text as count from app.production_learning_cycle_snapshots where workspace_id=$1 and cycle_key='build-036'",
+      [syncWorkspaceId]
+    );
+    return Number(result.rows[0]?.count ?? 0);
+  });
+  if (renewalSnapshotCount < 1) {
+    throw new Error("Build 036 renewal snapshot was not persisted.");
+  }
+
+  let renewalSnapshotImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.production_learning_cycle_snapshots set sync_events=999 where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    renewalSnapshotImmutable = true;
+  }
+  if (!renewalSnapshotImmutable) {
+    throw new Error("Build 036 renewal snapshots unexpectedly allowed runtime updates.");
+  }
+
   const restrictedLearning = await buildProductionLearningReview(restrictedId);
   if (restrictedLearning.evidence.workspaces.length !== 0) {
     throw new Error("Build 030 production-learning evidence leaked across accounts.");
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, least-privilege outcomes and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035/036 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, Build 030 comparison continuity, finite roadmap renewal and workspace-target acceptance passed."
   );
 }
 

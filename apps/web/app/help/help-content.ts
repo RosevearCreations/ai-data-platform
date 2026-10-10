@@ -398,6 +398,27 @@ export const HELP_TOPICS = {
       "After reviewing /adoption, you may choose which business domains/connectors deserve further investment. No recommendation is applied automatically."
     ]
   },
+  "learning-renewal": {
+    title: "Production Learning II & Build 030 comparison",
+    summary: "Build 036 repeats the production evidence review after Builds 031–035, preserves the difference between an old evidence gap and a numeric baseline, and creates a finite next queue only from current durable evidence.",
+    steps: [
+      "Read the six before/after cards for sync, repair, Browserless, delivery, retention and adoption.",
+      "For sync/repair, use the earliest durable post-Build-030 snapshot when available; Build 036 never invents a numeric Build 030 value that was not recorded.",
+      "For Browserless, integration delivery, retention and adoption, treat Build 030 as a qualitative evidence gap where no equivalent durable metric existed.",
+      "Review the unresolved evidence-gap list separately from measured zero values.",
+      "Keep unresolved Build 032/033 gates visible until a real provider run or live dry-run consumer acknowledgement exists.",
+      "If no workspace has durable operational adoption, prioritize the guided first-evidence runbook before adding more platform surface area.",
+      "Use Build 038 as the next review checkpoint after real operating activity or a material gate change."
+    ],
+    notes: [
+      "Build 036 cycle snapshots are append-only, RLS-scoped, fingerprint-deduplicated and bounded to 365 days / 30 snapshots per workspace.",
+      "The renewed roadmap is intentionally finite and may retain earlier unresolved builds."
+    ],
+    manual: [
+      "No infrastructure setup is required.",
+      "After reviewing the report, you may change business priorities, but the default queue remains evidence-driven."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -422,14 +443,14 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 035 records durable adoption and least-privilege outcomes across workspaces, profiles, connector grants and feature surfaces. Earlier Browserless, integration and retention gates remain evidence-driven independently.",
+    summary: "Build 036 closes the 031–035 review cycle, compares current evidence with the Build 030 review without fabricating missing baselines, and emits a finite renewed queue while unresolved Browserless/integration gates remain visible.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
       "Build 033 proves consumer-side integration acceptance.",
       "Build 034 adds retention/storage enforcement.",
       "Build 035 records adoption and permission outcomes without changing permissions automatically.",
-      "Build 036 repeats production learning and renews the roadmap again."
+      "Build 036 repeats production learning, records the renewal cycle and replaces itself with a finite next queue."
     ],
     notes: ["Business priorities can deliberately change this order, but the default queue follows current evidence."]
   },
@@ -485,6 +506,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

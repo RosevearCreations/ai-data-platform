@@ -458,3 +458,21 @@ Reason: adoption analytics should inform an operator decision, not silently chan
 Decision: workspace adoption snapshots persist only compact counts/keys, deduplicate unchanged evidence by SHA-256 fingerprint, and retain at most 365 days / 60 snapshots per workspace.
 
 Reason: Build 036 needs before/after continuity without turning adoption analytics into an unbounded data store.
+
+## D0072 — Build 030 comparison must not invent historical numbers
+
+Decision: Build 036 uses the earliest durable post-Build-030 sync/repair snapshot for numeric trend continuity. For provider cost, delivery, retention and adoption metrics that did not have an equivalent Build 030 durable snapshot, the report states that no numeric baseline existed.
+
+Reason: a qualitative evidence gap is not a numeric zero and must not be rewritten as one.
+
+## D0073 — Roadmap renewal is finite
+
+Decision: after Build 036 persists renewal evidence, Build 036 removes itself from the active queue. The queue may retain unresolved Builds 032/033, conditionally add Build 037 for zero-adoption evidence, and add Build 038 as the next trend-validation checkpoint.
+
+Reason: the platform should not grow through an indefinitely extended speculative queue.
+
+## D0074 — Renewal snapshots are compact and append-only
+
+Decision: Build 036 stores only bounded counts/flags, deduplicates unchanged evidence by fingerprint and grants the runtime no UPDATE/DELETE permission.
+
+Reason: roadmap continuity requires durable evidence without creating another mutable or unbounded analytics store.

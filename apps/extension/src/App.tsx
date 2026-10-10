@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">035</span>
+        <span className="build">036</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Adoption evidence never broadens permissions automatically</strong>
+        <strong>Production Learning II uses durable evidence only</strong>
         <p>
-          Build 035 compares enabled profile capabilities with durable activity and
-          connector grants with execution evidence. Recommendations remain
-          server-side review guidance; this extension does not alter workspace
-          roles, capability flags or connector grants.
+          Build 036 compares current production outcomes with the Build 030 review
+          and renews a finite roadmap. Missing historical measurements stay marked
+          as gaps rather than synthetic numbers; this extension does not alter
+          permissions or create activity to satisfy a metric.
         </p>
       </section>
 

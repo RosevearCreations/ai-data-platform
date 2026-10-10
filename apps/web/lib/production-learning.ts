@@ -170,6 +170,15 @@ export interface ProductionLearningEvidence {
     remoteWorkspaces: number;
     integrationWorkspaces: number;
   };
+  renewal: {
+    cycleSnapshots: number;
+    baselineSnapshots: number;
+    baselineGeneratedAt: string | null;
+    baselineSyncEvents: number;
+    baselineSyncConflicts: number;
+    baselineRepairChecks: number;
+    baselineRepairHealthy: number;
+  };
   workspaces: ProductionLearningWorkspaceEvidence[];
 }
 
@@ -291,6 +300,13 @@ export function summarizeProductionLearningEvidence(
   const adoptionScheduledWorkspaces = evidence.adoption.scheduledWorkspaces;
   const adoptionRemoteWorkspaces = evidence.adoption.remoteWorkspaces;
   const adoptionIntegrationWorkspaces = evidence.adoption.integrationWorkspaces;
+  const renewalCycleSnapshots = evidence.renewal.cycleSnapshots;
+  const renewalBaselineSnapshots = evidence.renewal.baselineSnapshots;
+  const renewalBaselineGeneratedAt = evidence.renewal.baselineGeneratedAt;
+  const renewalBaselineSyncEvents = evidence.renewal.baselineSyncEvents;
+  const renewalBaselineSyncConflicts = evidence.renewal.baselineSyncConflicts;
+  const renewalBaselineRepairChecks = evidence.renewal.baselineRepairChecks;
+  const renewalBaselineRepairHealthy = evidence.renewal.baselineRepairHealthy;
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
     evidence,
@@ -403,6 +419,21 @@ export function summarizeProductionLearningEvidence(
     adoptionScheduledWorkspaces,
     adoptionRemoteWorkspaces,
     adoptionIntegrationWorkspaces,
+    renewalCycleSnapshots,
+    renewalBaselineSnapshots,
+    renewalBaselineGeneratedAt,
+    renewalBaselineSyncEvents,
+    renewalBaselineSyncConflicts,
+    renewalBaselineSyncConflictRate:
+      renewalBaselineSyncEvents === 0
+        ? null
+        : renewalBaselineSyncConflicts / renewalBaselineSyncEvents,
+    renewalBaselineRepairChecks,
+    renewalBaselineRepairHealthy,
+    renewalBaselineRepairSuccessRate:
+      renewalBaselineRepairChecks === 0
+        ? null
+        : renewalBaselineRepairHealthy / renewalBaselineRepairChecks,
     connectorInstallations,
     connectorExecutions,
     syncEvents,
@@ -818,6 +849,56 @@ export function buildProductionLearningAssessment(
     owner: "operations"
   });
 
+  const renewalEvidenceGaps = [
+    ...(totals.syncEvents === 0
+      ? ["No real synchronization outcome samples exist yet."]
+      : []),
+    ...(totals.repairCompatibilityChecks === 0
+      ? ["No real post-repair compatibility samples exist yet."]
+      : []),
+    ...(totals.providerRuns === 0
+      ? ["The Browserless production cost/reliability baseline is still unmeasured."]
+      : []),
+    ...(totals.integrationLiveAccepted === 0
+      ? ["No supported business consumer has returned a live dry-run acknowledgement."]
+      : []),
+    ...(totals.adoptionActiveWorkspaces === 0
+      ? ["No workspace shows durable operational adoption yet."]
+      : []),
+    ...(totals.renewalBaselineSnapshots === 0
+      ? ["No earlier durable sync/repair snapshot is available for a numeric trend delta."]
+      : [])
+  ];
+
+  findings.push({
+    key: "production-learning-renewal",
+    category: "Production Learning II",
+    status:
+      totals.renewalCycleSnapshots === 0
+        ? "gap"
+        : renewalEvidenceGaps.length > 0
+          ? "watch"
+          : "healthy",
+    title:
+      totals.renewalCycleSnapshots === 0
+        ? "Build 036 renewal snapshot is not yet durable."
+        : "Build 030 findings have been re-measured after Builds 031–035.",
+    evidence:
+      String(totals.renewalCycleSnapshots) +
+      " Build 036 cycle snapshots · " +
+      String(totals.renewalBaselineSnapshots) +
+      " earliest post-Build-030 sync/repair baselines · " +
+      String(renewalEvidenceGaps.length) +
+      " unresolved evidence gaps.",
+    action:
+      totals.renewalCycleSnapshots === 0
+        ? "Persist the Build 036 review before starting another long feature queue."
+        : renewalEvidenceGaps.length > 0
+          ? "Keep the renewed roadmap finite and close only the measured gaps that affect real operating decisions."
+          : "Use the renewed finite roadmap and re-check trends after another operating period.",
+    owner: "platform"
+  });
+
   const roadmap: RoadmapRecommendation[] = [
     ...(totals.providerRuns === 0
       ? [{
@@ -875,21 +956,161 @@ export function buildProductionLearningAssessment(
           ]
         }]
       : []),
-    {
-      build: 36,
-      priority: "P2",
-      title: "Production Learning II & Roadmap Renewal",
-      rationale:
-        "Repeat the evidence review after Builds 031–035 and renew the queue only from observed reliability, cost and adoption.",
-      evidenceKeys: [
-        "sync-outcome-telemetry",
-        "remote-cost-reliability",
-        "integration-consumer-readiness",
-        "storage-retention",
-        "adoption-permission-outcomes"
-      ]
-    }
+    ...(totals.renewalCycleSnapshots === 0
+      ? [{
+          build: 36,
+          priority: "P2" as const,
+          title: "Production Learning II & Roadmap Renewal",
+          rationale:
+            "Persist the post-Build-035 review and renew the queue only from measured reliability, cost, adoption and unresolved evidence gaps.",
+          evidenceKeys: [
+            "sync-outcome-telemetry",
+            "remote-cost-reliability",
+            "integration-consumer-readiness",
+            "storage-retention",
+            "adoption-permission-outcomes",
+            "production-learning-renewal"
+          ]
+        }]
+      : []),
+    ...(totals.renewalCycleSnapshots > 0 &&
+    totals.adoptionActiveWorkspaces === 0
+      ? [{
+          build: 37,
+          priority: "P1" as const,
+          title: "Guided Production Adoption & First-Evidence Runbook",
+          rationale:
+            "Build 036 found no durable operational adoption in any workspace, so the next work should activate existing safe workflows and collect real evidence before adding more platform surface area.",
+          evidenceKeys: [
+            "production-learning-renewal",
+            "adoption-permission-outcomes",
+            "sync-outcome-telemetry",
+            "barcode-adoption"
+          ]
+        }]
+      : []),
+    ...(totals.renewalCycleSnapshots > 0
+      ? [{
+          build: 38,
+          priority: "P2" as const,
+          title: "Production Learning III & Trend Validation",
+          rationale:
+            "Re-run the finite evidence review after real operating activity or after unresolved Build 032/033 gates change; do not create another long queue by assumption.",
+          evidenceKeys: [
+            "production-learning-renewal",
+            "remote-cost-reliability",
+            "integration-consumer-readiness",
+            "adoption-permission-outcomes"
+          ]
+        }]
+      : [])
   ];
 
-  return { totals, findings, roadmap };
+  const renewal = {
+    build030Comparison: [
+      {
+        key: "sync-reliability",
+        label: "Synchronization reliability",
+        build030: "Build 030 identified missing durable sync outcome telemetry.",
+        current:
+          String(totals.syncEvents) +
+          " durable sync outcomes; " +
+          String(totals.syncConflicts) +
+          " conflicts; " +
+          String(totals.syncErrors) +
+          " errors.",
+        baseline:
+          totals.renewalBaselineSnapshots === 0
+            ? "No numeric post-Build-030 baseline snapshot is available."
+            : "Earliest durable baseline: " +
+              String(totals.renewalBaselineSyncEvents) +
+              " events at " +
+              String(totals.renewalBaselineSyncConflictRate === null
+                ? "no measured conflict rate"
+                : Math.round(totals.renewalBaselineSyncConflictRate * 100) + "% conflict rate") +
+              "."
+      },
+      {
+        key: "repair-reliability",
+        label: "Recipe-repair reliability",
+        build030: "Build 030 identified missing durable repair success/rollback telemetry.",
+        current:
+          String(totals.repairCompatibilityChecks) +
+          " compatibility checks; " +
+          String(totals.repairHealthyChecks) +
+          " healthy; " +
+          String(totals.repairRollbacks) +
+          " rollbacks.",
+        baseline:
+          totals.renewalBaselineSnapshots === 0
+            ? "No numeric post-Build-030 baseline snapshot is available."
+            : "Earliest durable baseline: " +
+              String(totals.renewalBaselineRepairChecks) +
+              " checks at " +
+              String(totals.renewalBaselineRepairSuccessRate === null
+                ? "no measured healthy rate"
+                : Math.round(totals.renewalBaselineRepairSuccessRate * 100) + "% healthy") +
+              "."
+      },
+      {
+        key: "remote-provider",
+        label: "Browserless cost / reliability",
+        build030: "Provider cost/reliability was a readiness gap, not a measured production baseline.",
+        current:
+          String(totals.providerRuns) +
+          " terminal provider runs · " +
+          String(totals.providerUnits) +
+          " estimated units · decision " +
+          String(totals.browserlessBaselineDecision) +
+          ".",
+        baseline: "Not numerically measured in Build 030; no fabricated delta is shown."
+      },
+      {
+        key: "integration-delivery",
+        label: "Integration delivery",
+        build030: "Consumer-side delivery acceptance was an evidence gap.",
+        current:
+          String(totals.integrationConformanceAccepted) +
+          " conformance acceptances · " +
+          String(totals.integrationLiveAccepted) +
+          " live dry-run acceptances · " +
+          String(totals.integrationDeliveryRejected) +
+          " rejections.",
+        baseline: "Not numerically measured in Build 030; no fabricated delta is shown."
+      },
+      {
+        key: "retention",
+        label: "Retention / storage",
+        build030: "Storage was a proxy without enforceable class budgets or cleanup outcomes.",
+        current:
+          String(totals.retentionBudgetBreaches) +
+          " budget breaches · " +
+          String(totals.retentionDeleteEligibleRows) +
+          " delete-eligible rows · " +
+          String(totals.retentionCleanupRuns) +
+          " cleanup runs.",
+        baseline: "Build 034 introduced the enforceable baseline; Build 030 had no equivalent metric."
+      },
+      {
+        key: "adoption",
+        label: "Adoption / permissions",
+        build030: "Profile/connector adoption was reviewed without durable adoption snapshots.",
+        current:
+          String(totals.adoptionActiveWorkspaces) +
+          "/" +
+          String(totals.workspaces) +
+          " active workspaces · " +
+          String(totals.adoptionUsedCapabilities) +
+          "/" +
+          String(totals.adoptionEnabledCapabilities) +
+          " capability slots used · " +
+          String(totals.adoptionPermissionReviewWorkspaces) +
+          " permission-review workspaces.",
+        baseline: "Build 035 introduced the durable adoption baseline; Build 030 had no equivalent snapshot."
+      }
+    ],
+    evidenceGaps: renewalEvidenceGaps
+  };
+
+  return { totals, findings, roadmap, renewal };
 }
