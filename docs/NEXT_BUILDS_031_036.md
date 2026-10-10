@@ -88,6 +88,8 @@ Manual intervention: open /retention, review candidates, explicitly approve boun
 
 ## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
 
+Status: IMPLEMENTED — DURABLE ADOPTION / LEAST-PRIVILEGE REVIEW ACTIVE.
+
 Priority: P2.
 
 Purpose: decide where further product investment is justified by actual usage.
@@ -103,7 +105,7 @@ Implementation sequence:
 7. Produce least-privilege and investment recommendations.
 8. Never change permissions automatically.
 
-Manual intervention: the user may choose which domains/integrations to prioritize after the review.
+Manual intervention: none for infrastructure. Review /adoption and choose future domain/integration investment manually; Build 035 never changes roles, profile capabilities or connector grants automatically.
 
 ## Build 036 — Production Learning II & Roadmap Renewal
 

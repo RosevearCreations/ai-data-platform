@@ -307,3 +307,13 @@ Retention is a workspace-scoped control plane, not a broad DELETE permission. A 
 Destructive cleanup is intentionally narrow. The normal runtime role still has no general DELETE grant on remote jobs/results or barcode intake. A security-definer function verifies the current session identity, owner/admin membership and an explicitly approved workspace retention policy, then deletes at most one bounded batch. The function only targets terminal low-risk operational rows by age and records before/after storage proxies in append-only cleanup evidence.
 
 Append-only/security-critical classes remain outside this cleanup function. Existing table-specific retention functions from earlier builds continue to own their bounded audit retention; Build 034 does not broaden or bypass them.
+
+## Build 035 adoption / least-privilege boundary
+
+Build 035 is an observation and recommendation layer. It maps each workspace's profile capability flags to durable activity already recorded by synchronization, source policy, scheduled jobs, remote execution, barcode intake and business-integration evidence. A capability is considered used only when its corresponding durable evidence exists.
+
+Connector grant review compares workspace installation grants with append-only connector executions. Successful or failed executions count as real grant use; blocked attempts remain visible but do not make an ungranted or unused capability appear adopted. Grants with no execution evidence can become stale review candidates after 30 days.
+
+Permission review combines owner/admin/member distribution with unused high-risk capability slots, connector grant outcomes and profile configuration mismatches. The result is advisory. No Build 035 code path can add/remove workspace members, change roles, change profile capability flags or rewrite connector grants.
+
+Fingerprint-deduplicated adoption snapshots provide before/after continuity for Build 036 without copying raw business data.

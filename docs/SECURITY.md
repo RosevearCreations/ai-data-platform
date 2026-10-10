@@ -387,3 +387,16 @@ Contextual help explicitly identifies actions that require manual external setup
 - intelligence audit, provider audit, connector audit, operational outcomes, production-learning snapshots, integration delivery/replay evidence, and retention-control evidence are protected from Build 034 destructive cleanup;
 - cleanup-run evidence is append-only to the runtime role and stores bounded counts/bytes rather than deleted payload bodies;
 - the metrics view uses security-invoker semantics so normal workspace RLS remains authoritative.
+
+## Build 035 adoption security
+
+- adoption evidence is read through existing workspace RLS boundaries;
+- the /adoption page and /api/adoption require an authenticated session;
+- adoption snapshots contain counts and capability/grant identifiers only, not connector secrets or raw extracted payloads;
+- snapshots are append-only to the runtime role and bounded to 365 days / 60 rows per workspace;
+- a blocked connector attempt does not count as legitimate use of a grant;
+- observed activity for a disabled profile capability is surfaced as an ACTION mismatch rather than silently changing the profile;
+- ownerless workspaces are an ACTION condition;
+- excess admins, unused high-risk capability slots and unused connector grants are review recommendations only;
+- Build 035 never adds/removes members, promotes/demotes roles, enables/disables profile capabilities, or changes connector grants automatically;
+- investment recommendations follow durable usage and never create synthetic activity.

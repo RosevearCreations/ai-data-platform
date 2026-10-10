@@ -808,7 +808,7 @@ No external account is required. The /retention page must show candidate rows fi
 
 ## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
 
-Status: QUEUED — NOT STARTED.
+Status: IMPLEMENTED — DURABLE ADOPTION / LEAST-PRIVILEGE REVIEW ACTIVE.
 
 Goal: determine which generalized features are actually used and whether privileges remain proportionate.
 
@@ -821,11 +821,11 @@ Deliverables:
 - stale/unused capability recommendations;
 - barcode and scheduled-job adoption comparison.
 
-Acceptance: adoption and least-privilege recommendations are derived from durable workspace evidence and never broaden permissions automatically.
+Acceptance: per-workspace/profile capability use, connector grants/executions, owner/admin/member distribution and barcode/scheduled/remote/integration adoption are derived from durable evidence, fingerprint-snapshotted for trend continuity, and produce advisory least-privilege recommendations without mutating permissions.
 
 Manual input gate:
 
-The user may choose which business domains/connectors deserve further investment after the evidence is presented.
+No infrastructure setup is required. The /adoption review presents evidence and recommendations only; the user may choose which domains/connectors deserve further investment. Roles, profile capabilities and connector grants are never changed automatically.
 
 ## Build 036 — Production Learning II & Roadmap Renewal
 

@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 
+import { buildAdoptionReview } from "./adoption-database";
 import { browserlessPilotReadiness } from "./browserless-provider";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
 import {
@@ -593,7 +594,7 @@ async function workspaceEvidence(
 
 export async function buildProductionLearningReview(userId: string) {
   const workspaces = await listWorkspacesForUser(userId);
-  const [workspaceEvidenceRows, profiles] = await Promise.all([
+  const [workspaceEvidenceRows, profiles, adoptionReview] = await Promise.all([
     Promise.all(workspaces.map((workspace) => workspaceEvidence(userId, workspace))),
     withUserDatabase(userId, async (client) => {
       const result = await client.query<{
@@ -603,7 +604,8 @@ export async function buildProductionLearningReview(userId: string) {
         "select is_builtin, archived_at from app.workspace_profiles"
       );
       return result.rows;
-    })
+    }),
+    buildAdoptionReview(userId)
   ]);
 
   const readiness = browserlessPilotReadiness();
@@ -623,6 +625,28 @@ export async function buildProductionLearningReview(userId: string) {
       customArchived: profiles.filter(
         (profile) => !profile.is_builtin && Boolean(profile.archived_at)
       ).length
+    },
+    adoption: {
+      reviewSnapshots: adoptionReview.totals.reviewSnapshots,
+      activeWorkspaces: adoptionReview.totals.activeWorkspaces,
+      noActivityWorkspaces: adoptionReview.totals.noActivityWorkspaces,
+      enabledCapabilities: adoptionReview.totals.enabledCapabilities,
+      usedCapabilities: adoptionReview.totals.usedCapabilities,
+      unusedEnabledCapabilities: adoptionReview.totals.unusedEnabledCapabilities,
+      highRiskUnusedCapabilities:
+        adoptionReview.totals.highRiskUnusedCapabilities,
+      disabledUsedCapabilities:
+        adoptionReview.totals.disabledUsedCapabilities,
+      connectorGrants: adoptionReview.totals.connectorGrants,
+      connectorUsedGrants: adoptionReview.totals.connectorUsedGrants,
+      connectorUnusedGrants: adoptionReview.totals.connectorUnusedGrants,
+      connectorStaleGrants: adoptionReview.totals.connectorStaleGrants,
+      permissionReviewWorkspaces:
+        adoptionReview.totals.permissionReviewWorkspaces,
+      barcodeWorkspaces: adoptionReview.totals.barcodeWorkspaces,
+      scheduledWorkspaces: adoptionReview.totals.scheduledWorkspaces,
+      remoteWorkspaces: adoptionReview.totals.remoteWorkspaces,
+      integrationWorkspaces: adoptionReview.totals.integrationWorkspaces
     },
     workspaces: workspaceEvidenceRows
   };

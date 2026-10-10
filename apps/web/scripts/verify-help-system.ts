@@ -22,6 +22,7 @@ async function main() {
     "../app/connectors/ConnectorManager.tsx",
     "../app/integration-delivery/page.tsx",
     "../app/retention/page.tsx",
+    "../app/adoption/page.tsx",
     "../app/production-learning/page.tsx",
     "../app/help/page.tsx"
   ];
@@ -84,8 +85,18 @@ async function main() {
     "Build 034 help must preserve explicit approval, age gates and no-cleanup-on-deploy guidance."
   );
 
+  const adoption = HELP_TOPICS["adoption-overview"];
+  assert(
+    "manual" in adoption &&
+      adoption.manual.some((step) => step.includes("No external account")) &&
+      adoption.steps.some((step) => step.includes("30 days")) &&
+      adoption.steps.some((step) => step.includes("never edit roles")) &&
+      adoption.notes.some((note) => note.includes("365 days / 60 snapshots")),
+    "Build 035 help must preserve durable adoption, stale-grant and no-automatic-permission-change guidance."
+  );
+
   console.log(
-    "Build 034 contextual help coverage, consumer delivery guidance and explicit retention-cleanup approval instructions passed."
+    "Build 035 contextual help coverage, retention approval guidance and adoption/least-privilege instructions passed."
   );
 
 }

@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 034</p>
+          <p className="eyebrow">Build 035</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,7 +45,7 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 034</p>
+        <p className="eyebrow">Build 035</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
           Live RLS-scoped evidence from Builds 019–029, explicit evidence gaps,
@@ -53,6 +53,9 @@ export default async function ProductionLearningPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
+          <Link className="secondaryButton" href="/adoption">
+            Adoption & permissions
+          </Link>
           <a className="secondaryButton" href="/api/production-learning">
             Evidence JSON
           </a>
@@ -148,6 +151,17 @@ export default async function ProductionLearningPage() {
             </p>
             <span className="badge">
               {totals.retentionBudgetBreaches > 0 ? "review required" : "budgets enforced"}
+            </span>
+          </article>
+          <article className="card">
+            <h3>{totals.adoptionActiveWorkspaces}/{totals.workspaces} adopted workspaces</h3>
+            <p>
+              {totals.adoptionUsedCapabilities}/{totals.adoptionEnabledCapabilities} capability slots used ·{" "}
+              {totals.adoptionHighRiskUnusedCapabilities} high-risk unused ·{" "}
+              {totals.adoptionConnectorUnusedGrants} unused connector grants.
+            </p>
+            <span className="badge">
+              {totals.adoptionReviewSnapshots} durable adoption snapshots
             </span>
           </article>
         </div>

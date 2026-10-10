@@ -376,6 +376,28 @@ export const HELP_TOPICS = {
       "Do not approve cleanup merely to test the button; CI verifies deletion behavior against disposable fixtures."
     ]
   },
+  "adoption-overview": {
+    title: "Workspace, profile & connector adoption / permissions",
+    summary: "Build 035 compares enabled profile capabilities with durable usage, connector grants with real execution evidence, and workspace roles with least-privilege review rules. It records bounded adoption snapshots but never changes permissions automatically.",
+    steps: [
+      "Compare active workspaces with workspaces that still have no durable operational activity.",
+      "Review enabled capability slots against observed history, source-policy, scheduled-job, remote, barcode and integration activity.",
+      "Treat observed use of a disabled profile capability as a configuration mismatch that requires investigation.",
+      "Review connector grants against successful/failed execution evidence; blocked attempts do not count as grant use.",
+      "Review unused connector grants, including grants unused for 30 days or longer, before adding credentials or broader capabilities.",
+      "Compare owner/admin/member counts and keep elevated privileges proportionate to measured operational need.",
+      "Use the profile cards to prioritize future investment where durable activity exists; do not manufacture usage to close a metric.",
+      "Build 035 recommendations are advisory only and never edit roles, profiles, connector grants or capability flags."
+    ],
+    notes: [
+      "Adoption snapshots are fingerprint-deduplicated, RLS-scoped and bounded to 365 days / 60 snapshots per workspace.",
+      "A zero is measured inactivity; it is not automatically a defect."
+    ],
+    manual: [
+      "No external account, paid service or environment variable is required.",
+      "After reviewing /adoption, you may choose which business domains/connectors deserve further investment. No recommendation is applied automatically."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -400,13 +422,13 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 034 adds enforceable retention budgets, protected-evidence exceptions and explicit bounded cleanup evidence. Earlier Browserless/integration gates remain evidence-driven and can stay visible independently.",
+    summary: "Build 035 records durable adoption and least-privilege outcomes across workspaces, profiles, connector grants and feature surfaces. Earlier Browserless, integration and retention gates remain evidence-driven independently.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
       "Build 033 proves consumer-side integration acceptance.",
       "Build 034 adds retention/storage enforcement.",
-      "Build 035 reviews adoption and permission outcomes.",
+      "Build 035 records adoption and permission outcomes without changing permissions automatically.",
       "Build 036 repeats production learning and renews the roadmap again."
     ],
     notes: ["Business priorities can deliberately change this order, but the default queue follows current evidence."]
@@ -456,6 +478,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Retention & cleanup",
     topics: ["retention-overview"]
+  },
+  {
+    title: "Adoption & permissions",
+    topics: ["adoption-overview"]
   },
   {
     title: "Production learning",
