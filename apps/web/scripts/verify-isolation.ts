@@ -46,6 +46,7 @@ import {
   listConnectorOverviewForUser,
   setWorkspaceConnectorEnabled
 } from "../lib/connector-database";
+import { buildAdoptionReview } from "../lib/adoption-database";
 import { buildProductionLearningReview } from "../lib/production-learning-database";
 import {
   appendIntegrationDeliveryEvent,
@@ -1686,6 +1687,48 @@ async function main() {
     confirmation: "REVOKE CLEANUP"
   });
 
+  const adoptionReview = await buildAdoptionReview(ownerId);
+  const adoptionWorkspace = adoptionReview.workspaces.find(
+    (workspace) => workspace.workspaceId === syncWorkspaceId
+  );
+  if (
+    !adoptionWorkspace ||
+    adoptionWorkspace.activity.sync < 1 ||
+    adoptionWorkspace.activity.sourcePolicySources !== 1 ||
+    adoptionWorkspace.activity.remoteRuns !== 1 ||
+    adoptionWorkspace.activity.integrationEvents < 2 ||
+    adoptionWorkspace.connectors.installations !== 1 ||
+    adoptionWorkspace.connectors.grants.length !== 1 ||
+    adoptionWorkspace.connectors.usedGrants.length !== 1 ||
+    adoptionWorkspace.connectors.unusedGrants.length !== 0 ||
+    adoptionWorkspace.capabilities.used.length < 4 ||
+    adoptionWorkspace.capabilities.highRiskUnused.length < 1 ||
+    adoptionWorkspace.permissions.status !== "watch" ||
+    adoptionWorkspace.snapshotCount < 1
+  ) {
+    throw new Error("Build 035 adoption/profile/connector outcome aggregation failed.");
+  }
+
+  const restrictedAdoption = await buildAdoptionReview(restrictedId);
+  if (restrictedAdoption.workspaces.length !== 0) {
+    throw new Error("Build 035 adoption evidence leaked across accounts.");
+  }
+
+  let adoptionSnapshotImmutable = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        "update app.workspace_adoption_review_snapshots set activity_events=999 where workspace_id=$1",
+        [syncWorkspaceId]
+      );
+    });
+  } catch {
+    adoptionSnapshotImmutable = true;
+  }
+  if (!adoptionSnapshotImmutable) {
+    throw new Error("Build 035 adoption review snapshots unexpectedly allowed runtime updates.");
+  }
+
   const productionLearning = await buildProductionLearningReview(ownerId);
   const learningWorkspace = productionLearning.evidence.workspaces.find(
     (workspace) => workspace.workspaceId === syncWorkspaceId
@@ -1709,11 +1752,16 @@ async function main() {
     productionLearning.totals.integrationLiveAccepted !== 0 ||
     productionLearning.totals.retentionCleanupRuns < 1 ||
     productionLearning.totals.retentionDeleteEligibleRows !== 0 ||
+    productionLearning.totals.adoptionReviewSnapshots < 3 ||
+    productionLearning.totals.adoptionActiveWorkspaces < 1 ||
+    productionLearning.totals.adoptionConnectorUsedGrants !== 1 ||
+    productionLearning.totals.adoptionConnectorUnusedGrants !== 0 ||
     productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
     productionLearning.roadmap.some((item) => item.build === 34) ||
+    productionLearning.roadmap.some((item) => item.build === 35) ||
     productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 034 production-learning retention/consumer aggregation failed.");
+    throw new Error("Build 035 production-learning retention/adoption/consumer aggregation failed.");
   }
   if (
     !productionLearning.findings.some(
@@ -1745,7 +1793,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, append-only cleanup evidence and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, least-privilege outcomes and workspace-target acceptance passed."
   );
 }
 

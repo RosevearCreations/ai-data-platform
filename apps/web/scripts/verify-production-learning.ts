@@ -16,6 +16,25 @@ const evidence: ProductionLearningEvidence = {
     readyForLivePilot: false
   },
   profiles: { visible: 5, customActive: 0, customArchived: 0 },
+  adoption: {
+    reviewSnapshots: 0,
+    activeWorkspaces: 0,
+    noActivityWorkspaces: 1,
+    enabledCapabilities: 4,
+    usedCapabilities: 0,
+    unusedEnabledCapabilities: 4,
+    highRiskUnusedCapabilities: 2,
+    disabledUsedCapabilities: 0,
+    connectorGrants: 1,
+    connectorUsedGrants: 1,
+    connectorUnusedGrants: 0,
+    connectorStaleGrants: 0,
+    permissionReviewWorkspaces: 1,
+    barcodeWorkspaces: 0,
+    scheduledWorkspaces: 0,
+    remoteWorkspaces: 0,
+    integrationWorkspaces: 0
+  },
   workspaces: [
     {
       workspaceId: "11111111-1111-4111-8111-111111111111",
@@ -333,6 +352,65 @@ assert(
   "A retention budget breach must produce an ACTION finding."
 );
 
+assert(
+  liveConsumerReview.roadmap.some((item) => item.build === 35),
+  "Build 035 must remain active until durable adoption review snapshots exist."
+);
+
+const adoptionEvidence: ProductionLearningEvidence = {
+  ...liveConsumerEvidence,
+  adoption: {
+    ...liveConsumerEvidence.adoption,
+    reviewSnapshots: 1,
+    activeWorkspaces: 1,
+    noActivityWorkspaces: 0,
+    usedCapabilities: 4,
+    unusedEnabledCapabilities: 0,
+    highRiskUnusedCapabilities: 0,
+    permissionReviewWorkspaces: 0,
+    barcodeWorkspaces: 1,
+    scheduledWorkspaces: 1,
+    remoteWorkspaces: 1,
+    integrationWorkspaces: 1
+  }
+};
+const adoptionReview = buildProductionLearningAssessment(adoptionEvidence);
+assert(
+  adoptionReview.findings.some(
+    (finding) =>
+      finding.key === "adoption-permission-outcomes" &&
+      finding.status === "healthy"
+  ),
+  "Measured Build 035 adoption with proportionate permissions must be healthy."
+);
+assert(
+  !adoptionReview.roadmap.some((item) => item.build === 35),
+  "Build 035 must leave the active roadmap after durable adoption review snapshots exist."
+);
+assert(
+  adoptionReview.roadmap.some((item) => item.build === 36),
+  "Build 036 must remain queued after Build 035 adoption evidence is durable."
+);
+
+const adoptionMismatchEvidence: ProductionLearningEvidence = {
+  ...adoptionEvidence,
+  adoption: {
+    ...adoptionEvidence.adoption,
+    disabledUsedCapabilities: 1,
+    permissionReviewWorkspaces: 1
+  }
+};
+const adoptionMismatchReview =
+  buildProductionLearningAssessment(adoptionMismatchEvidence);
+assert(
+  adoptionMismatchReview.findings.some(
+    (finding) =>
+      finding.key === "adoption-permission-outcomes" &&
+      finding.status === "action"
+  ),
+  "Observed use of disabled profile capabilities must require action."
+);
+
 console.log(
-  "Build 034 production-learning distinguishes healthy budgets, bounded cleanup candidates and storage-budget breaches."
+  "Build 035 production-learning advances only after durable adoption snapshots and surfaces least-privilege mismatches without changing permissions."
 );

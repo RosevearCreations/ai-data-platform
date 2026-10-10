@@ -1788,3 +1788,30 @@ Delivered:
 - extension version 0.34.0.
 
 No destructive production cleanup is part of the deployment. A live run requires a separate owner/admin approval and explicit run confirmation after reviewing the candidate preview.
+
+## Build 035 — Workspace, Profile & Connector Adoption / Permission Outcomes
+
+Date: 2026-10-10
+
+Status: IMPLEMENTED — DURABLE ADOPTION / LEAST-PRIVILEGE REVIEW ACTIVE.
+
+Delivered:
+
+- migration `0014_adoption_permission_outcomes.sql`;
+- fingerprint-deduplicated, RLS-scoped adoption review snapshots;
+- 365-day / 60-snapshot bounded trend continuity per workspace;
+- deterministic profile-capability enabled-vs-used outcomes;
+- explicit high-risk unused capability recommendations;
+- observed-use/disabled-capability mismatch detection;
+- connector installation/grant/use/stale-grant outcomes;
+- blocked connector attempt visibility without treating the blocked capability as adopted;
+- owner/admin/member least-privilege review;
+- barcode, scheduled-job, remote-execution and business-integration workspace adoption comparison;
+- profile-level activity/investment summaries;
+- authenticated /adoption UI and /api/adoption evidence endpoint;
+- Production learning adoption/permission finding and Build 035 queue closure once durable snapshots exist;
+- contextual help and explicit no-automatic-permission-change guidance;
+- extension version 0.35.0;
+- CI/database isolation proving RLS, snapshot immutability and durable connector/profile adoption evidence.
+
+Build 035 makes recommendations only. It never changes workspace roles, profile capability flags or connector grants automatically.

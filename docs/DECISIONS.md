@@ -434,3 +434,27 @@ Reason: the roadmap explicitly requires approval before destructive production c
 Decision: synchronized tombstones older than 180 days are surfaced as manual-archive candidates but are not auto-deleted or moved by Build 034.
 
 Reason: synchronized records can carry business/repair continuity semantics that should not be destroyed merely to satisfy storage pressure.
+
+## D0068 — Adoption evidence is observational, never self-fulfilling
+
+Decision: Build 035 measures capability use only from existing durable workspace evidence. It never creates synthetic jobs, captures, connector runs or integration events to make a feature appear adopted.
+
+Reason: investment decisions must reflect actual operational behavior.
+
+## D0069 — Connector grant use requires terminal execution evidence
+
+Decision: a connector grant counts as used only when the same connector/capability has a succeeded or failed execution audit. Blocked attempts remain security evidence but do not count as grant adoption.
+
+Reason: an attempted action outside a grant must not justify keeping or expanding that grant.
+
+## D0070 — Least-privilege recommendations do not mutate permissions
+
+Decision: Build 035 may recommend review of admins, high-risk unused profile capabilities or connector grants, but it cannot change workspace roles, profile capability flags or connector grants.
+
+Reason: adoption analytics should inform an operator decision, not silently change authorization.
+
+## D0071 — Adoption trend snapshots are bounded and fingerprint-deduplicated
+
+Decision: workspace adoption snapshots persist only compact counts/keys, deduplicate unchanged evidence by SHA-256 fingerprint, and retain at most 365 days / 60 snapshots per workspace.
+
+Reason: Build 036 needs before/after continuity without turning adoption analytics into an unbounded data store.

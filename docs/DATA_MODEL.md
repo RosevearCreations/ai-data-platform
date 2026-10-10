@@ -626,3 +626,22 @@ Security-definer function callable only after normal session/workspace admin val
 - terminal remote jobs older than 30 days (with their result rows through the existing FK cascade).
 
 Pending barcode captures, active remote jobs, synchronized tombstones, and all protected append-only/security evidence are excluded.
+
+## Build 035 adoption and permission outcomes
+
+### workspace_adoption_review_snapshots
+
+Workspace-scoped, append-only adoption snapshots capture the smallest durable comparison surface needed for trend and least-privilege review:
+
+- profile key;
+- enabled / used / unused-enabled capability keys;
+- high-risk unused capability keys;
+- observed activity that conflicts with disabled capability flags;
+- connector installation, enabled, grant, used-grant, unused-grant, stale-grant and blocked-attempt counts;
+- synchronized/source-policy/scheduled/remote/barcode/integration activity counts;
+- owner/admin/member counts;
+- aggregate activity count and used-capability count.
+
+A SHA-256 evidence fingerprint prevents repeated reads from creating duplicate unchanged snapshots. Runtime permissions are SELECT/INSERT only under workspace RLS. Retention is bounded to 365 days and 60 snapshots per workspace.
+
+Build 035 never stores connector secret values, raw extracted datasets or membership credentials in adoption snapshots.

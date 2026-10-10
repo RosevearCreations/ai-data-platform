@@ -151,6 +151,25 @@ export interface ProductionLearningEvidence {
     customActive: number;
     customArchived: number;
   };
+  adoption: {
+    reviewSnapshots: number;
+    activeWorkspaces: number;
+    noActivityWorkspaces: number;
+    enabledCapabilities: number;
+    usedCapabilities: number;
+    unusedEnabledCapabilities: number;
+    highRiskUnusedCapabilities: number;
+    disabledUsedCapabilities: number;
+    connectorGrants: number;
+    connectorUsedGrants: number;
+    connectorUnusedGrants: number;
+    connectorStaleGrants: number;
+    permissionReviewWorkspaces: number;
+    barcodeWorkspaces: number;
+    scheduledWorkspaces: number;
+    remoteWorkspaces: number;
+    integrationWorkspaces: number;
+  };
   workspaces: ProductionLearningWorkspaceEvidence[];
 }
 
@@ -251,6 +270,27 @@ export function summarizeProductionLearningEvidence(
   const retentionDeletedRows = sum(evidence, (w) => w.retention.deletedRows);
   const retentionFailedRuns = sum(evidence, (w) => w.retention.failedRuns);
   const retentionBudgetBreaches = sum(evidence, (w) => w.retention.budgetBreaches);
+  const adoptionReviewSnapshots = evidence.adoption.reviewSnapshots;
+  const adoptionActiveWorkspaces = evidence.adoption.activeWorkspaces;
+  const adoptionNoActivityWorkspaces = evidence.adoption.noActivityWorkspaces;
+  const adoptionEnabledCapabilities = evidence.adoption.enabledCapabilities;
+  const adoptionUsedCapabilities = evidence.adoption.usedCapabilities;
+  const adoptionUnusedEnabledCapabilities =
+    evidence.adoption.unusedEnabledCapabilities;
+  const adoptionHighRiskUnusedCapabilities =
+    evidence.adoption.highRiskUnusedCapabilities;
+  const adoptionDisabledUsedCapabilities =
+    evidence.adoption.disabledUsedCapabilities;
+  const adoptionConnectorGrants = evidence.adoption.connectorGrants;
+  const adoptionConnectorUsedGrants = evidence.adoption.connectorUsedGrants;
+  const adoptionConnectorUnusedGrants = evidence.adoption.connectorUnusedGrants;
+  const adoptionConnectorStaleGrants = evidence.adoption.connectorStaleGrants;
+  const adoptionPermissionReviewWorkspaces =
+    evidence.adoption.permissionReviewWorkspaces;
+  const adoptionBarcodeWorkspaces = evidence.adoption.barcodeWorkspaces;
+  const adoptionScheduledWorkspaces = evidence.adoption.scheduledWorkspaces;
+  const adoptionRemoteWorkspaces = evidence.adoption.remoteWorkspaces;
+  const adoptionIntegrationWorkspaces = evidence.adoption.integrationWorkspaces;
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
     evidence,
@@ -346,6 +386,23 @@ export function summarizeProductionLearningEvidence(
     retentionDeletedRows,
     retentionFailedRuns,
     retentionBudgetBreaches,
+    adoptionReviewSnapshots,
+    adoptionActiveWorkspaces,
+    adoptionNoActivityWorkspaces,
+    adoptionEnabledCapabilities,
+    adoptionUsedCapabilities,
+    adoptionUnusedEnabledCapabilities,
+    adoptionHighRiskUnusedCapabilities,
+    adoptionDisabledUsedCapabilities,
+    adoptionConnectorGrants,
+    adoptionConnectorUsedGrants,
+    adoptionConnectorUnusedGrants,
+    adoptionConnectorStaleGrants,
+    adoptionPermissionReviewWorkspaces,
+    adoptionBarcodeWorkspaces,
+    adoptionScheduledWorkspaces,
+    adoptionRemoteWorkspaces,
+    adoptionIntegrationWorkspaces,
     connectorInstallations,
     connectorExecutions,
     syncEvents,
@@ -623,22 +680,76 @@ export function buildProductionLearningAssessment(
     key: "connector-readiness",
     category: "Connectors",
     status:
-      totals.connectorInstallations === 0
+      totals.adoptionConnectorUnusedGrants > 0 ||
+      totals.adoptionConnectorStaleGrants > 0
         ? "watch"
-        : totals.connectorExecutions === 0
+        : totals.connectorInstallations === 0
           ? "watch"
-          : "healthy",
-    title: "Connector SDK readiness is measurable without credential exposure.",
+          : totals.connectorExecutions === 0
+            ? "watch"
+            : "healthy",
+    title: "Connector installation, grant and execution outcomes are measurable.",
     evidence:
       String(totals.connectorInstallations) +
-      " workspace installations and " +
+      " workspace installations · " +
       String(totals.connectorExecutions) +
-      " audited executions are visible.",
+      " audited executions · " +
+      String(totals.adoptionConnectorUsedGrants) +
+      "/" +
+      String(totals.adoptionConnectorGrants) +
+      " grants have execution evidence · " +
+      String(totals.adoptionConnectorStaleGrants) +
+      " stale unused grants.",
     action:
-      totals.connectorInstallations === 0
-        ? "Keep the no-secret sample available as the acceptance baseline; add real connectors only for a demonstrated need."
-        : "Review grants and audit outcomes before adding credentialed connectors.",
+      totals.adoptionConnectorUnusedGrants > 0
+        ? "Review unused connector grants in /adoption and remove them manually only when they are no longer required."
+        : totals.connectorInstallations === 0
+          ? "Keep the no-secret sample available as the acceptance baseline; add real connectors only for a demonstrated need."
+          : "Keep grants aligned with observed connector capabilities and continue append-only audit review.",
     owner: "platform"
+  });
+
+  findings.push({
+    key: "adoption-permission-outcomes",
+    category: "Adoption & least privilege",
+    status:
+      totals.adoptionDisabledUsedCapabilities > 0
+        ? "action"
+        : totals.adoptionHighRiskUnusedCapabilities > 0 ||
+            totals.adoptionConnectorUnusedGrants > 0 ||
+            totals.adoptionPermissionReviewWorkspaces > 0 ||
+            totals.adoptionActiveWorkspaces === 0
+          ? "watch"
+          : "healthy",
+    title:
+      totals.adoptionReviewSnapshots === 0
+        ? "Durable adoption/permission review evidence is not yet recorded."
+        : "Workspace, profile, connector and permission outcomes are durably reviewable.",
+    evidence:
+      String(totals.adoptionActiveWorkspaces) +
+      "/" +
+      String(totals.workspaces) +
+      " workspaces show durable activity · " +
+      String(totals.adoptionUsedCapabilities) +
+      "/" +
+      String(totals.adoptionEnabledCapabilities) +
+      " enabled capability slots are used · " +
+      String(totals.adoptionHighRiskUnusedCapabilities) +
+      " high-risk enabled slots are unused · " +
+      String(totals.adoptionConnectorUnusedGrants) +
+      " connector grants are unused · " +
+      String(totals.adoptionPermissionReviewWorkspaces) +
+      " workspaces have a least-privilege review recommendation.",
+    action:
+      totals.adoptionDisabledUsedCapabilities > 0
+        ? "Investigate profile capability/configuration mismatches before expanding automation."
+        : totals.adoptionHighRiskUnusedCapabilities > 0 ||
+            totals.adoptionConnectorUnusedGrants > 0
+          ? "Use /adoption to review unused capability slots and connector grants; Build 035 never changes roles, profiles or grants automatically."
+          : totals.adoptionActiveWorkspaces === 0
+            ? "Keep expansion conservative until real workspace activity appears; do not manufacture adoption evidence."
+            : "Prioritize future investment in profiles/features with measured durable use and continue periodic least-privilege review.",
+    owner: "operations"
   });
 
   findings.push({
@@ -684,16 +795,26 @@ export function buildProductionLearningAssessment(
   findings.push({
     key: "permission-health",
     category: "Security & permissions",
-    status: totals.ownerlessWorkspaces > 0 ? "action" : "healthy",
-    title: "Workspace ownership remains the primary operational permission check.",
+    status:
+      totals.ownerlessWorkspaces > 0 ||
+      totals.adoptionDisabledUsedCapabilities > 0
+        ? "action"
+        : totals.adoptionPermissionReviewWorkspaces > 0
+          ? "watch"
+          : "healthy",
+    title: "Workspace ownership and elevated-permission outcomes are measurable.",
     evidence:
       totals.ownerlessWorkspaces === 0
-        ? "Every visible workspace has at least one owner in the measured membership view."
+        ? "Every visible workspace has at least one owner; " +
+          String(totals.adoptionPermissionReviewWorkspaces) +
+          " workspace(s) have additional least-privilege review recommendations."
         : String(totals.ownerlessWorkspaces) + " visible workspaces have no owner.",
     action:
-      totals.ownerlessWorkspaces === 0
-        ? "Continue least-privilege review for admins, remote controls and connector grants."
-        : "Assign an accountable owner before expanding automation.",
+      totals.ownerlessWorkspaces > 0
+        ? "Assign an accountable owner before expanding automation."
+        : totals.adoptionPermissionReviewWorkspaces > 0
+          ? "Review the specific recommendations in /adoption; do not broaden or revoke privileges automatically."
+          : "Continue periodic least-privilege review for admins, remote controls and connector grants.",
     owner: "operations"
   });
 
@@ -739,14 +860,21 @@ export function buildProductionLearningAssessment(
           evidenceKeys: ["storage-retention"]
         }]
       : []),
-    {
-      build: 35,
-      priority: "P2",
-      title: "Workspace, Profile & Connector Adoption / Permission Outcomes",
-      rationale:
-        "Profile and connector infrastructure is ready; broader functionality should follow measured adoption and least-privilege review rather than assumptions.",
-      evidenceKeys: ["connector-readiness", "permission-health", "barcode-adoption"]
-    },
+    ...(totals.adoptionReviewSnapshots === 0
+      ? [{
+          build: 35,
+          priority: "P2" as const,
+          title: "Workspace, Profile & Connector Adoption / Permission Outcomes",
+          rationale:
+            "The adoption/least-privilege review has not yet produced a durable workspace snapshot.",
+          evidenceKeys: [
+            "adoption-permission-outcomes",
+            "connector-readiness",
+            "permission-health",
+            "barcode-adoption"
+          ]
+        }]
+      : []),
     {
       build: 36,
       priority: "P2",
@@ -757,7 +885,8 @@ export function buildProductionLearningAssessment(
         "sync-outcome-telemetry",
         "remote-cost-reliability",
         "integration-consumer-readiness",
-        "storage-retention"
+        "storage-retention",
+        "adoption-permission-outcomes"
       ]
     }
   ];

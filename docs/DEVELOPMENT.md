@@ -514,3 +514,22 @@ CI/database acceptance must:
 10. verify Production learning reports the run and removes Build 034 from the active roadmap once no delete candidate/budget breach/failure remains.
 
 Production differs from CI: deployment applies the schema/control plane only. Never approve or execute destructive production cleanup automatically.
+
+## Build 035 adoption verification
+
+CI/database acceptance must:
+
+1. apply migration `0014_adoption_permission_outcomes.sql`;
+2. verify capability usage classification against profile flags;
+3. verify observed use of a disabled capability becomes an ACTION mismatch;
+4. verify connector grants count as used only after succeeded/failed execution evidence;
+5. verify old unused grants become stale review candidates;
+6. verify blocked connector attempts remain visible without counting as grant use;
+7. derive workspace/profile adoption from existing durable fixtures;
+8. persist fingerprint-deduplicated adoption snapshots;
+9. prove another account receives no adoption workspace evidence;
+10. prove runtime adoption snapshots cannot be updated;
+11. verify Production learning records the adoption snapshot count and removes Build 035 from the active queue;
+12. verify recommendations do not mutate roles, profile capabilities or connector grants.
+
+No production action is required to manufacture adoption. After deployment, the operator may use /adoption to decide where future investment is justified.

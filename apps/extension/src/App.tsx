@@ -260,15 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">034</span>
+        <span className="build">035</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Retention cleanup remains server-side and approval-gated</strong>
+        <strong>Adoption evidence never broadens permissions automatically</strong>
         <p>
-          Build 034 adds workspace storage budgets and bounded cleanup evidence.
-          The extension does not delete durable server records; protected audit
-          evidence remains outside the cleanup path.
+          Build 035 compares enabled profile capabilities with durable activity and
+          connector grants with execution evidence. Recommendations remain
+          server-side review guidance; this extension does not alter workspace
+          roles, capability flags or connector grants.
         </p>
       </section>
 
