@@ -564,16 +564,3 @@ Reason: outcome review must remain observational or it could manufacture the suc
 Decision: durable action evidence can close an originating evidence gate while Build 042 still reports the operational outcome INCONCLUSIVE when required post-action safety state is not restored, such as a Browserless global kill switch left open.
 
 Reason: completing an experiment and leaving its temporary control window open are separate facts; the latter must remain visible.
-
-
-## D0089 — Explicit operator numbering can skip uncreated build numbers
-
-Decision: the operator's explicit request for ai-data-platform Build 048 is honored even though the repository previously ended at Build 042. Builds 043–047 are not fabricated, backfilled or treated as completed.
-
-Reason: build numbering is an operator-controlled release label, but historical truth in the repository must remain accurate.
-
-## D0090 — Resource review is observational, not an automatic control plane
-
-Decision: Build 048 may classify durable provider, sync, repair, delivery and retention/storage evidence against explicit review guardrails, but it cannot generate synthetic load, delete data, throttle workloads, mutate kill switches or infer external Vercel/Neon billing quotas.
-
-Reason: production resource evidence and external account quotas are different facts; review must not become an unapproved consequential action.

@@ -461,26 +461,6 @@ export const HELP_TOPICS = {
       "Normal real operating activity is the only supported way to create future trend movement."
     ]
   },
-  "learning-resource-budget-review": {
-    title: "Performance and resource-budget review",
-    summary: "Build 048 reviews existing provider, synchronization, repair, delivery, storage and retention evidence against explicit operational guardrails without generating load or changing production controls.",
-    steps: [
-      "Treat WITHIN-BUDGET as measured evidence that currently fits the stated guardrail.",
-      "Treat WATCH as measured pressure that deserves review but does not authorize automatic cleanup.",
-      "Treat OVER-BUDGET as a reason to investigate that workload before increasing volume.",
-      "Treat UNMEASURED as genuinely unavailable production evidence; never create synthetic work merely to fill the metric.",
-      "Use the stated action for the specific metric and keep existing Source Policy, dry-run, retention approval and kill-switch controls authoritative."
-    ],
-    notes: [
-      "The provider, sync and repair thresholds reuse existing platform guardrails already present in Production Learning.",
-      "Storage review uses retention-policy breach evidence and delete eligibility; Build 048 never deletes data.",
-      "This build does not attempt to infer Vercel/Neon account billing limits from application data."
-    ],
-    manual: [
-      "No new account, paid service, environment variable or production load test is required.",
-      "Any cleanup still requires the existing /retention approval and confirmation workflow."
-    ]
-  },
   "learning-outcome-reconciliation": {
     title: "Intervention outcome reconciliation & closure verification",
     summary: "Build 042 reconciles the Build 032, 033 and 037 intervention outcomes as VERIFIED, INCONCLUSIVE or NOT COMPLETE using only durable originating evidence and relevant restored safety state.",
@@ -648,6 +628,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-intervention-preflight", "learning-outcome-reconciliation", "learning-resource-budget-review", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-intervention-preflight", "learning-outcome-reconciliation", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

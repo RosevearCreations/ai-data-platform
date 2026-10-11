@@ -1,17 +1,5 @@
 # Build Log
 
-## Build 048 — Performance and Resource-Budget Review
-
-- explicit operator-directed numbering jump from Build 042; Builds 043–047 remain uncreated;
-- added read-only provider, sync, repair, delivery and storage/retention budget review;
-- preserves WITHIN-BUDGET / WATCH / OVER-BUDGET / UNMEASURED states;
-- reuses existing production-learning guardrails instead of inventing synthetic benchmarks;
-- storage pressure is based on durable retention evidence and never auto-deletes;
-- no synthetic load, automatic throttling, cleanup, paid-service change or external quota inference;
-- contextual help and extension version 0.48.0;
-- verification covers unmeasured baseline preservation and bounded measured provider/storage cases.
-
-
 
 ## Build 042 — Intervention Outcome Reconciliation & Closure Verification
 
@@ -1939,3 +1927,12 @@ Delivered:
 - contextual help, documentation and extension version 0.38.0.
 
 Build 038 does not generate synthetic operating activity, alter permissions, weaken provider/integration gates or fabricate historical measurements.
+
+
+## Rejected build record — Build 048 Performance and Resource-Budget Review
+
+Date: 2026-10-11
+
+Status: **REJECTED / REVERTED ON DEV — NEVER PROMOTED TO MAIN.**
+
+The operator rejected the Build 048 Performance and Resource-Budget Review direction. Commit `2cb9e2937e17e54ed007a945fb4206f4e7ebb5e4` was removed from the active code line by restoring the Build 042 production files and version state. This rejected build must not be resurrected or promoted without a new explicit operator request.
