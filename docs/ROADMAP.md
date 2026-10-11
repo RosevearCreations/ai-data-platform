@@ -1008,3 +1008,10 @@ Delivered:
 - no new database table, migration, automatic execution, permission/profile mutation or synthetic activity.
 
 Acceptance: a signed-in user sees only authorized workspaces, command-center totals are derived from existing RLS-scoped evidence, measured attention conditions surface without changing state, recent evidence is timestamp ordered, signed-out visitors see no private workspace evidence, and all existing workflow safety boundaries remain authoritative.
+
+
+## Rejected build record — Build 048 Performance and Resource-Budget Review
+
+Status: **REJECTED — DO NOT PROMOTE / DO NOT TREAT AS QUEUED WORK.**
+
+The experimental Build 048 scope was explicitly rejected by the operator on 2026-10-11 and was reverted from `dev`. It was never promoted to `main`. Future application builds must follow the approved product roadmap rather than reviving this rejected scope without a new explicit operator request.

@@ -1947,3 +1947,12 @@ Delivered:
 - extension version 0.43.0.
 
 Build 043 does not create synthetic operational evidence or execute consequential actions from the dashboard.
+
+
+## Rejected build record — Build 048 Performance and Resource-Budget Review
+
+Date: 2026-10-11
+
+Status: **REJECTED / REVERTED ON DEV — NEVER PROMOTED TO MAIN.**
+
+The operator rejected this direction. Its implementation and version changes were removed from the active development line. Do not resurrect or promote this scope without a new explicit operator request.
