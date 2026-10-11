@@ -74,3 +74,8 @@ assert(aggregateProjectReadiness([]) === "incomplete",
   "Projects without sources must remain incomplete.");
 
 console.log("Build 045 collection-project parsing, URL safety and readiness rules passed.");
+
+assert(
+  aggregateProjectReadiness([{ readiness: "ready" }]) === "ready",
+  "A project with only current ready sources must be ready."
+);

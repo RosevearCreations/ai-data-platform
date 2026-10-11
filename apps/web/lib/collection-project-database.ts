@@ -265,7 +265,7 @@ export async function listCollectionProjectsForUser(userId: string) {
         cadence: String(row.cadence ?? ""),
         ownerLabel: String(row.owner_label ?? ""),
         notes: String(row.notes ?? ""),
-        readiness: aggregateProjectReadiness(projectSources),
+        readiness: aggregateProjectReadiness(projectSources.filter((source) => source.status !== "retired")),
         sources: projectSources,
         createdAt: new Date(row.created_at),
         updatedAt: new Date(row.updated_at)
