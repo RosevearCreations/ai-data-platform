@@ -2,7 +2,8 @@ import {
   DATA_LIBRARY_SORTS,
   DATA_LIBRARY_TYPES,
   normalizeDataLibraryQuery,
-  recordFlags
+  recordFlags,
+  safeSourceHref
 } from "../lib/data-library";
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -44,3 +45,12 @@ assert(recordFlags({ duplicate: false, deleted: false, status: "active" }).lengt
   "healthy active records must not receive invented warning flags");
 
 console.log("Build 044 data-library filters, pagination bounds and record-quality flags passed.");
+
+assert(safeSourceHref("https://example.com/path") === "https://example.com/path",
+  "https source URLs must remain clickable");
+assert(safeSourceHref("http://example.com/") === "http://example.com/",
+  "http source URLs must remain clickable");
+assert(safeSourceHref("javascript:alert(1)") === "",
+  "non-http source references must never become clickable links");
+assert(safeSourceHref("not a url") === "",
+  "invalid source references must remain plain text");

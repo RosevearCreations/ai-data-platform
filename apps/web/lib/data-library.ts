@@ -315,7 +315,7 @@ export async function listUnifiedDataLibrary(
 
     return {
       total,
-      totalPages: result.totalPages,
+      totalPages,
       effectivePage,
       rows: rowsResult.rows
     };
@@ -330,7 +330,7 @@ export async function listUnifiedDataLibrary(
     },
     workspaces,
     total: result.total,
-    totalPages,
+    totalPages: result.totalPages,
     records: result.rows.map((row): DataLibraryRecord => ({
       workspaceId: row.workspace_id,
       workspaceName: row.workspace_name,
