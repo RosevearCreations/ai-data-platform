@@ -512,3 +512,16 @@ Reason: the roadmap remains evidence-driven and finite.
 Decision: when no eligible Build 036 baseline exists, Build 038 reports the baseline unavailable and preserves current metrics as a new checkpoint. It does not reinterpret unavailable history as zero.
 
 Reason: a missing measurement is different from a measured zero.
+
+
+## D0081 — Explicit operator priority may extend the finite roadmap
+
+Decision: D0079 remains the default anti-speculation rule, but an explicit operator request may create a later numbered build when its scope is grounded in existing durable evidence or a clearly stated business priority. Build 039 therefore consolidates the already-open Build 032/033/037 production evidence gates rather than inventing an unrelated feature queue.
+
+Reason: a finite evidence-driven roadmap should prevent automatic feature churn, not prevent an authorized operator from deliberately continuing work.
+
+## D0082 — Build 039 coordinates evidence; it never manufactures closure
+
+Decision: Build 039 marks Browserless, consumer delivery and operational adoption gates closed only from the same durable evidence that their originating builds already require. It never inserts synthetic events, changes profile capability flags, opens kill switches, approves Source Policies or enables downstream mutation.
+
+Reason: a readiness dashboard is useful only if it preserves the authority and safety boundaries of the underlying evidence.

@@ -904,3 +904,23 @@ Acceptance: PASSED when Build 038 persists changed current evidence, eligible hi
 Manual input gate:
 
 No infrastructure setup is required. Future trend movement must come from normal real operations.
+
+
+## Build 039 — Production Evidence Gate Closure & Operator Readiness
+
+Status: IMPLEMENTED on dev; promotion follows the normal dev → main release path.
+
+Goal: provide one production-learning readiness surface for the remaining evidence gates already created by Builds 032, 033 and 037, after the operator explicitly requested continued numbered development beyond Build 038.
+
+Delivered:
+
+- a Build 039 gate-closure model derived only from durable production evidence;
+- OPEN/CLOSED status for the Browserless terminal provider baseline, supported business-consumer live dry-run acknowledgement and genuine operational adoption;
+- exact next actions that reuse the original Build 032/033/037 controls rather than bypassing them;
+- an authenticated Production Learning gate-closure section and contextual help;
+- a healthy readiness state only when all three tracked gates have durable closure evidence;
+- no synthetic provider runs, consumer acknowledgements or adoption events;
+- no automatic permission, kill-switch, Source Policy or downstream mutation changes;
+- extension version 0.39.0.
+
+Acceptance: the production-learning review shows the three tracked evidence gates, reports only durable evidence as closure, remains fail-closed for incomplete gates, and reports normal-operations readiness only when all three are genuinely closed.
