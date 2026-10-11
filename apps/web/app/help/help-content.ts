@@ -1,4 +1,24 @@
 export const HELP_TOPICS = {
+  "command-center": {
+    title: "Application Command Center & Workspace Home",
+    summary: "Build 043 turns the signed-in home page into a read-only operational command center assembled from existing RLS-scoped adoption, remote execution, retention and integration-delivery evidence.",
+    steps: [
+      "Start with the attention count, then open the workspace cards that show a measured review condition.",
+      "Use Operational pulse to see whether sync, barcode, scheduled, remote and integration workflows are actually being used.",
+      "Read workspace attention chips as review prompts only; they do not change permissions, profiles, storage policy or execution controls.",
+      "Use Latest provider & delivery events for recent durable evidence and then open the relevant workflow for full details.",
+      "Launch work from the direct workflow links instead of treating the dashboard as an execution surface."
+    ],
+    notes: [
+      "Build 043 creates no new telemetry table and never manufactures dashboard events.",
+      "All workspace content comes through existing authenticated functions that preserve PostgreSQL row-level security.",
+      "The command center is intentionally read-only; consequential actions remain inside their existing controlled workflows."
+    ],
+    manual: [
+      "No new account, environment variable, paid service or database migration is required.",
+      "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
+    ]
+  },
   "platform-overview": {
     title: "AI Data Platform overview",
     summary: "This landing area shows who is signed in, the shared platform purpose and the main operational entry points.",
@@ -596,7 +616,7 @@ export const HELP_GROUPS: Array<{
 }> = [
   {
     title: "Platform & access",
-    topics: ["platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
+    topics: ["command-center", "platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
   },
   {
     title: "Barcode & intelligence",

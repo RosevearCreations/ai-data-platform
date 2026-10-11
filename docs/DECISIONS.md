@@ -564,3 +564,16 @@ Reason: outcome review must remain observational or it could manufacture the suc
 Decision: durable action evidence can close an originating evidence gate while Build 042 still reports the operational outcome INCONCLUSIVE when required post-action safety state is not restored, such as a Browserless global kill switch left open.
 
 Reason: completing an experiment and leaving its temporary control window open are separate facts; the latter must remain visible.
+
+
+## D0089 — The application home composes existing evidence instead of creating dashboard telemetry
+
+Decision: Build 043 derives the command center from the existing adoption, remote-execution, retention and integration-delivery query layers. It does not add a dashboard event table or persist page-view state.
+
+Reason: the workspace home should summarize sources of truth rather than become another source of truth that can drift from operational evidence.
+
+## D0090 — The command center is navigation and review, not an execution boundary
+
+Decision: Build 043 may surface attention conditions and direct links, but it performs no provider call, downstream delivery, cleanup, permission/profile change or other consequential action from the home page.
+
+Reason: centralizing visibility should not centralize or weaken the explicit confirmation and safety boundaries already enforced by the underlying workflows.

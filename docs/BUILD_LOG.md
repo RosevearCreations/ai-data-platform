@@ -1927,3 +1927,32 @@ Delivered:
 - contextual help, documentation and extension version 0.38.0.
 
 Build 038 does not generate synthetic operating activity, alter permissions, weaken provider/integration gates or fabricate historical measurements.
+
+
+## Build 043 — Application Command Center & Workspace Home
+
+Date: 2026-10-11
+
+Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+
+Delivered:
+
+- replaced the infrastructure-first authenticated landing page with the Application Command Center;
+- aggregated existing RLS-scoped adoption, remote, retention and integration-delivery evidence without a migration;
+- added authorized workspace activity cards, measured attention conditions, operational pulse metrics and recent durable provider/delivery evidence;
+- added direct application workflow launch navigation;
+- preserved signed-out privacy and all originating execution/permission safety gates;
+- added Build 043 command-center aggregation verification;
+- added detailed contextual help and responsive styles;
+- extension version 0.43.0.
+
+Build 043 does not create synthetic operational evidence or execute consequential actions from the dashboard.
+
+
+## Rejected build record — Build 048 Performance and Resource-Budget Review
+
+Date: 2026-10-11
+
+Status: **REJECTED / REVERTED ON DEV — NEVER PROMOTED TO MAIN.**
+
+The operator rejected this direction. Its implementation and version changes were removed from the active development line. Do not resurrect or promote this scope without a new explicit operator request.
