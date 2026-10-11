@@ -670,7 +670,7 @@ async function buildRenewalEvidence(
       await client.query(
         `
           insert into app.production_learning_cycle_snapshots (
-            workspace_id,snapshot_id,cycle_key,evidence_fingerprint,
+            workspace_id,snapshot_id,cycle_key,evidence_fingerprint,observation_context,
             sync_events,sync_conflicts,sync_errors,
             repair_checks,repair_healthy,repair_rollbacks,
             provider_runs,provider_successes,provider_units,
@@ -682,7 +682,7 @@ async function buildRenewalEvidence(
             permission_review_required,created_by,generated_at
           )
           values (
-            $1,$2,'build-036',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,
+            $1,$2,'build-036',$3,'build-038-runtime',$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,
             $15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,now()
           )
           on conflict (workspace_id,cycle_key,evidence_fingerprint) do nothing
@@ -739,6 +739,199 @@ async function buildRenewalEvidence(
   };
 }
 
+async function buildTrendValidationEvidence(
+  userId: string,
+  workspaceEvidenceRows: ProductionLearningWorkspaceEvidence[],
+  adoptionReview: Awaited<ReturnType<typeof buildAdoptionReview>>
+): Promise<ProductionLearningEvidence["trend"]> {
+  const baseline = await withUserDatabase(userId, async (client) => {
+    const result = await client.query<{
+      baseline_snapshots: string;
+      baseline_generated_at: Date | null;
+      sync_events: string;
+      sync_conflicts: string;
+      repair_checks: string;
+      repair_healthy: string;
+      provider_runs: string;
+      provider_units: string;
+      integration_live_accepted: string;
+      retention_budget_breaches: string;
+      adoption_activity_events: string;
+      adoption_used_capabilities: string;
+      adoption_high_risk_unused: string;
+      connector_unused_grants: string;
+    }>(
+      `
+        with first_build036 as (
+          select distinct on (workspace_id)
+            workspace_id,
+            generated_at,
+            sync_events,
+            sync_conflicts,
+            repair_checks,
+            repair_healthy,
+            provider_runs,
+            provider_units,
+            integration_live_accepted,
+            retention_budget_breaches,
+            adoption_activity_events,
+            adoption_used_capabilities,
+            adoption_high_risk_unused,
+            connector_unused_grants
+          from app.production_learning_cycle_snapshots
+          where cycle_key='build-036'
+            and observation_context='legacy'
+          order by workspace_id,generated_at asc,created_at asc
+        )
+        select
+          count(*)::text as baseline_snapshots,
+          min(generated_at) as baseline_generated_at,
+          coalesce(sum(sync_events),0)::text as sync_events,
+          coalesce(sum(sync_conflicts),0)::text as sync_conflicts,
+          coalesce(sum(repair_checks),0)::text as repair_checks,
+          coalesce(sum(repair_healthy),0)::text as repair_healthy,
+          coalesce(sum(provider_runs),0)::text as provider_runs,
+          coalesce(sum(provider_units),0)::text as provider_units,
+          coalesce(sum(integration_live_accepted),0)::text as integration_live_accepted,
+          coalesce(sum(retention_budget_breaches),0)::text as retention_budget_breaches,
+          coalesce(sum(adoption_activity_events),0)::text as adoption_activity_events,
+          coalesce(sum(adoption_used_capabilities),0)::text as adoption_used_capabilities,
+          coalesce(sum(adoption_high_risk_unused),0)::text as adoption_high_risk_unused,
+          coalesce(sum(connector_unused_grants),0)::text as connector_unused_grants
+        from first_build036
+      `
+    );
+    return result.rows[0];
+  });
+
+  const adoptionByWorkspace = new Map(
+    adoptionReview.workspaces.map((workspace) => [workspace.workspaceId, workspace])
+  );
+
+  for (const workspace of workspaceEvidenceRows) {
+    const adoption = adoptionByWorkspace.get(workspace.workspaceId);
+    const snapshot = {
+      syncEvents: workspace.outcomes.sync.events,
+      syncConflicts: workspace.outcomes.sync.conflicts,
+      syncErrors: workspace.outcomes.sync.errors,
+      repairChecks: workspace.outcomes.repair.compatibilityChecks,
+      repairHealthy: workspace.outcomes.repair.healthy,
+      repairRollbacks: workspace.outcomes.repair.rolledBack,
+      providerRuns: workspace.remote.providerRuns,
+      providerSuccesses: workspace.remote.providerSuccesses,
+      providerUnits: workspace.remote.providerUnits,
+      integrationAttempts: workspace.integrations.deliveryAttempts,
+      integrationLiveAccepted: workspace.integrations.liveAccepted,
+      integrationRejected: workspace.integrations.deliveryRejected,
+      integrationTransportErrors: workspace.integrations.transportErrors,
+      retentionBudgetBreaches: workspace.retention.budgetBreaches,
+      retentionDeleteEligible: workspace.retention.deleteEligibleRows,
+      retentionCleanupRuns: workspace.retention.cleanupRuns,
+      retentionFailedRuns: workspace.retention.failedRuns,
+      adoptionActivityEvents: adoption?.activityEvents ?? 0,
+      adoptionUsedCapabilities: adoption?.capabilities.used.length ?? 0,
+      adoptionHighRiskUnused: adoption?.capabilities.highRiskUnused.length ?? 0,
+      connectorUnusedGrants: adoption?.connectors.unusedGrants.length ?? 0,
+      permissionReviewRequired:
+        adoption ? adoption.permissions.status !== "healthy" : false
+    };
+    const fingerprint = createHash("sha256")
+      .update(JSON.stringify(snapshot))
+      .digest("hex");
+
+    await withUserDatabase(userId, async (client) => {
+      await client.query(
+        `
+          insert into app.production_learning_cycle_snapshots (
+            workspace_id,snapshot_id,cycle_key,evidence_fingerprint,observation_context,
+            sync_events,sync_conflicts,sync_errors,
+            repair_checks,repair_healthy,repair_rollbacks,
+            provider_runs,provider_successes,provider_units,
+            integration_attempts,integration_live_accepted,integration_rejected,
+            integration_transport_errors,retention_budget_breaches,
+            retention_delete_eligible,retention_cleanup_runs,retention_failed_runs,
+            adoption_activity_events,adoption_used_capabilities,
+            adoption_high_risk_unused,connector_unused_grants,
+            permission_review_required,created_by,generated_at
+          )
+          values (
+            $1,$2,'build-038',$3,'build-038-runtime',$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,
+            $15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,now()
+          )
+          on conflict (workspace_id,cycle_key,evidence_fingerprint) do nothing
+        `,
+        [
+          workspace.workspaceId,
+          randomUUID(),
+          fingerprint,
+          snapshot.syncEvents,
+          snapshot.syncConflicts,
+          snapshot.syncErrors,
+          snapshot.repairChecks,
+          snapshot.repairHealthy,
+          snapshot.repairRollbacks,
+          snapshot.providerRuns,
+          snapshot.providerSuccesses,
+          snapshot.providerUnits,
+          snapshot.integrationAttempts,
+          snapshot.integrationLiveAccepted,
+          snapshot.integrationRejected,
+          snapshot.integrationTransportErrors,
+          snapshot.retentionBudgetBreaches,
+          snapshot.retentionDeleteEligible,
+          snapshot.retentionCleanupRuns,
+          snapshot.retentionFailedRuns,
+          snapshot.adoptionActivityEvents,
+          snapshot.adoptionUsedCapabilities,
+          snapshot.adoptionHighRiskUnused,
+          snapshot.connectorUnusedGrants,
+          snapshot.permissionReviewRequired,
+          userId
+        ]
+      );
+    });
+  }
+
+  const cycleSnapshots = await withUserDatabase(userId, async (client) => {
+    const result = await client.query<{ count: string }>(
+      "select count(*)::text as count from app.production_learning_cycle_snapshots where cycle_key='build-038'"
+    );
+    return numeric(result.rows[0]?.count);
+  });
+
+  return {
+    cycleSnapshots,
+    baselineSnapshots: numeric(baseline?.baseline_snapshots),
+    baselineGeneratedAt: baseline?.baseline_generated_at
+      ? baseline.baseline_generated_at.toISOString()
+      : null,
+    baselineSyncEvents: numeric(baseline?.sync_events),
+    baselineSyncConflicts: numeric(baseline?.sync_conflicts),
+    baselineRepairChecks: numeric(baseline?.repair_checks),
+    baselineRepairHealthy: numeric(baseline?.repair_healthy),
+    baselineProviderRuns: numeric(baseline?.provider_runs),
+    baselineProviderUnits: numeric(baseline?.provider_units),
+    baselineIntegrationLiveAccepted: numeric(
+      baseline?.integration_live_accepted
+    ),
+    baselineRetentionBudgetBreaches: numeric(
+      baseline?.retention_budget_breaches
+    ),
+    baselineAdoptionActivityEvents: numeric(
+      baseline?.adoption_activity_events
+    ),
+    baselineAdoptionUsedCapabilities: numeric(
+      baseline?.adoption_used_capabilities
+    ),
+    baselineAdoptionHighRiskUnused: numeric(
+      baseline?.adoption_high_risk_unused
+    ),
+    baselineConnectorUnusedGrants: numeric(
+      baseline?.connector_unused_grants
+    )
+  };
+}
+
 export async function buildProductionLearningReview(userId: string) {
   const workspaces = await listWorkspacesForUser(userId);
   const [workspaceEvidenceRows, profiles, adoptionReview] = await Promise.all([
@@ -757,6 +950,11 @@ export async function buildProductionLearningReview(userId: string) {
 
   const readiness = browserlessPilotReadiness();
   const renewal = await buildRenewalEvidence(
+    userId,
+    workspaceEvidenceRows,
+    adoptionReview
+  );
+  const trend = await buildTrendValidationEvidence(
     userId,
     workspaceEvidenceRows,
     adoptionReview
@@ -801,6 +999,7 @@ export async function buildProductionLearningReview(userId: string) {
       integrationWorkspaces: adoptionReview.totals.integrationWorkspaces
     },
     renewal,
+    trend,
     workspaces: workspaceEvidenceRows
   };
 

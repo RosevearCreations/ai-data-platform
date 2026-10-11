@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 036</p>
+          <p className="eyebrow">Build 038</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,12 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 036</p>
+        <p className="eyebrow">Build 038</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Build 036 re-runs the production review after Builds 031–035, compares
-          durable evidence against the Build 030 review, names unresolved gaps and
-          renews only a finite evidence-driven roadmap.
+          Build 038 validates the latest production trends against an eligible
+          Build 036 cycle baseline when one exists, preserves unavailable history
+          explicitly, and keeps only unresolved evidence-driven work active.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -200,6 +200,38 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
+          <p className="eyebrow">Build 036 → Build 038</p>
+          <h2>Trend validation</h2>
+          <HelpInfo topic="learning-trend-validation" />
+        </div>
+        <div className="grid">
+          {review.trendValidation.comparisons.map((item) => (
+            <article className="card" key={item.key}>
+              <h3>{item.label}</h3>
+              <p><strong>Build 036 baseline:</strong> {item.baseline}</p>
+              <p><strong>Build 038 current:</strong> {item.current}</p>
+              <span className="badge">
+                {item.delta === null
+                  ? "historical baseline unavailable"
+                  : item.delta === 0
+                    ? "no aggregate change"
+                    : (item.delta > 0 ? "+" : "") + String(item.delta)}
+              </span>
+            </article>
+          ))}
+        </div>
+        <div className="emptyState">
+          <p>
+            {review.trendValidation.baselineAvailable
+              ? String(review.trendValidation.materialChanges) +
+                " aggregate trend dimension(s) changed from the eligible Build 036 cycle."
+              : "No eligible historical Build 036 cycle snapshot exists. Build 038 keeps that baseline unavailable instead of synthesizing a delta."}
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
           <p className="eyebrow">Build 030 → Build 036</p>
           <h2>Before / after evidence comparison</h2>
           <HelpInfo topic="learning-renewal" />
@@ -232,7 +264,7 @@ export default async function ProductionLearningPage() {
           </div>
         ) : (
           <div className="emptyState">
-            <p>No unresolved Build 036 evidence gaps are currently visible.</p>
+            <p>No unresolved Build 038 evidence gaps are currently visible.</p>
           </div>
         )}
       </section>
@@ -313,8 +345,8 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
-          <p className="eyebrow">Renewed roadmap</p>
-          <h2>Finite renewed queue — evidence driven</h2>
+          <p className="eyebrow">Post-Build 038 roadmap</p>
+          <h2>Only unresolved evidence gates remain</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
         <div className="grid">

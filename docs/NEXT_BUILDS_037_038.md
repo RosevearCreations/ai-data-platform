@@ -27,10 +27,10 @@ Manual intervention: perform only genuine work. Do not create fixtures, fake sou
 
 ## Build 038 — Production Learning III & Trend Validation
 
-Status: QUEUED AFTER REAL OPERATING ACTIVITY OR A MATERIAL GATE CHANGE.
+Status: IMPLEMENTED — DURABLE TREND CHECKPOINT / ACTIVE QUEUE REDUCTION.
 
 Priority: P2.
 
 Purpose: validate whether Build 037 real-use activity, Browserless baseline progress, consumer-delivery progress and retention/adoption outcomes materially changed the evidence.
 
-Do not extend this into another long feature queue before Build 038 re-measures the platform.
+Build 038 writes a bounded cycle checkpoint, uses only genuinely historical Build 036 cycle rows for numeric deltas, and leaves an unavailable baseline unavailable when none exists. After the checkpoint is durable, Build 038 removes itself and does not invent Build 039. Any remaining queue consists only of unresolved evidence gates such as Build 032, Build 033 or the conditional Build 037 runbook.

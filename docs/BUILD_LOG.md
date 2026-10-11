@@ -1859,3 +1859,24 @@ Delivered:
 - extension version 0.37.0.
 
 Build 037 creates no synthetic operational evidence and changes no permissions or capability flags.
+
+## Build 038 — Production Learning III & Trend Validation
+
+Date: 2026-10-11
+
+Status: IMPLEMENTED — DURABLE TREND CHECKPOINT / ACTIVE QUEUE REDUCTION.
+
+Delivered:
+
+- migration `0016_production_learning_trend_validation.sql`;
+- `build-038` cycle snapshots in the existing RLS-scoped append-only cycle table;
+- `observation_context` provenance separating historical Build 036 rows from same-runtime continuity;
+- six-part Build 036 → Build 038 comparison;
+- explicit historical-baseline-unavailable behavior;
+- Production Learning III finding and material-change count;
+- Build 038 roadmap self-closure after durable evidence;
+- unresolved Build 032/033/037 gates preserved independently;
+- no speculative Build 039;
+- contextual help, documentation and extension version 0.38.0.
+
+Build 038 does not generate synthetic operating activity, alter permissions, weaken provider/integration gates or fabricate historical measurements.

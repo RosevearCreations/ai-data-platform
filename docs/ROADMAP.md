@@ -879,10 +879,28 @@ No new infrastructure is required. Use the runbook only for genuine work; the Ch
 
 ## Build 038 — Production Learning III & Trend Validation
 
-Status: QUEUED AFTER BUILD 036.
+Status: IMPLEMENTED — DURABLE TREND CHECKPOINT / ACTIVE QUEUE REDUCTION.
 
 Goal: repeat the finite review after real operating activity or after unresolved Browserless/integration gates materially change.
 
 Priority: P2.
 
-Scope: validate trends, close or retain evidence gaps, and renew the queue again only from observed outcomes.
+Scope: persist a Build 038 cycle checkpoint, compare current sync/repair/provider/integration/retention/adoption outcomes with a genuinely historical Build 036 cycle when one exists, preserve unavailable history explicitly, close Build 038 itself after durable evidence, and leave only unresolved evidence gates active.
+
+
+Delivered:
+
+- migration `0016_production_learning_trend_validation.sql`;
+- Build 038 cycle support in the existing bounded append-only cycle table;
+- explicit `observation_context` so same-runtime Build 036 continuity rows cannot become false historical baselines;
+- six-part Build 036 → Build 038 trend comparison;
+- unavailable-baseline handling without synthetic zeros;
+- durable Production Learning III finding;
+- Build 038 removal from the active roadmap once its checkpoint is durable;
+- no automatic Build 039 or speculative feature queue.
+
+Acceptance: PASSED when Build 038 persists changed current evidence, eligible historical Build 036 rows are distinguished from same-runtime continuity rows, trend cards show numeric deltas only when a real baseline exists, Build 032/033/037 gates remain independently evidence-driven, and Build 038 removes itself after durable trend evidence.
+
+Manual input gate:
+
+No infrastructure setup is required. Future trend movement must come from normal real operations.

@@ -440,6 +440,27 @@ export const HELP_TOPICS = {
       "After reviewing the report, you may change business priorities, but the default queue remains evidence-driven."
     ]
   },
+  "learning-trend-validation": {
+    title: "Production Learning III & trend validation",
+    summary: "Build 038 compares current production outcomes with an eligible historical Build 036 cycle only when that historical snapshot genuinely predates Build 038. Missing historical baselines remain unavailable rather than being recreated from current values.",
+    steps: [
+      "Review the Build 036 → Build 038 cards for synchronization, repair, Browserless, integration delivery, retention and adoption.",
+      "Treat a historical baseline unavailable badge as an evidence limit, not as a zero.",
+      "Use only legacy Build 036 cycle snapshots that existed before the Build 038 runtime as numeric trend baselines.",
+      "Keep Build 032 active until a real Browserless terminal provider run exists.",
+      "Keep Build 033 active until a supported business consumer returns a live dry-run acknowledgement.",
+      "Keep the Build 037 runbook available for any workspace that still has measured zero operational adoption.",
+      "After Build 038 records its current checkpoint, remove Build 038 itself from the active queue and add no speculative feature build without observed evidence."
+    ],
+    notes: [
+      "Build 038 cycle snapshots reuse the append-only RLS-scoped cycle table and remain bounded by its 365-day / 30-row-per-workspace retention.",
+      "Build 038 marks new same-runtime Build 036 continuity rows separately so they cannot masquerade as historical trend baselines."
+    ],
+    manual: [
+      "No external account, paid service or new environment variable is required.",
+      "Normal real operating activity is the only supported way to create future trend movement."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -464,14 +485,14 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 036 closes the 031–035 review cycle, compares current evidence with the Build 030 review without fabricating missing baselines, and emits a finite renewed queue while unresolved Browserless/integration gates remain visible.",
+    summary: "Build 038 validates the finite queue against current production trends, closes its own checkpoint after durable evidence, and leaves unresolved Browserless, consumer-delivery or zero-adoption work active without inventing new feature builds.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
       "Build 033 proves consumer-side integration acceptance.",
       "Build 034 adds retention/storage enforcement.",
       "Build 035 records adoption and permission outcomes without changing permissions automatically.",
-      "Build 036 repeats production learning, records the renewal cycle and replaces itself with a finite next queue."
+      "Build 036 established the renewal checkpoint; Build 038 validates later trends and then removes itself from the active queue."
     ],
     notes: ["Business priorities can deliberately change this order, but the default queue follows current evidence."]
   },
@@ -527,6 +548,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];
