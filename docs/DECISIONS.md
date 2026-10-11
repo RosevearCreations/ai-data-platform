@@ -577,3 +577,22 @@ Reason: the workspace home should summarize sources of truth rather than become 
 Decision: Build 043 may surface attention conditions and direct links, but it performs no provider call, downstream delivery, cleanup, permission/profile change or other consequential action from the home page.
 
 Reason: centralizing visibility should not centralize or weaken the explicit confirmation and safety boundaries already enforced by the underlying workflows.
+
+
+## D0091 — The Unified Data Library is a read model, not a new source of truth
+
+Decision: Build 044 queries existing RLS-scoped durable tables directly and does not persist a copied library/index table.
+
+Reason: a unified explorer is valuable only if records cannot drift from their originating scraper, reviewed dataset, intelligence or barcode sources of truth.
+
+## D0092 — Record quality indicators must be durable facts, not inferred confidence
+
+Decision: Build 044 may display tombstone, duplicate and explicit review-state flags already present in the originating record, but it does not manufacture confidence, verification or quality scores from payload shape.
+
+Reason: the record explorer must preserve evidence semantics rather than turn UI heuristics into trusted data.
+
+## D0093 — Saved library views are local navigation state
+
+Decision: named Build 044 saved views store only the bounded query string in browser localStorage and never persist workspace data or authorization state.
+
+Reason: reusable navigation should not create another backend state model or cross workspace security boundary.

@@ -1966,3 +1966,25 @@ The operator rejected this direction. Its implementation and version changes wer
 - push-triggered main Verify: GREEN — workflow run `38162475886`;
 - extension version: `0.43.0`;
 - rejected Build 048 implementation remains excluded; only its rejection record is retained.
+
+
+## Build 044 — Unified Data Library & Record Explorer
+
+Date: 2026-10-11
+
+Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+
+Delivered:
+
+- authenticated `/data-library` workspace record explorer;
+- RLS-scoped read model across saved scraper/template, reviewed dataset, intelligence module and barcode capture sources;
+- search, workspace/type filtering, deterministic sorting and bounded server-side pagination;
+- browser-local saved filter views;
+- raw vs normalized/summary record inspection with provenance;
+- durable tombstone, duplicate and review-state quality flags;
+- safe source-link handling and responsive record detail UI;
+- contextual help and direct Command Center navigation;
+- Build 044 verification;
+- extension version 0.44.0.
+
+Build 044 adds no migration or copied library table and performs no record mutation.

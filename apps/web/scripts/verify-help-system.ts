@@ -13,6 +13,7 @@ async function main() {
     "../app/capture/page.tsx",
     "../app/capture/barcode-capture-client.tsx",
     "../app/intelligence/page.tsx",
+    "../app/data-library/page.tsx",
     "../app/remote-execution/page.tsx",
     "../app/remote-execution/RemotePilotAdminPanel.tsx",
     "../app/sign-in/page.tsx",

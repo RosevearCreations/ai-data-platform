@@ -47,9 +47,14 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 011 — CSV/XLSX/JSON Export.
+Build 044 — Unified Data Library & Record Explorer.
 
 
 ## Persistence and authentication
 
 The platform uses provider-portable PostgreSQL with Better Auth. Neon is the initial managed PostgreSQL host, while migrations and workspace isolation remain standard PostgreSQL.
+
+
+## Build 044 application surface
+
+The signed-in web application now includes `/data-library`, a read-only unified explorer over authorized durable workspace records. It supports workspace/type filtering, search, sorting, pagination, browser-local saved views, provenance inspection and raw-vs-normalized comparison without creating a duplicate library table.

@@ -19,6 +19,56 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "data-library-overview": {
+    title: "Unified Data Library",
+    summary: "Build 044 provides one read-only explorer over existing RLS-scoped saved scrapers/templates, reviewed datasets, intelligence modules and barcode captures. It does not copy records into a new library table.",
+    steps: [
+      "Open the Data Library from the Command Center.",
+      "Choose one authorized workspace or keep all authorized workspaces visible.",
+      "Filter by record type or search title, source and bounded JSON values.",
+      "Use the record explorer to compare normalized/summary data with the raw durable payload and provenance.",
+      "Treat tombstone, duplicate and review flags as evidence from the originating record rather than inferred quality scores."
+    ],
+    notes: [
+      "The library query runs under the same PostgreSQL row-level-security identity as the rest of the web application.",
+      "Build 044 is read-only and never edits a scraper, dataset, intelligence module or barcode review.",
+      "External source links are clickable only for http/https URLs; other source references are displayed as text."
+    ],
+    manual: [
+      "No new database migration, environment variable, account or paid service is required.",
+      "If a record is missing, use its originating workflow to create or synchronize genuine data rather than adding a duplicate through the library."
+    ]
+  },
+  "data-library-filters": {
+    title: "Library filters, sorting & saved views",
+    summary: "Workspace, type, search, sort and page-size filters are server-side. Named saved views are stored only in this browser and are links back to the same read-only query.",
+    steps: [
+      "Narrow to a workspace when reviewing one business or personal context.",
+      "Use record type to isolate recipes/templates, reviewed datasets, intelligence modules or barcode captures.",
+      "Search terms are bounded and matched against record labels, source references and stored JSON text.",
+      "Choose a deterministic sort and page size, then save the current view if you expect to reuse it.",
+      "Remove saved views when they are no longer useful."
+    ],
+    notes: [
+      "Saved views never write to PostgreSQL and do not travel to another browser.",
+      "Pagination is capped and out-of-range pages clamp to the final available page."
+    ]
+  },
+  "data-library-records": {
+    title: "Record explorer, provenance & quality flags",
+    summary: "Each result exposes workspace identity, originating type, record/version status, observed/updated timestamps, source provenance, normalized summary data and the raw durable payload.",
+    steps: [
+      "Verify the workspace and record type before interpreting the payload.",
+      "Check tombstoned, duplicate or review-pending/rejected flags before reuse.",
+      "Open Explore record detail to compare normalized/summary fields with the raw payload.",
+      "Use Provenance to identify the source URL/origin, retrieval/capture time or module identity that produced the record.",
+      "Return to the originating workflow for any edit, approval or remediation."
+    ],
+    notes: [
+      "Build 044 does not invent confidence values. It displays only quality/review signals durably present in the source record.",
+      "Raw payload display remains workspace-authorized and is intended for inspection, not downstream execution."
+    ]
+  },
   "platform-overview": {
     title: "AI Data Platform overview",
     summary: "This landing area shows who is signed in, the shared platform purpose and the main operational entry points.",
@@ -617,6 +667,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Platform & access",
     topics: ["command-center", "platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
+  },
+  {
+    title: "Unified data library",
+    topics: ["data-library-overview", "data-library-filters", "data-library-records"]
   },
   {
     title: "Barcode & intelligence",
