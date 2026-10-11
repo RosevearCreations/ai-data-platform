@@ -9,23 +9,22 @@ import {
   updateCollectionProject
 } from "../lib/collection-project-database";
 
-async function createUser(name: string, email: string) {
-  const result = await auth.api.signUpEmail({
+async function existingUser(email: string) {
+  const result = await auth.api.signInEmail({
     body: {
-      name,
       email,
-      password: "build-045-ci-fixture-password-not-a-secret"
+      password: "build-002-ci-fixture-password-not-a-secret"
     }
   });
-  if (!result.user?.id) throw new Error("Build 045 test user creation failed.");
+  if (!result.user?.id) throw new Error("Build 045 could not reuse the isolation fixture user.");
   return result.user.id;
 }
 
 async function main() {
-  const ownerId = await createUser("Build 045 Owner", "build045-owner@example.test");
-  const outsiderId = await createUser("Build 045 Outsider", "build045-outsider@example.test");
+  const ownerId = await existingUser("build002-owner@example.test");
+  const outsiderId = await existingUser("build002-restricted@example.test");
   const workspaces = await listWorkspacesForUser(ownerId);
-  const workspace = workspaces[0];
+  const workspace = workspaces.find((item) => item.slug === "rosiedazzlers") ?? workspaces[0];
   if (!workspace) throw new Error("Build 045 owner has no seeded workspace.");
 
   const project = await createCollectionProject(ownerId, workspace.id, {
