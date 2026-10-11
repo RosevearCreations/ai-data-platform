@@ -1042,7 +1042,7 @@ Acceptance: only authorized workspace records are visible; supported record type
 
 ## Build 045 — Source & Collection Project Manager
 
-Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+Status: **PRODUCTION GREEN — promoted to main via PR #58 after dev and PR verification.**
 
 Goal: add a durable project-management layer for real source collection work without weakening Source Policy, scraper, scheduling or remote-execution controls.
 
