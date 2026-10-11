@@ -1,5 +1,17 @@
 # Build Log
 
+## Build 048 — Performance and Resource-Budget Review
+
+- explicit operator-directed numbering jump from Build 042; Builds 043–047 remain uncreated;
+- added read-only provider, sync, repair, delivery and storage/retention budget review;
+- preserves WITHIN-BUDGET / WATCH / OVER-BUDGET / UNMEASURED states;
+- reuses existing production-learning guardrails instead of inventing synthetic benchmarks;
+- storage pressure is based on durable retention evidence and never auto-deletes;
+- no synthetic load, automatic throttling, cleanup, paid-service change or external quota inference;
+- contextual help and extension version 0.48.0;
+- verification covers unmeasured baseline preservation and bounded measured provider/storage cases.
+
+
 
 ## Build 042 — Intervention Outcome Reconciliation & Closure Verification
 

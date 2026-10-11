@@ -264,6 +264,17 @@ assert(
     !review.outcomePlan.allVerified,
   "Build 042 must keep all three intervention outcomes NOT COMPLETE when their originating durable closure evidence is absent."
 );
+assert(
+  review.resourceBudgetReview.build === 48 &&
+    review.resourceBudgetReview.metrics.length === 5 &&
+    review.resourceBudgetReview.counts.unmeasured >= 1 &&
+    review.findings.some(
+      (finding) =>
+        finding.key === "performance-resource-budget-review" &&
+        finding.category === "Build 048"
+    ),
+  "Build 048 must expose five read-only budget metrics and preserve genuinely unmeasured production areas."
+);
 
 const baselineEvidence: ProductionLearningEvidence = {
   ...evidence,
@@ -499,6 +510,19 @@ assert(
   "Build 042 must report all tracked intervention outcomes VERIFIED only when originating durable closure evidence is present and operational safety state reconciles cleanly."
 );
 assert(
+  adoptionReview.resourceBudgetReview.metrics.some(
+    (metric) =>
+      metric.key === "provider-efficiency" &&
+      metric.state === "within-budget"
+  ) &&
+    adoptionReview.resourceBudgetReview.metrics.some(
+      (metric) =>
+        metric.key === "storage-retention" &&
+        metric.state !== "over-budget"
+    ),
+  "Build 048 must classify bounded provider evidence and retention pressure from existing durable metrics without synthetic load."
+);
+assert(
   adoptionReview.roadmap.some((item) => item.build === 36),
   "Build 036 must remain queued after Build 035 adoption evidence is durable."
 );
@@ -668,5 +692,5 @@ assert(
 );
 
 console.log(
-  "Build 042 reconciles intervention outcomes as VERIFIED, INCONCLUSIVE or NOT COMPLETE from originating durable evidence and preserved safety state."
+  "Build 048 adds a read-only performance and resource-budget review over existing durable production metrics without synthetic load, automatic cleanup or throttling."
 );

@@ -1440,6 +1440,160 @@ export function buildProductionLearningAssessment(
     outcomes: outcomeReconciliation
   };
 
+  const resourceBudgetMetrics = [
+    {
+      key: "provider-efficiency",
+      label: "Remote provider efficiency",
+      state:
+        totals.providerRuns === 0
+          ? "unmeasured" as const
+          : (totals.providerAverageUnitsPerRun ?? 0) <= 2 &&
+              (totals.providerSuccessRate ?? 0) >= 0.9
+            ? "within-budget" as const
+            : "over-budget" as const,
+      measured:
+        totals.providerRuns === 0
+          ? "No terminal provider runs yet."
+          : String(totals.providerRuns) + " run(s) · " +
+            (totals.providerAverageUnitsPerRun?.toFixed(2) ?? "n/a") +
+            " units/run · " +
+            Math.round((totals.providerSuccessRate ?? 0) * 100) + "% success.",
+      budget: "Existing bounded-provider guardrail: ≤2 estimated units/run with ≥90% success.",
+      action:
+        totals.providerRuns === 0
+          ? "Do not create synthetic load; wait for genuine controlled provider evidence."
+          : "If over budget, investigate failed/repeated work before increasing remote volume."
+    },
+    {
+      key: "sync-reliability",
+      label: "Synchronization reliability",
+      state:
+        totals.syncEvents === 0
+          ? "unmeasured" as const
+          : totals.syncErrors === 0 && (totals.syncConflictRate ?? 0) <= 0.1
+            ? "within-budget" as const
+            : "over-budget" as const,
+      measured:
+        String(totals.syncEvents) + " outcome(s) · " +
+        String(totals.syncConflicts) + " conflict(s) · " +
+        String(totals.syncErrors) + " error(s).",
+      budget: "Existing operational threshold: conflict rate ≤10% and zero sync errors.",
+      action:
+        totals.syncEvents === 0
+          ? "Use normal synchronization only when genuine work requires it."
+          : "Review conflict/error evidence before increasing sync throughput."
+    },
+    {
+      key: "repair-stability",
+      label: "Repair stability",
+      state:
+        totals.repairCompatibilityChecks === 0
+          ? "unmeasured" as const
+          : (totals.repairSuccessRate ?? 0) >= 0.8 && totals.repairRollbacks === 0
+            ? "within-budget" as const
+            : "over-budget" as const,
+      measured:
+        String(totals.repairCompatibilityChecks) + " compatibility check(s) · " +
+        String(totals.repairRollbacks) + " rollback(s) · " +
+        (totals.repairSuccessRate === null
+          ? "health pending."
+          : Math.round(totals.repairSuccessRate * 100) + "% healthy."),
+      budget: "Existing repair threshold: ≥80% healthy compatibility outcomes with zero rollback evidence.",
+      action:
+        totals.repairCompatibilityChecks === 0
+          ? "Do not manufacture repair activity; retain the metric as unmeasured."
+          : "Review failed compatibility or rollback evidence before automating more repair work."
+    },
+    {
+      key: "delivery-reliability",
+      label: "Integration delivery reliability",
+      state:
+        totals.integrationDeliveryAttempts === 0
+          ? "unmeasured" as const
+          : (totals.integrationDeliveryRejected + totals.integrationTransportErrors) /
+                totals.integrationDeliveryAttempts <=
+              0.1
+            ? "within-budget" as const
+            : "over-budget" as const,
+      measured:
+        String(totals.integrationDeliveryAttempts) + " attempt(s) · " +
+        String(totals.integrationDeliveryRejected) + " rejected · " +
+        String(totals.integrationTransportErrors) + " transport error(s).",
+      budget: "Review threshold: rejected + transport-error outcomes ≤10% of attempts; dry-run safety remains unchanged.",
+      action:
+        totals.integrationDeliveryAttempts === 0
+          ? "Keep delivery unmeasured until a genuine supported-consumer dry-run is required."
+          : "Resolve receiver or transport failures before expanding delivery volume."
+    },
+    {
+      key: "storage-retention",
+      label: "Storage and retention pressure",
+      state:
+        totals.retentionBudgetBreaches > 0
+          ? "over-budget" as const
+          : totals.retentionDeleteEligibleBytes > 0
+            ? "watch" as const
+            : "within-budget" as const,
+      measured:
+        String(totals.storageBytes) + " measured byte(s) · " +
+        String(totals.retentionDeleteEligibleBytes) + " delete-eligible byte(s) · " +
+        String(totals.retentionBudgetBreaches) + " retention budget breach(es).",
+      budget: "Retention policy is authoritative: zero recorded budget breaches; delete eligibility is advisory until explicit cleanup approval.",
+      action:
+        totals.retentionBudgetBreaches > 0
+          ? "Review retention policy/breach evidence before adding storage-heavy workloads."
+          : totals.retentionDeleteEligibleBytes > 0
+            ? "Review eligible rows on /retention; do not auto-delete."
+            : "Continue observing storage growth without automatic cleanup."
+    }
+  ];
+
+  const resourceBudgetCounts = {
+    withinBudget: resourceBudgetMetrics.filter((metric) => metric.state === "within-budget").length,
+    watch: resourceBudgetMetrics.filter((metric) => metric.state === "watch").length,
+    overBudget: resourceBudgetMetrics.filter((metric) => metric.state === "over-budget").length,
+    unmeasured: resourceBudgetMetrics.filter((metric) => metric.state === "unmeasured").length
+  };
+  const resourceBudgetReview = {
+    build: 48,
+    title: "Performance and Resource-Budget Review",
+    storageBytesPerWorkspace:
+      totals.workspaces === 0 ? 0 : Math.round(totals.storageBytes / totals.workspaces),
+    counts: resourceBudgetCounts,
+    metrics: resourceBudgetMetrics,
+    allMeasuredWithinBudget:
+      resourceBudgetCounts.overBudget === 0 &&
+      resourceBudgetCounts.watch === 0 &&
+      resourceBudgetCounts.unmeasured === 0
+  };
+
+  findings.push({
+    key: "performance-resource-budget-review",
+    category: "Build 048",
+    status:
+      resourceBudgetCounts.overBudget > 0
+        ? "action"
+        : resourceBudgetCounts.watch > 0 || resourceBudgetCounts.unmeasured > 0
+          ? "watch"
+          : "healthy",
+    title:
+      resourceBudgetCounts.overBudget > 0
+        ? String(resourceBudgetCounts.overBudget) + " measured resource budget(s) need review."
+        : resourceBudgetReview.allMeasuredWithinBudget
+          ? "Measured performance and resource budgets are within current guardrails."
+          : "Resource review is healthy enough to continue, with watch/unmeasured areas preserved explicitly.",
+    evidence:
+      String(resourceBudgetCounts.withinBudget) + " within budget · " +
+      String(resourceBudgetCounts.watch) + " watch · " +
+      String(resourceBudgetCounts.overBudget) + " over budget · " +
+      String(resourceBudgetCounts.unmeasured) + " unmeasured.",
+    action:
+      resourceBudgetCounts.overBudget > 0
+        ? "Address only the specific measured pressure before increasing that workload."
+        : "Continue genuine workloads; do not generate synthetic activity merely to fill unmeasured metrics.",
+    owner: "platform"
+  });
+
   findings.push({
     key: "intervention-outcome-reconciliation",
     category: "Build 042",
@@ -1859,5 +2013,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan, preflightPlan, outcomePlan };
+  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan, preflightPlan, outcomePlan, resourceBudgetReview };
 }

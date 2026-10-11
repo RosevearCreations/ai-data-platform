@@ -986,3 +986,27 @@ Delivered:
 - no provider retry, receiver retry, permission/profile mutation or synthetic evidence creation.
 
 Acceptance: Build 042 never derives closure from a checklist or page view, reports incomplete and inconclusive outcomes explicitly, and reports all outcomes VERIFIED only when the originating durable evidence and required safety state support that conclusion.
+
+
+## Build 048 — Performance and Resource-Budget Review
+
+Status: IMPLEMENTED on dev; promotion follows the normal dev → main release path.
+
+Numbering note: the repository previously ended at Build 042. Build 048 was explicitly requested by the operator with this title; Builds 043–047 are not retroactively invented or marked complete.
+
+Goal: review current production performance/resource pressure from durable application evidence before increasing workload.
+
+Delivered:
+
+- read-only budget cards for remote-provider efficiency, sync reliability, repair stability, integration-delivery reliability and storage/retention pressure;
+- explicit WITHIN-BUDGET / WATCH / OVER-BUDGET / UNMEASURED states;
+- provider budget reuses the existing bounded ≤2 units/run guardrail and requires ≥90% success;
+- sync review reuses the existing ≤10% conflict threshold and zero-error expectation;
+- repair review reuses the existing ≥80% healthy compatibility threshold and zero rollback expectation;
+- delivery review surfaces rejected/transport-error pressure without weakening dry-run controls;
+- storage review uses durable retention budget breaches and delete eligibility without performing cleanup;
+- measured storage-per-visible-workspace informational footprint;
+- contextual help and extension version 0.48.0;
+- no synthetic load, automatic throttling, cleanup, paid-service change or environment mutation.
+
+Acceptance: Build 048 classifies only existing durable evidence, preserves unmeasured areas explicitly, does not infer external account billing quotas, and performs no consequential resource-management action.

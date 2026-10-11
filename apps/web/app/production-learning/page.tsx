@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 042</p>
+          <p className="eyebrow">Build 048</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,12 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 042</p>
+        <p className="eyebrow">Build 048</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Build 042 reconciles intervention outcomes from durable evidence,
-          distinguishing verified closure from inconclusive or incomplete results
-          without weakening the Build 041 preflight or originating safety gates.
+          Build 048 adds a read-only performance and resource-budget review
+          over existing durable production metrics. It preserves unmeasured areas,
+          does not generate synthetic load, and never performs automatic cleanup or throttling.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -195,6 +195,37 @@ export default async function ProductionLearningPage() {
             <p>{totals.approvedPublicSources} eligible · {totals.allowlistedSources} allowlisted · {totals.armedWorkspaces} armed workspaces.</p>
             <span className="badge">pilot prerequisites</span>
           </article>
+        </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <p className="eyebrow">Build 048</p>
+          <h2>Performance & resource-budget review</h2>
+          <HelpInfo topic="learning-resource-budget-review" />
+        </div>
+        <div className="grid">
+          {review.resourceBudgetReview.metrics.map((metric) => (
+            <article className="card" key={metric.key}>
+              <span className="badge">{metric.state.toUpperCase()}</span>
+              <h3>{metric.label}</h3>
+              <p><strong>Measured:</strong> {metric.measured}</p>
+              <p><strong>Budget:</strong> {metric.budget}</p>
+              <p><strong>Action:</strong> {metric.action}</p>
+            </article>
+          ))}
+        </div>
+        <div className="emptyState">
+          <p>
+            {review.resourceBudgetReview.counts.withinBudget} within budget ·{" "}
+            {review.resourceBudgetReview.counts.watch} watch ·{" "}
+            {review.resourceBudgetReview.counts.overBudget} over budget ·{" "}
+            {review.resourceBudgetReview.counts.unmeasured} unmeasured.
+          </p>
+          <p>
+            Average measured storage footprint:{" "}
+            {formatBytes(review.resourceBudgetReview.storageBytesPerWorkspace)} per visible workspace.
+          </p>
         </div>
       </section>
 

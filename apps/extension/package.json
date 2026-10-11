@@ -1,6 +1,6 @@
 {
   "name": "@rosevear/ai-data-extension",
-  "version": "0.42.0",
+  "version": "0.48.0",
   "private": true,
   "type": "module",
   "scripts": {
