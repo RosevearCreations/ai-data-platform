@@ -461,6 +461,27 @@ export const HELP_TOPICS = {
       "Normal real operating activity is the only supported way to create future trend movement."
     ]
   },
+  "learning-intervention-sequencing": {
+    title: "Gate closure progress & safe intervention sequencing",
+    summary: "Build 040 classifies each remaining production evidence gate as COMPLETE, ACTIONABLE or BLOCKED, then recommends only the highest-priority intervention whose prerequisites are already satisfied.",
+    steps: [
+      "Read COMPLETE as durable evidence already satisfying the originating gate.",
+      "Read ACTIONABLE as an operator step whose existing prerequisites are currently satisfied.",
+      "Read BLOCKED as a requirement to resolve only the listed prerequisite before attempting that gate.",
+      "Follow the P0/P1/P2 ordering only among ACTIONABLE gates; a blocked P0 gate never authorizes bypassing its controls.",
+      "For Browserless, never open the global kill-switch window until token, provider flag, Source Policy, allowlist and intended workspace arm are all ready.",
+      "For adoption, perform genuine profile-appropriate work only.",
+      "For consumer delivery, require an approved/exported package and conformance before contacting a supported receiver."
+    ],
+    notes: [
+      "Build 040 makes no external calls and changes no operational state.",
+      "The sequencing view cannot approve Source Policies, arm workspaces, change environment variables, fabricate adoption or enable downstream mutation."
+    ],
+    manual: [
+      "No new account, paid service or environment variable is introduced by Build 040.",
+      "Use only the manual procedure already documented by the originating gate when a stage becomes ACTIONABLE."
+    ]
+  },
   "learning-gate-closure": {
     title: "Production evidence gate closure & operator readiness",
     summary: "Build 039 consolidates the remaining Build 032 Browserless baseline, Build 033 live dry-run consumer acknowledgement and Build 037 real-adoption gates into one operator view. It does not bypass or auto-close any gate.",
@@ -567,6 +588,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

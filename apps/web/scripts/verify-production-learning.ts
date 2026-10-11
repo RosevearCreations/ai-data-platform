@@ -233,6 +233,21 @@ assert(
     !review.gateClosure.readyForNormalOperations,
   "Build 039 must show Browserless, consumer-delivery and adoption gates open when no durable closure evidence exists."
 );
+assert(
+  review.interventionPlan.openCount === 3 &&
+    review.interventionPlan.blockedCount >= 1 &&
+    review.interventionPlan.nextIntervention?.key === "operational-adoption",
+  "Build 040 must choose genuine adoption as the next safe intervention when Browserless and consumer delivery still lack prerequisites."
+);
+assert(
+  review.interventionPlan.stages.some(
+    (stage) =>
+      stage.key === "browserless-baseline" &&
+      stage.state === "blocked" &&
+      stage.blockers.length > 0
+  ),
+  "Build 040 must expose Browserless prerequisite blockers instead of opening the kill switch early."
+);
 
 const baselineEvidence: ProductionLearningEvidence = {
   ...evidence,
@@ -429,6 +444,17 @@ assert(
   "Build 039 must become ready only after provider, live consumer and real adoption evidence are all durable."
 );
 assert(
+  adoptionReview.interventionPlan.openCount === 0 &&
+    adoptionReview.interventionPlan.completeCount === 3 &&
+    adoptionReview.interventionPlan.nextIntervention === null &&
+    adoptionReview.findings.some(
+      (finding) =>
+        finding.key === "production-intervention-sequencing" &&
+        finding.status === "healthy"
+    ),
+  "Build 040 must stop recommending interventions after all tracked evidence gates are durably closed."
+);
+assert(
   adoptionReview.roadmap.some((item) => item.build === 36),
   "Build 036 must remain queued after Build 035 adoption evidence is durable."
 );
@@ -598,5 +624,5 @@ assert(
 );
 
 console.log(
-  "Build 039 production gate closure preserves Build 038 trend integrity and consolidates durable Build 032/033/037 readiness without weakening existing controls."
+  "Build 040 sequences safe production interventions from durable prerequisite evidence and stops recommending work after all tracked gates close."
 );

@@ -1,6 +1,18 @@
 # Build Log
 
 
+## Build 040 — Gate Closure Progress & Safe Intervention Sequencing
+
+- classified Build 032/033/037 production gates as COMPLETE, ACTIONABLE or BLOCKED;
+- exposed Browserless prerequisite completeness without opening the kill-switch window;
+- sequenced only currently safe interventions by existing P0/P1/P2 priority;
+- prevented blocked high-priority gates from authorizing bypass or suppressing other safe work;
+- added intervention progress/blocker/action cards to Production Learning;
+- no external execution or operational-state mutation from the sequencing layer;
+- contextual help and extension version 0.40.0;
+- verification covers blocked Browserless readiness, safe next-action selection and the all-complete stop state.
+
+
 ## Build 039 — Production Evidence Gate Closure & Operator Readiness
 
 - explicit operator-directed continuation beyond Build 038 without reopening a speculative long queue;

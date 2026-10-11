@@ -1088,6 +1088,160 @@ export function buildProductionLearningAssessment(
     gates: gateClosureGates
   };
 
+  const browserlessPrerequisites = [
+    evidence.browserless.tokenConfigured,
+    evidence.browserless.executionEnabled,
+    totals.approvedPublicSources > 0,
+    totals.allowlistedSources > 0,
+    totals.armedWorkspaces > 0
+  ];
+  const browserlessReadyPrerequisites =
+    browserlessPrerequisites.filter(Boolean).length;
+  const browserlessBlockedReasons = [
+    ...(!evidence.browserless.tokenConfigured
+      ? ["Browserless token is not configured in the server environment."]
+      : []),
+    ...(!evidence.browserless.executionEnabled
+      ? ["Provider execution master flag is disabled."]
+      : []),
+    ...(totals.approvedPublicSources === 0
+      ? ["No eligible approved public Source Policy is available."]
+      : []),
+    ...(totals.allowlistedSources === 0
+      ? ["No approved source policy revision is allowlisted."]
+      : []),
+    ...(totals.armedWorkspaces === 0
+      ? ["No intended workspace is armed for the bounded provider pilot."]
+      : [])
+  ];
+
+  const interventionStages = [
+    {
+      key: "browserless-baseline",
+      build: 32,
+      priority: "P0" as const,
+      state:
+        totals.providerRuns > 0
+          ? "complete" as const
+          : browserlessBlockedReasons.length === 0
+            ? "actionable" as const
+            : "blocked" as const,
+      title: "Browserless one-run baseline",
+      progress:
+        totals.providerRuns > 0
+          ? "Terminal provider evidence exists."
+          : String(browserlessReadyPrerequisites) + "/5 pilot prerequisites satisfied.",
+      blockers: browserlessBlockedReasons,
+      action:
+        totals.providerRuns > 0
+          ? "No intervention required; retain bounded provider controls."
+          : browserlessBlockedReasons.length === 0
+            ? "Open only the approved one-run kill-switch window, execute one page, then immediately restore fail-closed mode."
+            : "Resolve only the listed prerequisites; do not open the global kill switch while prerequisites remain incomplete."
+    },
+    {
+      key: "operational-adoption",
+      build: 37,
+      priority: "P1" as const,
+      state:
+        totals.adoptionActiveWorkspaces > 0
+          ? "complete" as const
+          : totals.workspaces > 0
+            ? "actionable" as const
+            : "blocked" as const,
+      title: "Real operational adoption",
+      progress:
+        String(totals.adoptionActiveWorkspaces) + "/" +
+        String(totals.workspaces) + " visible workspace(s) have durable activity.",
+      blockers:
+        totals.workspaces > 0
+          ? []
+          : ["No authorized workspace is visible to the current account."],
+      action:
+        totals.adoptionActiveWorkspaces > 0
+          ? "No intervention required; continue normal genuine work."
+          : totals.workspaces > 0
+            ? "Use the first-evidence runbook for a genuine business task appropriate to the workspace profile."
+            : "Restore authorized workspace visibility before attempting first-evidence work."
+    },
+    {
+      key: "consumer-delivery",
+      build: 33,
+      priority: totals.integrationConformanceAccepted > 0 ? "P2" as const : "P1" as const,
+      state:
+        totals.integrationLiveAccepted > 0
+          ? "complete" as const
+          : totals.integrationExports > 0 && totals.integrationConformanceAccepted > 0
+            ? "actionable" as const
+            : "blocked" as const,
+      title: "Supported business-consumer dry-run",
+      progress:
+        String(totals.integrationExports) + " exported package(s) · " +
+        String(totals.integrationConformanceAccepted) + " conformance acceptance(s) · " +
+        String(totals.integrationLiveAccepted) + " live dry-run acknowledgement(s).",
+      blockers: [
+        ...(totals.integrationExports === 0
+          ? ["No approved/exported integration package is available for delivery."]
+          : []),
+        ...(totals.integrationConformanceAccepted === 0
+          ? ["Consumer contract conformance has not been accepted yet."]
+          : [])
+      ],
+      action:
+        totals.integrationLiveAccepted > 0
+          ? "No intervention required; downstream mutation remains separately approval-gated."
+          : totals.integrationExports > 0 && totals.integrationConformanceAccepted > 0
+            ? "After a supported business app implements the documented receiver, run handshake and exactly one dry-run package."
+            : "Complete package export and conformance before configuring or contacting a live business receiver."
+    }
+  ];
+  const interventionOpen = interventionStages.filter((stage) => stage.state !== "complete");
+  const interventionActionable = interventionOpen.filter((stage) => stage.state === "actionable");
+  const interventionBlocked = interventionOpen.filter((stage) => stage.state === "blocked");
+  const priorityRank = { P0: 0, P1: 1, P2: 2 } as const;
+  const nextIntervention =
+    [...interventionActionable].sort(
+      (a, b) => priorityRank[a.priority] - priorityRank[b.priority]
+    )[0] ?? null;
+  const interventionPlan = {
+    build: 40,
+    title: "Gate Closure Progress & Safe Intervention Sequencing",
+    openCount: interventionOpen.length,
+    actionableCount: interventionActionable.length,
+    blockedCount: interventionBlocked.length,
+    completeCount: interventionStages.length - interventionOpen.length,
+    nextIntervention,
+    stages: interventionStages
+  };
+
+  findings.push({
+    key: "production-intervention-sequencing",
+    category: "Build 040",
+    status:
+      interventionOpen.length === 0
+        ? "healthy"
+        : interventionActionable.length > 0
+          ? "watch"
+          : "gap",
+    title:
+      interventionOpen.length === 0
+        ? "No tracked production intervention is required."
+        : nextIntervention
+          ? "Next safe intervention: " + nextIntervention.title + "."
+          : "Tracked gates remain open, but prerequisites block safe intervention.",
+    evidence:
+      String(interventionPlan.completeCount) + " complete · " +
+      String(interventionPlan.actionableCount) + " actionable · " +
+      String(interventionPlan.blockedCount) + " blocked.",
+    action:
+      nextIntervention
+        ? nextIntervention.action
+        : interventionOpen.length === 0
+          ? "Continue normal evidence-driven operation."
+          : "Resolve only the prerequisite blockers shown below; do not bypass the originating gate controls.",
+    owner: "operations"
+  });
+
   findings.push({
     key: "production-gate-closure",
     category: "Build 039",
@@ -1418,5 +1572,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal, trendValidation, gateClosure };
+  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan };
 }

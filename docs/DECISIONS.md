@@ -525,3 +525,16 @@ Reason: a finite evidence-driven roadmap should prevent automatic feature churn,
 Decision: Build 039 marks Browserless, consumer delivery and operational adoption gates closed only from the same durable evidence that their originating builds already require. It never inserts synthetic events, changes profile capability flags, opens kill switches, approves Source Policies or enables downstream mutation.
 
 Reason: a readiness dashboard is useful only if it preserves the authority and safety boundaries of the underlying evidence.
+
+
+## D0083 — Priority never overrides prerequisite safety
+
+Decision: Build 040 applies P0/P1/P2 ordering only among gates already classified ACTIONABLE. A higher-priority gate that lacks prerequisites remains BLOCKED and cannot suppress a lower-priority safe action or justify bypassing its original control boundary.
+
+Reason: roadmap priority expresses business urgency, not authorization to weaken Source Policy, kill-switch, contract or identity controls.
+
+## D0084 — Intervention sequencing is read-only
+
+Decision: Build 040 derives COMPLETE/ACTIONABLE/BLOCKED state from existing authenticated evidence and configuration-presence signals only. The sequencing layer performs no external call and mutates no operational gate.
+
+Reason: deciding what is safe to do next should remain separate from performing the consequential action.

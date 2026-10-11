@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 039</p>
+          <p className="eyebrow">Build 040</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,12 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 039</p>
+        <p className="eyebrow">Build 040</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Build 039 turns the remaining production-evidence gates into one
-          operator readiness view while preserving the Build 038 trend checkpoint,
-          fail-closed Browserless controls and dry-run-only consumer delivery.
+          Build 040 sequences the remaining production-evidence work by
+          prerequisite readiness and priority, while preserving the Build 039
+          closure model, fail-closed Browserless controls and dry-run-only delivery.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -200,7 +200,43 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
-          <p className="eyebrow">Build 039</p>
+          <p className="eyebrow">Build 040</p>
+          <h2>Safe intervention sequence</h2>
+          <HelpInfo topic="learning-intervention-sequencing" />
+        </div>
+        <div className="grid">
+          {review.interventionPlan.stages.map((stage) => (
+            <article className="card" key={stage.key}>
+              <span className="badge">
+                {stage.state.toUpperCase()} · {stage.priority} · Build {stage.build}
+              </span>
+              <h3>{stage.title}</h3>
+              <p>{stage.progress}</p>
+              {stage.blockers.length ? (
+                <p><strong>Blocked by:</strong> {stage.blockers.join(" ")}</p>
+              ) : null}
+              <p><strong>Safe action:</strong> {stage.action}</p>
+            </article>
+          ))}
+        </div>
+        <div className="emptyState">
+          <p>
+            {review.interventionPlan.nextIntervention
+              ? "Next recommended intervention: " +
+                review.interventionPlan.nextIntervention.title +
+                " (" +
+                review.interventionPlan.nextIntervention.priority +
+                ")."
+              : review.interventionPlan.openCount === 0
+                ? "All tracked interventions are complete; continue normal evidence-driven operation."
+                : "No open gate is safely actionable yet. Resolve only the listed prerequisites."}
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <p className="eyebrow">Build 040</p>
           <h2>Production evidence gate closure</h2>
           <HelpInfo topic="learning-gate-closure" />
         </div>
@@ -218,14 +254,14 @@ export default async function ProductionLearningPage() {
           <p>
             {review.gateClosure.readyForNormalOperations
               ? "All tracked production evidence gates are closed. Normal evidence-driven operations can continue."
-              : String(review.gateClosure.openCount) + " tracked production evidence gate(s) remain open; Build 039 keeps their exact operator actions visible without bypassing earlier controls."}
+              : String(review.gateClosure.openCount) + " tracked production evidence gate(s) remain open; Build 040 keeps their exact operator actions visible without bypassing earlier controls."}
           </p>
         </div>
       </section>
 
       <section>
         <div className="sectionHeading">
-          <p className="eyebrow">Build 036 → Build 039</p>
+          <p className="eyebrow">Build 036 → Build 040</p>
           <h2>Trend validation</h2>
           <HelpInfo topic="learning-trend-validation" />
         </div>
@@ -234,7 +270,7 @@ export default async function ProductionLearningPage() {
             <article className="card" key={item.key}>
               <h3>{item.label}</h3>
               <p><strong>Build 036 baseline:</strong> {item.baseline}</p>
-              <p><strong>Build 039 current:</strong> {item.current}</p>
+              <p><strong>Build 040 current:</strong> {item.current}</p>
               <span className="badge">
                 {item.delta === null
                   ? "historical baseline unavailable"
@@ -250,7 +286,7 @@ export default async function ProductionLearningPage() {
             {review.trendValidation.baselineAvailable
               ? String(review.trendValidation.materialChanges) +
                 " aggregate trend dimension(s) changed from the eligible Build 036 cycle."
-              : "No eligible historical Build 036 cycle snapshot exists. Build 039 keeps that baseline unavailable instead of synthesizing a delta."}
+              : "No eligible historical Build 036 cycle snapshot exists. Build 040 keeps that baseline unavailable instead of synthesizing a delta."}
           </p>
         </div>
       </section>
@@ -289,7 +325,7 @@ export default async function ProductionLearningPage() {
           </div>
         ) : (
           <div className="emptyState">
-            <p>No unresolved Build 039 evidence gaps are currently visible.</p>
+            <p>No unresolved Build 040 evidence gaps are currently visible.</p>
           </div>
         )}
       </section>
@@ -370,7 +406,7 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
-          <p className="eyebrow">Post-Build 039 roadmap</p>
+          <p className="eyebrow">Post-Build 040 roadmap</p>
           <h2>Only unresolved evidence gates remain</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
