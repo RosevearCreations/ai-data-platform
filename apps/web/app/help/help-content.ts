@@ -19,6 +19,40 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "collection-projects-overview": {
+    title: "Source & Collection Project Manager",
+    summary: "Build 045 groups real source-collection work into durable workspace projects. Projects and sources are PostgreSQL/RLS-scoped; only workspace owners/admins can mutate them.",
+    steps: [
+      "Create a project in the intended authorized workspace and record its factual purpose, cadence and responsible person.",
+      "Add each real source URL with the collection method that will actually be used.",
+      "Link the current Source Policy ID when governance review exists.",
+      "Optionally link an active saved scraper/template when the source uses one.",
+      "Use readiness and blocker details to resolve governance/configuration gaps before running collection in the originating workflow."
+    ],
+    notes: [
+      "This manager does not approve Source Policy, enable remote execution or launch collection.",
+      "Projects are archived and sources are retired instead of destructively deleted.",
+      "Workspace RLS remains authoritative for both reads and writes."
+    ],
+    manual: [
+      "No new external account, secret, paid service or environment variable is required.",
+      "The Build 045 database migration is applied by the normal deployment migration workflow."
+    ]
+  },
+  "collection-projects-readiness": {
+    title: "Collection readiness & blockers",
+    summary: "Readiness is recomputed from the source's current linked governance and scraper/template evidence. It is not stored as an approval flag.",
+    steps: [
+      "READY means a current approved Source Policy matches the source origin and collection method, and any explicitly linked scraper/template is active and origin-matched.",
+      "BLOCKED means required linked governance or explicitly requested scraper evidence is missing, expired, unapproved or mismatched.",
+      "INCOMPLETE means the project has no sources yet or the source has been retired.",
+      "Fix Source Policy or scraper evidence in its originating workflow; the manager will reflect the new evidence on refresh."
+    ],
+    notes: [
+      "Project readiness is blocked if any non-retired source is blocked.",
+      "Build 045 never turns a readiness label into collection authorization."
+    ]
+  },
   "data-library-overview": {
     title: "Unified Data Library",
     summary: "Build 044 provides one read-only explorer over existing RLS-scoped saved scrapers/templates, reviewed datasets, intelligence modules and barcode captures. It does not copy records into a new library table.",
