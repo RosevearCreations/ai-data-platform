@@ -323,3 +323,11 @@ Fingerprint-deduplicated adoption snapshots provide before/after continuity for 
 The Build 036 review has two comparison layers. Sync/repair can use the earliest durable post-Build-030 `production_learning_review_snapshots` row as a numeric continuity baseline. Browserless cost, consumer delivery, enforceable retention and durable adoption did not have equivalent Build 030 numeric snapshots, so the review labels those as qualitative Build 030 evidence gaps and reports only current durable values.
 
 After collecting the current RLS-scoped workspace evidence, Build 036 writes one compact `production_learning_cycle_snapshots` row per changed workspace fingerprint. The report then derives unresolved gaps and a finite roadmap. It does not generate activity, modify permissions, or broaden provider/integration gates.
+
+## Build 037 guided first-evidence architecture
+
+`buildFirstEvidenceReviewForUser` reuses the Build 035 RLS-scoped adoption review and maps each authorized workspace into a deterministic runbook. The mapping uses profile capability flags plus existing durable activity counts; it does not write operational rows.
+
+The website exposes the derived plan at `/first-evidence` and `/api/first-evidence`. Sync and Source Policy instructions point operators back to the Chrome extension, barcode intake uses the existing web capture surface, and high-risk remote/integration actions remain behind their earlier explicit gates.
+
+Production Learning receives only a derived guided-adoption finding. Build 037 remains roadmap-active while every visible workspace is at measured zero activity and disappears after real durable adoption exists.

@@ -853,13 +853,29 @@ No infrastructure setup is required. Business priorities may be adjusted after r
 
 ## Build 037 — Guided Production Adoption & First-Evidence Runbook
 
-Status: EVIDENCE-CONDITIONAL — QUEUED only when Build 036 sees zero durable operational adoption.
+Status: IMPLEMENTED — EVIDENCE-CONDITIONAL RUNBOOK ACTIVE while any workspace remains at measured zero adoption.
 
 Goal: use existing safe workflows to generate real production evidence before adding more platform features.
 
 Priority: P1 when no workspace has durable activity.
 
 Scope: guided first-use sequences for sync, source-policy, barcode/scheduled workflows where profile-appropriate, with explicit review gates and no synthetic activity.
+
+Deliverables:
+
+- authenticated /first-evidence workspace runbook and /api/first-evidence evidence view;
+- profile-aware sync, source-policy, barcode and scheduled first-use sequencing;
+- explicit Build 032 remote-execution and Build 033 integration-delivery gates;
+- connector execution guidance only for already-installed/granted connectors;
+- durable-evidence completion derived from existing RLS-scoped Build 035 adoption outcomes;
+- Production Learning finding that becomes healthy when real operational adoption exists;
+- no synthetic activity, no automatic capability enabling and no permission changes.
+
+Acceptance: PASSED when profile-disabled workflows are not recommended, source-policy prerequisites gate scheduling, remote/integration operator gates remain intact, cross-account runbook isolation passes, and Build 037 leaves the active roadmap once durable operational adoption exists.
+
+Manual input gate:
+
+No new infrastructure is required. Use the runbook only for genuine work; the Chrome extension remains the operator surface for workspace sync, Source Policy Registry and local scheduling.
 
 ## Build 038 — Production Learning III & Trend Validation
 

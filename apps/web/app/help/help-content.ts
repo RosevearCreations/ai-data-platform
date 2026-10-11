@@ -398,6 +398,27 @@ export const HELP_TOPICS = {
       "After reviewing /adoption, you may choose which business domains/connectors deserve further investment. No recommendation is applied automatically."
     ]
   },
+  "first-evidence-overview": {
+    title: "Guided production adoption & first-evidence runbook",
+    summary: "Build 037 turns measured zero-adoption workspaces into a profile-aware operator sequence. It links to existing safe workflows and never creates synthetic activity or bypasses earlier approval gates.",
+    steps: [
+      "Choose one workspace with FIRST EVIDENCE NEEDED and perform only a step that matches real work you actually need.",
+      "Start with synchronized workspace data, a reviewed source policy, or barcode intake when the profile supports that workflow.",
+      "Create a scheduled job only after its current source-policy prerequisite is satisfied and only for a genuine recurring need.",
+      "Treat Browserless remote execution as Build 032-gated; do not run a provider call just to improve an adoption metric.",
+      "Treat business delivery as Build 033-gated; do not create a fake receiver or enable downstream mutation for metric closure.",
+      "Run installed connectors only within their existing grants and only when real work requires the capability.",
+      "After genuine activity is recorded, reopen Adoption and Production Learning so their fingerprinted snapshots capture the changed evidence."
+    ],
+    notes: [
+      "The runbook itself writes no operational evidence. Real sync, policy, barcode, scheduled, remote, integration or connector workflows create their own normal durable evidence.",
+      "A profile-disabled workflow is marked not applicable rather than being enabled automatically."
+    ],
+    manual: [
+      "No new external account, paid service or environment variable is required for Build 037.",
+      "The Chrome extension is used for saved-scraper synchronization, Source Policy Registry and local scheduled workflows; the website links to the corresponding review surfaces."
+    ]
+  },
   "learning-renewal": {
     title: "Production Learning II & Build 030 comparison",
     summary: "Build 036 repeats the production evidence review after Builds 031–035, preserves the difference between an old evidence gap and a numeric baseline, and creates a finite next queue only from current durable evidence.",
@@ -502,7 +523,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Adoption & permissions",
-    topics: ["adoption-overview"]
+    topics: ["adoption-overview", "first-evidence-overview"]
   },
   {
     title: "Production learning",

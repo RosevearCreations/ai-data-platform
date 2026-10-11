@@ -550,3 +550,20 @@ CI/database acceptance must:
 10. always add Build 038 as the finite trend-validation checkpoint after the renewal cycle.
 
 No external service or environment variable is required.
+
+## Build 037 first-evidence verification
+
+CI acceptance must:
+
+1. derive workspace plans from existing Build 035 adoption evidence;
+2. mark profile-disabled workflows not applicable;
+3. offer real synchronized-data/source-policy/barcode steps only where the profile permits them;
+4. gate scheduled jobs until a current source-policy source exists;
+5. keep remote execution explicitly operator-gated by Build 032;
+6. keep business delivery explicitly gated by Build 033;
+7. avoid writes from the runbook itself;
+8. prove another account receives no workspace runbook entries;
+9. surface a Production Learning WATCH finding while all workspaces remain at zero adoption;
+10. mark that finding healthy and remove Build 037 from the active roadmap after real durable activity exists.
+
+No new environment variable, external account or paid service is required.

@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">036</span>
+        <span className="build">037</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>Production Learning II uses durable evidence only</strong>
+        <strong>First evidence must come from real work</strong>
         <p>
-          Build 036 compares current production outcomes with the Build 030 review
-          and renews a finite roadmap. Missing historical measurements stay marked
-          as gaps rather than synthetic numbers; this extension does not alter
-          permissions or create activity to satisfy a metric.
+          Build 037 guides first-use adoption through the existing workspace sync,
+          Source Policy, barcode and scheduled workflows. Do not create throwaway
+          fixtures, loosen permissions, or run gated remote/integration actions
+          merely to improve an adoption metric.
         </p>
       </section>
 

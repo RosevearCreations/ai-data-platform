@@ -55,6 +55,9 @@ export default async function AdoptionPage() {
           automatically.
         </p>
         <div className="heroActions">
+          <Link className="secondaryButton" href="/first-evidence">
+            First-evidence runbook
+          </Link>
           <Link className="secondaryButton" href="/production-learning">
             Production learning
           </Link>

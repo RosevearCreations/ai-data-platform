@@ -476,3 +476,21 @@ Reason: the platform should not grow through an indefinitely extended speculativ
 Decision: Build 036 stores only bounded counts/flags, deduplicates unchanged evidence by fingerprint and grants the runtime no UPDATE/DELETE permission.
 
 Reason: roadmap continuity requires durable evidence without creating another mutable or unbounded analytics store.
+
+## D0075 — First-evidence guidance does not manufacture evidence
+
+Decision: Build 037 is a derived runbook. It never inserts sync, barcode, provider, connector or integration activity on its own.
+
+Reason: adoption must represent real operations rather than test artifacts created to satisfy a dashboard.
+
+## D0076 — Profile capability flags define runbook applicability
+
+Decision: a workflow disabled by the workspace profile is shown as not applicable and is never automatically enabled by the runbook.
+
+Reason: guidance must preserve the Build 028 profile boundary.
+
+## D0077 — Earlier high-risk gates remain authoritative
+
+Decision: Build 037 may link to remote execution and integration delivery, but it keeps Build 032 and Build 033 approval gates explicit and never treats those actions as ordinary first-use steps.
+
+Reason: a first-adoption goal cannot weaken provider, source-policy or downstream-write safety.
