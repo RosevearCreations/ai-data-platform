@@ -461,6 +461,25 @@ export const HELP_TOPICS = {
       "Normal real operating activity is the only supported way to create future trend movement."
     ]
   },
+  "learning-gate-closure": {
+    title: "Production evidence gate closure & operator readiness",
+    summary: "Build 039 consolidates the remaining Build 032 Browserless baseline, Build 033 live dry-run consumer acknowledgement and Build 037 real-adoption gates into one operator view. It does not bypass or auto-close any gate.",
+    steps: [
+      "Read each gate card as OPEN or CLOSED from durable production evidence only.",
+      "For Browserless, keep the existing Source Policy, allowlist, workspace arm and global kill-switch sequence authoritative.",
+      "For consumer delivery, keep conformance distinct from a real supported business application's authenticated dry-run acknowledgement.",
+      "For adoption, count only genuine durable work; never create synthetic activity to improve readiness.",
+      "When all three gates are closed, return to normal evidence-driven operations instead of automatically creating another feature queue."
+    ],
+    notes: [
+      "Build 039 is a coordination/readiness layer over existing evidence; it creates no synthetic provider, delivery or adoption events.",
+      "Earlier Build 032/033/037 safety decisions remain authoritative."
+    ],
+    manual: [
+      "No new account, paid service or environment variable is introduced by Build 039.",
+      "Any manual action shown by an open gate is the same controlled action already documented by its original build."
+    ]
+  },
   "learning-gaps": {
     title: "Measured findings and evidence gaps",
     summary: "A GAP means the platform cannot yet make a production trend claim from durable data; it is intentionally different from a measured zero.",
@@ -485,7 +504,7 @@ export const HELP_TOPICS = {
   },
   "learning-roadmap": {
     title: "Evidence-driven roadmap renewal",
-    summary: "Build 038 validates the finite queue against current production trends, closes its own checkpoint after durable evidence, and leaves unresolved Browserless, consumer-delivery or zero-adoption work active without inventing new feature builds.",
+    summary: "Build 039 consolidates the remaining Browserless, consumer-delivery and zero-adoption evidence gates into one operator readiness view while preserving the finite evidence-driven roadmap.",
     steps: [
       "Build 031 completed append-only outcome telemetry and review snapshot continuity.",
       "Build 032 establishes a real Browserless cost/reliability baseline and remains active until the first terminal provider event.",
@@ -548,6 +567,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

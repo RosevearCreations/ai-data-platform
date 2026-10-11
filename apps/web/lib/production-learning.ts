@@ -1036,6 +1036,76 @@ export function buildProductionLearningAssessment(
     owner: "platform"
   });
 
+  const gateClosureGates = [
+    {
+      key: "browserless-baseline",
+      build: 32,
+      title: "Browserless provider baseline",
+      status: totals.providerRuns > 0 ? "closed" as const : "open" as const,
+      evidence:
+        totals.providerRuns > 0
+          ? String(totals.providerRuns) + " terminal provider run(s) recorded; bounded decision " + totals.browserlessBaselineDecision + "."
+          : "No terminal Browserless provider run is recorded.",
+      nextAction:
+        totals.providerRuns > 0
+          ? "Keep the bounded provider controls in place and review material reliability/cost changes only."
+          : "Complete one approved, allowlisted, explicitly armed one-page pilot under the existing Build 032 kill-switch procedure."
+    },
+    {
+      key: "consumer-delivery",
+      build: 33,
+      title: "Business consumer dry-run acknowledgement",
+      status: totals.integrationLiveAccepted > 0 ? "closed" as const : "open" as const,
+      evidence:
+        totals.integrationLiveAccepted > 0
+          ? String(totals.integrationLiveAccepted) + " live business-consumer dry-run acknowledgement(s) recorded."
+          : String(totals.integrationConformanceAccepted) + " conformance acceptance(s), but no live business-consumer dry-run acknowledgement.",
+      nextAction:
+        totals.integrationLiveAccepted > 0
+          ? "Keep delivery dry-run only until a separate downstream mutation build is explicitly approved."
+          : "Configure one supported business receiver only after it implements the v1 contract, then run handshake and one dry-run delivery."
+    },
+    {
+      key: "operational-adoption",
+      build: 37,
+      title: "Real operational adoption",
+      status: totals.adoptionActiveWorkspaces > 0 ? "closed" as const : "open" as const,
+      evidence:
+        String(totals.adoptionActiveWorkspaces) + "/" + String(totals.workspaces) + " visible workspace(s) have durable operational activity.",
+      nextAction:
+        totals.adoptionActiveWorkspaces > 0
+          ? "Continue normal work and let existing append-only evidence capture genuine usage."
+          : "Use the profile-aware first-evidence runbook for real work; do not create synthetic activity to close this gate."
+    }
+  ];
+  const gateClosureOpenCount = gateClosureGates.filter((gate) => gate.status === "open").length;
+  const gateClosure = {
+    build: 39,
+    title: "Production Evidence Gate Closure & Operator Readiness",
+    openCount: gateClosureOpenCount,
+    closedCount: gateClosureGates.length - gateClosureOpenCount,
+    readyForNormalOperations: gateClosureOpenCount === 0,
+    gates: gateClosureGates
+  };
+
+  findings.push({
+    key: "production-gate-closure",
+    category: "Build 039",
+    status: gateClosureOpenCount === 0 ? "healthy" : "watch",
+    title:
+      gateClosureOpenCount === 0
+        ? "All tracked production evidence gates are closed."
+        : String(gateClosureOpenCount) + " tracked production evidence gate(s) remain open.",
+    evidence:
+      String(gateClosure.closedCount) + "/" + String(gateClosure.gates.length) +
+      " Build 032/033/037 evidence gates are closed from durable production evidence.",
+    action:
+      gateClosureOpenCount === 0
+        ? "Return to normal evidence-driven operations; add future builds only for measured needs or explicit operator priorities."
+        : "Work only the open gate actions shown in Build 039; do not weaken source-policy, kill-switch, dry-run or adoption-integrity controls.",
+    owner: "operations"
+  });
+
   const roadmap: RoadmapRecommendation[] = [
     ...(totals.providerRuns === 0
       ? [{
@@ -1348,5 +1418,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal, trendValidation };
+  return { totals, findings, roadmap, renewal, trendValidation, gateClosure };
 }

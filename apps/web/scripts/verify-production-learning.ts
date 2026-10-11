@@ -228,6 +228,11 @@ assert(
     review.roadmap.some((item) => item.build === 32 && item.priority === "P0"),
   "Build 032 must remain P0 until a real provider baseline exists."
 );
+assert(
+  review.gateClosure.openCount === 3 &&
+    !review.gateClosure.readyForNormalOperations,
+  "Build 039 must show Browserless, consumer-delivery and adoption gates open when no durable closure evidence exists."
+);
 
 const baselineEvidence: ProductionLearningEvidence = {
   ...evidence,
@@ -414,6 +419,16 @@ assert(
   "Build 035 must leave the active roadmap after durable adoption review snapshots exist."
 );
 assert(
+  adoptionReview.gateClosure.openCount === 0 &&
+    adoptionReview.gateClosure.readyForNormalOperations &&
+    adoptionReview.findings.some(
+      (finding) =>
+        finding.key === "production-gate-closure" &&
+        finding.status === "healthy"
+    ),
+  "Build 039 must become ready only after provider, live consumer and real adoption evidence are all durable."
+);
+assert(
   adoptionReview.roadmap.some((item) => item.build === 36),
   "Build 036 must remain queued after Build 035 adoption evidence is durable."
 );
@@ -583,5 +598,5 @@ assert(
 );
 
 console.log(
-  "Build 038 production-learning closes its own checkpoint after durable evidence, preserves missing historical baselines and validates measurable Build 036-to-038 changes."
+  "Build 039 production gate closure preserves Build 038 trend integrity and consolidates durable Build 032/033/037 readiness without weakening existing controls."
 );
