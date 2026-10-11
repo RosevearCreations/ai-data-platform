@@ -7,7 +7,8 @@ import {
   DATA_LIBRARY_SORTS,
   DATA_LIBRARY_TYPES,
   listUnifiedDataLibrary,
-  normalizeDataLibraryQuery
+  normalizeDataLibraryQuery,
+  safeSourceHref
 } from "@/lib/data-library";
 
 import { DataLibrarySavedViews } from "./DataLibrarySavedViews";
@@ -156,10 +157,12 @@ export default async function DataLibraryPage({
                   <div><dt>Source</dt><dd>{record.sourceLabel || "workspace record"}</dd></div>
                 </dl>
 
-                {record.sourceUrl ? (
+                {safeSourceHref(record.sourceUrl) ? (
                   <p className="librarySource">
-                    Source: <a className="textLink" href={record.sourceUrl} rel="noreferrer" target="_blank">{record.sourceUrl}</a>
+                    Source: <a className="textLink" href={safeSourceHref(record.sourceUrl)} rel="noreferrer" target="_blank">{record.sourceUrl}</a>
                   </p>
+                ) : record.sourceUrl ? (
+                  <p className="librarySource">Source reference: {record.sourceUrl}</p>
                 ) : null}
 
                 <details className="libraryDetails">

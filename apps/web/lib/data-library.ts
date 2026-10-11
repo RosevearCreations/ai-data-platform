@@ -83,6 +83,15 @@ export function normalizeDataLibraryQuery(input: {
   };
 }
 
+export function safeSourceHref(value: string) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.toString() : "";
+  } catch {
+    return "";
+  }
+}
+
 export function recordFlags(input: {
   duplicate: boolean;
   deleted: boolean;
@@ -268,24 +277,22 @@ export async function listUnifiedDataLibrary(
   input: DataLibraryQuery
 ) {
   const query = normalizeDataLibraryQuery(input);
-  const offset = (query.page - 1) * query.pageSize;
-
   const result = await withUserDatabase(userId, async (client) => {
     const values: unknown[] = [];
     const conditions: string[] = [];
 
     if (query.workspaceId) {
       values.push(query.workspaceId);
-      conditions.push(`workspace_id = $${values.length}`);
+      conditions.push(`workspace_id = ${values.length}`);
     }
     if (query.type) {
       values.push(query.type);
-      conditions.push(`record_type = $${values.length}`);
+      conditions.push(`record_type = ${values.length}`);
     }
     if (query.search) {
       values.push("%" + query.search.toLowerCase() + "%");
       conditions.push(
-        `lower(concat_ws(' ',workspace_name,title,subtitle,source_url,source_label,normalized::text,raw::text)) like $${values.length}`
+        `lower(concat_ws(' ',workspace_name,title,subtitle,source_url,source_label,normalized::text,raw::text)) like ${values.length}`
       );
     }
 
@@ -294,27 +301,32 @@ export async function listUnifiedDataLibrary(
       recordsCte + ` select count(*)::text as count from records${where}`,
       values
     );
+    const total = Number(countResult.rows[0]?.count ?? 0);
+    const totalPages = Math.max(1, Math.ceil(total / query.pageSize));
+    const effectivePage = Math.min(query.page, totalPages);
+    const offset = (effectivePage - 1) * query.pageSize;
 
     const pageValues = [...values, query.pageSize, offset];
     const rowsResult = await client.query<LibraryRow>(
       recordsCte +
-        ` select * from records${where} order by ${sortSql[query.sort]} limit $${pageValues.length - 1} offset $${pageValues.length}`,
+        ` select * from records${where} order by ${sortSql[query.sort]} limit ${pageValues.length - 1} offset ${pageValues.length}`,
       pageValues
     );
 
     return {
-      total: Number(countResult.rows[0]?.count ?? 0),
+      total,
+      totalPages: result.totalPages,
+      effectivePage,
       rows: rowsResult.rows
     };
   });
 
   const workspaces = await listWorkspacesForUser(userId);
-  const totalPages = Math.max(1, Math.ceil(result.total / query.pageSize));
 
   return {
     query: {
       ...query,
-      page: Math.min(query.page, totalPages)
+      page: result.effectivePage
     },
     workspaces,
     total: result.total,
