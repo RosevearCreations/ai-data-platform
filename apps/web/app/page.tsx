@@ -18,6 +18,7 @@ const foundations = [
 const workflowLinks = [
   ["/capture", "Barcode intake"],
   ["/data-library", "Unified data library"],
+  ["/collection-projects", "Collection projects"],
   ["/intelligence", "Intelligence library"],
   ["/remote-execution", "Remote execution"],
   ["/connectors", "Connectors"],

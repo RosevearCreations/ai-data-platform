@@ -1038,3 +1038,28 @@ Delivered:
 - no migration, library-copy table, record mutation, inferred confidence score or synthetic data.
 
 Acceptance: only authorized workspace records are visible; supported record types can be searched, filtered, sorted and paginated; out-of-range pagination clamps safely; raw and normalized representations remain distinguishable; provenance and durable quality flags remain visible; saved views are local-only; and the explorer cannot mutate originating records.
+
+
+## Build 045 — Source & Collection Project Manager
+
+Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+
+Goal: add a durable project-management layer for real source collection work without weakening Source Policy, scraper, scheduling or remote-execution controls.
+
+Delivered:
+
+- migration `0017_collection_projects.sql`;
+- RLS-scoped `workspace_collection_projects` and `workspace_collection_project_sources`;
+- owner/admin-only project/source mutation with member read visibility;
+- project name, factual purpose, lifecycle, cadence, responsible-person label and notes;
+- source URL/origin, collection method, lifecycle, cadence and notes;
+- optional exact Source Policy ID and saved scraper/template linkage;
+- dynamic READY / BLOCKED / INCOMPLETE evaluation from current Source Policy approval/expiry/origin/method and active linked scraper evidence;
+- non-destructive project archive and source retirement;
+- authenticated `/collection-projects` manager plus API;
+- Command Center navigation, responsive UI and contextual help;
+- pure validation/readiness verification plus PostgreSQL persistence/RLS cross-account verification;
+- extension version 0.45.0;
+- no automatic Source Policy approval, scraper creation, scheduled job creation, remote execution or collection launch.
+
+Acceptance: authorized members can read only their workspace projects; only owners/admins can mutate; URLs/origins/methods are normalized and bounded; current governance/scraper mismatches fail closed as blockers; cross-account project data remains invisible; lifecycle changes are non-destructive; and project readiness never substitutes for execution authorization.

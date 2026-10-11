@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 044 — Unified Data Library & Record Explorer.
+Build 045 — Source & Collection Project Manager.
 
 
 ## Persistence and authentication
@@ -58,3 +58,8 @@ The platform uses provider-portable PostgreSQL with Better Auth. Neon is the ini
 ## Build 044 application surface
 
 The signed-in web application now includes `/data-library`, a read-only unified explorer over authorized durable workspace records. It supports workspace/type filtering, search, sorting, pagination, browser-local saved views, provenance inspection and raw-vs-normalized comparison without creating a duplicate library table.
+
+
+## Build 045 application surface
+
+The signed-in web application now includes `/collection-projects`, a durable workspace manager for named collection projects and their source bindings. It links project sources to current Source Policy and saved scraper/template evidence and reports readiness blockers without approving or executing collection.

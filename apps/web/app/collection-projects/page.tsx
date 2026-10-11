@@ -54,7 +54,35 @@ export default async function CollectionProjectsPage() {
       </section>
 
       <CollectionProjectManager
-        projects={projects}
+        projects={projects.map((project) => ({
+          workspaceId: project.workspaceId,
+          workspaceName: project.workspaceName,
+          workspaceProfile: project.workspaceProfile,
+          role: project.role,
+          canManage: project.canManage,
+          projectId: project.projectId,
+          name: project.name,
+          purpose: project.purpose,
+          status: project.status,
+          cadence: project.cadence,
+          ownerLabel: project.ownerLabel,
+          notes: project.notes,
+          readiness: project.readiness,
+          sources: project.sources.map((source) => ({
+            sourceId: source.sourceId,
+            displayName: source.displayName,
+            sourceUrl: source.sourceUrl,
+            sourceOrigin: source.sourceOrigin,
+            collectionMethod: source.collectionMethod,
+            sourcePolicyId: source.sourcePolicyId,
+            savedScraperId: source.savedScraperId,
+            cadence: source.cadence,
+            status: source.status,
+            notes: source.notes,
+            readiness: source.readiness,
+            blockers: source.blockers
+          }))
+        }))}
         options={options}
       />
     </main>

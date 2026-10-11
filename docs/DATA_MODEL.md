@@ -689,3 +689,32 @@ Build 044 does **not** add a database table. The authenticated `/data-library` e
 - `app.workspace_barcode_captures`.
 
 The union preserves each originating record ID, workspace identity, timestamps, source/provenance fields, explicit server version where applicable, normalized/summary data and raw durable payload. PostgreSQL RLS on the originating tables remains authoritative. Tombstones, duplicate state and review state are exposed as source facts; no confidence or verification state is inferred by the read model.
+
+
+## Build 045 collection projects
+
+### workspace_collection_projects
+
+Durable workspace-scoped collection intent:
+
+- workspace_id + project_id primary key;
+- name, purpose, lifecycle status, cadence, owner_label and notes;
+- created_by, created_at and updated_at;
+- member SELECT policy;
+- owner/admin INSERT/UPDATE policies;
+- no runtime DELETE grant.
+
+### workspace_collection_project_sources
+
+Durable project source bindings:
+
+- workspace_id + project_id + source_id primary key;
+- display_name, normalized http/https source_url and source_origin;
+- collection_method aligned with Source Policy methods;
+- optional source_policy_id and saved_scraper_id references by stable application ID;
+- cadence, lifecycle status and notes;
+- member SELECT policy;
+- owner/admin INSERT/UPDATE policies;
+- no runtime DELETE grant.
+
+Source Policy and scraper IDs are intentionally not database foreign keys because those originating records live in versioned intelligence/synchronization models. Build 045 resolves them dynamically under the same workspace RLS and marks missing, expired, mismatched or tombstoned evidence as blockers.

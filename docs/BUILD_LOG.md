@@ -1998,3 +1998,26 @@ Build 044 adds no migration or copied library table and performs no record mutat
 - push-triggered main Verify: GREEN — workflow run `38163813516`;
 - extension version: `0.44.0`;
 - Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.
+
+
+## Build 045 — Source & Collection Project Manager
+
+Date: 2026-10-11
+
+Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+
+Delivered:
+
+- migration `0017_collection_projects.sql`;
+- durable workspace-scoped collection projects and project-source records;
+- owner/admin mutation policies and member read RLS;
+- source-policy and saved-scraper/template linkage;
+- fail-closed dynamic source/project readiness with explicit blockers;
+- non-destructive archive/retire lifecycle;
+- authenticated project-management API and `/collection-projects` interface;
+- project/source creation and lifecycle controls;
+- contextual help, responsive styling and Command Center navigation;
+- pure readiness tests and PostgreSQL cross-account isolation verification;
+- extension version 0.45.0.
+
+Build 045 organizes collection intent only. It does not approve sources or run collection.

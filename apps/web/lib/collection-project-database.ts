@@ -275,8 +275,8 @@ export async function listCollectionProjectsForUser(userId: string) {
 }
 
 export async function collectionProjectOptionsForUser(userId: string) {
-  return withUserDatabase(userId, async (client) => {
-    const workspaces = await listWorkspacesForUser(userId);
+  const workspaces = await listWorkspacesForUser(userId);
+  const evidence = await withUserDatabase(userId, async (client) => {
     const policies = await client.query<QueryResultRow>(`
       select workspace_id,payload
       from app.workspace_intelligence_modules
@@ -289,7 +289,6 @@ export async function collectionProjectOptionsForUser(userId: string) {
       order by name
     `);
     return {
-      workspaces,
       policies: policies.rows.flatMap((row) =>
         policiesFromPayload(row.payload).map((policy) => ({
           workspaceId: String(row.workspace_id),
@@ -305,6 +304,7 @@ export async function collectionProjectOptionsForUser(userId: string) {
       }))
     };
   });
+  return { workspaces, ...evidence };
 }
 
 export async function createCollectionProject(
