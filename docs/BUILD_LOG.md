@@ -1,6 +1,18 @@
 # Build Log
 
 
+## Build 042 — Intervention Outcome Reconciliation & Closure Verification
+
+- reconciled Build 032/033/037 outcomes as VERIFIED, INCONCLUSIVE or NOT COMPLETE;
+- kept originating durable evidence authoritative over checklist or page state;
+- required restored Browserless fail-closed state for clean operational verification;
+- surfaced disabled-capability adoption mismatches as inconclusive rather than silently normalizing permissions;
+- surfaced consumer rejection/transport failure without acceptance as inconclusive and never auto-retried;
+- added per-intervention evidence, explanation and bounded follow-up to Production Learning;
+- contextual help and extension version 0.42.0;
+- verification covers no-evidence, terminal Browserless and all-outcomes-verified cases.
+
+
 ## Build 041 — Operator Intervention Preflight & Completion Evidence
 
 - packaged the Build 040-selected intervention into a read-only operator preflight;

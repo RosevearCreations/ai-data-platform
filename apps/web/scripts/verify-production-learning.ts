@@ -257,6 +257,13 @@ assert(
     review.preflightPlan.current.completionEvidence.length >= 2,
   "Build 041 must provide a satisfied preflight, explicit anti-synthetic stop condition and durable completion evidence for the selected adoption intervention."
 );
+assert(
+  review.outcomePlan.counts.verified === 0 &&
+    review.outcomePlan.counts.inconclusive === 0 &&
+    review.outcomePlan.counts.notComplete === 3 &&
+    !review.outcomePlan.allVerified,
+  "Build 042 must keep all three intervention outcomes NOT COMPLETE when their originating durable closure evidence is absent."
+);
 
 const baselineEvidence: ProductionLearningEvidence = {
   ...evidence,
@@ -297,6 +304,14 @@ const baselineReview = buildProductionLearningAssessment(baselineEvidence);
 assert(
   baselineReview.totals.browserlessBaselineDecision === "go-bounded",
   "Successful one-page Browserless evidence must produce the bounded go decision."
+);
+assert(
+  baselineReview.outcomePlan.outcomes.some(
+    (outcome) =>
+      outcome.key === "browserless-baseline" &&
+      outcome.state === "verified"
+  ),
+  "Build 042 must reconcile a terminal Browserless run as VERIFIED only when fail-closed state is restored."
 );
 assert(
   !baselineReview.roadmap.some((item) => item.build === 32),
@@ -474,6 +489,16 @@ assert(
   "Build 041 must stop issuing a preflight packet once all tracked gates have durable completion evidence."
 );
 assert(
+  adoptionReview.outcomePlan.allVerified &&
+    adoptionReview.outcomePlan.counts.verified === 3 &&
+    adoptionReview.findings.some(
+      (finding) =>
+        finding.key === "intervention-outcome-reconciliation" &&
+        finding.status === "healthy"
+    ),
+  "Build 042 must report all tracked intervention outcomes VERIFIED only when originating durable closure evidence is present and operational safety state reconciles cleanly."
+);
+assert(
   adoptionReview.roadmap.some((item) => item.build === 36),
   "Build 036 must remain queued after Build 035 adoption evidence is durable."
 );
@@ -643,5 +668,5 @@ assert(
 );
 
 console.log(
-  "Build 041 adds read-only operator preflight, stop conditions and durable completion evidence to the Build 040 safe intervention sequence."
+  "Build 042 reconciles intervention outcomes as VERIFIED, INCONCLUSIVE or NOT COMPLETE from originating durable evidence and preserved safety state."
 );

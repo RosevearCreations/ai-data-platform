@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 041</p>
+          <p className="eyebrow">Build 042</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,12 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 041</p>
+        <p className="eyebrow">Build 042</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Build 041 adds a read-only operator preflight and completion-evidence
-          packet for the next safe intervention, while preserving Build 040
-          sequencing and every originating production safety gate.
+          Build 042 reconciles intervention outcomes from durable evidence,
+          distinguishing verified closure from inconclusive or incomplete results
+          without weakening the Build 041 preflight or originating safety gates.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -195,6 +195,36 @@ export default async function ProductionLearningPage() {
             <p>{totals.approvedPublicSources} eligible · {totals.allowlistedSources} allowlisted · {totals.armedWorkspaces} armed workspaces.</p>
             <span className="badge">pilot prerequisites</span>
           </article>
+        </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <p className="eyebrow">Build 042</p>
+          <h2>Intervention outcome reconciliation</h2>
+          <HelpInfo topic="learning-outcome-reconciliation" />
+        </div>
+        <div className="grid">
+          {review.outcomePlan.outcomes.map((outcome) => (
+            <article className="card" key={outcome.key}>
+              <span className="badge">
+                {outcome.state.toUpperCase().replace("-", " ")} · Build {outcome.build}
+              </span>
+              <h3>{outcome.title}</h3>
+              <p><strong>Durable evidence:</strong> {outcome.durableEvidence}</p>
+              <p><strong>Reconciliation:</strong> {outcome.reconciliation}</p>
+              <p><strong>Follow-up:</strong> {outcome.followUp}</p>
+            </article>
+          ))}
+        </div>
+        <div className="emptyState">
+          <p>
+            {review.outcomePlan.allVerified
+              ? "All tracked intervention outcomes are verified from durable evidence."
+              : String(review.outcomePlan.counts.verified) + " verified · " +
+                String(review.outcomePlan.counts.inconclusive) + " inconclusive · " +
+                String(review.outcomePlan.counts.notComplete) + " not complete."}
+          </p>
         </div>
       </section>
 
