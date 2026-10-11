@@ -538,3 +538,16 @@ Reason: roadmap priority expresses business urgency, not authorization to weaken
 Decision: Build 040 derives COMPLETE/ACTIONABLE/BLOCKED state from existing authenticated evidence and configuration-presence signals only. The sequencing layer performs no external call and mutates no operational gate.
 
 Reason: deciding what is safe to do next should remain separate from performing the consequential action.
+
+
+## D0085 — Preflight guidance is not execution authorization
+
+Decision: Build 041 may explain prerequisites, stop conditions and completion evidence for the Build 040-selected intervention, but it cannot execute or authorize the consequential action itself.
+
+Reason: operational readiness and operational execution must remain separate so Source Policy, kill-switch, receiver-authentication and workspace-approval boundaries stay explicit.
+
+## D0086 — Gate completion must be proven by originating durable evidence
+
+Decision: Build 041 considers an intervention complete only when the existing Build 032, 033 or 037 durable evidence already used by Production Learning proves closure. A checklist completion or page view is never sufficient.
+
+Reason: operator guidance must not become a second, weaker source of truth.

@@ -944,3 +944,24 @@ Delivered:
 - no provider call, receiver call, permission mutation, environment-variable change, Source Policy approval or synthetic evidence creation.
 
 Acceptance: Build 040 recommends only a safe actionable stage, exposes exact prerequisite blockers for blocked stages, preserves originating Build 032/033/037 controls, and stops recommending interventions when all tracked gates are durably complete.
+
+
+## Build 041 — Operator Intervention Preflight & Completion Evidence
+
+Status: IMPLEMENTED on dev; promotion follows the normal dev → main release path.
+
+Goal: turn Build 040's next-safe-intervention selection into an operator-readable preflight/completion packet without executing the consequential action.
+
+Delivered:
+
+- preflight checks for the selected Build 032, Build 033 or Build 037 intervention;
+- explicit stop conditions that preserve Source Policy, kill-switch, contract, dry-run and adoption-integrity boundaries;
+- durable completion-evidence requirements for each intervention;
+- Browserless preflight includes token, provider flag, approved Source Policy, allowlist, workspace arm and fail-closed kill-switch state;
+- operational-adoption preflight explicitly forbids synthetic activity and profile-capability bypass;
+- consumer-delivery preflight requires exported package/conformance and preserves dry-run-only downstream behavior;
+- no packet after all tracked evidence gates are durably complete;
+- contextual help and extension version 0.41.0;
+- no provider execution, receiver delivery, environment change, permission mutation or synthetic evidence creation.
+
+Acceptance: Build 041 produces a read-only preflight for only the currently selected safe intervention, exposes stop conditions and durable completion evidence, and removes the packet when all tracked gates are complete.
