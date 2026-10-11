@@ -331,3 +331,11 @@ After collecting the current RLS-scoped workspace evidence, Build 036 writes one
 The website exposes the derived plan at `/first-evidence` and `/api/first-evidence`. Sync and Source Policy instructions point operators back to the Chrome extension, barcode intake uses the existing web capture surface, and high-risk remote/integration actions remain behind their earlier explicit gates.
 
 Production Learning receives only a derived guided-adoption finding. Build 037 remains roadmap-active while every visible workspace is at measured zero activity and disappears after real durable adoption exists.
+
+## Build 038 Production Learning III architecture
+
+Build 038 reuses the existing Production Learning evidence graph and cycle-snapshot table. The trend reader first identifies the earliest eligible historical Build 036 row per authorized workspace using `cycle_key='build-036'` and `observation_context='legacy'`. Current Build 038 evidence is then fingerprinted and persisted as `cycle_key='build-038'`.
+
+The separate observation context is important because production may never have opened the authenticated Build 036 review. In that case Build 038 can still preserve Build 036 continuity rows for compatibility, but those same-runtime rows are explicitly ineligible as historical trend baselines. The UI therefore reports "historical baseline unavailable" instead of comparing current values to a fabricated past value.
+
+The resulting six trend dimensions are synchronization, repair compatibility, Browserless provider activity, live consumer acknowledgement, retention-budget health and adoption/least-privilege outcomes. Roadmap closure is derived from the persisted Build 038 cycle count; unresolved Build 032/033/037 gates remain independent.

@@ -179,6 +179,23 @@ export interface ProductionLearningEvidence {
     baselineRepairChecks: number;
     baselineRepairHealthy: number;
   };
+  trend: {
+    cycleSnapshots: number;
+    baselineSnapshots: number;
+    baselineGeneratedAt: string | null;
+    baselineSyncEvents: number;
+    baselineSyncConflicts: number;
+    baselineRepairChecks: number;
+    baselineRepairHealthy: number;
+    baselineProviderRuns: number;
+    baselineProviderUnits: number;
+    baselineIntegrationLiveAccepted: number;
+    baselineRetentionBudgetBreaches: number;
+    baselineAdoptionActivityEvents: number;
+    baselineAdoptionUsedCapabilities: number;
+    baselineAdoptionHighRiskUnused: number;
+    baselineConnectorUnusedGrants: number;
+  };
   workspaces: ProductionLearningWorkspaceEvidence[];
 }
 
@@ -307,6 +324,27 @@ export function summarizeProductionLearningEvidence(
   const renewalBaselineSyncConflicts = evidence.renewal.baselineSyncConflicts;
   const renewalBaselineRepairChecks = evidence.renewal.baselineRepairChecks;
   const renewalBaselineRepairHealthy = evidence.renewal.baselineRepairHealthy;
+  const trendCycleSnapshots = evidence.trend.cycleSnapshots;
+  const trendBaselineSnapshots = evidence.trend.baselineSnapshots;
+  const trendBaselineGeneratedAt = evidence.trend.baselineGeneratedAt;
+  const trendBaselineSyncEvents = evidence.trend.baselineSyncEvents;
+  const trendBaselineSyncConflicts = evidence.trend.baselineSyncConflicts;
+  const trendBaselineRepairChecks = evidence.trend.baselineRepairChecks;
+  const trendBaselineRepairHealthy = evidence.trend.baselineRepairHealthy;
+  const trendBaselineProviderRuns = evidence.trend.baselineProviderRuns;
+  const trendBaselineProviderUnits = evidence.trend.baselineProviderUnits;
+  const trendBaselineIntegrationLiveAccepted =
+    evidence.trend.baselineIntegrationLiveAccepted;
+  const trendBaselineRetentionBudgetBreaches =
+    evidence.trend.baselineRetentionBudgetBreaches;
+  const trendBaselineAdoptionActivityEvents =
+    evidence.trend.baselineAdoptionActivityEvents;
+  const trendBaselineAdoptionUsedCapabilities =
+    evidence.trend.baselineAdoptionUsedCapabilities;
+  const trendBaselineAdoptionHighRiskUnused =
+    evidence.trend.baselineAdoptionHighRiskUnused;
+  const trendBaselineConnectorUnusedGrants =
+    evidence.trend.baselineConnectorUnusedGrants;
   const connectorInstallations = sum(evidence, (w) => w.connectors.installations);
   const connectorExecutions = sum(
     evidence,
@@ -434,6 +472,29 @@ export function summarizeProductionLearningEvidence(
       renewalBaselineRepairChecks === 0
         ? null
         : renewalBaselineRepairHealthy / renewalBaselineRepairChecks,
+    trendCycleSnapshots,
+    trendBaselineSnapshots,
+    trendBaselineGeneratedAt,
+    trendBaselineSyncEvents,
+    trendBaselineSyncConflicts,
+    trendBaselineSyncConflictRate:
+      trendBaselineSyncEvents === 0
+        ? null
+        : trendBaselineSyncConflicts / trendBaselineSyncEvents,
+    trendBaselineRepairChecks,
+    trendBaselineRepairHealthy,
+    trendBaselineRepairSuccessRate:
+      trendBaselineRepairChecks === 0
+        ? null
+        : trendBaselineRepairHealthy / trendBaselineRepairChecks,
+    trendBaselineProviderRuns,
+    trendBaselineProviderUnits,
+    trendBaselineIntegrationLiveAccepted,
+    trendBaselineRetentionBudgetBreaches,
+    trendBaselineAdoptionActivityEvents,
+    trendBaselineAdoptionUsedCapabilities,
+    trendBaselineAdoptionHighRiskUnused,
+    trendBaselineConnectorUnusedGrants,
     connectorInstallations,
     connectorExecutions,
     syncEvents,
@@ -921,6 +982,60 @@ export function buildProductionLearningAssessment(
     owner: "platform"
   });
 
+  const trendBaselineAvailable = totals.trendBaselineSnapshots > 0;
+  const trendMaterialChanges = trendBaselineAvailable
+    ? [
+        totals.syncEvents !== totals.trendBaselineSyncEvents,
+        totals.syncConflicts !== totals.trendBaselineSyncConflicts,
+        totals.repairCompatibilityChecks !== totals.trendBaselineRepairChecks,
+        totals.repairHealthyChecks !== totals.trendBaselineRepairHealthy,
+        totals.providerRuns !== totals.trendBaselineProviderRuns,
+        totals.providerUnits !== totals.trendBaselineProviderUnits,
+        totals.integrationLiveAccepted !== totals.trendBaselineIntegrationLiveAccepted,
+        totals.retentionBudgetBreaches !== totals.trendBaselineRetentionBudgetBreaches,
+        totals.adoptionUsedCapabilities !== totals.trendBaselineAdoptionUsedCapabilities,
+        totals.adoptionHighRiskUnusedCapabilities !== totals.trendBaselineAdoptionHighRiskUnused,
+        totals.adoptionConnectorUnusedGrants !== totals.trendBaselineConnectorUnusedGrants
+      ].filter(Boolean).length
+    : 0;
+
+  findings.push({
+    key: "production-learning-trend-validation",
+    category: "Production Learning III",
+    status:
+      totals.trendCycleSnapshots === 0
+        ? "gap"
+        : !trendBaselineAvailable
+          ? "watch"
+          : trendMaterialChanges > 0
+            ? "healthy"
+            : "watch",
+    title:
+      totals.trendCycleSnapshots === 0
+        ? "Build 038 trend-validation snapshot is not yet durable."
+        : !trendBaselineAvailable
+          ? "Build 038 is durable, but no eligible Build 036 cycle baseline exists."
+          : trendMaterialChanges > 0
+            ? "Build 036 → Build 038 operational changes are measurable."
+            : "Build 038 confirms no material metric movement since the eligible Build 036 baseline.",
+    evidence:
+      String(totals.trendCycleSnapshots) +
+      " Build 038 cycle snapshots · " +
+      String(totals.trendBaselineSnapshots) +
+      " eligible Build 036 baseline snapshots · " +
+      String(trendMaterialChanges) +
+      " changed aggregate trend dimensions.",
+    action:
+      totals.trendCycleSnapshots === 0
+        ? "Persist the Build 038 review before renewing the queue."
+        : !trendBaselineAvailable
+          ? "Treat current values as the new durable checkpoint; retain unresolved gates and do not invent a historical Build 036 delta."
+          : trendMaterialChanges > 0
+            ? "Use the measured changes to close or retain existing gates; add no new feature build unless an observed outcome justifies it."
+            : "Keep the queue limited to unresolved evidence gates and normal operations until new real activity changes the measurements.",
+    owner: "platform"
+  });
+
   const roadmap: RoadmapRecommendation[] = [
     ...(totals.providerRuns === 0
       ? [{
@@ -978,7 +1093,7 @@ export function buildProductionLearningAssessment(
           ]
         }]
       : []),
-    ...(totals.renewalCycleSnapshots === 0
+    ...(totals.renewalCycleSnapshots === 0 && totals.trendCycleSnapshots === 0
       ? [{
           build: 36,
           priority: "P2" as const,
@@ -1012,7 +1127,7 @@ export function buildProductionLearningAssessment(
           ]
         }]
       : []),
-    ...(totals.renewalCycleSnapshots > 0
+    ...(totals.trendCycleSnapshots === 0
       ? [{
           build: 38,
           priority: "P2" as const,
@@ -1024,11 +1139,108 @@ export function buildProductionLearningAssessment(
             "remote-cost-reliability",
             "integration-consumer-readiness",
             "adoption-permission-outcomes",
-            "first-evidence-adoption"
+            "first-evidence-adoption",
+            "production-learning-trend-validation"
           ]
         }]
       : [])
   ];
+
+  const trendDelta = (current: number, baseline: number) =>
+    trendBaselineAvailable ? current - baseline : null;
+  const trendValidation = {
+    baselineAvailable: trendBaselineAvailable,
+    materialChanges: trendMaterialChanges,
+    build036GeneratedAt: totals.trendBaselineGeneratedAt,
+    comparisons: [
+      {
+        key: "sync",
+        label: "Synchronization outcomes",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineSyncEvents) + " events · " +
+            String(totals.trendBaselineSyncConflicts) + " conflicts"
+          : "No eligible Build 036 cycle baseline.",
+        current:
+          String(totals.syncEvents) + " events · " +
+          String(totals.syncConflicts) + " conflicts",
+        delta: trendDelta(totals.syncEvents, totals.trendBaselineSyncEvents)
+      },
+      {
+        key: "repair",
+        label: "Repair compatibility",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineRepairHealthy) + "/" +
+            String(totals.trendBaselineRepairChecks) + " healthy checks"
+          : "No eligible Build 036 cycle baseline.",
+        current:
+          String(totals.repairHealthyChecks) + "/" +
+          String(totals.repairCompatibilityChecks) + " healthy checks",
+        delta: trendDelta(
+          totals.repairCompatibilityChecks,
+          totals.trendBaselineRepairChecks
+        )
+      },
+      {
+        key: "provider",
+        label: "Browserless provider",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineProviderRuns) + " runs · " +
+            String(totals.trendBaselineProviderUnits) + " units"
+          : "No eligible Build 036 cycle baseline.",
+        current:
+          String(totals.providerRuns) + " runs · " +
+          String(totals.providerUnits) + " units",
+        delta: trendDelta(totals.providerRuns, totals.trendBaselineProviderRuns)
+      },
+      {
+        key: "integration",
+        label: "Live consumer acknowledgement",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineIntegrationLiveAccepted) + " live accepts"
+          : "No eligible Build 036 cycle baseline.",
+        current: String(totals.integrationLiveAccepted) + " live accepts",
+        delta: trendDelta(
+          totals.integrationLiveAccepted,
+          totals.trendBaselineIntegrationLiveAccepted
+        )
+      },
+      {
+        key: "retention",
+        label: "Retention budget health",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineRetentionBudgetBreaches) + " budget breaches"
+          : "No eligible Build 036 cycle baseline.",
+        current: String(totals.retentionBudgetBreaches) + " budget breaches",
+        delta: trendDelta(
+          totals.retentionBudgetBreaches,
+          totals.trendBaselineRetentionBudgetBreaches
+        )
+      },
+      {
+        key: "adoption",
+        label: "Adoption / least privilege",
+        baseline: trendBaselineAvailable
+          ? String(totals.trendBaselineAdoptionUsedCapabilities) +
+            " used capabilities · " +
+            String(totals.trendBaselineAdoptionHighRiskUnused) +
+            " high-risk unused · " +
+            String(totals.trendBaselineConnectorUnusedGrants) +
+            " unused connector grants"
+          : "No eligible Build 036 cycle baseline.",
+        current:
+          String(totals.adoptionUsedCapabilities) +
+          " used capabilities · " +
+          String(totals.adoptionHighRiskUnusedCapabilities) +
+          " high-risk unused · " +
+          String(totals.adoptionConnectorUnusedGrants) +
+          " unused connector grants",
+        delta: trendDelta(
+          totals.adoptionUsedCapabilities,
+          totals.trendBaselineAdoptionUsedCapabilities
+        )
+      }
+    ]
+  };
 
   const renewal = {
     build030Comparison: [
@@ -1136,5 +1348,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal };
+  return { totals, findings, roadmap, renewal, trendValidation };
 }

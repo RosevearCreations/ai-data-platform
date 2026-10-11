@@ -106,6 +106,17 @@ async function main() {
     "Build 037 help must preserve real-work-only adoption and existing remote/integration gates."
   );
 
+  const trendValidation = HELP_TOPICS["learning-trend-validation"];
+  assert(
+    "manual" in trendValidation &&
+      trendValidation.manual.some((step) => step.includes("No external account")) &&
+      trendValidation.steps.some((step) => step.includes("evidence limit")) &&
+      trendValidation.steps.some((step) => step.includes("Build 032")) &&
+      trendValidation.steps.some((step) => step.includes("Build 033")) &&
+      trendValidation.notes.some((note) => note.includes("cannot masquerade")),
+    "Build 038 help must preserve non-fabricated trend baselines and unresolved provider/consumer gates."
+  );
+
   const renewal = HELP_TOPICS["learning-renewal"];
   assert(
     "manual" in renewal &&
@@ -117,7 +128,7 @@ async function main() {
   );
 
   console.log(
-    "Build 037 contextual help coverage, real-work-only first-evidence guidance and existing production gates passed."
+    "Build 038 contextual help coverage, non-fabricated trend validation, first-evidence guidance and existing production gates passed."
   );
 
 }

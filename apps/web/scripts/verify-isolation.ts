@@ -1782,14 +1782,16 @@ async function main() {
     productionLearning.totals.adoptionConnectorUnusedGrants !== 0 ||
     productionLearning.totals.renewalCycleSnapshots < 3 ||
     productionLearning.totals.renewalBaselineSnapshots < 3 ||
+    productionLearning.totals.trendCycleSnapshots < 3 ||
+    productionLearning.totals.trendBaselineSnapshots !== 0 ||
     productionLearning.totals.browserlessBaselineDecision !== "go-bounded" ||
     productionLearning.roadmap.some((item) => item.build === 34) ||
     productionLearning.roadmap.some((item) => item.build === 35) ||
     productionLearning.roadmap.some((item) => item.build === 36) ||
-    !productionLearning.roadmap.some((item) => item.build === 38) ||
+    productionLearning.roadmap.some((item) => item.build === 38) ||
     productionLearning.roadmap[0]?.build !== 33
   ) {
-    throw new Error("Build 036 production-learning renewal/adoption/consumer aggregation failed.");
+    throw new Error("Build 038 production-learning trend/adoption/consumer aggregation failed.");
   }
   if (
     !productionLearning.findings.some(
@@ -1826,6 +1828,39 @@ async function main() {
     throw new Error("Build 036 renewal snapshot was not persisted.");
   }
 
+  const trendSnapshotCount = await withUserDatabase(ownerId, async (client) => {
+    const result = await client.query<{ count: string }>(
+      "select count(*)::text as count from app.production_learning_cycle_snapshots where workspace_id=$1 and cycle_key='build-038'",
+      [syncWorkspaceId]
+    );
+    return Number(result.rows[0]?.count ?? 0);
+  });
+  if (trendSnapshotCount < 1) {
+    throw new Error("Build 038 trend-validation snapshot was not persisted.");
+  }
+
+  const runtimeBuild036Context = await withUserDatabase(ownerId, async (client) => {
+    const result = await client.query<{ count: string }>(
+      "select count(*)::text as count from app.production_learning_cycle_snapshots where workspace_id=$1 and cycle_key='build-036' and observation_context='build-038-runtime'",
+      [syncWorkspaceId]
+    );
+    return Number(result.rows[0]?.count ?? 0);
+  });
+  if (runtimeBuild036Context < 1) {
+    throw new Error("Build 038 did not distinguish runtime Build 036 continuity rows from eligible historical baselines.");
+  }
+
+  if (
+    !productionLearning.findings.some(
+      (finding) =>
+        finding.key === "production-learning-trend-validation" &&
+        finding.status === "watch" &&
+        finding.title.includes("no eligible Build 036")
+    )
+  ) {
+    throw new Error("Build 038 fabricated an eligible Build 036 trend baseline in the same runtime.");
+  }
+
   let renewalSnapshotImmutable = false;
   try {
     await withUserDatabase(ownerId, async (client) => {
@@ -1838,7 +1873,7 @@ async function main() {
     renewalSnapshotImmutable = true;
   }
   if (!renewalSnapshotImmutable) {
-    throw new Error("Build 036 renewal snapshots unexpectedly allowed runtime updates.");
+    throw new Error("Build 036/038 cycle snapshots unexpectedly allowed runtime updates.");
   }
 
   const restrictedLearning = await buildProductionLearningReview(restrictedId);
@@ -1847,7 +1882,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035/036/037 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, finite roadmap renewal, guided first-evidence RLS isolation and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035/036/037/038 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, finite roadmap renewal, guided first-evidence RLS isolation, non-fabricated trend validation and workspace-target acceptance passed."
   );
 }
 

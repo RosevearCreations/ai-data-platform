@@ -260,16 +260,16 @@ export function App() {
           <p className="eyebrow">AI Data Platform</p>
           <h1>Element picker</h1>
         </div>
-        <span className="build">037</span>
+        <span className="build">038</span>
       </header>
 
       <section className="notice" aria-label="Inspection policy">
-        <strong>First evidence must come from real work</strong>
+        <strong>Trend validation uses only genuine historical evidence</strong>
         <p>
-          Build 037 guides first-use adoption through the existing workspace sync,
-          Source Policy, barcode and scheduled workflows. Do not create throwaway
-          fixtures, loosen permissions, or run gated remote/integration actions
-          merely to improve an adoption metric.
+          Build 038 compares current operating outcomes with an eligible prior
+          Build 036 cycle when one truly exists. Missing history stays unavailable;
+          this extension does not synthesize activity or weaken provider,
+          integration, Source Policy or permission gates.
         </p>
       </section>
 

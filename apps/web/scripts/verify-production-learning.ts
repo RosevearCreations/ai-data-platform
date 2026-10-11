@@ -44,6 +44,23 @@ const evidence: ProductionLearningEvidence = {
     baselineRepairChecks: 0,
     baselineRepairHealthy: 0
   },
+  trend: {
+    cycleSnapshots: 0,
+    baselineSnapshots: 0,
+    baselineGeneratedAt: null,
+    baselineSyncEvents: 0,
+    baselineSyncConflicts: 0,
+    baselineRepairChecks: 0,
+    baselineRepairHealthy: 0,
+    baselineProviderRuns: 0,
+    baselineProviderUnits: 0,
+    baselineIntegrationLiveAccepted: 0,
+    baselineRetentionBudgetBreaches: 0,
+    baselineAdoptionActivityEvents: 0,
+    baselineAdoptionUsedCapabilities: 0,
+    baselineAdoptionHighRiskUnused: 0,
+    baselineConnectorUnusedGrants: 0
+  },
   workspaces: [
     {
       workspaceId: "11111111-1111-4111-8111-111111111111",
@@ -498,6 +515,73 @@ assert(
   "Build 037 must not remain queued once durable operational adoption exists."
 );
 
+const trendWithoutBaselineEvidence: ProductionLearningEvidence = {
+  ...renewalEvidence,
+  trend: {
+    ...renewalEvidence.trend,
+    cycleSnapshots: 1
+  }
+};
+const trendWithoutBaseline =
+  buildProductionLearningAssessment(trendWithoutBaselineEvidence);
+assert(
+  !trendWithoutBaseline.roadmap.some((item) => item.build === 38),
+  "Build 038 must leave the active roadmap after a durable trend-validation snapshot exists."
+);
+assert(
+  trendWithoutBaseline.findings.some(
+    (finding) =>
+      finding.key === "production-learning-trend-validation" &&
+      finding.status === "watch" &&
+      finding.title.includes("no eligible Build 036")
+  ),
+  "Build 038 must preserve an unavailable historical baseline instead of inventing one."
+);
+assert(
+  trendWithoutBaseline.trendValidation.baselineAvailable === false,
+  "Build 038 must explicitly mark a missing Build 036 cycle baseline."
+);
+
+const trendWithBaselineEvidence: ProductionLearningEvidence = {
+  ...renewalEvidence,
+  trend: {
+    cycleSnapshots: 1,
+    baselineSnapshots: 1,
+    baselineGeneratedAt: "2026-10-10T12:00:00.000Z",
+    baselineSyncEvents: 10,
+    baselineSyncConflicts: 1,
+    baselineRepairChecks: 2,
+    baselineRepairHealthy: 1,
+    baselineProviderRuns: 0,
+    baselineProviderUnits: 0,
+    baselineIntegrationLiveAccepted: 0,
+    baselineRetentionBudgetBreaches: 0,
+    baselineAdoptionActivityEvents: 1,
+    baselineAdoptionUsedCapabilities: 2,
+    baselineAdoptionHighRiskUnused: 2,
+    baselineConnectorUnusedGrants: 1
+  }
+};
+const trendWithBaseline =
+  buildProductionLearningAssessment(trendWithBaselineEvidence);
+assert(
+  trendWithBaseline.trendValidation.baselineAvailable &&
+    trendWithBaseline.trendValidation.materialChanges > 0,
+  "Build 038 must detect measured changes against an eligible Build 036 cycle baseline."
+);
+assert(
+  trendWithBaseline.trendValidation.comparisons.length === 6,
+  "Build 038 must compare sync, repair, provider, integration, retention and adoption trends."
+);
+assert(
+  trendWithBaseline.findings.some(
+    (finding) =>
+      finding.key === "production-learning-trend-validation" &&
+      finding.status === "healthy"
+  ),
+  "Build 038 must mark measurable changed trends healthy when no trend-validation gate is missing."
+);
+
 console.log(
-  "Build 037 production-learning keeps the guided first-evidence runbook conditional on measured zero adoption and closes it after real durable activity exists."
+  "Build 038 production-learning closes its own checkpoint after durable evidence, preserves missing historical baselines and validates measurable Build 036-to-038 changes."
 );

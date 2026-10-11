@@ -494,3 +494,21 @@ Reason: guidance must preserve the Build 028 profile boundary.
 Decision: Build 037 may link to remote execution and integration delivery, but it keeps Build 032 and Build 033 approval gates explicit and never treats those actions as ordinary first-use steps.
 
 Reason: a first-adoption goal cannot weaken provider, source-policy or downstream-write safety.
+
+## D0078 — Same-runtime continuity is not a historical trend baseline
+
+Decision: Build 038 tags new cycle rows with `observation_context='build-038-runtime'`. Only pre-existing `legacy` Build 036 cycle rows are eligible for Build 036 → 038 numeric comparison.
+
+Reason: deploying or opening Build 038 must not manufacture its own historical baseline.
+
+## D0079 — Build 038 closes itself without inventing Build 039
+
+Decision: once at least one authorized Build 038 cycle snapshot is durable, Build 038 leaves the active roadmap. No new numbered feature build is created merely to keep the queue moving.
+
+Reason: the roadmap remains evidence-driven and finite.
+
+## D0080 — Trend absence is a valid result
+
+Decision: when no eligible Build 036 baseline exists, Build 038 reports the baseline unavailable and preserves current metrics as a new checkpoint. It does not reinterpret unavailable history as zero.
+
+Reason: a missing measurement is different from a measured zero.

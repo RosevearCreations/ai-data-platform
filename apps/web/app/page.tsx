@@ -30,7 +30,7 @@ export default async function HomePage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="platform-overview" />
-        <p className="eyebrow">Build 037</p>
+        <p className="eyebrow">Build 038</p>
         <h1>AI Data Platform</h1>
         <p className="lead">
           Shared extraction and intelligence infrastructure with reusable domain

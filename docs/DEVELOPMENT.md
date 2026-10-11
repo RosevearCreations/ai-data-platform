@@ -567,3 +567,20 @@ CI acceptance must:
 10. mark that finding healthy and remove Build 037 from the active roadmap after real durable activity exists.
 
 No new environment variable, external account or paid service is required.
+
+## Build 038 trend-validation verification
+
+CI/database acceptance must:
+
+1. apply `0016_production_learning_trend_validation.sql`;
+2. preserve existing cycle-table RLS and append-only runtime privileges;
+3. persist fingerprint-deduplicated `build-038` current snapshots;
+4. mark new same-runtime Build 036 continuity rows as `build-038-runtime`;
+5. exclude those same-runtime rows from historical Build 036 baseline eligibility;
+6. produce an explicit unavailable-baseline WATCH result when no eligible historical cycle exists;
+7. produce six measured trend comparisons when an eligible historical baseline exists;
+8. remove Build 038 from the active roadmap once its durable cycle snapshot exists;
+9. keep Build 032, Build 033 and conditional Build 037 decisions independent;
+10. prove cycle snapshots remain runtime-immutable and cross-account isolated.
+
+No new environment variable, external account or paid service is required.

@@ -422,3 +422,13 @@ Contextual help explicitly identifies actions that require manual external setup
 - integration delivery stays Build 033 receiver/operator-gated;
 - the runbook itself writes no operational evidence and cannot change workspace roles, profile capabilities or connector grants;
 - synthetic records, fake sources and fake receivers are explicitly prohibited as adoption shortcuts.
+
+## Build 038 trend-validation security
+
+- trend snapshots reuse the existing authenticated workspace/RLS boundary;
+- runtime permissions remain SELECT/INSERT only; UPDATE/DELETE remain denied;
+- Build 038 adds no secret-bearing fields and stores counts/flags only;
+- historical Build 036 eligibility is explicit and cannot be satisfied by a same-runtime Build 038 continuity write;
+- missing historical values remain unavailable rather than being inferred;
+- provider, Source Policy, integration receiver, connector and role/capability gates are not changed by trend validation;
+- no synthetic sync, barcode, provider, connector or delivery activity is generated to create a trend.
