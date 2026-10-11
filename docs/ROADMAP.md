@@ -986,3 +986,25 @@ Delivered:
 - no provider retry, receiver retry, permission/profile mutation or synthetic evidence creation.
 
 Acceptance: Build 042 never derives closure from a checklist or page view, reports incomplete and inconclusive outcomes explicitly, and reports all outcomes VERIFIED only when the originating durable evidence and required safety state support that conclusion.
+
+
+## Build 043 — Application Command Center & Workspace Home
+
+Status: IMPLEMENTED on isolated release branch; promotion follows the verified Build 043 → main path because dev currently contains unrelated Build 048 work.
+
+Goal: move the application from infrastructure/readiness-first landing content to a practical signed-in workspace home without creating a second telemetry source.
+
+Delivered:
+
+- authenticated Application Command Center on the root page;
+- authorized workspace cards using existing adoption evidence and profile/role identity;
+- top-level counts for active workspaces, measured attention conditions, durable activity and managed storage footprint;
+- operational pulse for sync, barcode capture, scheduled attempts, remote runs and integration events;
+- attention chips derived from existing permission-review, profile-mismatch, storage-budget, remote-failure and delivery-transport evidence;
+- latest remote-provider and integration-delivery evidence sorted by durable timestamps;
+- direct launch links to the major working surfaces;
+- contextual help and responsive command-center styling;
+- extension version 0.43.0;
+- no new database table, migration, automatic execution, permission/profile mutation or synthetic activity.
+
+Acceptance: a signed-in user sees only authorized workspaces, command-center totals are derived from existing RLS-scoped evidence, measured attention conditions surface without changing state, recent evidence is timestamp ordered, signed-out visitors see no private workspace evidence, and all existing workflow safety boundaries remain authoritative.
