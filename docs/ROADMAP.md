@@ -924,3 +924,23 @@ Delivered:
 - extension version 0.39.0.
 
 Acceptance: the production-learning review shows the three tracked evidence gates, reports only durable evidence as closure, remains fail-closed for incomplete gates, and reports normal-operations readiness only when all three are genuinely closed.
+
+
+## Build 040 — Gate Closure Progress & Safe Intervention Sequencing
+
+Status: IMPLEMENTED on dev; promotion follows the normal dev → main release path.
+
+Goal: convert Build 039's OPEN/CLOSED gate visibility into a prerequisite-aware operator sequence without automatically changing production state.
+
+Delivered:
+
+- COMPLETE / ACTIONABLE / BLOCKED classification for the Build 032, Build 033 and Build 037 evidence gates;
+- Browserless readiness derived from token presence, provider flag, approved Source Policy, allowlist and intended workspace-arm prerequisites;
+- adoption actionability only for authorized visible workspaces and genuine profile-appropriate work;
+- consumer-delivery actionability only after an approved/exported package and conformance acceptance exist;
+- priority ordering applied only among ACTIONABLE gates so a blocked P0 item never authorizes bypass;
+- an explicit next safe intervention or a prerequisite-only blocked state;
+- contextual help and extension version 0.40.0;
+- no provider call, receiver call, permission mutation, environment-variable change, Source Policy approval or synthetic evidence creation.
+
+Acceptance: Build 040 recommends only a safe actionable stage, exposes exact prerequisite blockers for blocked stages, preserves originating Build 032/033/037 controls, and stops recommending interventions when all tracked gates are durably complete.
