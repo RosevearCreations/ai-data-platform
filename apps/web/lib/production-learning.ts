@@ -1214,6 +1214,165 @@ export function buildProductionLearningAssessment(
     stages: interventionStages
   };
 
+  const interventionPreflight = interventionStages.map((stage) => {
+    if (stage.key === "browserless-baseline") {
+      return {
+        key: stage.key,
+        build: stage.build,
+        title: stage.title,
+        state: stage.state,
+        preflightChecks: [
+          {
+            label: "Browserless token configured",
+            satisfied: evidence.browserless.tokenConfigured
+          },
+          {
+            label: "Provider execution master flag enabled",
+            satisfied: evidence.browserless.executionEnabled
+          },
+          {
+            label: "Eligible approved public Source Policy exists",
+            satisfied: totals.approvedPublicSources > 0
+          },
+          {
+            label: "Exact approved policy revision is allowlisted",
+            satisfied: totals.allowlistedSources > 0
+          },
+          {
+            label: "Intended workspace is armed",
+            satisfied: totals.armedWorkspaces > 0
+          },
+          {
+            label: "Global kill switch remains fail-closed before the approved run window",
+            satisfied: evidence.browserless.globalKillSwitchActive
+          }
+        ],
+        stopConditions: [
+          "Do not start if any prerequisite check is false.",
+          "Do not continue if the source redirects outside the approved origin or requires access-control bypass.",
+          "Stop after exactly one approved page/run for the baseline.",
+          "Restore the global kill switch immediately after the run window."
+        ],
+        completionEvidence: [
+          "At least one terminal provider run is durably recorded.",
+          "Provider status, estimated units, duration and bounded go/no-go decision are visible in Production Learning."
+        ]
+      };
+    }
+
+    if (stage.key === "operational-adoption") {
+      return {
+        key: stage.key,
+        build: stage.build,
+        title: stage.title,
+        state: stage.state,
+        preflightChecks: [
+          {
+            label: "At least one authorized workspace is visible",
+            satisfied: totals.workspaces > 0
+          },
+          {
+            label: "The intended workflow is enabled by that workspace profile",
+            satisfied: totals.workspaces > 0
+          },
+          {
+            label: "The work represents a genuine operational need",
+            satisfied: true
+          }
+        ],
+        stopConditions: [
+          "Do not enable a profile-disabled workflow merely to improve adoption metrics.",
+          "Do not create synthetic sync, barcode, scheduled, remote, integration or connector activity.",
+          "Stop if the intended task is not real operational work."
+        ],
+        completionEvidence: [
+          "At least one visible workspace has durable operational activity.",
+          "The existing adoption snapshot records real capability use without permission mutation."
+        ]
+      };
+    }
+
+    return {
+      key: stage.key,
+      build: stage.build,
+      title: stage.title,
+      state: stage.state,
+      preflightChecks: [
+        {
+          label: "An approved/exported integration package exists",
+          satisfied: totals.integrationExports > 0
+        },
+        {
+          label: "Contract conformance is accepted",
+          satisfied: totals.integrationConformanceAccepted > 0
+        },
+        {
+          label: "A supported business application has implemented the documented v1 receiver",
+          satisfied: totals.integrationHandshakeAccepted > 0 || totals.integrationLiveAccepted > 0
+        }
+      ],
+      stopConditions: [
+        "Do not send to an arbitrary client-supplied URL.",
+        "Do not proceed if the receiver identity/schema or dry-run support is rejected.",
+        "Do not authorize live downstream mutation; Build 033/041 remain dry-run only."
+      ],
+      completionEvidence: [
+        "A supported business consumer returns an authenticated accepted dry-run acknowledgement.",
+        "The acknowledgement is durably recorded with the package/replay identity and no live mutation."
+      ]
+    };
+  });
+
+  const currentPreflight =
+    interventionPlan.nextIntervention === null
+      ? null
+      : interventionPreflight.find(
+          (packet) => packet.key === interventionPlan.nextIntervention?.key
+        ) ?? null;
+
+  const preflightPlan = {
+    build: 41,
+    title: "Operator Intervention Preflight & Completion Evidence",
+    current: currentPreflight,
+    packets: interventionPreflight,
+    allComplete: interventionPlan.openCount === 0
+  };
+
+  findings.push({
+    key: "operator-intervention-preflight",
+    category: "Build 041",
+    status:
+      preflightPlan.allComplete
+        ? "healthy"
+        : currentPreflight
+          ? currentPreflight.preflightChecks.every((check) => check.satisfied)
+            ? "watch"
+            : "gap"
+          : "gap",
+    title:
+      preflightPlan.allComplete
+        ? "All tracked interventions have durable completion evidence."
+        : currentPreflight
+          ? "Preflight packet ready for " + currentPreflight.title + "."
+          : "No intervention packet is currently actionable.",
+    evidence:
+      preflightPlan.allComplete
+        ? "All Build 032/033/037 evidence gates are complete."
+        : currentPreflight
+          ? String(currentPreflight.preflightChecks.filter((check) => check.satisfied).length) +
+            "/" +
+            String(currentPreflight.preflightChecks.length) +
+            " preflight checks satisfied."
+          : "Open gates exist, but Build 040 found no safely actionable stage.",
+    action:
+      preflightPlan.allComplete
+        ? "Continue normal evidence-driven operations."
+        : currentPreflight
+          ? "Review every preflight check and stop condition before performing the originating build's manual procedure; use the listed durable completion evidence to verify closure afterward."
+          : "Resolve only the prerequisite blockers reported by Build 040.",
+    owner: "operations"
+  });
+
   findings.push({
     key: "production-intervention-sequencing",
     category: "Build 040",
@@ -1572,5 +1731,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan };
+  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan, preflightPlan };
 }

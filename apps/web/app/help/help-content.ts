@@ -461,6 +461,26 @@ export const HELP_TOPICS = {
       "Normal real operating activity is the only supported way to create future trend movement."
     ]
   },
+  "learning-intervention-preflight": {
+    title: "Operator intervention preflight & completion evidence",
+    summary: "Build 041 packages the next Build 040 safe intervention into read-only preflight checks, explicit stop conditions and the exact durable evidence required to prove completion.",
+    steps: [
+      "Confirm every preflight item is PASS before starting the originating build's manual procedure.",
+      "Treat any BLOCKED item as a stop; resolve that prerequisite instead of bypassing it.",
+      "Read all stop conditions before performing the consequential action.",
+      "Perform the action only through the existing originating Build 032, 033 or 037 workflow.",
+      "Return to Production Learning afterward and confirm the listed durable completion evidence exists.",
+      "If all tracked gates are complete, Build 041 issues no new intervention packet."
+    ],
+    notes: [
+      "Build 041 is read-only and performs no provider run, receiver delivery, environment-variable change, permission change or synthetic adoption event.",
+      "A preflight packet is guidance, not authorization to ignore an originating build's approval boundary."
+    ],
+    manual: [
+      "No new account, paid service or variable is introduced by Build 041.",
+      "The actual consequential action remains in the original controlled workflow and is never executed by the preflight view."
+    ]
+  },
   "learning-intervention-sequencing": {
     title: "Gate closure progress & safe intervention sequencing",
     summary: "Build 040 classifies each remaining production evidence gate as COMPLETE, ACTIONABLE or BLOCKED, then recommends only the highest-priority intervention whose prerequisites are already satisfied.",
@@ -588,6 +608,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-intervention-preflight", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

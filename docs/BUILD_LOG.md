@@ -1,6 +1,18 @@
 # Build Log
 
 
+## Build 041 — Operator Intervention Preflight & Completion Evidence
+
+- packaged the Build 040-selected intervention into a read-only operator preflight;
+- added explicit PASS/BLOCKED checks for the prerequisites that already govern the originating workflow;
+- added stop conditions for Browserless, real-adoption and consumer-delivery actions;
+- listed the durable evidence that must exist after a successful intervention before its gate is considered closed;
+- no checklist state can substitute for provider, consumer or adoption evidence;
+- no external execution or operational-state mutation from the preflight layer;
+- contextual help and extension version 0.41.0;
+- verification covers the selected adoption preflight and the all-gates-complete no-packet state.
+
+
 ## Build 040 — Gate Closure Progress & Safe Intervention Sequencing
 
 - classified Build 032/033/037 production gates as COMPLETE, ACTIONABLE or BLOCKED;

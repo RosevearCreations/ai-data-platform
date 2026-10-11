@@ -25,7 +25,7 @@ export default async function ProductionLearningPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 040</p>
+          <p className="eyebrow">Build 041</p>
           <h1>Production learning</h1>
           <p className="lead">
             Sign in to review live workspace evidence, cost proxies, gaps and the renewed roadmap.
@@ -45,12 +45,12 @@ export default async function ProductionLearningPage() {
     <main className="shell">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
-        <p className="eyebrow">Build 040</p>
+        <p className="eyebrow">Build 041</p>
         <h1>Production learning & cost review</h1>
         <p className="lead">
-          Build 040 sequences the remaining production-evidence work by
-          prerequisite readiness and priority, while preserving the Build 039
-          closure model, fail-closed Browserless controls and dry-run-only delivery.
+          Build 041 adds a read-only operator preflight and completion-evidence
+          packet for the next safe intervention, while preserving Build 040
+          sequencing and every originating production safety gate.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Back to platform</Link>
@@ -196,6 +196,50 @@ export default async function ProductionLearningPage() {
             <span className="badge">pilot prerequisites</span>
           </article>
         </div>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <p className="eyebrow">Build 041</p>
+          <h2>Operator preflight & completion evidence</h2>
+          <HelpInfo topic="learning-intervention-preflight" />
+        </div>
+        {review.preflightPlan.current ? (
+          <article className="card">
+            <span className="badge">
+              NEXT SAFE INTERVENTION · Build {review.preflightPlan.current.build}
+            </span>
+            <h3>{review.preflightPlan.current.title}</h3>
+            <p><strong>Preflight checks</strong></p>
+            <ul>
+              {review.preflightPlan.current.preflightChecks.map((check) => (
+                <li key={check.label}>
+                  {check.satisfied ? "PASS" : "BLOCKED"} — {check.label}
+                </li>
+              ))}
+            </ul>
+            <p><strong>Stop conditions</strong></p>
+            <ul>
+              {review.preflightPlan.current.stopConditions.map((condition) => (
+                <li key={condition}>{condition}</li>
+              ))}
+            </ul>
+            <p><strong>Durable completion evidence</strong></p>
+            <ul>
+              {review.preflightPlan.current.completionEvidence.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        ) : (
+          <div className="emptyState">
+            <p>
+              {review.preflightPlan.allComplete
+                ? "All tracked interventions already have durable completion evidence."
+                : "No intervention is currently safe to preflight; resolve only the Build 040 prerequisite blockers."}
+            </p>
+          </div>
+        )}
       </section>
 
       <section>

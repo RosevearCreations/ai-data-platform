@@ -248,6 +248,15 @@ assert(
   ),
   "Build 040 must expose Browserless prerequisite blockers instead of opening the kill switch early."
 );
+assert(
+  review.preflightPlan.current?.key === "operational-adoption" &&
+    review.preflightPlan.current.preflightChecks.every((check) => check.satisfied) &&
+    review.preflightPlan.current.stopConditions.some((item) =>
+      item.includes("synthetic")
+    ) &&
+    review.preflightPlan.current.completionEvidence.length >= 2,
+  "Build 041 must provide a satisfied preflight, explicit anti-synthetic stop condition and durable completion evidence for the selected adoption intervention."
+);
 
 const baselineEvidence: ProductionLearningEvidence = {
   ...evidence,
@@ -455,6 +464,16 @@ assert(
   "Build 040 must stop recommending interventions after all tracked evidence gates are durably closed."
 );
 assert(
+  adoptionReview.preflightPlan.allComplete &&
+    adoptionReview.preflightPlan.current === null &&
+    adoptionReview.findings.some(
+      (finding) =>
+        finding.key === "operator-intervention-preflight" &&
+        finding.status === "healthy"
+    ),
+  "Build 041 must stop issuing a preflight packet once all tracked gates have durable completion evidence."
+);
+assert(
   adoptionReview.roadmap.some((item) => item.build === 36),
   "Build 036 must remain queued after Build 035 adoption evidence is durable."
 );
@@ -624,5 +643,5 @@ assert(
 );
 
 console.log(
-  "Build 040 sequences safe production interventions from durable prerequisite evidence and stops recommending work after all tracked gates close."
+  "Build 041 adds read-only operator preflight, stop conditions and durable completion evidence to the Build 040 safe intervention sequence."
 );
