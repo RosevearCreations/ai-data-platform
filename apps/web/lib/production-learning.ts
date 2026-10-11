@@ -1338,6 +1338,134 @@ export function buildProductionLearningAssessment(
     allComplete: interventionPlan.openCount === 0
   };
 
+  const outcomeReconciliation = [
+    {
+      key: "browserless-baseline",
+      build: 32,
+      title: "Browserless one-run baseline",
+      state:
+        totals.providerRuns === 0
+          ? "not-complete" as const
+          : evidence.browserless.globalKillSwitchActive
+            ? "verified" as const
+            : "inconclusive" as const,
+      durableEvidence:
+        totals.providerRuns === 0
+          ? "No terminal provider run is durably recorded."
+          : String(totals.providerRuns) + " terminal provider run(s) · decision " +
+            String(totals.browserlessBaselineDecision) + ".",
+      reconciliation:
+        totals.providerRuns === 0
+          ? "The Build 032 completion evidence is still absent."
+          : evidence.browserless.globalKillSwitchActive
+            ? "Terminal provider evidence exists and the global kill switch is restored fail-closed."
+            : "Terminal provider evidence exists, but the global kill switch is not currently fail-closed; treat operational closure as inconclusive until it is restored.",
+      followUp:
+        totals.providerRuns === 0
+          ? "Use only the Build 041 preflight and original Build 032 one-run procedure when it becomes actionable."
+          : evidence.browserless.globalKillSwitchActive
+            ? "No reconciliation action required; preserve the bounded provider controls."
+            : "Restore the global kill switch before treating the intervention as operationally reconciled."
+    },
+    {
+      key: "operational-adoption",
+      build: 37,
+      title: "Real operational adoption",
+      state:
+        totals.adoptionActiveWorkspaces === 0
+          ? "not-complete" as const
+          : totals.adoptionDisabledUsedCapabilities > 0
+            ? "inconclusive" as const
+            : "verified" as const,
+      durableEvidence:
+        String(totals.adoptionActiveWorkspaces) + "/" +
+        String(totals.workspaces) + " workspace(s) have durable activity · " +
+        String(totals.adoptionDisabledUsedCapabilities) +
+        " disabled-capability use observation(s).",
+      reconciliation:
+        totals.adoptionActiveWorkspaces === 0
+          ? "No genuine operational-adoption closure evidence exists yet."
+          : totals.adoptionDisabledUsedCapabilities > 0
+            ? "Operational activity exists, but disabled-capability use prevents clean reconciliation."
+            : "Genuine durable activity exists without observed use of disabled profile capabilities.",
+      followUp:
+        totals.adoptionActiveWorkspaces === 0
+          ? "Perform genuine profile-appropriate work only through the existing first-evidence workflow."
+          : totals.adoptionDisabledUsedCapabilities > 0
+            ? "Review the profile/permission mismatch; do not normalize it by automatically enabling the capability."
+            : "No reconciliation action required; continue normal genuine work."
+    },
+    {
+      key: "consumer-delivery",
+      build: 33,
+      title: "Supported business-consumer dry-run",
+      state:
+        totals.integrationLiveAccepted > 0
+          ? "verified" as const
+          : totals.integrationDeliveryRejected > 0 ||
+              totals.integrationTransportErrors > 0
+            ? "inconclusive" as const
+            : "not-complete" as const,
+      durableEvidence:
+        String(totals.integrationLiveAccepted) + " live accepted · " +
+        String(totals.integrationDeliveryRejected) + " rejected · " +
+        String(totals.integrationTransportErrors) + " transport error(s).",
+      reconciliation:
+        totals.integrationLiveAccepted > 0
+          ? "A supported business consumer has durably acknowledged an authenticated dry-run."
+          : totals.integrationDeliveryRejected > 0 ||
+              totals.integrationTransportErrors > 0
+            ? "A delivery attempt produced durable failure evidence but no accepted live dry-run acknowledgement."
+            : "No accepted supported-consumer dry-run evidence exists yet.",
+      followUp:
+        totals.integrationLiveAccepted > 0
+          ? "No reconciliation action required; downstream mutation remains separately approval-gated."
+          : totals.integrationDeliveryRejected > 0 ||
+              totals.integrationTransportErrors > 0
+            ? "Resolve receiver identity, contract or transport failure before any retry; remain dry-run only."
+            : "Complete package export, conformance and supported receiver readiness before attempting the controlled dry-run."
+    }
+  ];
+
+  const reconciliationCounts = {
+    verified: outcomeReconciliation.filter((item) => item.state === "verified").length,
+    inconclusive: outcomeReconciliation.filter((item) => item.state === "inconclusive").length,
+    notComplete: outcomeReconciliation.filter((item) => item.state === "not-complete").length
+  };
+  const outcomePlan = {
+    build: 42,
+    title: "Intervention Outcome Reconciliation & Closure Verification",
+    allVerified: reconciliationCounts.verified === outcomeReconciliation.length,
+    counts: reconciliationCounts,
+    outcomes: outcomeReconciliation
+  };
+
+  findings.push({
+    key: "intervention-outcome-reconciliation",
+    category: "Build 042",
+    status:
+      outcomePlan.allVerified
+        ? "healthy"
+        : reconciliationCounts.inconclusive > 0
+          ? "action"
+          : "watch",
+    title:
+      outcomePlan.allVerified
+        ? "All tracked intervention outcomes are durably reconciled."
+        : reconciliationCounts.inconclusive > 0
+          ? String(reconciliationCounts.inconclusive) + " intervention outcome(s) require reconciliation."
+          : "Tracked intervention closure evidence is still incomplete.",
+    evidence:
+      String(reconciliationCounts.verified) + " verified · " +
+      String(reconciliationCounts.inconclusive) + " inconclusive · " +
+      String(reconciliationCounts.notComplete) + " not complete.",
+    action:
+      outcomePlan.allVerified
+        ? "Continue normal evidence-driven operations."
+        : "Use the per-intervention reconciliation guidance below; never mark a gate complete from checklist state alone.",
+    owner: "operations"
+  });
+
   findings.push({
     key: "operator-intervention-preflight",
     category: "Build 041",
@@ -1731,5 +1859,5 @@ export function buildProductionLearningAssessment(
     evidenceGaps: renewalEvidenceGaps
   };
 
-  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan, preflightPlan };
+  return { totals, findings, roadmap, renewal, trendValidation, gateClosure, interventionPlan, preflightPlan, outcomePlan };
 }

@@ -461,6 +461,26 @@ export const HELP_TOPICS = {
       "Normal real operating activity is the only supported way to create future trend movement."
     ]
   },
+  "learning-outcome-reconciliation": {
+    title: "Intervention outcome reconciliation & closure verification",
+    summary: "Build 042 reconciles the Build 032, 033 and 037 intervention outcomes as VERIFIED, INCONCLUSIVE or NOT COMPLETE using only durable originating evidence and relevant restored safety state.",
+    steps: [
+      "Read VERIFIED only when the originating durable completion evidence exists and required post-action safety state is clean.",
+      "Read INCONCLUSIVE when evidence exists but a safety-state mismatch or durable failure signal still requires review.",
+      "Read NOT COMPLETE when the originating closure evidence has not yet been recorded.",
+      "Use the listed follow-up for the specific intervention; do not convert a checklist, page view or operator assertion into closure evidence.",
+      "When all three outcomes are VERIFIED, continue normal evidence-driven operation rather than creating synthetic proof."
+    ],
+    notes: [
+      "Browserless reconciliation also checks that the global kill switch is restored fail-closed after terminal evidence.",
+      "Operational adoption remains inconclusive if disabled profile capabilities were observed in use.",
+      "Consumer delivery requires a durable accepted live dry-run acknowledgement; rejection or transport errors without acceptance remain inconclusive."
+    ],
+    manual: [
+      "No new account, variable or service is introduced by Build 042.",
+      "Build 042 does not retry a provider or receiver action and does not mutate permissions, profiles or evidence."
+    ]
+  },
   "learning-intervention-preflight": {
     title: "Operator intervention preflight & completion evidence",
     summary: "Build 041 packages the next Build 040 safe intervention into read-only preflight checks, explicit stop conditions and the exact durable evidence required to prove completion.",
@@ -608,6 +628,6 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Production learning",
-    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-intervention-preflight", "learning-gaps", "learning-workspaces", "learning-roadmap"]
+    topics: ["learning-overview", "learning-evidence", "learning-browserless", "learning-renewal", "learning-trend-validation", "learning-gate-closure", "learning-intervention-sequencing", "learning-intervention-preflight", "learning-outcome-reconciliation", "learning-gaps", "learning-workspaces", "learning-roadmap"]
   }
 ];

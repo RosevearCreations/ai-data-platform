@@ -551,3 +551,16 @@ Reason: operational readiness and operational execution must remain separate so 
 Decision: Build 041 considers an intervention complete only when the existing Build 032, 033 or 037 durable evidence already used by Production Learning proves closure. A checklist completion or page view is never sufficient.
 
 Reason: operator guidance must not become a second, weaker source of truth.
+
+
+## D0087 — Reconciliation cannot create closure evidence
+
+Decision: Build 042 may classify existing intervention evidence, but it cannot create, repair, retry or substitute for the Build 032, 033 or 037 evidence that closes a gate.
+
+Reason: outcome review must remain observational or it could manufacture the success it is supposed to verify.
+
+## D0088 — Restored safety state is part of operational reconciliation
+
+Decision: durable action evidence can close an originating evidence gate while Build 042 still reports the operational outcome INCONCLUSIVE when required post-action safety state is not restored, such as a Browserless global kill switch left open.
+
+Reason: completing an experiment and leaving its temporary control window open are separate facts; the latter must remain visible.

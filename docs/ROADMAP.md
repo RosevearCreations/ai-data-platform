@@ -965,3 +965,24 @@ Delivered:
 - no provider execution, receiver delivery, environment change, permission mutation or synthetic evidence creation.
 
 Acceptance: Build 041 produces a read-only preflight for only the currently selected safe intervention, exposes stop conditions and durable completion evidence, and removes the packet when all tracked gates are complete.
+
+
+## Build 042 — Intervention Outcome Reconciliation & Closure Verification
+
+Status: IMPLEMENTED on dev; promotion follows the normal dev → main release path.
+
+Goal: reconcile the outcome of Build 032, Build 033 and Build 037 interventions from originating durable evidence after Build 041 preflight, without allowing checklist state to become proof.
+
+Delivered:
+
+- VERIFIED / INCONCLUSIVE / NOT COMPLETE reconciliation for each tracked intervention;
+- Browserless verification requires terminal provider evidence plus restored fail-closed global kill-switch state;
+- operational-adoption verification requires genuine durable activity without observed use of disabled profile capabilities;
+- consumer-delivery verification requires a durable accepted supported-consumer live dry-run acknowledgement;
+- durable rejection/transport failure without acceptance is surfaced as INCONCLUSIVE instead of silently retried;
+- per-intervention durable evidence, reconciliation explanation and bounded follow-up;
+- all-verified aggregate only when all three originating evidence paths reconcile cleanly;
+- contextual help and extension version 0.42.0;
+- no provider retry, receiver retry, permission/profile mutation or synthetic evidence creation.
+
+Acceptance: Build 042 never derives closure from a checklist or page view, reports incomplete and inconclusive outcomes explicitly, and reports all outcomes VERIFIED only when the originating durable evidence and required safety state support that conclusion.
