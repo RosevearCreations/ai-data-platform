@@ -2004,7 +2004,7 @@ Build 044 adds no migration or copied library table and performs no record mutat
 
 Date: 2026-10-11
 
-Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+Status: **PRODUCTION GREEN — CODE PROMOTED VIA PR #58.**
 
 Delivered:
 
@@ -2021,3 +2021,13 @@ Delivered:
 - extension version 0.45.0.
 
 Build 045 organizes collection intent only. It does not approve sources or run collection.
+
+
+### Build 045 release verification
+
+- dev Verify: GREEN — workflow run `38183956302`;
+- main PR Verify: GREEN — workflow run `38184039559`;
+- production merge: PR #58, commit `6116a52b898db1293cf18b18d94143f8ce5443ea`;
+- push-triggered main Verify: GREEN — workflow run `38184126314`;
+- extension version: `0.45.0`;
+- Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.
