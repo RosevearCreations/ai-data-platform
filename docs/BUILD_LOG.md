@@ -1972,7 +1972,7 @@ The operator rejected this direction. Its implementation and version changes wer
 
 Date: 2026-10-11
 
-Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+Status: **PRODUCTION GREEN — CODE PROMOTED VIA PR #55.**
 
 Delivered:
 
@@ -1988,3 +1988,13 @@ Delivered:
 - extension version 0.44.0.
 
 Build 044 adds no migration or copied library table and performs no record mutation.
+
+
+### Build 044 release verification
+
+- dev Verify: GREEN — workflow run `38163613905`;
+- main PR Verify: GREEN — workflow run `38163704515`;
+- production merge: PR #55, commit `cfd5e8aa3f9fb138f82a2fce2a82b9af67072f2b`;
+- push-triggered main Verify: GREEN — workflow run `38163813516`;
+- extension version: `0.44.0`;
+- Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.

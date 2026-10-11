@@ -1019,7 +1019,7 @@ The experimental Build 048 scope was explicitly rejected by the operator on 2026
 
 ## Build 044 — Unified Data Library & Record Explorer
 
-Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+Status: **PRODUCTION GREEN — promoted to main via PR #55 after dev and PR verification.**
 
 Goal: give authorized users one searchable, paginated workspace library for durable records without duplicating those records into another persistence layer.
 
