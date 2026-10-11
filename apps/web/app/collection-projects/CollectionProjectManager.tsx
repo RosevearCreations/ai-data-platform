@@ -270,6 +270,26 @@ export function CollectionProjectManager({ projects, options }: ManagerProps) {
 
                   <ProjectStatus project={project} onUpdate={(status) => updateProjectStatus(project, status)} />
 
+                  {project.canManage && project.status !== "archived" ? (
+                    <details className="collectionEditPanel">
+                      <summary>Edit project details</summary>
+                      <ProjectEditForm
+                        project={project}
+                        pending={pending}
+                        onSubmit={(updated) =>
+                          run(() =>
+                            mutate("PATCH", {
+                              action: "update-project",
+                              workspaceId: project.workspaceId,
+                              projectId: project.projectId,
+                              project: updated
+                            })
+                          )
+                        }
+                      />
+                    </details>
+                  ) : null}
+
                   <div className="collectionSourceList">
                     {project.sources.map((source) => (
                       <article className="collectionSourceCard" key={source.sourceId}>
@@ -295,6 +315,28 @@ export function CollectionProjectManager({ projects, options }: ManagerProps) {
                         ) : (
                           <span className="collectionReadyNote">Current governance/scraper evidence is ready.</span>
                         )}
+                        {project.canManage && source.status !== "retired" ? (
+                          <details className="collectionEditPanel">
+                            <summary>Edit source linkage</summary>
+                            <SourceEditForm
+                              source={source}
+                              policies={policies}
+                              scrapers={scrapers}
+                              pending={pending}
+                              onSubmit={(updated) =>
+                                run(() =>
+                                  mutate("PATCH", {
+                                    action: "update-source",
+                                    workspaceId: project.workspaceId,
+                                    projectId: project.projectId,
+                                    sourceId: source.sourceId,
+                                    source: updated
+                                  })
+                                )
+                              }
+                            />
+                          </details>
+                        ) : null}
                         {project.canManage && source.status !== "retired" ? (
                           <div className="collectionActions">
                             {["planned", "active", "paused"].map((status) => (
@@ -470,6 +512,150 @@ function SourceForm({
         <textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={2000} />
       </label>
       <button className="primary" type="submit" disabled={pending}>Add source</button>
+    </form>
+  );
+}
+
+
+function ProjectEditForm({
+  project,
+  pending,
+  onSubmit
+}: {
+  project: ProjectRecord;
+  pending: boolean;
+  onSubmit: (project: Record<string, unknown>) => void;
+}) {
+  const [name, setName] = useState(project.name);
+  const [purpose, setPurpose] = useState(project.purpose);
+  const [cadence, setCadence] = useState(project.cadence);
+  const [ownerLabel, setOwnerLabel] = useState(project.ownerLabel);
+  const [notes, setNotes] = useState(project.notes);
+  return (
+    <form
+      className="collectionProjectForm collectionInlineForm"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit({
+          name,
+          purpose,
+          cadence,
+          ownerLabel,
+          notes,
+          status: project.status
+        });
+      }}
+    >
+      <label>
+        Project name
+        <input required value={name} onChange={(event) => setName(event.target.value)} maxLength={120} />
+      </label>
+      <label>
+        Owner / responsible person
+        <input value={ownerLabel} onChange={(event) => setOwnerLabel(event.target.value)} maxLength={120} />
+      </label>
+      <label className="collectionWide">
+        Purpose
+        <textarea value={purpose} onChange={(event) => setPurpose(event.target.value)} maxLength={1000} />
+      </label>
+      <label>
+        Cadence
+        <input value={cadence} onChange={(event) => setCadence(event.target.value)} maxLength={120} />
+      </label>
+      <label className="collectionWide">
+        Notes
+        <textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={2000} />
+      </label>
+      <button className="primary" type="submit" disabled={pending}>Save project details</button>
+    </form>
+  );
+}
+
+function SourceEditForm({
+  source,
+  policies,
+  scrapers,
+  pending,
+  onSubmit
+}: {
+  source: SourceRecord;
+  policies: PolicyOption[];
+  scrapers: ScraperOption[];
+  pending: boolean;
+  onSubmit: (source: Record<string, unknown>) => void;
+}) {
+  const [displayName, setDisplayName] = useState(source.displayName);
+  const [sourceUrl, setSourceUrl] = useState(source.sourceUrl);
+  const [collectionMethod, setCollectionMethod] = useState(source.collectionMethod);
+  const [sourcePolicyId, setSourcePolicyId] = useState(source.sourcePolicyId);
+  const [savedScraperId, setSavedScraperId] = useState(source.savedScraperId);
+  const [cadence, setCadence] = useState(source.cadence);
+  const [notes, setNotes] = useState(source.notes);
+  return (
+    <form
+      className="collectionSourceForm collectionInlineForm"
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit({
+          displayName,
+          sourceUrl,
+          collectionMethod,
+          sourcePolicyId,
+          savedScraperId,
+          cadence,
+          status: source.status,
+          notes
+        });
+      }}
+    >
+      <label>
+        Source name
+        <input required value={displayName} onChange={(event) => setDisplayName(event.target.value)} maxLength={120} />
+      </label>
+      <label className="collectionWide">
+        Source URL
+        <input required type="url" value={sourceUrl} onChange={(event) => setSourceUrl(event.target.value)} maxLength={1000} />
+      </label>
+      <label>
+        Collection method
+        <select value={collectionMethod} onChange={(event) => setCollectionMethod(event.target.value)}>
+          <option value="public-webpage">public webpage</option>
+          <option value="official-api">official API</option>
+          <option value="official-dataset">official dataset</option>
+          <option value="user-export">user export</option>
+        </select>
+      </label>
+      <label>
+        Source Policy
+        <select value={sourcePolicyId} onChange={(event) => setSourcePolicyId(event.target.value)}>
+          <option value="">Not linked yet</option>
+          {policies.map((policy) => (
+            <option key={policy.id} value={policy.id}>
+              {policy.origin} · {policy.status} · {policy.collectionMethod}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Saved scraper/template
+        <select value={savedScraperId} onChange={(event) => setSavedScraperId(event.target.value)}>
+          <option value="">Not linked / not required</option>
+          {scrapers.map((scraper) => (
+            <option key={scraper.scraperId} value={scraper.scraperId}>
+              {scraper.name} · {scraper.kind}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Cadence
+        <input value={cadence} onChange={(event) => setCadence(event.target.value)} maxLength={120} />
+      </label>
+      <label className="collectionWide">
+        Notes
+        <textarea value={notes} onChange={(event) => setNotes(event.target.value)} maxLength={2000} />
+      </label>
+      <button className="primary" type="submit" disabled={pending}>Save source linkage</button>
     </form>
   );
 }
