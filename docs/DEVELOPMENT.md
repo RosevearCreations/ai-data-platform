@@ -584,3 +584,14 @@ CI/database acceptance must:
 10. prove cycle snapshots remain runtime-immutable and cross-account isolated.
 
 No new environment variable, external account or paid service is required.
+
+
+## Build 045 collection project development
+
+- `db/migrations/0017_collection_projects.sql` creates the durable project/source tables and RLS policies.
+- `apps/web/lib/collection-projects.ts` owns bounded input normalization and deterministic readiness rules.
+- `apps/web/lib/collection-project-database.ts` owns RLS-scoped CRUD/readiness assembly.
+- `/api/collection-projects` is the authenticated mutation/read API.
+- `/collection-projects` is the management UI.
+- `verify-collection-projects.ts` tests pure parsing/readiness behavior.
+- `verify-collection-project-database.ts` tests real PostgreSQL persistence, fail-closed readiness and cross-account RLS isolation.

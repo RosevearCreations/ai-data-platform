@@ -596,3 +596,22 @@ Reason: the record explorer must preserve evidence semantics rather than turn UI
 Decision: named Build 044 saved views store only the bounded query string in browser localStorage and never persist workspace data or authorization state.
 
 Reason: reusable navigation should not create another backend state model or cross workspace security boundary.
+
+
+## D0094 — Collection projects organize intent but do not authorize collection
+
+Decision: Build 045 stores durable project/source organization and derives readiness, but it cannot approve Source Policy, create/enable a schedule, open remote execution gates or run collection.
+
+Reason: project-management convenience must not become a parallel execution or governance authority.
+
+## D0095 — Source readiness is derived from current originating evidence
+
+Decision: Build 045 does not persist a trusted readiness flag. It recomputes readiness from the linked current Source Policy and active saved scraper/template evidence every time projects are listed.
+
+Reason: policy expiry, revision or scraper retirement must immediately block the project instead of leaving a stale green state.
+
+## D0096 — Collection project lifecycle is non-destructive
+
+Decision: projects are archived and project sources are retired rather than deleted through the application runtime.
+
+Reason: collection planning and source history are operational evidence and should remain reviewable after work stops.

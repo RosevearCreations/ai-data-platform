@@ -1364,3 +1364,241 @@ h3 {
     justify-content: flex-start;
   }
 }
+
+
+/* Build 045 — Source & Collection Project Manager */
+.collectionShell {
+  width: min(1220px, calc(100% - 2rem));
+}
+
+.collectionHero {
+  max-width: 940px;
+  padding-bottom: 3rem;
+}
+
+.collectionSummary,
+.collectionWorkspace,
+.collectionCreate {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.collectionManager {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.collectionError {
+  border: 1px solid rgba(255, 138, 138, 0.35);
+  border-radius: 0.8rem;
+  background: rgba(255, 110, 110, 0.08);
+  color: #ffc2c2;
+  padding: 0.8rem 1rem;
+}
+
+.collectionProjectForm,
+.collectionSourceForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  border: 1px solid rgba(125, 226, 216, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1rem;
+}
+
+.collectionProjectForm label,
+.collectionSourceForm label {
+  display: grid;
+  gap: 0.4rem;
+  color: #c9dadd;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.collectionProjectForm input,
+.collectionProjectForm select,
+.collectionProjectForm textarea,
+.collectionSourceForm input,
+.collectionSourceForm select,
+.collectionSourceForm textarea {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid rgba(237, 246, 247, 0.13);
+  border-radius: 0.7rem;
+  background: #0d1921;
+  color: #edf6f7;
+  padding: 0.7rem 0.75rem;
+}
+
+.collectionProjectForm textarea,
+.collectionSourceForm textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.collectionWide {
+  grid-column: 1 / -1;
+}
+
+.collectionProjectList,
+.collectionSourceList {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.collectionProjectCard {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.1rem;
+}
+
+.collectionProjectHeader,
+.collectionSourceHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.collectionProjectHeader h3 {
+  margin: 0.4rem 0 0.3rem;
+}
+
+.collectionProjectHeader p,
+.collectionSourceCard p {
+  margin: 0;
+  color: #91a5a8;
+}
+
+.collectionReadiness {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.collectionReadiness-ready {
+  background: rgba(125, 226, 216, 0.1);
+  color: #a9eee8;
+}
+
+.collectionReadiness-blocked {
+  background: rgba(255, 153, 122, 0.11);
+  color: #ffc0a9;
+}
+
+.collectionReadiness-incomplete {
+  background: rgba(255, 211, 120, 0.09);
+  color: #ecd29b;
+}
+
+.collectionProjectMeta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.collectionProjectMeta div {
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.65rem;
+}
+
+.collectionProjectMeta dt {
+  color: #74898c;
+  font-size: 0.66rem;
+}
+
+.collectionProjectMeta dd {
+  margin: 0.2rem 0 0;
+  color: #c7d8da;
+  font-size: 0.78rem;
+}
+
+.collectionActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.collectionSourceCard {
+  display: grid;
+  gap: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 0.8rem;
+  background: rgba(4, 12, 17, 0.35);
+  padding: 0.85rem;
+}
+
+.collectionSourceHeader > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.collectionSourceHeader span:not(.collectionReadiness) {
+  color: #7f9496;
+  font-size: 0.72rem;
+}
+
+.collectionBlockers {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  color: #e8b49f;
+  font-size: 0.76rem;
+}
+
+.collectionReadyNote {
+  color: #99ddd7;
+  font-size: 0.76rem;
+}
+
+.collectionAddSource {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.75rem;
+}
+
+.collectionAddSource > summary {
+  color: #9de9e2;
+  cursor: pointer;
+  font-weight: 850;
+}
+
+.collectionAddSource .collectionSourceForm {
+  margin-top: 0.8rem;
+}
+
+.textDangerButton {
+  width: fit-content;
+  border: 0;
+  background: transparent;
+  color: #e9a2a2;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .collectionProjectForm,
+  .collectionSourceForm,
+  .collectionProjectMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .collectionWide {
+    grid-column: auto;
+  }
+
+  .collectionProjectHeader,
+  .collectionSourceHeader {
+    flex-direction: column;
+  }
+}
