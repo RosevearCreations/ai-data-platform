@@ -990,7 +990,7 @@ Acceptance: Build 042 never derives closure from a checklist or page view, repor
 
 ## Build 043 — Application Command Center & Workspace Home
 
-Status: IMPLEMENTED on isolated release branch; promotion follows the verified Build 043 → main path because dev currently contains unrelated Build 048 work.
+Status: **PRODUCTION GREEN — promoted to main via PR #52 after dev and PR verification.**
 
 Goal: move the application from infrastructure/readiness-first landing content to a practical signed-in workspace home without creating a second telemetry source.
 
@@ -1014,4 +1014,4 @@ Acceptance: a signed-in user sees only authorized workspaces, command-center tot
 
 Status: **REJECTED — DO NOT PROMOTE / DO NOT TREAT AS QUEUED WORK.**
 
-The experimental Build 048 scope was explicitly rejected by the operator on 2026-10-11 and was reverted from `dev`. It was never promoted to `main`. Future application builds must follow the approved product roadmap rather than reviving this rejected scope without a new explicit operator request.
+The experimental Build 048 scope was explicitly rejected by the operator on 2026-10-11 and reverted before production promotion. Its rejected implementation was never promoted to `main`. Future application builds must follow the approved product roadmap rather than reviving this rejected scope without a new explicit operator request.
