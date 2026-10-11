@@ -677,3 +677,15 @@ Changes:
 - existing RLS, append-only runtime grants, fingerprint deduplication and 365-day / 30-row-per-workspace retention remain in force.
 
 No raw business payloads, secrets or credentials are added to the cycle snapshot.
+
+
+## Build 044 unified library read model
+
+Build 044 does **not** add a database table. The authenticated `/data-library` explorer creates a read-only union at query time over:
+
+- `app.workspace_saved_scrapers` (saved scraper/template records);
+- `app.workspace_reviewed_datasets`;
+- `app.workspace_intelligence_modules`;
+- `app.workspace_barcode_captures`.
+
+The union preserves each originating record ID, workspace identity, timestamps, source/provenance fields, explicit server version where applicable, normalized/summary data and raw durable payload. PostgreSQL RLS on the originating tables remains authoritative. Tombstones, duplicate state and review state are exposed as source facts; no confidence or verification state is inferred by the read model.

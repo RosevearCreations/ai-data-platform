@@ -1015,3 +1015,26 @@ Acceptance: a signed-in user sees only authorized workspaces, command-center tot
 Status: **REJECTED — DO NOT PROMOTE / DO NOT TREAT AS QUEUED WORK.**
 
 The experimental Build 048 scope was explicitly rejected by the operator on 2026-10-11 and reverted before production promotion. Its rejected implementation was never promoted to `main`. Future application builds must follow the approved product roadmap rather than reviving this rejected scope without a new explicit operator request.
+
+
+## Build 044 — Unified Data Library & Record Explorer
+
+Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+
+Goal: give authorized users one searchable, paginated workspace library for durable records without duplicating those records into another persistence layer.
+
+Delivered:
+
+- authenticated `/data-library` route and Command Center navigation;
+- one RLS-scoped union across saved scrapers, saved templates, reviewed datasets, intelligence modules and barcode captures;
+- workspace and record-type filters, bounded full-text-style search, deterministic sorting and server-side pagination;
+- browser-local named saved views that preserve query filters without writing workspace data;
+- record explorer showing workspace/profile identity, record/version status, observed/updated timestamps and originating source reference;
+- side-by-side normalized/summary, raw durable payload and provenance inspection;
+- visible tombstone, duplicate, pending-review and rejected-review flags derived only from durable source state;
+- safe http/https source links with non-web references rendered as text;
+- responsive library UI, contextual help and Build 044 verification;
+- extension version 0.44.0;
+- no migration, library-copy table, record mutation, inferred confidence score or synthetic data.
+
+Acceptance: only authorized workspace records are visible; supported record types can be searched, filtered, sorted and paginated; out-of-range pagination clamps safely; raw and normalized representations remain distinguishable; provenance and durable quality flags remain visible; saved views are local-only; and the explorer cannot mutate originating records.
