@@ -105,6 +105,10 @@ export function recordFlags(input: {
   return flags;
 }
 
+function sqlParam(index: number) {
+  return "$" + String(index);
+}
+
 const sortSql: Record<DataLibrarySort, string> = {
   "updated-desc": "updated_at desc, title asc",
   "observed-desc": "observed_at desc, title asc",
@@ -283,16 +287,16 @@ export async function listUnifiedDataLibrary(
 
     if (query.workspaceId) {
       values.push(query.workspaceId);
-      conditions.push(`workspace_id = ${values.length}`);
+      conditions.push("workspace_id = " + sqlParam(values.length));
     }
     if (query.type) {
       values.push(query.type);
-      conditions.push(`record_type = ${values.length}`);
+      conditions.push("record_type = " + sqlParam(values.length));
     }
     if (query.search) {
       values.push("%" + query.search.toLowerCase() + "%");
       conditions.push(
-        `lower(concat_ws(' ',workspace_name,title,subtitle,source_url,source_label,normalized::text,raw::text)) like ${values.length}`
+        "lower(concat_ws(' ',workspace_name,title,subtitle,source_url,source_label,normalized::text,raw::text)) like " + sqlParam(values.length)
       );
     }
 
@@ -309,7 +313,7 @@ export async function listUnifiedDataLibrary(
     const pageValues = [...values, query.pageSize, offset];
     const rowsResult = await client.query<LibraryRow>(
       recordsCte +
-        ` select * from records${where} order by ${sortSql[query.sort]} limit ${pageValues.length - 1} offset ${pageValues.length}`,
+        ` select * from records${where} order by ${sortSql[query.sort]} limit ` + sqlParam(pageValues.length - 1) + " offset " + sqlParam(pageValues.length),
       pageValues
     );
 
