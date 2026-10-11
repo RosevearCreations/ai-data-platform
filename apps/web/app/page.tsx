@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
-import { listWorkspacesForUser } from "@/lib/database";
+import { buildCommandCenterHome } from "@/lib/command-center";
 
 import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { SignOutButton } from "./sign-out-button";
@@ -15,26 +15,43 @@ const foundations = [
   "AI for interpretation; deterministic code for repetition"
 ] as const;
 
+const workflowLinks = [
+  ["/capture", "Barcode intake"],
+  ["/intelligence", "Intelligence library"],
+  ["/remote-execution", "Remote execution"],
+  ["/connectors", "Connectors"],
+  ["/integration-delivery", "Integration delivery"],
+  ["/retention", "Retention & cleanup"],
+  ["/adoption", "Adoption & permissions"],
+  ["/first-evidence", "First-evidence runbook"],
+  ["/workspace-profiles", "Workspace profiles"],
+  ["/production-learning", "Production learning"],
+  ["/help", "Help center"]
+] as const;
+
+function formatBytes(value: number) {
+  if (value < 1024) return value + " B";
+  if (value < 1024 * 1024) return (value / 1024).toFixed(1) + " KiB";
+  return (value / (1024 * 1024)).toFixed(1) + " MiB";
+}
+
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
-  const workspaces = session
-    ? await listWorkspacesForUser(session.user.id)
-    : [];
+  const session = await auth.api.getSession({ headers: await headers() });
+  const commandCenter = session
+    ? await buildCommandCenterHome(session.user.id)
+    : null;
 
   return (
     <main className="shell">
-      <section className="hero">
-        <HelpInfo topic="platform-overview" />
-        <p className="eyebrow">Build 038</p>
-        <h1>AI Data Platform</h1>
+      <section className="hero commandHero">
+        <HelpInfo topic="command-center" />
+        <p className="eyebrow">Build 043</p>
+        <h1>Application Command Center</h1>
         <p className="lead">
-          Shared extraction and intelligence infrastructure with reusable domain
-          profiles and live production-learning evidence across authorized workspaces.
+          Start work, see workspace activity, and surface operational attention from
+          the durable evidence the platform already records.
         </p>
 
         {session ? (
@@ -47,115 +64,143 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="heroActions">
-            <Link className="primaryLink" href="/sign-in">
-              Sign in
-            </Link>
+            <Link className="primaryLink" href="/sign-in">Sign in</Link>
             <span>Authentication and workspace isolation are enabled.</span>
           </div>
         )}
       </section>
 
-      <section aria-labelledby="workspace-heading">
-        <div className="sectionHeading">
-          <p className="eyebrow">Workspaces</p>
-          <h2 id="workspace-heading">
-            {session ? "Your authorized workspaces" : "One engine, isolated contexts"}
-          </h2>
-          <HelpInfo topic="workspaces" />
-        </div>
+      {commandCenter ? (
+        <>
+          <section aria-labelledby="command-overview">
+            <div className="sectionHeading">
+              <p className="eyebrow">Today&apos;s workspace home</p>
+              <h2 id="command-overview">What needs your attention</h2>
+              <HelpInfo topic="command-center" />
+            </div>
+            <div className="commandMetrics">
+              <article><strong>{commandCenter.totals.workspaces}</strong><span>authorized workspaces</span></article>
+              <article><strong>{commandCenter.totals.activeWorkspaces}</strong><span>with durable activity</span></article>
+              <article><strong>{commandCenter.totals.attentionWorkspaces}</strong><span>need review</span></article>
+              <article><strong>{commandCenter.totals.activityEvents}</strong><span>measured activity events</span></article>
+              <article><strong>{formatBytes(commandCenter.totals.measuredBytes)}</strong><span>managed evidence footprint</span></article>
+            </div>
+          </section>
 
-        {session ? (
-          workspaces.length > 0 ? (
-            <div className="grid">
-              {workspaces.map((workspace) => (
-                <article className="card" key={workspace.id}>
-                  <h3>{workspace.name}</h3>
-                  <p>{workspace.purpose || workspace.profileDescription}</p>
-                  <span className="badge">
-                    {workspace.profileName} · {workspace.role}
-                  </span>
-                </article>
+          <section className="commandSection" aria-labelledby="activity-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Activity</p>
+              <h2 id="activity-heading">Operational pulse</h2>
+            </div>
+            <div className="commandMetrics commandMetricsCompact">
+              <article><strong>{commandCenter.totals.sync}</strong><span>sync outcomes</span></article>
+              <article><strong>{commandCenter.totals.barcodeCaptures}</strong><span>barcode captures</span></article>
+              <article><strong>{commandCenter.totals.scheduledAttempts}</strong><span>scheduled attempts</span></article>
+              <article><strong>{commandCenter.totals.remoteRuns}</strong><span>remote runs</span></article>
+              <article><strong>{commandCenter.totals.integrationEvents}</strong><span>integration events</span></article>
+            </div>
+          </section>
+
+          <section className="commandSection" aria-labelledby="workspace-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Workspaces</p>
+              <h2 id="workspace-heading">Your working contexts</h2>
+              <HelpInfo topic="workspaces" />
+            </div>
+            {commandCenter.workspaces.length ? (
+              <div className="grid commandWorkspaceGrid">
+                {commandCenter.workspaces.map((workspace) => (
+                  <article className="card commandWorkspaceCard" key={workspace.workspaceId}>
+                    <div>
+                      <h3>{workspace.workspaceName}</h3>
+                      <span className="badge">{workspace.profileName} · {workspace.role}</span>
+                    </div>
+                    <p>{workspace.activityEvents} durable activity event(s)</p>
+                    <p>
+                      Sync {workspace.activity.sync} · Barcode {workspace.activity.barcodeCaptures} ·
+                      Remote {workspace.activity.remoteRuns} · Integrations {workspace.activity.integrationEvents}
+                    </p>
+                    {workspace.attention.length ? (
+                      <div className="commandAttention">
+                        {workspace.attention.map((item) => <span key={item}>{item}</span>)}
+                      </div>
+                    ) : (
+                      <span className="commandHealthy">No measured attention condition</span>
+                    )}
+                    {workspace.latest ? (
+                      <small>
+                        Latest {workspace.latest.kind.toLowerCase()}: {workspace.latest.label} ·{" "}
+                        {workspace.latest.at.toLocaleString()}
+                      </small>
+                    ) : (
+                      <small>No recent remote or delivery event recorded.</small>
+                    )}
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="emptyState">
+                <h3>No workspace access</h3>
+                <p>This authenticated account has not been granted a workspace.</p>
+              </div>
+            )}
+          </section>
+
+          <section className="commandSection" aria-labelledby="recent-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Recent evidence</p>
+              <h2 id="recent-heading">Latest provider & delivery events</h2>
+            </div>
+            {commandCenter.latestEvents.length ? (
+              <div className="commandRecentList">
+                {commandCenter.latestEvents.map((event, index) => (
+                  <article key={event.workspaceName + event.label + index}>
+                    <div><strong>{event.workspaceName}</strong><span>{event.kind}</span></div>
+                    <p>{event.label}</p>
+                    <small>{event.at.toLocaleString()}</small>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <div className="emptyState">No recent provider or delivery evidence yet.</div>
+            )}
+          </section>
+
+          <section className="commandSection" aria-labelledby="launch-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Launch</p>
+              <h2 id="launch-heading">Go directly to the work</h2>
+            </div>
+            <nav className="commandLaunchGrid" aria-label="Application workflows">
+              {workflowLinks.map(([href, label], index) => (
+                <Link className={index === 0 ? "primaryLink" : "secondaryButton"} href={href} key={href}>
+                  {label}
+                </Link>
               ))}
-            </div>
-          ) : (
-            <div className="emptyState">
-              <h3>No workspace access</h3>
-              <p>
-                This account is authenticated but has not been granted access to
-                a workspace.
-              </p>
-            </div>
-          )
-        ) : (
-          <div className="grid">
-            <article className="card">
-              <h3>Rosie Dazzlers</h3>
-              <p>Ontario detailing intelligence, pricing history and SEO evidence.</p>
-            </article>
-            <article className="card">
-              <h3>Devil n Dove</h3>
-              <p>Supplier, product, tool and inventory intelligence.</p>
-            </article>
-            <article className="card">
-              <h3>Personal</h3>
-              <p>Movie metadata enrichment and approved private datasets.</p>
-            </article>
+            </nav>
+          </section>
+
+          <AiFieldSuggestions />
+        </>
+      ) : (
+        <section aria-labelledby="workspace-heading">
+          <div className="sectionHeading">
+            <p className="eyebrow">Private application</p>
+            <h2 id="workspace-heading">One engine, isolated workspaces</h2>
+            <HelpInfo topic="platform-overview" />
           </div>
-        )}
-      </section>
-
-      {session ? (
-        <div className="heroActions">
-          <Link className="primaryLink" href="/capture">
-            Scan / enter barcode
-          </Link>
-          <Link className="secondaryButton" href="/intelligence">
-            Review persistent intelligence
-          </Link>
-          <Link className="secondaryButton" href="/remote-execution">
-            Remote execution pilot
-          </Link>
-          <Link className="secondaryButton" href="/workspace-profiles">
-            Workspace profiles
-          </Link>
-          <Link className="secondaryButton" href="/connectors">
-            Connectors
-          </Link>
-          <Link className="secondaryButton" href="/integration-delivery">
-            Integration delivery
-          </Link>
-          <Link className="secondaryButton" href="/retention">
-            Retention & cleanup
-          </Link>
-          <Link className="secondaryButton" href="/adoption">
-            Adoption & permissions
-          </Link>
-          <Link className="secondaryButton" href="/first-evidence">
-            First-evidence runbook
-          </Link>
-          <Link className="secondaryButton" href="/production-learning">
-            Production learning
-          </Link>
-          <Link className="secondaryButton" href="/help">
-            Help center
-          </Link>
-          <span>Mobile barcode intake and durable intelligence are available across devices.</span>
-        </div>
-      ) : null}
-
-      {session ? <AiFieldSuggestions /> : null}
+          <div className="grid">
+            <article className="card"><h3>Rosie Dazzlers</h3><p>Detailing intelligence, pricing history and operational evidence.</p></article>
+            <article className="card"><h3>Devil n Dove</h3><p>Supplier, product, tool and inventory intelligence.</p></article>
+            <article className="card"><h3>Personal</h3><p>Movie metadata enrichment and approved private datasets.</p></article>
+          </div>
+        </section>
+      )}
 
       <section className="principles" aria-labelledby="principles-heading">
         <HelpInfo topic="guardrails" />
-        <div>
-          <p className="eyebrow">Guardrails</p>
-          <h2 id="principles-heading">Designed for traceable data</h2>
-        </div>
-        <ul>
-          {foundations.map((foundation) => (
-            <li key={foundation}>{foundation}</li>
-          ))}
-        </ul>
+        <div><p className="eyebrow">Guardrails</p><h2 id="principles-heading">Designed for traceable data</h2></div>
+        <ul>{foundations.map((foundation) => <li key={foundation}>{foundation}</li>)}</ul>
       </section>
     </main>
   );

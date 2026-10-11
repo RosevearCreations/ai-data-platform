@@ -988,8 +988,30 @@ Delivered:
 Acceptance: Build 042 never derives closure from a checklist or page view, reports incomplete and inconclusive outcomes explicitly, and reports all outcomes VERIFIED only when the originating durable evidence and required safety state support that conclusion.
 
 
+## Build 043 — Application Command Center & Workspace Home
+
+Status: IMPLEMENTED on isolated release branch; promotion follows the verified Build 043 → main path because dev currently contains unrelated Build 048 work.
+
+Goal: move the application from infrastructure/readiness-first landing content to a practical signed-in workspace home without creating a second telemetry source.
+
+Delivered:
+
+- authenticated Application Command Center on the root page;
+- authorized workspace cards using existing adoption evidence and profile/role identity;
+- top-level counts for active workspaces, measured attention conditions, durable activity and managed storage footprint;
+- operational pulse for sync, barcode capture, scheduled attempts, remote runs and integration events;
+- attention chips derived from existing permission-review, profile-mismatch, storage-budget, remote-failure and delivery-transport evidence;
+- latest remote-provider and integration-delivery evidence sorted by durable timestamps;
+- direct launch links to the major working surfaces;
+- contextual help and responsive command-center styling;
+- extension version 0.43.0;
+- no new database table, migration, automatic execution, permission/profile mutation or synthetic activity.
+
+Acceptance: a signed-in user sees only authorized workspaces, command-center totals are derived from existing RLS-scoped evidence, measured attention conditions surface without changing state, recent evidence is timestamp ordered, signed-out visitors see no private workspace evidence, and all existing workflow safety boundaries remain authoritative.
+
+
 ## Rejected build record — Build 048 Performance and Resource-Budget Review
 
 Status: **REJECTED — DO NOT PROMOTE / DO NOT TREAT AS QUEUED WORK.**
 
-The experimental Build 048 commit `2cb9e2937e17e54ed007a945fb4206f4e7ebb5e4` was explicitly rejected by the operator on 2026-10-11. Its implementation, version bump and production-learning changes were reverted from `dev`. Build numbering after Build 043 must be chosen from the approved application roadmap rather than reviving this rejected scope.
+The experimental Build 048 scope was explicitly rejected by the operator on 2026-10-11 and was reverted from `dev`. It was never promoted to `main`. Future application builds must follow the approved product roadmap rather than reviving this rejected scope without a new explicit operator request.
