@@ -411,3 +411,14 @@ Contextual help explicitly identifies actions that require manual external setup
 - missing Build 030 measurements remain explicitly unmeasured instead of being backfilled or inferred;
 - roadmap recommendations never mutate roles, profile capabilities, connector grants, remote gates or integration receiver settings;
 - no synthetic provider run, barcode capture, sync outcome or business delivery event is created to improve a metric.
+
+## Build 037 first-evidence security
+
+- the runbook is authenticated and inherits workspace membership/RLS from Build 035 adoption evidence;
+- no new secrets, credentials, provider configuration or cross-workspace data paths are introduced;
+- profile-disabled workflows remain not applicable;
+- scheduled workflows cannot be recommended as ready before the source-policy prerequisite is present;
+- remote execution stays Build 032 operator-gated;
+- integration delivery stays Build 033 receiver/operator-gated;
+- the runbook itself writes no operational evidence and cannot change workspace roles, profile capabilities or connector grants;
+- synthetic records, fake sources and fake receivers are explicitly prohibited as adoption shortcuts.

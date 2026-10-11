@@ -23,6 +23,7 @@ async function main() {
     "../app/integration-delivery/page.tsx",
     "../app/retention/page.tsx",
     "../app/adoption/page.tsx",
+    "../app/first-evidence/page.tsx",
     "../app/production-learning/page.tsx",
     "../app/help/page.tsx"
   ];
@@ -95,6 +96,16 @@ async function main() {
     "Build 035 help must preserve durable adoption, stale-grant and no-automatic-permission-change guidance."
   );
 
+  const firstEvidence = HELP_TOPICS["first-evidence-overview"];
+  assert(
+    "manual" in firstEvidence &&
+      firstEvidence.manual.some((step) => step.includes("No new external account")) &&
+      firstEvidence.steps.some((step) => step.includes("Build 032-gated")) &&
+      firstEvidence.steps.some((step) => step.includes("Build 033-gated")) &&
+      firstEvidence.notes.some((note) => note.includes("writes no operational evidence")),
+    "Build 037 help must preserve real-work-only adoption and existing remote/integration gates."
+  );
+
   const renewal = HELP_TOPICS["learning-renewal"];
   assert(
     "manual" in renewal &&
@@ -106,7 +117,7 @@ async function main() {
   );
 
   console.log(
-    "Build 036 contextual help coverage, adoption/retention guidance and finite production-learning renewal instructions passed."
+    "Build 037 contextual help coverage, real-work-only first-evidence guidance and existing production gates passed."
   );
 
 }

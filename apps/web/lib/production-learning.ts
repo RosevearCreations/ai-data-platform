@@ -784,6 +784,28 @@ export function buildProductionLearningAssessment(
   });
 
   findings.push({
+    key: "first-evidence-adoption",
+    category: "Guided production adoption",
+    status: totals.adoptionActiveWorkspaces > 0 ? "healthy" : "watch",
+    title:
+      totals.adoptionActiveWorkspaces > 0
+        ? "Real operational adoption evidence exists."
+        : "Workspaces still need their first real operating evidence.",
+    evidence:
+      String(totals.adoptionActiveWorkspaces) +
+      "/" +
+      String(totals.workspaces) +
+      " workspaces have durable activity; " +
+      String(totals.adoptionNoActivityWorkspaces) +
+      " remain at measured zero.",
+    action:
+      totals.adoptionActiveWorkspaces > 0
+        ? "Use /first-evidence only for remaining zero-activity workspaces and continue normal operations."
+        : "Use /first-evidence to perform one profile-appropriate real workflow. Do not create synthetic records or bypass Build 032/033 gates.",
+    owner: "operations"
+  });
+
+  findings.push({
     key: "storage-retention",
     category: "Storage & retention",
     status:
@@ -985,7 +1007,8 @@ export function buildProductionLearningAssessment(
             "production-learning-renewal",
             "adoption-permission-outcomes",
             "sync-outcome-telemetry",
-            "barcode-adoption"
+            "barcode-adoption",
+            "first-evidence-adoption"
           ]
         }]
       : []),
@@ -1000,7 +1023,8 @@ export function buildProductionLearningAssessment(
             "production-learning-renewal",
             "remote-cost-reliability",
             "integration-consumer-readiness",
-            "adoption-permission-outcomes"
+            "adoption-permission-outcomes",
+            "first-evidence-adoption"
           ]
         }]
       : [])

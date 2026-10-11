@@ -47,6 +47,7 @@ import {
   setWorkspaceConnectorEnabled
 } from "../lib/connector-database";
 import { buildAdoptionReview } from "../lib/adoption-database";
+import { buildFirstEvidenceReviewForUser } from "../lib/first-evidence-database";
 import { buildProductionLearningReview } from "../lib/production-learning-database";
 import {
   appendIntegrationDeliveryEvent,
@@ -1709,6 +1710,29 @@ async function main() {
     throw new Error("Build 035 adoption/profile/connector outcome aggregation failed.");
   }
 
+  const firstEvidence = await buildFirstEvidenceReviewForUser(ownerId);
+  const firstEvidenceWorkspace = firstEvidence.workspaces.find(
+    (workspace) => workspace.workspaceId === syncWorkspaceId
+  );
+  if (
+    !firstEvidenceWorkspace ||
+    !firstEvidenceWorkspace.hasDurableEvidence ||
+    !firstEvidenceWorkspace.steps.some(
+      (step) => step.key === "remote" && step.operatorGate
+    ) ||
+    !firstEvidenceWorkspace.steps.some(
+      (step) => step.key === "integration" && step.operatorGate
+    )
+  ) {
+    throw new Error("Build 037 first-evidence runbook did not preserve durable adoption and operator gates.");
+  }
+
+  const restrictedFirstEvidence =
+    await buildFirstEvidenceReviewForUser(restrictedId);
+  if (restrictedFirstEvidence.workspaces.length !== 0) {
+    throw new Error("Build 037 first-evidence runbook leaked across accounts.");
+  }
+
   const restrictedAdoption = await buildAdoptionReview(restrictedId);
   if (restrictedAdoption.workspaces.length !== 0) {
     throw new Error("Build 035 adoption evidence leaked across accounts.");
@@ -1823,7 +1847,7 @@ async function main() {
   }
 
   console.log(
-    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035/036 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, Build 030 comparison continuity, finite roadmap renewal and workspace-target acceptance passed."
+    "Build 002/019/020/021/024/025/026/027/028/029/030/031/033/034/035/036/037 database isolation, source-policy persistence, barcode review, remote execution lifecycle, controlled pilot guardrails, configurable workspace profiles, connector SDK grants/audit, delivery acknowledgement, bounded retention cleanup, durable adoption snapshots, finite roadmap renewal, guided first-evidence RLS isolation and workspace-target acceptance passed."
   );
 }
 

@@ -464,6 +464,14 @@ const noAdoptionRenewal: ProductionLearningEvidence = {
 };
 const noAdoptionReview = buildProductionLearningAssessment(noAdoptionRenewal);
 assert(
+  noAdoptionReview.findings.some(
+    (finding) =>
+      finding.key === "first-evidence-adoption" &&
+      finding.status === "watch"
+  ),
+  "Zero-adoption evidence must surface the Build 037 guided first-evidence finding."
+);
+assert(
   noAdoptionReview.roadmap.some(
     (item) =>
       item.build === 37 &&
@@ -477,7 +485,19 @@ assert(
   ),
   "Build 036 must name the operational-adoption evidence gap explicitly."
 );
+assert(
+  adoptionReview.findings.some(
+    (finding) =>
+      finding.key === "first-evidence-adoption" &&
+      finding.status === "healthy"
+  ),
+  "Build 037 first-evidence finding must become healthy once real adoption exists."
+);
+assert(
+  !renewalReview.roadmap.some((item) => item.build === 37),
+  "Build 037 must not remain queued once durable operational adoption exists."
+);
 
 console.log(
-  "Build 036 production-learning renewal preserves non-fabricated Build 030 comparisons, closes itself after durable cycle evidence and emits a finite evidence-driven roadmap."
+  "Build 037 production-learning keeps the guided first-evidence runbook conditional on measured zero adoption and closes it after real durable activity exists."
 );

@@ -57,6 +57,9 @@ export default async function ProductionLearningPage() {
           <Link className="secondaryButton" href="/adoption">
             Adoption & permissions
           </Link>
+          <Link className="secondaryButton" href="/first-evidence">
+            First-evidence runbook
+          </Link>
           <a className="secondaryButton" href="/api/production-learning">
             Evidence JSON
           </a>

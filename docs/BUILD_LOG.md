@@ -1838,3 +1838,24 @@ Delivered:
 - contextual help and extension 0.36.0 messaging.
 
 No permission, provider gate, integration receiver or business record is changed by the renewal review.
+
+## Build 037 — Guided Production Adoption & First-Evidence Runbook
+
+Date: 2026-10-10
+
+Status: IMPLEMENTED — EVIDENCE-CONDITIONAL RUNBOOK ACTIVE.
+
+Delivered:
+
+- authenticated `/first-evidence` runbook and `/api/first-evidence` evidence endpoint;
+- profile-aware first-use steps for synchronized assets, Source Policy, barcode and scheduled workflows;
+- explicit not-applicable handling for profile-disabled capabilities;
+- scheduling remains gated until its real source-policy prerequisite is satisfied;
+- Browserless remains explicitly Build 032 operator-gated;
+- business delivery remains explicitly Build 033 receiver/operator-gated;
+- installed connectors are suggested only within existing grants;
+- Production Learning tracks the guided-adoption finding and removes Build 037 after real durable adoption exists;
+- cross-account database acceptance confirms the runbook inherits existing workspace RLS;
+- extension version 0.37.0.
+
+Build 037 creates no synthetic operational evidence and changes no permissions or capability flags.
