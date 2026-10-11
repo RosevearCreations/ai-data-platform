@@ -1933,7 +1933,7 @@ Build 038 does not generate synthetic operating activity, alter permissions, wea
 
 Date: 2026-10-11
 
-Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+Status: **PRODUCTION GREEN — CODE PROMOTED VIA PR #52.**
 
 Delivered:
 
@@ -1956,3 +1956,13 @@ Date: 2026-10-11
 Status: **REJECTED / REVERTED ON DEV — NEVER PROMOTED TO MAIN.**
 
 The operator rejected this direction. Its implementation and version changes were removed from the active development line. Do not resurrect or promote this scope without a new explicit operator request.
+
+
+### Build 043 release verification
+
+- dev Verify: GREEN — workflow run `38162306206`;
+- main PR Verify: GREEN — workflow run `38162389923`;
+- production merge: PR #52, commit `b7efc5879304b2b4a0a878fc62d10ad37353df5d`;
+- push-triggered main Verify: GREEN — workflow run `38162475886`;
+- extension version: `0.43.0`;
+- rejected Build 048 implementation remains excluded; only its rejection record is retained.
