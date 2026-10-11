@@ -1095,3 +1095,272 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 044 — Unified Data Library & Record Explorer */
+.libraryShell {
+  width: min(1220px, calc(100% - 2rem));
+}
+
+.libraryHero {
+  max-width: 900px;
+  padding-bottom: 3rem;
+}
+
+.libraryFilters,
+.libraryResults {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.libraryFilterGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1.6fr 1fr 0.65fr auto;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.libraryFilterGrid label {
+  display: grid;
+  gap: 0.4rem;
+  color: #cbdadc;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.libraryFilterGrid input,
+.libraryFilterGrid select,
+.librarySaveRow input {
+  width: 100%;
+  min-height: 2.8rem;
+  border: 1px solid rgba(237, 246, 247, 0.13);
+  border-radius: 0.7rem;
+  background: #0d1921;
+  color: #edf6f7;
+  padding: 0 0.75rem;
+}
+
+.librarySavedViews {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.librarySaveRow {
+  display: grid;
+  grid-template-columns: minmax(220px, 420px) auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.librarySavedViews small {
+  color: #7f9295;
+}
+
+.librarySavedList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.librarySavedList > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(125, 226, 216, 0.12);
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.04);
+  padding: 0.35rem 0.55rem;
+}
+
+.librarySavedList button {
+  border: 0;
+  background: transparent;
+  color: #aabec0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.libraryRecordList {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.libraryRecord {
+  display: grid;
+  gap: 0.9rem;
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.15rem;
+}
+
+.libraryRecordTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.libraryRecordTop h3 {
+  margin: 0.35rem 0 0.3rem;
+}
+
+.libraryRecordTop p {
+  margin: 0;
+  color: #93a8aa;
+}
+
+.libraryRecordMeta,
+.libraryFlags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.libraryRecordMeta {
+  justify-content: flex-end;
+}
+
+.libraryRecordMeta span,
+.libraryFlags span {
+  border-radius: 999px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 850;
+}
+
+.libraryRecordMeta span {
+  background: rgba(255, 255, 255, 0.055);
+  color: #b9cbcd;
+}
+
+.libraryFlags span {
+  background: rgba(255, 193, 112, 0.1);
+  color: #f0cc98;
+}
+
+.libraryFlags .libraryFlagOk {
+  background: rgba(125, 226, 216, 0.08);
+  color: #a6eee7;
+}
+
+.libraryProvenanceSummary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.libraryProvenanceSummary div {
+  min-width: 0;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 0.65rem;
+}
+
+.libraryProvenanceSummary dt {
+  margin-bottom: 0.25rem;
+  color: #75898c;
+  font-size: 0.67rem;
+}
+
+.libraryProvenanceSummary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #c8d9db;
+  font-size: 0.76rem;
+}
+
+.librarySource {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #8ea2a5;
+  font-size: 0.78rem;
+}
+
+.libraryDetails {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.75rem;
+}
+
+.libraryDetails > summary {
+  color: #9de9e2;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.libraryDetailGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
+.libraryDetailGrid section {
+  min-width: 0;
+}
+
+.libraryDetailGrid h4 {
+  margin: 0 0 0.45rem;
+  color: #d7e7e9;
+}
+
+.libraryDetailGrid pre {
+  max-height: 360px;
+  overflow: auto;
+  border-radius: 0.65rem;
+  background: #071117;
+  color: #b8cacd;
+  padding: 0.75rem;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.libraryPagination {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.libraryPagination > :last-child {
+  justify-self: end;
+}
+
+.libraryPagination > span {
+  color: #8fa4a6;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 980px) {
+  .libraryFilterGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .libraryDetailGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .libraryProvenanceSummary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .libraryFilterGrid,
+  .librarySaveRow,
+  .libraryProvenanceSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .libraryRecordTop {
+    flex-direction: column;
+  }
+
+  .libraryRecordMeta {
+    justify-content: flex-start;
+  }
+}
