@@ -5,6 +5,7 @@ create table if not exists app.workspace_publication_delivery_mappings (
   target text not null check (target in ('rosie-dazzlers','devil-n-dove')),
   status text not null default 'active' check (status in ('active','retired')),
   integration_key_field text not null check (char_length(integration_key_field) between 1 and 128),
+  operation_action text not null default 'create' check (operation_action in ('create','update')),
   evidence_url_field text,
   evidence_timestamp_field text not null check (char_length(evidence_timestamp_field) between 1 and 128),
   field_map jsonb not null check (
