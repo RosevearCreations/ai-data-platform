@@ -958,7 +958,8 @@ export const HELP_GROUPS: Array<{
     topics: ["connectors-overview", "connector-registry", "connector-workspace", "connector-audit"]
   },
   {
-    title: "Approved data & integration delivery",\n    topics: ["publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    title: "Approved data & integration delivery",
+    topics: ["publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",
