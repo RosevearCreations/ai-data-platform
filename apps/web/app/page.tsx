@@ -20,6 +20,7 @@ const workflowLinks = [
   ["/data-library", "Unified data library"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
+  ["/collection-runs", "Collection run console"],
   ["/intelligence", "Intelligence library"],
   ["/remote-execution", "Remote execution"],
   ["/connectors", "Connectors"],
