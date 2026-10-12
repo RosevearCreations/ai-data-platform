@@ -827,3 +827,48 @@ Append-only publication/export evidence with actions:
 - withdrawn.
 
 The runtime role receives SELECT/INSERT and no UPDATE/DELETE grant. Export events identify the publication fingerprint and row count without copying the full exported payload into the event ledger.
+
+
+## Build 050 publication delivery bridge
+
+### workspace_publication_delivery_mappings
+
+Immutable mapping evidence that connects one Build 049 publication to one supported consumer contract.
+
+Key fields:
+
+- workspace_id / mapping_id / publication_id;
+- target: rosie-dazzlers | devil-n-dove;
+- status: active | retired;
+- integration_key_field;
+- operation_action: create | update;
+- evidence_url_field (optional; otherwise publication source URL);
+- evidence_timestamp_field;
+- field_map;
+- mapping_fingerprint;
+- created_by / created_at;
+- retired_by / retired_at / retirement_note.
+
+The mapping fingerprint binds the publication fingerprint, target, action and mapping configuration. The runtime role receives INSERT plus UPDATE only on retirement-state columns; mapping content cannot be edited in place. A corrected mapping is a new mapping.
+
+### workspace_publication_delivery_receipts
+
+Append-only evidence linking publication and mapping identity to the exact Build 033 package and consumer outcome.
+
+Key fields:
+
+- workspace_id / receipt_id;
+- mapping_id / publication_id;
+- publication_fingerprint / mapping_fingerprint;
+- target / transport_mode;
+- consumer_id;
+- package_id / replay_key / package_fingerprint;
+- receipt_status: accepted | rejected | transport-error;
+- validation_code;
+- dry_run;
+- consumer_received_at;
+- actor_user_id;
+- bounded details;
+- created_at.
+
+Runtime access is SELECT/INSERT only under workspace RLS. Receipt rows never contain bearer credentials or full package bodies.

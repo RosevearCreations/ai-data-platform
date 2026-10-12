@@ -686,3 +686,28 @@ Decision: Build 049 generates audited JSON/CSV files and provenance manifests on
 Reason: publication authority and downstream mutation/delivery authority remain separate safety boundaries.
 
 Consequence: Build 050 may map an approved publication into an explicitly controlled consumer-delivery package and receipt flow while preserving the Build 049 fingerprint as source evidence.
+
+
+## D0104 — Build 050 reuses the Build 033 consumer protocol
+
+Decision: an approved publication is mapped into the existing version-1 Rosie Dazzlers / Devil n Dove consumer package rather than introducing a Build 050-specific transport schema.
+
+Reason: receiver validation, HTTPS/bearer transport, dry-run semantics, replay behavior and acknowledgement validation were already hardened in Build 033.
+
+Consequence: Build 050 adds publication/mapping provenance around that protocol but cannot weaken its transport gates.
+
+## D0105 — Publication delivery mappings are immutable
+
+Decision: target, create/update intent, key field, evidence fields and field map are immutable after mapping creation. Runtime UPDATE is limited to non-destructive retirement state.
+
+Reason: a receipt must identify one stable transformation from one immutable publication to one consumer package.
+
+Consequence: corrections create a new mapping and new mapping fingerprint; earlier receipts remain interpretable.
+
+## D0106 — Build 050 remains dry-run only
+
+Decision: external package delivery still forces `dryRun=true`, even though Build 050 now has a complete publication→mapping→package→receipt evidence chain.
+
+Reason: proving receipt continuity is different from authorizing business-system mutation.
+
+Consequence: Build 051 is the earliest build that may consider controlled live activation, with consumer-side idempotency and explicit enablement required first.

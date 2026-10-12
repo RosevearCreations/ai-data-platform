@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 049 — Approved Dataset Publishing & Export Handoff.
+Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.
 
 
 ## Persistence and authentication
@@ -78,3 +78,8 @@ The signed-in application now includes `/data-review`, a durable workspace-scope
 ## Build 049 application surface
 
 The signed-in application now includes `/approved-data`, an approved-only publishing and export handoff workbench. A workspace owner/admin can turn one terminal Build 048 approval into one immutable publication snapshot, preserve source/review provenance and a publication fingerprint, export that exact snapshot as JSON or CSV, copy a compact handoff manifest, and withdraw future exports without rewriting the approved review or automatically mutating a downstream business system.
+
+
+## Build 050 application surface
+
+The signed-in application now includes `/approved-data/delivery`, which maps an immutable Build 049 publication into the existing Build 033 consumer contracts. Owner/admin users can create an immutable field mapping, prove the generated package through local conformance, test a configured consumer handshake, send an authenticated external dry-run, and inspect append-only receipt evidence that links the publication fingerprint, mapping fingerprint and package fingerprint. Build 050 does not enable live business-system mutation.
