@@ -2101,3 +2101,42 @@ The complete repository matrix must pass on the exact Build 047 commit, includin
 ### Next
 
 Build 048 — Data Review, Cleanup & Approval Workbench. The rejected Build 048 Performance and Resource-Budget Review remains rejected.
+
+
+## Build 048 — Data Review, Cleanup & Approval Workbench
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0018_data_review_workbench.sql` with RLS-scoped review batches and append-only review events;
+- authenticated `/data-review` application workbench and `/api/data-review` boundary;
+- immutable original source snapshot with dataset ID, server version and canonical fingerprint;
+- deterministic whitespace cleanup into a working copy only;
+- duplicate-cleaned-row detection and safe default exclusion;
+- row include/exclude control and bounded manual JSON correction;
+- durable cleanup-draft saves and decision notes;
+- owner/admin-only terminal approval/rejection;
+- portable decision JSON containing approved included rows and exact source provenance;
+- Command Center navigation, responsive styling and contextual help;
+- pure deterministic verification and PostgreSQL persistence/RLS/audit/terminal-decision verification.
+
+Guardrails:
+
+- the source `workspace_reviewed_datasets` record is never overwritten;
+- review approval is a handoff record, not an automatic downstream write;
+- terminal batches cannot be edited later;
+- a changed source version/fingerprint becomes a separate review candidate;
+- no external account, environment variable, secret or paid service is added;
+- the previously rejected “Build 048 — Performance and Resource-Budget Review” remains rejected and is not revived.
+
+Verification target:
+
+- migrations: PASS required;
+- PostgreSQL review persistence/RLS/audit test: PASS required;
+- typecheck/lint/tests: PASS required;
+- Next.js production build: PASS required;
+- Chrome extension production build: PASS required;
+- dev → main promotion and READY Vercel production deployment required.

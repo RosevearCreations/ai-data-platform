@@ -18,6 +18,7 @@ const foundations = [
 const workflowLinks = [
   ["/capture", "Barcode intake"],
   ["/data-library", "Unified data library"],
+  ["/data-review", "Data review workbench"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],

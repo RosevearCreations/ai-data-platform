@@ -749,3 +749,44 @@ The authenticated run console joins existing workspace-scoped evidence at read t
 - `remote_execution_controls` / `remote_execution_source_allowlist` for existing Browserless authorization state.
 
 PostgreSQL RLS on every originating source remains authoritative. Downloaded run reports are generated client-side from the already-authorized read model and are not persisted as another server-side record.
+
+
+## Build 048 data review workbench
+
+### workspace_data_review_batches
+
+A workspace-scoped review snapshot for one exact `workspace_reviewed_datasets` version.
+
+Key fields:
+
+- workspace_id / review_id;
+- source_dataset_id;
+- source_server_version;
+- source_fingerprint;
+- title / source_url;
+- status: in-review | approved | rejected;
+- original_payload — immutable source snapshot held for comparison;
+- working_rows — bounded review rows containing original, cleaned and inclusion state;
+- row_count / included_count;
+- cleanup_summary;
+- review_note;
+- created_by / updated_by;
+- approved_by / approved_at;
+- rejected_by / rejected_at;
+- created_at / updated_at.
+
+The normal application may update a batch only while it remains `in-review`. Application logic rejects terminal cleanup mutations and requires owner/admin membership for approval/rejection. The source reviewed dataset is not modified by this workflow.
+
+### workspace_data_review_events
+
+Append-only review audit evidence.
+
+Key fields:
+
+- workspace_id / event_id / review_id;
+- action: created | saved | approved | rejected;
+- actor_user_id;
+- bounded JSON details;
+- created_at.
+
+The runtime role receives SELECT/INSERT only and no UPDATE/DELETE grant on review events. Both review tables use workspace-membership RLS. A review approval records a handoff decision and does not by itself mutate a downstream business system.

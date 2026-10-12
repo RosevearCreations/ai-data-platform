@@ -652,3 +652,20 @@ Reason: changing only a browser button state would not stop provider work and wo
 Decision: Build 047 exposes Retry failed page only when the latest terminal Browserless one-page job failed, timed out or was cancelled and all current gates remain valid.
 
 Reason: the controlled Browserless boundary is currently one page. A successful page is durable terminal evidence and must not be silently repeated under the semantics of failure recovery.
+
+
+## D0100 — Build 048 snapshots review evidence instead of mutating source datasets
+
+Decision: the Data Review workbench copies the exact source dataset payload/version/fingerprint into a durable review batch and performs cleanup on a separate working-row representation.
+
+Reason: cleanup must remain auditable against original evidence, and approval must not silently rewrite the synchronized source dataset.
+
+Consequence: source data changes create a new review candidate; approved/rejected review batches are terminal for the pinned version/fingerprint.
+
+## D0101 — Build 048 approval is a handoff, not a downstream write
+
+Decision: owner/admin approval records durable review evidence and a portable decision snapshot but does not automatically publish into Rosie Dazzlers, Devil n Dove or another business system.
+
+Reason: review quality and downstream mutation authority are separate control boundaries.
+
+Consequence: Build 049 can implement explicit approved-dataset publishing/export handoff without weakening Build 048 traceability.
