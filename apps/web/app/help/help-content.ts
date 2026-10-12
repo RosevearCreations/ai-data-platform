@@ -19,6 +19,44 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "data-review-overview": {
+    title: "Data Review, Cleanup & Approval Workbench",
+    summary: "Build 048 creates a durable workspace-scoped review snapshot from an existing reviewed-dataset version. Original evidence is preserved, cleanup happens on a working copy, and owner/admin approval or rejection is recorded as a separate auditable decision.",
+    steps: [
+      "Choose the exact workspace dataset version you want to inspect and start a review snapshot.",
+      "Compare every original row with the deterministic cleaned row; automatic cleanup only trims and collapses string whitespace.",
+      "Exclude duplicate or unsuitable rows and edit the working JSON only when a factual correction is needed.",
+      "Save cleanup drafts as often as needed while the batch remains in review.",
+      "Have a workspace owner/admin record the final approval or rejection after reviewing the included rows and decision note.",
+      "Download the terminal decision snapshot when a portable approved/rejected handoff is needed."
+    ],
+    notes: [
+      "The source workspace_reviewed_datasets row is never overwritten by Build 048.",
+      "Automatic duplicate detection defaults later identical cleaned rows to excluded but never deletes the original evidence.",
+      "Approved/rejected review batches are terminal for that exact source version and fingerprint; changed source data creates a new review candidate.",
+      "Build 048 records an approval handoff only and does not automatically write into Rosie Dazzlers, Devil n Dove or another business system."
+    ],
+    manual: [
+      "No new external account, environment variable, secret or paid service is required.",
+      "The normal deployment migration applies 0018_data_review_workbench.sql; no manual production data approval is performed during deployment."
+    ]
+  },
+  "data-review-rows": {
+    title: "Row cleanup, exclusions & decision evidence",
+    summary: "Each review row keeps immutable original evidence beside an editable working copy. Exclusion and cleanup decisions remain in the review batch rather than mutating the source dataset.",
+    steps: [
+      "Treat duplicate-cleaned-row and blank-field indicators as review prompts, not automatic truth.",
+      "Keep Include in approval selected only for rows that should remain in the approved snapshot.",
+      "Edit Working cleaned row as valid JSON and keep the factual meaning tied to the original evidence.",
+      "Save before leaving a long review session so the cleanup state and audit event are durable.",
+      "Use Approve reviewed data only after the included rows are ready; only owner/admin roles may make the terminal decision."
+    ],
+    notes: [
+      "At least one row must remain included in an approvable cleanup draft.",
+      "The API rejects fabricated row IDs, oversized row payloads and edits to terminal review batches.",
+      "The decision download contains the source dataset ID/version/fingerprint plus only the rows included in the review snapshot."
+    ]
+  },
   "collection-runs-overview": {
     title: "Collection Run Console & Live Evidence",
     summary: "Build 047 combines current Build 045 project/source readiness, synchronized local Chrome scheduled-job attempts, and existing Browserless remote-execution evidence into one operational console without creating another execution authority.",

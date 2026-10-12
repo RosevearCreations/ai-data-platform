@@ -14,6 +14,8 @@ async function main() {
     "../app/capture/barcode-capture-client.tsx",
     "../app/intelligence/page.tsx",
     "../app/data-library/page.tsx",
+    "../app/data-review/page.tsx",
+    "../app/data-review/DataReviewWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -44,6 +46,16 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const dataReview = HELP_TOPICS["data-review-overview"];
+  assert(
+    "manual" in dataReview &&
+      dataReview.steps.some((step) => step.includes("owner/admin")) &&
+      dataReview.notes.some((note) => note.includes("never overwritten")) &&
+      dataReview.notes.some((note) => note.includes("does not automatically write")) &&
+      dataReview.manual.some((step) => step.includes("No new external account")),
+    "Build 048 help must preserve source evidence, terminal owner/admin approval and no automatic business writes."
   );
 
   const collectionRuns = HELP_TOPICS["collection-runs-overview"];
@@ -143,7 +155,7 @@ async function main() {
   );
 
   console.log(
-    "Build 038 contextual help coverage, non-fabricated trend validation, first-evidence guidance and existing production gates passed."
+    "Build 048 contextual help coverage, durable review guidance and existing production gates passed."
   );
 
 }

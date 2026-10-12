@@ -1119,4 +1119,30 @@ Delivered:
 
 Acceptance: authorized users see only RLS-scoped project/run evidence; local Chrome remains operator-present and extension-owned; Browserless remains behind all existing provider/policy/allowlist/kill-switch gates; active cancellation is observed during provider work; retry is offered only for failed terminal one-page attempts; and run reports contain recorded evidence rather than fabricated progress or cost.
 
-Next queued: **Build 048 — Data Review, Cleanup & Approval Workbench.** This application-roadmap scope is distinct from the previously rejected “Build 048 — Performance and Resource-Budget Review,” which remains rejected.
+## Build 048 — Data Review, Cleanup & Approval Workbench
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: turn durable collected datasets into an explicit cleanup and approval workflow before later publishing/export handoff, while preserving the source payload as immutable review evidence.
+
+Delivered:
+
+- migration `0018_data_review_workbench.sql`;
+- RLS-scoped `workspace_data_review_batches` plus append-only `workspace_data_review_events`;
+- exact source dataset ID, server version and canonical payload fingerprint pinned into each review snapshot;
+- deterministic string whitespace cleanup on a working copy only;
+- duplicate-cleaned-row identification with duplicate rows defaulted excluded rather than deleted;
+- side-by-side original evidence and editable cleaned-row JSON;
+- explicit row inclusion/exclusion and bounded cleanup-draft saves;
+- owner/admin-only terminal approval or rejection;
+- terminal decisions for an exact source version/fingerprint, with a changed source version returning as a new candidate;
+- portable approved/rejected decision snapshot download;
+- authenticated `/data-review` workbench, API, Command Center navigation, contextual help and responsive UI;
+- deterministic cleanup/edit validation plus PostgreSQL persistence/RLS/audit verification;
+- no overwrite of `workspace_reviewed_datasets`, no automatic downstream business write, no new external service and no paid dependency.
+
+Acceptance: only authorized workspace datasets/review batches are visible; review creation pins the current durable source version/fingerprint; automatic cleanup never mutates original evidence; fabricated row IDs, oversized edits and all-row exclusion fail closed; terminal approval/rejection requires owner/admin authority; review events remain append-only through the runtime role; approved/rejected batches reject later cleanup edits; and downstream business systems remain unchanged.
+
+This Build 048 is the approved application-roadmap build and is separate from the rejected Performance and Resource-Budget Review experiment retained above.
+
+Next queued: **Build 049 — Approved Dataset Publishing & Export Handoff.**

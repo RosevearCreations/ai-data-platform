@@ -2025,3 +2025,285 @@ h3 {
     grid-column: 1 / -1;
   }
 }
+
+
+/* Build 048 — Data Review, Cleanup & Approval Workbench */
+.reviewShell {
+  width: min(1280px, calc(100% - 2rem));
+}
+
+.reviewHero {
+  max-width: 980px;
+  padding-bottom: 3rem;
+}
+
+.reviewSummary,
+.reviewQueue,
+.reviewEditor {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.reviewFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+  margin-top: 2rem;
+  border: 1px solid rgba(237, 246, 247, 0.09);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1rem;
+}
+
+.reviewFilters label,
+.reviewNote {
+  display: grid;
+  gap: 0.4rem;
+  color: #c8d8da;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.reviewFilters select {
+  min-width: 220px;
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0 0.8rem;
+}
+
+.reviewMessage {
+  margin-top: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.18);
+  border-radius: 0.8rem;
+  background: rgba(125, 226, 216, 0.06);
+  color: #b8ece7;
+  padding: 0.8rem 1rem;
+}
+
+.reviewCandidateGrid,
+.reviewBatchList,
+.reviewRows {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.reviewCandidateGrid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.reviewCandidate,
+.reviewBatchSummary,
+.reviewRow,
+.reviewEditor {
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.reviewCandidate {
+  display: grid;
+  gap: 1rem;
+  align-content: space-between;
+  padding: 1rem;
+}
+
+.reviewCandidate h3,
+.reviewBatchSummary h3 {
+  margin: 0.45rem 0 0.3rem;
+}
+
+.reviewCandidate p,
+.reviewCandidate small,
+.reviewBatchSummary p,
+.reviewProvenance,
+.reviewTerminal {
+  color: #91a5a8;
+  overflow-wrap: anywhere;
+}
+
+.reviewBatchSummary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.reviewBatchActive {
+  border-color: rgba(125, 226, 216, 0.35);
+  background: rgba(125, 226, 216, 0.055);
+}
+
+.reviewStatus {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.reviewStatus-in-review {
+  background: rgba(255, 211, 120, 0.09);
+  color: #ecd29b;
+}
+
+.reviewStatus-approved {
+  background: rgba(125, 226, 216, 0.1);
+  color: #a9eee8;
+}
+
+.reviewStatus-rejected {
+  background: rgba(255, 138, 138, 0.1);
+  color: #ffc0c0;
+}
+
+.reviewEditor {
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.reviewNote textarea {
+  min-height: 90px;
+  resize: vertical;
+  border: 1px solid rgba(237, 246, 247, 0.13);
+  border-radius: 0.7rem;
+  background: #0d1921;
+  color: #edf6f7;
+  padding: 0.75rem;
+}
+
+.reviewRows {
+  margin-top: 1.2rem;
+}
+
+.reviewRow {
+  padding: 1rem;
+}
+
+.reviewRow > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.reviewRow > header > div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.reviewRow > header span {
+  color: #84999c;
+  font-size: 0.72rem;
+}
+
+.reviewInclude {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #c7d8da;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.reviewIssues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.reviewIssues span {
+  border-radius: 999px;
+  background: rgba(255, 193, 112, 0.1);
+  color: #f0cc98;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.reviewIssues .reviewClean {
+  background: rgba(125, 226, 216, 0.08);
+  color: #a6eee7;
+}
+
+.reviewCompare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.reviewCompare h4 {
+  margin: 0 0 0.45rem;
+  color: #d7e7e9;
+}
+
+.reviewCompare pre,
+.reviewCompare textarea {
+  width: 100%;
+  min-height: 190px;
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.65rem;
+  background: #071117;
+  color: #b8cacd;
+  padding: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reviewCompare textarea {
+  resize: vertical;
+}
+
+.reviewDecisionBar {
+  position: sticky;
+  bottom: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin-top: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.14);
+  border-radius: 0.8rem;
+  background: rgba(6, 16, 22, 0.96);
+  padding: 0.8rem;
+}
+
+.reviewDecisionBar span {
+  color: #8fa3a6;
+  font-size: 0.75rem;
+}
+
+.reviewTerminal {
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1rem;
+}
+
+@media (max-width: 760px) {
+  .reviewCompare {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewBatchSummary,
+  .reviewRow > header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reviewFilters label,
+  .reviewFilters select {
+    width: 100%;
+  }
+}
