@@ -2037,7 +2037,7 @@ Build 045 organizes collection intent only. It does not approve sources or run c
 
 Date: 2026-10-11
 
-Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+Status: **PRODUCTION GREEN — CODE PROMOTED VIA PR #61.**
 
 Delivered:
 
@@ -2055,3 +2055,13 @@ Delivered:
 - extension version 0.46.0.
 
 Build 046 does not fetch remote pages from the web builder, approve collection, create schedules or execute providers.
+
+
+### Build 046 release verification
+
+- dev Verify: GREEN — workflow run `38187847375`;
+- main PR Verify: GREEN — workflow run `38187932859`;
+- production merge: PR #61, commit `32a563370cf2dd40db88b698edf0027cdcb7ee07`;
+- push-triggered main Verify: GREEN — workflow run `38188026469`;
+- extension version: `0.46.0`;
+- Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.

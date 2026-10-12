@@ -1067,7 +1067,7 @@ Acceptance: authorized members can read only their workspace projects; only owne
 
 ## Build 046 — Visual Extraction Recipe Builder
 
-Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+Status: **PRODUCTION GREEN — promoted to main via PR #61 after dev and PR verification.**
 
 Goal: turn the existing extension-only version-1 extraction recipe workflow into a durable product-level authoring surface without creating a competing recipe format or weakening collection controls.
 
