@@ -8,7 +8,6 @@ import {
   type PublicationDeliveryMapping
 } from "./publication-delivery-bridge";
 import {
-  integrationConsumerConfiguration,
   type ConsumerStateVerificationResponse,
   type IntegrationPackageV1,
   type IntegrationScalar,
@@ -428,16 +427,6 @@ export async function loadAcceptedDeliveryReconciliationContext(
       throw new Error("delivery_reconciliation_accepted_delivery_required");
     }
 
-    const config = integrationConsumerConfiguration(row.target);
-    if (
-      !config.configured ||
-      !config.endpoint ||
-      !config.endpointOrigin ||
-      config.endpointOrigin !== row.consumer_id
-    ) {
-      throw new Error("delivery_reconciliation_consumer_identity_changed");
-    }
-
     const publication: PublicationBridgePublication = {
       workspaceId: row.workspace_id,
       workspaceName: row.workspace_name,
@@ -522,9 +511,7 @@ export async function loadAcceptedDeliveryReconciliationContext(
       delivery,
       publication,
       mapping,
-      package: integrationPackage,
-      endpoint: config.endpoint,
-      endpointOrigin: config.endpointOrigin
+      package: integrationPackage
     };
   });
 }
