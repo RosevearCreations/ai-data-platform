@@ -31,7 +31,7 @@ export default async function ApprovedDataPage() {
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/data-review">Data review workbench</Link>
           <Link className="secondaryButton" href="/data-library">Unified data library</Link>
-          <Link className="secondaryButton" href="/integration-delivery">Integration delivery</Link>
+          <Link className="secondaryButton" href="/approved-data/delivery">Publication delivery bridge</Link>\n          <Link className="secondaryButton" href="/integration-delivery">Integration delivery</Link>
         </div>
       </section>
 
