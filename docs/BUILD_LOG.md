@@ -2164,7 +2164,7 @@ Next queued: Build 049 — Approved Dataset Publishing & Export Handoff.
 
 Date: 2026-10-12
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN — release verification passed; production Neon migration applied and verified; Vercel production READY.
 
 Delivered:
 
@@ -2199,5 +2199,25 @@ Verification target:
 - typecheck/lint/tests: PASS required;
 - Next.js and Chrome extension production builds: PASS required;
 - feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.
+
+
+### Build 049 production closeout
+
+- feature implementation: PR #70 → dev;
+- release promotion: PR #71 → main;
+- release verification: GitHub Actions run 38246794390 — SUCCESS;
+- release main SHA: dd6b79af163ae6091cb8daead8d981ddfbc4bdfb;
+- production Neon project: ai-data-platform-production;
+- production migration: 0019_approved_dataset_publishing.sql — APPLIED;
+- publication tables and RLS policies: VERIFIED;
+- runtime publication UPDATE privilege: restricted to status / withdrawn_by / withdrawn_at / withdrawal_note;
+- publication event ledger: SELECT/INSERT only for runtime role;
+- Vercel production deployment: dpl_3JWkL88WBjQ1QfdEivPMzVJTtxJQ;
+- Vercel state: READY;
+- deployment source: main SHA dd6b79af163ae6091cb8daead8d981ddfbc4bdfb;
+- canonical production alias: ai-data-platform-beryl.vercel.app;
+- alias error: none.
 
 Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.
