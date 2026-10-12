@@ -19,6 +19,43 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "recipe-builder-overview": {
+    title: "Visual Extraction Recipe Builder",
+    summary: "Build 046 adds a signed-in web authoring surface for the same version-1 extraction recipe contract used by the Chrome extension. Recipes save into the existing synchronized saved-scraper/template store rather than a new persistence model.",
+    steps: [
+      "Choose the authorized workspace where the recipe belongs.",
+      "Load an existing synchronized recipe or start a new template/scraper.",
+      "Optionally seed the source URL from an active Build 045 collection-project source.",
+      "Define the record selector, then add, duplicate, reorder and configure field cards.",
+      "Resolve validation errors, test against bounded sample HTML, then save a synchronized revision.",
+      "Use the Chrome extension live-page picker when you need selectors derived directly from a real page."
+    ],
+    notes: [
+      "Web-authored recipes use the same version-1 field/source/transform contract as the extension.",
+      "Saving uses existing optimistic concurrency, so a stale edit conflicts instead of silently overwriting a newer recipe.",
+      "A scraper requires a source URL; a reusable template may remain source-neutral."
+    ],
+    manual: [
+      "No new account, environment variable, paid service or database migration is required.",
+      "Install/use the existing Chrome extension only when live-page visual element picking is required."
+    ]
+  },
+  "recipe-builder-preview": {
+    title: "Recipe validation, preview & portable JSON",
+    summary: "Build 046 preview operates only on HTML explicitly pasted into the browser. It never fetches a source, bypasses access controls or creates collection evidence.",
+    steps: [
+      "Fix duplicate field keys, missing selectors and missing attribute names before preview.",
+      "Paste a bounded representative HTML sample into the preview lab.",
+      "Run the preview and inspect matched records, extracted values and required-field warnings.",
+      "Use portable JSON to copy a recipe between authoring contexts or import an existing version-1 recipe.",
+      "Save only after the preview/validation evidence matches the intended source structure."
+    ],
+    notes: [
+      "Preview considers at most 100 matched records and renders at most 20 rows.",
+      "Remote collection remains behind Source Policy, scheduling and remote-execution controls.",
+      "Preview success is not Source Policy approval and is not permission to collect."
+    ]
+  },
   "collection-projects-overview": {
     title: "Source & Collection Project Manager",
     summary: "Build 045 groups real source-collection work into durable workspace projects. Projects and sources are PostgreSQL/RLS-scoped; only workspace owners/admins can mutate them.",
@@ -701,6 +738,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Platform & access",
     topics: ["command-center", "platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
+  },
+  {
+    title: "Collection & extraction",
+    topics: ["collection-projects-overview", "collection-projects-readiness", "recipe-builder-overview", "recipe-builder-preview"]
   },
   {
     title: "Unified data library",

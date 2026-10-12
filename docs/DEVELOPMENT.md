@@ -595,3 +595,14 @@ No new environment variable, external account or paid service is required.
 - `/collection-projects` is the management UI.
 - `verify-collection-projects.ts` tests pure parsing/readiness behavior.
 - `verify-collection-project-database.ts` tests real PostgreSQL persistence, fail-closed readiness and cross-account RLS isolation.
+
+
+## Build 046 visual recipe development
+
+- `apps/web/lib/visual-recipe-builder.ts` owns the shared web-side version-1 recipe parser, validation and transform semantics.
+- `apps/web/lib/recipe-builder-database.ts` reads/writes existing synchronized saved scraper/template records with revision history.
+- `/api/recipe-builder` is the authenticated synchronized save boundary.
+- `/recipe-builder` is the signed-in visual authoring and sample-preview surface.
+- `verify-visual-recipe-builder.ts` covers deterministic parsing, validation, URL safety and transforms.
+- `verify-recipe-builder-database.ts` covers synchronized create/revision/stale-conflict behavior and workspace RLS.
+- The existing extension `RecipeBuilder` remains the live-page picker and executes the same version-1 contract.
