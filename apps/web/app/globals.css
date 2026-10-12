@@ -2307,3 +2307,231 @@ h3 {
     width: 100%;
   }
 }
+
+
+/* Build 049 — Approved Dataset Publishing & Export Handoff */
+.publishShell {
+  width: min(1280px, calc(100% - 2rem));
+}
+
+.publishHero {
+  max-width: 980px;
+  padding-bottom: 3rem;
+}
+
+.publishSummary,
+.publishQueue {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.publishFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+  margin-top: 2rem;
+  border: 1px solid rgba(237, 246, 247, 0.09);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1rem;
+}
+
+.publishFilters label,
+.publishAction label,
+.withdrawPanel label {
+  display: grid;
+  gap: 0.4rem;
+  color: #c8d8da;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.publishFilters select,
+.publishAction textarea,
+.withdrawPanel input {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0.65rem 0.8rem;
+}
+
+.publishFilters select {
+  min-width: 220px;
+}
+
+.publishAction textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.publishMessage {
+  margin-top: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.18);
+  border-radius: 0.8rem;
+  background: rgba(125, 226, 216, 0.06);
+  color: #b8ece7;
+  padding: 0.8rem 1rem;
+}
+
+.publishCandidateGrid,
+.publicationList {
+  display: grid;
+  gap: 1rem;
+}
+
+.publishCandidateGrid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.publishCandidate,
+.publicationCard {
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+}
+
+.publishCandidate {
+  display: grid;
+  gap: 1rem;
+  align-content: space-between;
+}
+
+.publishCandidate h3,
+.publicationCard h3 {
+  margin: 0.5rem 0 0.3rem;
+}
+
+.publishCandidate p,
+.publishCandidate small,
+.publicationCard p,
+.publicationCard small {
+  color: #91a5a8;
+}
+
+.publishCandidate code {
+  display: block;
+  margin-top: 0.6rem;
+  color: #87a6a8;
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
+}
+
+.publishAction {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.publishState {
+  display: inline-flex;
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.3rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.publishState-published {
+  background: rgba(125, 226, 216, 0.1);
+  color: #a9eee8;
+}
+
+.publishState-withdrawn {
+  background: rgba(255, 138, 138, 0.1);
+  color: #ffc0c0;
+}
+
+.publicationCard > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.publicationEvidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+
+.publicationEvidence > div {
+  min-width: 0;
+  border-radius: 0.7rem;
+  background: rgba(7, 16, 24, 0.42);
+  padding: 0.7rem;
+}
+
+.publicationEvidence dt {
+  color: #7f9496;
+  font-size: 0.66rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.publicationEvidence dd {
+  margin: 0.25rem 0 0;
+  color: #c4d6d8;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.publicationFields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.publicationFields span {
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.07);
+  color: #b9e9e4;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.publicationNote,
+.publicationWithdrawal {
+  border-left: 3px solid rgba(125, 226, 216, 0.25);
+  padding-left: 0.7rem;
+}
+
+.publicationWithdrawal {
+  border-left-color: rgba(255, 138, 138, 0.35);
+  color: #ffc0c0 !important;
+}
+
+.withdrawPanel {
+  display: flex;
+  gap: 0.7rem;
+  align-items: end;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 1rem;
+}
+
+.withdrawPanel label {
+  flex: 1 1 320px;
+}
+
+@media (max-width: 760px) {
+  .publicationCard > header {
+    flex-direction: column;
+  }
+
+  .publicationEvidence {
+    grid-template-columns: 1fr;
+  }
+
+  .publishFilters label,
+  .publishFilters select {
+    width: 100%;
+  }
+}
