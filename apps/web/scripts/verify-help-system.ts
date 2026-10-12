@@ -57,7 +57,7 @@ async function main() {
   const controlledLive = HELP_TOPICS["controlled-live-delivery-overview"];
   assert(
     "manual" in controlledLive &&
-      controlledLive.steps.some((step) => step.includes("24 hours")) &&
+      controlledLive.summary.includes("24-hour activation") &&
       controlledLive.steps.some((step) => step.includes("accepted external dry-run")) &&
       controlledLive.notes.some((note) => note.includes("Idempotency-Key")) &&
       controlledLive.notes.some((note) => note.includes("return-original-ack")) &&
