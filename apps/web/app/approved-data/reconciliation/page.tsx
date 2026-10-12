@@ -1,0 +1,47 @@
+import { headers } from "next/headers";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { auth } from "@/lib/auth";
+import { listPostDeliveryReconciliationForUser } from "@/lib/post-delivery-reconciliation";
+
+import { HelpInfo } from "../../help/HelpInfo";
+import { PostDeliveryReconciliationWorkbench } from "./PostDeliveryReconciliationWorkbench";
+
+export const dynamic = "force-dynamic";
+
+export default async function PostDeliveryReconciliationPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
+    redirect("/sign-in?callbackUrl=%2Fapproved-data%2Freconciliation");
+  }
+
+  const model = await listPostDeliveryReconciliationForUser(session.user.id);
+
+  return (
+    <main className="shell reconciliationShell">
+      <section className="hero reconciliationHero">
+        <HelpInfo topic="post-delivery-reconciliation-overview" />
+        <p className="eyebrow">Build 052</p>
+        <h1>Post-Delivery Reconciliation & Consumer State Verification</h1>
+        <p className="lead">
+          Read the consumer&apos;s current state after an accepted Build 051 live
+          delivery, compare only the fields that exact package was responsible for,
+          and preserve matched, missing or mismatched evidence without silently
+          correcting either system.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/live-delivery">
+            Controlled live delivery
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/delivery">
+            Publication delivery bridge
+          </Link>
+        </div>
+      </section>
+
+      <PostDeliveryReconciliationWorkbench initialModel={model} />
+    </main>
+  );
+}
