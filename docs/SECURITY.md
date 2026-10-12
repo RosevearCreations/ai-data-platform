@@ -443,3 +443,14 @@ The publication copies only included cleaned rows from the exact approved review
 JSON and CSV are generated on demand from the publication snapshot. Each platform export appends a bounded audit event; raw export payloads are not copied into the event ledger. CSV encodes nested values as canonical JSON text. No export is uploaded to a third party by Build 049.
 
 Withdrawal is non-destructive and owner/admin-only. It blocks future platform exports while preserving publication/audit evidence. The interface explicitly does not claim that a previously downloaded file can be recalled. Downstream delivery remains outside Build 049.
+
+
+## Build 050 publication delivery bridge security
+
+A Build 050 mapping can reference only a Build 049 publication visible through normal workspace RLS. Creation, retirement, conformance and external delivery require workspace owner/admin authority. Mapping content is immutable after insert because the runtime role has UPDATE permission only on status/retirement columns.
+
+Mapping validation executes against every frozen publication row before persistence. The integration-key source must be scalar and unique, mapped consumer values must be scalar, target fields must be permitted by the existing Build 033 contract, and source evidence must contain a valid HTTP(S) URL and date timestamp. Withdrawn publications and retired mappings cannot generate packages.
+
+The Build 033 protocol remains authoritative for package validation and external transport. Browser input cannot specify an endpoint or credential. External delivery uses only configured HTTPS targets and server-only bearer tokens, follows no redirects, has a bounded timeout, sends `dryRun=true`, and rejects acknowledgements claiming a live mutation.
+
+Bridge receipts store fingerprints, identities, status codes and bounded details only. They do not store bearer credentials or full package bodies and are SELECT/INSERT only for the runtime role. Build 050 therefore proves publication-to-consumer handoff without enabling production mutation.
