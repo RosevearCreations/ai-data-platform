@@ -1172,7 +1172,7 @@ Acceptance: **PASSED.** Only authorized workspace members can inspect/export pub
 
 ## Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through dev/main verification on 2026-10-12; migration 0020 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: bridge an immutable Build 049 publication into the existing Build 033 consumer protocol with explicit field mapping, conformance-first validation and an append-only receipt chain that proves exactly which publication and mapping produced a consumer acknowledgement.
 
@@ -1195,6 +1195,6 @@ Delivered:
 - pure deterministic mapping/package tests plus PostgreSQL mapping/RLS/immutability/receipt verification;
 - no arbitrary outbound endpoint, no new credential, no automatic mapping inference and no live downstream mutation.
 
-Acceptance: only authorized workspace data is visible; only owners/admins can create/retire mappings or execute bridge actions; withdrawn publications and retired mappings fail closed; mapping content cannot be mutated by the runtime role; package identity binds publication and mapping fingerprints; conformance replay is rejected; external transport stays Build 033 authenticated HTTPS dry-run; receipt evidence is append-only; and cross-account mapping/package access remains denied.
+Acceptance: **PASSED.** Only authorized workspace data is visible; only owners/admins can create/retire mappings or execute bridge actions; withdrawn publications and retired mappings fail closed; mapping content cannot be mutated by the runtime role; package identity binds publication and mapping fingerprints; conformance replay is rejected; external transport stays Build 033 authenticated HTTPS dry-run; receipt evidence is append-only; and cross-account mapping/package access remains denied. Release evidence: implementation PR #74 → dev; syntax correction PR #75 → dev; joined-row typing correction PR #76 → dev; release PR #77 → main; dev Verify run 38269492737 (#569) GREEN; release PR Verify run 38269686730 (#570) GREEN; main Verify run 38269844795 (#571) GREEN; production Neon migration ledger includes 0020 with mapping/receipt RLS and retirement-only mapping UPDATE grants verified; and Vercel deployment dpl_63Ty5GiRHnVARZY7fp8mkRYyZ3k3 is READY for main SHA a7bebaf5551369d6386bcf949560f251de422e93.
 
 Next queued: **Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.**
