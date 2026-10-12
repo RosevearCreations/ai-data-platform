@@ -564,6 +564,149 @@ export function validateLiveConsumerHandshake(
   };
 }
 
+export interface StateVerificationConsumerHandshake extends ConsumerHandshake {
+  stateVerificationSupported: true;
+}
+
+export function validateStateVerificationConsumerHandshake(
+  value: unknown,
+  target: IntegrationTarget
+): StateVerificationConsumerHandshake {
+  const base = validateConsumerHandshake(value, target);
+  const input = object(value);
+  if (!input || input.stateVerificationSupported !== true) {
+    throw new Error("consumer_state_verification_capability_invalid");
+  }
+  return {
+    ...base,
+    stateVerificationSupported: true
+  };
+}
+
+export interface ConsumerStateVerificationRecord {
+  integrationKey: string;
+  status: "found" | "missing";
+  values: Record<string, IntegrationScalar>;
+}
+
+export interface ConsumerStateVerificationResponse {
+  protocol: typeof INTEGRATION_CONSUMER_PROTOCOL;
+  kind: "state-verification";
+  status: "accepted" | "rejected";
+  code: string;
+  target: IntegrationTarget;
+  packageId: string;
+  replayKey: string;
+  fingerprint: string;
+  verifiedAt: string;
+  records: ConsumerStateVerificationRecord[];
+}
+
+export function validateConsumerStateVerification(
+  value: unknown,
+  expected: IntegrationPackageV1
+): ConsumerStateVerificationResponse {
+  const input = object(value);
+  if (
+    !input ||
+    input.protocol !== INTEGRATION_CONSUMER_PROTOCOL ||
+    input.kind !== "state-verification" ||
+    (input.status !== "accepted" && input.status !== "rejected") ||
+    typeof input.code !== "string" ||
+    input.target !== expected.target ||
+    input.packageId !== expected.packageId ||
+    input.replayKey !== expected.replayKey ||
+    input.fingerprint !== expected.fingerprint ||
+    !isDate(input.verifiedAt) ||
+    !Array.isArray(input.records)
+  ) {
+    throw new Error("consumer_state_verification_invalid");
+  }
+
+  if (input.status === "rejected") {
+    if (input.records.length !== 0) {
+      throw new Error("consumer_state_verification_invalid");
+    }
+    return {
+      protocol: INTEGRATION_CONSUMER_PROTOCOL,
+      kind: "state-verification",
+      status: "rejected",
+      code: input.code,
+      target: expected.target,
+      packageId: expected.packageId,
+      replayKey: expected.replayKey,
+      fingerprint: expected.fingerprint,
+      verifiedAt: String(input.verifiedAt),
+      records: []
+    };
+  }
+
+  const expectedKeys = new Set(expected.operations.map((operation) => operation.integrationKey));
+  const seen = new Set<string>();
+  const records: ConsumerStateVerificationRecord[] = [];
+  for (const raw of input.records) {
+    const record = object(raw);
+    if (
+      !record ||
+      typeof record.integrationKey !== "string" ||
+      !expectedKeys.has(record.integrationKey) ||
+      seen.has(record.integrationKey) ||
+      (record.status !== "found" && record.status !== "missing")
+    ) {
+      throw new Error("consumer_state_verification_invalid");
+    }
+    seen.add(record.integrationKey);
+
+    if (record.status === "missing") {
+      const values = object(record.values);
+      if (values && Object.keys(values).length) {
+        throw new Error("consumer_state_verification_invalid");
+      }
+      records.push({
+        integrationKey: record.integrationKey,
+        status: "missing",
+        values: {}
+      });
+      continue;
+    }
+
+    const values = object(record.values);
+    if (!values || Object.keys(values).length > 100) {
+      throw new Error("consumer_state_verification_invalid");
+    }
+    const normalized = Object.fromEntries(
+      Object.entries(values).map(([key, scalar]) => {
+        if (!isScalar(scalar)) {
+          throw new Error("consumer_state_verification_invalid");
+        }
+        return [key, scalar];
+      })
+    );
+    records.push({
+      integrationKey: record.integrationKey,
+      status: "found",
+      values: normalized
+    });
+  }
+
+  if (seen.size !== expectedKeys.size) {
+    throw new Error("consumer_state_verification_incomplete");
+  }
+
+  return {
+    protocol: INTEGRATION_CONSUMER_PROTOCOL,
+    kind: "state-verification",
+    status: "accepted",
+    code: input.code,
+    target: expected.target,
+    packageId: expected.packageId,
+    replayKey: expected.replayKey,
+    fingerprint: expected.fingerprint,
+    verifiedAt: String(input.verifiedAt),
+    records
+  };
+}
+
 export interface ConsumerAcknowledgement {
   protocol: typeof INTEGRATION_CONSUMER_PROTOCOL;
   status: "accepted" | "rejected";
