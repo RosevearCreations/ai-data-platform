@@ -1147,7 +1147,7 @@ This Build 048 is the approved application-roadmap build and is separate from th
 
 ## Build 049 — Approved Dataset Publishing & Export Handoff
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through dev/main verification on 2026-10-12; migration 0019 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: convert a terminal Build 048 approval into one canonical, immutable and auditable publication snapshot that can be handed off as JSON or CSV without mutating the approved review or silently writing into a business system.
 
@@ -1168,6 +1168,6 @@ Delivered:
 - deterministic export/fingerprint tests plus PostgreSQL approval/RLS/audit/withdrawal verification;
 - no overwrite of Build 048 review evidence, no unapproved publishing, no automatic downstream business write and no new paid service.
 
-Acceptance: only authorized workspace members can inspect/export publication evidence; only owners/admins can publish or withdraw; a publication can originate only from a terminal approved Build 048 review; excluded rows never enter the snapshot; published cleaned values remain frozen; one approved review cannot create competing publications; cross-account access fails closed; export events are append-only; withdrawal prevents future platform exports; and previously downloaded files are explicitly treated as non-recallable copies.
+Acceptance: **PASSED.** Only authorized workspace members can inspect/export publication evidence; only owners/admins can publish or withdraw; a publication can originate only from a terminal approved Build 048 review; excluded rows never enter the snapshot; published cleaned values remain frozen; one approved review cannot create competing publications; cross-account access fails closed; export events are append-only; withdrawal prevents future platform exports; and previously downloaded files are explicitly treated as non-recallable copies. Release evidence: implementation PR #70 → dev; release PR #71 → main; PR Verify run 38246794390 GREEN; production Neon migration ledger includes 0019 with publication RLS and withdrawal-only UPDATE grants verified; and Vercel deployment dpl_3JWkL88WBjQ1QfdEivPMzVJTtxJQ is READY for main SHA dd6b79af163ae6091cb8daead8d981ddfbc4bdfb.
 
 Next queued: **Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.**
