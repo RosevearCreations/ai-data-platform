@@ -718,3 +718,19 @@ Durable project source bindings:
 - no runtime DELETE grant.
 
 Source Policy and scraper IDs are intentionally not database foreign keys because those originating records live in versioned intelligence/synchronization models. Build 045 resolves them dynamically under the same workspace RLS and marks missing, expired, mismatched or tombstoned evidence as blockers.
+
+
+## Build 046 visual recipe persistence
+
+Build 046 adds no database table. Web-authored recipes use existing `app.workspace_saved_scrapers` records with `kind = scraper|template`.
+
+The payload remains compatible with the extension's saved scraper shape and includes:
+
+- version/id/workspaceId/kind/name;
+- sourceUrl/sourceOrigin;
+- createdAt/updatedAt;
+- monotonic recipe revision and retained prior revisions;
+- version-1 extraction recipe;
+- existing compatibility/check-history slots.
+
+Writes use the Build 020 optimistic-concurrency sync boundary, so web and extension authorship share server versions and stale updates return conflicts instead of replacing newer state.
