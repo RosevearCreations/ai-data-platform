@@ -2299,7 +2299,7 @@ Next queued: Build 051 — Controlled Consumer Activation & Idempotent Live Deli
 
 Date: 2026-10-12
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN — corrected dev/main release verification passed; production Neon migration applied and verified; Vercel production READY.
 
 Delivered:
 
@@ -2337,5 +2337,34 @@ Verification target:
 - PostgreSQL activation/RLS/immutable identity/idempotent retry test: PASS required;
 - typecheck/lint/tests/builds: PASS required;
 - feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 052 — Post-Delivery Reconciliation & Consumer State Verification.
+
+
+### Build 051 production closeout
+
+- implementation: PR #80 → dev;
+- help capability wording correction: PR #82 → dev;
+- release promotion: PR #81 → main;
+- corrected dev SHA: 3c9a0b7c88d4c148bbecf03cf30fd863c8b06e1a;
+- corrected dev verification: GitHub Actions run 38274901441 (#577) — SUCCESS;
+- main-target PR verification: GitHub Actions run 38274909528 (#578) — SUCCESS;
+- initial production main SHA: 35402017499888cea186b15ae33c11679e590b72;
+- independent main verification: GitHub Actions run 38275448570 (#579) — SUCCESS;
+- production migration: 0021_controlled_live_delivery.sql — APPLIED;
+- live activation / live-delivery RLS: VERIFIED;
+- activation UPDATE privilege: restricted to status / revoked_by / revoked_at / revocation_note;
+- live-delivery UPDATE privilege: restricted to attempt/outcome fields only; package/replay/idempotency/fingerprint identity fields are immutable;
+- automatic Vercel deployment dpl_FrhQsQtLuZDpTu3z5j7msMXZYQEo was canceled after remaining stuck in INITIALIZING;
+- exact-SHA Vercel deployment: dpl_6E89KWnUpRkqZx9kRBP9APbHSrBq;
+- Vercel state: READY;
+- deployment source: main SHA 35402017499888cea186b15ae33c11679e590b72;
+- canonical production alias: ai-data-platform-beryl.vercel.app;
+- alias error: none.
+
+Resolved during promotion:
+
+- Verify #575 caught that Build 051 help did not name the exact `duplicateBehavior=return-original-ack` capability required by the safety verifier; corrected through PR #82.
+- No failed gate was bypassed. Build 051 proceeded only after corrected dev, main-target and independent main verification all passed.
 
 Next queued: Build 052 — Post-Delivery Reconciliation & Consumer State Verification.
