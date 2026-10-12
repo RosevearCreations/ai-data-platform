@@ -531,6 +531,39 @@ export function validateConsumerHandshake(
   return input as unknown as ConsumerHandshake;
 }
 
+export interface LiveConsumerHandshake extends ConsumerHandshake {
+  liveMutationEnabled: true;
+  idempotency: {
+    keySource: "replayKey";
+    duplicateBehavior: "return-original-ack";
+  };
+}
+
+export function validateLiveConsumerHandshake(
+  value: unknown,
+  target: IntegrationTarget
+): LiveConsumerHandshake {
+  const base = validateConsumerHandshake(value, target);
+  const input = object(value);
+  const idempotency = input ? object(input.idempotency) : null;
+  if (
+    base.liveMutationEnabled !== true ||
+    !idempotency ||
+    idempotency.keySource !== "replayKey" ||
+    idempotency.duplicateBehavior !== "return-original-ack"
+  ) {
+    throw new Error("consumer_live_capability_invalid");
+  }
+  return {
+    ...base,
+    liveMutationEnabled: true,
+    idempotency: {
+      keySource: "replayKey",
+      duplicateBehavior: "return-original-ack"
+    }
+  };
+}
+
 export interface ConsumerAcknowledgement {
   protocol: typeof INTEGRATION_CONSUMER_PROTOCOL;
   status: "accepted" | "rejected";
