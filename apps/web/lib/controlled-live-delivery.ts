@@ -108,6 +108,10 @@ export function liveActivationConfirmation(target: IntegrationTarget) {
   return "ACTIVATE " + target.toUpperCase() + " LIVE";
 }
 
+export function liveDeliveryConfirmation(target: IntegrationTarget) {
+  return "DELIVER " + target.toUpperCase() + " LIVE";
+}
+
 export function consumerLiveActivationFingerprint(input: {
   publicationFingerprint: string;
   mappingFingerprint: string;
