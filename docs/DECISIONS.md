@@ -669,3 +669,20 @@ Decision: owner/admin approval records durable review evidence and a portable de
 Reason: review quality and downstream mutation authority are separate control boundaries.
 
 Consequence: Build 049 can implement explicit approved-dataset publishing/export handoff without weakening Build 048 traceability.
+
+
+## D0102 — Build 049 publishes one immutable snapshot per approval
+
+Decision: one exact terminal Build 048 review may create only one canonical `workspace_dataset_publications` row, containing the included approved cleaned rows and publication fingerprint.
+
+Reason: export handoffs need a stable referent. Regenerating from later source or review state would make the same publication identity mean different data.
+
+Consequence: corrected data requires a new reviewed/approved source version rather than editing or republishing the existing snapshot.
+
+## D0103 — Build 049 exports files but does not deliver them to consumers
+
+Decision: Build 049 generates audited JSON/CSV files and provenance manifests only. It does not call Rosie Dazzlers, Devil n Dove or another receiver.
+
+Reason: publication authority and downstream mutation/delivery authority remain separate safety boundaries.
+
+Consequence: Build 050 may map an approved publication into an explicitly controlled consumer-delivery package and receipt flow while preserving the Build 049 fingerprint as source evidence.
