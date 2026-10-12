@@ -1881,3 +1881,147 @@ h3 {
     flex-direction: column;
   }
 }
+
+
+/* Build 047 — Collection Run Console */
+.runConsoleSummary,
+.runConsoleFilters,
+.runSourceCard {
+  margin-top: 2rem;
+}
+
+.runRuntimeState,
+.runConsoleMessage,
+.runGuidance,
+.runSourceUrl {
+  color: #9eb1b4;
+  line-height: 1.6;
+}
+
+.runConsoleFilters {
+  display: flex;
+  align-items: end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border: 1px solid rgba(237, 246, 247, 0.09);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.runConsoleFilters label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 220px;
+  color: #c8d7d9;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.runConsoleFilters select {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0 0.8rem;
+}
+
+.runSourceList {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.runSourceCard {
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.035);
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.runSourceCard > header,
+.runEvidenceRow,
+.runAttempt,
+.runBadges {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.runSourceCard > header {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.runBadges .badge {
+  margin-top: 0;
+}
+
+.runModeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.runModePanel,
+.runHistory {
+  border: 1px solid rgba(237, 246, 247, 0.08);
+  border-radius: 0.85rem;
+  background: rgba(7, 16, 24, 0.42);
+  padding: 1rem;
+}
+
+.runEvidenceRow span {
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.08);
+  color: #c9f7f1;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.runBlockers {
+  margin: 1rem 0 0;
+  color: #ffc7bd;
+  line-height: 1.55;
+}
+
+.runHistory {
+  margin-top: 1rem;
+}
+
+.runAttempt {
+  display: grid;
+  grid-template-columns: 110px 100px 80px 80px minmax(150px, 1fr);
+  margin-top: 0.45rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid rgba(237, 246, 247, 0.07);
+  color: #adbdc0;
+  font-size: 0.8rem;
+}
+
+.runAttempt strong {
+  color: #edf6f7;
+}
+
+.runAttempt .runError {
+  grid-column: 1 / -1;
+  color: #ffb4a8;
+}
+
+@media (max-width: 760px) {
+  .runModeGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .runAttempt {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .runAttempt .runError {
+    grid-column: 1 / -1;
+  }
+}

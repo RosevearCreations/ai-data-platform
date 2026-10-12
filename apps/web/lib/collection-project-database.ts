@@ -18,6 +18,13 @@ type PolicyEvidence = {
   collectionMethod: string;
   status: string;
   reviewExpiresAt: string;
+  revision: number;
+  fingerprint: string;
+  dataSensitivity: string;
+  robotsDecision: string;
+  publicOrAuthorized: boolean;
+  termsReviewed: boolean;
+  noAccessControlBypass: boolean;
 };
 
 type ScraperEvidence = {
@@ -46,6 +53,13 @@ export interface CollectionProjectSourceRecord {
     current: boolean;
     originMatches: boolean;
     methodMatches: boolean;
+    revision: number;
+    fingerprint: string;
+    dataSensitivity: string;
+    robotsDecision: string;
+    publicOrAuthorized: boolean;
+    termsReviewed: boolean;
+    noAccessControlBypass: boolean;
   };
   scraper: {
     requested: boolean;
@@ -95,7 +109,22 @@ function policiesFromPayload(value: unknown): PolicyEvidence[] {
     const reviewExpiresAt =
       typeof item.reviewExpiresAt === "string" ? item.reviewExpiresAt : "";
     return id && origin
-      ? [{ id, origin, collectionMethod, status, reviewExpiresAt }]
+      ? [{
+          id,
+          origin,
+          collectionMethod,
+          status,
+          reviewExpiresAt,
+          revision: Number.isInteger(item.revision) ? Number(item.revision) : 0,
+          fingerprint: typeof item.fingerprint === "string" ? item.fingerprint : "",
+          dataSensitivity:
+            typeof item.dataSensitivity === "string" ? item.dataSensitivity : "",
+          robotsDecision:
+            typeof item.robotsDecision === "string" ? item.robotsDecision : "",
+          publicOrAuthorized: item.publicOrAuthorized === true,
+          termsReviewed: item.termsReviewed === true,
+          noAccessControlBypass: item.noAccessControlBypass === true
+        }]
       : [];
   });
 }
@@ -240,7 +269,14 @@ export async function listCollectionProjectsForUser(userId: string) {
               approved: policyApproved,
               current: policyCurrent,
               originMatches: policyOriginMatches,
-              methodMatches: policyMethodMatches
+              methodMatches: policyMethodMatches,
+              revision: linkedPolicy?.revision ?? 0,
+              fingerprint: linkedPolicy?.fingerprint ?? "",
+              dataSensitivity: linkedPolicy?.dataSensitivity ?? "",
+              robotsDecision: linkedPolicy?.robotsDecision ?? "",
+              publicOrAuthorized: linkedPolicy?.publicOrAuthorized ?? false,
+              termsReviewed: linkedPolicy?.termsReviewed ?? false,
+              noAccessControlBypass: linkedPolicy?.noAccessControlBypass ?? false
             },
             scraper: {
               requested: scraperRequested,

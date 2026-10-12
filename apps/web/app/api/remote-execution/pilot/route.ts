@@ -13,6 +13,7 @@ import {
   createWorkspaceRemoteExecutionJob,
   enqueueWorkspaceRemoteExecutionJob,
   heartbeatWorkspaceRemoteExecutionJob,
+  isWorkspaceRemoteExecutionCancellationRequested,
   leaseWorkspaceRemoteExecutionJob
 } from "@/lib/remote-execution-database";
 import {
@@ -161,6 +162,16 @@ export async function POST(request: Request) {
           )
         ) {
           controller.abort();
+          return;
+        }
+        if (
+          await isWorkspaceRemoteExecutionCancellationRequested(
+            current.user.id,
+            workspaceId,
+            jobId
+          )
+        ) {
+          controller.abort();
         }
       })().catch(() => controller.abort());
     }, 1000);
@@ -196,6 +207,15 @@ export async function POST(request: Request) {
       (await isWorkspaceRemotePilotKilled(current.user.id, workspaceId))
     ) {
       throw new Error("remote_pilot_killed");
+    }
+    if (
+      await isWorkspaceRemoteExecutionCancellationRequested(
+        current.user.id,
+        workspaceId,
+        jobId
+      )
+    ) {
+      throw new Error("remote_job_cancel_requested");
     }
 
     const completion = await completeWorkspaceRemoteExecutionJob(
@@ -243,6 +263,7 @@ export async function POST(request: Request) {
         jobId,
         status:
           message === "remote_pilot_killed" ||
+          message === "remote_job_cancel_requested" ||
           (error instanceof Error && error.name === "AbortError")
             ? "cancelled"
             : "failed",

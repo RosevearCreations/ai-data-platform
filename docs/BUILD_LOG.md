@@ -2065,3 +2065,39 @@ Build 046 does not fetch remote pages from the web builder, approve collection, 
 - push-triggered main Verify: GREEN — workflow run `38188026469`;
 - extension version: `0.46.0`;
 - Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.
+
+## Build 047 — Collection Run Console & Live Evidence
+
+Date: 2026-10-11
+
+Status: IMPLEMENTED. Promotion evidence is recorded after dev/main verification.
+
+### Goal
+
+Provide one operator console for real collection runs and their durable evidence without weakening the local Chrome, Source Policy or controlled Browserless boundaries.
+
+### Delivered
+
+- authenticated collection-run console and evidence refresh API;
+- project/source readiness and exact Source Policy pin display;
+- synchronized local Chrome attempt history with row/warning/error evidence;
+- controlled Browserless launch through the existing one-page pilot route;
+- active queue/status evidence and automatic refresh while remote work is active;
+- durable cancellation requests observed by the executing Browserless route;
+- bounded failed-page retry only after failed/cancelled/timed-out one-page attempts;
+- per-source page outcome, row, provider-unit and error summaries;
+- downloadable JSON run evidence report generated in the browser;
+- Build 047 contextual help, Command Center route and responsive UI;
+- extension version 0.47.0.
+
+### Safety boundary
+
+Build 047 does not remotely command the Chrome extension, approve Source Policy, arm a workspace, create an allowlist, disable the global kill switch, expand Browserless beyond the existing one-page pilot, or invent cost/progress evidence.
+
+### Verification target
+
+The complete repository matrix must pass on the exact Build 047 commit, including the new collection-run gate/evidence test, existing remote-execution tests, help coverage, typecheck, lint, Next.js production build, extension build and database isolation checks.
+
+### Next
+
+Build 048 — Data Review, Cleanup & Approval Workbench. The rejected Build 048 Performance and Resource-Budget Review remains rejected.

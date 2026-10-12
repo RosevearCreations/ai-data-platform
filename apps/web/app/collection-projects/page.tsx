@@ -36,6 +36,7 @@ export default async function CollectionProjectsPage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/data-library">Unified Data Library</Link>
+          <Link className="secondaryButton" href="/collection-runs">Run console</Link>
           <Link className="secondaryButton" href="/intelligence">Source Policy & intelligence</Link>
         </div>
       </section>

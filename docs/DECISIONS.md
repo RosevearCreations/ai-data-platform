@@ -634,3 +634,21 @@ Reason: recipe authoring must not become an implicit crawler or bypass Source Po
 Decision: web-authored recipes save through the existing workspace sync mutation boundary and preserve stale-edit conflicts plus revision history.
 
 Reason: web and extension editing must share one durable source of truth and must never silently overwrite each other.
+
+## D0099 — Build 047 orchestrates existing execution authorities
+
+Decision: the Collection Run Console may observe synchronized local Chrome evidence and invoke the existing controlled Browserless pilot, but it does not introduce another execution engine or another approval state.
+
+Reason: Build 017 already owns operator-present Chrome extraction, while Builds 026/027 own remote lifecycle, exact Source Policy pins, allowlists, kill switches and bounded Browserless execution. Reusing those authorities prevents a web-console convenience layer from weakening governance.
+
+## D0100 — Active console cancellation is durable and worker-observed
+
+Decision: Stop / cancel writes the existing `cancel_requested_at` lifecycle signal. The active Browserless route polls that durable signal alongside global/workspace kill switches and refuses to commit success after cancellation is observed.
+
+Reason: changing only a browser button state would not stop provider work and would not be auditable.
+
+## D0101 — Failed-page retry never treats success as retryable
+
+Decision: Build 047 exposes Retry failed page only when the latest terminal Browserless one-page job failed, timed out or was cancelled and all current gates remain valid.
+
+Reason: the controlled Browserless boundary is currently one page. A successful page is durable terminal evidence and must not be silently repeated under the semantics of failure recovery.
