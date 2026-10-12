@@ -39,7 +39,11 @@ create table if not exists app.workspace_live_delivery_reconciliations (
   foreign key (workspace_id,publication_id)
     references app.workspace_dataset_publications(workspace_id,publication_id)
     on delete restrict,
-  check (matched_count + mismatched_count + missing_count = expected_record_count)
+  check (
+    (status in ('matched','drift') and matched_count + mismatched_count + missing_count = expected_record_count)
+    or
+    (status in ('rejected','transport-error') and matched_count=0 and mismatched_count=0 and missing_count=0)
+  )
 );
 
 create index if not exists workspace_live_delivery_reconciliations_recent_idx
