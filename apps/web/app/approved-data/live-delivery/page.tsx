@@ -32,6 +32,9 @@ export default async function ControlledLiveDeliveryPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation">
+            Post-delivery reconciliation
+          </Link>
           <Link className="secondaryButton" href="/approved-data/delivery">
             Build 050 delivery bridge
           </Link>

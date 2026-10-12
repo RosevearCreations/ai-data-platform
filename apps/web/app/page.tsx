@@ -22,6 +22,7 @@ const workflowLinks = [
   ["/approved-data", "Approved data publishing"],
   ["/approved-data/delivery", "Publication delivery bridge"],
   ["/approved-data/live-delivery", "Controlled live delivery"],
+  ["/approved-data/reconciliation", "Post-delivery reconciliation"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],

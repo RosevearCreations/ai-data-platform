@@ -720,3 +720,28 @@ Controlled sequence:
 9. revoke activation when work is complete.
 
 Build 051 adds no new environment variable or paid service. The downstream consumer implementation must support the new live/idempotency handshake fields before activation can succeed.
+
+
+## Build 052 post-delivery reconciliation
+
+- `db/migrations/0022_post_delivery_reconciliation.sql` creates the append-only reconciliation ledger.
+- `validateStateVerificationConsumerHandshake()` requires the downstream consumer to opt into the read-only state-verification contract.
+- `validateConsumerStateVerification()` requires exact package identity and complete unique-key coverage.
+- `apps/web/lib/post-delivery-reconciliation.ts` reconstructs historical package evidence, compares governed values and persists compact reconciliation evidence.
+- `/api/approved-data/reconciliation` performs the configured-origin check, capability handshake and read-only verify-state request.
+- `/approved-data/reconciliation` is the operator workbench.
+- `verify-post-delivery-reconciliation.ts` checks capability, response completeness, matched state and drift classification.
+- `verify-post-delivery-reconciliation-database.ts` checks historical reconstruction after publication/mapping closure, cross-account RLS and append-only grants.
+
+Verification sequence:
+
+1. identify an accepted Build 051 delivery;
+2. reconstruct and verify its historical package identity;
+3. confirm the configured consumer origin still matches;
+4. require state-verification capability;
+5. request current values for only the delivered keys/fields;
+6. compare server-side;
+7. store immutable matched/drift/error evidence;
+8. do not mutate either system.
+
+The downstream consumer must implement the read-only state-verification contract. Build 052 adds no new environment variable or paid service.

@@ -2733,3 +2733,105 @@ h3 {
   color: #d8e8e9;
   font-size: 0.78rem;
 }
+
+
+/* Build 052 — Post-Delivery Reconciliation & Consumer State Verification */
+.reconciliationShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.reconciliationHero {
+  max-width: 1040px;
+  padding-bottom: 3rem;
+}
+
+.reconciliationSummary,
+.reconciliationSection {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.reconciliationNotice {
+  margin-top: 2rem;
+  border: 1px solid rgba(126, 211, 255, 0.2);
+  border-radius: 1rem;
+  background: rgba(126, 211, 255, 0.055);
+  padding: 1rem;
+}
+
+.reconciliationNotice strong {
+  display: block;
+  color: #b9e6ff;
+  margin-bottom: 0.35rem;
+}
+
+.reconciliationNotice p {
+  margin: 0;
+  color: #aebfc1;
+}
+
+.reconciliationCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.reconciliationCounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reconciliationCounts span {
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.035);
+  color: #cbdadd;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+}
+
+.reconciliationResults {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.reconciliationResults > div {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) auto minmax(180px, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.025);
+  padding: 0.7rem;
+}
+
+.reconciliationResults strong,
+.reconciliationResults span,
+.reconciliationResults small,
+.reconciliationResults code {
+  overflow-wrap: anywhere;
+}
+
+.reconciliationResults strong {
+  color: #e5f1f2;
+  font-size: 0.78rem;
+}
+
+.reconciliationResults span,
+.reconciliationResults small {
+  color: #9fb2b5;
+  font-size: 0.74rem;
+}
+
+.reconciliationResults code,
+.reconciliationFingerprint {
+  color: #8bc8cf;
+  font-size: 0.67rem;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .reconciliationResults > div {
+    grid-template-columns: 1fr;
+  }
+}

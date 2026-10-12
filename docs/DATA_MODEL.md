@@ -916,3 +916,28 @@ Key fields:
 - created_by / created_at / last_attempt_at / updated_at.
 
 A unique `(workspace_id, consumer_id, package_id)` constraint creates one canonical sender-side delivery identity. Runtime UPDATE is limited to attempt/outcome fields; identity and idempotency columns cannot change.
+
+
+## Build 052 post-delivery reconciliation
+
+### workspace_live_delivery_reconciliations
+
+Append-only evidence for a read-only consumer-state verification of one accepted Build 051 live delivery.
+
+Key fields:
+
+- workspace_id / reconciliation_id;
+- delivery_id / activation_id / mapping_id / publication_id;
+- target / consumer_id;
+- package_id / replay_key / package_fingerprint;
+- status: matched | drift | rejected | transport-error;
+- expected_record_count;
+- matched_count / mismatched_count / missing_count;
+- validation_code / http_status / consumer_verified_at;
+- verification_fingerprint;
+- bounded record_results;
+- actor_user_id / created_at.
+
+For matched/drift outcomes the three result counts must sum to the expected record count. Rejected/transport-error outcomes retain zero comparison counts because no trustworthy state comparison completed. `record_results` stores integration key, matched/mismatched/missing status, expected/observed fingerprints and differing governed field names rather than full consumer values.
+
+Runtime access is SELECT/INSERT only under workspace RLS. There is no runtime UPDATE or DELETE grant.

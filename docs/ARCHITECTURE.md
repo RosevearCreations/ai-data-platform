@@ -368,3 +368,14 @@ The consumer handshake extends the existing Build 033 protocol with live-only ca
 Before a live network call, the platform inserts or locks one canonical delivery row keyed by consumer origin and package ID. The package replay key is also the outbound Idempotency-Key. Accepted/rejected results are terminal. A transport-error may be retried only while the same activation is valid, under a bounded retry limit, and always with the same replay key.
 
 The outbound endpoint/token still come exclusively from the existing Build 033 server configuration. Build 051 sends `dryRun=false` only after a fresh capability handshake, a current activation and explicit operator confirmation.
+
+
+## Build 052 post-delivery reconciliation architecture
+
+Build 052 sits after Build 051 accepted live delivery and is strictly read-only. It reconstructs the original package from immutable publication and mapping evidence using the original delivery creation time, then requires reconstructed package ID, replay key and fingerprint to equal the accepted live-delivery row. This historical reconstruction intentionally works even when the publication is later withdrawn or the mapping retired.
+
+The currently configured consumer origin must still equal the original accepted-delivery consumer origin. A fresh handshake must advertise `stateVerificationSupported=true`. The verification request sends package identity plus the integration keys and governed field names to read, but not the expected values. The consumer returns current scalar values or explicit missing status for every requested key.
+
+Comparison is server-side. Only fields that the accepted package was responsible for are compared, so unrelated consumer-managed fields do not create false drift. Full observed records are not persisted; Build 052 stores compact expected/observed fingerprints and differing governed field names.
+
+Each verification is append-only and repeatable. Matched, drift, rejected and transport-error are separate outcomes. No outcome invokes a mutation path.

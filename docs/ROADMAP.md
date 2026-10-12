@@ -1227,4 +1227,34 @@ Delivered:
 
 Acceptance: **PASSED.** Only owners/admins may activate, revoke or send live; an active Build 050 mapping and published Build 049 snapshot are required; the configured consumer origin must match the recent accepted dry-run; live/idempotency capability is revalidated; activation expires after 24 hours; publication/mapping/package/activation identity columns cannot be mutated by the runtime role; a live delivery is reserved before network mutation; accepted/rejected outcomes are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and revocation/expiry prevents new live sends. Release evidence: implementation PR #80 → dev; help-verifier correction PR #82 → dev; release PR #81 → main; corrected dev Verify run 38274901441 (#577) GREEN; main-target PR Verify run 38274909528 (#578) GREEN; independent main Verify run 38275448570 (#579) GREEN; production Neon migration ledger includes 0021 with activation/live-delivery RLS and identity-protecting column grants verified; and Vercel deployment dpl_6E89KWnUpRkqZx9kRBP9APbHSrBq is READY for main SHA 35402017499888cea186b15ae33c11679e590b72.
 
-Next queued: **Build 052 — Post-Delivery Reconciliation & Consumer State Verification.**
+## Build 052 — Post-Delivery Reconciliation & Consumer State Verification
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: prove what the downstream consumer currently holds after an accepted Build 051 live delivery by reconstructing the exact historical package, performing a read-only consumer state query, comparing only package-governed fields and preserving immutable drift evidence without automatic correction.
+
+Delivered:
+
+- migration `0022_post_delivery_reconciliation.sql`;
+- RLS-scoped append-only `workspace_live_delivery_reconciliations`;
+- reconciliation eligibility restricted to accepted Build 051 live deliveries;
+- exact historical package reconstruction from immutable Build 049 publication + Build 050 mapping evidence;
+- package ID, replay key and package fingerprint must match the accepted live-delivery row before consumer verification;
+- historical reconciliation remains possible after publication withdrawal or mapping retirement;
+- current configured consumer origin must match the origin that accepted the live delivery;
+- fresh read-only capability handshake requires `stateVerificationSupported=true`;
+- verification request sends package identity plus expected integration keys/field names, not expected field values;
+- consumer response must cover every expected integration key exactly once and may report found or missing;
+- server-side comparison covers only the fields governed by the delivered package;
+- consumer-managed fields outside the package are ignored;
+- matched, mismatched and missing counts;
+- per-record expected/observed fingerprints plus differing governed field names;
+- rejected and transport-error verification outcomes retained distinctly from actual drift;
+- repeated verification creates additional evidence so later drift can be observed over time;
+- authenticated `/approved-data/reconciliation` workbench, API, navigation, contextual help and responsive UI;
+- deterministic capability/response/comparison tests plus PostgreSQL historical-reconstruction/RLS/append-only verification;
+- no automatic repair, rollback, delivery retry or corrective mutation.
+
+Acceptance: only authorized workspace evidence is visible; only owners/admins may run verification; only accepted live deliveries are eligible; historical package reconstruction reproduces the exact accepted package identity even after publication/mapping closure; changed consumer origin fails closed; state-verification capability and complete unique-key response are mandatory; matched/drift outcomes are derived from server-side comparison of package-governed fields; full observed records are not copied into the ledger; reconciliation rows cannot be updated or deleted by the runtime role; and no discrepancy causes an automatic downstream write.
+
+Next queued: **Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.**
