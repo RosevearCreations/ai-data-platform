@@ -230,7 +230,7 @@ export function PublicationDeliveryWorkbench({
         workspaceId: mapping.workspaceId,
         mappingId: mapping.mappingId,
         retirementNote: "Retired from the Build 050 delivery workbench."
-      })) as PublicationDeliveryBridgeModel;
+      })) as unknown as PublicationDeliveryBridgeModel;
       setModel(next);
       setMessage("Mapping retired. Existing delivery and receipt evidence remains available.");
     } catch (error) {
