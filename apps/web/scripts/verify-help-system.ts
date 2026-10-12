@@ -22,6 +22,8 @@ async function main() {
     "../app/approved-data/delivery/PublicationDeliveryWorkbench.tsx",
     "../app/approved-data/live-delivery/page.tsx",
     "../app/approved-data/live-delivery/ControlledLiveDeliveryWorkbench.tsx",
+    "../app/approved-data/reconciliation/page.tsx",
+    "../app/approved-data/reconciliation/PostDeliveryReconciliationWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -52,6 +54,18 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const reconciliation = HELP_TOPICS["post-delivery-reconciliation-overview"];
+  assert(
+    "manual" in reconciliation &&
+      reconciliation.steps.some((step) => step.includes("stateVerificationSupported=true")) &&
+      reconciliation.steps.some((step) => step.includes("does not automatically repair")) &&
+      reconciliation.notes.some((note) => note.includes("withdrawn")) &&
+      reconciliation.notes.some((note) => note.includes("append-only")) &&
+      reconciliation.manual.some((step) => step.includes("0022_post_delivery_reconciliation.sql")) &&
+      reconciliation.manual.some((step) => step.includes("introduces no new secret")),
+    "Build 052 help must preserve read-only verification, historical auditability, append-only evidence and exact migration guidance."
   );
 
   const controlledLive = HELP_TOPICS["controlled-live-delivery-overview"];
@@ -195,7 +209,7 @@ async function main() {
   );
 
   console.log(
-    "Build 051 contextual help coverage, controlled live activation/idempotency guidance and existing production gates passed."
+    "Build 052 contextual help coverage, read-only reconciliation/drift guidance and existing production gates passed."
   );
 
 }
