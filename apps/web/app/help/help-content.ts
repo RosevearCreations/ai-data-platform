@@ -34,7 +34,7 @@ export const HELP_TOPICS = {
       "A configured consumer URL/token alone is never enough to enable live mutation.",
       "A local conformance result does not satisfy the activation gate; the accepted dry-run must come from the configured external consumer within the preceding 24 hours.",
       "The live-delivery Idempotency-Key is the existing package replayKey and cannot be edited by the runtime role.",
-      "The consumer must promise that duplicate replay keys return the original acknowledgement rather than applying the mutation again.",
+      "The consumer must advertise duplicateBehavior=return-original-ack so duplicate replay keys return the original acknowledgement instead of applying the mutation again.",
       "Activation revocation or expiry blocks new live sends but does not rewrite earlier delivery evidence."
     ],
     manual: [
