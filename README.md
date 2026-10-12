@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 047 — Collection Run Console & Live Evidence.
+Build 048 — Data Review, Cleanup & Approval Workbench.
 
 
 ## Persistence and authentication
@@ -68,3 +68,8 @@ The signed-in web application now includes `/collection-projects`, a durable wor
 ## Build 046 application surface
 
 The signed-in application now includes `/recipe-builder`, a durable visual authoring surface for the same version-1 extraction recipes used by the Chrome extension. It supports synchronized revisions, project-source presets, visual field editing, deterministic validation, portable JSON and bounded supplied-HTML preview without performing remote collection.
+
+
+## Build 048 application surface
+
+The signed-in application now includes `/data-review`, a durable workspace-scoped cleanup and approval workbench over existing reviewed-dataset versions. It snapshots the original payload, applies deterministic whitespace cleanup only to a working copy, identifies duplicate-cleaned rows, supports row exclusion/manual JSON correction, records append-only review events, and requires workspace owner/admin authority for terminal approval or rejection. Build 048 does not overwrite the source dataset or automatically write into downstream business systems.
