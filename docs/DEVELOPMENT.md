@@ -628,3 +628,25 @@ Verification:
 - help coverage verifies cancellation, retry, local Chrome ownership and exact Browserless environment gates.
 
 No Build 047 migration or new environment variable is required.
+
+
+## Build 048 data-review development
+
+- `db/migrations/0018_data_review_workbench.sql` creates durable review batches, append-only review events and workspace RLS.
+- `apps/web/lib/data-review-workbench.ts` owns canonical source fingerprints, deterministic cleanup, duplicate detection, bounded edit validation and database operations.
+- `/api/data-review` is the authenticated create/save/approve/reject boundary.
+- `/data-review` is the signed-in cleanup and approval surface.
+- `verify-data-review.ts` proves deterministic cleanup, duplicate handling, source fingerprints and anti-fabrication edit rules.
+- `verify-data-review-database.ts` proves durable persistence, cross-account RLS isolation, audit evidence and terminal approval behavior.
+
+Review sequence:
+
+1. select an existing durable reviewed-dataset version;
+2. start a review, which snapshots the exact source payload and fingerprint;
+3. compare original rows with deterministic cleaned working rows;
+4. exclude duplicates/unsuitable rows and make only factual JSON corrections;
+5. save cleanup drafts while status remains in-review;
+6. have a workspace owner/admin approve or reject;
+7. download the terminal decision snapshot when needed for the next publishing/export workflow.
+
+Build 048 requires no new external account, environment variable, secret or paid service. Deployment applies the migration but never approves production data automatically.
