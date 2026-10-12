@@ -1170,4 +1170,31 @@ Delivered:
 
 Acceptance: **PASSED.** Only authorized workspace members can inspect/export publication evidence; only owners/admins can publish or withdraw; a publication can originate only from a terminal approved Build 048 review; excluded rows never enter the snapshot; published cleaned values remain frozen; one approved review cannot create competing publications; cross-account access fails closed; export events are append-only; withdrawal prevents future platform exports; and previously downloaded files are explicitly treated as non-recallable copies. Release evidence: implementation PR #70 → dev; release PR #71 → main; PR Verify run 38246794390 GREEN; production Neon migration ledger includes 0019 with publication RLS and withdrawal-only UPDATE grants verified; and Vercel deployment dpl_3JWkL88WBjQ1QfdEivPMzVJTtxJQ is READY for main SHA dd6b79af163ae6091cb8daead8d981ddfbc4bdfb.
 
-Next queued: **Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.**
+## Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: bridge an immutable Build 049 publication into the existing Build 033 consumer protocol with explicit field mapping, conformance-first validation and an append-only receipt chain that proves exactly which publication and mapping produced a consumer acknowledgement.
+
+Delivered:
+
+- migration `0020_publication_delivery_bridge.sql`;
+- RLS-scoped immutable `workspace_publication_delivery_mappings`;
+- append-only `workspace_publication_delivery_receipts`;
+- owner/admin-only mapping creation and retirement;
+- explicit Rosie Dazzlers / Devil n Dove target selection;
+- explicit create/update intent rather than inferred consumer state;
+- explicit integration-key, source-evidence URL/timestamp and target-field mapping;
+- mapping validation against every frozen publication row;
+- duplicate-key, non-scalar-value, invalid URL/timestamp and unsupported-contract-field rejection;
+- generated Build 033 v1 package identity bound to publication ID/fingerprint and mapping ID/fingerprint;
+- local conformance consumer with replay rejection;
+- reuse of existing configured HTTPS consumer endpoint and server-only bearer credential for external handshake/dry-run;
+- append-only receipts for accepted, rejected and transport-error outcomes;
+- authenticated `/approved-data/delivery` workbench, API, Command Center/publishing links, contextual help and responsive UI;
+- pure deterministic mapping/package tests plus PostgreSQL mapping/RLS/immutability/receipt verification;
+- no arbitrary outbound endpoint, no new credential, no automatic mapping inference and no live downstream mutation.
+
+Acceptance: only authorized workspace data is visible; only owners/admins can create/retire mappings or execute bridge actions; withdrawn publications and retired mappings fail closed; mapping content cannot be mutated by the runtime role; package identity binds publication and mapping fingerprints; conformance replay is rejected; external transport stays Build 033 authenticated HTTPS dry-run; receipt evidence is append-only; and cross-account mapping/package access remains denied.
+
+Next queued: **Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.**
