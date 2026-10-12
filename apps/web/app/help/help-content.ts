@@ -19,6 +19,43 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "collection-runs-overview": {
+    title: "Collection Run Console & Live Evidence",
+    summary: "Build 047 combines current Build 045 project/source readiness, synchronized local Chrome scheduled-job attempts, and existing Browserless remote-execution evidence into one operational console without creating another execution authority.",
+    steps: [
+      "Filter to the authorized workspace and active collection project.",
+      "Use Local Chrome when an operator is present on the approved source page; run it from the existing extension Scheduled jobs panel and let intelligence sync return the attempt evidence.",
+      "Use Browserless only when the current Source Policy pin, saved scraper, allowlist, workspace arm, provider flag, token and global kill-switch state all satisfy the existing remote-execution gate.",
+      "Watch active Browserless work until terminal evidence appears, or request Stop / cancel when the run should end.",
+      "Retry only a failed, timed-out or cancelled one-page Browserless attempt; a successful attempt is never offered as a failed-page retry.",
+      "Download the JSON run report when you need the current project, source, policy, Chrome and Browserless evidence in one portable record."
+    ],
+    notes: [
+      "Build 047 reuses the existing remote-execution job/result tables and synchronized scheduled-jobs intelligence; it does not create a duplicate evidence table.",
+      "The Browserless adapter remains the existing one-page controlled boundary, so Browserless row counts remain zero until a future explicitly approved extraction boundary exists.",
+      "Local Chrome extraction remains operator-present and extension-owned; this web page observes synchronized evidence rather than remotely controlling Chrome."
+    ],
+    manual: [
+      "No new account, secret, database migration or paid service is required for Build 047.",
+      "Browserless execution still depends on BROWSERLESS_API_TOKEN, REMOTE_EXECUTION_PROVIDER_EXECUTION_ENABLED=true and the deliberate REMOTE_EXECUTION_KILL_SWITCH=false run window.",
+      "If Browserless is fail-closed, use /remote-execution to review the existing workspace/allowlist controls rather than bypassing them."
+    ]
+  },
+  "collection-runs-evidence": {
+    title: "Run evidence, cancellation & retry",
+    summary: "Live evidence is derived from durable remote jobs/results and synchronized Chrome attempts. Status, rows, errors, provider units and timestamps are reported only when those evidence paths recorded them.",
+    steps: [
+      "Prepared, queued, leased and running Browserless jobs count as active work.",
+      "Stop / cancel writes the existing durable remote cancellation request; the active Browserless worker checks that request and aborts fail-closed.",
+      "Succeeded, failed, cancelled and timed-out jobs remain visible as terminal evidence.",
+      "Provider units come from recorded Browserless result evidence; missing cost evidence is never estimated as a fabricated value.",
+      "Chrome rows come from synchronized local run attempts and stay distinct from Browserless one-page provider evidence."
+    ],
+    notes: [
+      "The console polls only while remote work is active and can also be refreshed manually.",
+      "Downloaded reports are generated in the browser from the evidence already visible to the signed-in account and do not create a new server record."
+    ]
+  },
   "recipe-builder-overview": {
     title: "Visual Extraction Recipe Builder",
     summary: "Build 046 adds a signed-in web authoring surface for the same version-1 extraction recipe contract used by the Chrome extension. Recipes save into the existing synchronized saved-scraper/template store rather than a new persistence model.",
