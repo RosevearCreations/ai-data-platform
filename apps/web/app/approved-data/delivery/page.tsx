@@ -31,6 +31,7 @@ export default async function PublicationDeliveryPage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/approved-data">Approved data publishing</Link>
+          <Link className="secondaryButton" href="/approved-data/live-delivery">Controlled live delivery</Link>
           <Link className="secondaryButton" href="/integration-delivery">Build 033 delivery evidence</Link>
         </div>
       </section>
