@@ -1145,4 +1145,29 @@ Acceptance: **PASSED.** Only authorized workspace datasets/review batches are vi
 
 This Build 048 is the approved application-roadmap build and is separate from the rejected Performance and Resource-Budget Review experiment retained above.
 
-Next queued: **Build 049 — Approved Dataset Publishing & Export Handoff.**
+## Build 049 — Approved Dataset Publishing & Export Handoff
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: convert a terminal Build 048 approval into one canonical, immutable and auditable publication snapshot that can be handed off as JSON or CSV without mutating the approved review or silently writing into a business system.
+
+Delivered:
+
+- migration `0019_approved_dataset_publishing.sql`;
+- RLS-scoped `workspace_dataset_publications` and append-only `workspace_dataset_publication_events`;
+- approved-review-only publication creation with owner/admin authority;
+- one canonical publication per exact approved review;
+- immutable included cleaned-row snapshot, stable field order and publication fingerprint;
+- exact source dataset ID/version/fingerprint plus Build 048 approval provenance;
+- self-describing JSON export with manifest and rows;
+- stable CSV export with nested values encoded as canonical JSON text;
+- export audit events for JSON and CSV generation;
+- copyable handoff manifest for provenance-only transfer;
+- non-destructive publication withdrawal that blocks future platform exports;
+- authenticated `/approved-data` workbench, API/export endpoints, Command Center link, responsive styling and contextual help;
+- deterministic export/fingerprint tests plus PostgreSQL approval/RLS/audit/withdrawal verification;
+- no overwrite of Build 048 review evidence, no unapproved publishing, no automatic downstream business write and no new paid service.
+
+Acceptance: only authorized workspace members can inspect/export publication evidence; only owners/admins can publish or withdraw; a publication can originate only from a terminal approved Build 048 review; excluded rows never enter the snapshot; published cleaned values remain frozen; one approved review cannot create competing publications; cross-account access fails closed; export events are append-only; withdrawal prevents future platform exports; and previously downloaded files are explicitly treated as non-recallable copies.
+
+Next queued: **Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.**

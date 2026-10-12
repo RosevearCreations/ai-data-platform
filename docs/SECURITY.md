@@ -432,3 +432,14 @@ Contextual help explicitly identifies actions that require manual external setup
 - missing historical values remain unavailable rather than being inferred;
 - provider, Source Policy, integration receiver, connector and role/capability gates are not changed by trend validation;
 - no synthetic sync, barcode, provider, connector or delivery activity is generated to create a trend.
+
+
+## Build 049 approved publication boundary
+
+A Build 049 publication can be created only from a persisted Build 048 batch whose status is `approved` and whose approval timestamp exists. Workspace owner/admin authority is checked both in application logic and publication-table RLS for creation/withdrawal. Authorized members may inspect and export active publications.
+
+The publication copies only included cleaned rows from the exact approved review into an immutable snapshot. It pins the review ID, source dataset ID/server version/fingerprint, approval actor/time and a separate publication fingerprint. Neither the original reviewed dataset nor the Build 048 review is modified.
+
+JSON and CSV are generated on demand from the publication snapshot. Each platform export appends a bounded audit event; raw export payloads are not copied into the event ledger. CSV encodes nested values as canonical JSON text. No export is uploaded to a third party by Build 049.
+
+Withdrawal is non-destructive and owner/admin-only. It blocks future platform exports while preserving publication/audit evidence. The interface explicitly does not claim that a previously downloaded file can be recalled. Downstream delivery remains outside Build 049.

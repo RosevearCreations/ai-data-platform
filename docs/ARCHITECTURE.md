@@ -339,3 +339,12 @@ Build 038 reuses the existing Production Learning evidence graph and cycle-snaps
 The separate observation context is important because production may never have opened the authenticated Build 036 review. In that case Build 038 can still preserve Build 036 continuity rows for compatibility, but those same-runtime rows are explicitly ineligible as historical trend baselines. The UI therefore reports "historical baseline unavailable" instead of comparing current values to a fabricated past value.
 
 The resulting six trend dimensions are synchronization, repair compatibility, Browserless provider activity, live consumer acknowledgement, retention-budget health and adoption/least-privilege outcomes. Roadmap closure is derived from the persisted Build 038 cycle count; unresolved Build 032/033/037 gates remain independent.
+
+
+## Build 049 approved publication architecture
+
+Build 049 adds a narrow publication layer after Build 048 approval. `workspace_dataset_publications` stores the canonical export snapshot and provenance; `workspace_dataset_publication_events` records publication, export and withdrawal actions. Both remain inside the existing workspace RLS/session boundary.
+
+The publication model deliberately freezes approved cleaned rows instead of referencing mutable source rows at export time. JSON and CSV renderers are deterministic and server-side export requests record an audit event before returning the file. Publication withdrawal changes only handoff availability and never deletes evidence.
+
+No receiver invocation occurs in this layer. The existing Build 033 integration-delivery boundary remains separate until a later build explicitly maps publication fields to a supported consumer contract.
