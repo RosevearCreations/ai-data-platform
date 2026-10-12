@@ -615,3 +615,22 @@ Reason: policy expiry, revision or scraper retirement must immediately block the
 Decision: projects are archived and project sources are retired rather than deleted through the application runtime.
 
 Reason: collection planning and source history are operational evidence and should remain reviewable after work stops.
+
+
+## D0097 — Build 046 reuses the version-1 extraction recipe contract
+
+Decision: the web Visual Extraction Recipe Builder authors the same record-selector/field/source/transform recipe shape already used by the Chrome extension and synchronized saved scraper records.
+
+Reason: a second web-only recipe schema would fragment compatibility with live-page picking, scheduling, repair history and later collection execution.
+
+## D0098 — Web preview is supplied-HTML only
+
+Decision: Build 046 preview parses only HTML pasted into the user's browser and never fetches the configured source URL.
+
+Reason: recipe authoring must not become an implicit crawler or bypass Source Policy and controlled execution boundaries.
+
+## D0099 — Recipe save uses synchronized optimistic concurrency
+
+Decision: web-authored recipes save through the existing workspace sync mutation boundary and preserve stale-edit conflicts plus revision history.
+
+Reason: web and extension editing must share one durable source of truth and must never silently overwrite each other.

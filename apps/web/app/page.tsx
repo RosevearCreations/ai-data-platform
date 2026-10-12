@@ -19,6 +19,7 @@ const workflowLinks = [
   ["/capture", "Barcode intake"],
   ["/data-library", "Unified data library"],
   ["/collection-projects", "Collection projects"],
+  ["/recipe-builder", "Visual recipe builder"],
   ["/intelligence", "Intelligence library"],
   ["/remote-execution", "Remote execution"],
   ["/connectors", "Connectors"],

@@ -2031,3 +2031,27 @@ Build 045 organizes collection intent only. It does not approve sources or run c
 - push-triggered main Verify: GREEN — workflow run `38184126314`;
 - extension version: `0.45.0`;
 - Build 048 Performance and Resource-Budget Review remains REJECTED and excluded from production.
+
+
+## Build 046 — Visual Extraction Recipe Builder
+
+Date: 2026-10-11
+
+Status: IMPLEMENTATION COMPLETE — PROMOTION PENDING.
+
+Delivered:
+
+- signed-in `/recipe-builder` workspace;
+- synchronized version-1 recipe persistence using existing saved-scraper/template records;
+- optimistic concurrency and revision history;
+- Build 045 project-source presets;
+- visual field-card add/duplicate/reorder/remove controls;
+- validation, source URL safety and template/scraper modes;
+- bounded sample-HTML preview;
+- portable recipe JSON import/export;
+- existing Chrome extension retained as the live-page visual selector;
+- Command Center navigation, contextual help and responsive styling;
+- pure validation tests plus synchronized database/RLS verification;
+- extension version 0.46.0.
+
+Build 046 does not fetch remote pages from the web builder, approve collection, create schedules or execute providers.

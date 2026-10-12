@@ -15,6 +15,7 @@ async function main() {
     "../app/intelligence/page.tsx",
     "../app/data-library/page.tsx",
     "../app/collection-projects/page.tsx",
+    "../app/recipe-builder/page.tsx",
     "../app/remote-execution/page.tsx",
     "../app/remote-execution/RemotePilotAdminPanel.tsx",
     "../app/sign-in/page.tsx",

@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 045 — Source & Collection Project Manager.
+Build 046 — Visual Extraction Recipe Builder.
 
 
 ## Persistence and authentication
@@ -63,3 +63,8 @@ The signed-in web application now includes `/data-library`, a read-only unified 
 ## Build 045 application surface
 
 The signed-in web application now includes `/collection-projects`, a durable workspace manager for named collection projects and their source bindings. It links project sources to current Source Policy and saved scraper/template evidence and reports readiness blockers without approving or executing collection.
+
+
+## Build 046 application surface
+
+The signed-in application now includes `/recipe-builder`, a durable visual authoring surface for the same version-1 extraction recipes used by the Chrome extension. It supports synchronized revisions, project-source presets, visual field editing, deterministic validation, portable JSON and bounded supplied-HTML preview without performing remote collection.

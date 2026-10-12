@@ -1063,3 +1063,32 @@ Delivered:
 - no automatic Source Policy approval, scraper creation, scheduled job creation, remote execution or collection launch.
 
 Acceptance: authorized members can read only their workspace projects; only owners/admins can mutate; URLs/origins/methods are normalized and bounded; current governance/scraper mismatches fail closed as blockers; cross-account project data remains invisible; lifecycle changes are non-destructive; and project readiness never substitutes for execution authorization.
+
+
+## Build 046 — Visual Extraction Recipe Builder
+
+Status: IMPLEMENTED on dev; production promotion follows the normal verified dev → main release path.
+
+Goal: turn the existing extension-only version-1 extraction recipe workflow into a durable product-level authoring surface without creating a competing recipe format or weakening collection controls.
+
+Delivered:
+
+- authenticated `/recipe-builder` workspace authoring surface;
+- exact reuse of the existing version-1 recipe contract (record selector, fields, extraction source, attribute, required flag and transforms);
+- synchronized read/write through the existing `workspace_saved_scrapers` source of truth;
+- optimistic concurrency with stale-edit conflict behavior and retained recipe revision history;
+- Build 045 collection-project source presets;
+- field cards with add, duplicate, reorder, remove and bounded 20-field editing;
+- deterministic recipe validation for record selector, duplicate keys, field selectors and attribute requirements;
+- source-safe http/https URL normalization;
+- template vs scraper save modes, with source URL required for scraper mode;
+- portable JSON import/export;
+- browser-local sample-HTML preview capped at 100 matched records / 20 displayed rows;
+- deterministic text/link/image/attribute extraction plus existing transform semantics;
+- extension live-page recipe picker relabeled as the Build 046 live-page companion;
+- Command Center navigation, contextual help and responsive UI;
+- pure recipe validation tests and PostgreSQL synchronized-revision/conflict/RLS verification;
+- extension version 0.46.0;
+- no remote source fetch, Source Policy approval, schedule creation, remote execution or downstream business write.
+
+Acceptance: users can author or revise the same recipe format used by the extension, preview it safely against supplied HTML, save synchronized revisions without lost updates, and retain workspace isolation; live-page selection stays in the extension and all collection authorization remains outside the builder.
