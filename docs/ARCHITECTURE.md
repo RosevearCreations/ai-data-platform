@@ -357,3 +357,14 @@ Build 050 composes the Build 049 publication ledger with the existing Build 033 
 Before persistence, the mapping is executed against every frozen publication row. Duplicate keys, unsupported consumer fields, non-scalar values or invalid evidence fail closed. The resulting package keeps the Build 033 v1 schema/validator and encodes the publication ID/fingerprint plus mapping ID/fingerprint into its batch identity so the package fingerprint is transitively bound to both immutable inputs.
 
 Local conformance uses the existing replay-aware receipt registry. External delivery reuses the existing target-specific HTTPS endpoint/bearer configuration, no-redirect transport, timeout and dry-run acknowledgement validator. Build 050 adds an append-only bridge receipt so a consumer result can be traced back to the exact publication and mapping without copying package bodies into audit data.
+
+
+## Build 051 controlled live-delivery architecture
+
+Build 051 adds a new authorization layer above Build 050 rather than changing the Build 049 publication or Build 050 mapping semantics. Live authority is represented by a temporary activation that pins one consumer origin, one exact mapping/publication/package identity and the accepted external dry-run receipt that justified activation.
+
+The consumer handshake extends the existing Build 033 protocol with live-only capability evidence: `liveMutationEnabled=true` plus replay-key idempotency and return-original-ack duplicate behavior. Build 050 dry-run transport remains unchanged and compatible with consumers that do not advertise these live fields.
+
+Before a live network call, the platform inserts or locks one canonical delivery row keyed by consumer origin and package ID. The package replay key is also the outbound Idempotency-Key. Accepted/rejected results are terminal. A transport-error may be retried only while the same activation is valid, under a bounded retry limit, and always with the same replay key.
+
+The outbound endpoint/token still come exclusively from the existing Build 033 server configuration. Build 051 sends `dryRun=false` only after a fresh capability handshake, a current activation and explicit operator confirmation.
