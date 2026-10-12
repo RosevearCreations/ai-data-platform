@@ -54,7 +54,8 @@ create table if not exists app.workspace_dataset_publication_events (
 create index if not exists workspace_dataset_publication_events_publication_idx
   on app.workspace_dataset_publication_events(workspace_id, publication_id, created_at desc);
 
-grant select, insert, update on app.workspace_dataset_publications to ai_data_runtime;
+grant select, insert on app.workspace_dataset_publications to ai_data_runtime;
+grant update (status, withdrawn_by, withdrawn_at, withdrawal_note) on app.workspace_dataset_publications to ai_data_runtime;
 grant select, insert on app.workspace_dataset_publication_events to ai_data_runtime;
 
 alter table app.workspace_dataset_publications enable row level security;
