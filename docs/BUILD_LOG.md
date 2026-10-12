@@ -2158,3 +2158,46 @@ Verification target:
 - alias error: none.
 
 Next queued: Build 049 — Approved Dataset Publishing & Export Handoff.
+
+
+## Build 049 — Approved Dataset Publishing & Export Handoff
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0019_approved_dataset_publishing.sql`;
+- authenticated `/approved-data` workbench plus create/withdraw/export APIs;
+- approved-only owner/admin publication creation;
+- one immutable publication snapshot per Build 048 approved review;
+- included cleaned rows only, stable field order and `pub1-` publication fingerprint;
+- exact source/review approval provenance and publication notes;
+- self-describing JSON handoff package;
+- CSV export with stable columns and nested-value JSON encoding;
+- append-only published/exported-json/exported-csv/withdrawn audit events;
+- publication withdrawal without deletion or source/review mutation;
+- Command Center navigation, responsive UI and contextual help;
+- pure export/fingerprint verification and PostgreSQL approval/RLS/audit/withdrawal verification.
+
+Guardrails:
+
+- an in-review or rejected Build 048 batch cannot publish;
+- only owner/admin roles can publish or withdraw;
+- publication creation is idempotent per approved review;
+- exported rows are copied from the exact approved cleaned snapshot and never refreshed from mutable source data;
+- withdrawal blocks new platform exports but cannot recall already downloaded files;
+- Build 049 does not call a downstream receiver or mutate Rosie Dazzlers, Devil n Dove or another consumer system;
+- no new external account, secret, environment variable or paid dependency is introduced.
+
+Verification target:
+
+- migrations: PASS required;
+- deterministic publishing/export tests: PASS required;
+- PostgreSQL approval/RLS/audit/withdrawal test: PASS required;
+- typecheck/lint/tests: PASS required;
+- Next.js and Chrome extension production builds: PASS required;
+- feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.

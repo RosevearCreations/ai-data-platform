@@ -16,6 +16,8 @@ async function main() {
     "../app/data-library/page.tsx",
     "../app/data-review/page.tsx",
     "../app/data-review/DataReviewWorkbench.tsx",
+    "../app/approved-data/page.tsx",
+    "../app/approved-data/ApprovedDatasetPublishing.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -46,6 +48,16 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const approvedData = HELP_TOPICS["approved-data-overview"];
+  assert(
+    "manual" in approvedData &&
+      approvedData.steps.some((step) => step.includes("owner/admin")) &&
+      approvedData.notes.some((note) => note.includes("cannot recall")) &&
+      approvedData.notes.some((note) => note.includes("does not automatically write")) &&
+      approvedData.manual.some((step) => step.includes("0019_approved_dataset_publishing.sql")),
+    "Build 049 help must preserve approved-only immutable publishing, withdrawal limits and no automatic downstream writes."
   );
 
   const dataReview = HELP_TOPICS["data-review-overview"];
@@ -155,7 +167,7 @@ async function main() {
   );
 
   console.log(
-    "Build 048 contextual help coverage, durable review guidance and existing production gates passed."
+    "Build 049 contextual help coverage, approved publishing/export guidance and existing production gates passed."
   );
 
 }

@@ -790,3 +790,40 @@ Key fields:
 - created_at.
 
 The runtime role receives SELECT/INSERT only and no UPDATE/DELETE grant on review events. Both review tables use workspace-membership RLS. A review approval records a handoff decision and does not by itself mutate a downstream business system.
+
+
+## Build 049 approved dataset publishing
+
+### workspace_dataset_publications
+
+One canonical immutable export snapshot per terminal approved Build 048 review.
+
+Key fields:
+
+- workspace_id / publication_id;
+- review_id;
+- source_dataset_id / source_server_version / source_fingerprint;
+- title / source_url;
+- status: published | withdrawn;
+- publication_fingerprint;
+- row_count;
+- field_order;
+- published_rows;
+- approval_note;
+- publication_note;
+- review_approved_by / review_approved_at;
+- published_by / published_at;
+- withdrawn_by / withdrawn_at / withdrawal_note.
+
+A unique `(workspace_id, review_id)` constraint prevents competing publication snapshots for one approval. `published_rows` contains only rows included in the approved review and freezes the cleaned values at publication time. Runtime SELECT is available to authorized workspace members; INSERT/UPDATE RLS is restricted to workspace owner/admin roles. Application updates are limited to non-destructive withdrawal state.
+
+### workspace_dataset_publication_events
+
+Append-only publication/export evidence with actions:
+
+- published;
+- exported-json;
+- exported-csv;
+- withdrawn.
+
+The runtime role receives SELECT/INSERT and no UPDATE/DELETE grant. Export events identify the publication fingerprint and row count without copying the full exported payload into the event ledger.

@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 048 — Data Review, Cleanup & Approval Workbench.
+Build 049 — Approved Dataset Publishing & Export Handoff.
 
 
 ## Persistence and authentication
@@ -73,3 +73,8 @@ The signed-in application now includes `/recipe-builder`, a durable visual autho
 ## Build 048 application surface
 
 The signed-in application now includes `/data-review`, a durable workspace-scoped cleanup and approval workbench over existing reviewed-dataset versions. It snapshots the original payload, applies deterministic whitespace cleanup only to a working copy, identifies duplicate-cleaned rows, supports row exclusion/manual JSON correction, records append-only review events, and requires workspace owner/admin authority for terminal approval or rejection. Build 048 does not overwrite the source dataset or automatically write into downstream business systems.
+
+
+## Build 049 application surface
+
+The signed-in application now includes `/approved-data`, an approved-only publishing and export handoff workbench. A workspace owner/admin can turn one terminal Build 048 approval into one immutable publication snapshot, preserve source/review provenance and a publication fingerprint, export that exact snapshot as JSON or CSV, copy a compact handoff manifest, and withdraw future exports without rewriting the approved review or automatically mutating a downstream business system.

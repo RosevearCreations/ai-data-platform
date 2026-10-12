@@ -650,3 +650,26 @@ Review sequence:
 7. download the terminal decision snapshot when needed for the next publishing/export workflow.
 
 Build 048 requires no new external account, environment variable, secret or paid service. Deployment applies the migration but never approves production data automatically.
+
+
+## Build 049 approved dataset publishing
+
+- `db/migrations/0019_approved_dataset_publishing.sql` creates the publication ledger, export events and workspace RLS.
+- `apps/web/lib/approved-dataset-publishing.ts` owns approved-row snapshotting, canonical publication fingerprints, CSV rendering, manifest creation and database operations.
+- `/api/approved-data` lists, publishes and withdraws canonical publication records.
+- `/api/approved-data/export` produces audited JSON/CSV downloads from the immutable publication snapshot.
+- `/approved-data` is the signed-in publication/export workbench.
+- `verify-approved-dataset-publishing.ts` validates included-row snapshotting, canonical fingerprints, CSV escaping and filenames.
+- `verify-approved-dataset-publishing-database.ts` validates approved-only publishing, idempotency, RLS isolation, audited exports and withdrawal.
+
+Publishing sequence:
+
+1. complete Build 048 review and owner/admin approval;
+2. open Approved Data Publishing;
+3. verify the exact source version/fingerprint and approved row count;
+4. publish the approval once to freeze its export snapshot;
+5. export JSON for a self-describing handoff or CSV for tabular import;
+6. record/compare the publication fingerprint in a receiving workflow;
+7. withdraw the publication if future exports must stop; never edit the published rows in place.
+
+Build 049 requires no new external account, environment variable, secret or paid service.

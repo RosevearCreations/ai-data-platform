@@ -19,6 +19,58 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "approved-data-overview": {
+    title: "Approved Dataset Publishing & Export Handoff",
+    summary: "Build 049 turns one terminal approved Build 048 review into one immutable publication snapshot. The publication keeps the exact approved cleaned rows, source provenance, review approval evidence and a publication fingerprint before any export is produced.",
+    steps: [
+      "Start only from a Build 048 review whose status is approved.",
+      "Have a workspace owner/admin publish the approved review once; the publication snapshot is canonical for that review.",
+      "Confirm the source dataset ID/version/fingerprint and publication fingerprint before handing the data to another process.",
+      "Use JSON when the receiving workflow needs the full manifest plus rows; use CSV for a flat tabular handoff.",
+      "Copy the manifest when a recipient needs provenance without the full dataset payload.",
+      "Withdraw a publication if future exports should stop; create a new approved review for corrected data rather than editing the published snapshot."
+    ],
+    notes: [
+      "Publishing never changes the Build 048 review or the original reviewed dataset.",
+      "A publication contains only rows included in the approved review and freezes the approved cleaned values at publication time.",
+      "Each JSON/CSV export is recorded as a workspace-scoped audit event.",
+      "Withdrawal blocks new platform exports but cannot recall copies that were already downloaded.",
+      "Build 049 creates files and handoff evidence only; it does not automatically write into Rosie Dazzlers, Devil n Dove or another downstream system."
+    ],
+    manual: [
+      "No new external account, environment variable, secret or paid service is required.",
+      "The normal database migration applies 0019_approved_dataset_publishing.sql before the application surface is used."
+    ]
+  },
+  "approved-data-publish": {
+    title: "Publishing an approved snapshot",
+    summary: "Publishing is an owner/admin action that converts the exact terminal approval into an immutable export snapshot. One approved review has one canonical publication record.",
+    steps: [
+      "Check the approval time, approved row count and source fingerprint.",
+      "Add an optional publication note describing the handoff purpose or intended recipient context.",
+      "Publish only when the approval is the exact version that should leave the review workflow.",
+      "If the source data later changes, complete a new review and approval instead of republishing edited rows."
+    ],
+    notes: [
+      "Members may inspect publications but owner/admin authority is required to create or withdraw one.",
+      "Duplicate publication requests for the same approved review resolve to the existing canonical publication rather than creating competing snapshots."
+    ]
+  },
+  "approved-data-export": {
+    title: "JSON, CSV & handoff evidence",
+    summary: "Exports are generated on demand from the immutable publication rows. The JSON package includes the complete handoff manifest; CSV preserves the publication field order and encodes nested values as JSON text.",
+    steps: [
+      "Use Download JSON for a self-describing package with provenance, fingerprints, publication metadata and rows.",
+      "Use Download CSV when a spreadsheet/import workflow needs the approved rows in stable column order.",
+      "Use Copy manifest when only the publication identity and provenance are needed.",
+      "Verify the publication fingerprint when a receiving process records or acknowledges the handoff."
+    ],
+    notes: [
+      "Exports are generated from the publication snapshot, never from a later mutable review or source dataset.",
+      "Withdrawn publications remain visible as audit evidence but cannot create new JSON or CSV exports.",
+      "Exporting does not upload the dataset to a third-party service."
+    ]
+  },
   "data-review-overview": {
     title: "Data Review, Cleanup & Approval Workbench",
     summary: "Build 048 creates a durable workspace-scoped review snapshot from an existing reviewed-dataset version. Original evidence is preserved, cleanup happens on a working copy, and owner/admin approval or rejection is recorded as a separate auditable decision.",
