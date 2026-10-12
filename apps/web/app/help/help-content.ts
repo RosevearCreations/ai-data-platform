@@ -19,6 +19,60 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "post-delivery-reconciliation-overview": {
+    title: "Post-Delivery Reconciliation & Consumer State Verification",
+    summary: "Build 052 performs a read-only comparison after an accepted Build 051 live delivery. It reconstructs the exact historical package, asks the configured consumer for current state, compares only package-governed fields and stores immutable matched, mismatched or missing evidence.",
+    steps: [
+      "Start from an accepted Build 051 live-delivery record; rejected, transport-error and reserved deliveries are not eligible.",
+      "Confirm the currently configured consumer origin is the same origin that accepted the original live package.",
+      "Run Verify current consumer state; Build 052 first requires a fresh handshake with stateVerificationSupported=true.",
+      "The request sends package identity, integration keys and governed field names, but not the expected values that the consumer is supposed to prove.",
+      "Review matched, mismatched and missing counts plus the field-level discrepancy names and expected/observed fingerprints.",
+      "Treat drift as evidence for follow-up. Build 052 does not automatically repair, roll back, retry or send a new delivery."
+    ],
+    notes: [
+      "Historical reconciliation remains available after the publication is withdrawn or the delivery mapping is retired because those controls stop future writes, not audit reads.",
+      "The consumer response must cover every expected integration key exactly once; duplicate, omitted or unexpected keys fail closed.",
+      "Only fields governed by the original package are compared. Consumer-managed fields outside that package are ignored.",
+      "Observed values are compared in memory; durable reconciliation evidence stores fingerprints and differing field names rather than copying the full consumer record.",
+      "Reconciliation evidence is append-only through the runtime role."
+    ],
+    manual: [
+      "Apply 0022_post_delivery_reconciliation.sql before using Build 052.",
+      "Build 052 reuses the existing configured consumer URL/token variables and introduces no new secret or paid service.",
+      "The downstream consumer must advertise stateVerificationSupported=true and implement the read-only verify-state request/response contract before verification can succeed."
+    ]
+  },
+  "post-delivery-reconciliation-verify": {
+    title: "Read-only consumer state verification",
+    summary: "Verification proves the consumer's current governed fields against the exact accepted package without granting any mutation authority.",
+    steps: [
+      "The platform reconstructs the historical package from immutable publication and mapping evidence and verifies package ID, replay key and fingerprint against the accepted live-delivery row.",
+      "A fresh consumer handshake must advertise stateVerificationSupported=true.",
+      "The platform requests only the expected integration keys and governed field names.",
+      "A found record is compared field-by-field against package values; a missing record is recorded explicitly.",
+      "A rejected or transport-error verification is preserved as evidence but is not treated as drift."
+    ],
+    notes: [
+      "Consumer identity changes fail closed rather than querying a different endpoint.",
+      "The verification call is read-only and does not use the Build 051 live activation."
+    ]
+  },
+  "post-delivery-reconciliation-evidence": {
+    title: "Reconciliation evidence & drift",
+    summary: "Each verification creates one immutable reconciliation record with package identity, outcome counts, per-record fingerprints and differing governed field names.",
+    steps: [
+      "Matched means every governed field for every expected integration key equals the delivered package.",
+      "Mismatched means the consumer record exists but one or more governed fields differ.",
+      "Missing means the expected integration key is not currently present at the consumer.",
+      "Rejected means the consumer answered the verification request but refused to provide state.",
+      "Transport-error means capability, transport or response validation prevented a trustworthy comparison."
+    ],
+    notes: [
+      "Build 052 records evidence only. Corrective mutation requires a later explicit remediation workflow.",
+      "Repeated verification creates additional evidence so later drift can be distinguished from the state observed immediately after delivery."
+    ]
+  },
   "controlled-live-delivery-overview": {
     title: "Controlled Consumer Activation & Idempotent Live Delivery",
     summary: "Build 051 is the first AI Data Platform path that may send dryRun=false to a business consumer. It does so only after an explicit 24-hour activation tied to one Build 050 mapping, one configured consumer origin, one recent accepted external dry-run and a fresh handshake that proves live mutation plus replay-key idempotency.",
@@ -1014,7 +1068,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Approved data & integration delivery",
-    topics: ["controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    topics: ["post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",

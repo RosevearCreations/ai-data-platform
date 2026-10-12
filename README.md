@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.
+Build 052 — Post-Delivery Reconciliation & Consumer State Verification.
 
 
 ## Persistence and authentication
@@ -88,3 +88,8 @@ The signed-in application now includes `/approved-data/delivery`, which maps an 
 ## Build 051 application surface
 
 The signed-in application now includes `/approved-data/live-delivery`, the first controlled live-mutation path in the AI Data Platform. A workspace owner/admin can activate one exact Build 050 mapping for 24 hours only after a recent accepted external dry-run and a fresh consumer handshake proving both live mutation support and replay-key idempotency. Each live send requires a separate typed confirmation, reserves one canonical consumer/package delivery identity before the network call, sends the replay key as the Idempotency-Key, allows only bounded retry of transport-error outcomes with that same key, and never resends an accepted or rejected terminal delivery.
+
+
+## Build 052 application surface
+
+The signed-in application now includes `/approved-data/reconciliation`, a read-only post-delivery verification workbench for accepted Build 051 live deliveries. The platform reconstructs the exact historical package from immutable publication/mapping evidence, requires the currently configured consumer origin to match the origin that accepted the live delivery, obtains a fresh `stateVerificationSupported=true` capability handshake, requests current values for only the delivered integration keys and governed fields, compares them server-side, and stores append-only matched/mismatched/missing fingerprints and field names. Build 052 never automatically repairs, rolls back, retries or sends a new mutation when drift is found.
