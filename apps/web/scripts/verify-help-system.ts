@@ -20,6 +20,8 @@ async function main() {
     "../app/approved-data/ApprovedDatasetPublishing.tsx",
     "../app/approved-data/delivery/page.tsx",
     "../app/approved-data/delivery/PublicationDeliveryWorkbench.tsx",
+    "../app/approved-data/live-delivery/page.tsx",
+    "../app/approved-data/live-delivery/ControlledLiveDeliveryWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -50,6 +52,18 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const controlledLive = HELP_TOPICS["controlled-live-delivery-overview"];
+  assert(
+    "manual" in controlledLive &&
+      controlledLive.steps.some((step) => step.includes("24 hours")) &&
+      controlledLive.steps.some((step) => step.includes("accepted external dry-run")) &&
+      controlledLive.notes.some((note) => note.includes("Idempotency-Key")) &&
+      controlledLive.notes.some((note) => note.includes("return-original-ack")) &&
+      controlledLive.manual.some((step) => step.includes("0021_controlled_live_delivery.sql")) &&
+      controlledLive.manual.some((step) => step.includes("introduces no new secret")),
+    "Build 051 help must preserve temporary activation, recent external dry-run, replay-key idempotency and exact migration guidance."
   );
 
   const publicationDelivery = HELP_TOPICS["publication-delivery-overview"];
@@ -181,7 +195,7 @@ async function main() {
   );
 
   console.log(
-    "Build 050 contextual help coverage, publication delivery mapping/receipt guidance and existing production gates passed."
+    "Build 051 contextual help coverage, controlled live activation/idempotency guidance and existing production gates passed."
   );
 
 }

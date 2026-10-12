@@ -711,3 +711,36 @@ Decision: external package delivery still forces `dryRun=true`, even though Buil
 Reason: proving receipt continuity is different from authorizing business-system mutation.
 
 Consequence: Build 051 is the earliest build that may consider controlled live activation, with consumer-side idempotency and explicit enablement required first.
+
+
+## D0107 — Live authority is temporary and evidence-pinned
+
+Decision: Build 051 live mutation requires a 24-hour activation tied to one immutable publication/mapping/package identity, one configured consumer origin and one recent accepted external dry-run receipt.
+
+Reason: a configured credential or earlier conformance result is not sufficient evidence that the current consumer/package is safe to mutate.
+
+Consequence: activation expiry, revocation, mapping retirement, publication withdrawal or consumer-origin change blocks new live sends.
+
+## D0108 — Consumer-side idempotency is mandatory before live mutation
+
+Decision: live activation and every live attempt require a consumer handshake with `liveMutationEnabled=true`, `idempotency.keySource=replayKey` and `duplicateBehavior=return-original-ack`.
+
+Reason: after a transport timeout the sender may not know whether mutation occurred. Safe retry requires the receiver to recognize the same replay key and return the original result instead of mutating again.
+
+Consequence: consumers that support Build 050 dry-run but do not advertise this idempotency capability remain live-disabled.
+
+## D0109 — Sender reserves canonical delivery identity before the network call
+
+Decision: Build 051 creates one durable live-delivery identity per workspace + consumer origin + package ID before sending `dryRun=false`.
+
+Reason: sender-side concurrency/replay protection must exist before the consequential action, not only after an acknowledgement.
+
+Consequence: accepted/rejected rows are terminal; transport-error rows may retry only with the same activation/package/replay key and within the bounded retry count.
+
+## D0110 — Live delivery still requires per-send operator confirmation
+
+Decision: activation does not authorize unattended mutation. Every Build 051 live send requires a separate typed target-specific confirmation.
+
+Reason: temporary live capability and intent to execute a particular consequential delivery are different decisions.
+
+Consequence: scheduling or unattended live delivery requires a later explicit build and may not reuse Build 051 activation as implicit authorization.

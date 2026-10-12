@@ -454,3 +454,16 @@ Mapping validation executes against every frozen publication row before persiste
 The Build 033 protocol remains authoritative for package validation and external transport. Browser input cannot specify an endpoint or credential. External delivery uses only configured HTTPS targets and server-only bearer tokens, follows no redirects, has a bounded timeout, sends `dryRun=true`, and rejects acknowledgements claiming a live mutation.
 
 Bridge receipts store fingerprints, identities, status codes and bounded details only. They do not store bearer credentials or full package bodies and are SELECT/INSERT only for the runtime role. Build 050 therefore proves publication-to-consumer handoff without enabling production mutation.
+
+
+## Build 051 controlled live mutation boundary
+
+Build 051 is the first application path authorized to request a downstream mutation with `dryRun=false`. It therefore adds controls beyond the existing Build 033/050 transport gates.
+
+Live activation requires all of the following simultaneously: workspace owner/admin authority, active Build 050 mapping, published Build 049 snapshot, configured HTTPS consumer endpoint plus server-only bearer token, an accepted external Build 050 dry-run receipt from the exact current consumer/package within 24 hours, and a fresh handshake that explicitly advertises `liveMutationEnabled=true` plus replay-key / return-original-ack idempotency. The operator must then type the target-specific activation phrase. Activations expire after 24 hours and can be revoked sooner.
+
+Every live send performs a second fresh live-capability handshake and requires a separate target-specific typed confirmation. Before network mutation the platform reserves one canonical `workspace_publication_live_deliveries` row. The immutable package replay key is sent in the Idempotency-Key header and may not be changed through the runtime role.
+
+Accepted and rejected outcomes are terminal and never resent. A transport-error represents an uncertain result and may retry only with the same package/replay key while the same activation is active, capped by the retry limit. This depends on the consumer's explicit promise to return the original acknowledgement for duplicate replay keys.
+
+Browser requests cannot supply the endpoint, bearer credential, package ID, replay key or idempotency key. Identity columns in both activation and live-delivery tables are not runtime-updatable. Workspace RLS applies to all live state.

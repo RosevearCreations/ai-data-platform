@@ -19,6 +19,61 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "controlled-live-delivery-overview": {
+    title: "Controlled Consumer Activation & Idempotent Live Delivery",
+    summary: "Build 051 is the first AI Data Platform path that may send dryRun=false to a business consumer. It does so only after an explicit 24-hour activation tied to one Build 050 mapping, one configured consumer origin, one recent accepted external dry-run and a fresh handshake that proves live mutation plus replay-key idempotency.",
+    steps: [
+      "Complete Build 050 conformance, external handshake and an accepted external dry-run for the exact mapping first.",
+      "Verify the consumer handshake advertises liveMutationEnabled=true and idempotency with replayKey plus return-original-ack duplicate behavior.",
+      "Type the exact activation phrase shown by the workbench; activation is owner/admin-only and expires after 24 hours.",
+      "Before each live send, review the publication, mapping, consumer origin and prior delivery state, then type the separate delivery confirmation phrase.",
+      "Treat an accepted live-delivery record as terminal; the platform returns the existing result instead of sending a second mutation.",
+      "Retry only a transport-error outcome and only while the same activation remains valid; the exact replay key is reused."
+    ],
+    notes: [
+      "A configured consumer URL/token alone is never enough to enable live mutation.",
+      "A local conformance result does not satisfy the activation gate; the accepted dry-run must come from the configured external consumer within the preceding 24 hours.",
+      "The live-delivery Idempotency-Key is the existing package replayKey and cannot be edited by the runtime role.",
+      "The consumer must advertise duplicateBehavior=return-original-ack so duplicate replay keys return the original acknowledgement instead of applying the mutation again.",
+      "Activation revocation or expiry blocks new live sends but does not rewrite earlier delivery evidence."
+    ],
+    manual: [
+      "Apply 0021_controlled_live_delivery.sql before using Build 051.",
+      "Build 051 reuses the existing Build 033 consumer URL/token variables; it introduces no new secret or paid service.",
+      "The downstream Rosie Dazzlers or Devil n Dove consumer must be upgraded to return the Build 051 live/idempotency handshake fields before activation becomes possible."
+    ]
+  },
+  "controlled-live-delivery-activation": {
+    title: "Live activation prerequisites",
+    summary: "Activation is temporary authorization for one immutable publication/mapping/package identity and one configured consumer origin. It is not a general workspace permission.",
+    steps: [
+      "Confirm the Build 050 mapping is active and package-ready.",
+      "Confirm the external dry-run receipt is accepted, belongs to the same package/mapping/consumer and is less than 24 hours old.",
+      "Confirm the fresh consumer handshake still advertises live mutation and replay-key idempotency.",
+      "Type the target-specific activation phrase exactly; do not copy an old activation to a changed mapping or endpoint.",
+      "Revoke activation immediately when the consumer endpoint, mapping intent or operational plan changes."
+    ],
+    notes: [
+      "An activation pins the publication fingerprint, mapping fingerprint, package fingerprint, package ID, replay key, consumer origin and dry-run receipt.",
+      "Only one active activation may exist for a mapping; an expired activation is revoked before a replacement is created."
+    ]
+  },
+  "controlled-live-delivery-idempotency": {
+    title: "Idempotent live delivery & retry",
+    summary: "Build 051 reserves one canonical delivery record per consumer origin and package ID before the network call. The replay key is sent as the Idempotency-Key and is reused unchanged if a transport result is uncertain.",
+    steps: [
+      "A first live send creates a reserved delivery record before contacting the consumer.",
+      "If the consumer returns an accepted acknowledgement with dryRun=false, the delivery becomes terminal accepted and cannot be resent.",
+      "If the consumer explicitly rejects the package, the delivery becomes terminal rejected and requires a corrected/new mapping rather than a resend.",
+      "If transport or acknowledgement validation fails, the result is transport-error and may be retried with the identical replay key, up to the bounded retry limit.",
+      "Compare publication, mapping, activation and package fingerprints when reconciling a live receipt."
+    ],
+    notes: [
+      "A retry never invents a new idempotency key.",
+      "Concurrent or rapid duplicate sends are blocked by the durable reservation.",
+      "A transport error means mutation outcome may be unknown; consumer-side return-original-ack behavior is what makes retry safe."
+    ]
+  },
   "publication-delivery-overview": {
     title: "Approved Publication Delivery Mapping & Consumer Receipt Bridge",
     summary: "Build 050 maps one immutable Build 049 publication into the existing Build 033 v1 consumer contract and keeps a fingerprint-linked receipt chain from publication through mapping and package to consumer acknowledgement.",
@@ -959,7 +1014,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Approved data & integration delivery",
-    topics: ["publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    topics: ["controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",

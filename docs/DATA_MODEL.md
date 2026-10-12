@@ -872,3 +872,47 @@ Key fields:
 - created_at.
 
 Runtime access is SELECT/INSERT only under workspace RLS. Receipt rows never contain bearer credentials or full package bodies.
+
+
+## Build 051 controlled live delivery
+
+### workspace_consumer_live_activations
+
+Temporary live-mutation authority for one exact Build 050 mapping and configured consumer.
+
+Key fields:
+
+- workspace_id / activation_id;
+- mapping_id / publication_id / target;
+- status: active | revoked;
+- consumer_id;
+- publication_fingerprint / mapping_fingerprint;
+- package_id / replay_key / package_fingerprint;
+- dry_run_receipt_id;
+- idempotency_key_source = replayKey;
+- duplicate_behavior = return-original-ack;
+- activation_fingerprint;
+- activated_by / activated_at / expires_at;
+- revoked_by / revoked_at / revocation_note.
+
+Only one active activation may exist per mapping. Runtime UPDATE is limited to revocation-state columns. Activation identity and all pinned evidence are immutable.
+
+### workspace_publication_live_deliveries
+
+Canonical sender-side live-delivery identity and terminal/retry state.
+
+Key fields:
+
+- workspace_id / delivery_id;
+- activation_id / mapping_id / publication_id;
+- target / consumer_id;
+- publication_fingerprint / mapping_fingerprint / activation_fingerprint;
+- package_id / replay_key / package_fingerprint;
+- idempotency_key;
+- status: reserved | accepted | rejected | transport-error;
+- attempt_count;
+- validation_code / http_status / consumer_received_at;
+- bounded acknowledgement metadata;
+- created_by / created_at / last_attempt_at / updated_at.
+
+A unique `(workspace_id, consumer_id, package_id)` constraint creates one canonical sender-side delivery identity. Runtime UPDATE is limited to attempt/outcome fields; identity and idempotency columns cannot change.

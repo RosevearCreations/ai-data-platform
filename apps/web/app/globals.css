@@ -2646,3 +2646,90 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 051 — Controlled Consumer Activation & Idempotent Live Delivery */
+.liveDeliveryShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.liveDeliveryHero {
+  max-width: 1040px;
+  padding-bottom: 3rem;
+}
+
+.liveDeliverySummary,
+.liveDeliverySection {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.liveSafetyNotice {
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 193, 112, 0.2);
+  border-radius: 1rem;
+  background: rgba(255, 193, 112, 0.06);
+  padding: 1rem;
+}
+
+.liveSafetyNotice strong {
+  display: block;
+  color: #f0cc98;
+  margin-bottom: 0.35rem;
+}
+
+.liveSafetyNotice p {
+  margin: 0;
+  color: #aebfc1;
+}
+
+.liveDeliveryCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.liveActionPanel {
+  display: grid;
+  gap: 0.7rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 1rem;
+}
+
+.liveActionPanel input {
+  min-height: 2.9rem;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0.65rem 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.liveActivationEvidence,
+.liveDeliveryOutcome {
+  display: grid;
+  gap: 0.35rem;
+  border-radius: 0.75rem;
+  background: rgba(125, 226, 216, 0.055);
+  padding: 0.8rem;
+}
+
+.liveActivationEvidence p,
+.liveDeliveryOutcome span {
+  margin: 0;
+  color: #a7babc;
+  font-size: 0.78rem;
+}
+
+.liveActivationEvidence code,
+.liveDeliveryOutcome code {
+  color: #9bded8;
+  font-size: 0.7rem;
+  overflow-wrap: anywhere;
+}
+
+.liveDeliveryOutcome strong {
+  text-transform: uppercase;
+  color: #d8e8e9;
+  font-size: 0.78rem;
+}
