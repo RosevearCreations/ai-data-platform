@@ -1121,7 +1121,7 @@ Acceptance: authorized users see only RLS-scoped project/run evidence; local Chr
 
 ## Build 048 — Data Review, Cleanup & Approval Workbench
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through dev/main verification on 2026-10-12; GitHub Actions release verification and main push verification passed; Neon migrations 0017/0018 are applied; Vercel production is READY.**
 
 Goal: turn durable collected datasets into an explicit cleanup and approval workflow before later publishing/export handoff, while preserving the source payload as immutable review evidence.
 
@@ -1141,7 +1141,7 @@ Delivered:
 - deterministic cleanup/edit validation plus PostgreSQL persistence/RLS/audit verification;
 - no overwrite of `workspace_reviewed_datasets`, no automatic downstream business write, no new external service and no paid dependency.
 
-Acceptance: only authorized workspace datasets/review batches are visible; review creation pins the current durable source version/fingerprint; automatic cleanup never mutates original evidence; fabricated row IDs, oversized edits and all-row exclusion fail closed; terminal approval/rejection requires owner/admin authority; review events remain append-only through the runtime role; approved/rejected batches reject later cleanup edits; and downstream business systems remain unchanged.
+Acceptance: **PASSED.** Only authorized workspace datasets/review batches are visible; review creation pins the current durable source version/fingerprint; automatic cleanup never mutates original evidence; fabricated row IDs, oversized edits and all-row exclusion fail closed; terminal approval/rejection requires owner/admin authority; review events remain append-only through the runtime role; approved/rejected batches reject later cleanup edits; and downstream business systems remain unchanged. Release evidence: PR #66 → dev, PR #67 → main, verification runs 38208624258 and 38208730424 GREEN, production Neon migration ledger includes 0017/0018, and Vercel deployment dpl_4omoR13yvArkxeqh7E7KfAmRoYAi is READY for main SHA 1e2b63b4a1418a3e07302eeb1f40b6d8ee5fd987.
 
 This Build 048 is the approved application-roadmap build and is separate from the rejected Performance and Resource-Budget Review experiment retained above.
 
