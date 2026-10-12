@@ -2293,3 +2293,49 @@ Resolved during promotion:
 - No failed gate was bypassed. Build 050 proceeded only after the corrected full repository suite passed.
 
 Next queued: Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.
+
+
+## Build 051 — Controlled Consumer Activation & Idempotent Live Delivery
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0021_controlled_live_delivery.sql`;
+- temporary owner/admin live activation tied to one exact mapping/package/consumer;
+- accepted external dry-run prerequisite no older than 24 hours;
+- fresh consumer live/idempotency capability validation;
+- typed activation confirmation and separate typed live-send confirmation;
+- canonical consumer/package delivery reservation before outbound mutation;
+- replay key used as the immutable Idempotency-Key;
+- terminal accepted/rejected no-resend behavior;
+- transport-error retry with the same idempotency key and bounded retry count;
+- 24-hour activation expiry plus explicit revocation;
+- publication/mapping/activation/package fingerprint continuity in live-delivery evidence;
+- Build 050 receipt and Build 033 event/consumer-receipt continuity;
+- `/approved-data/live-delivery` workbench, API, navigation, responsive UI and contextual help;
+- deterministic capability/fingerprint verification and PostgreSQL activation/RLS/immutable-identity/idempotent-retry verification.
+
+Guardrails:
+
+- configured endpoint/token presence alone never authorizes live mutation;
+- local conformance is insufficient for activation;
+- the external dry-run receipt must match the exact mapping, publication, package fingerprint and configured consumer origin;
+- live handshake must advertise liveMutationEnabled plus replayKey / return-original-ack idempotency;
+- activation is temporary and specific, not workspace-wide;
+- browser input cannot provide an outbound URL, bearer token, idempotency key or package identity;
+- accepted and rejected live deliveries are terminal;
+- only transport-error may retry, and retry uses the identical replay key;
+- mapping/publication withdrawal, mapping retirement, activation revocation or activation expiry fail closed.
+
+Verification target:
+
+- migration 0021: PASS required;
+- live-capability / activation fingerprint tests: PASS required;
+- PostgreSQL activation/RLS/immutable identity/idempotent retry test: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 052 — Post-Delivery Reconciliation & Consumer State Verification.

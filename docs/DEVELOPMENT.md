@@ -695,3 +695,28 @@ Recommended sequence:
 7. retire a wrong mapping and create a new one rather than editing mapping content.
 
 Build 050 requires no new secret or paid service. It reuses the existing Build 033 consumer environment variables.
+
+
+## Build 051 controlled live delivery
+
+- `db/migrations/0021_controlled_live_delivery.sql` creates temporary consumer activations and canonical idempotent live-delivery state.
+- `apps/web/lib/controlled-live-delivery.ts` owns activation fingerprinting, dry-run gating, activation lifecycle, delivery reservation, bounded retry and terminal outcome state.
+- `validateLiveConsumerHandshake()` extends the existing Build 033 handshake only for live activation/delivery and requires replay-key / return-original-ack idempotency.
+- `/api/approved-data/live-delivery` activates/revokes live authority and performs confirmed live delivery using the existing configured consumer transport.
+- `/approved-data/live-delivery` is the owner/admin operator workbench.
+- `verify-controlled-live-delivery.ts` validates live capability and deterministic activation identity.
+- `verify-controlled-live-delivery-database.ts` validates recent dry-run gating, RLS, immutable identity, transport-error retry with the same key, accepted-terminal no-resend and revocation.
+
+Controlled sequence:
+
+1. complete Build 049 publication;
+2. create and prove a Build 050 mapping;
+3. send an accepted external Build 050 dry-run;
+4. ensure the consumer advertises live mutation plus required idempotency;
+5. type the live-activation phrase;
+6. review the exact pinned activation/package/consumer evidence;
+7. type the separate live-send phrase;
+8. treat accepted/rejected as terminal; retry only transport-error with the same replay key;
+9. revoke activation when work is complete.
+
+Build 051 adds no new environment variable or paid service. The downstream consumer implementation must support the new live/idempotency handshake fields before activation can succeed.
