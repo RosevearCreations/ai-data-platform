@@ -1092,3 +1092,31 @@ Delivered:
 - no remote source fetch, Source Policy approval, schedule creation, remote execution or downstream business write.
 
 Acceptance: users can author or revise the same recipe format used by the extension, preview it safely against supplied HTML, save synchronized revisions without lost updates, and retain workspace isolation; live-page selection stays in the extension and all collection authorization remains outside the builder.
+
+## Build 047 — Collection Run Console & Live Evidence
+
+Status: **IMPLEMENTED on build branch; promotion follows the normal build → dev → main release path.**
+
+Goal: make real collection execution observable and controllable from one authenticated product surface while preserving the existing local-Chrome and Browserless authorization boundaries.
+
+Delivered:
+
+- authenticated `/collection-runs` operational console;
+- Build 045 project/source context and current readiness on every run card;
+- local Chrome mode backed by synchronized Build 017 scheduled-job attempts;
+- Browserless mode backed by existing Build 026/027 remote jobs, results, workspace controls and allowlists;
+- exact Source Policy ID/revision/fingerprint carried from current project evidence;
+- fail-closed Browserless launch unless project/source lifecycle, linked scraper, HTTPS, public-web policy, provider runtime, workspace arm and exact allowlist pin are all current;
+- live polling only while remote jobs are active;
+- prepared/queued/leased/running/succeeded/failed/cancelled/timed-out evidence;
+- pages attempted/succeeded/failed/cancelled, recorded rows, errors and Browserless provider units;
+- durable Stop / cancel requests observed by the active Browserless worker;
+- failed/timed-out/cancelled one-page retry without presenting successful pages as retry candidates;
+- browser-generated JSON run report containing current project/source/policy/local/remote evidence;
+- Command Center navigation, contextual help and responsive styling;
+- extension continuity version 0.47.0;
+- no new database table, migration, Source Policy approval path, workspace-arm bypass or unattended local Chrome execution.
+
+Acceptance: authorized users see only RLS-scoped project/run evidence; local Chrome remains operator-present and extension-owned; Browserless remains behind all existing provider/policy/allowlist/kill-switch gates; active cancellation is observed during provider work; retry is offered only for failed terminal one-page attempts; and run reports contain recorded evidence rather than fabricated progress or cost.
+
+Next queued: **Build 048 — Data Review, Cleanup & Approval Workbench.** This application-roadmap scope is distinct from the previously rejected “Build 048 — Performance and Resource-Budget Review,” which remains rejected.

@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 046 — Visual Extraction Recipe Builder.
+Build 047 — Collection Run Console & Live Evidence.
 
 
 ## Persistence and authentication

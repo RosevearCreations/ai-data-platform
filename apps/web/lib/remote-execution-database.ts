@@ -306,6 +306,26 @@ export async function requestWorkspaceRemoteExecutionCancellation(
   });
 }
 
+export async function isWorkspaceRemoteExecutionCancellationRequested(
+  userId: string,
+  workspaceId: string,
+  jobId: string
+) {
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceAccess(client, workspaceId);
+    const result = await client.query<{
+      cancel_requested_at: Date | null;
+      status: RemoteExecutionJobStatus;
+    }>(
+      "select cancel_requested_at,status from app.remote_execution_jobs where workspace_id=$1 and job_id=$2",
+      [workspaceId, jobId]
+    );
+    if (!result.rows[0]) throw new Error("remote_job_not_found");
+    return Boolean(result.rows[0].cancel_requested_at) ||
+      result.rows[0].status === "cancelled";
+  });
+}
+
 export async function expireWorkspaceRemoteExecutionJob(
   userId: string,
   workspaceId: string,

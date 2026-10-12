@@ -606,3 +606,25 @@ No new environment variable, external account or paid service is required.
 - `verify-visual-recipe-builder.ts` covers deterministic parsing, validation, URL safety and transforms.
 - `verify-recipe-builder-database.ts` covers synchronized create/revision/stale-conflict behavior and workspace RLS.
 - The existing extension `RecipeBuilder` remains the live-page picker and executes the same version-1 contract.
+
+## Build 047 collection-run development
+
+Build 047 is an orchestration/read-model layer over existing authoritative paths:
+
+- `workspace_collection_projects` and project sources provide collection intent;
+- current `source-policy` intelligence provides the exact policy pin and public-source constraints;
+- `scheduled-jobs` intelligence provides synchronized operator-present Chrome attempt evidence;
+- `remote_execution_jobs` and `remote_execution_results` provide Browserless lifecycle/results;
+- `remote_execution_controls` and `remote_execution_source_allowlist` remain the remote authorization gates.
+
+The web console may call the existing `/api/remote-execution/pilot` only when every current gate is satisfied. It may request cancellation through the existing remote job lifecycle. The Browserless route now checks the durable cancellation request during its provider polling loop and after provider completion before committing success.
+
+The local Chrome path remains intentionally observational from the website. Actual DOM extraction is still launched by the operator from the Chrome extension Scheduled jobs panel on the approved source origin.
+
+Verification:
+
+- `verify-collection-runs.ts` covers fully governed readiness, fail-closed global Browserless state, required linked scraper evidence and local/remote evidence summaries;
+- existing controlled-remote-pilot and remote lifecycle tests remain authoritative for provider limits and result safety;
+- help coverage verifies cancellation, retry, local Chrome ownership and exact Browserless environment gates.
+
+No Build 047 migration or new environment variable is required.

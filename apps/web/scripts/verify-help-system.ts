@@ -16,6 +16,8 @@ async function main() {
     "../app/data-library/page.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
+    "../app/collection-runs/page.tsx",
+    "../app/collection-runs/CollectionRunConsole.tsx",
     "../app/remote-execution/page.tsx",
     "../app/remote-execution/RemotePilotAdminPanel.tsx",
     "../app/sign-in/page.tsx",
@@ -42,6 +44,16 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const collectionRuns = HELP_TOPICS["collection-runs-overview"];
+  assert(
+    "manual" in collectionRuns &&
+      collectionRuns.steps.some((step) => step.includes("Stop / cancel")) &&
+      collectionRuns.steps.some((step) => step.includes("failed, timed-out or cancelled")) &&
+      collectionRuns.manual.some((step) => step.includes("BROWSERLESS_API_TOKEN")) &&
+      collectionRuns.notes.some((note) => note.includes("operator-present")),
+    "Build 047 help must preserve local Chrome ownership, remote cancellation, bounded retry and Browserless gates."
   );
 
   const remote = HELP_TOPICS["remote-overview"];
