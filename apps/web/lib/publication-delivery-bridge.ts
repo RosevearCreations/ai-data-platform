@@ -740,7 +740,34 @@ export async function loadPublicationDeliveryPackage(
 ) {
   return withUserDatabase(userId, async (client) => {
     const role = await requireManager(client, input.workspaceId);
-    const result = await client.query<PublicationRow & MappingRow>(
+    const result = await client.query<QueryResultRow & {
+      workspace_id: string;
+      workspace_name: string;
+      publication_id: string;
+      title: string;
+      source_url: string;
+      publication_status: "published" | "withdrawn";
+      publication_fingerprint: string;
+      row_count: string | number;
+      field_order: string[];
+      published_rows: JsonRecord[];
+      review_approved_at: Date;
+      published_at: Date;
+      mapping_id: string;
+      target: IntegrationTarget;
+      mapping_status: "active" | "retired";
+      integration_key_field: string;
+      operation_action: "create" | "update";
+      evidence_url_field: string | null;
+      evidence_timestamp_field: string;
+      field_map: Record<string, string>;
+      mapping_fingerprint: string;
+      created_by: string;
+      created_at: Date;
+      retired_by: string | null;
+      retired_at: Date | null;
+      retirement_note: string;
+    }>(
       `select
         p.workspace_id,
         w.name as workspace_name,
@@ -776,10 +803,7 @@ export async function loadPublicationDeliveryPackage(
        limit 1`,
       [input.workspaceId, input.mappingId]
     );
-    const row = result.rows[0] as (PublicationRow & MappingRow & {
-      publication_status: "published" | "withdrawn";
-      mapping_status: "active" | "retired";
-    }) | undefined;
+    const row = result.rows[0];
     if (!row) throw new Error("publication_delivery_mapping_not_found");
 
     const publication = publicationFromRow(
