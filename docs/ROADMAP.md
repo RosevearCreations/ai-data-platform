@@ -1199,7 +1199,7 @@ Acceptance: **PASSED.** Only authorized workspace data is visible; only owners/a
 
 ## Build 051 — Controlled Consumer Activation & Idempotent Live Delivery
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through dev/main verification on 2026-10-12; migration 0021 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: permit live business-consumer mutation only after the Build 049 publication and Build 050 mapping/receipt chain is complete, with temporary explicit activation, consumer-proven replay-key idempotency, sender-side durable reservation and terminal no-resend behavior.
 
@@ -1225,6 +1225,6 @@ Delivered:
 - deterministic live-capability/fingerprint tests plus PostgreSQL activation/RLS/immutable-identity/idempotent-retry verification;
 - no arbitrary endpoint, no browser credential, no activation inferred from configuration, and no unbounded retry.
 
-Acceptance: only owners/admins may activate, revoke or send live; an active Build 050 mapping and published Build 049 snapshot are required; the configured consumer origin must match the recent accepted dry-run; live/idempotency capability is revalidated; activation expires after 24 hours; publication/mapping/package/activation identity columns cannot be mutated by the runtime role; a live delivery is reserved before network mutation; accepted/rejected outcomes are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and revocation/expiry prevents new live sends.
+Acceptance: **PASSED.** Only owners/admins may activate, revoke or send live; an active Build 050 mapping and published Build 049 snapshot are required; the configured consumer origin must match the recent accepted dry-run; live/idempotency capability is revalidated; activation expires after 24 hours; publication/mapping/package/activation identity columns cannot be mutated by the runtime role; a live delivery is reserved before network mutation; accepted/rejected outcomes are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and revocation/expiry prevents new live sends. Release evidence: implementation PR #80 → dev; help-verifier correction PR #82 → dev; release PR #81 → main; corrected dev Verify run 38274901441 (#577) GREEN; main-target PR Verify run 38274909528 (#578) GREEN; independent main Verify run 38275448570 (#579) GREEN; production Neon migration ledger includes 0021 with activation/live-delivery RLS and identity-protecting column grants verified; and Vercel deployment dpl_6E89KWnUpRkqZx9kRBP9APbHSrBq is READY for main SHA 35402017499888cea186b15ae33c11679e590b72.
 
 Next queued: **Build 052 — Post-Delivery Reconciliation & Consumer State Verification.**
