@@ -2227,7 +2227,7 @@ Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Rece
 
 Date: 2026-10-12
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN — dev/main release verification passed; production Neon migration applied and verified; Vercel production READY.
 
 Delivered:
 
@@ -2261,5 +2261,35 @@ Verification target:
 - PostgreSQL persistence/RLS/immutability/receipt test: PASS required;
 - typecheck/lint/tests/builds: PASS required;
 - feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.
+
+
+### Build 050 production closeout
+
+- implementation: PR #74 → dev;
+- CI syntax correction: PR #75 → dev;
+- joined-row typing correction: PR #76 → dev;
+- release promotion: PR #77 → main;
+- verified dev SHA: e8910c6b03034431c3fc70060435f160da3b8d77;
+- dev verification: GitHub Actions run 38269492737 (#569) — SUCCESS;
+- main-target PR verification: GitHub Actions run 38269686730 (#570) — SUCCESS;
+- initial production main SHA: a7bebaf5551369d6386bcf949560f251de422e93;
+- independent main verification: GitHub Actions run 38269844795 (#571) — SUCCESS;
+- production migration: 0020_publication_delivery_bridge.sql — APPLIED;
+- publication-delivery mapping/receipt RLS: VERIFIED;
+- mapping UPDATE privilege: restricted to status / retired_by / retired_at / retirement_note;
+- receipt ledger runtime privileges: SELECT / INSERT only;
+- Vercel production deployment: dpl_63Ty5GiRHnVARZY7fp8mkRYyZ3k3;
+- Vercel state: READY;
+- deployment source: main SHA a7bebaf5551369d6386bcf949560f251de422e93;
+- canonical production alias: ai-data-platform-beryl.vercel.app;
+- alias error: none.
+
+Resolved during promotion:
+
+- Verify #567 caught literal newline escape artifacts in generated help source; corrected via PR #75.
+- Verify #568 caught a conflicting TypeScript publication/mapping row intersection; corrected via PR #76.
+- No failed gate was bypassed. Build 050 proceeded only after the corrected full repository suite passed.
 
 Next queued: Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.
