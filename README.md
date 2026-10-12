@@ -47,7 +47,7 @@ See [Development](docs/DEVELOPMENT.md) for install, build, verification and exte
 
 ## Current build
 
-Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.
+Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.
 
 
 ## Persistence and authentication
@@ -83,3 +83,8 @@ The signed-in application now includes `/approved-data`, an approved-only publis
 ## Build 050 application surface
 
 The signed-in application now includes `/approved-data/delivery`, which maps an immutable Build 049 publication into the existing Build 033 consumer contracts. Owner/admin users can create an immutable field mapping, prove the generated package through local conformance, test a configured consumer handshake, send an authenticated external dry-run, and inspect append-only receipt evidence that links the publication fingerprint, mapping fingerprint and package fingerprint. Build 050 does not enable live business-system mutation.
+
+
+## Build 051 application surface
+
+The signed-in application now includes `/approved-data/live-delivery`, the first controlled live-mutation path in the AI Data Platform. A workspace owner/admin can activate one exact Build 050 mapping for 24 hours only after a recent accepted external dry-run and a fresh consumer handshake proving both live mutation support and replay-key idempotency. Each live send requires a separate typed confirmation, reserves one canonical consumer/package delivery identity before the network call, sends the replay key as the Idempotency-Key, allows only bounded retry of transport-error outcomes with that same key, and never resends an accepted or rejected terminal delivery.
