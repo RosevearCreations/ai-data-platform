@@ -2535,3 +2535,114 @@ h3 {
     width: 100%;
   }
 }
+
+
+/* Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge */
+.bridgeShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.bridgeHero {
+  max-width: 1040px;
+  padding-bottom: 3rem;
+}
+
+.bridgeSummary,
+.bridgeSection {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.bridgePublicationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1rem;
+}
+
+.bridgePublicationCard {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgba(224, 247, 250, 0.1);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem;
+}
+
+.bridgePublicationCard h3 {
+  margin: 0.5rem 0 0.3rem;
+}
+
+.bridgePublicationCard p,
+.bridgePublicationCard small {
+  color: #91a5a8;
+}
+
+.bridgePublicationCard code {
+  display: block;
+  color: #87a6a8;
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
+}
+
+.bridgeFormGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.bridgeFormGrid label,
+.bridgeFieldMap {
+  display: grid;
+  gap: 0.4rem;
+  color: #c8d8da;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.bridgeFormGrid select,
+.bridgeFieldMap textarea {
+  min-height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0.65rem 0.8rem;
+}
+
+.bridgeFieldMap textarea {
+  min-height: 190px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.76rem;
+}
+
+.bridgeHint {
+  color: #91a5a8;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.bridgeBlockers {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.75rem 0;
+}
+
+.bridgeBlockers span {
+  border-left: 3px solid rgba(255, 138, 138, 0.42);
+  background: rgba(255, 138, 138, 0.06);
+  color: #ffc0c0;
+  border-radius: 0.25rem 0.65rem 0.65rem 0.25rem;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .bridgeFormGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .bridgePublicationGrid {
+    grid-template-columns: 1fr;
+  }
+}

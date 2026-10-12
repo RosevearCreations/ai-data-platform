@@ -2221,3 +2221,45 @@ Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Rece
 - alias error: none.
 
 Next queued: Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge.
+
+
+## Build 050 — Approved Publication Delivery Mapping & Consumer Receipt Bridge
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0020_publication_delivery_bridge.sql`;
+- immutable publication-to-consumer mapping records under workspace RLS;
+- append-only publication-linked consumer receipt ledger;
+- explicit target, create/update intent, integration key, evidence URL/timestamp and field map;
+- deterministic mapping fingerprint and package identity that includes Build 049 publication/mapping identity;
+- Build 033 v1 package reuse rather than a second transport contract;
+- local conformance acceptance/replay evidence;
+- existing configured external handshake and authenticated dry-run delivery path;
+- accepted/rejected/transport-error receipt capture;
+- `/approved-data/delivery` workbench, API, navigation, responsive styling and contextual help;
+- deterministic mapping/package verification and PostgreSQL RLS/immutable-grant/receipt verification.
+
+Guardrails:
+
+- only an active Build 049 publication may generate a package;
+- only an active immutable mapping may generate a package;
+- every mapped row must produce a unique scalar integration key, scalar contract values and valid source URL/timestamp evidence;
+- runtime UPDATE permission is limited to mapping retirement fields;
+- receipt rows are SELECT/INSERT only for the runtime role;
+- browser requests cannot provide a delivery endpoint or credential;
+- external delivery remains `dryRun=true` and a consumer acknowledgement claiming live mutation is rejected;
+- Build 050 introduces no new paid service or secret.
+
+Verification target:
+
+- migration 0020: PASS required;
+- mapping/package deterministic tests: PASS required;
+- PostgreSQL persistence/RLS/immutability/receipt test: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.

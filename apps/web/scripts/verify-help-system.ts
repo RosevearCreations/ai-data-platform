@@ -18,6 +18,8 @@ async function main() {
     "../app/data-review/DataReviewWorkbench.tsx",
     "../app/approved-data/page.tsx",
     "../app/approved-data/ApprovedDatasetPublishing.tsx",
+    "../app/approved-data/delivery/page.tsx",
+    "../app/approved-data/delivery/PublicationDeliveryWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -48,6 +50,18 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const publicationDelivery = HELP_TOPICS["publication-delivery-overview"];
+  assert(
+    "manual" in publicationDelivery &&
+      publicationDelivery.steps.some((step) => step.includes("owner/admin")) &&
+      publicationDelivery.steps.some((step) => step.includes("conformance")) &&
+      publicationDelivery.notes.some((note) => note.includes("dry-run only")) &&
+      publicationDelivery.notes.some((note) => note.includes("cannot generate")) &&
+      publicationDelivery.manual.some((step) => step.includes("0020_publication_delivery_bridge.sql")) &&
+      publicationDelivery.manual.some((step) => step.includes("INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN")),
+    "Build 050 help must preserve approved-publication mapping, conformance-first delivery, dry-run-only external transport and exact manual setup."
   );
 
   const approvedData = HELP_TOPICS["approved-data-overview"];
@@ -167,7 +181,7 @@ async function main() {
   );
 
   console.log(
-    "Build 049 contextual help coverage, approved publishing/export guidance and existing production gates passed."
+    "Build 050 contextual help coverage, publication delivery mapping/receipt guidance and existing production gates passed."
   );
 
 }

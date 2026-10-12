@@ -19,6 +19,73 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "publication-delivery-overview": {
+    title: "Approved Publication Delivery Mapping & Consumer Receipt Bridge",
+    summary: "Build 050 maps one immutable Build 049 publication into the existing Build 033 v1 consumer contract and keeps a fingerprint-linked receipt chain from publication through mapping and package to consumer acknowledgement.",
+    steps: [
+      "Start from an active Build 049 publication; withdrawn publications fail closed.",
+      "Have a workspace owner/admin create an immutable mapping for Rosie Dazzlers or Devil n Dove.",
+      "Choose the publication field used for the integration key, the create/update intent, source-evidence URL/timestamp fields, and the explicit consumer-field map.",
+      "Run conformance first so the generated package is independently validated and replay behavior is proven without contacting a business application.",
+      "When the target consumer is configured, test the authenticated handshake before sending one external dry-run package.",
+      "Confirm the receipt card carries the publication fingerprint, mapping fingerprint and package fingerprint before treating the handoff as proven."
+    ],
+    notes: [
+      "Mapping content is immutable after creation; retirement is the only runtime update and corrections require a new mapping.",
+      "The package identity binds the Build 049 publication ID/fingerprint and Build 050 mapping ID/fingerprint.",
+      "A withdrawn publication or retired mapping cannot generate a new package.",
+      "Build 050 external transport remains dry-run only and does not authorize a live Rosie Dazzlers or Devil n Dove mutation."
+    ],
+    manual: [
+      "Apply 0020_publication_delivery_bridge.sql before using the Build 050 workbench.",
+      "No new external account or paid service is required; local conformance works without a configured business consumer.",
+      "External dry-run uses the existing INTEGRATION_CONSUMER_ROSIE_DAZZLERS_URL / INTEGRATION_CONSUMER_ROSIE_DAZZLERS_TOKEN or INTEGRATION_CONSUMER_DEVIL_N_DOVE_URL / INTEGRATION_CONSUMER_DEVIL_N_DOVE_TOKEN server configuration."
+    ]
+  },
+  "publication-delivery-mapping": {
+    title: "Immutable publication-to-consumer mapping",
+    summary: "A mapping records exactly how frozen publication fields become consumer contract values. It is validated against every publication row before it can be saved.",
+    steps: [
+      "Select a stable scalar publication field for the consumer integration key.",
+      "Choose create or update explicitly; Build 050 never infers consumer state.",
+      "Select a valid source-evidence timestamp field and either a row URL field or the publication source URL.",
+      "Map only allowed consumer contract fields to existing publication fields.",
+      "Create the mapping only after every row can produce a unique key, scalar values and valid source evidence."
+    ],
+    notes: [
+      "Duplicate integration keys, non-scalar mapped values, invalid URLs or invalid evidence timestamps fail closed.",
+      "An identical mapping for the same publication and target resolves to the existing canonical mapping."
+    ]
+  },
+  "publication-delivery-consumer": {
+    title: "Conformance, handshake & dry-run delivery",
+    summary: "Build 050 reuses the Build 033 consumer protocol instead of creating a second transport. Conformance is local; external handshake and delivery require the existing configured HTTPS endpoint and bearer credential.",
+    steps: [
+      "Run conformance before any external contact.",
+      "Use Test handshake to confirm protocol, target, schema, bearer authentication and dry-run support.",
+      "Use Send dry-run only while the mapping remains ready and the consumer is configured.",
+      "Treat any rejection, replay response, invalid acknowledgement or transport error as evidence to resolve rather than a reason to bypass validation."
+    ],
+    notes: [
+      "No browser request can supply an arbitrary outbound endpoint.",
+      "External delivery follows the existing no-redirect, bounded-timeout Build 033 transport.",
+      "An acknowledgement claiming a live mutation is rejected."
+    ]
+  },
+  "publication-delivery-receipts": {
+    title: "Publication-linked consumer receipts",
+    summary: "The receipt ledger is append-only evidence connecting the exact publication and mapping fingerprints to the generated package and the consumer result.",
+    steps: [
+      "Compare publicationFingerprint, mappingFingerprint and packageFingerprint on each receipt.",
+      "Use transportMode to distinguish local conformance from an external consumer acknowledgement.",
+      "Use validationCode and receipt status to understand accepted, rejected and transport-error outcomes.",
+      "Keep prior receipts when a mapping is retired; retirement stops future package generation but does not rewrite evidence."
+    ],
+    notes: [
+      "Receipt details are bounded and do not contain bearer credentials or full package bodies.",
+      "Runtime access is SELECT/INSERT only; receipts cannot be edited or deleted through the normal application role."
+    ]
+  },
   "approved-data-overview": {
     title: "Approved Dataset Publishing & Export Handoff",
     summary: "Build 049 turns one terminal approved Build 048 review into one immutable publication snapshot. The publication keeps the exact approved cleaned rows, source provenance, review approval evidence and a publication fingerprint before any export is produced.",
@@ -891,8 +958,8 @@ export const HELP_GROUPS: Array<{
     topics: ["connectors-overview", "connector-registry", "connector-workspace", "connector-audit"]
   },
   {
-    title: "Integration delivery",
-    topics: ["integration-delivery"]
+    title: "Approved data & integration delivery",
+    topics: ["publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",

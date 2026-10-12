@@ -348,3 +348,12 @@ Build 049 adds a narrow publication layer after Build 048 approval. `workspace_d
 The publication model deliberately freezes approved cleaned rows instead of referencing mutable source rows at export time. JSON and CSV renderers are deterministic and server-side export requests record an audit event before returning the file. Publication withdrawal changes only handoff availability and never deletes evidence.
 
 No receiver invocation occurs in this layer. The existing Build 033 integration-delivery boundary remains separate until a later build explicitly maps publication fields to a supported consumer contract.
+
+
+## Build 050 approved publication delivery architecture
+
+Build 050 composes the Build 049 publication ledger with the existing Build 033 consumer protocol. It does not invent another receiver format. A mapping selects a supported consumer target, a stable publication field for the integration key, explicit create/update intent, source-evidence URL/timestamp fields and a target-field map.
+
+Before persistence, the mapping is executed against every frozen publication row. Duplicate keys, unsupported consumer fields, non-scalar values or invalid evidence fail closed. The resulting package keeps the Build 033 v1 schema/validator and encodes the publication ID/fingerprint plus mapping ID/fingerprint into its batch identity so the package fingerprint is transitively bound to both immutable inputs.
+
+Local conformance uses the existing replay-aware receipt registry. External delivery reuses the existing target-specific HTTPS endpoint/bearer configuration, no-redirect transport, timeout and dry-run acknowledgement validator. Build 050 adds an append-only bridge receipt so a consumer result can be traced back to the exact publication and mapping without copying package bodies into audit data.

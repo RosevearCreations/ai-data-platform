@@ -20,6 +20,7 @@ const workflowLinks = [
   ["/data-library", "Unified data library"],
   ["/data-review", "Data review workbench"],
   ["/approved-data", "Approved data publishing"],
+  ["/approved-data/delivery", "Publication delivery bridge"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],
