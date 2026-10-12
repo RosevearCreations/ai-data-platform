@@ -1197,4 +1197,34 @@ Delivered:
 
 Acceptance: **PASSED.** Only authorized workspace data is visible; only owners/admins can create/retire mappings or execute bridge actions; withdrawn publications and retired mappings fail closed; mapping content cannot be mutated by the runtime role; package identity binds publication and mapping fingerprints; conformance replay is rejected; external transport stays Build 033 authenticated HTTPS dry-run; receipt evidence is append-only; and cross-account mapping/package access remains denied. Release evidence: implementation PR #74 → dev; syntax correction PR #75 → dev; joined-row typing correction PR #76 → dev; release PR #77 → main; dev Verify run 38269492737 (#569) GREEN; release PR Verify run 38269686730 (#570) GREEN; main Verify run 38269844795 (#571) GREEN; production Neon migration ledger includes 0020 with mapping/receipt RLS and retirement-only mapping UPDATE grants verified; and Vercel deployment dpl_63Ty5GiRHnVARZY7fp8mkRYyZ3k3 is READY for main SHA a7bebaf5551369d6386bcf949560f251de422e93.
 
-Next queued: **Build 051 — Controlled Consumer Activation & Idempotent Live Delivery.**
+## Build 051 — Controlled Consumer Activation & Idempotent Live Delivery
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: permit live business-consumer mutation only after the Build 049 publication and Build 050 mapping/receipt chain is complete, with temporary explicit activation, consumer-proven replay-key idempotency, sender-side durable reservation and terminal no-resend behavior.
+
+Delivered:
+
+- migration `0021_controlled_live_delivery.sql`;
+- RLS-scoped `workspace_consumer_live_activations`;
+- RLS-scoped canonical `workspace_publication_live_deliveries`;
+- owner/admin-only live activation and revocation;
+- 24-hour activation window pinned to publication fingerprint, mapping fingerprint, package ID/replay key/fingerprint, consumer origin and accepted external dry-run receipt;
+- activation requires an accepted Build 050 external dry-run from the exact consumer/package within the preceding 24 hours;
+- fresh live-capability handshake requires `liveMutationEnabled=true`;
+- fresh live-capability handshake also requires `idempotency.keySource=replayKey` and `duplicateBehavior=return-original-ack`;
+- target-specific typed activation confirmation and a separate typed confirmation for every live send;
+- canonical sender-side delivery reservation unique by workspace + consumer origin + package ID before outbound mutation;
+- `Idempotency-Key` and replay-key headers bound to the immutable package replay key;
+- accepted and rejected live results become terminal and are never automatically resent;
+- transport-error outcomes may retry only with the same activation/package identity and same idempotency key, with a bounded retry count;
+- fresh live/idempotency handshake revalidation before every live mutation attempt;
+- reuse of Build 033 configured HTTPS endpoint/bearer transport, no redirects and bounded timeout;
+- Build 050 publication-linked receipt plus Build 033 integration event/consumer-receipt continuity for accepted live delivery;
+- authenticated `/approved-data/live-delivery` workbench, API, navigation, contextual help and responsive UI;
+- deterministic live-capability/fingerprint tests plus PostgreSQL activation/RLS/immutable-identity/idempotent-retry verification;
+- no arbitrary endpoint, no browser credential, no activation inferred from configuration, and no unbounded retry.
+
+Acceptance: only owners/admins may activate, revoke or send live; an active Build 050 mapping and published Build 049 snapshot are required; the configured consumer origin must match the recent accepted dry-run; live/idempotency capability is revalidated; activation expires after 24 hours; publication/mapping/package/activation identity columns cannot be mutated by the runtime role; a live delivery is reserved before network mutation; accepted/rejected outcomes are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and revocation/expiry prevents new live sends.
+
+Next queued: **Build 052 — Post-Delivery Reconciliation & Consumer State Verification.**
