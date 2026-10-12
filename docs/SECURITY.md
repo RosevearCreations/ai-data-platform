@@ -467,3 +467,16 @@ Every live send performs a second fresh live-capability handshake and requires a
 Accepted and rejected outcomes are terminal and never resent. A transport-error represents an uncertain result and may retry only with the same package/replay key while the same activation is active, capped by the retry limit. This depends on the consumer's explicit promise to return the original acknowledgement for duplicate replay keys.
 
 Browser requests cannot supply the endpoint, bearer credential, package ID, replay key or idempotency key. Identity columns in both activation and live-delivery tables are not runtime-updatable. Workspace RLS applies to all live state.
+
+
+## Build 052 read-only reconciliation boundary
+
+Build 052 can inspect only an accepted Build 051 delivery visible through workspace RLS and only an owner/admin may initiate consumer verification. Historical package reconstruction is validated against the exact package ID, replay key and fingerprint recorded by the accepted live-delivery row before any outbound read.
+
+The outbound endpoint and bearer credential still come only from existing server configuration. The configured endpoint origin must equal the original consumer origin stored with the accepted delivery; changing configuration cannot silently redirect historical reconciliation to another consumer.
+
+A fresh handshake must explicitly advertise `stateVerificationSupported=true`. The verify-state request sends only package identity, expected integration keys and governed field names. Expected values are withheld from the consumer request so state verification cannot be satisfied by simply echoing the desired state.
+
+The response must identify the same package/replay/fingerprint and cover every expected key exactly once. Duplicate, omitted or unexpected keys fail closed. Only scalar returned values are accepted. Full consumer values are compared in memory and are not stored in durable reconciliation rows; persisted evidence contains value fingerprints and differing field names.
+
+Reconciliation rows are SELECT/INSERT only for the runtime role. Build 052 has no automatic mutation, rollback or retry path when drift is detected.
