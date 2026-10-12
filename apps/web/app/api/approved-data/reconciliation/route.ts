@@ -74,7 +74,7 @@ async function fetchConsumer(
 export async function GET() {
   const userId = await currentUserId();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
-  return Response.json(await listPostDeliveryReconciliationForUser(authenticatedUserId));
+  return Response.json(await listPostDeliveryReconciliationForUser(userId));
 }
 
 export async function POST(request: Request) {
