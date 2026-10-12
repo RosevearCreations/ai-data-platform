@@ -2374,7 +2374,7 @@ Next queued: Build 052 — Post-Delivery Reconciliation & Consumer State Verific
 
 Date: 2026-10-12
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN — corrected dev/main verification passed; production Neon migration applied and verified; Vercel production READY.
 
 Delivered:
 
@@ -2411,5 +2411,34 @@ Verification target:
 - PostgreSQL historical reconstruction / RLS / append-only test: PASS required;
 - typecheck/lint/tests/builds: PASS required;
 - feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.
+
+
+### Build 052 production closeout
+
+- implementation: PR #86 → dev;
+- reconciliation route typing correction: PR #88 → dev;
+- reconciliation GET auth correction: PR #89 → dev;
+- release promotion: PR #87 → main;
+- verified corrected dev SHA: 905a27f38fe797eae505f955c4249cafe2eb973b;
+- dev verification: GitHub Actions run 38320041104 (#587) — SUCCESS;
+- main-target PR verification: GitHub Actions run 38320046984 (#588) — SUCCESS;
+- initial production main SHA: 426537771df15e9d30277db799d0aae5e04faf3d;
+- independent main verification: GitHub Actions run 38320247702 (#589) — SUCCESS;
+- production migration: 0022_post_delivery_reconciliation.sql — APPLIED;
+- reconciliation table RLS: VERIFIED;
+- reconciliation runtime grants: SELECT / INSERT only; no UPDATE / DELETE;
+- Vercel production deployment: dpl_HzqxevLb6Ecp8D2hUWZ2QSn6oVXq;
+- Vercel state: READY;
+- deployment source: main SHA 426537771df15e9d30277db799d0aae5e04faf3d;
+- canonical production alias: ai-data-platform-beryl.vercel.app;
+- alias error: none.
+
+Resolved during promotion:
+
+- Verify #583/#584 caught TypeScript control-flow narrowing in the reconciliation API; corrected through PR #88.
+- Verify #585/#586 caught a one-line GET identifier regression introduced by that narrowing fix; corrected through PR #89.
+- No failed gate was bypassed. Build 052 proceeded only after corrected dev and main-target verification were both GREEN.
 
 Next queued: Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.

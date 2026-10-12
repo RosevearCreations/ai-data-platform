@@ -1229,7 +1229,7 @@ Acceptance: **PASSED.** Only owners/admins may activate, revoke or send live; an
 
 ## Build 052 — Post-Delivery Reconciliation & Consumer State Verification
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through corrected dev/main verification on 2026-10-12; migration 0022 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: prove what the downstream consumer currently holds after an accepted Build 051 live delivery by reconstructing the exact historical package, performing a read-only consumer state query, comparing only package-governed fields and preserving immutable drift evidence without automatic correction.
 
@@ -1255,6 +1255,6 @@ Delivered:
 - deterministic capability/response/comparison tests plus PostgreSQL historical-reconstruction/RLS/append-only verification;
 - no automatic repair, rollback, delivery retry or corrective mutation.
 
-Acceptance: only authorized workspace evidence is visible; only owners/admins may run verification; only accepted live deliveries are eligible; historical package reconstruction reproduces the exact accepted package identity even after publication/mapping closure; changed consumer origin fails closed; state-verification capability and complete unique-key response are mandatory; matched/drift outcomes are derived from server-side comparison of package-governed fields; full observed records are not copied into the ledger; reconciliation rows cannot be updated or deleted by the runtime role; and no discrepancy causes an automatic downstream write.
+Acceptance: **PASSED.** Only authorized workspace evidence is visible; only owners/admins may run verification; only accepted live deliveries are eligible; historical package reconstruction reproduces the exact accepted package identity even after publication/mapping closure; changed consumer origin fails closed; state-verification capability and complete unique-key response are mandatory; matched/drift outcomes are derived from server-side comparison of package-governed fields; full observed records are not copied into the ledger; reconciliation rows cannot be updated or deleted by the runtime role; and no discrepancy causes an automatic downstream write. Release evidence: implementation PR #86 → dev; typing correction PR #88 → dev; GET auth correction PR #89 → dev; release PR #87 → main; corrected dev Verify run 38320041104 (#587) GREEN; corrected main-target PR Verify run 38320046984 (#588) GREEN; independent main Verify run 38320247702 (#589) GREEN; production Neon migration ledger includes 0022 with reconciliation RLS and SELECT/INSERT-only runtime grants verified; and Vercel deployment dpl_HzqxevLb6Ecp8D2hUWZ2QSn6oVXq is READY for main SHA 426537771df15e9d30277db799d0aae5e04faf3d.
 
 Next queued: **Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.**
