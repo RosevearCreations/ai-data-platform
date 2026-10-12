@@ -104,6 +104,17 @@ function valuesFingerprint(values: Record<string, IntegrationScalar>) {
   return fingerprint("state1-", values);
 }
 
+export function reconciliationErrorFingerprint(input: {
+  packageId: string;
+  replayKey: string;
+  packageFingerprint: string;
+  status: "rejected" | "transport-error";
+  validationCode: string;
+  occurredAt: string;
+}) {
+  return fingerprint("verify1-", input);
+}
+
 export function compareConsumerState(
   integrationPackage: IntegrationPackageV1,
   response: ConsumerStateVerificationResponse
