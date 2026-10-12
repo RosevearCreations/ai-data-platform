@@ -673,3 +673,25 @@ Publishing sequence:
 7. withdraw the publication if future exports must stop; never edit the published rows in place.
 
 Build 049 requires no new external account, environment variable, secret or paid service.
+
+
+## Build 050 publication delivery bridge
+
+- `db/migrations/0020_publication_delivery_bridge.sql` creates immutable mappings and append-only bridge receipts.
+- `apps/web/lib/publication-delivery-bridge.ts` owns mapping validation, package construction, persistence and receipt evidence.
+- `/api/approved-data/delivery` lists bridge state, creates/retires mappings, runs conformance, probes configured consumers and sends authenticated dry-run packages.
+- `/approved-data/delivery` is the signed-in operator workbench.
+- `verify-publication-delivery-bridge.ts` checks package identity, mapped values/evidence and fail-closed behavior.
+- `verify-publication-delivery-bridge-database.ts` checks canonical mapping persistence, cross-account RLS, immutable grants, receipt fingerprints and retirement.
+
+Recommended sequence:
+
+1. publish a reviewed dataset through Build 049;
+2. choose a supported consumer and create an explicit immutable mapping;
+3. run local conformance and confirm the publication/mapping/package fingerprints;
+4. configure the existing Build 033 target URL/token only when a real consumer exists;
+5. test the handshake;
+6. send one dry-run and verify the receipt chain;
+7. retire a wrong mapping and create a new one rather than editing mapping content.
+
+Build 050 requires no new secret or paid service. It reuses the existing Build 033 consumer environment variables.
