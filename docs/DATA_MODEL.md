@@ -734,3 +734,18 @@ The payload remains compatible with the extension's saved scraper shape and incl
 - existing compatibility/check-history slots.
 
 Writes use the Build 020 optimistic-concurrency sync boundary, so web and extension authorship share server versions and stale updates return conflicts instead of replacing newer state.
+
+## Build 047 collection-run read model
+
+Build 047 adds no PostgreSQL table.
+
+The authenticated run console joins existing workspace-scoped evidence at read time:
+
+- `workspace_collection_projects` / `workspace_collection_project_sources` for project/source intent;
+- `workspace_intelligence_modules(module_key='source-policy')` for the current exact Source Policy pin and collection restrictions;
+- `workspace_intelligence_modules(module_key='scheduled-jobs')` for synchronized local Chrome run attempts;
+- `remote_execution_jobs` for Browserless lifecycle, cancellation and failures;
+- `remote_execution_results` for append-only successful result payloads and recorded provider/page evidence;
+- `remote_execution_controls` / `remote_execution_source_allowlist` for existing Browserless authorization state.
+
+PostgreSQL RLS on every originating source remains authoritative. Downloaded run reports are generated client-side from the already-authorized read model and are not persisted as another server-side record.
