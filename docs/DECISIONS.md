@@ -744,3 +744,36 @@ Decision: activation does not authorize unattended mutation. Every Build 051 liv
 Reason: temporary live capability and intent to execute a particular consequential delivery are different decisions.
 
 Consequence: scheduling or unattended live delivery requires a later explicit build and may not reuse Build 051 activation as implicit authorization.
+
+
+## D0111 — Reconciliation is read-only and independent of live activation
+
+Decision: Build 052 verification never reuses Build 051 live activation and never sends a mutation request.
+
+Reason: proving current downstream state and authorizing a consequential write are different security decisions.
+
+Consequence: an expired/revoked activation does not block historical verification, while reconciliation can never become implicit authorization for correction.
+
+## D0112 — Historical delivery remains verifiable after publication or mapping closure
+
+Decision: Build 052 reconstructs the accepted package from immutable publication/mapping fields even if the publication is later withdrawn or mapping retired, then requires exact identity equality with the accepted live-delivery row.
+
+Reason: withdrawal/retirement should stop future handoff, not destroy the ability to audit an already executed delivery.
+
+Consequence: historical verification is possible without reopening the publication or mapping.
+
+## D0113 — Consumer verification request withholds expected values
+
+Decision: the verify-state request supplies package identity, integration keys and governed field names but not expected values.
+
+Reason: a consumer should return independently read current state rather than being handed the answer it is expected to prove.
+
+Consequence: comparison remains server-side and a consumer cannot satisfy verification by blindly echoing requested expected values.
+
+## D0114 — Drift evidence is append-only and non-remediating
+
+Decision: Build 052 persists matched/mismatched/missing fingerprints and differing governed field names but performs no automatic repair, rollback, retry or corrective delivery.
+
+Reason: discrepancy detection is evidence; corrective action requires a separate intent and safety review.
+
+Consequence: Build 053 may triage reconciliation exceptions and prepare corrective plans, but Build 052 itself cannot mutate either side.
