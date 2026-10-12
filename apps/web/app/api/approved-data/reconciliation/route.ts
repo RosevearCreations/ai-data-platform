@@ -74,12 +74,13 @@ async function fetchConsumer(
 export async function GET() {
   const userId = await currentUserId();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
-  return Response.json(await listPostDeliveryReconciliationForUser(userId));
+  return Response.json(await listPostDeliveryReconciliationForUser(authenticatedUserId));
 }
 
 export async function POST(request: Request) {
   const userId = await currentUserId();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const authenticatedUserId = userId;
 
   const body = object(await request.json().catch(() => null));
   if (body.action !== "verify-state") {
@@ -98,9 +99,11 @@ export async function POST(request: Request) {
     );
   }
 
-  let context;
+  let context: Awaited<
+    ReturnType<typeof loadAcceptedDeliveryReconciliationContext>
+  >;
   try {
-    context = await loadAcceptedDeliveryReconciliationContext(userId, {
+    context = await loadAcceptedDeliveryReconciliationContext(authenticatedUserId, {
       workspaceId,
       deliveryId
     });
@@ -119,7 +122,7 @@ export async function POST(request: Request) {
     code: string,
     httpStatus?: number | null
   ) {
-    await recordLiveDeliveryReconciliation(userId, {
+    await recordLiveDeliveryReconciliation(authenticatedUserId, {
       workspaceId,
       deliveryId,
       activationId: context.delivery.activationId,
@@ -207,7 +210,7 @@ export async function POST(request: Request) {
     );
     const comparison = compareConsumerState(context.package, verification);
 
-    const reconciliationId = await recordLiveDeliveryReconciliation(userId, {
+    const reconciliationId = await recordLiveDeliveryReconciliation(authenticatedUserId, {
       workspaceId,
       deliveryId,
       activationId: context.delivery.activationId,
@@ -238,7 +241,7 @@ export async function POST(request: Request) {
           mismatched: comparison.mismatchedCount,
           missing: comparison.missingCount
         },
-        model: await listPostDeliveryReconciliationForUser(userId)
+        model: await listPostDeliveryReconciliationForUser(authenticatedUserId)
       },
       { status: comparison.status === "rejected" ? 409 : 200 }
     );
