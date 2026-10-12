@@ -1095,7 +1095,7 @@ Acceptance: users can author or revise the same recipe format used by the extens
 
 ## Build 047 — Collection Run Console & Live Evidence
 
-Status: **IMPLEMENTED on build branch; promotion follows the normal build → dev → main release path.**
+Status: **PRODUCTION GREEN — promoted to main via PR #64 after dev/main verification; Vercel production deployment `dpl_6KqrG9RajGf8xAWqhYBhz836d8CK` is READY for release SHA `40bb1e3f7e4e8bb50f0e29c453f9df2e68219065`.**
 
 Goal: make real collection execution observable and controllable from one authenticated product surface while preserving the existing local-Chrome and Browserless authorization boundaries.
 
