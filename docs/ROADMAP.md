@@ -1430,3 +1430,17 @@ Production evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Build 057 application release is therefore **GREEN on main and production**.
+
+## Build 058 — Successor Corrective Delivery Activation & Idempotent Execution
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct accepted predecessor corrective evidence without mutating it;
+- derive a distinct successor package from approved Build 057 scope;
+- require fresh capability handshake, accepted dry-run and typed activation;
+- reserve/live-send with deterministic replay-key idempotency and bounded retries;
+- preserve immutable successor activation/delivery evidence;
+- block reopened cases from the legacy Build 054 execution path.
+
+Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**

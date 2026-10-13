@@ -803,3 +803,7 @@ Do not resend a corrective package, expose expected values, reopen automatically
 - `/approved-data/reconciliation/reopened-planning` is the operator workbench.
 - `verify-reopened-exception-planning.ts` validates fail-closed scope derivation and deterministic fingerprints.
 - `verify-reopened-exception-planning-database.ts` validates tables, RLS, policies, grants, the reopened-case guard and the legacy-plan block.
+
+## Build 058 verification
+
+Build 058 adds `verify-successor-corrective-delivery-execution.ts` to the application test chain and `verify-successor-corrective-delivery-execution-database.ts` to `db:verify`. Verification covers deterministic distinct successor package identity, frozen-field scope, confirmation phrases, tamper rejection, RLS, narrow UPDATE grants, one-active-activation enforcement and database blocking of legacy Build 054 writes after reopen.
