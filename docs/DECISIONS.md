@@ -810,3 +810,44 @@ Decision: Build 053 approval records review of the immutable planning artifact b
 Reason: exception analysis and consequential execution require separate control boundaries.
 
 Consequence: Build 054 must establish fresh activation/idempotency/execution gates rather than treating Build 053 approval alone as permission to write.
+
+
+## D0119 — Corrective execution gets a new package and replay identity
+
+Decision: Build 054 derives a new integration package from the approved Build 053 plan instead of resending the original Build 051 package.
+
+Reason: the original replay key already identifies the original accepted mutation. Reusing it could cause the consumer to return the original acknowledgement instead of applying the reviewed correction.
+
+Consequence: corrective package ID, replay key and fingerprint are deterministically bound to the approved plan ID/review evidence.
+
+## D0120 — New reconciliation evidence supersedes an unexecuted corrective plan
+
+Decision: Build 054 requires the Build 053 plan's reconciliation to remain the newest reconciliation for the original accepted delivery.
+
+Reason: a later read-back may show that the consumer state changed after triage.
+
+Consequence: stale plans fail closed and require fresh triage/planning from the newer reconciliation.
+
+## D0121 — Corrective activation requires an accepted dry-run and expires quickly
+
+Decision: approved plans receive at most a one-hour activation only after fresh live/idempotency capability and an accepted dry-run of the exact corrective package.
+
+Reason: reviewed intent should not become durable standing write authority.
+
+Consequence: activation is plan/package/consumer-specific and expires no later than the package's 24-hour approval window.
+
+## D0122 — Corrective mutation uses sender reservation and replay-key idempotency
+
+Decision: the sender persists the canonical corrective delivery identity before contacting the consumer and uses the corrective replay key as `Idempotency-Key`.
+
+Reason: network uncertainty must not create duplicate downstream mutation.
+
+Consequence: accepted/rejected results are terminal; transport-error alone may retry with unchanged identity and a bounded attempt count.
+
+## D0123 — Accepted transport is not exception closure
+
+Decision: Build 054 leaves the Build 053 case/plan approval state intact after an accepted corrective delivery.
+
+Reason: transport acknowledgement proves receipt, not current downstream state.
+
+Consequence: Build 055 must independently reconcile the corrective outcome before exception closure.
