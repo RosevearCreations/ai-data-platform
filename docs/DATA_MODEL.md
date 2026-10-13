@@ -1009,3 +1009,10 @@ Immutable successor-plan identity and correction scope for a reopened exception.
 - `app.workspace_successor_corrective_live_deliveries` stores the idempotent live reservation/result ledger. Identity columns are immutable to the runtime role; only delivery status/attempt/result fields have narrow UPDATE grants.
 - The predecessor Build 054 activation/delivery rows remain historical evidence and are not rewritten or reused as successor execution rows.
 - Migration: `0028_successor_corrective_delivery_execution.sql`.
+
+## Build 059 successor reconciliation evidence
+
+- `app.workspace_successor_corrective_delivery_reconciliations` records independent read-back evidence for an accepted Build 058 successor delivery, including exact plan/regression/package identities, status, record-level results and verification fingerprint.
+- `app.workspace_reconciliation_exception_reclosures` records one immutable verified re-closure for the current reopen generation. It binds the original closure and reopen fingerprints to the Build 057 plan, Build 058 delivery and newest matched Build 059 reconciliation.
+- Runtime access is SELECT/INSERT only for both tables. UPDATE and DELETE are not granted.
+- Migration: `0029_successor_corrective_reconciliation_reclosure.sql`.
