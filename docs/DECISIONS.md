@@ -851,3 +851,44 @@ Decision: Build 054 leaves the Build 053 case/plan approval state intact after a
 Reason: transport acknowledgement proves receipt, not current downstream state.
 
 Consequence: Build 055 must independently reconcile the corrective outcome before exception closure.
+
+
+## D0124 — Corrective transport acceptance is not resolution
+
+Decision: Build 055 requires an independent read-back after an accepted Build 054 corrective delivery.
+
+Reason: an acknowledgement proves delivery handling, not the consumer's resulting current state.
+
+Consequence: no exception may close from Build 054 transport evidence alone.
+
+## D0125 — Corrective read-back withholds expected values
+
+Decision: the verify request sends the corrective package identity, integration keys and governed field names, but not the expected values.
+
+Reason: the consumer must report independently read state rather than echoing the answer supplied by the sender.
+
+Consequence: comparison remains server-side against the frozen corrective package.
+
+## D0126 — Only the latest corrective verification can support closure
+
+Decision: an older matched read-back becomes ineligible if a newer verification exists.
+
+Reason: later evidence is the best available representation of current downstream state.
+
+Consequence: newer drift/rejected/transport-error evidence fails closure closed even if historical matched evidence exists.
+
+## D0127 — Verified closure is immutable evidence before mutable case state
+
+Decision: Build 055 inserts an immutable closure row before changing the Build 053 case status to closed, and a database trigger enforces that prerequisite.
+
+Reason: the mutable case lifecycle must never be the only proof that closure was warranted.
+
+Consequence: generic triage cannot close a case, and runtime code cannot edit or delete the reconciliation/closure evidence supporting closure.
+
+## D0128 — Post-closure regression is a separate governance problem
+
+Decision: Build 055 terminates at verified closure and does not automatically reopen a case later.
+
+Reason: reopening needs explicit rules for regression evidence, duplicate cases and operator accountability.
+
+Consequence: Build 056 is queued as Post-Closure Regression Monitoring & Exception Reopen Governance.

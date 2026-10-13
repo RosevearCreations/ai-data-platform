@@ -19,6 +19,60 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "corrective-closure-overview": {
+    title: "Corrective Delivery Reconciliation & Exception Closure",
+    summary: "Build 055 independently verifies the fields written by an accepted Build 054 corrective delivery and permits closure only from the latest matched read-back. Transport acceptance alone never closes an exception.",
+    steps: [
+      "Start from an accepted Build 054 corrective delivery whose Build 053 plan and exception case are still approved.",
+      "Confirm the configured consumer origin still matches the consumer origin pinned to the corrective delivery.",
+      "Require a fresh stateVerificationSupported=true handshake before reading current consumer state.",
+      "Request only the integration keys and governed field names present in the frozen corrective package; expected values are never sent to the consumer.",
+      "Compare current consumer state server-side against the exact corrective package.",
+      "Treat matched, drift, rejected and transport-error results as append-only evidence.",
+      "Allow closure only when the latest corrective reconciliation for that delivery is matched.",
+      "Require a separate typed closure confirmation and a non-empty closure note before recording immutable closure evidence."
+    ],
+    notes: [
+      "Build 055 sends no corrective mutation and never retries Build 054 delivery.",
+      "A later drift/rejected/transport-error verification supersedes an earlier matched result for closure eligibility.",
+      "The Build 053 case cannot transition to closed through the generic triage path; the database requires a Build 055 closure row.",
+      "Closure evidence pins the case, approved plan, accepted corrective delivery, latest matched reconciliation and verification fingerprints."
+    ],
+    manual: [
+      "Apply 0025_corrective_reconciliation_closure.sql before using Build 055.",
+      "Build 055 reuses the existing supported consumer URL/token variables and introduces no new secret or paid service."
+    ]
+  },
+  "corrective-closure-verify": {
+    title: "Corrective state read-back",
+    summary: "Read-back asks the consumer for current values after Build 054 without revealing the expected values in the request.",
+    steps: [
+      "Choose an accepted corrective delivery.",
+      "Build 055 verifies consumer-origin continuity and performs a fresh state-verification handshake.",
+      "The verify-state request identifies the exact corrective package and governed field names only.",
+      "Matched means every governed corrective field now equals the frozen expected value.",
+      "Drift or missing state keeps the exception open and should return to planning rather than being auto-repaired."
+    ],
+    notes: [
+      "Every verification is append-only so later regression cannot erase earlier evidence.",
+      "Verification errors are evidence, not closure."
+    ]
+  },
+  "corrective-closure-evidence": {
+    title: "Verified closure evidence",
+    summary: "Exception closure is a distinct owner/admin action backed by the latest matched corrective reconciliation.",
+    steps: [
+      "Review the latest matched corrective reconciliation and its per-key results.",
+      "Enter a closure note explaining why the evidence warrants closure.",
+      "Type the exact CLOSE VERIFIED <TARGET> EXCEPTION phrase.",
+      "Build 055 inserts immutable closure evidence before setting the Build 053 case to closed.",
+      "If a newer corrective reconciliation exists and is not matched, closure fails closed."
+    ],
+    notes: [
+      "Closure rows are SELECT/INSERT only for the runtime role; they cannot be edited or deleted.",
+      "The database trigger blocks direct case closure when no verified closure row exists."
+    ]
+  },
   "corrective-delivery-overview": {
     title: "Approved Corrective Delivery Activation & Idempotent Execution",
     summary: "Build 054 converts one approved Build 053 corrective plan into a new deterministic corrective package, proves that exact package by external dry-run, grants short-lived corrective authority, then executes with sender-side reservation and replay-key idempotency.",
@@ -1191,7 +1245,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Approved data & integration delivery",
-    topics: ["corrective-delivery-overview", "corrective-delivery-activation", "corrective-delivery-idempotency", "reconciliation-triage-overview", "reconciliation-triage-case", "reconciliation-triage-planning", "reconciliation-triage-review", "post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    topics: ["corrective-closure-overview", "corrective-closure-verify", "corrective-closure-evidence", "corrective-delivery-overview", "corrective-delivery-activation", "corrective-delivery-idempotency", "reconciliation-triage-overview", "reconciliation-triage-case", "reconciliation-triage-planning", "reconciliation-triage-review", "post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",

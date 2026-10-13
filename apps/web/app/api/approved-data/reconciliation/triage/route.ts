@@ -64,7 +64,7 @@ const classifications = [
 ] as const;
 const severities = ["low","medium","high","critical"] as const;
 const intents = ["investigate","accept-drift","plan-correction","no-action"] as const;
-const caseStatuses = ["open","planned","approved","closed","dismissed"] as const;
+const caseStatuses = ["open","planned","approved","dismissed"] as const;
 
 export async function GET() {
   const userId = await currentUserId();

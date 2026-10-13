@@ -504,3 +504,14 @@ Activation requires the same configured consumer origin that accepted the origin
 The sender reserves the canonical corrective delivery row before any live network mutation. The corrective replay key is the immutable `Idempotency-Key`. Accepted/rejected are terminal. Only transport-error may retry, with the same identity and a five-attempt cap.
 
 Runtime UPDATE grants cannot alter activation plan/package identity or corrective delivery plan/package/replay/idempotency identity.
+
+
+## Build 055 verified closure boundary
+
+Build 055 treats downstream transport acceptance as receipt evidence, not state proof. Only an independently read current consumer state can support closure.
+
+The verify-state request never sends the expected corrective values. It sends only the exact corrective package identity, governed integration keys and governed field names. Comparison occurs server-side.
+
+Corrective reconciliation rows and closure rows are append-only for `ai_data_runtime`; the runtime role receives no UPDATE or DELETE privileges on either table. RLS restricts visibility to workspace members and INSERT to workspace owners/admins with matching accepted-delivery/approved-plan/approved-case evidence.
+
+Closure requires the latest corrective reconciliation to be `matched`. A database trigger blocks any case status transition to `closed` unless an immutable Build 055 closure row already exists, preventing the older generic triage path from bypassing verified closure.
