@@ -2788,3 +2788,13 @@ Production promotion evidence:
 Build 058 is **GREEN on main and production**.
 
 Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**
+
+## Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure
+
+Implementation branch: `build-059-successor-reconciliation-reclosure`.
+
+Added migration `0029_successor_corrective_reconciliation_reclosure.sql`, successor reconciliation library/API/workbench, CI verification, immutable successor read-back and re-closure ledgers, latest-match enforcement, latest-reopen binding, successor-aware case-close trigger behavior, wait/busy mutation controls, and database blocking of legacy Build 055/056 lifecycle writes after reopen.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**
