@@ -2808,3 +2808,13 @@ Production promotion evidence:
 Build 059 is **GREEN on main and production**.
 
 Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**
+
+## Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance
+
+Implementation branch: `build-060-post-reclosure-recurrence`.
+
+Added migration `0030_post_reclosure_recurrence_governance.sql`, post-re-closure monitoring library/API/workbench, stable-versus-recurred classification, immutable recurrence evidence, newest-check recurrence enforcement, generation-aware closed→open governance, prior successor-cycle freeze triggers, busy/wait mutation controls, and CI verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**
