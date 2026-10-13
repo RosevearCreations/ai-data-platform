@@ -28,6 +28,8 @@ async function main() {
     "../app/approved-data/reconciliation/triage/ReconciliationExceptionTriageWorkbench.tsx",
     "../app/approved-data/reconciliation/corrective-delivery/page.tsx",
     "../app/approved-data/reconciliation/corrective-delivery/CorrectiveDeliveryWorkbench.tsx",
+    "../app/approved-data/reconciliation/corrective-closure/page.tsx",
+    "../app/approved-data/reconciliation/corrective-closure/CorrectiveClosureWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -58,6 +60,18 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const correctiveClosure = HELP_TOPICS["corrective-closure-overview"];
+  assert(
+    "manual" in correctiveClosure &&
+      correctiveClosure.steps.some((step) => step.includes("stateVerificationSupported=true")) &&
+      correctiveClosure.steps.some((step) => step.includes("expected values are never sent")) &&
+      correctiveClosure.steps.some((step) => step.includes("latest corrective reconciliation")) &&
+      correctiveClosure.notes.some((note) => note.includes("cannot transition to closed")) &&
+      correctiveClosure.manual.some((step) => step.includes("0025_corrective_reconciliation_closure.sql")) &&
+      correctiveClosure.manual.some((step) => step.includes("introduces no new secret")),
+    "Build 055 help must preserve independent read-back, no-expected-value disclosure, latest-match closure and database-enforced closure guidance."
   );
 
   const corrective = HELP_TOPICS["corrective-delivery-overview"];
@@ -239,7 +253,7 @@ async function main() {
   );
 
   console.log(
-    "Build 054 contextual help coverage, corrective activation/idempotent execution guidance and existing production gates passed."
+    "Build 055 contextual help coverage, corrective read-back/verified closure guidance and existing production gates passed."
   );
 
 }
