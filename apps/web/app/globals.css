@@ -3037,3 +3037,20 @@ h3 {
   color: #edf6f7;
   padding: 0.65rem 0.75rem;
 }
+
+
+/* Build 055 — Corrective Delivery Reconciliation & Exception Closure */
+.correctiveClosureShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.correctiveClosureHero {
+  max-width: 1080px;
+  padding-bottom: 3rem;
+}
+
+.correctiveClosureShell textarea {
+  width: 100%;
+  min-height: 6rem;
+  resize: vertical;
+}
