@@ -524,3 +524,10 @@ Regression checks and reopen rows are append-only for `ai_data_runtime`; no runt
 
 No check can mutate the consumer, resend a corrective package or automatically reopen an exception. Reopening requires the newest check for the closure to be `regressed`, a non-empty operator reason and a target-specific typed confirmation. The database requires immutable reopen evidence before a case may transition away from `closed`, and a reopened closure cannot later satisfy the verified-close guard.
 
+
+
+## Build 057 successor planning boundary
+
+Only workspace owners/admins may create or update a reopened re-triage cycle or successor plan. RLS requires an exact Build 056 reopen → regressed-check → open-case chain before a re-triage row may be inserted. Successor-plan insertion additionally requires `plan-correction`, an approved predecessor plan, an accepted predecessor corrective delivery and exact package identity.
+
+The legacy Build 053 plan-insert policy now explicitly rejects cases with Build 056 reopen evidence. A database trigger also blocks generic `open → planned/approved/dismissed` transitions on the original case after reopen, so the successor lifecycle cannot be bypassed through the old case workflow. Build 057 has no consumer endpoint and grants no runtime DELETE on its evidence tables.

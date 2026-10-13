@@ -113,3 +113,8 @@ The signed-in application now includes `/approved-data/reconciliation/corrective
 
 The signed-in application now includes `/approved-data/reconciliation/post-closure-regression`. A verified Build 055 closure can be read back again without sending expected values or performing a downstream mutation. Stable, regressed and error outcomes are retained as append-only post-closure evidence. Only the newest regressed check can support an explicit owner/admin reopen, and an immutable reopen row must exist before the closed Build 053 case may return to `open`. A reopened case cannot reuse its older Build 055 closure as proof for a later silent re-close.
 
+
+
+## Build 057 application surface
+
+The signed-in application now includes `/approved-data/reconciliation/reopened-planning`. Every governed Build 056 reopen may create one new re-triage cycle. Owners/admins classify the reopened regression, record investigation notes, choose a resolution intent, and—only for `plan-correction`—freeze a successor corrective plan from the exact fields proven regressed by Build 056 and the desired values already governed by the accepted predecessor corrective package. Build 057 performs no downstream consumer mutation. The legacy Build 053 corrective-plan insert path is denied once a case has Build 056 reopen evidence.

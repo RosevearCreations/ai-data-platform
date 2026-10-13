@@ -2725,3 +2725,31 @@ Build 056 application release is therefore **GREEN on main and production**.
 
 Next queued: Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.
 
+
+
+## Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning
+
+Date: 2026-10-13
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+- migration `0027_reopened_exception_successor_planning.sql`;
+- reopened re-triage and successor corrective-plan persistence;
+- exact Build 056 reopen/regression lineage;
+- deterministic successor scope and plan fingerprinting;
+- legacy Build 053 plan-path block after reopen;
+- reopened-case lifecycle guard;
+- authenticated API and operator workbench;
+- verification wired into `pnpm test` and `pnpm db:verify`;
+- documentation and next-build queue updated.
+
+Verification target:
+- migration clean on empty CI PostgreSQL;
+- typecheck/lint/build/tests GREEN;
+- database/RLS verifier GREEN;
+- feature → dev → main promotion;
+- production Neon migration recorded and verified;
+- exact main SHA READY on Vercel production.
+
+Next queued: Build 058 — Successor Corrective Delivery Activation & Idempotent Execution.
