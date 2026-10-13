@@ -93,3 +93,8 @@ The signed-in application now includes `/approved-data/live-delivery`, the first
 ## Build 052 application surface
 
 The signed-in application now includes `/approved-data/reconciliation`, a read-only post-delivery verification workbench for accepted Build 051 live deliveries. The platform reconstructs the exact historical package from immutable publication/mapping evidence, requires the currently configured consumer origin to match the origin that accepted the live delivery, obtains a fresh `stateVerificationSupported=true` capability handshake, requests current values for only the delivered integration keys and governed fields, compares them server-side, and stores append-only matched/mismatched/missing fingerprints and field names. Build 052 never automatically repairs, rolls back, retries or sends a new mutation when drift is found.
+
+
+## Build 053 application surface
+
+The signed-in application now includes `/approved-data/reconciliation/triage`, where Build 052 drift becomes an explicit exception case and, when appropriate, an immutable corrective delivery plan. Owners/admins classify severity and resolution intent, investigate without changing reconciliation evidence, freeze exact affected keys/fields plus desired governed values from the original accepted package, and approve/reject/withdraw the planning artifact. Build 053 has no downstream consumer call, live activation or corrective execution endpoint.
