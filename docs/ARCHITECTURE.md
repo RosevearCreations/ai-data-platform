@@ -417,3 +417,10 @@ Every post-closure check is append-only. A matching read-back is recorded as `st
 
 Reopening is a separate owner/admin governance action. The selected check must be the newest check for that closure and must be `regressed`. The transaction inserts immutable reopen evidence before changing the original exception case from `closed` to `open`. A database trigger prevents any other closed-to-nonclosed transition. Once a closure has a reopen row, the Build 055 close guard no longer accepts that historical closure as proof for another transition to `closed`; a successor resolution cycle must establish fresh closure authority.
 
+
+
+## Build 057 reopened successor-cycle boundary
+
+Build 057 treats a Build 056 reopen as the start of a new resolution generation rather than a continuation of the original Build 053 plan. `workspace_reopened_exception_triage_cycles` is one-per-reopen and records the new classification, severity, intent and investigation state while preserving the original exception case, closure, regression check and reopen rows unchanged.
+
+Successor planning is stored separately in `workspace_successor_corrective_delivery_plans`. Its correction scope is derived only from Build 056 `mismatched`/`missing` results and values already frozen in the accepted predecessor corrective plan. The original `workspace_corrective_delivery_plans` insert policy now rejects any case that has reopen evidence, preventing stale Build 053 planning from being used after reopening. Build 057 has no activation or transport path.
