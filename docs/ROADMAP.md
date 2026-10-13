@@ -1352,7 +1352,7 @@ Next queued: **Build 056 — Post-Closure Regression Monitoring & Exception Reop
 
 ## Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — 2026-10-13.**
 
 Goal: observe verified Build 055 closures for later downstream regression and, only from the newest proven regression, permit an explicit governed reopen without weakening or rewriting the original closure evidence.
 
@@ -1375,6 +1375,21 @@ Delivered:
 - no corrective mutation, no resend and no automatic reopen.
 
 Acceptance target: only verified Build 055 closures may be monitored; expected values are never sent to the consumer; only owners/admins may check or reopen; stable evidence leaves the case closed; only the newest regressed check may support reopen; stale regression cannot reopen; generic or direct closed→open changes fail at the database layer; regression/reopen evidence is immutable to the runtime role; cross-account evidence remains invisible; reopening preserves the original Build 055 closure as historical evidence while preventing that stale closure from silently re-closing the case; and no Build 056 path performs a downstream mutation.
+
+
+
+Production evidence:
+
+- implementation PR #107 merged to `dev`;
+- correction PR #108 fixed authenticated-user type narrowing;
+- correction PR #109 removed the final Build 056 lint defect;
+- `dev` candidate `e62fc92d43317fd3ac085cba53df92f4362e28ea` passed Verify #617 (run `38411509850`);
+- release PR #110 passed main-target Verify #618 (run `38411804647`) and merged to `main`;
+- release `main` SHA `d8c1b895f03306a48dea0a6910562b44192e9427` passed Verify #619 (run `38412121779`);
+- production Neon project `ai-data-platform-production`, branch `production`, recorded `0026_post_closure_regression_reopen.sql`;
+- production verification confirmed both Build 056 tables have RLS enabled, exactly the intended SELECT/INSERT runtime grants, both manager/member policies, the governed reopen trigger, and the verified-close guard;
+- Vercel production deployment `dpl_DxcL2W1VTLf9Bxw1Tdm1XrwyfcBh` is READY from exact release SHA `d8c1b895f03306a48dea0a6910562b44192e9427`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with no alias error.
 
 Next queued: **Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.**
 
