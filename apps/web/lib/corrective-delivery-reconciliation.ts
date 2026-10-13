@@ -620,9 +620,7 @@ export async function closeVerifiedReconciliationException(
     });
     const closureId = randomUUID();
 
-    await client.query("begin");
-    try {
-      await client.query(
+    await client.query(
         `insert into app.workspace_reconciliation_exception_closures (
           workspace_id,closure_id,case_id,plan_id,corrective_delivery_id,
           corrective_reconciliation_id,target,plan_fingerprint,
@@ -647,7 +645,7 @@ export async function closeVerifiedReconciliationException(
           userId
         ]
       );
-      const closed = await client.query(
+    const closed = await client.query(
         `update app.workspace_reconciliation_exception_cases
          set status='closed',updated_by=$3,updated_at=now(),
              closed_by=$3,closed_at=now(),
@@ -658,13 +656,8 @@ export async function closeVerifiedReconciliationException(
          where workspace_id=$1 and case_id=$2 and status='approved'`,
         [input.workspaceId, row.case_id, userId, closureNote]
       );
-      if (!closed.rowCount) {
-        throw new Error("corrective_closure_case_not_approved");
-      }
-      await client.query("commit");
-    } catch (error) {
-      await client.query("rollback");
-      throw error;
+    if (!closed.rowCount) {
+      throw new Error("corrective_closure_case_not_approved");
     }
 
     return closureId;
