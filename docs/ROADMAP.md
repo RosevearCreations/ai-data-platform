@@ -1318,4 +1318,34 @@ Delivered:
 
 Acceptance: **PASSED.** Only approved Build 053 plans with no unresolved manual-review item may activate; a newer reconciliation fails closed; the configured consumer origin must match the original accepted source delivery; activation requires accepted external dry-run of the exact corrective package; corrective identity columns cannot be mutated by the runtime role; accepted/rejected deliveries are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and Build 053 plan approval remains unchanged after Build 054 execution. Release evidence: implementation PR #97 → dev; browser/server boundary correction PR #98 → dev; release PR #99 → main; corrected dev Verify run 38341043399 (#601) GREEN; main-target PR Verify run 38341189240 (#602) GREEN; independent main Verify run 38341320305 (#603) GREEN; production Neon migration ledger includes 0024 with corrective activation/delivery RLS and identity-protecting UPDATE grants verified; and Vercel deployment dpl_Gn7tYooUkXS4xsTYbQKvzLKC8XVk is READY for main SHA f46c790e8eeb778d37bbee80027a6c4995413b56.
 
-Next queued: **Build 055 — Corrective Delivery Reconciliation & Exception Closure.**
+## Build 055 — Corrective Delivery Reconciliation & Exception Closure
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: independently verify the consumer state after an accepted Build 054 corrective delivery and permit exception closure only from the latest matched read-back evidence.
+
+Delivered:
+
+- migration `0025_corrective_reconciliation_closure.sql`;
+- append-only `workspace_corrective_delivery_reconciliations` evidence for matched, drift, rejected and transport-error outcomes;
+- immutable `workspace_reconciliation_exception_closures` evidence with one canonical closure per case;
+- accepted Build 054 corrective delivery required before read-back;
+- Build 053 approved plan and approved case must still be current;
+- exact reconstruction of the Build 054 corrective package and consumer identity;
+- fresh `stateVerificationSupported=true` handshake before each read-back;
+- verify-state request sends corrective package identity, integration keys and governed field names only — not expected values;
+- server-side comparison against the exact frozen corrective package;
+- append-only per-key matched/mismatched/missing evidence and verification fingerprints;
+- latest-verification rule: older matched evidence cannot close a case after newer drift/rejected/transport-error evidence;
+- explicit target-specific typed closure confirmation;
+- non-empty operator closure note;
+- database-enforced closure guard: Build 053 generic case update cannot set `closed` without an existing Build 055 verified closure row;
+- closure transaction inserts immutable closure evidence before transitioning the case to `closed`;
+- RLS-scoped SELECT/INSERT-only reconciliation and closure ledgers;
+- `/approved-data/reconciliation/corrective-closure` workbench, API, navigation, contextual help and responsive UI;
+- deterministic comparison/fingerprint tests plus PostgreSQL accepted-correction/read-back/latest-match/RLS/immutability/closure-trigger verification;
+- no corrective mutation, no resend and no automatic new corrective plan.
+
+Acceptance target: transport acceptance alone never closes a case; only accepted Build 054 deliveries may be reconciled; expected values are not sent in the verification request; drift/error evidence keeps the case open; an older matched result cannot close after newer evidence; generic triage closure fails closed at both app and database layers; only owners/admins may record verification or closure; reconciliation and closure evidence cannot be mutated or deleted by the runtime role; cross-account evidence remains invisible; and the Build 053 approved plan remains unchanged after verified case closure.
+
+Next queued: **Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance.**
