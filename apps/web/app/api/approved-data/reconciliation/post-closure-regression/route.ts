@@ -86,6 +86,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const userId = await currentUserId();
   if (!userId) return Response.json({ error: "Unauthorized" }, { status: 401 });
+  const authenticatedUserId = userId;
 
   const body = object(await request.json().catch(() => null));
   if (body.action !== "check-closed-state") {
@@ -122,7 +123,7 @@ export async function POST(request: Request) {
   const occurredAt = new Date().toISOString();
 
   async function recordError(code: string, httpStatus?: number | null) {
-    await recordPostClosureRegressionCheck(userId, {
+    await recordPostClosureRegressionCheck(authenticatedUserId, {
       workspaceId,
       context,
       status: "transport-error",
