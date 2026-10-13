@@ -2770,3 +2770,13 @@ Production promotion evidence:
 - aliases include `ai-data-platform-beryl.vercel.app`; `aliasError=null`.
 
 Build 057 application release is therefore **GREEN on main and production**.
+
+## Build 058 — Successor Corrective Delivery Activation & Idempotent Execution
+
+Implementation branch: `build-058-successor-corrective-execution`.
+
+Added migration `0028_successor_corrective_delivery_execution.sql`, successor execution library/API/workbench, CI verification, strict busy-state UI controls, distinct successor package/replay identity, fresh handshake + dry-run activation, same-key bounded retry behavior, terminal no-resend handling, and database guards preventing reopened cases from using the legacy Build 054 write path.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**
