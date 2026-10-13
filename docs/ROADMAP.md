@@ -1397,7 +1397,7 @@ Next queued: **Build 057 — Reopened Exception Re-Triage & Successor Corrective
 
 ## Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — 2026-10-13.**
 
 Goal: convert a governed Build 056 reopen into a fresh, attributable re-triage generation and, where explicitly approved, a successor corrective plan without reusing stale Build 053 planning authority or performing any downstream mutation.
 
@@ -1416,3 +1416,17 @@ Delivered:
 Acceptance target: only governed Build 056 reopens may start re-triage; each reopen may have at most one re-triage generation; successor scope must fail closed if a regressed key/field is not predecessor-governed; only owners/admins may mutate; old closure/regression/reopen evidence stays immutable; reopened cases cannot create legacy Build 053 plans; successor plans are reviewable but cannot execute in Build 057; cross-workspace evidence remains hidden; runtime DELETE remains unavailable.
 
 Next queued: **Build 058 — Successor Corrective Delivery Activation & Idempotent Execution.**
+
+
+Production evidence:
+- implementation PR #113 merged Build 057 into `dev`;
+- dev Verify #625 exposed a database-verifier assumption about PostgreSQL column-level UPDATE grants; correction PR #114 fixed verification without widening privileges;
+- corrected `dev` SHA `2137775bb090a0d6a5c7ab08fbb197919c3815ef` passed Verify #626 / run `38428377281`;
+- release PR #115 passed main-target Verify #627 / run `38428588214` and merged to `main`;
+- release `main` SHA `ba440510d3e83f8754199789bf9575dc9de075b3` passed main Verify #628 / run `38428862405`;
+- Neon production project `dry-violet-48414847`, branch `br-wandering-paper-b5wj4f1u`, records `0027_reopened_exception_successor_planning.sql`;
+- production Neon verification confirmed both Build 057 tables have RLS enabled, all six intended policies, the reopened-cycle guard, the legacy Build 053 plan-insert block, narrow column-level UPDATE grants, and no runtime DELETE grant;
+- Vercel production deployment `dpl_6Q4BUdDNAQB7AaFmn2CApoZNsFmE` is `READY`, target `production`, source `git`, exact GitHub SHA `ba440510d3e83f8754199789bf9575dc9de075b3`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 057 application release is therefore **GREEN on main and production**.

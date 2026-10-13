@@ -2731,7 +2731,7 @@ Next queued: Build 057 — Reopened Exception Re-Triage & Successor Corrective P
 
 Date: 2026-10-13
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN.
 
 Delivered:
 - migration `0027_reopened_exception_successor_planning.sql`;
@@ -2753,3 +2753,20 @@ Verification target:
 - exact main SHA READY on Vercel production.
 
 Next queued: Build 058 — Successor Corrective Delivery Activation & Idempotent Execution.
+
+
+Production promotion evidence:
+- PR #113 → `dev`: Build 057 implementation;
+- Verify #625 found only the Build 057 grant-verifier mismatch; application typecheck/lint/build/tests were already GREEN;
+- PR #114 → `dev`: corrected column-level UPDATE privilege verification without widening production grants;
+- corrected `dev` SHA `2137775bb090a0d6a5c7ab08fbb197919c3815ef`;
+- Verify #626 / run `38428377281`: SUCCESS;
+- release PR #115 main-target Verify #627 / run `38428588214`: SUCCESS;
+- release `main` SHA `ba440510d3e83f8754199789bf9575dc9de075b3`;
+- main Verify #628 / run `38428862405`: SUCCESS;
+- Neon production project `dry-violet-48414847` / branch `br-wandering-paper-b5wj4f1u`: migration `0027_reopened_exception_successor_planning.sql` recorded and live;
+- production Neon checks: Build 057 RLS ON, six intended policies present, reopened-cycle guard active, legacy Build 053 plan path blocked, narrow UPDATE columns present, no runtime DELETE;
+- Vercel deployment `dpl_6Q4BUdDNAQB7AaFmn2CApoZNsFmE`: `READY`, target `production`, source `git`, exact GitHub SHA `ba440510d3e83f8754199789bf9575dc9de075b3`;
+- aliases include `ai-data-platform-beryl.vercel.app`; `aliasError=null`.
+
+Build 057 application release is therefore **GREEN on main and production**.
