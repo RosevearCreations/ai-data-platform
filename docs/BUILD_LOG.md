@@ -2510,3 +2510,52 @@ Resolved during promotion:
 - No failed gate was bypassed. Build 053 proceeded only after corrected dev, main-target and independent main verification all passed.
 
 Next queued: Build 054 — Approved Corrective Delivery Activation & Idempotent Execution.
+
+
+## Build 054 — Approved Corrective Delivery Activation & Idempotent Execution
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0024_corrective_delivery_execution.sql`;
+- approved-plan reconstruction and plan-fingerprint verification;
+- new deterministic corrective package and replay identity;
+- exact frozen-field execution scope;
+- manual-review fail-closed handling;
+- latest-reconciliation supersession gate;
+- original consumer-origin continuity;
+- accepted corrective dry-run requirement;
+- one-hour plan-specific corrective activation;
+- separate typed activation and execution confirmations;
+- sender-side reservation before live mutation;
+- same-key bounded transport retry and terminal no-resend behavior;
+- narrow RLS/grants for activation revocation and delivery outcome updates only;
+- `/approved-data/reconciliation/corrective-delivery` workbench, API, navigation and help;
+- deterministic and PostgreSQL end-to-end verification.
+
+Guardrails:
+
+- Build 053 approval is necessary but not sufficient for execution;
+- a newer Build 052 reconciliation invalidates the old plan;
+- corrective data is generated only from frozen Build 053 values;
+- the corrective package never reuses the original live package replay identity;
+- unresolved missing-update semantics remain manual-review and cannot execute;
+- the configured consumer origin must match the original accepted delivery;
+- activation requires fresh live/idempotency capability plus accepted external dry-run;
+- live execution requires a separate operator confirmation;
+- accepted/rejected are terminal;
+- only transport-error retries, with the same replay key and maximum five attempts;
+- accepted corrective delivery does not automatically close the triage exception.
+
+Verification target:
+
+- migration 0024: PASS required;
+- corrective package / scope / confirmation tests: PASS required;
+- PostgreSQL activation/RLS/immutable identity/idempotent retry/supersession test: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 055 — Corrective Delivery Reconciliation & Exception Closure.
