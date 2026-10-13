@@ -108,3 +108,8 @@ The signed-in application now includes `/approved-data/reconciliation/corrective
 ## Build 055 application surface
 
 The signed-in application now includes `/approved-data/reconciliation/corrective-closure`. Accepted Build 054 corrective delivery is not considered resolved until the consumer independently returns current values for the exact corrective package scope. Build 055 withholds expected values from the verify request, stores append-only matched/drift/error evidence, requires the latest verification to be matched, then records an immutable closure row before the Build 053 case may transition to `closed`.
+
+## Build 056 application surface
+
+The signed-in application now includes `/approved-data/reconciliation/post-closure-regression`. A verified Build 055 closure can be read back again without sending expected values or performing a downstream mutation. Stable, regressed and error outcomes are retained as append-only post-closure evidence. Only the newest regressed check can support an explicit owner/admin reopen, and an immutable reopen row must exist before the closed Build 053 case may return to `open`. A reopened case cannot reuse its older Build 055 closure as proof for a later silent re-close.
+
