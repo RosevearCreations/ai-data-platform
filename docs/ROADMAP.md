@@ -1481,3 +1481,18 @@ Promotion evidence:
 Build 059 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**
+
+## Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct the exact Build 058 successor package after Build 059 re-closure;
+- record immutable stable, recurred, rejected and transport-error monitoring evidence;
+- require newest-check and newest-re-closure evidence before recurrence;
+- reopen only through an explicit owner/admin recurrence action with reason and typed confirmation;
+- make closed→open authorization generation-aware;
+- freeze the prior successor cycle after recurrence;
+- preserve all earlier closure, reopen, planning, execution, reconciliation and re-closure evidence.
+
+Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**

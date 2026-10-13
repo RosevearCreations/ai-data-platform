@@ -1016,3 +1016,10 @@ Immutable successor-plan identity and correction scope for a reopened exception.
 - `app.workspace_reconciliation_exception_reclosures` records one immutable verified re-closure for the current reopen generation. It binds the original closure and reopen fingerprints to the Build 057 plan, Build 058 delivery and newest matched Build 059 reconciliation.
 - Runtime access is SELECT/INSERT only for both tables. UPDATE and DELETE are not granted.
 - Migration: `0029_successor_corrective_reconciliation_reclosure.sql`.
+
+## Build 060 recurrence evidence
+
+- `app.workspace_post_reclosure_regression_checks` stores immutable post-re-closure state-verification evidence against the exact accepted successor package.
+- `app.workspace_reconciliation_exception_recurrences` stores one governed recurrence per Build 059 re-closure and binds the newest recurrent check, case, target and re-closure fingerprint.
+- Runtime access to both tables is SELECT/INSERT only; UPDATE and DELETE are not granted.
+- Migration: `0030_post_reclosure_recurrence_governance.sql`.
