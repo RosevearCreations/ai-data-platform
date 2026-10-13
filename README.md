@@ -103,3 +103,8 @@ The signed-in application now includes `/approved-data/reconciliation/triage`, w
 ## Build 054 application surface
 
 The signed-in application now includes `/approved-data/reconciliation/corrective-delivery`. An approved Build 053 plan is reconstructed server-side into a new deterministic corrective package with its own package ID and replay key. Activation requires the exact original consumer origin, a fresh live/idempotency handshake, an accepted external dry-run and a target-specific typed confirmation. Live execution requires a second confirmation, durable reservation before the network call, `Idempotency-Key=<corrective replay key>`, terminal no-resend behavior for accepted/rejected outcomes and bounded same-key retries for transport uncertainty.
+
+
+## Build 055 application surface
+
+The signed-in application now includes `/approved-data/reconciliation/corrective-closure`. Accepted Build 054 corrective delivery is not considered resolved until the consumer independently returns current values for the exact corrective package scope. Build 055 withholds expected values from the verify request, stores append-only matched/drift/error evidence, requires the latest verification to be matched, then records an immutable closure row before the Build 053 case may transition to `closed`.
