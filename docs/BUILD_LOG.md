@@ -2815,6 +2815,14 @@ Implementation branch: `build-060-post-reclosure-recurrence`.
 
 Added migration `0030_post_reclosure_recurrence_governance.sql`, post-re-closure monitoring library/API/workbench, stable-versus-recurred classification, immutable recurrence evidence, newest-check recurrence enforcement, generation-aware closed→open governance, prior successor-cycle freeze triggers, busy/wait mutation controls, and CI verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #127 merged the feature branch to `dev`;
+- release PR #128 passed Verify #650 on `dev` SHA `932064d96a42f930fe582c399afaf818e61105b7`;
+- release `main` SHA: `7d567bf8881457b3c1b3102c2cdcc92927519a1e`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0030_post_reclosure_recurrence_governance.sql`;
+- production verification confirmed both Build 060 tables have RLS, four intended policies exist, runtime table grants are SELECT/INSERT only with no UPDATE/DELETE, governed reopen authorization accepts only current-generation recurrence evidence, and four database triggers freeze the superseded successor cycle;
+- Vercel deployment `dpl_9ZZj9pWV4jYAKJLk353uHU7ZaseS` is READY, sourced from exact SHA `7d567bf8881457b3c1b3102c2cdcc92927519a1e`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 060 is **GREEN on main and production**.
 
 Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**
