@@ -34,6 +34,9 @@ export default async function CorrectiveDeliveryPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-closure">
+            Corrective reconciliation & closure
+          </Link>
           <Link
             className="secondaryButton"
             href="/approved-data/reconciliation/triage"

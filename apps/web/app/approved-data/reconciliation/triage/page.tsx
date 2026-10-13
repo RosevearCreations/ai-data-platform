@@ -35,6 +35,9 @@ export default async function ReconciliationExceptionTriagePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-delivery">
             Corrective delivery execution
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-closure">
+            Corrective reconciliation & closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
           </Link>

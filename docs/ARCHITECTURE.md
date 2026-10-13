@@ -397,3 +397,14 @@ Build 054 is the first remediation-capable layer after Build 052 read-only recon
 A corrective plan remains executable only while its referenced reconciliation is still the newest evidence for the original delivery. This prevents an old plan from being activated after a later read-back changes the known consumer state.
 
 Activation and execution are separate controls. Activation requires the original consumer origin, a fresh live/idempotency handshake and an accepted external dry-run of the exact corrective package. The grant lasts at most one hour and never beyond the package's 24-hour approval window. Execution revalidates the consumer capability, reserves the canonical corrective delivery row before the network call and sends the corrective replay key as the idempotency key. Accepted/rejected outcomes are terminal; transport uncertainty retries the same identity only.
+
+
+## Build 055 corrective reconciliation & closure architecture
+
+Build 055 is a read-after-write proof layer. It does not infer success from the Build 054 transport acknowledgement and does not send another mutation. The server reconstructs the exact accepted corrective package, confirms the current configured consumer origin matches the pinned Build 054 consumer and requires the existing state-verification capability.
+
+The read-back request carries package identity plus integration keys and governed field names, but withholds expected values. The consumer therefore reports independently read current state, which the server compares against the frozen corrective package.
+
+Every verification is append-only. Closure eligibility is determined only by the newest verification for the corrective delivery. A later drift, rejection or transport error invalidates an older matched result for closure purposes.
+
+Verified closure is a separate owner/admin action. Immutable closure evidence is inserted first; only then can the Build 053 case transition to `closed`. A database trigger enforces that ordering even if application code is bypassed.

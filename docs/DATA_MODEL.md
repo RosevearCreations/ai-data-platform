@@ -965,3 +965,16 @@ Temporary authority for one exact approved Build 053 plan and one exact correcti
 ### workspace_corrective_live_deliveries
 
 Canonical sender-side delivery identity for one corrective package and consumer origin. The row pins plan fingerprint, activation fingerprint, corrective package ID/replay/fingerprint and `idempotency_key`. Runtime UPDATE is restricted to attempt/outcome evidence; identity fields are immutable. Accepted/rejected outcomes are terminal while transport-error may return to reserved with the same identity up to five attempts.
+
+
+## Build 055 corrective reconciliation and closure
+
+### workspace_corrective_delivery_reconciliations
+
+Append-only read-back evidence for an accepted Build 054 corrective delivery. Each row pins the corrective delivery, original source delivery, approved plan/case, consumer identity, plan fingerprint, corrective package/replay/fingerprint, terminal verification status, per-key result fingerprints and actor/time. Runtime access is SELECT/INSERT only.
+
+### workspace_reconciliation_exception_closures
+
+One immutable verified closure row per Build 053 exception case. The row pins the approved plan, accepted corrective delivery, latest matched corrective reconciliation, plan/corrective-package/verification fingerprints, operator closure note and deterministic closure fingerprint. Runtime access is SELECT/INSERT only.
+
+A database trigger on `workspace_reconciliation_exception_cases.status` requires an existing Build 055 closure row before a transition to `closed`.

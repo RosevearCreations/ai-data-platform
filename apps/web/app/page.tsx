@@ -25,6 +25,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation", "Post-delivery reconciliation"],
   ["/approved-data/reconciliation/triage", "Reconciliation exception triage"],
   ["/approved-data/reconciliation/corrective-delivery", "Corrective delivery execution"],
+  ["/approved-data/reconciliation/corrective-closure", "Corrective reconciliation & closure"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],

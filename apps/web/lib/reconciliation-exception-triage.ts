@@ -509,9 +509,12 @@ export async function updateReconciliationExceptionCase(
     investigationNote: string;
   }
 ) {
+  if (input.status === "closed") {
+    throw new Error("reconciliation_triage_verified_closure_required");
+  }
   return withUserDatabase(userId, async (client) => {
     await requireManager(client, input.workspaceId);
-    const closing = input.status === "closed" || input.status === "dismissed";
+    const closing = input.status === "dismissed";
     const result = await client.query(
       `update app.workspace_reconciliation_exception_cases
        set status=$3,

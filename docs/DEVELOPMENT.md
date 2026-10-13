@@ -769,3 +769,15 @@ Do not add consumer fetches, live activations or delivery execution to Build 053
 - `verify-corrective-delivery-execution-database.ts` checks the full approved-plan → activation → retry → terminal delivery chain plus RLS/immutability/supersession.
 
 Do not execute manual-review plan items, reuse the source package replay key, widen corrective values in the browser, or close an exception merely because the corrective transport returned accepted.
+
+
+## Build 055 corrective reconciliation and exception closure
+
+- `db/migrations/0025_corrective_reconciliation_closure.sql` creates append-only corrective read-back and closure ledgers plus the verified-close database trigger.
+- `apps/web/lib/corrective-delivery-reconciliation.ts` reconstructs accepted corrective context, compares read-back state, stores reconciliation evidence and performs verified closure.
+- `/api/approved-data/reconciliation/corrective-closure` owns server-only state-verification transport and the explicit closure action.
+- `/approved-data/reconciliation/corrective-closure` is the operator workbench.
+- `verify-corrective-delivery-reconciliation.ts` checks matched/drift comparison and deterministic evidence fingerprints.
+- `verify-corrective-delivery-reconciliation-database.ts` checks accepted correction → drift → stale matched evidence → latest match → database-enforced verified closure, plus RLS and immutability.
+
+Do not close from Build 053 generic case updates, treat Build 054 acceptance as resolution, send expected values to the consumer, or automatically resend a corrective package from Build 055.
