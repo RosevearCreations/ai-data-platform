@@ -491,3 +491,16 @@ Only workspace owners/admins may create or update exception cases or create/revi
 Desired plan values are derived server-side from the exact accepted package; browser input supplies rationale and triage metadata, not arbitrary corrective values. Missing records from original update operations are marked manual-review instead of inferring a create mutation.
 
 An approved plan is evidence for a future controlled-execution workflow only. Build 053 cannot execute it.
+
+
+## Build 054 corrective mutation boundary
+
+Build 054 never treats a Build 053 approval as standing mutation authority. The approved plan must still point to the newest reconciliation, contain no unresolved manual-review item and reconstruct to the same original accepted package identity.
+
+Corrective values are derived server-side from frozen plan scope. Browser input may provide only action IDs and exact confirmation text; it cannot supply a corrective value, endpoint, bearer token, package identity, replay key or idempotency key.
+
+Activation requires the same configured consumer origin that accepted the original Build 051 delivery, a fresh `liveMutationEnabled=true` handshake, `idempotency.keySource=replayKey`, `duplicateBehavior=return-original-ack` and an accepted external dry-run of the exact corrective package. Authority lasts at most one hour.
+
+The sender reserves the canonical corrective delivery row before any live network mutation. The corrective replay key is the immutable `Idempotency-Key`. Accepted/rejected are terminal. Only transport-error may retry, with the same identity and a five-attempt cap.
+
+Runtime UPDATE grants cannot alter activation plan/package identity or corrective delivery plan/package/replay/idempotency identity.
