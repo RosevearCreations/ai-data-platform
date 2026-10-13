@@ -1509,7 +1509,7 @@ Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Cor
 
 ## Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - create one new re-triage generation from the latest governed Build 060 recurrence;
@@ -1519,5 +1519,15 @@ Scope:
 - support owner/admin classification, investigation, dismissal and plan review with wait/busy controls;
 - preserve narrow RLS/grants and immutable lifecycle evidence;
 - freeze Build 057 planning mutations after recurrence.
+
+Promotion evidence:
+- feature PR #131 merged Build 061 to `dev`;
+- release PR #132 passed Verify #657 on exact `dev` SHA `d9fb5077270b3f45490017741a9970752a0a51b5`;
+- release merged to `main` at `cd11208dc49e74a7b373741ae6495a44007319f0`;
+- production Neon migration `0031_recurrent_exception_next_generation_planning.sql` is recorded with both Build 061 tables under RLS, six intended policies, SELECT/INSERT table grants, narrow column-level UPDATE grants, no unrestricted table UPDATE/DELETE, and both predecessor-planning freeze triggers;
+- Vercel deployment `dpl_4pjbzqSqA5yNChDx8UGrTLrjXRfw` is READY for exact release SHA `cd11208dc49e74a7b373741ae6495a44007319f0`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 061 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**
