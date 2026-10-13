@@ -515,3 +515,12 @@ The verify-state request never sends the expected corrective values. It sends on
 Corrective reconciliation rows and closure rows are append-only for `ai_data_runtime`; the runtime role receives no UPDATE or DELETE privileges on either table. RLS restricts visibility to workspace members and INSERT to workspace owners/admins with matching accepted-delivery/approved-plan/approved-case evidence.
 
 Closure requires the latest corrective reconciliation to be `matched`. A database trigger blocks any case status transition to `closed` unless an immutable Build 055 closure row already exists, preventing the older generic triage path from bypassing verified closure.
+
+## Build 056 post-closure regression and reopen boundary
+
+Post-closure monitoring is read-only. The request sends corrective package identity, governed integration keys and governed field names but never expected values. Full returned consumer values are compared in memory and are not persisted; durable evidence stores fingerprints and differing field names.
+
+Regression checks and reopen rows are append-only for `ai_data_runtime`; no runtime UPDATE or DELETE privilege is granted. Workspace RLS limits visibility to members and creation to owners/admins with matching closure, accepted corrective-delivery and approved-plan evidence.
+
+No check can mutate the consumer, resend a corrective package or automatically reopen an exception. Reopening requires the newest check for the closure to be `regressed`, a non-empty operator reason and a target-specific typed confirmation. The database requires immutable reopen evidence before a case may transition away from `closed`, and a reopened closure cannot later satisfy the verified-close guard.
+
