@@ -2,16 +2,26 @@
 
 import { useMemo, useState } from "react";
 
-import {
-  correctiveActivationConfirmation,
-  correctiveExecutionConfirmation,
-  type CorrectiveDeliveryActivation,
-  type CorrectiveDeliveryModel,
-  type CorrectiveLiveDelivery
+import type {
+  CorrectiveDeliveryActivation,
+  CorrectiveDeliveryModel,
+  CorrectiveLiveDelivery
 } from "@/lib/corrective-delivery-execution";
 import type { CorrectiveDeliveryPlan } from "@/lib/reconciliation-exception-triage";
 
 import { HelpInfo } from "../../../help/HelpInfo";
+
+function correctiveActivationConfirmation(
+  target: "rosie-dazzlers" | "devil-n-dove"
+) {
+  return "ACTIVATE " + target.toUpperCase() + " CORRECTIVE";
+}
+
+function correctiveExecutionConfirmation(
+  target: "rosie-dazzlers" | "devil-n-dove"
+) {
+  return "EXECUTE " + target.toUpperCase() + " CORRECTIVE";
+}
 
 async function callApi(
   method: "POST" | "PATCH",
