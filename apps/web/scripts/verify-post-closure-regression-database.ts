@@ -1125,9 +1125,9 @@ async function main() {
   const finalTriage = await listReconciliationExceptionTriageForUser(ownerId);
   if (
     !finalTriage.plans.some((item) => item.planId === planId && item.status === "approved") ||
-    !finalTriage.cases.some((item) => item.caseId === caseId && item.status === "closed")
+    !finalTriage.cases.some((item) => item.caseId === caseId && item.status === "open")
   ) {
-    throw new Error("Build 055 closure rewrote approved plan evidence or failed to close the case.");
+    throw new Error("Build 056 reopen rewrote approved plan evidence or failed to return the case to open.");
   }
 
   console.log(
