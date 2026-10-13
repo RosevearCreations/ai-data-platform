@@ -2,7 +2,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { PoolClient, QueryResultRow } from "pg";
 
 import { withUserDatabase } from "./database";
-import type { IntegrationScalar, IntegrationTarget } from "./integration-delivery";
+import type { IntegrationTarget } from "./integration-delivery";
 import {
   listPostReclosureRegressionForUser,
   type PostReclosureRegressionModel
