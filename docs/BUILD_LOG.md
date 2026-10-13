@@ -2442,3 +2442,43 @@ Resolved during promotion:
 - No failed gate was bypassed. Build 052 proceeded only after corrected dev and main-target verification were both GREEN.
 
 Next queued: Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.
+
+
+## Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning
+
+Date: 2026-10-12
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0023_reconciliation_exception_triage.sql`;
+- canonical drift exception cases under workspace RLS;
+- owner/admin classification, severity, resolution intent and investigation notes;
+- immutable reconciliation/package/affected-key evidence inside each case;
+- frozen corrective plan scope built from exact Build 052 drift and original accepted-package values;
+- safe missing-record distinction between restore-missing and manual-review;
+- deterministic plan fingerprint and duplicate canonicalization;
+- approve/reject/withdraw review evidence with terminal status;
+- `/approved-data/reconciliation/triage` workbench, API, navigation, help and responsive styling;
+- deterministic planning tests plus PostgreSQL RLS/immutability/canonicalization/review tests.
+
+Guardrails:
+
+- Build 053 accepts drift reconciliation only;
+- case updates cannot change pinned reconciliation/package evidence;
+- plan content cannot be edited after creation;
+- expected corrective values come from the original accepted package, not free-form browser input;
+- missing records from original update operations are never automatically converted into create operations;
+- approval is a reviewed planning artifact only;
+- Build 053 has no external consumer transport and cannot execute a correction.
+
+Verification target:
+
+- migration 0023: PASS required;
+- corrective-scope / plan-fingerprint tests: PASS required;
+- PostgreSQL canonical case/plan, RLS, immutability and review test: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion and exact READY Vercel production deployment required.
+
+Next queued: Build 054 — Approved Corrective Delivery Activation & Idempotent Execution.
