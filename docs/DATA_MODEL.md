@@ -1023,3 +1023,15 @@ Immutable successor-plan identity and correction scope for a reopened exception.
 - `app.workspace_reconciliation_exception_recurrences` stores one governed recurrence per Build 059 re-closure and binds the newest recurrent check, case, target and re-closure fingerprint.
 - Runtime access to both tables is SELECT/INSERT only; UPDATE and DELETE are not granted.
 - Migration: `0030_post_reclosure_recurrence_governance.sql`.
+
+## Build 061 recurrence planning generation
+
+### `workspace_recurrent_exception_triage_cycles`
+One re-triage generation per governed Build 060 recurrence. It binds recurrence, re-closure, recurrent verification, case, target, immutable fingerprints and derived affected keys/fields while allowing narrow owner/admin decision-state updates.
+
+### `workspace_next_generation_corrective_delivery_plans`
+Frozen plan evidence for a recurrent exception. It binds the Build 061 re-triage, Build 060 recurrence, Build 059 re-closure, predecessor Build 057 successor plan, predecessor Build 058 accepted successor delivery, exact successor package identity, recurrence/re-closure/verification fingerprints, correction scope and rationale.
+
+Runtime grants remain SELECT/INSERT plus narrow column-level UPDATE only; DELETE and unrestricted table UPDATE are not granted.
+
+Migration: `0031_recurrent_exception_next_generation_planning.sql`.
