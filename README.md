@@ -130,3 +130,9 @@ Operator UI: `/approved-data/reconciliation/successor-delivery`.
 Build 059 independently reads back an accepted Build 058 successor corrective package, preserves matched/drift/error evidence, and permits a reopened exception to close again only when the newest verification for that exact successor delivery is matched. Re-closure is recorded in a new immutable ledger; the original Build 055 closure, Build 056 reopen, Build 057 plan and Build 058 delivery remain historical evidence.
 
 Operator UI: `/approved-data/reconciliation/successor-closure`.
+
+### Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 060 monitors the exact Build 058 successor package after a verified Build 059 re-closure. It records immutable stable/recurred/error read-back evidence and permits a second reopen only through a new recurrence ledger entry tied to the newest recurrent check. The prior closure, reopen, successor planning, execution, reconciliation and re-closure chain remains immutable.
+
+Operator UI: `/approved-data/reconciliation/post-reclosure-regression`.
