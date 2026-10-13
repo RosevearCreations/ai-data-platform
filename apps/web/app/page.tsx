@@ -29,6 +29,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/post-closure-regression", "Post-closure regression & reopen governance"],
   ["/approved-data/reconciliation/reopened-planning", "Reopened exception re-triage & successor planning"],
   ["/approved-data/reconciliation/successor-delivery", "Successor corrective delivery execution"],
+  ["/approved-data/reconciliation/successor-closure", "Successor reconciliation & re-closure"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],

@@ -1454,3 +1454,18 @@ Promotion evidence:
 Build 058 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**
+
+## Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct the exact accepted Build 058 successor package;
+- independently verify consumer state against only that package scope;
+- preserve matched, drift, rejection and transport-error evidence;
+- allow re-closure only from the newest matched successor verification;
+- preserve the original closure/reopen/planning/execution chain unchanged;
+- require a successor re-closure row for any post-reopen case close;
+- block legacy Build 055/056 reconciliation, closure and original regression writes after reopen.
+
+Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**

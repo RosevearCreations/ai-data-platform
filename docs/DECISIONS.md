@@ -966,3 +966,19 @@ The successor replay key is the live idempotency key. Transport failures may ret
 ## D0140 — Reopened cases cannot fall back to Build 054 execution
 
 Database policies reject new legacy corrective activations and legacy corrective delivery inserts/updates for a case once Build 056 reopen evidence exists. Reopened cases must use the Build 057/058 successor lifecycle.
+
+## D0141 — Re-closure is a new immutable evidence generation
+
+A Build 055 closure is never rewritten after a Build 056 reopen. Build 059 records a new re-closure row that binds the original closure/reopen evidence to the accepted Build 058 successor delivery and newest matched read-back.
+
+## D0142 — Delivery acceptance is not re-closure authority
+
+An accepted Build 058 delivery proves transport acceptance only. Build 059 requires a fresh consumer state-verification handshake and exact package read-back before re-closure is eligible.
+
+## D0143 — Only the newest matched successor read-back may re-close
+
+Older matched evidence cannot outrank a newer drift, rejection or transport error. Re-closure is allowed only when the selected reconciliation is the newest row for the exact successor delivery and the latest reopen generation.
+
+## D0144 — Reopened cases cannot reuse first-generation closure/regression paths
+
+After reopen evidence exists, runtime policies deny legacy Build 055 corrective reconciliation/closure inserts and Build 056 original post-closure regression inserts. The case-close trigger requires successor re-closure evidence instead of accepting the original closure.

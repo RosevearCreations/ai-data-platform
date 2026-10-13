@@ -124,3 +124,9 @@ The signed-in application now includes `/approved-data/reconciliation/reopened-p
 Build 058 turns an approved Build 057 successor plan into a separate, short-lived corrective execution path. It reconstructs the accepted predecessor corrective package only as immutable evidence, derives a new successor package identity, requires a fresh consumer handshake and accepted dry-run, then performs live delivery with one deterministic replay/idempotency key and bounded same-key retries. Reopened exceptions cannot fall back to the legacy Build 054 activation/delivery write path.
 
 Operator UI: `/approved-data/reconciliation/successor-delivery`.
+
+### Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure
+
+Build 059 independently reads back an accepted Build 058 successor corrective package, preserves matched/drift/error evidence, and permits a reopened exception to close again only when the newest verification for that exact successor delivery is matched. Re-closure is recorded in a new immutable ledger; the original Build 055 closure, Build 056 reopen, Build 057 plan and Build 058 delivery remain historical evidence.
+
+Operator UI: `/approved-data/reconciliation/successor-closure`.

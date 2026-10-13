@@ -32,6 +32,9 @@ export default async function SuccessorCorrectiveDeliveryPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-closure">
+            Successor reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/reopened-planning">
             Reopened re-triage & successor planning
           </Link>
