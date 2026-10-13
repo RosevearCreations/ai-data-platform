@@ -2826,3 +2826,13 @@ Production promotion evidence:
 Build 060 is **GREEN on main and production**.
 
 Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**
+
+## Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning
+
+Implementation branch: `build-061-recurrent-retriage-next-generation-planning`.
+
+Added migration `0031_recurrent_exception_next_generation_planning.sql`, recurrent planning library/API/workbench, deterministic next-generation scope/fingerprints, latest-recurrence gates, predecessor successor-plan/delivery/package binding, Build 057 planning freeze triggers, busy/wait mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**

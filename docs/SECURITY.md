@@ -543,3 +543,9 @@ Only owners/admins may record successor reconciliation or re-close an exception.
 ## Build 060 recurrence controls
 
 Only owners/admins may record post-re-closure monitoring or recurrence. Monitoring requires the latest Build 059 re-closure, a closed case, accepted successor delivery, approved successor plan and exact package/re-closure fingerprints. Recurrence requires the newest check to be `recurred`, the re-closure to still be the newest closure generation and the case to remain closed. The generic closed→open trigger now accepts recurrence evidence only when its timestamp belongs to the current closure generation. Recurrence also freezes prior successor activation, live-delivery, reconciliation and re-closure mutation surfaces.
+
+## Build 061 recurrence-planning controls
+
+Build 061 creation and review mutations require owner/admin membership. Re-triage creation requires the latest governed recurrence for an open case, a `recurred` Build 060 verification, and matching recurrence/regression/re-closure fingerprints. Next-generation plan creation additionally requires `plan-correction`, an approved predecessor successor plan, an accepted predecessor successor delivery and exact successor package identity.
+
+Correction scope fails closed if a recurrent record or field was not governed by the predecessor successor plan. Runtime receives no DELETE or unrestricted table UPDATE rights. Once recurrence exists, database triggers block further insert/update activity on the old Build 057 re-triage and successor-plan tables, extending Build 060's freeze of Build 058/059 mutation surfaces.

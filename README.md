@@ -136,3 +136,9 @@ Operator UI: `/approved-data/reconciliation/successor-closure`.
 Build 060 monitors the exact Build 058 successor package after a verified Build 059 re-closure. It records immutable stable/recurred/error read-back evidence and permits a second reopen only through a new recurrence ledger entry tied to the newest recurrent check. The prior closure, reopen, successor planning, execution, reconciliation and re-closure chain remains immutable.
 
 Operator UI: `/approved-data/reconciliation/post-reclosure-regression`.
+
+### Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning
+
+Build 061 consumes immutable Build 060 recurrence evidence and starts a distinct recurrence planning generation. It creates a new re-triage cycle and freezes a next-generation corrective plan only from fields proven recurrent by the latest post-re-closure read-back and values governed by the approved predecessor successor plan. Build 057 planning and the Build 058/059 execution chain remain historical evidence and cannot be reused after recurrence.
+
+Operator UI: `/approved-data/reconciliation/recurrent-planning`.
