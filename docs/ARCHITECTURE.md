@@ -430,3 +430,9 @@ Successor planning is stored separately in `workspace_successor_corrective_deliv
 The reopened-exception lifecycle now has a dedicated execution boundary after Build 057 planning. The Build 058 server reconstructs the accepted predecessor corrective package, validates the approved successor plan against that immutable identity and Build 056 regression fingerprint, then creates a new package with a distinct batch ID, package ID, replay key and fingerprint. Activation requires a current consumer capability handshake and an accepted dry-run. Live execution reserves a durable delivery row before transport, reuses the same replay key for bounded retries, and treats accepted/rejected acknowledgements as terminal.
 
 The legacy Build 054 activation and live-delivery insert policies are additionally guarded against cases that have Build 056 reopen evidence, preventing a reopened exception from bypassing the successor lifecycle.
+
+## Build 059 — Successor reconciliation and re-closure
+
+Build 059 adds a separate verification generation after Build 058 delivery. The application reconstructs the exact successor package from the approved Build 057 plan and accepted Build 058 delivery, performs a fresh state-verification handshake/read-back, and writes an immutable successor reconciliation row. Re-closure is a separate owner/admin action and requires the newest reconciliation for that successor delivery to be `matched`.
+
+The generic case close trigger now distinguishes first-generation closure from post-reopen re-closure. If reopen evidence exists, the original closure is insufficient: the trigger requires a Build 059 re-closure bound to the latest reopen. Legacy Build 055 reconciliation/closure and Build 056 original post-closure regression writes are denied after reopen evidence exists.
