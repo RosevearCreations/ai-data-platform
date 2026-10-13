@@ -1457,7 +1457,7 @@ Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-C
 
 ## Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct the exact accepted Build 058 successor package;
@@ -1467,5 +1467,17 @@ Scope:
 - preserve the original closure/reopen/planning/execution chain unchanged;
 - require a successor re-closure row for any post-reopen case close;
 - block legacy Build 055/056 reconciliation, closure and original regression writes after reopen.
+
+Promotion evidence:
+- feature PR #122 merged Build 059 to `dev`;
+- Verify #641 exposed an older Build 056 verifier assumption after the new successor-specific close guard correctly rejected stale closure reuse;
+- verifier-only PR #124 updated that negative test without weakening application or database controls;
+- release PR #123 passed corrected Verify #643 on exact `dev` SHA `ea0c98ec0cbfb8227421eaa48b1c13666f4eaa04`;
+- release merged to `main` at `6be1de76c974eef0de3817565fb9316a9c43d172`;
+- production Neon migration `0029_successor_corrective_reconciliation_reclosure.sql` is recorded with both Build 059 tables under RLS, four intended policies, runtime SELECT/INSERT only, successor-aware case-close trigger behavior and legacy Build 055/056 lifecycle guards;
+- Vercel deployment `dpl_855Qxn5c4jQPDCNeNZvgyqmPEB6g` is READY for exact release SHA `6be1de76c974eef0de3817565fb9316a9c43d172`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 059 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**
