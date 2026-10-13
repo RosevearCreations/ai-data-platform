@@ -46,6 +46,12 @@ export default async function PostClosureRegressionPage() {
           >
             Exception triage & planning
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/approved-data/reconciliation/reopened-planning"
+          >
+            Reopened re-triage & successor planning
+          </Link>
         </div>
       </section>
 

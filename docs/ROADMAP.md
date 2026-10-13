@@ -1393,3 +1393,26 @@ Production evidence:
 
 Next queued: **Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.**
 
+
+
+## Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: convert a governed Build 056 reopen into a fresh, attributable re-triage generation and, where explicitly approved, a successor corrective plan without reusing stale Build 053 planning authority or performing any downstream mutation.
+
+Delivered:
+- one re-triage generation per immutable Build 056 reopen;
+- classification, severity, resolution intent, summary and investigation notes for the reopened generation;
+- deterministic successor scope constrained to Build 056 regressed records and predecessor-governed desired values;
+- immutable successor plan identity tied to the reopen, regression fingerprint, predecessor plan and accepted corrective delivery package;
+- owner/admin review lifecycle for successor plans;
+- RLS and narrow runtime grants;
+- database block on the legacy Build 053 plan path for reopened cases;
+- database guard against generic reopened-case planned/approved/dismissed transitions;
+- signed-in workbench, API, pure verification and database verification;
+- no downstream consumer write path.
+
+Acceptance target: only governed Build 056 reopens may start re-triage; each reopen may have at most one re-triage generation; successor scope must fail closed if a regressed key/field is not predecessor-governed; only owners/admins may mutate; old closure/regression/reopen evidence stays immutable; reopened cases cannot create legacy Build 053 plans; successor plans are reviewable but cannot execute in Build 057; cross-workspace evidence remains hidden; runtime DELETE remains unavailable.
+
+Next queued: **Build 058 — Successor Corrective Delivery Activation & Idempotent Execution.**

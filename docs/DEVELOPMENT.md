@@ -793,3 +793,13 @@ Do not close from Build 053 generic case updates, treat Build 054 acceptance as 
 
 Do not resend a corrective package, expose expected values, reopen automatically, reopen from stale regression evidence or reuse a historical Build 055 closure to re-close a reopened case. Build 056 introduces no new secret or paid service.
 
+
+
+## Build 057 reopened exception planning
+
+- `db/migrations/0027_reopened_exception_successor_planning.sql` creates re-triage and successor-plan tables, RLS, narrow runtime grants, the reopened-case lifecycle guard and the legacy-plan insertion block.
+- `apps/web/lib/reopened-exception-planning.ts` owns Build 056 handoff, re-triage state, deterministic successor scope/fingerprints and plan review.
+- `/api/approved-data/reconciliation/reopened-planning` is the authenticated owner/admin mutation boundary.
+- `/approved-data/reconciliation/reopened-planning` is the operator workbench.
+- `verify-reopened-exception-planning.ts` validates fail-closed scope derivation and deterministic fingerprints.
+- `verify-reopened-exception-planning-database.ts` validates tables, RLS, policies, grants, the reopened-case guard and the legacy-plan block.

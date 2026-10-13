@@ -991,3 +991,14 @@ One immutable governed reopen row per Build 055 closure. The row pins the closur
 
 A database trigger requires a matching reopen row before a case may leave `closed`. The Build 055 verified-close guard also excludes closures that already have a reopen row, preventing stale closure evidence from silently re-closing a reopened case.
 
+
+
+## Build 057 reopened exception re-triage
+
+### workspace_reopened_exception_triage_cycles
+
+One re-triage generation per Build 056 reopen. Identity fields bind the reopen, historical closure, regression check, original case and regression fingerprint. Mutable runtime fields are limited to the re-triage status and operator classification/severity/intent/notes. The original case and historical evidence are not rewritten.
+
+### workspace_successor_corrective_delivery_plans
+
+Immutable successor-plan identity and correction scope for a reopened exception. The row pins the re-triage generation, Build 056 regression fingerprint, predecessor Build 053 plan, accepted Build 054 corrective delivery and its package/replay/fingerprint identity. Runtime updates are limited to review status and review audit fields. Runtime DELETE is not granted.

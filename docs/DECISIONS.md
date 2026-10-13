@@ -925,3 +925,28 @@ Reason: the old matched read-back predates the regression that justified reopeni
 
 Consequence: a successor resolution cycle must establish fresh closure authority rather than silently reusing stale evidence.
 
+
+
+## D0133 — A governed reopen starts a new triage generation
+
+Decision: Build 057 creates one `workspace_reopened_exception_triage_cycles` row per Build 056 reopen instead of reusing the mutable fields of the original Build 053 case as the canonical successor-cycle record.
+
+Consequence: the original case remains the durable incident identity, while every reopened resolution generation is independently attributable to the reopen and regression evidence that caused it.
+
+## D0134 — Successor correction scope is constrained by both regression evidence and predecessor governance
+
+Decision: a successor plan may include only Build 056 mismatched/missing records, and only fields whose desired values were already frozen in the accepted predecessor corrective-plan scope.
+
+Consequence: Build 057 cannot expand correction authority based on newly observed consumer values or operator input.
+
+## D0135 — Reopened cases cannot return to the legacy Build 053 planning path
+
+Decision: the legacy `workspace_corrective_delivery_plans_manager_insert` RLS policy rejects any case with Build 056 reopen evidence, and a database trigger blocks generic planned/approved/dismissed status transitions on the original reopened case.
+
+Consequence: all post-reopen planning must use the successor-cycle tables.
+
+## D0136 — Build 057 is planning-only
+
+Decision: Build 057 does not activate, deliver, resend or otherwise mutate a downstream consumer.
+
+Consequence: an approved successor plan is evidence for a later controlled execution build, not permission to write by itself.
