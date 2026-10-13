@@ -2777,6 +2777,14 @@ Implementation branch: `build-058-successor-corrective-execution`.
 
 Added migration `0028_successor_corrective_delivery_execution.sql`, successor execution library/API/workbench, CI verification, strict busy-state UI controls, distinct successor package/replay identity, fresh handshake + dry-run activation, same-key bounded retry behavior, terminal no-resend handling, and database guards preventing reopened cases from using the legacy Build 054 write path.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #118 merged the feature branch to `dev`;
+- PR #119 promoted `dev` to `main` after Verify #634 completed successfully (migrations, typecheck/lint/build/tests, auth/workspace/database isolation);
+- release `main` SHA: `5cf65d337fb1daf40c4f1e3722c5192b2b64068c`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0028_successor_corrective_delivery_execution.sql`;
+- production verification confirmed both Build 058 tables have RLS, six intended policies exist, the one-active-activation index exists, runtime table grants are SELECT/INSERT only, UPDATE is column-limited, DELETE is absent, and legacy Build 054 activation/delivery writes are guarded by reopen evidence;
+- Vercel deployment `dpl_5fUFrTznT97wowrHVh6RovceKh7u` is READY, sourced from exact SHA `5cf65d337fb1daf40c4f1e3722c5192b2b64068c`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 058 is **GREEN on main and production**.
 
 Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**
