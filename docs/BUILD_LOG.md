@@ -2833,6 +2833,14 @@ Implementation branch: `build-061-recurrent-retriage-next-generation-planning`.
 
 Added migration `0031_recurrent_exception_next_generation_planning.sql`, recurrent planning library/API/workbench, deterministic next-generation scope/fingerprints, latest-recurrence gates, predecessor successor-plan/delivery/package binding, Build 057 planning freeze triggers, busy/wait mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #131 merged the feature branch to `dev`;
+- release PR #132 passed Verify #657 on `dev` SHA `d9fb5077270b3f45490017741a9970752a0a51b5`;
+- release `main` SHA: `cd11208dc49e74a7b373741ae6495a44007319f0`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0031_recurrent_exception_next_generation_planning.sql`;
+- production verification confirmed both Build 061 tables have RLS, six intended policies exist, table-level runtime grants are SELECT/INSERT only, UPDATE is restricted to the intended columns, DELETE/unrestricted UPDATE are absent, and two triggers freeze the superseded Build 057 planning cycle;
+- Vercel deployment `dpl_4pjbzqSqA5yNChDx8UGrTLrjXRfw` is READY, sourced from exact SHA `cd11208dc49e74a7b373741ae6495a44007319f0`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 061 is **GREEN on main and production**.
 
 Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**
