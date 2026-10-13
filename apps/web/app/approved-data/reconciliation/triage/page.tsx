@@ -32,6 +32,9 @@ export default async function ReconciliationExceptionTriagePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-delivery">
+            Corrective delivery execution
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
           </Link>
