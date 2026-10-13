@@ -535,3 +535,7 @@ The legacy Build 053 plan-insert policy now explicitly rejects cases with Build 
 ## Build 058 successor corrective write controls
 
 Build 058 requires owner/admin role, an approved Build 057 successor plan, approved re-triage, an open reopened case, unchanged regressed evidence, an accepted predecessor corrective delivery, current consumer identity, fresh live-capability handshake, accepted dry-run and typed activation/execution confirmations. Successor package identity is distinct from the predecessor package. Runtime grants do not include DELETE or unrestricted table UPDATE. The old Build 054 activation/delivery policies reject new writes for cases with reopen evidence, closing the legacy-path bypass.
+
+## Build 059 successor re-closure controls
+
+Only owners/admins may record successor reconciliation or re-close an exception. Reconciliation insertion requires an accepted Build 058 successor delivery, approved Build 057 successor plan and re-triage, unchanged Build 056 regression identity, and an open case. Re-closure requires the latest successor reconciliation to be matched and the reopen to be the latest generation. The close trigger rejects reopened-case closure unless the matching Build 059 re-closure row already exists in the same transaction. Legacy Build 055/056 write paths are blocked after reopen evidence exists.

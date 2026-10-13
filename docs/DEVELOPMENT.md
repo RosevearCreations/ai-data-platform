@@ -807,3 +807,7 @@ Do not resend a corrective package, expose expected values, reopen automatically
 ## Build 058 verification
 
 Build 058 adds `verify-successor-corrective-delivery-execution.ts` to the application test chain and `verify-successor-corrective-delivery-execution-database.ts` to `db:verify`. Verification covers deterministic distinct successor package identity, frozen-field scope, confirmation phrases, tamper rejection, RLS, narrow UPDATE grants, one-active-activation enforcement and database blocking of legacy Build 054 writes after reopen.
+
+## Build 059 verification
+
+Build 059 adds `verify-successor-corrective-delivery-reconciliation.ts` to the application test chain and `verify-successor-corrective-delivery-reconciliation-database.ts` to `db:verify`. Verification covers exact-match versus drift behavior, deterministic error/re-closure fingerprints, typed confirmation, RLS, immutable runtime grants, successor lifecycle insert gates, legacy-path blocking, and the successor-aware database close trigger.

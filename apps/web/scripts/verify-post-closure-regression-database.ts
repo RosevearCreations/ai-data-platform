@@ -1028,7 +1028,10 @@ async function main() {
   } catch (error) {
     staleClosureReuseBlocked =
       error instanceof Error &&
-      error.message.includes("reconciliation_triage_verified_closure_required");
+      (
+        error.message.includes("reconciliation_triage_verified_closure_required") ||
+        error.message.includes("reconciliation_triage_verified_successor_reclosure_required")
+      );
   }
   if (!staleClosureReuseBlocked) {
     throw new Error("Build 056 allowed the superseded Build 055 closure to silently re-close a reopened case.");
