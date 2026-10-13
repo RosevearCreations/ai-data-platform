@@ -2835,3 +2835,112 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning */
+.triageShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.triageHero {
+  max-width: 1040px;
+  padding-bottom: 3rem;
+}
+
+.triageSummary,
+.triageSection {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.triageNotice {
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 204, 128, 0.2);
+  border-radius: 1rem;
+  background: rgba(255, 204, 128, 0.055);
+  padding: 1rem;
+}
+
+.triageNotice strong {
+  display: block;
+  color: #f1d3a8;
+  margin-bottom: 0.35rem;
+}
+
+.triageNotice p {
+  margin: 0;
+  color: #aebfc1;
+}
+
+.triageCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.triageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.triageGrid label,
+.triagePlanDraft {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.triageGrid label {
+  color: #aebfc1;
+  font-size: 0.78rem;
+}
+
+.triageGrid select,
+.triageCard textarea {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0.65rem 0.75rem;
+}
+
+.triageCard textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+.triageScope {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.triageScope > div {
+  display: grid;
+  gap: 0.25rem;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.025);
+  padding: 0.75rem;
+}
+
+.triageScope strong {
+  color: #e6f1f2;
+  font-size: 0.8rem;
+}
+
+.triageScope span,
+.triageScope small {
+  color: #9fb2b5;
+  font-size: 0.74rem;
+}
+
+.triageScope code {
+  color: #9bded8;
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .triageGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -777,3 +777,36 @@ Decision: Build 052 persists matched/mismatched/missing fingerprints and differi
 Reason: discrepancy detection is evidence; corrective action requires a separate intent and safety review.
 
 Consequence: Build 053 may triage reconciliation exceptions and prepare corrective plans, but Build 052 itself cannot mutate either side.
+
+
+## D0115 — One canonical triage case per reconciliation
+
+Decision: Build 053 permits one exception case for each exact Build 052 drift reconciliation.
+
+Reason: duplicate cases could create competing interpretations and corrective plans for the same immutable evidence.
+
+Consequence: repeated case creation returns the existing canonical case.
+
+## D0116 — Corrective values come only from the accepted package
+
+Decision: Build 053 derives desired values server-side from the original accepted package and includes only fields proven mismatched/missing by Build 052.
+
+Reason: planning must not turn free-form browser input into unreviewed business data.
+
+Consequence: changing desired data requires a new upstream publication/mapping path rather than editing a corrective plan.
+
+## D0117 — Missing update targets remain manual-review
+
+Decision: when Build 052 says a record is missing but the original package operation was `update`, Build 053 marks the plan item `manual-review` instead of changing it to create.
+
+Reason: existence semantics may carry business meaning and cannot be inferred safely from absence.
+
+Consequence: a later execution build must resolve this condition explicitly before mutation.
+
+## D0118 — Plan approval is not execution authority
+
+Decision: Build 053 approval records review of the immutable planning artifact but has no downstream transport or mutation capability.
+
+Reason: exception analysis and consequential execution require separate control boundaries.
+
+Consequence: Build 054 must establish fresh activation/idempotency/execution gates rather than treating Build 053 approval alone as permission to write.

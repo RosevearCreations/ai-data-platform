@@ -24,6 +24,8 @@ async function main() {
     "../app/approved-data/live-delivery/ControlledLiveDeliveryWorkbench.tsx",
     "../app/approved-data/reconciliation/page.tsx",
     "../app/approved-data/reconciliation/PostDeliveryReconciliationWorkbench.tsx",
+    "../app/approved-data/reconciliation/triage/page.tsx",
+    "../app/approved-data/reconciliation/triage/ReconciliationExceptionTriageWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -54,6 +56,18 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const triage = HELP_TOPICS["reconciliation-triage-overview"];
+  assert(
+    "manual" in triage &&
+      triage.steps.some((step) => step.includes("status=drift")) &&
+      triage.steps.some((step) => step.includes("approve, reject or withdraw")) &&
+      triage.notes.some((note) => note.includes("Approval is not execution")) &&
+      triage.notes.some((note) => note.includes("manual-review")) &&
+      triage.manual.some((step) => step.includes("0023_reconciliation_exception_triage.sql")) &&
+      triage.manual.some((step) => step.includes("introduces no new secret")),
+    "Build 053 help must preserve drift-only triage, frozen planning scope, planning-only approval and exact migration guidance."
   );
 
   const reconciliation = HELP_TOPICS["post-delivery-reconciliation-overview"];
@@ -209,7 +223,7 @@ async function main() {
   );
 
   console.log(
-    "Build 052 contextual help coverage, read-only reconciliation/drift guidance and existing production gates passed."
+    "Build 053 contextual help coverage, reconciliation triage/planning guidance and existing production gates passed."
   );
 
 }
