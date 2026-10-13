@@ -408,3 +408,12 @@ The read-back request carries package identity plus integration keys and governe
 Every verification is append-only. Closure eligibility is determined only by the newest verification for the corrective delivery. A later drift, rejection or transport error invalidates an older matched result for closure purposes.
 
 Verified closure is a separate owner/admin action. Immutable closure evidence is inserted first; only then can the Build 053 case transition to `closed`. A database trigger enforces that ordering even if application code is bypassed.
+
+## Build 056 post-closure regression & reopen architecture
+
+Build 056 adds a read-only observation layer above verified Build 055 closure. It reconstructs the same accepted corrective package that supported closure, requires the same pinned consumer origin and the existing state-verification capability, then asks only for the governed integration keys and field names. Expected values remain server-side.
+
+Every post-closure check is append-only. A matching read-back is recorded as `stable`; mismatch/missing evidence is recorded as `regressed`; rejected and transport-error outcomes remain distinct. Monitoring does not execute a corrective delivery and never reopens a case automatically.
+
+Reopening is a separate owner/admin governance action. The selected check must be the newest check for that closure and must be `regressed`. The transaction inserts immutable reopen evidence before changing the original exception case from `closed` to `open`. A database trigger prevents any other closed-to-nonclosed transition. Once a closure has a reopen row, the Build 055 close guard no longer accepts that historical closure as proof for another transition to `closed`; a successor resolution cycle must establish fresh closure authority.
+

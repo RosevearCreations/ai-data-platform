@@ -781,3 +781,15 @@ Do not execute manual-review plan items, reuse the source package replay key, wi
 - `verify-corrective-delivery-reconciliation-database.ts` checks accepted correction → drift → stale matched evidence → latest match → database-enforced verified closure, plus RLS and immutability.
 
 Do not close from Build 053 generic case updates, treat Build 054 acceptance as resolution, send expected values to the consumer, or automatically resend a corrective package from Build 055.
+
+## Build 056 post-closure regression monitoring and exception reopen governance
+
+- `db/migrations/0026_post_closure_regression_reopen.sql` creates append-only regression/reopen ledgers and database guards for governed reopen plus stale-closure reuse.
+- `apps/web/lib/post-closure-regression.ts` reconstructs closed corrective context, compares post-closure read-back state, stores evidence and performs governed reopen.
+- `/api/approved-data/reconciliation/post-closure-regression` owns server-only state-verification transport and the explicit reopen action.
+- `/approved-data/reconciliation/post-closure-regression` is the operator workbench.
+- `verify-post-closure-regression.ts` checks stable/regressed semantics and deterministic fingerprints/confirmation.
+- `verify-post-closure-regression-database.ts` extends the full accepted-correction → verified-closure fixture through stable/regressed checks, latest-evidence reopen rules, database guards, RLS and immutable evidence.
+
+Do not resend a corrective package, expose expected values, reopen automatically, reopen from stale regression evidence or reuse a historical Build 055 closure to re-close a reopened case. Build 056 introduces no new secret or paid service.
+
