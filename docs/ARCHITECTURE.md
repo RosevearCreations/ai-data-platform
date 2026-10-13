@@ -388,3 +388,12 @@ Build 053 sits between read-only Build 052 reconciliation and any future correct
 When resolution intent is `plan-correction`, the platform reconstructs the accepted package through the Build 052 historical package path and intersects its operations with the reconciliation's mismatched/missing records. The resulting plan contains only governed desired values from that accepted package. Mismatches propose update-existing. A missing record originally created may be planned as restore-missing; a missing record originally updated remains manual-review.
 
 Plan creation and review are database-only. There is no outbound transport in Build 053.
+
+
+## Build 054 corrective execution architecture
+
+Build 054 is the first remediation-capable layer after Build 052 read-only reconciliation and Build 053 planning. It does not send the original package again. Instead, it reconstructs the original accepted package, verifies the terminal Build 053 plan fingerprint, intersects the frozen corrective scope with the original operations and creates a new deterministic integration package whose batch identity is the approved plan ID.
+
+A corrective plan remains executable only while its referenced reconciliation is still the newest evidence for the original delivery. This prevents an old plan from being activated after a later read-back changes the known consumer state.
+
+Activation and execution are separate controls. Activation requires the original consumer origin, a fresh live/idempotency handshake and an accepted external dry-run of the exact corrective package. The grant lasts at most one hour and never beyond the package's 24-hour approval window. Execution revalidates the consumer capability, reserves the canonical corrective delivery row before the network call and sends the corrective replay key as the idempotency key. Accepted/rejected outcomes are terminal; transport uncertainty retries the same identity only.

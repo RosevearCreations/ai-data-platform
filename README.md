@@ -98,3 +98,8 @@ The signed-in application now includes `/approved-data/reconciliation`, a read-o
 ## Build 053 application surface
 
 The signed-in application now includes `/approved-data/reconciliation/triage`, where Build 052 drift becomes an explicit exception case and, when appropriate, an immutable corrective delivery plan. Owners/admins classify severity and resolution intent, investigate without changing reconciliation evidence, freeze exact affected keys/fields plus desired governed values from the original accepted package, and approve/reject/withdraw the planning artifact. Build 053 has no downstream consumer call, live activation or corrective execution endpoint.
+
+
+## Build 054 application surface
+
+The signed-in application now includes `/approved-data/reconciliation/corrective-delivery`. An approved Build 053 plan is reconstructed server-side into a new deterministic corrective package with its own package ID and replay key. Activation requires the exact original consumer origin, a fresh live/idempotency handshake, an accepted external dry-run and a target-specific typed confirmation. Live execution requires a second confirmation, durable reservation before the network call, `Idempotency-Key=<corrective replay key>`, terminal no-resend behavior for accepted/rejected outcomes and bounded same-key retries for transport uncertainty.

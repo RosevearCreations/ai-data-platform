@@ -757,3 +757,15 @@ The downstream consumer must implement the read-only state-verification contract
 - `verify-reconciliation-exception-triage-database.ts` checks canonical case/plan creation, cross-workspace RLS, immutable evidence/scope and terminal approval evidence.
 
 Do not add consumer fetches, live activations or delivery execution to Build 053. Those belong to a later explicitly controlled build.
+
+
+## Build 054 corrective delivery execution
+
+- `db/migrations/0024_corrective_delivery_execution.sql` creates corrective activation and live-delivery tables with RLS and identity-protecting column grants.
+- `apps/web/lib/corrective-delivery-execution.ts` reconstructs approved plans, builds deterministic corrective packages, enforces supersession/manual-review gates, creates/revokes activation and manages idempotent reservation/finalization.
+- `/api/approved-data/reconciliation/corrective-delivery` owns the server-only consumer handshake, dry-run and live transport.
+- `/approved-data/reconciliation/corrective-delivery` is the operator workbench.
+- `verify-corrective-delivery-execution.ts` checks new corrective identity, frozen-field scope and fail-closed behavior.
+- `verify-corrective-delivery-execution-database.ts` checks the full approved-plan → activation → retry → terminal delivery chain plus RLS/immutability/supersession.
+
+Do not execute manual-review plan items, reuse the source package replay key, widen corrective values in the browser, or close an exception merely because the corrective transport returned accepted.

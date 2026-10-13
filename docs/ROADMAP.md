@@ -1283,4 +1283,39 @@ Delivered:
 
 Acceptance: **PASSED.** Only Build 052 drift may open a case; one reconciliation cannot create competing cases; source reconciliation/package identity remains immutable; only owners/admins may triage or create/review plans; plan scope comes only from original governed values and proven mismatch/missing evidence; runtime cannot mutate frozen plan scope or pinned evidence; terminal review status cannot be overwritten; and plan approval does not execute or authorize a downstream write inside Build 053. Release evidence: implementation PR #92 → dev; lint correction PR #93 → dev; release PR #94 → main; corrected dev Verify run 38329354571 (#594) GREEN; main-target PR Verify run 38329505465 (#595) GREEN; independent main Verify run 38329665022 (#596) GREEN; production Neon migration ledger includes 0023 with case/plan RLS and identity-protecting column grants verified; and Vercel deployment dpl_3yxtDxdy984MKX4ACtXCFqvNWyzE is READY for main SHA 5d5ae2273d8c37538ae4b5473377270e979d78d4.
 
-Next queued: **Build 054 — Approved Corrective Delivery Activation & Idempotent Execution.**
+## Build 054 — Approved Corrective Delivery Activation & Idempotent Execution
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: turn one approved Build 053 corrective plan into a new plan-bound corrective package, prove that package through an authenticated dry-run, grant short-lived corrective authority and execute at most one canonical downstream mutation with replay-key idempotency.
+
+Delivered:
+
+- migration `0024_corrective_delivery_execution.sql`;
+- RLS-scoped corrective activations and corrective live-delivery ledger;
+- exact Build 053 approved-plan / approved-case requirement;
+- source Build 051 delivery must remain accepted and consumer origin must remain unchanged;
+- Build 052 reconciliation referenced by the plan must still be the newest reconciliation for the source delivery;
+- deterministic corrective package derived server-side from frozen Build 053 scope and the original accepted package;
+- new corrective package ID, replay key and fingerprint bound to the approved plan ID/review time;
+- mismatched records execute only the proven governed fields;
+- restore-missing is allowed only when the original operation was create;
+- unresolved manual-review scope fails closed;
+- 24-hour plan-package execution window and one-hour maximum activation window;
+- target-specific activation and execution confirmation phrases;
+- fresh liveMutationEnabled + replayKey / return-original-ack handshake before activation;
+- authenticated external dry-run of the exact corrective package before activation;
+- fresh live/idempotency handshake before every live corrective attempt;
+- canonical sender-side corrective delivery reservation before outbound mutation;
+- `Idempotency-Key` bound to the immutable corrective replay key;
+- accepted/rejected terminal behavior with no resend;
+- transport-error retry only with identical plan/activation/package/idempotency identity and bounded five-attempt limit;
+- activation revocation;
+- `/approved-data/reconciliation/corrective-delivery` workbench, API, navigation, contextual help and responsive UI;
+- deterministic package/scope tests plus PostgreSQL approved-plan reconstruction/RLS/immutable-identity/retry/supersession verification;
+- no browser-supplied corrective values, endpoint, token, package identity or idempotency key;
+- no automatic exception closure after accepted corrective execution.
+
+Acceptance target: only approved Build 053 plans with no unresolved manual-review item may activate; a newer reconciliation fails closed; the configured consumer origin must match the original accepted source delivery; activation requires accepted external dry-run of the exact corrective package; corrective identity columns cannot be mutated by the runtime role; accepted/rejected deliveries are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and Build 053 plan approval remains unchanged after Build 054 execution.
+
+Next queued: **Build 055 — Corrective Delivery Reconciliation & Exception Closure.**
