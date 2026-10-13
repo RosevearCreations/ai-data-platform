@@ -13,8 +13,7 @@ import {
   getActiveCorrectiveDeliveryActivation,
   listCorrectiveDeliveryForUser,
   loadApprovedCorrectivePlanContext,
-  reserveIdempotentCorrectiveDelivery,
-  revokeCorrectiveDeliveryActivation
+  reserveIdempotentCorrectiveDelivery
 } from "../lib/corrective-delivery-execution";
 import {
   closeDatabasePools,
