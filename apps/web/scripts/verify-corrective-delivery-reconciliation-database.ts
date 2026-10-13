@@ -617,6 +617,25 @@ async function main() {
     throw new Error("Build 055 allowed generic triage closure without verified evidence.");
   }
 
+  let databaseClosureGuardBlocked = false;
+  try {
+    await withUserDatabase(ownerId, async (client) => {
+      await client.query(
+        `update app.workspace_reconciliation_exception_cases
+         set status='closed',updated_by=$3,updated_at=now(),closed_by=$3,closed_at=now()
+         where workspace_id=$1 and case_id=$2`,
+        [workspace.id, caseId, ownerId]
+      );
+    });
+  } catch (error) {
+    databaseClosureGuardBlocked =
+      error instanceof Error &&
+      error.message.includes("reconciliation_triage_verified_closure_required");
+  }
+  if (!databaseClosureGuardBlocked) {
+    throw new Error("Build 055 database trigger allowed closure without verified closure evidence.");
+  }
+
   const matchedVerification: ConsumerStateVerificationResponse = {
     protocol: INTEGRATION_CONSUMER_PROTOCOL,
     kind: "state-verification",
