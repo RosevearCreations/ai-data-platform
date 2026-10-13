@@ -1257,4 +1257,30 @@ Delivered:
 
 Acceptance: **PASSED.** Only authorized workspace evidence is visible; only owners/admins may run verification; only accepted live deliveries are eligible; historical package reconstruction reproduces the exact accepted package identity even after publication/mapping closure; changed consumer origin fails closed; state-verification capability and complete unique-key response are mandatory; matched/drift outcomes are derived from server-side comparison of package-governed fields; full observed records are not copied into the ledger; reconciliation rows cannot be updated or deleted by the runtime role; and no discrepancy causes an automatic downstream write. Release evidence: implementation PR #86 → dev; typing correction PR #88 → dev; GET auth correction PR #89 → dev; release PR #87 → main; corrected dev Verify run 38320041104 (#587) GREEN; corrected main-target PR Verify run 38320046984 (#588) GREEN; independent main Verify run 38320247702 (#589) GREEN; production Neon migration ledger includes 0022 with reconciliation RLS and SELECT/INSERT-only runtime grants verified; and Vercel deployment dpl_HzqxevLb6Ecp8D2hUWZ2QSn6oVXq is READY for main SHA 426537771df15e9d30277db799d0aae5e04faf3d.
 
-Next queued: **Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning.**
+## Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: turn immutable Build 052 drift into a controlled exception case and, only when explicitly intended, a frozen corrective delivery plan that can be reviewed without performing any downstream mutation.
+
+Delivered:
+
+- migration `0023_reconciliation_exception_triage.sql`;
+- RLS-scoped reconciliation exception cases with controlled triage-field updates;
+- one canonical exception case per exact drift reconciliation;
+- classification, severity, resolution intent, summary and investigation notes;
+- immutable pinned reconciliation fingerprint, package ID/fingerprint, affected integration keys and affected-field snapshot;
+- RLS-scoped corrective delivery plans with immutable package/replay/reconciliation identity and immutable correction scope;
+- plan scope generated only from mismatched/missing Build 052 records and original accepted-package governed values;
+- mismatched records scope only differing governed fields;
+- missing records originally created are marked restore-missing;
+- missing records originally updated are marked manual-review rather than assuming creation is safe;
+- deterministic plan fingerprint and duplicate-plan canonicalization;
+- proposed → approved/rejected/withdrawn review lifecycle with terminal review evidence;
+- authenticated `/approved-data/reconciliation/triage` workbench, API, navigation, contextual help and responsive UI;
+- deterministic scope/fingerprint tests plus PostgreSQL canonical-case/plan/RLS/immutability/review verification;
+- no consumer call, no new live activation, no dryRun=false request and no corrective execution.
+
+Acceptance: only Build 052 drift may open a case; one reconciliation cannot create competing cases; source reconciliation/package identity remains immutable; only owners/admins may triage or create/review plans; plan scope comes only from original governed values and proven mismatch/missing evidence; runtime cannot mutate frozen plan scope or pinned evidence; terminal review status cannot be overwritten; and plan approval does not execute or authorize a downstream write inside Build 053.
+
+Next queued: **Build 054 — Approved Corrective Delivery Activation & Idempotent Execution.**
