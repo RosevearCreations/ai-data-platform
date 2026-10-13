@@ -815,3 +815,7 @@ Build 059 adds `verify-successor-corrective-delivery-reconciliation.ts` to the a
 ## Build 060 verification
 
 Build 060 adds `verify-post-reclosure-regression.ts` to the application test chain and `verify-post-reclosure-regression-database.ts` to `db:verify`. Verification covers stable-versus-recurred classification, deterministic recurrence/error fingerprints, typed recurrence confirmation, RLS, immutable table grants, latest-check recurrence gates, recurrence-aware reopen behavior and database triggers that freeze the superseded successor cycle.
+
+## Build 061 verification
+
+Build 061 adds `verify-recurrent-exception-planning.ts` to the application test chain and `verify-recurrent-exception-planning-database.ts` to `db:verify`. Verification covers deterministic next-generation scope and fingerprints, predecessor-governed field narrowing, RLS, narrow runtime grants, recurrence/re-closure/predecessor evidence gates and database triggers that freeze Build 057 planning after recurrence.

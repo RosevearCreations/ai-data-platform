@@ -1506,3 +1506,18 @@ Promotion evidence:
 Build 060 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**
+
+## Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning
+
+Status: implementation ready for promotion.
+
+Scope:
+- create one new re-triage generation from the latest governed Build 060 recurrence;
+- derive affected records/fields from the exact recurrent verification;
+- freeze corrective scope to the intersection of recurrent drift and predecessor successor-plan governance;
+- bind recurrence, re-closure, predecessor successor plan/delivery and exact successor package identity into the new plan;
+- support owner/admin classification, investigation, dismissal and plan review with wait/busy controls;
+- preserve narrow RLS/grants and immutable lifecycle evidence;
+- freeze Build 057 planning mutations after recurrence.
+
+Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**
