@@ -442,3 +442,11 @@ The generic case close trigger now distinguishes first-generation closure from p
 Build 060 adds a monitoring generation after Build 059 re-closure. The exact successor package is reconstructed in read-only mode even while the exception is closed, then independently verified against the consumer. Matched state is stored as `stable`; renewed drift is stored as `recurred`; rejection and transport failures remain evidence only.
 
 A recurrent check never reopens an exception by itself. The owner/admin recurrence action inserts a separate recurrence row and transitions the case from closed to open in the same transaction. The governed reopen trigger accepts only current-generation Build 056 reopen evidence or Build 060 recurrence evidence created at or after the closure being reopened. Once recurrence is recorded, triggers freeze the prior Build 058/059 successor cycle from further activation, delivery, reconciliation or re-closure mutation.
+
+## Build 061 — Recurrent exception re-triage and next-generation planning
+
+Build 061 is the planning boundary after Build 060 recurrence. A recurrence becomes a new immutable decision generation rather than reopening the Build 057 successor plan. The service derives affected records and fields from the exact Build 060 recurrent verification, then narrows proposed correction scope against the approved predecessor successor plan. Only predecessor-governed fields may enter the next generation.
+
+Owners/admins can classify, investigate, dismiss or choose `plan-correction`. Plan creation freezes recurrence identity, re-closure identity, predecessor successor plan/delivery identity, exact successor package identity, recurrent verification fingerprint, scoped desired values and operator rationale. Approval advances only the Build 061 re-triage record; it does not execute a delivery.
+
+Database triggers added in Build 061 freeze Build 057 reopened re-triage and successor-plan mutation after recurrence. Build 060 already freezes Build 058/059 execution/reconciliation/re-closure surfaces, so the entire predecessor successor cycle becomes historical once recurrence is governed.
