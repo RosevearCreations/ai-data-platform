@@ -1320,7 +1320,7 @@ Acceptance: **PASSED.** Only approved Build 053 plans with no unresolved manual-
 
 ## Build 055 — Corrective Delivery Reconciliation & Exception Closure
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — corrected dev/main verification passed; migration 0025 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: independently verify the consumer state after an accepted Build 054 corrective delivery and permit exception closure only from the latest matched read-back evidence.
 
@@ -1346,6 +1346,6 @@ Delivered:
 - deterministic comparison/fingerprint tests plus PostgreSQL accepted-correction/read-back/latest-match/RLS/immutability/closure-trigger verification;
 - no corrective mutation, no resend and no automatic new corrective plan.
 
-Acceptance target: transport acceptance alone never closes a case; only accepted Build 054 deliveries may be reconciled; expected values are not sent in the verification request; drift/error evidence keeps the case open; an older matched result cannot close after newer evidence; generic triage closure fails closed at both app and database layers; only owners/admins may record verification or closure; reconciliation and closure evidence cannot be mutated or deleted by the runtime role; cross-account evidence remains invisible; and the Build 053 approved plan remains unchanged after verified case closure.
+Acceptance: **PASSED.** Transport acceptance alone never closes a case; only accepted Build 054 deliveries may be reconciled; expected values are not sent in the verification request; drift/error evidence keeps the case open; an older matched result cannot close after newer evidence; generic triage closure fails closed at both app and database layers; only owners/admins may record verification or closure; reconciliation and closure evidence cannot be mutated or deleted by the runtime role; cross-account evidence remains invisible; and the Build 053 approved plan remains unchanged after verified case closure. Release evidence: implementation PR #102 → dev; lint correction PR #103 → dev; release PR #104 → main; corrected dev Verify run 38404972599 (#608) GREEN; main-target PR Verify run 38405364137 (#609) GREEN; independent main Verify run 38405651337 (#610) GREEN; production Neon migration ledger includes 0025 with reconciliation/closure RLS, SELECT/INSERT-only runtime privileges, and the verified-close trigger/function confirmed; and Vercel deployment dpl_3D8PrXhb6myiv5qhHsxepvo8fBPk is READY for main SHA fc92ae3fb10de4ce12c123181719cdf1e752076e.
 
 Next queued: **Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance.**
