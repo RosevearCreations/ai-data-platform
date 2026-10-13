@@ -1285,7 +1285,7 @@ Acceptance: **PASSED.** Only Build 052 drift may open a case; one reconciliation
 
 ## Build 054 — Approved Corrective Delivery Activation & Idempotent Execution
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — corrected dev/main verification passed; migration 0024 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: turn one approved Build 053 corrective plan into a new plan-bound corrective package, prove that package through an authenticated dry-run, grant short-lived corrective authority and execute at most one canonical downstream mutation with replay-key idempotency.
 
@@ -1316,6 +1316,6 @@ Delivered:
 - no browser-supplied corrective values, endpoint, token, package identity or idempotency key;
 - no automatic exception closure after accepted corrective execution.
 
-Acceptance target: only approved Build 053 plans with no unresolved manual-review item may activate; a newer reconciliation fails closed; the configured consumer origin must match the original accepted source delivery; activation requires accepted external dry-run of the exact corrective package; corrective identity columns cannot be mutated by the runtime role; accepted/rejected deliveries are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and Build 053 plan approval remains unchanged after Build 054 execution.
+Acceptance: **PASSED.** Only approved Build 053 plans with no unresolved manual-review item may activate; a newer reconciliation fails closed; the configured consumer origin must match the original accepted source delivery; activation requires accepted external dry-run of the exact corrective package; corrective identity columns cannot be mutated by the runtime role; accepted/rejected deliveries are terminal; transport-error retry reuses the exact replay key and is bounded; cross-account activation/delivery state remains invisible; and Build 053 plan approval remains unchanged after Build 054 execution. Release evidence: implementation PR #97 → dev; browser/server boundary correction PR #98 → dev; release PR #99 → main; corrected dev Verify run 38341043399 (#601) GREEN; main-target PR Verify run 38341189240 (#602) GREEN; independent main Verify run 38341320305 (#603) GREEN; production Neon migration ledger includes 0024 with corrective activation/delivery RLS and identity-protecting UPDATE grants verified; and Vercel deployment dpl_Gn7tYooUkXS4xsTYbQKvzLKC8XVk is READY for main SHA f46c790e8eeb778d37bbee80027a6c4995413b56.
 
 Next queued: **Build 055 — Corrective Delivery Reconciliation & Exception Closure.**
