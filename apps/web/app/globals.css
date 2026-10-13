@@ -2944,3 +2944,96 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 054 — Approved Corrective Delivery Activation & Idempotent Execution */
+.correctiveShell {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.correctiveHero {
+  max-width: 1060px;
+  padding-bottom: 3rem;
+}
+
+.correctiveSummary,
+.correctiveSection {
+  position: relative;
+  margin-top: 2.5rem;
+}
+
+.correctiveNotice {
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 183, 117, 0.2);
+  border-radius: 1rem;
+  background: rgba(255, 183, 117, 0.055);
+  padding: 1rem;
+}
+
+.correctiveNotice strong {
+  display: block;
+  color: #f4cfab;
+  margin-bottom: 0.35rem;
+}
+
+.correctiveNotice p {
+  margin: 0;
+  color: #aebfc1;
+}
+
+.correctiveCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.correctiveScope {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.correctiveScope > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem;
+  border-radius: 0.75rem;
+  background: rgba(255,255,255,0.025);
+}
+
+.correctiveScope strong {
+  color: #edf5f6;
+  font-size: 0.8rem;
+}
+
+.correctiveScope span,
+.correctiveScope small {
+  color: #9eb1b4;
+  font-size: 0.73rem;
+}
+
+.correctiveAction {
+  display: grid;
+  gap: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 1rem;
+}
+
+.correctiveAction label {
+  display: grid;
+  gap: 0.45rem;
+  color: #afc0c3;
+  font-size: 0.78rem;
+}
+
+.correctiveAction code {
+  color: #9bded8;
+  overflow-wrap: anywhere;
+}
+
+.correctiveAction input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 0.7rem;
+  background: #0c161e;
+  color: #edf6f7;
+  padding: 0.65rem 0.75rem;
+}

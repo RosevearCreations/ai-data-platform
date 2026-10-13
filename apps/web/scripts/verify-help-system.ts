@@ -26,6 +26,8 @@ async function main() {
     "../app/approved-data/reconciliation/PostDeliveryReconciliationWorkbench.tsx",
     "../app/approved-data/reconciliation/triage/page.tsx",
     "../app/approved-data/reconciliation/triage/ReconciliationExceptionTriageWorkbench.tsx",
+    "../app/approved-data/reconciliation/corrective-delivery/page.tsx",
+    "../app/approved-data/reconciliation/corrective-delivery/CorrectiveDeliveryWorkbench.tsx",
     "../app/collection-projects/page.tsx",
     "../app/recipe-builder/page.tsx",
     "../app/collection-runs/page.tsx",
@@ -56,6 +58,20 @@ async function main() {
   assert(
     Object.keys(HELP_TOPICS).length >= 30,
     "Help registry unexpectedly lost detailed section topics."
+  );
+
+  const corrective = HELP_TOPICS["corrective-delivery-overview"];
+  assert(
+    "manual" in corrective &&
+      corrective.steps.some((step) => step.includes("newest reconciliation")) &&
+      corrective.steps.some((step) => step.includes("external dry-run")) &&
+      corrective.steps.some((step) => step.includes("one-hour window")) &&
+      corrective.steps.some((step) => step.includes("Idempotency-Key")) &&
+      corrective.notes.some((note) => note.includes("new package ID and replay key")) &&
+      corrective.notes.some((note) => note.includes("does not automatically close")) &&
+      corrective.manual.some((step) => step.includes("0024_corrective_delivery_execution.sql")) &&
+      corrective.manual.some((step) => step.includes("introduces no new secret")),
+    "Build 054 help must preserve supersession, dry-run activation, short-lived authority, new corrective replay identity and same-key execution guidance."
   );
 
   const triage = HELP_TOPICS["reconciliation-triage-overview"];
@@ -223,7 +239,7 @@ async function main() {
   );
 
   console.log(
-    "Build 053 contextual help coverage, reconciliation triage/planning guidance and existing production gates passed."
+    "Build 054 contextual help coverage, corrective activation/idempotent execution guidance and existing production gates passed."
   );
 
 }
