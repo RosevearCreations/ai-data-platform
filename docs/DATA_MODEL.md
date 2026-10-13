@@ -978,3 +978,16 @@ Append-only read-back evidence for an accepted Build 054 corrective delivery. Ea
 One immutable verified closure row per Build 053 exception case. The row pins the approved plan, accepted corrective delivery, latest matched corrective reconciliation, plan/corrective-package/verification fingerprints, operator closure note and deterministic closure fingerprint. Runtime access is SELECT/INSERT only.
 
 A database trigger on `workspace_reconciliation_exception_cases.status` requires an existing Build 055 closure row before a transition to `closed`.
+
+## Build 056 post-closure regression monitoring and reopen governance
+
+### workspace_post_closure_regression_checks
+
+Append-only current-state evidence for a verified Build 055 closure. Each row pins the closure/case/plan/corrective-delivery identity, consumer origin, closure fingerprint, corrective package/replay/fingerprint, terminal check status, compact per-key comparison evidence and actor/time. Status is `stable | regressed | rejected | transport-error`. Runtime access is SELECT/INSERT only.
+
+### workspace_reconciliation_exception_reopens
+
+One immutable governed reopen row per Build 055 closure. The row pins the closure, newest regressed check, case/target, closure fingerprint, regression fingerprint, operator reason and deterministic reopen fingerprint. Runtime access is SELECT/INSERT only.
+
+A database trigger requires a matching reopen row before a case may leave `closed`. The Build 055 verified-close guard also excludes closures that already have a reopen row, preventing stale closure evidence from silently re-closing a reopened case.
+

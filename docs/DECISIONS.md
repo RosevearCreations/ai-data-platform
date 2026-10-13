@@ -892,3 +892,36 @@ Decision: Build 055 terminates at verified closure and does not automatically re
 Reason: reopening needs explicit rules for regression evidence, duplicate cases and operator accountability.
 
 Consequence: Build 056 is queued as Post-Closure Regression Monitoring & Exception Reopen Governance.
+
+## D0129 — Verified closure remains observable, not permanently assumed
+
+Decision: Build 056 permits repeated independent read-back of the exact corrective scope after Build 055 closure.
+
+Reason: a downstream consumer may regress after a correctly verified closure.
+
+Consequence: closed exceptions can accumulate append-only stable/regressed/error evidence without reopening automatically or sending a mutation.
+
+## D0130 — Only the newest post-closure check can support reopen
+
+Decision: a reopen may use only the newest check for the exact Build 055 closure, and that check must be `regressed`.
+
+Reason: older regression evidence must not outrank newer evidence showing the consumer recovered or became unverifiable.
+
+Consequence: stale regression fails closed; a fresh read-back is required before reopen when newer evidence exists.
+
+## D0131 — Reopen evidence precedes mutable case state
+
+Decision: Build 056 inserts one immutable reopen row before changing the original case from `closed` to `open`, and a database trigger enforces that prerequisite.
+
+Reason: mutable case status must not be the only evidence that a verified closure was later superseded.
+
+Consequence: generic case updates cannot reopen a closed exception, duplicate reopen requests canonicalize to the one closure-bound reopen event, and operator identity/reason remain durable.
+
+## D0132 — Reopened closures cannot be reused as closure authority
+
+Decision: after a Build 055 closure is superseded by a Build 056 reopen, that historical closure cannot authorize another transition to `closed`.
+
+Reason: the old matched read-back predates the regression that justified reopening.
+
+Consequence: a successor resolution cycle must establish fresh closure authority rather than silently reusing stale evidence.
+

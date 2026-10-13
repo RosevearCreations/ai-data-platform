@@ -2664,3 +2664,45 @@ Resolved during promotion:
 - No failed gate was bypassed.
 
 Next queued: Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance.
+
+## Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance
+
+Date: 2026-10-13
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0026_post_closure_regression_reopen.sql`;
+- closed-exception post-closure state-verification context;
+- stable/regressed/rejected/transport-error append-only evidence;
+- latest-check-only reopen eligibility;
+- immutable operator reopen ledger and deterministic reopen fingerprint;
+- database guard preventing ungoverned closed→nonclosed transitions;
+- stale Build 055 closure protection after reopen;
+- owner/admin typed confirmation plus reason;
+- `/approved-data/reconciliation/post-closure-regression` workbench/API/navigation;
+- deterministic and PostgreSQL full-lifecycle verification.
+
+Guardrails:
+
+- monitoring sends no corrective mutation and no resend;
+- expected values are never disclosed in the read-back request;
+- stable checks never reopen;
+- stale regression cannot outrank newer evidence;
+- reopen is explicit and never automatic;
+- generic case updates cannot reopen a closed exception;
+- regression/reopen evidence is append-only and immutable to the runtime role;
+- Build 055 closure history remains intact after reopen;
+- a reopened closure cannot be reused as authority to silently close again.
+
+Verification target:
+
+- migration 0026: PASS required;
+- post-closure stable/regressed comparison and fingerprint tests: PASS required;
+- PostgreSQL verified closure → stable → regression → stale-regression rejection → latest-regression governed reopen, RLS, immutable evidence and both database guards: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion, production Neon migration and exact READY Vercel deployment required.
+
+Next queued: Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.
+

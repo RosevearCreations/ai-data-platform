@@ -1349,3 +1349,32 @@ Delivered:
 Acceptance: **PASSED.** Transport acceptance alone never closes a case; only accepted Build 054 deliveries may be reconciled; expected values are not sent in the verification request; drift/error evidence keeps the case open; an older matched result cannot close after newer evidence; generic triage closure fails closed at both app and database layers; only owners/admins may record verification or closure; reconciliation and closure evidence cannot be mutated or deleted by the runtime role; cross-account evidence remains invisible; and the Build 053 approved plan remains unchanged after verified case closure. Release evidence: implementation PR #102 → dev; lint correction PR #103 → dev; release PR #104 → main; corrected dev Verify run 38404972599 (#608) GREEN; main-target PR Verify run 38405364137 (#609) GREEN; independent main Verify run 38405651337 (#610) GREEN; production Neon migration ledger includes 0025 with reconciliation/closure RLS, SELECT/INSERT-only runtime privileges, and the verified-close trigger/function confirmed; and Vercel deployment dpl_3D8PrXhb6myiv5qhHsxepvo8fBPk is READY for main SHA fc92ae3fb10de4ce12c123181719cdf1e752076e.
 
 Next queued: **Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance.**
+
+## Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance
+
+Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+
+Goal: observe verified Build 055 closures for later downstream regression and, only from the newest proven regression, permit an explicit governed reopen without weakening or rewriting the original closure evidence.
+
+Delivered:
+
+- migration `0026_post_closure_regression_reopen.sql`;
+- append-only `workspace_post_closure_regression_checks` with stable, regressed, rejected and transport-error outcomes;
+- immutable `workspace_reconciliation_exception_reopens` with one canonical reopen per verified closure;
+- exact reconstruction of the accepted corrective package behind the Build 055 closure;
+- current consumer-origin continuity plus fresh state-verification handshake;
+- expected-value-withholding read-back request using only governed keys/field names;
+- server-side stable/regressed comparison with compact fingerprint evidence;
+- latest-check rule: stale regression cannot reopen after newer stable/error evidence;
+- explicit target-specific typed reopen confirmation and non-empty operator reason;
+- database-enforced closed→nonclosed guard requiring immutable reopen evidence first;
+- stale-closure protection: a closure with a reopen row cannot satisfy a later transition back to `closed`;
+- RLS-scoped SELECT/INSERT-only regression and reopen ledgers;
+- `/approved-data/reconciliation/post-closure-regression` workbench, API and application navigation;
+- deterministic comparison/fingerprint tests plus PostgreSQL full-lifecycle/RLS/immutability/trigger verification;
+- no corrective mutation, no resend and no automatic reopen.
+
+Acceptance target: only verified Build 055 closures may be monitored; expected values are never sent to the consumer; only owners/admins may check or reopen; stable evidence leaves the case closed; only the newest regressed check may support reopen; stale regression cannot reopen; generic or direct closed→open changes fail at the database layer; regression/reopen evidence is immutable to the runtime role; cross-account evidence remains invisible; reopening preserves the original Build 055 closure as historical evidence while preventing that stale closure from silently re-closing the case; and no Build 056 path performs a downstream mutation.
+
+Next queued: **Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.**
+

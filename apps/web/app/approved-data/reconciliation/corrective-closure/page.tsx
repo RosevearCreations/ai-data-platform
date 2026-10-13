@@ -44,6 +44,12 @@ export default async function CorrectiveClosurePage() {
           </Link>
           <Link
             className="secondaryButton"
+            href="/approved-data/reconciliation/post-closure-regression"
+          >
+            Post-closure regression & reopen governance
+          </Link>
+          <Link
+            className="secondaryButton"
             href="/approved-data/reconciliation/triage"
           >
             Exception triage & planning
