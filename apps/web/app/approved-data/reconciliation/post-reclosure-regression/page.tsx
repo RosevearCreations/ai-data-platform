@@ -32,6 +32,9 @@ export default async function PostReclosureRegressionPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/recurrent-planning">
+            Recurrent exception planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successor-closure">
             Successor reconciliation & re-closure
           </Link>
