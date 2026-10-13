@@ -2795,6 +2795,16 @@ Implementation branch: `build-059-successor-reconciliation-reclosure`.
 
 Added migration `0029_successor_corrective_reconciliation_reclosure.sql`, successor reconciliation library/API/workbench, CI verification, immutable successor read-back and re-closure ledgers, latest-match enforcement, latest-reopen binding, successor-aware case-close trigger behavior, wait/busy mutation controls, and database blocking of legacy Build 055/056 lifecycle writes after reopen.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #122 merged the feature branch to `dev`;
+- Verify #641 confirmed migration/build/application tests but failed the older Build 056 regression verifier because Build 059 now returns the stronger `reconciliation_triage_verified_successor_reclosure_required` guard;
+- PR #124 changed only that verifier to recognize the successor-specific denial; no application permission or database guard was loosened;
+- release PR #123 then passed Verify #643 on corrected `dev` SHA `ea0c98ec0cbfb8227421eaa48b1c13666f4eaa04`;
+- release `main` SHA: `6be1de76c974eef0de3817565fb9316a9c43d172`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0029_successor_corrective_reconciliation_reclosure.sql`;
+- production verification confirmed both Build 059 tables have RLS, four intended policies exist, runtime table grants are SELECT/INSERT only with no UPDATE/DELETE, legacy Build 055/056 reconciliation/closure/regression writes are blocked after reopen, and the case-close trigger requires a Build 059 successor re-closure for reopened cases;
+- Vercel deployment `dpl_855Qxn5c4jQPDCNeNZvgyqmPEB6g` is READY, sourced from exact SHA `6be1de76c974eef0de3817565fb9316a9c43d172`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 059 is **GREEN on main and production**.
 
 Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance.**
