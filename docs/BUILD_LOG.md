@@ -2589,3 +2589,46 @@ Resolved during promotion:
 - No failed gate was bypassed; Build 054 proceeded only after corrected dev, main-target and independent main verification all passed.
 
 Next queued: Build 055 — Corrective Delivery Reconciliation & Exception Closure.
+
+
+## Build 055 — Corrective Delivery Reconciliation & Exception Closure
+
+Date: 2026-10-13
+
+Status: RELEASE CANDIDATE — dev/main/production verification pending.
+
+Delivered:
+
+- migration `0025_corrective_reconciliation_closure.sql`;
+- accepted-corrective-delivery read-back context;
+- exact corrective package reconstruction and consumer-origin continuity;
+- state-verification handshake and expected-value-withholding request;
+- append-only corrective reconciliation outcomes;
+- latest matched evidence requirement for closure;
+- immutable verified closure ledger;
+- application and database guards preventing unverified `closed` transitions;
+- target-specific typed closure confirmation and closure note;
+- `/approved-data/reconciliation/corrective-closure` workbench/API/navigation/help;
+- deterministic and PostgreSQL end-to-end verification.
+
+Guardrails:
+
+- Build 054 accepted transport is necessary but not sufficient for closure;
+- Build 055 sends no corrective mutation;
+- expected corrective values are never disclosed in the read-back request;
+- only the newest corrective reconciliation is eligible for closure;
+- drift/rejected/transport-error evidence keeps the case open;
+- generic Build 053 case updates cannot set `closed`;
+- the database trigger also refuses `closed` without a verified closure row;
+- closure evidence is append-only and immutable to the runtime role;
+- Build 053 approved plan evidence is preserved.
+
+Verification target:
+
+- migration 0025: PASS required;
+- corrective comparison / closure fingerprint tests: PASS required;
+- PostgreSQL accepted correction → drift → stale match → latest match → verified closure, RLS, immutable evidence and trigger test: PASS required;
+- typecheck/lint/tests/builds: PASS required;
+- feature → dev → main promotion, production Neon migration and exact READY Vercel deployment required.
+
+Next queued: Build 056 — Post-Closure Regression Monitoring & Exception Reopen Governance.
