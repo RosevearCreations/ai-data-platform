@@ -424,3 +424,9 @@ Reopening is a separate owner/admin governance action. The selected check must b
 Build 057 treats a Build 056 reopen as the start of a new resolution generation rather than a continuation of the original Build 053 plan. `workspace_reopened_exception_triage_cycles` is one-per-reopen and records the new classification, severity, intent and investigation state while preserving the original exception case, closure, regression check and reopen rows unchanged.
 
 Successor planning is stored separately in `workspace_successor_corrective_delivery_plans`. Its correction scope is derived only from Build 056 `mismatched`/`missing` results and values already frozen in the accepted predecessor corrective plan. The original `workspace_corrective_delivery_plans` insert policy now rejects any case that has reopen evidence, preventing stale Build 053 planning from being used after reopening. Build 057 has no activation or transport path.
+
+## Build 058 — Successor corrective execution
+
+The reopened-exception lifecycle now has a dedicated execution boundary after Build 057 planning. The Build 058 server reconstructs the accepted predecessor corrective package, validates the approved successor plan against that immutable identity and Build 056 regression fingerprint, then creates a new package with a distinct batch ID, package ID, replay key and fingerprint. Activation requires a current consumer capability handshake and an accepted dry-run. Live execution reserves a durable delivery row before transport, reuses the same replay key for bounded retries, and treats accepted/rejected acknowledgements as terminal.
+
+The legacy Build 054 activation and live-delivery insert policies are additionally guarded against cases that have Build 056 reopen evidence, preventing a reopened exception from bypassing the successor lifecycle.

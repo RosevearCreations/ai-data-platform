@@ -1002,3 +1002,10 @@ One re-triage generation per Build 056 reopen. Identity fields bind the reopen, 
 ### workspace_successor_corrective_delivery_plans
 
 Immutable successor-plan identity and correction scope for a reopened exception. The row pins the re-triage generation, Build 056 regression fingerprint, predecessor Build 053 plan, accepted Build 054 corrective delivery and its package/replay/fingerprint identity. Runtime updates are limited to review status and review audit fields. Runtime DELETE is not granted.
+
+## Build 058 successor execution evidence
+
+- `app.workspace_successor_corrective_delivery_activations` binds one active execution window to the approved Build 057 successor plan, its re-triage/reopen/regression evidence, the accepted predecessor corrective delivery, the newly derived successor package identity, and the accepted dry-run acknowledgement.
+- `app.workspace_successor_corrective_live_deliveries` stores the idempotent live reservation/result ledger. Identity columns are immutable to the runtime role; only delivery status/attempt/result fields have narrow UPDATE grants.
+- The predecessor Build 054 activation/delivery rows remain historical evidence and are not rewritten or reused as successor execution rows.
+- Migration: `0028_successor_corrective_delivery_execution.sql`.

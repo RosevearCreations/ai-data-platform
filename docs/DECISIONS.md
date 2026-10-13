@@ -950,3 +950,19 @@ Consequence: all post-reopen planning must use the successor-cycle tables.
 Decision: Build 057 does not activate, deliver, resend or otherwise mutate a downstream consumer.
 
 Consequence: an approved successor plan is evidence for a later controlled execution build, not permission to write by itself.
+
+## D0137 — Successor correction uses a new delivery identity
+
+A reopened exception never reuses the predecessor corrective package ID, replay key, activation or delivery row. Build 058 derives a new package from the approved Build 057 scope while retaining predecessor identity only as evidence.
+
+## D0138 — Successor activation requires fresh external proof
+
+Plan approval alone is not permission to mutate a consumer. A fresh live-capability handshake, accepted dry-run of the exact successor package and typed activation confirmation are required before an activation window is created.
+
+## D0139 — Successor live delivery is idempotent and retry-bounded
+
+The successor replay key is the live idempotency key. Transport failures may retry only the identical package/key, reservations are stale-safe, retries are capped at five attempts, and accepted/rejected results are terminal.
+
+## D0140 — Reopened cases cannot fall back to Build 054 execution
+
+Database policies reject new legacy corrective activations and legacy corrective delivery inserts/updates for a case once Build 056 reopen evidence exists. Reopened cases must use the Build 057/058 successor lifecycle.

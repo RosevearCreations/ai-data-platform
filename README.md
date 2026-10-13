@@ -118,3 +118,9 @@ The signed-in application now includes `/approved-data/reconciliation/post-closu
 ## Build 057 application surface
 
 The signed-in application now includes `/approved-data/reconciliation/reopened-planning`. Every governed Build 056 reopen may create one new re-triage cycle. Owners/admins classify the reopened regression, record investigation notes, choose a resolution intent, and—only for `plan-correction`—freeze a successor corrective plan from the exact fields proven regressed by Build 056 and the desired values already governed by the accepted predecessor corrective package. Build 057 performs no downstream consumer mutation. The legacy Build 053 corrective-plan insert path is denied once a case has Build 056 reopen evidence.
+
+### Build 058 — Successor Corrective Delivery Activation & Idempotent Execution
+
+Build 058 turns an approved Build 057 successor plan into a separate, short-lived corrective execution path. It reconstructs the accepted predecessor corrective package only as immutable evidence, derives a new successor package identity, requires a fresh consumer handshake and accepted dry-run, then performs live delivery with one deterministic replay/idempotency key and bounded same-key retries. Reopened exceptions cannot fall back to the legacy Build 054 activation/delivery write path.
+
+Operator UI: `/approved-data/reconciliation/successor-delivery`.

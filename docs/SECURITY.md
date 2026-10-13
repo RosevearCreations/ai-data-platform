@@ -531,3 +531,7 @@ No check can mutate the consumer, resend a corrective package or automatically r
 Only workspace owners/admins may create or update a reopened re-triage cycle or successor plan. RLS requires an exact Build 056 reopen → regressed-check → open-case chain before a re-triage row may be inserted. Successor-plan insertion additionally requires `plan-correction`, an approved predecessor plan, an accepted predecessor corrective delivery and exact package identity.
 
 The legacy Build 053 plan-insert policy now explicitly rejects cases with Build 056 reopen evidence. A database trigger also blocks generic `open → planned/approved/dismissed` transitions on the original case after reopen, so the successor lifecycle cannot be bypassed through the old case workflow. Build 057 has no consumer endpoint and grants no runtime DELETE on its evidence tables.
+
+## Build 058 successor corrective write controls
+
+Build 058 requires owner/admin role, an approved Build 057 successor plan, approved re-triage, an open reopened case, unchanged regressed evidence, an accepted predecessor corrective delivery, current consumer identity, fresh live-capability handshake, accepted dry-run and typed activation/execution confirmations. Successor package identity is distinct from the predecessor package. Runtime grants do not include DELETE or unrestricted table UPDATE. The old Build 054 activation/delivery policies reject new writes for cases with reopen evidence, closing the legacy-path bypass.

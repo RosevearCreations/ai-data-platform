@@ -33,6 +33,9 @@ export default async function ReopenedExceptionPlanningPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-closure-regression">
             Post-closure regression & reopen governance
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-delivery">
+            Successor corrective delivery execution
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/triage">
             Original exception triage
           </Link>
