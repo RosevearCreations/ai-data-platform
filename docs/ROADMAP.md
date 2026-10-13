@@ -1433,7 +1433,7 @@ Build 057 application release is therefore **GREEN on main and production**.
 
 ## Build 058 — Successor Corrective Delivery Activation & Idempotent Execution
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct accepted predecessor corrective evidence without mutating it;
@@ -1442,5 +1442,15 @@ Scope:
 - reserve/live-send with deterministic replay-key idempotency and bounded retries;
 - preserve immutable successor activation/delivery evidence;
 - block reopened cases from the legacy Build 054 execution path.
+
+Promotion evidence:
+- feature PR #118 merged to `dev`;
+- release PR #119 passed Verify #634 on exact `dev` head `fab65c0b01bebb140ad65465a7c834b15b300b07`;
+- release merged to `main` at `5cf65d337fb1daf40c4f1e3722c5192b2b64068c`;
+- production Neon migration `0028_successor_corrective_delivery_execution.sql` recorded and verified with RLS, six intended policies, narrow UPDATE grants, no runtime DELETE, one-active-activation enforcement and legacy Build 054 reopen guards;
+- Vercel deployment `dpl_5fUFrTznT97wowrHVh6RovceKh7u` is READY for exact release SHA `5cf65d337fb1daf40c4f1e3722c5192b2b64068c`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 058 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 059 — Successor Corrective Delivery Reconciliation & Re-Closure.**
