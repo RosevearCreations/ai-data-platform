@@ -2669,7 +2669,7 @@ Next queued: Build 056 — Post-Closure Regression Monitoring & Exception Reopen
 
 Date: 2026-10-13
 
-Status: RELEASE CANDIDATE — dev/main/production verification pending.
+Status: PRODUCTION GREEN.
 
 Delivered:
 
@@ -2703,6 +2703,25 @@ Verification target:
 - PostgreSQL verified closure → stable → regression → stale-regression rejection → latest-regression governed reopen, RLS, immutable evidence and both database guards: PASS required;
 - typecheck/lint/tests/builds: PASS required;
 - feature → dev → main promotion, production Neon migration and exact READY Vercel deployment required.
+
+
+
+Production promotion evidence:
+
+- PR #107 → `dev`: Build 056 implementation;
+- PR #108 → `dev`: authenticated-user type narrowing correction after Verify #615;
+- PR #109 → `dev`: unused-binding lint correction after Verify #616;
+- `dev` SHA `e62fc92d43317fd3ac085cba53df92f4362e28ea`;
+- Verify #617 / run `38411509850`: SUCCESS;
+- release PR #110 main-target Verify #618 / run `38411804647`: SUCCESS;
+- release `main` SHA `d8c1b895f03306a48dea0a6910562b44192e9427`;
+- main Verify #619 / run `38412121779`: SUCCESS;
+- Neon production project `dry-violet-48414847` / branch `br-wandering-paper-b5wj4f1u`: migration `0026_post_closure_regression_reopen.sql` recorded and live;
+- production Neon checks: regression/reopen RLS ON, manager/member policies present, runtime grants exactly `INSERT,SELECT`, governed-reopen trigger present, verified-close guard present;
+- Vercel deployment `dpl_DxcL2W1VTLf9Bxw1Tdm1XrwyfcBh`: `READY`, target `production`, source `git`, exact GitHub SHA `d8c1b895f03306a48dea0a6910562b44192e9427`;
+- aliases include `ai-data-platform-beryl.vercel.app`; `aliasError=null`.
+
+Build 056 application release is therefore **GREEN on main and production**.
 
 Next queued: Build 057 — Reopened Exception Re-Triage & Successor Corrective Planning.
 
