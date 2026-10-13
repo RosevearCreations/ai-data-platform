@@ -745,3 +745,15 @@ Verification sequence:
 8. do not mutate either system.
 
 The downstream consumer must implement the read-only state-verification contract. Build 052 adds no new environment variable or paid service.
+
+
+## Build 053 reconciliation exception triage
+
+- `db/migrations/0023_reconciliation_exception_triage.sql` creates case and plan tables with RLS and narrow UPDATE grants.
+- `apps/web/lib/reconciliation-exception-triage.ts` owns case canonicalization, corrective-scope construction, plan fingerprinting and terminal review.
+- `/api/approved-data/reconciliation/triage` exposes authenticated case/plan CRUD within the planning-only boundary.
+- `/approved-data/reconciliation/triage` is the operator workbench.
+- `verify-reconciliation-exception-triage.ts` checks exact scope and fingerprint behavior.
+- `verify-reconciliation-exception-triage-database.ts` checks canonical case/plan creation, cross-workspace RLS, immutable evidence/scope and terminal approval evidence.
+
+Do not add consumer fetches, live activations or delivery execution to Build 053. Those belong to a later explicitly controlled build.

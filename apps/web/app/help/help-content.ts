@@ -19,6 +19,72 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "reconciliation-triage-overview": {
+    title: "Reconciliation Exception Triage & Corrective Delivery Planning",
+    summary: "Build 053 turns Build 052 drift evidence into an explicit owner/admin triage case and, when justified, an immutable corrective delivery plan. It freezes affected integration keys, governed fields, desired values, package identity, rationale and review evidence without contacting a consumer or executing a correction.",
+    steps: [
+      "Start only from a Build 052 reconciliation with status=drift.",
+      "Create one canonical exception case and classify the discrepancy, severity and intended resolution.",
+      "Use investigation notes to record why the drift is expected, acceptable, uncertain or potentially corrective.",
+      "Set resolution intent to plan-correction only when a corrective delivery should be designed.",
+      "Create a frozen corrective plan; Build 053 reconstructs the accepted package and scopes only mismatched or missing governed fields.",
+      "Review the frozen scope and approve, reject or withdraw the plan as a planning artifact."
+    ],
+    notes: [
+      "Approval is not execution: Build 053 has no consumer transport, live activation or corrective delivery endpoint.",
+      "One triage case is canonical per reconciliation so repeated UI actions cannot create competing exception identities.",
+      "Plan scope is immutable after creation; only review status and review evidence may change.",
+      "A missing record that originated from an update operation is marked manual-review instead of assuming that a create is safe.",
+      "Pinned reconciliation fingerprint, package ID, replay key and package fingerprint cannot be edited by the runtime role."
+    ],
+    manual: [
+      "Apply 0023_reconciliation_exception_triage.sql before using Build 053.",
+      "Build 053 introduces no new secret, external account or paid service.",
+      "A future build is required before any approved corrective plan can be activated or executed."
+    ]
+  },
+  "reconciliation-triage-case": {
+    title: "Exception case classification",
+    summary: "A triage case records the operational interpretation of immutable Build 052 drift without changing the underlying reconciliation.",
+    steps: [
+      "Choose a classification that reflects the current evidence rather than the desired outcome.",
+      "Set severity according to business impact, not simply the number of changed fields.",
+      "Use investigate when the cause is uncertain, accept-drift for an intentional downstream difference, plan-correction for a deliberate corrective proposal, and no-action when evidence should remain informational.",
+      "Keep investigation notes factual and separate from the frozen reconciliation evidence."
+    ],
+    notes: [
+      "Case metadata may be updated by an owner/admin, but reconciliation fingerprint, package identity and affected-key snapshot remain immutable."
+    ]
+  },
+  "reconciliation-triage-planning": {
+    title: "Corrective delivery plan scope",
+    summary: "A corrective plan is generated from the original accepted package plus the exact mismatched/missing records in one Build 052 drift reconciliation.",
+    steps: [
+      "For mismatched records, include only the governed fields that Build 052 proved differ.",
+      "For missing records that were originally created, plan restore-missing with the original governed values.",
+      "For missing records that were originally updates, mark manual-review instead of inferring that creation is safe.",
+      "Freeze package identity, reconciliation fingerprint, desired values and rationale into one plan fingerprint.",
+      "Create a new plan if the rationale or intended scope needs to change; do not edit an existing frozen plan."
+    ],
+    notes: [
+      "The plan contains desired governed values from the accepted package, not values invented during triage.",
+      "No plan creation path calls the downstream consumer."
+    ]
+  },
+  "reconciliation-triage-review": {
+    title: "Plan review & approval",
+    summary: "Review status records whether a frozen corrective plan is acceptable for a later execution workflow. It never authorizes Build 053 to send anything.",
+    steps: [
+      "Confirm reconciliation fingerprint, package fingerprint, affected keys and governed field scope.",
+      "Review any manual-review entries before approving the planning artifact.",
+      "Record a review note and choose approved, rejected or withdrawn.",
+      "Treat approved as ready for a future controlled-execution build, not as a live delivery request."
+    ],
+    notes: [
+      "A proposed plan can be reviewed only once; terminal review status cannot be overwritten through the runtime API.",
+      "Execution must require a separate future control boundary with its own dry-run, activation, idempotency and post-delivery verification."
+    ]
+  },
   "post-delivery-reconciliation-overview": {
     title: "Post-Delivery Reconciliation & Consumer State Verification",
     summary: "Build 052 performs a read-only comparison after an accepted Build 051 live delivery. It reconstructs the exact historical package, asks the configured consumer for current state, compares only package-governed fields and stores immutable matched, mismatched or missing evidence.",
@@ -1068,7 +1134,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Approved data & integration delivery",
-    topics: ["post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    topics: ["reconciliation-triage-overview", "reconciliation-triage-case", "reconciliation-triage-planning", "reconciliation-triage-review", "post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",

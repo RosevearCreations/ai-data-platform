@@ -379,3 +379,12 @@ The currently configured consumer origin must still equal the original accepted-
 Comparison is server-side. Only fields that the accepted package was responsible for are compared, so unrelated consumer-managed fields do not create false drift. Full observed records are not persisted; Build 052 stores compact expected/observed fingerprints and differing governed field names.
 
 Each verification is append-only and repeatable. Matched, drift, rejected and transport-error are separate outcomes. No outcome invokes a mutation path.
+
+
+## Build 053 reconciliation triage architecture
+
+Build 053 sits between read-only Build 052 reconciliation and any future corrective execution. It consumes only durable Build 052 drift evidence. A case snapshots the exact reconciliation/package identity and affected keys so later classification changes cannot redefine what evidence originally opened the case.
+
+When resolution intent is `plan-correction`, the platform reconstructs the accepted package through the Build 052 historical package path and intersects its operations with the reconciliation's mismatched/missing records. The resulting plan contains only governed desired values from that accepted package. Mismatches propose update-existing. A missing record originally created may be planned as restore-missing; a missing record originally updated remains manual-review.
+
+Plan creation and review are database-only. There is no outbound transport in Build 053.

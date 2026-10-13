@@ -480,3 +480,14 @@ A fresh handshake must explicitly advertise `stateVerificationSupported=true`. T
 The response must identify the same package/replay/fingerprint and cover every expected key exactly once. Duplicate, omitted or unexpected keys fail closed. Only scalar returned values are accepted. Full consumer values are compared in memory and are not stored in durable reconciliation rows; persisted evidence contains value fingerprints and differing field names.
 
 Reconciliation rows are SELECT/INSERT only for the runtime role. Build 052 has no automatic mutation, rollback or retry path when drift is detected.
+
+
+## Build 053 corrective planning boundary
+
+Build 053 does not inherit Build 051 live-mutation authority. It has no consumer endpoint call, no bearer-token use, no activation creation and no `dryRun=false` request.
+
+Only workspace owners/admins may create or update exception cases or create/review corrective plans. Cases may change operational triage fields, but source reconciliation fingerprint, delivery/package identity and affected-key/field snapshots are not runtime-updatable. Corrective plans are immutable except for review status/audit fields.
+
+Desired plan values are derived server-side from the exact accepted package; browser input supplies rationale and triage metadata, not arbitrary corrective values. Missing records from original update operations are marked manual-review instead of inferring a create mutation.
+
+An approved plan is evidence for a future controlled-execution workflow only. Build 053 cannot execute it.

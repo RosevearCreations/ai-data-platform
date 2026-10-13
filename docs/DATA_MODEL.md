@@ -941,3 +941,16 @@ Key fields:
 For matched/drift outcomes the three result counts must sum to the expected record count. Rejected/transport-error outcomes retain zero comparison counts because no trustworthy state comparison completed. `record_results` stores integration key, matched/mismatched/missing status, expected/observed fingerprints and differing governed field names rather than full consumer values.
 
 Runtime access is SELECT/INSERT only under workspace RLS. There is no runtime UPDATE or DELETE grant.
+
+
+## Build 053 reconciliation exception triage
+
+### workspace_reconciliation_exception_cases
+
+One canonical triage case per Build 052 drift reconciliation. Mutable runtime fields are limited to status, classification, severity, resolution intent, summary, investigation notes and closure/update audit fields. Reconciliation fingerprint, package identity, affected integration keys/fields and source linkage are immutable.
+
+### workspace_corrective_delivery_plans
+
+Frozen planning artifact for one triage case. It pins reconciliation fingerprint, package ID, replay key, package fingerprint, rationale and correction scope. Correction scope contains integration key, mismatch/missing status, proposed planning action, governed fields, desired values and expected/observed fingerprints.
+
+Runtime UPDATE is restricted to review status and review audit fields. Plan identity and correction scope cannot be changed after creation.
