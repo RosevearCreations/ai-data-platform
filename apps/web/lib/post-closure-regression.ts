@@ -423,7 +423,7 @@ export async function recordPostClosureRegressionCheck(
 ) {
   return withUserDatabase(userId, async (client) => {
     await requireManager(client, input.workspaceId);
-    const { closure, delivery, plan } = input.context;
+    const { closure, delivery } = input.context;
     const current = await client.query<{
       case_status: string;
       delivery_status: string;
