@@ -537,7 +537,11 @@ function successorPlanFromRow(row: ContextRow): SuccessorCorrectiveDeliveryPlan 
 
 export async function loadApprovedSuccessorCorrectivePlanContext(
   userId: string,
-  input: { workspaceId: string; successorPlanId: string }
+  input: {
+    workspaceId: string;
+    successorPlanId: string;
+    allowClosedCase?: boolean;
+  }
 ): Promise<SuccessorCorrectiveExecutionContext> {
   const row = await withUserDatabase(userId, async (client) => {
     const result = await client.query<ContextRow>(
@@ -618,7 +622,10 @@ export async function loadApprovedSuccessorCorrectivePlanContext(
   if (row.retriage_status !== "approved") {
     throw new Error("successor_delivery_approved_retriage_required");
   }
-  if (row.case_status !== "open") {
+  if (
+    row.case_status !== "open" &&
+    !(input.allowClosedCase === true && row.case_status === "closed")
+  ) {
     throw new Error("successor_delivery_open_case_required");
   }
   if (

@@ -436,3 +436,9 @@ The legacy Build 054 activation and live-delivery insert policies are additional
 Build 059 adds a separate verification generation after Build 058 delivery. The application reconstructs the exact successor package from the approved Build 057 plan and accepted Build 058 delivery, performs a fresh state-verification handshake/read-back, and writes an immutable successor reconciliation row. Re-closure is a separate owner/admin action and requires the newest reconciliation for that successor delivery to be `matched`.
 
 The generic case close trigger now distinguishes first-generation closure from post-reopen re-closure. If reopen evidence exists, the original closure is insufficient: the trigger requires a Build 059 re-closure bound to the latest reopen. Legacy Build 055 reconciliation/closure and Build 056 original post-closure regression writes are denied after reopen evidence exists.
+
+## Build 060 — Post-re-closure recurrence governance
+
+Build 060 adds a monitoring generation after Build 059 re-closure. The exact successor package is reconstructed in read-only mode even while the exception is closed, then independently verified against the consumer. Matched state is stored as `stable`; renewed drift is stored as `recurred`; rejection and transport failures remain evidence only.
+
+A recurrent check never reopens an exception by itself. The owner/admin recurrence action inserts a separate recurrence row and transitions the case from closed to open in the same transaction. The governed reopen trigger accepts only current-generation Build 056 reopen evidence or Build 060 recurrence evidence created at or after the closure being reopened. Once recurrence is recorded, triggers freeze the prior Build 058/059 successor cycle from further activation, delivery, reconciliation or re-closure mutation.

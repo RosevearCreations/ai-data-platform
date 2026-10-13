@@ -53,6 +53,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/successor-closure">
             Successor reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-reclosure-regression">
+            Post-re-closure recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>

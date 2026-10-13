@@ -539,3 +539,7 @@ Build 058 requires owner/admin role, an approved Build 057 successor plan, appro
 ## Build 059 successor re-closure controls
 
 Only owners/admins may record successor reconciliation or re-close an exception. Reconciliation insertion requires an accepted Build 058 successor delivery, approved Build 057 successor plan and re-triage, unchanged Build 056 regression identity, and an open case. Re-closure requires the latest successor reconciliation to be matched and the reopen to be the latest generation. The close trigger rejects reopened-case closure unless the matching Build 059 re-closure row already exists in the same transaction. Legacy Build 055/056 write paths are blocked after reopen evidence exists.
+
+## Build 060 recurrence controls
+
+Only owners/admins may record post-re-closure monitoring or recurrence. Monitoring requires the latest Build 059 re-closure, a closed case, accepted successor delivery, approved successor plan and exact package/re-closure fingerprints. Recurrence requires the newest check to be `recurred`, the re-closure to still be the newest closure generation and the case to remain closed. The generic closed→open trigger now accepts recurrence evidence only when its timestamp belongs to the current closure generation. Recurrence also freezes prior successor activation, live-delivery, reconciliation and re-closure mutation surfaces.

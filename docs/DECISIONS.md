@@ -982,3 +982,19 @@ Older matched evidence cannot outrank a newer drift, rejection or transport erro
 ## D0144 — Reopened cases cannot reuse first-generation closure/regression paths
 
 After reopen evidence exists, runtime policies deny legacy Build 055 corrective reconciliation/closure inserts and Build 056 original post-closure regression inserts. The case-close trigger requires successor re-closure evidence instead of accepting the original closure.
+
+## D0145 — Re-closure creates a new monitoring generation
+
+Build 059 re-closure does not end observability. Build 060 monitors the exact successor package that justified re-closure and stores independent evidence without changing prior lifecycle rows.
+
+## D0146 — Recurring drift is evidence, not an automatic reopen
+
+A `recurred` check alone does not change case state. Reopening requires an owner/admin recurrence action, a reason, typed confirmation and the newest recurrent check for the newest re-closure.
+
+## D0147 — Reopen authorization is generation-aware
+
+The closed→open database trigger accepts only reopen or recurrence evidence whose timestamp is at or after the closure currently being reopened. An older Build 056 reopen cannot authorize a later reopen after Build 059 re-closure.
+
+## D0148 — A recurrence freezes the superseded successor cycle
+
+After recurrence is recorded, Build 058/059 activation, live-delivery, reconciliation and re-closure mutation surfaces are blocked by database triggers. A new corrective generation must be planned rather than silently replaying the previous successor cycle.
