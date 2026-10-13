@@ -59,7 +59,7 @@ async function main() {
     "Build 057 must block the legacy Build 053 plan path after reopen."
   );
 
-  const grants = await authPool.query<{ table_name: string; privilege_type: string }>(
+  const tableGrants = await authPool.query<{ table_name: string; privilege_type: string }>(
     `select table_name,privilege_type
      from information_schema.role_table_grants
      where table_schema='app'
@@ -69,19 +69,64 @@ async function main() {
          'workspace_successor_corrective_delivery_plans'
        )`
   );
-  const byTable = new Map<string, Set<string>>();
-  for (const row of grants.rows) {
-    const set = byTable.get(row.table_name) ?? new Set<string>();
-    set.add(row.privilege_type);
-    byTable.set(row.table_name, set);
-  }
+  const columnGrants = await authPool.query<{
+    table_name: string;
+    column_name: string;
+    privilege_type: string;
+  }>(
+    `select table_name,column_name,privilege_type
+     from information_schema.column_privileges
+     where table_schema='app'
+       and grantee='ai_data_runtime'
+       and privilege_type='UPDATE'
+       and table_name in (
+         'workspace_reopened_exception_triage_cycles',
+         'workspace_successor_corrective_delivery_plans'
+       )`
+  );
+
   for (const table of [
     "workspace_reopened_exception_triage_cycles",
     "workspace_successor_corrective_delivery_plans"
   ]) {
-    const privileges = byTable.get(table) ?? new Set<string>();
-    assert(privileges.has("SELECT") && privileges.has("INSERT") && privileges.has("UPDATE"), table + " runtime grants are incomplete.");
+    const privileges = new Set(
+      tableGrants.rows
+        .filter((row) => row.table_name === table)
+        .map((row) => row.privilege_type)
+    );
+    const updateColumns = new Set(
+      columnGrants.rows
+        .filter((row) => row.table_name === table)
+        .map((row) => row.column_name)
+    );
+    assert(
+      privileges.has("SELECT") && privileges.has("INSERT"),
+      table + " SELECT/INSERT runtime grants are incomplete."
+    );
+    assert(updateColumns.size > 0, table + " narrow column UPDATE grants are missing.");
+    assert(!privileges.has("UPDATE"), table + " must not grant unrestricted table UPDATE.");
     assert(!privileges.has("DELETE"), table + " must not grant runtime DELETE.");
+  }
+
+  const retriageUpdates = new Set(
+    columnGrants.rows
+      .filter((row) => row.table_name === "workspace_reopened_exception_triage_cycles")
+      .map((row) => row.column_name)
+  );
+  for (const column of [
+    "status","classification","severity","resolution_intent","summary",
+    "investigation_note","updated_by","updated_at","dismissed_by","dismissed_at"
+  ]) {
+    assert(retriageUpdates.has(column), "Missing re-triage UPDATE grant for " + column + ".");
+  }
+
+  const successorUpdates = new Set(
+    columnGrants.rows
+      .filter((row) => row.table_name === "workspace_successor_corrective_delivery_plans")
+      .map((row) => row.column_name)
+  );
+  for (const column of ["status","reviewed_by","reviewed_at","review_note"]) {
+    assert(successorUpdates.has(column), "Missing successor-plan UPDATE grant for " + column + ".");
   }
 
   console.log("Build 057 reopened exception planning database verification passed.");
