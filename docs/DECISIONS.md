@@ -998,3 +998,19 @@ The closed→open database trigger accepts only reopen or recurrence evidence wh
 ## D0148 — A recurrence freezes the superseded successor cycle
 
 After recurrence is recorded, Build 058/059 activation, live-delivery, reconciliation and re-closure mutation surfaces are blocked by database triggers. A new corrective generation must be planned rather than silently replaying the previous successor cycle.
+
+## D0149 — Recurrence starts a new planning generation
+
+A Build 060 recurrence must not reopen or edit the Build 057 successor plan. Build 061 creates a separate re-triage and next-generation corrective plan tied to the recurrence generation.
+
+## D0150 — Next-generation scope is intersectional
+
+A field may enter a Build 061 corrective plan only when the newest recurrent verification proves it drifted or is missing and the approved predecessor successor plan governed that field/value.
+
+## D0151 — Recurrence freezes predecessor planning
+
+Once recurrence evidence exists, the Build 057 reopened re-triage and successor-plan tables are frozen by database triggers. Together with Build 060's execution/reconciliation/re-closure freeze, this makes the entire predecessor successor cycle historical.
+
+## D0152 — Planning approval is not delivery authority
+
+Approving a Build 061 next-generation plan changes only planning evidence. External execution requires a later activation/delivery generation with its own capability, dry-run, idempotency and transport controls.
