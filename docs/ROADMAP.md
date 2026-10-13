@@ -1484,7 +1484,7 @@ Next queued: **Build 060 — Post-Re-Closure Regression Monitoring & Recurrence 
 
 ## Build 060 — Post-Re-Closure Regression Monitoring & Recurrence Governance
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct the exact Build 058 successor package after Build 059 re-closure;
@@ -1494,5 +1494,15 @@ Scope:
 - make closed→open authorization generation-aware;
 - freeze the prior successor cycle after recurrence;
 - preserve all earlier closure, reopen, planning, execution, reconciliation and re-closure evidence.
+
+Promotion evidence:
+- feature PR #127 merged Build 060 to `dev`;
+- release PR #128 passed Verify #650 on exact `dev` SHA `932064d96a42f930fe582c399afaf818e61105b7`;
+- release merged to `main` at `7d567bf8881457b3c1b3102c2cdcc92927519a1e`;
+- production Neon migration `0030_post_reclosure_recurrence_governance.sql` is recorded with both Build 060 tables under RLS, four intended policies, runtime SELECT/INSERT only, generation-aware reopen behavior and four successor-cycle freeze triggers;
+- Vercel deployment `dpl_9ZZj9pWV4jYAKJLk353uHU7ZaseS` is READY for exact release SHA `7d567bf8881457b3c1b3102c2cdcc92927519a1e`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 060 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 061 — Recurrent Exception Re-Triage & Next-Generation Corrective Planning.**
