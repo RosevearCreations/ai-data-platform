@@ -1259,7 +1259,7 @@ Acceptance: **PASSED.** Only authorized workspace evidence is visible; only owne
 
 ## Build 053 — Reconciliation Exception Triage & Corrective Delivery Planning
 
-Status: **IMPLEMENTED — release candidate pending dev/main production verification.**
+Status: **PRODUCTION GREEN — promoted through corrected dev/main verification on 2026-10-12; migration 0023 is applied and verified in production Neon; Vercel production is READY.**
 
 Goal: turn immutable Build 052 drift into a controlled exception case and, only when explicitly intended, a frozen corrective delivery plan that can be reviewed without performing any downstream mutation.
 
@@ -1281,6 +1281,6 @@ Delivered:
 - deterministic scope/fingerprint tests plus PostgreSQL canonical-case/plan/RLS/immutability/review verification;
 - no consumer call, no new live activation, no dryRun=false request and no corrective execution.
 
-Acceptance: only Build 052 drift may open a case; one reconciliation cannot create competing cases; source reconciliation/package identity remains immutable; only owners/admins may triage or create/review plans; plan scope comes only from original governed values and proven mismatch/missing evidence; runtime cannot mutate frozen plan scope or pinned evidence; terminal review status cannot be overwritten; and plan approval does not execute or authorize a downstream write inside Build 053.
+Acceptance: **PASSED.** Only Build 052 drift may open a case; one reconciliation cannot create competing cases; source reconciliation/package identity remains immutable; only owners/admins may triage or create/review plans; plan scope comes only from original governed values and proven mismatch/missing evidence; runtime cannot mutate frozen plan scope or pinned evidence; terminal review status cannot be overwritten; and plan approval does not execute or authorize a downstream write inside Build 053. Release evidence: implementation PR #92 → dev; lint correction PR #93 → dev; release PR #94 → main; corrected dev Verify run 38329354571 (#594) GREEN; main-target PR Verify run 38329505465 (#595) GREEN; independent main Verify run 38329665022 (#596) GREEN; production Neon migration ledger includes 0023 with case/plan RLS and identity-protecting column grants verified; and Vercel deployment dpl_3yxtDxdy984MKX4ACtXCFqvNWyzE is READY for main SHA 5d5ae2273d8c37538ae4b5473377270e979d78d4.
 
 Next queued: **Build 054 — Approved Corrective Delivery Activation & Idempotent Execution.**
