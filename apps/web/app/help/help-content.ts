@@ -19,6 +19,63 @@ export const HELP_TOPICS = {
       "If a workspace shows no activity, create only genuine operational evidence through the normal workflow rather than test activity just to populate the dashboard."
     ]
   },
+  "corrective-delivery-overview": {
+    title: "Approved Corrective Delivery Activation & Idempotent Execution",
+    summary: "Build 054 converts one approved Build 053 corrective plan into a new deterministic corrective package, proves that exact package by external dry-run, grants short-lived corrective authority, then executes with sender-side reservation and replay-key idempotency.",
+    steps: [
+      "Start only from a Build 053 corrective plan whose status is approved and whose exception case is still approved.",
+      "Confirm the Build 052 reconciliation referenced by the plan is still the newest reconciliation for the original accepted delivery.",
+      "Resolve every manual-review scope item by creating and approving a new executable plan; Build 054 never guesses create semantics.",
+      "Type the target-specific activation confirmation, then require a fresh liveMutationEnabled=true handshake with replayKey / return-original-ack idempotency.",
+      "Send an authenticated external dry-run of the exact corrective package and activate only after that consumer accepts it.",
+      "Use the separate execution confirmation during the active one-hour window; Build 054 revalidates live/idempotency capability before every live attempt.",
+      "Reserve the corrective delivery before the network mutation and send the corrective replay key as Idempotency-Key.",
+      "Treat accepted/rejected as terminal; retry only transport-error with the exact same corrective package, activation and idempotency key."
+    ],
+    notes: [
+      "The corrective package receives a new package ID and replay key derived from the approved plan; it never reuses the original Build 051 replay identity.",
+      "Activation lasts at most one hour and never beyond the corrective package's 24-hour approved-plan window.",
+      "A newer reconciliation makes the approved plan stale and blocks activation.",
+      "Corrective package values come only from frozen Build 053 governed values; browser input cannot supply corrective data, endpoint, token or idempotency identity.",
+      "Accepted corrective execution does not automatically close the exception because downstream state still requires post-correction verification."
+    ],
+    manual: [
+      "Apply 0024_corrective_delivery_execution.sql before using Build 054.",
+      "Build 054 reuses the existing INTEGRATION_CONSUMER_ROSIE_DAZZLERS_URL / TOKEN or INTEGRATION_CONSUMER_DEVIL_N_DOVE_URL / TOKEN configuration and introduces no new secret or paid service."
+    ]
+  },
+  "corrective-delivery-activation": {
+    title: "Corrective dry-run & short-lived activation",
+    summary: "Activation is a temporary grant for one exact approved plan, one exact corrective package and the same consumer origin that accepted the original Build 051 delivery.",
+    steps: [
+      "Verify the configured consumer origin still matches the original accepted delivery consumer.",
+      "Type the displayed ACTIVATE <TARGET> CORRECTIVE phrase exactly.",
+      "Build 054 performs a fresh live/idempotency handshake and then an external dry-run of the corrective package.",
+      "Activation is created only when the dry-run acknowledgement is accepted and echoes the exact corrective package ID, replay key and fingerprint.",
+      "Use Revoke activation immediately when the correction should no longer be executable."
+    ],
+    notes: [
+      "Dry-run acknowledgement evidence is stored inside the activation row and cannot be rewritten by the runtime role.",
+      "Expired activations are fail-closed and may be replaced only after a new accepted dry-run."
+    ]
+  },
+  "corrective-delivery-idempotency": {
+    title: "Corrective execution, retry & terminal evidence",
+    summary: "Every corrective mutation has one durable sender-side delivery identity and one immutable replay key. This preserves exactly-once intent even when the network outcome is uncertain.",
+    steps: [
+      "Type the displayed EXECUTE <TARGET> CORRECTIVE phrase for the active plan.",
+      "Build 054 revalidates liveMutationEnabled and return-original-ack behavior before reserving a send.",
+      "The platform reserves the delivery row before contacting the consumer.",
+      "The corrective replay key is the Idempotency-Key for every attempt.",
+      "If transport certainty is lost, retry only through the same workbench; the attempt count increases but package/idempotency identity does not change.",
+      "Accepted and rejected results are terminal and a later execution request returns the stored terminal evidence without another send."
+    ],
+    notes: [
+      "Retries are bounded to five attempts.",
+      "Runtime UPDATE privileges cannot change plan fingerprint, activation fingerprint, corrective package identity, replay key or idempotency key.",
+      "A rejected corrective package requires a new reviewed plan rather than an automatic resend."
+    ]
+  },
   "reconciliation-triage-overview": {
     title: "Reconciliation Exception Triage & Corrective Delivery Planning",
     summary: "Build 053 turns Build 052 drift evidence into an explicit owner/admin triage case and, when justified, an immutable corrective delivery plan. It freezes affected integration keys, governed fields, desired values, package identity, rationale and review evidence without contacting a consumer or executing a correction.",
@@ -1134,7 +1191,7 @@ export const HELP_GROUPS: Array<{
   },
   {
     title: "Approved data & integration delivery",
-    topics: ["reconciliation-triage-overview", "reconciliation-triage-case", "reconciliation-triage-planning", "reconciliation-triage-review", "post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
+    topics: ["corrective-delivery-overview", "corrective-delivery-activation", "corrective-delivery-idempotency", "reconciliation-triage-overview", "reconciliation-triage-case", "reconciliation-triage-planning", "reconciliation-triage-review", "post-delivery-reconciliation-overview", "post-delivery-reconciliation-verify", "post-delivery-reconciliation-evidence", "controlled-live-delivery-overview", "controlled-live-delivery-activation", "controlled-live-delivery-idempotency", "publication-delivery-overview", "publication-delivery-mapping", "publication-delivery-consumer", "publication-delivery-receipts", "integration-delivery"]
   },
   {
     title: "Retention & cleanup",
