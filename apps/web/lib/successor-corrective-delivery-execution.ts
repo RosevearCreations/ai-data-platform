@@ -149,6 +149,9 @@ type ContextRow = QueryResultRow & {
   successor_plan_reviewed_at: Date;
   successor_plan_review_note: string;
   source_regression_fingerprint: string;
+  plan_source_corrective_package_id: string;
+  plan_source_corrective_replay_key: string;
+  plan_source_corrective_package_fingerprint: string;
   correction_scope: CorrectivePlanScopeItem[];
   retriage_status: string;
   case_status: string;
@@ -517,9 +520,9 @@ function successorPlanFromRow(row: ContextRow): SuccessorCorrectiveDeliveryPlan 
     predecessorPlanId: row.predecessor_plan_id,
     predecessorCorrectiveDeliveryId: row.predecessor_corrective_delivery_id,
     sourceRegressionFingerprint: row.source_regression_fingerprint,
-    sourceCorrectivePackageId: row.predecessor_corrective_package_id,
-    sourceCorrectiveReplayKey: row.predecessor_corrective_replay_key,
-    sourceCorrectivePackageFingerprint: row.predecessor_corrective_package_fingerprint,
+    sourceCorrectivePackageId: row.plan_source_corrective_package_id,
+    sourceCorrectiveReplayKey: row.plan_source_corrective_replay_key,
+    sourceCorrectivePackageFingerprint: row.plan_source_corrective_package_fingerprint,
     correctionScope: Array.isArray(row.correction_scope) ? row.correction_scope : [],
     planFingerprint: row.successor_plan_fingerprint,
     rationale: row.successor_plan_rationale,
@@ -548,7 +551,11 @@ export async function loadApprovedSuccessorCorrectivePlanContext(
               p.reviewed_by as successor_plan_reviewed_by,
               p.reviewed_at as successor_plan_reviewed_at,
               p.review_note as successor_plan_review_note,
-              p.source_regression_fingerprint,p.correction_scope,
+              p.source_regression_fingerprint,
+              p.source_corrective_package_id as plan_source_corrective_package_id,
+              p.source_corrective_replay_key as plan_source_corrective_replay_key,
+              p.source_corrective_package_fingerprint as plan_source_corrective_package_fingerprint,
+              p.correction_scope,
               t.status as retriage_status,c.status as case_status,
               regression.status as regression_status,
               regression.verification_fingerprint as regression_fingerprint,
@@ -622,8 +629,9 @@ export async function loadApprovedSuccessorCorrectivePlanContext(
   }
   if (
     row.predecessor_delivery_status !== "accepted" ||
-    row.predecessor_corrective_package_id !== row.predecessor_corrective_package_id ||
-    row.predecessor_corrective_replay_key !== row.predecessor_corrective_replay_key
+    row.plan_source_corrective_package_id !== row.predecessor_corrective_package_id ||
+    row.plan_source_corrective_replay_key !== row.predecessor_corrective_replay_key ||
+    row.plan_source_corrective_package_fingerprint !== row.predecessor_corrective_package_fingerprint
   ) {
     throw new Error("successor_delivery_predecessor_not_accepted");
   }
