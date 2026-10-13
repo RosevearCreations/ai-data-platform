@@ -954,3 +954,14 @@ One canonical triage case per Build 052 drift reconciliation. Mutable runtime fi
 Frozen planning artifact for one triage case. It pins reconciliation fingerprint, package ID, replay key, package fingerprint, rationale and correction scope. Correction scope contains integration key, mismatch/missing status, proposed planning action, governed fields, desired values and expected/observed fingerprints.
 
 Runtime UPDATE is restricted to review status and review audit fields. Plan identity and correction scope cannot be changed after creation.
+
+
+## Build 054 corrective delivery execution
+
+### workspace_corrective_delivery_activations
+
+Temporary authority for one exact approved Build 053 plan and one exact corrective package. The row pins the source package, corrective package, consumer origin, plan fingerprint, accepted dry-run evidence and activation fingerprint. Runtime UPDATE is restricted to revocation fields only.
+
+### workspace_corrective_live_deliveries
+
+Canonical sender-side delivery identity for one corrective package and consumer origin. The row pins plan fingerprint, activation fingerprint, corrective package ID/replay/fingerprint and `idempotency_key`. Runtime UPDATE is restricted to attempt/outcome evidence; identity fields are immutable. Accepted/rejected outcomes are terminal while transport-error may return to reserved with the same identity up to five attempts.
