@@ -246,9 +246,9 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
                   <dl className="publicationEvidence">
                     <div><dt>Successor-generation plan</dt><dd>{plan.successorGenerationPlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
-                    <div><dt>Source recurrence</dt><dd>{plan.sourceRecurrenceFingerprint}</dd></div>
+                    <div><dt>Source recurrence</dt><dd>{plan.sourceNextGenerationRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor next-generation delivery</dt><dd>{plan.predecessorNextGenerationDeliveryId}</dd></div>
-                    <div><dt>Predecessor successor package</dt><dd>{plan.sourceSuccessorPackageId}</dd></div>
+                    <div><dt>Predecessor successor package</dt><dd>{plan.sourceNextGenerationPackageId}</dd></div>
                     {activation ? (
                       <>
                         <div><dt>Activation</dt><dd>{activation.activationId}</dd></div>
