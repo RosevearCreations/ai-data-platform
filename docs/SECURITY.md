@@ -549,3 +549,11 @@ Only owners/admins may record post-re-closure monitoring or recurrence. Monitori
 Build 061 creation and review mutations require owner/admin membership. Re-triage creation requires the latest governed recurrence for an open case, a `recurred` Build 060 verification, and matching recurrence/regression/re-closure fingerprints. Next-generation plan creation additionally requires `plan-correction`, an approved predecessor successor plan, an accepted predecessor successor delivery and exact successor package identity.
 
 Correction scope fails closed if a recurrent record or field was not governed by the predecessor successor plan. Runtime receives no DELETE or unrestricted table UPDATE rights. Once recurrence exists, database triggers block further insert/update activity on the old Build 057 re-triage and successor-plan tables, extending Build 060's freeze of Build 058/059 mutation surfaces.
+
+## Build 062 execution controls
+
+Only owners/admins may activate, execute, retry or revoke Build 062 delivery. Activation requires the latest recurrence generation, approved Build 061 re-triage/plan, open case, unchanged recurrence/regression/re-closure fingerprints, approved predecessor successor plan, accepted predecessor successor delivery and exact predecessor successor package identity.
+
+The consumer must freshly prove bearer authentication, dry-run support, live mutation and replay-key idempotency with return-original-ack duplicate semantics. An accepted dry-run of the exact package is mandatory before activation. Live sends reserve durable evidence first; retries are same-key and bounded to five. Accepted/rejected rows are terminal.
+
+Build 062 also freezes Build 061 planning once activation begins, extending the historical immutability chain already enforced for Build 057–060 predecessor generations.
