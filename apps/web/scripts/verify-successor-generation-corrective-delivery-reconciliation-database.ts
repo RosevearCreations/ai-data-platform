@@ -11,8 +11,8 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and c.relname in (
-         'workspace_successor_generation_corrective_delivery_reconciliations',
-         'workspace_reconciliation_exception_successor_generation_reclosures'
+         'workspace_successor_generation_delivery_reconciliations',
+         'workspace_reconciliation_successor_generation_reclosures'
        )`
   );
   assert(tables.rows.length === 2, "Build 067 tables must exist.");
@@ -37,13 +37,13 @@ async function main() {
      where table_schema='app'
        and grantee='ai_data_runtime'
        and table_name in (
-         'workspace_successor_generation_corrective_delivery_reconciliations',
-         'workspace_reconciliation_exception_successor_generation_reclosures'
+         'workspace_successor_generation_delivery_reconciliations',
+         'workspace_reconciliation_successor_generation_reclosures'
        )`
   );
   for (const table of [
-    "workspace_successor_generation_corrective_delivery_reconciliations",
-    "workspace_reconciliation_exception_successor_generation_reclosures"
+    "workspace_successor_generation_delivery_reconciliations",
+    "workspace_reconciliation_successor_generation_reclosures"
   ]) {
     const privileges = new Set(
       grants.rows.filter((row) => row.table_name === table).map((row) => row.privilege_type)
@@ -61,17 +61,17 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and (
-         (c.relname='workspace_successor_generation_corrective_delivery_reconciliations'
+         (c.relname='workspace_successor_generation_delivery_reconciliations'
           and p.polname='successor_generation_reconciliations_manager_insert')
          or
-         (c.relname='workspace_reconciliation_exception_successor_generation_reclosures'
+         (c.relname='workspace_reconciliation_successor_generation_reclosures'
           and p.polname='successor_generation_reclosures_manager_insert')
        )`
   );
   assert(insertPolicies.rows.length === 2, "Build 067 insert gates must exist.");
 
   const reconciliationGate = insertPolicies.rows.find(
-    (row) => row.table_name === "workspace_successor_generation_corrective_delivery_reconciliations"
+    (row) => row.table_name === "workspace_successor_generation_delivery_reconciliations"
   )?.expression ?? "";
   for (const required of [
     "workspace_successor_generation_corrective_live_deliveries",
@@ -91,10 +91,10 @@ async function main() {
   );
 
   const reclosureGate = insertPolicies.rows.find(
-    (row) => row.table_name === "workspace_reconciliation_exception_successor_generation_reclosures"
+    (row) => row.table_name === "workspace_reconciliation_successor_generation_reclosures"
   )?.expression ?? "";
   for (const required of [
-    "workspace_successor_generation_corrective_delivery_reconciliations",
+    "workspace_successor_generation_delivery_reconciliations",
     "workspace_reconciliation_exception_next_generation_recurrences",
     "workspace_reconciliation_exception_next_generation_reclosures"
   ]) {
@@ -114,7 +114,7 @@ async function main() {
   );
   const definition = guard.rows[0]?.definition ?? "";
   assert(
-    definition.includes("workspace_reconciliation_exception_successor_generation_reclosures"),
+    definition.includes("workspace_reconciliation_successor_generation_reclosures"),
     "Build 067 close trigger must recognize successor-generation re-closure evidence."
   );
   assert(
