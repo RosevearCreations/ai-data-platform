@@ -96,8 +96,9 @@ async function main() {
     "Build 064 close trigger must detect second recurrence."
   );
   assert(
-    closeDefinition.includes("reconciliation_triage_second_generation_reclosure_required"),
-    "Build 064 must fail closed after second recurrence."
+    closeDefinition.includes("reconciliation_triage_second_generation_reclosure_required") ||
+      closeDefinition.includes("reconciliation_triage_verified_successor_generation_reclosure_required"),
+    "Build 064 must fail closed after second recurrence, including stronger successor-generation re-closure evidence."
   );
 
   const triggers = await authPool.query<{ trigger_name:string }>(
