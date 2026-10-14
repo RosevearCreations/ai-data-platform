@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_successor_generation_execution_for_recurrent_planning()
+create or replace function app.require_no_successor_generation_execution_for_second_recurrence_planning()
 returns trigger
 language plpgsql
 as $$
@@ -367,22 +367,22 @@ begin
     where activation.workspace_id=new.workspace_id
       and activation.case_id=new.case_id
   ) then
-    raise exception 'successor_generation_execution_freezes_recurrent_planning';
+    raise exception 'successor_generation_execution_freezes_second_recurrence_planning';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists workspace_recurrent_triage_execution_guard
+drop trigger if exists workspace_second_recurrence_triage_execution_guard
   on app.workspace_second_recurrence_exception_triage_cycles;
-create trigger workspace_recurrent_triage_execution_guard
+create trigger workspace_second_recurrence_triage_execution_guard
 before insert or update on app.workspace_second_recurrence_exception_triage_cycles
 for each row
-execute function app.require_no_successor_generation_execution_for_recurrent_planning();
+execute function app.require_no_successor_generation_execution_for_second_recurrence_planning();
 
 drop trigger if exists workspace_successor_generation_plan_execution_guard
   on app.workspace_successor_generation_corrective_delivery_plans;
 create trigger workspace_successor_generation_plan_execution_guard
 before insert or update on app.workspace_successor_generation_corrective_delivery_plans
 for each row
-execute function app.require_no_successor_generation_execution_for_recurrent_planning();
+execute function app.require_no_successor_generation_execution_for_second_recurrence_planning();
