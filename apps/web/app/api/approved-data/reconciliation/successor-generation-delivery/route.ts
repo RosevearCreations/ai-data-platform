@@ -142,7 +142,7 @@ function deliveryEnvelope(
       sourceNextGenerationRecurrenceFingerprint: context.plan.sourceNextGenerationRecurrenceFingerprint,
       sourceRegressionFingerprint: context.plan.sourceRegressionFingerprint,
       sourceNextGenerationReclosureFingerprint: context.plan.sourceNextGenerationReclosureFingerprint,
-      predecessorSuccessorPlanId: context.plan.predecessorSuccessorPlanId,
+      predecessorNextGenerationPlanId: context.plan.predecessorNextGenerationPlanId,
       predecessorNextGenerationDeliveryId: context.plan.predecessorNextGenerationDeliveryId,
       predecessorNextGenerationPackageId:
         context.predecessorNextGenerationPackage.packageId,
