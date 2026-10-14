@@ -12,7 +12,7 @@ create table if not exists app.workspace_successor_generation_corrective_deliver
   target text not null check (target in ('rosie-dazzlers','devil-n-dove')),
   consumer_id text not null check (char_length(consumer_id) between 1 and 512),
   successor_generation_plan_fingerprint text not null check (char_length(successor_generation_plan_fingerprint) between 1 and 128),
-  source_next_generation_next_generation_recurrence_fingerprint text not null check (char_length(source_next_generation_next_generation_recurrence_fingerprint) between 1 and 128),
+  source_next_generation_recurrence_fingerprint text not null check (char_length(source_next_generation_recurrence_fingerprint) between 1 and 128),
   source_regression_fingerprint text not null check (char_length(source_regression_fingerprint) between 1 and 128),
   source_next_generation_reclosure_fingerprint text not null check (char_length(source_next_generation_reclosure_fingerprint) between 1 and 128),
   successor_generation_package_id text not null check (char_length(successor_generation_package_id) between 1 and 512),
@@ -48,10 +48,10 @@ create table if not exists app.workspace_successor_generation_corrective_deliver
     references app.workspace_second_recurrence_exception_triage_cycles(workspace_id,second_recurrence_retriage_id)
     on delete restrict,
   foreign key (workspace_id,next_generation_recurrence_id)
-    references app.workspace_reconciliation_exception_recurrences(workspace_id,next_generation_recurrence_id)
+    references app.workspace_reconciliation_exception_next_generation_recurrences(workspace_id,next_generation_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_reclosure_id)
-    references app.workspace_reconciliation_exception_reclosures(workspace_id,reclosure_id)
+    references app.workspace_reconciliation_exception_next_generation_reclosures(workspace_id,next_generation_reclosure_id)
     on delete restrict,
   foreign key (workspace_id,next_generation_reclosure_regression_check_id)
     references app.workspace_post_next_generation_reclosure_regression_checks(workspace_id,next_generation_reclosure_regression_check_id)
@@ -97,10 +97,10 @@ create table if not exists app.workspace_reconciliation_exception_successor_gene
   primary key (workspace_id,successor_generation_reclosure_id),
   unique (workspace_id,next_generation_recurrence_id),
   foreign key (workspace_id,predecessor_next_generation_reclosure_id)
-    references app.workspace_reconciliation_exception_reclosures(workspace_id,reclosure_id)
+    references app.workspace_reconciliation_exception_next_generation_reclosures(workspace_id,next_generation_reclosure_id)
     on delete restrict,
   foreign key (workspace_id,next_generation_recurrence_id)
-    references app.workspace_reconciliation_exception_recurrences(workspace_id,next_generation_recurrence_id)
+    references app.workspace_reconciliation_exception_next_generation_recurrences(workspace_id,next_generation_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,second_recurrence_retriage_id)
     references app.workspace_second_recurrence_exception_triage_cycles(workspace_id,second_recurrence_retriage_id)
@@ -167,10 +167,10 @@ with check (
     join app.workspace_second_recurrence_exception_triage_cycles t
       on t.workspace_id=p.workspace_id
      and t.second_recurrence_retriage_id=p.second_recurrence_retriage_id
-    join app.workspace_reconciliation_exception_recurrences recurrence
+    join app.workspace_reconciliation_exception_next_generation_recurrences recurrence
       on recurrence.workspace_id=p.workspace_id
      and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
-    join app.workspace_reconciliation_exception_reclosures predecessor_reclosure
+    join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
       on predecessor_reclosure.workspace_id=p.workspace_id
      and predecessor_reclosure.next_generation_reclosure_id=p.next_generation_reclosure_id
     join app.workspace_post_next_generation_reclosure_regression_checks regression
@@ -196,7 +196,7 @@ with check (
       and p.case_id=workspace_successor_generation_corrective_delivery_reconciliations.case_id
       and p.status='approved'
       and p.plan_fingerprint=workspace_successor_generation_corrective_delivery_reconciliations.successor_generation_plan_fingerprint
-      and p.source_next_generation_recurrence_fingerprint=workspace_successor_generation_corrective_delivery_reconciliations.source_next_generation_next_generation_recurrence_fingerprint
+      and p.source_next_generation_recurrence_fingerprint=workspace_successor_generation_corrective_delivery_reconciliations.source_next_generation_recurrence_fingerprint
       and p.source_regression_fingerprint=workspace_successor_generation_corrective_delivery_reconciliations.source_regression_fingerprint
       and p.source_next_generation_reclosure_fingerprint=workspace_successor_generation_corrective_delivery_reconciliations.source_next_generation_reclosure_fingerprint
       and t.status='approved'
@@ -209,7 +209,7 @@ with check (
       and c.status='open'
       and recurrence.next_generation_recurrence_id=(
         select newest.next_generation_recurrence_id
-        from app.workspace_reconciliation_exception_recurrences newest
+        from app.workspace_reconciliation_exception_next_generation_recurrences newest
         where newest.workspace_id=recurrence.workspace_id
           and newest.case_id=recurrence.case_id
         order by newest.recurred_at desc,newest.next_generation_recurrence_id desc
@@ -256,10 +256,10 @@ with check (
     join app.workspace_second_recurrence_exception_triage_cycles t
       on t.workspace_id=p.workspace_id
      and t.second_recurrence_retriage_id=p.second_recurrence_retriage_id
-    join app.workspace_reconciliation_exception_recurrences recurrence
+    join app.workspace_reconciliation_exception_next_generation_recurrences recurrence
       on recurrence.workspace_id=p.workspace_id
      and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
-    join app.workspace_reconciliation_exception_reclosures predecessor_reclosure
+    join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
       on predecessor_reclosure.workspace_id=p.workspace_id
      and predecessor_reclosure.next_generation_reclosure_id=p.next_generation_reclosure_id
     join app.workspace_reconciliation_exception_cases c
@@ -293,7 +293,7 @@ with check (
       )
       and recurrence.next_generation_recurrence_id=(
         select newest_recurrence.next_generation_recurrence_id
-        from app.workspace_reconciliation_exception_recurrences newest_recurrence
+        from app.workspace_reconciliation_exception_next_generation_recurrences newest_recurrence
         where newest_recurrence.workspace_id=recurrence.workspace_id
           and newest_recurrence.case_id=recurrence.case_id
         order by newest_recurrence.recurred_at desc,newest_recurrence.next_generation_recurrence_id desc
