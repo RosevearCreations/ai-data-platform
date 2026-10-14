@@ -1663,3 +1663,20 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+
+## Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Status: implementation ready for promotion.
+
+Scope:
+- independently reconstruct the exact accepted Build 066 successor-generation package for read-only state verification;
+- record immutable matched, drift, rejected and transport-error evidence without silently repairing either system;
+- bind every verification to the approved Build 065 plan, newest Build 064 second recurrence and exact Build 066 package identity;
+- permit re-closure only from the newest matched verification for the newest second-recurrence generation;
+- create a distinct successor-generation re-closure ledger binding Build 063, 064, 065, 066 and 067 evidence;
+- update the database case-close guard to require Build 067 evidence after a second recurrence while preserving Build 063, Build 059 and original closure fallbacks;
+- preserve owner/admin mutation boundaries and SELECT/INSERT-only immutable evidence ledgers;
+- expose single-flight wait/busy controls for verification and re-closure.
+
+Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
