@@ -1043,3 +1043,10 @@ Migration: `0031_recurrent_exception_next_generation_planning.sql`.
 - Runtime receives SELECT/INSERT plus narrow revocation/result UPDATE columns only; unrestricted UPDATE and DELETE remain absent.
 - One active activation per next-generation plan is enforced by a partial unique index; one logical delivery per workspace/consumer/package is enforced by a unique constraint; retry count is constrained to 1–5.
 - Migration: `0032_next_generation_corrective_delivery_execution.sql`.
+
+## Build 063 next-generation reconciliation evidence
+
+- `app.workspace_next_generation_corrective_delivery_reconciliations` stores independent state read-back evidence for an accepted Build 062 delivery, including exact recurrence/re-closure/plan/package identities, record-level results and verification fingerprint.
+- `app.workspace_reconciliation_exception_next_generation_reclosures` stores one immutable verified re-closure per recurrence generation. It binds the predecessor Build 059 re-closure and Build 060 recurrence to the Build 061 plan, Build 062 delivery and newest matched Build 063 reconciliation.
+- Runtime access is SELECT/INSERT only for both tables. UPDATE and DELETE are not granted.
+- Migration: `0033_next_generation_corrective_reconciliation_reclosure.sql`.
