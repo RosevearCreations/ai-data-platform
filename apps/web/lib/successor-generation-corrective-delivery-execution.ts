@@ -143,9 +143,9 @@ type ActivationRow = QueryResultRow & {
   status: "active" | "revoked";
   consumer_id: string;
   successor_generation_plan_fingerprint: string;
-  source_next_generation_next_generation_recurrence_fingerprint: string;
+  source_next_generation_recurrence_fingerprint: string;
   source_regression_fingerprint: string;
-  source_next_generation_next_generation_reclosure_fingerprint: string;
+  source_next_generation_reclosure_fingerprint: string;
   predecessor_next_generation_plan_id: string;
   predecessor_next_generation_delivery_id: string;
   predecessor_next_generation_package_id: string;
