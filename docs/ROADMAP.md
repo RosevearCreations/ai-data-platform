@@ -1637,3 +1637,20 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+
+## Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct the exact accepted Build 062 next-generation package only as predecessor evidence;
+- derive a distinct Build 066 successor-generation package ID, replay key and fingerprint;
+- require a fresh authenticated live capability handshake and accepted dry-run before activation;
+- bind activation to the approved Build 065 plan, exact Build 064 second recurrence and predecessor package identity;
+- reserve one durable delivery row before transport and reuse the same idempotency key on every retry;
+- keep accepted/rejected outcomes terminal and bound transport retries to five attempts;
+- freeze Build 065 planning after Build 066 execution begins;
+- expose single-flight wait/busy controls for activate, execute and revoke actions.
+
+Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure.**

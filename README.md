@@ -167,3 +167,10 @@ Operator UI: `/approved-data/reconciliation/post-next-generation-reclosure`.
 Build 065 consumes immutable Build 064 second-recurrence evidence and starts a distinct successor-generation decision cycle. It re-triages only the newest governed second recurrence, limits correction scope to fields proven recurrent by the exact Build 064 read-back and already governed by the approved Build 061 plan, and freezes an independently reviewable successor-generation corrective plan without rewriting the Build 061–063 history.
 
 Operator UI: `/approved-data/reconciliation/second-recurrence-planning`.
+
+
+### Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution
+
+Build 066 turns an approved Build 065 successor-generation plan into a separate controlled execution generation. It reconstructs the accepted Build 062 next-generation package only as immutable predecessor evidence, derives a fresh successor-generation package ID/replay key/fingerprint, requires a fresh authenticated live-capability handshake and accepted dry-run, then reserves one durable live-delivery row before transport. Retries reuse the exact replay/idempotency key, stop after five attempts, and accepted/rejected outcomes remain terminal.
+
+Operator UI: `/approved-data/reconciliation/successor-generation-delivery`.
