@@ -477,9 +477,9 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
               predecessor_plan.status as predecessor_plan_status,
               predecessor_delivery.status as predecessor_delivery_status,
               predecessor_delivery.consumer_id,
-              predecessor_delivery.successor_package_id as predecessor_package_id,
-              predecessor_delivery.successor_replay_key as predecessor_replay_key,
-              predecessor_delivery.successor_package_fingerprint as predecessor_package_fingerprint
+              predecessor_delivery.next_generation_package_id as predecessor_package_id,
+              predecessor_delivery.next_generation_replay_key as predecessor_replay_key,
+              predecessor_delivery.next_generation_package_fingerprint as predecessor_package_fingerprint
        from app.workspace_successor_generation_corrective_delivery_plans p
        join app.workspace_second_recurrence_exception_triage_cycles t
          on t.workspace_id=p.workspace_id
@@ -811,9 +811,9 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
               predecessor_plan.status as predecessor_plan_status,
               predecessor_delivery.status as predecessor_delivery_status,
               predecessor_delivery.consumer_id,
-              predecessor_delivery.successor_package_id as predecessor_package_id,
-              predecessor_delivery.successor_replay_key as predecessor_replay_key,
-              predecessor_delivery.successor_package_fingerprint as predecessor_package_fingerprint
+              predecessor_delivery.next_generation_package_id as predecessor_package_id,
+              predecessor_delivery.next_generation_replay_key as predecessor_replay_key,
+              predecessor_delivery.next_generation_package_fingerprint as predecessor_package_fingerprint
        from app.workspace_successor_generation_corrective_delivery_plans p
        join app.workspace_second_recurrence_exception_triage_cycles t
          on t.workspace_id=p.workspace_id
