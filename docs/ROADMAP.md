@@ -1641,7 +1641,7 @@ Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation
 
 ## Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct the exact accepted Build 062 next-generation package only as predecessor evidence;
@@ -1652,5 +1652,14 @@ Scope:
 - keep accepted/rejected outcomes terminal and bound transport retries to five attempts;
 - freeze Build 065 planning after Build 066 execution begins;
 - expose single-flight wait/busy controls for activate, execute and revoke actions.
+
+Promotion evidence:
+- feature PR #152 merged the Build 066 implementation to `dev`;
+- release PR #153 passed Verify #698 on corrected exact `dev` SHA `6889a57012e3424cc5d6f990b78f7ed808434d02`;
+- release merged to `main` at `fe19d5b0f7e5b2670fd013165642253d1618822b`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0036_successor_generation_corrective_delivery_execution.sql`;
+- production verification confirms both Build 066 tables are under RLS, all six intended policies exist, both Build 065 planning-freeze triggers/functions are live, table grants are SELECT/INSERT only, UPDATE is limited to the intended activation/delivery columns, and the five-attempt retry bound is database-enforced;
+- Vercel deployment `dpl_BAy6jXvZzfP6hkcdbWfPnopdmviB` is READY from exact release SHA `fe19d5b0f7e5b2670fd013165642253d1618822b`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure.**
