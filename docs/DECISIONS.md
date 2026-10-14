@@ -1046,3 +1046,19 @@ Build 063 does not rewrite the predecessor Build 059 re-closure or Build 060 rec
 ## D0160 — Only the newest matched verification may close
 
 Matched evidence becomes stale as soon as a newer read-back exists. Build 063 re-closure requires the newest verification for the exact Build 062 delivery to be matched, preventing older success evidence from outranking newer drift or transport failure.
+
+## D0161 — A second recurrence is a new evidence generation
+
+Build 064 recurrence never edits or reuses the Build 060 recurrence. It creates a distinct immutable recurrence bound to the Build 063 re-closure and newest post-re-closure read-back.
+
+## D0162 — Monitoring cannot reopen automatically
+
+A `recurred` Build 064 check is evidence only. Reopening requires an explicit owner/admin action from the newest recurrent check and a typed confirmation.
+
+## D0163 — Second recurrence freezes the current next-generation cycle
+
+After Build 064 recurrence, Build 062 activation/delivery and Build 063 reconciliation/re-closure mutation paths are frozen by database triggers. The completed generation becomes historical evidence.
+
+## D0164 — Stale re-closure evidence cannot close a second recurrence
+
+Once Build 064 recurrence exists, the case-close trigger refuses direct closure even though a valid Build 063 re-closure exists. A later corrective generation must produce its own verified closure evidence before the case can close again.
