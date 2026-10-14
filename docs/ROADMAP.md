@@ -1559,3 +1559,19 @@ Promotion evidence:
 Build 062 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+## Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct the exact accepted Build 062 package for read-only state verification;
+- preserve immutable matched/drift/rejected/transport-error evidence;
+- bind verification to the Build 060 recurrence, predecessor Build 059 re-closure, Build 061 plan and Build 062 package;
+- require the newest verification for the exact delivery before re-closure;
+- create one immutable next-generation re-closure per recurrence generation;
+- make the database case-close trigger recurrence-generation aware;
+- preserve owner/admin mutation boundaries and SELECT/INSERT-only evidence ledgers;
+- expose wait/busy controls for verification and re-closure.
+
+Next queued: **Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance.**

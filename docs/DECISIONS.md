@@ -1030,3 +1030,19 @@ One canonical delivery row is reserved before transport. Its replay key is the o
 ## D0156 — Execution freezes Build 061 planning
 
 Once a Build 062 activation exists, Build 061 recurrence re-triage and next-generation plan rows may no longer be inserted or updated for that case. Execution therefore consumes frozen planning evidence rather than mutable operator state.
+
+## D0157 — Next-generation delivery acceptance is not closure authority
+
+An accepted Build 062 transport result is necessary but insufficient to close a recurrent exception. Build 063 requires an independent consumer state read-back of the exact delivered package.
+
+## D0158 — Re-closure authority follows the newest recurrence generation
+
+Once Build 060 recurrence exists, the Build 059 successor re-closure cannot authorize another case close. The case-close trigger requires a Build 063 re-closure bound to the newest recurrence generation.
+
+## D0159 — Next-generation re-closure is immutable lineage evidence
+
+Build 063 does not rewrite the predecessor Build 059 re-closure or Build 060 recurrence. It creates a new immutable re-closure row binding predecessor re-closure, recurrence, Build 061 plan, Build 062 delivery and Build 063 verification.
+
+## D0160 — Only the newest matched verification may close
+
+Matched evidence becomes stale as soon as a newer read-back exists. Build 063 re-closure requires the newest verification for the exact Build 062 delivery to be matched, preventing older success evidence from outranking newer drift or transport failure.
