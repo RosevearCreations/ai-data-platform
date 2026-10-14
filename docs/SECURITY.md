@@ -563,3 +563,9 @@ Build 062 also freezes Build 061 planning once activation begins, extending the 
 Only owners/admins may record Build 063 reconciliation evidence or create the next-generation re-closure. Reconciliation insertion requires an accepted Build 062 delivery, approved Build 061 plan/re-triage, an open case, the newest recurrence generation, unchanged recurrence/regression/predecessor-re-closure fingerprints and the exact Build 062 package identity.
 
 Re-closure requires the newest Build 063 verification for the delivery to be `matched`, the Build 062 delivery to remain accepted, the Build 061 plan/re-triage to remain approved, and the bound recurrence to remain the newest generation for the case. The database close trigger now requires Build 063 next-generation re-closure evidence whenever recurrence exists, while preserving the original Build 055 and Build 059 closure rules for earlier generations.
+
+## Build 064 recurrence controls
+
+Only owners/admins may create Build 064 monitoring evidence or govern recurrence. Monitoring insertion requires a closed case, accepted Build 062 delivery, approved Build 061 plan, exact Build 063 re-closure identity, exact Build 060 recurrence identity and no already-governed Build 064 recurrence. Recurrence insertion requires the newest Build 064 check to be `recurred`, the newest Build 063 re-closure and a still-closed case.
+
+Once Build 064 recurrence exists, database triggers block further mutation of the Build 062 activation/delivery and Build 063 reconciliation/re-closure generation. The governed-reopen trigger recognizes the new recurrence in the same transaction. The verified-close trigger fails closed with `reconciliation_triage_second_generation_reclosure_required` so stale Build 063 evidence cannot close the newly reopened case.

@@ -154,3 +154,9 @@ Operator UI: `/approved-data/reconciliation/next-generation-delivery`.
 Build 063 independently reads back an accepted Build 062 next-generation corrective package and records immutable matched/drift/error evidence. A recurrent exception may close again only when the newest verification for the exact Build 062 delivery is matched and the delivery/plan belongs to the newest recurrence generation. Re-closure is written to a distinct next-generation ledger that binds the predecessor Build 059 re-closure, Build 060 recurrence, Build 061 plan and Build 062 delivery.
 
 Operator UI: `/approved-data/reconciliation/next-generation-closure`.
+
+### Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 064 monitors the exact Build 062 package after verified Build 063 re-closure. Stable, recurrent, rejected and transport-error read-backs are append-only evidence. Drift never reopens automatically: an owner/admin must explicitly govern recurrence from the newest recurrent check. The recurrence freezes the current Build 061–063 generation and direct closure is blocked until a later corrective generation creates fresh verified closure evidence.
+
+Operator UI: `/approved-data/reconciliation/post-next-generation-reclosure`.
