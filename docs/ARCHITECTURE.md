@@ -458,3 +458,9 @@ Build 062 is a distinct execution boundary after Build 061 planning. The server 
 Activation requires a current authenticated consumer handshake proving live mutation, dry-run support and replay-key idempotency with return-original-ack duplicate behavior. The exact package is dry-run first; only an accepted dry-run may open a short-lived activation. Before any live request, the platform inserts or locks one canonical next-generation delivery row keyed by consumer origin and package ID. The package replay key is the outbound idempotency key. Accepted/rejected results are terminal; transport errors may retry with the same key up to five total attempts while activation remains valid.
 
 Once any Build 062 activation exists, database triggers freeze Build 061 re-triage/plan mutation so planning evidence cannot move underneath execution.
+
+## Build 063 — Next-generation reconciliation and re-closure
+
+Build 063 separates transport acceptance from verified correction closure. The server reconstructs the exact accepted Build 062 package, performs a fresh read-only consumer state verification and compares only package-governed fields. Every verification becomes immutable evidence with matched/drift/rejected/transport-error status and a deterministic verification fingerprint.
+
+A new re-closure generation may be created only from the newest matched verification for the newest recurrence generation. It binds the predecessor Build 059 re-closure, Build 060 recurrence, Build 061 re-triage/plan, Build 062 accepted delivery/package and Build 063 verification. The case-close trigger is generation-aware: once recurrence exists, the earlier Build 059 re-closure no longer authorizes closure; the matching Build 063 next-generation re-closure must already exist in the same transaction.
