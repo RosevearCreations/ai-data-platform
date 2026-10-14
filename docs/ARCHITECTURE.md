@@ -464,3 +464,9 @@ Once any Build 062 activation exists, database triggers freeze Build 061 re-tria
 Build 063 separates transport acceptance from verified correction closure. The server reconstructs the exact accepted Build 062 package, performs a fresh read-only consumer state verification and compares only package-governed fields. Every verification becomes immutable evidence with matched/drift/rejected/transport-error status and a deterministic verification fingerprint.
 
 A new re-closure generation may be created only from the newest matched verification for the newest recurrence generation. It binds the predecessor Build 059 re-closure, Build 060 recurrence, Build 061 re-triage/plan, Build 062 accepted delivery/package and Build 063 verification. The case-close trigger is generation-aware: once recurrence exists, the earlier Build 059 re-closure no longer authorizes closure; the matching Build 063 next-generation re-closure must already exist in the same transaction.
+
+## Build 064 — Post-next-generation re-closure recurrence governance
+
+Build 064 reuses the exact accepted Build 062 package only as immutable monitoring truth after Build 063 has closed the recurrent exception. The monitor performs a fresh state-verification handshake/read-back and maps exact match to `stable` and changed/missing governed state to `recurred`.
+
+A recurrent read-back remains evidence only. Explicit owner/admin recurrence creates a new immutable recurrence generation bound to the newest Build 063 re-closure and newest monitoring check, then reopens the case. Database triggers freeze Build 062 activation/delivery and Build 063 reconciliation/re-closure mutation after that recurrence. The case-close trigger also fails closed after the new recurrence so stale Build 063 re-closure evidence cannot authorize a later direct close.

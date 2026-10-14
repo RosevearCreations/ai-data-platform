@@ -1585,3 +1585,20 @@ Promotion evidence:
 Build 063 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+## Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Status: implementation ready for promotion.
+
+Scope:
+- monitor the exact accepted Build 062 package after Build 063 re-closure;
+- preserve immutable stable/recurred/rejected/transport-error evidence;
+- require the newest monitor and newest Build 063 re-closure for recurrence governance;
+- create a distinct second recurrence generation without rewriting Build 060;
+- reopen only through explicit owner/admin action and typed confirmation;
+- freeze Build 062/063 mutation paths after recurrence;
+- make governed reopen recognize the new recurrence generation;
+- block direct closure after second recurrence until a future generation supplies fresh verified closure evidence;
+- expose wait/busy controls for monitoring and recurrence actions.
+
+Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning.**

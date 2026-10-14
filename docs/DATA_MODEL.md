@@ -1050,3 +1050,10 @@ Migration: `0031_recurrent_exception_next_generation_planning.sql`.
 - `app.workspace_reconciliation_exception_next_generation_reclosures` stores one immutable verified re-closure per recurrence generation. It binds the predecessor Build 059 re-closure and Build 060 recurrence to the Build 061 plan, Build 062 delivery and newest matched Build 063 reconciliation.
 - Runtime access is SELECT/INSERT only for both tables. UPDATE and DELETE are not granted.
 - Migration: `0033_next_generation_corrective_reconciliation_reclosure.sql`.
+
+## Build 064 post-next-generation recurrence evidence
+
+- `app.workspace_post_next_generation_reclosure_regression_checks` records append-only stable/recurred/rejected/transport-error read-back evidence against the exact Build 062 package that justified Build 063 re-closure.
+- `app.workspace_reconciliation_exception_next_generation_recurrences` records one governed recurrence per Build 063 re-closure and binds the predecessor Build 060 recurrence, newest Build 064 check and recurrence rationale.
+- Runtime access to both new tables is SELECT/INSERT only; UPDATE and DELETE are not granted.
+- Migration: `0034_post_next_generation_reclosure_recurrence_governance.sql`.
