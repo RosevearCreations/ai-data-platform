@@ -143,9 +143,9 @@ type ActivationRow = QueryResultRow & {
   status: "active" | "revoked";
   consumer_id: string;
   successor_generation_plan_fingerprint: string;
-  source_next_generation_recurrence_fingerprint: string;
+  source_next_generation_next_generation_recurrence_fingerprint: string;
   source_regression_fingerprint: string;
-  source_next_generation_reclosure_fingerprint: string;
+  source_next_generation_next_generation_reclosure_fingerprint: string;
   predecessor_next_generation_plan_id: string;
   predecessor_next_generation_delivery_id: string;
   predecessor_next_generation_package_id: string;
@@ -237,11 +237,11 @@ async function requireManager(client: PoolClient, workspaceId: string) {
 }
 
 export function successorGenerationActivationConfirmation(target: IntegrationTarget) {
-  return "ACTIVATE " + target.toUpperCase() + " NEXT-GENERATION CORRECTIVE";
+  return "ACTIVATE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
 }
 
 export function successorGenerationExecutionConfirmation(target: IntegrationTarget) {
-  return "EXECUTE " + target.toUpperCase() + " NEXT-GENERATION CORRECTIVE";
+  return "EXECUTE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
 }
 
 export function successorGenerationActivationFingerprint(input: {
@@ -450,9 +450,9 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
       plan_status: string;
       retriage_status: string;
       case_status: string;
-      recurrence_fingerprint: string;
+      next_generation_recurrence_fingerprint: string;
       regression_fingerprint: string;
-      reclosure_fingerprint: string;
+      next_generation_reclosure_fingerprint: string;
       latest_next_generation_recurrence_id: string;
       predecessor_plan_status: string;
       predecessor_delivery_status: string;
@@ -463,9 +463,9 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
     }>(
       `select p.status as plan_status,t.status as retriage_status,
               c.status as case_status,
-              recurrence.recurrence_fingerprint,
+              recurrence.next_generation_recurrence_fingerprint,
               recurrence.regression_fingerprint,
-              recurrence.reclosure_fingerprint,
+              recurrence.next_generation_reclosure_fingerprint,
               (
                 select newest.next_generation_recurrence_id
                 from app.workspace_reconciliation_exception_next_generation_recurrences newest
@@ -513,9 +513,9 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
   }
   if (
     plan.nextGenerationRecurrenceId !== gate.latest_next_generation_recurrence_id ||
-    plan.sourceNextGenerationRecurrenceFingerprint !== gate.recurrence_fingerprint ||
+    plan.sourceNextGenerationRecurrenceFingerprint !== gate.next_generation_recurrence_fingerprint ||
     plan.sourceRegressionFingerprint !== gate.regression_fingerprint ||
-    plan.sourceNextGenerationReclosureFingerprint !== gate.reclosure_fingerprint
+    plan.sourceNextGenerationReclosureFingerprint !== gate.next_generation_reclosure_fingerprint
   ) {
     throw new Error("successor_generation_delivery_next_generation_recurrence_identity_changed");
   }
@@ -533,7 +533,7 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
     userId,
     {
       workspaceId: input.workspaceId,
-      successorPlanId: plan.predecessorNextGenerationPlanId,
+      nextGenerationPlanId: plan.predecessorNextGenerationPlanId,
       allowClosedCase: input.allowClosedCase
     }
   );
@@ -785,9 +785,9 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
       case_status: string;
       next_generation_recurrence_id: string;
       latest_next_generation_recurrence_id: string;
-      recurrence_fingerprint: string;
+      next_generation_recurrence_fingerprint: string;
       regression_fingerprint: string;
-      reclosure_fingerprint: string;
+      next_generation_reclosure_fingerprint: string;
       predecessor_plan_status: string;
       predecessor_delivery_status: string;
       consumer_id: string;
@@ -805,9 +805,9 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
                 order by newest.recurred_at desc,newest.next_generation_recurrence_id desc
                 limit 1
               ) as latest_next_generation_recurrence_id,
-              recurrence.recurrence_fingerprint,
+              recurrence.next_generation_recurrence_fingerprint,
               recurrence.regression_fingerprint,
-              recurrence.reclosure_fingerprint,
+              recurrence.next_generation_reclosure_fingerprint,
               predecessor_plan.status as predecessor_plan_status,
               predecessor_delivery.status as predecessor_delivery_status,
               predecessor_delivery.consumer_id,
@@ -844,9 +844,9 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
       throw new Error("successor_generation_delivery_execution_gate_closed");
     }
     if (
-      current.recurrence_fingerprint !== input.context.plan.sourceNextGenerationRecurrenceFingerprint ||
+      current.next_generation_recurrence_fingerprint !== input.context.plan.sourceNextGenerationRecurrenceFingerprint ||
       current.regression_fingerprint !== input.context.plan.sourceRegressionFingerprint ||
-      current.reclosure_fingerprint !== input.context.plan.sourceNextGenerationReclosureFingerprint
+      current.next_generation_reclosure_fingerprint !== input.context.plan.sourceNextGenerationReclosureFingerprint
     ) {
       throw new Error("successor_generation_delivery_next_generation_recurrence_identity_changed");
     }
