@@ -2870,6 +2870,14 @@ Implementation branch: `build-063-next-generation-reconciliation-reclosure`.
 
 Added migration `0033_next_generation_corrective_reconciliation_reclosure.sql`, next-generation reconciliation library/API/workbench, immutable read-back evidence, latest-verification/latest-recurrence re-closure gates, a distinct recurrence-generation re-closure ledger, a recurrence-aware case-close trigger, busy/wait mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #141 merged the implementation to `dev`;
+- release PR #142 passed Verify #675 on `dev` SHA `0eac322b162def599986c2959dcb1628a8b5e4cb`;
+- release `main` SHA: `a71e08049fafcc0a6c25e34d0d27fc5a44e239cf`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0033_next_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirmed both Build 063 tables have RLS, all four intended policies exist, runtime grants are SELECT/INSERT only with no UPDATE/DELETE, and `app.require_verified_corrective_closure()` requires the latest Build 063 re-closure after recurrence while preserving Build 059/055 generation rules;
+- Vercel deployment `dpl_H1VCTnGx6eneUamXoRWPkMCZvxUB` is READY, sourced from exact SHA `a71e08049fafcc0a6c25e34d0d27fc5a44e239cf`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 063 is **GREEN on main and production**.
 
 Next queued: **Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
