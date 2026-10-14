@@ -1616,7 +1616,7 @@ Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation 
 
 ## Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - consume the newest governed Build 064 second recurrence without mutating prior generations;
@@ -1626,5 +1626,14 @@ Scope:
 - require explicit plan review before future execution;
 - freeze Build 061 planning after a second recurrence;
 - expose wait/busy controls for create/save/review actions.
+
+Promotion evidence:
+- feature PR #149 merged the Build 065 implementation to `dev`;
+- release PR #150 passed Verify #689 on exact `dev` SHA `24ab4521f5db172fe3fae427d5dd3a568a5826ef`;
+- release merged to `main` at `3de22a8fffe683678112c93486156ac2f38272d6`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0035_second_recurrence_successor_generation_planning.sql`;
+- production verification confirms both Build 065 tables are under RLS, all six intended policies exist, both predecessor-generation freeze triggers are live, table grants are SELECT/INSERT only, and UPDATE remains restricted to the intended review/re-triage columns;
+- Vercel deployment `dpl_8APNPHmkqxtJnAqzpb2kTySXPyCE` is READY from exact release SHA `3de22a8fffe683678112c93486156ac2f38272d6`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**

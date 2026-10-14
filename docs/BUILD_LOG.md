@@ -2907,6 +2907,14 @@ Implementation branch: `build-065-second-recurrence-successor-generation-plannin
 
 Added migration `0035_second_recurrence_successor_generation_planning.sql`, second-recurrence planning library/API/workbench, immutable successor-generation plan lineage, Build 061 predecessor-planning freeze guards, manager-only RLS policies, least-privilege mutation grants, single-flight wait controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #149 merged the implementation to `dev`;
+- release PR #150 passed Verify #689 on exact `dev` SHA `24ab4521f5db172fe3fae427d5dd3a568a5826ef`;
+- release `main` SHA: `3de22a8fffe683678112c93486156ac2f38272d6`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0035_second_recurrence_successor_generation_planning.sql`;
+- production verification confirmed both Build 065 tables have RLS, all six intended policies exist, both predecessor-generation freeze triggers are live, runtime table grants are SELECT/INSERT only, and UPDATE privileges are limited to the intended review/re-triage columns;
+- Vercel deployment `dpl_8APNPHmkqxtJnAqzpb2kTySXPyCE` is READY, sourced from exact SHA `3de22a8fffe683678112c93486156ac2f38272d6`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 065 is **GREEN on main and production**.
 
 Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**
