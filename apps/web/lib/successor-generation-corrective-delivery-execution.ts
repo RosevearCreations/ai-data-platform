@@ -62,7 +62,7 @@ export interface SuccessorGenerationCorrectiveDeliveryActivation {
   predecessorNextGenerationPlanId: string;
   predecessorNextGenerationDeliveryId: string;
   predecessorNextGenerationPackageId: string;
-  predecessorSuccessorReplayKey: string;
+  predecessorNextGenerationReplayKey: string;
   predecessorNextGenerationPackageFingerprint: string;
   successorGenerationPackageId: string;
   successorGenerationReplayKey: string;
@@ -149,7 +149,7 @@ type ActivationRow = QueryResultRow & {
   predecessor_next_generation_plan_id: string;
   predecessor_next_generation_delivery_id: string;
   predecessor_next_generation_package_id: string;
-  predecessor_successor_replay_key: string;
+  predecessor_next_generation_replay_key: string;
   predecessor_next_generation_package_fingerprint: string;
   successor_generation_package_id: string;
   successor_generation_replay_key: string;
@@ -491,7 +491,7 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        join app.workspace_next_generation_corrective_delivery_plans predecessor_plan
          on predecessor_plan.workspace_id=p.workspace_id
-        and predecessor_plan.successor_plan_id=p.predecessor_next_generation_plan_id
+        and predecessor_plan.next_generation_plan_id=p.predecessor_next_generation_plan_id
        join app.workspace_next_generation_corrective_live_deliveries predecessor_delivery
          on predecessor_delivery.workspace_id=p.workspace_id
         and predecessor_delivery.delivery_id=p.predecessor_next_generation_delivery_id
@@ -538,9 +538,9 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
     }
   );
   if (
-    predecessorContext.successorPackage.packageId !== gate.predecessor_package_id ||
-    predecessorContext.successorPackage.replayKey !== gate.predecessor_replay_key ||
-    predecessorContext.successorPackage.fingerprint !== gate.predecessor_package_fingerprint ||
+    predecessorContext.nextGenerationPackage.packageId !== gate.predecessor_package_id ||
+    predecessorContext.nextGenerationPackage.replayKey !== gate.predecessor_replay_key ||
+    predecessorContext.nextGenerationPackage.fingerprint !== gate.predecessor_package_fingerprint ||
     predecessorContext.consumerId !== gate.consumer_id
   ) {
     throw new Error("successor_generation_delivery_predecessor_reconstruction_mismatch");
@@ -548,12 +548,12 @@ export async function loadApprovedSuccessorGenerationCorrectivePlanContext(
 
   const successorGenerationPackage = buildSuccessorGenerationCorrectiveExecutionPackage(
     plan,
-    predecessorContext.successorPackage
+    predecessorContext.nextGenerationPackage
   );
 
   return {
     plan,
-    predecessorNextGenerationPackage: predecessorContext.successorPackage,
+    predecessorNextGenerationPackage: predecessorContext.nextGenerationPackage,
     successorGenerationPackage,
     consumerId: gate.consumer_id
   };
@@ -584,7 +584,7 @@ function activationFromRow(
     predecessorNextGenerationPlanId: row.predecessor_next_generation_plan_id,
     predecessorNextGenerationDeliveryId: row.predecessor_next_generation_delivery_id,
     predecessorNextGenerationPackageId: row.predecessor_next_generation_package_id,
-    predecessorSuccessorReplayKey: row.predecessor_successor_replay_key,
+    predecessorNextGenerationReplayKey: row.predecessor_next_generation_replay_key,
     predecessorNextGenerationPackageFingerprint:
       row.predecessor_next_generation_package_fingerprint,
     successorGenerationPackageId: row.successor_generation_package_id,
@@ -825,7 +825,7 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        join app.workspace_next_generation_corrective_delivery_plans predecessor_plan
          on predecessor_plan.workspace_id=p.workspace_id
-        and predecessor_plan.successor_plan_id=p.predecessor_next_generation_plan_id
+        and predecessor_plan.next_generation_plan_id=p.predecessor_next_generation_plan_id
        join app.workspace_next_generation_corrective_live_deliveries predecessor_delivery
          on predecessor_delivery.workspace_id=p.workspace_id
         and predecessor_delivery.delivery_id=p.predecessor_next_generation_delivery_id
@@ -908,7 +908,7 @@ export async function createSuccessorGenerationCorrectiveDeliveryActivation(
         source_next_generation_recurrence_fingerprint,source_regression_fingerprint,
         source_next_generation_reclosure_fingerprint,predecessor_next_generation_plan_id,
         predecessor_next_generation_delivery_id,predecessor_next_generation_package_id,
-        predecessor_successor_replay_key,predecessor_next_generation_package_fingerprint,
+        predecessor_next_generation_replay_key,predecessor_next_generation_package_fingerprint,
         successor_generation_package_id,successor_generation_replay_key,
         successor_generation_package_fingerprint,dry_run_validation_code,
         dry_run_http_status,dry_run_consumer_received_at,dry_run_acknowledgement,
