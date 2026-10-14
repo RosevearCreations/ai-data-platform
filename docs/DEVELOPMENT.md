@@ -823,3 +823,7 @@ Build 061 adds `verify-recurrent-exception-planning.ts` to the application test 
 ## Build 062 verification
 
 Build 062 adds `verify-next-generation-corrective-delivery-execution.ts` to the application test chain and `verify-next-generation-corrective-delivery-execution-database.ts` to `db:verify`. Verification covers deterministic new package identity, non-reuse of predecessor package/replay identity, predecessor-governed value enforcement, typed activation/execution confirmations, RLS, narrow grants, exact recurrence/predecessor policy gates, replay-key idempotency binding, database retry cap and Build 061 freeze triggers.
+
+## Build 063 verification
+
+Build 063 adds `verify-next-generation-corrective-delivery-reconciliation.ts` to the application test chain and `verify-next-generation-corrective-delivery-reconciliation-database.ts` to `db:verify`. Verification covers exact-match versus drift behavior, deterministic error/re-closure fingerprints, typed confirmation, RLS, immutable SELECT/INSERT runtime grants, exact Build 062 package binding, latest-recurrence/latest-verification gates and the recurrence-aware database close trigger.
