@@ -157,12 +157,12 @@ type ReclosureRow = QueryResultRow & {
   successor_generation_reconciliation_id: string;
   case_id: string;
   target: IntegrationTarget;
-  predecessor_next_generation_next_generation_reclosure_fingerprint: string;
+  predecessor_next_generation_reclosure_fingerprint: string;
   next_generation_recurrence_fingerprint: string;
   successor_generation_plan_fingerprint: string;
   successor_generation_package_fingerprint: string;
   verification_fingerprint: string;
-  successor_generation_next_generation_reclosure_fingerprint: string;
+  successor_generation_reclosure_fingerprint: string;
   reclosure_note: string;
   closed_by: string;
   closed_at: Date;
@@ -393,7 +393,7 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
       regression_fingerprint: string;
       next_generation_reclosure_fingerprint: string;
       predecessor_next_generation_reclosure_id: string;
-      predecessor_next_generation_next_generation_reclosure_fingerprint: string;
+      predecessor_next_generation_reclosure_fingerprint: string;
     }>(
       `select d.successor_generation_plan_id,d.status,c.status as case_status,
               p.status as plan_status,t.status as retriage_status,
@@ -691,7 +691,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
       case_status: string;
       latest_reconciliation_id: string;
       latest_next_generation_recurrence_id: string;
-      predecessor_next_generation_next_generation_reclosure_fingerprint: string;
+      predecessor_next_generation_reclosure_fingerprint: string;
       next_generation_recurrence_fingerprint: string;
     }>(
       `select r.successor_generation_reconciliation_id,r.successor_generation_delivery_id,
