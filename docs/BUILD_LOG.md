@@ -2945,6 +2945,17 @@ Implementation branch: `build-067-successor-generation-reconciliation-reclosure`
 
 Added migration `0037_successor_generation_corrective_reconciliation_reclosure.sql`, successor-generation reconciliation library/API/workbench, immutable Build 066 read-back evidence, newest-verification/newest-second-recurrence re-closure gates, a distinct successor-generation re-closure ledger, a second-recurrence-aware case-close guard preserving prior generations, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #155 merged the implementation to `dev`;
+- release PR #156 Verify #705 confirmed migration/build/application tests and then exposed only the older Build 064 fail-closed message expectation;
+- the Build 064 verifier was updated to accept the stronger Build 067 successor-generation re-closure denial without changing application or database permissions;
+- Verify #707 then exposed PostgreSQL's 63-byte identifier truncation for two 66-character Build 067 table names; both were renamed to explicit PostgreSQL-safe names before production;
+- corrected exact `dev` SHA `d755e465a5799b63150bb8d4e6dde49d0ea3e7d1` passed Verify #712, including migration, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `a65787fdc9df02936a256c55da7a5d9a8c50a18f`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0037_successor_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirmed both Build 067 evidence ledgers have RLS, four intended policies exist, runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE, and the case-close function requires Build 067 successor-generation re-closure after second recurrence while preserving Build 063/059/original closure fallbacks;
+- Vercel deployment `dpl_ESeBZPpuXQQ3LTEhAKSkZC4inUon` is READY, sourced from exact SHA `a65787fdc9df02936a256c55da7a5d9a8c50a18f`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 067 is **GREEN on main and production**.
 
 Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
