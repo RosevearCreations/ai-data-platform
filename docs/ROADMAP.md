@@ -1667,7 +1667,7 @@ Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconcilia
 
 ## Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - independently reconstruct the exact accepted Build 066 successor-generation package for read-only state verification;
@@ -1678,5 +1678,17 @@ Scope:
 - update the database case-close guard to require Build 067 evidence after a second recurrence while preserving Build 063, Build 059 and original closure fallbacks;
 - preserve owner/admin mutation boundaries and SELECT/INSERT-only immutable evidence ledgers;
 - expose single-flight wait/busy controls for verification and re-closure.
+
+Promotion evidence:
+- feature PR #155 merged the Build 067 implementation to `dev`;
+- release PR #156 initially surfaced the expected stronger-guard compatibility mismatch in Verify #705 and the PostgreSQL 63-byte table-name issue in Verify #707;
+- the Build 064 verifier was updated only to recognize Build 067's stronger fail-closed denial, without weakening the database guard;
+- the two 66-character Build 067 table names were replaced before production with explicit PostgreSQL-safe names;
+- corrected release candidate `dev` SHA `d755e465a5799b63150bb8d4e6dde49d0ea3e7d1` passed Verify #712;
+- release merged to `main` at `a65787fdc9df02936a256c55da7a5d9a8c50a18f`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0037_successor_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirms both Build 067 ledgers are under RLS, all four intended policies exist, runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE, and `app.require_verified_corrective_closure()` requires successor-generation re-closure after a second recurrence while preserving older generation fallbacks;
+- Vercel deployment `dpl_ESeBZPpuXQQ3LTEhAKSkZC4inUon` is READY from exact release SHA `a65787fdc9df02936a256c55da7a5d9a8c50a18f`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
