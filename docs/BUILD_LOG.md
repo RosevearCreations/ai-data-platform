@@ -2918,3 +2918,14 @@ Production promotion evidence:
 Build 065 is **GREEN on main and production**.
 
 Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+
+## Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution
+
+Implementation branch: `build-066-successor-generation-corrective-delivery`.
+
+Added migration `0036_successor_generation_corrective_delivery_execution.sql`, successor-generation execution library/API/workbench, deterministic new package derivation from accepted Build 062 predecessor evidence, fresh live handshake/dry-run activation, durable pre-send reservation, bounded same-key retries, terminal accepted/rejected delivery outcomes, Build 065 planning freeze guards, least-privilege RLS policies/grants, single-flight wait controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure.**
