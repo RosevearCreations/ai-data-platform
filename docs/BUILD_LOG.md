@@ -2851,6 +2851,15 @@ Implementation branch: `build-062-next-generation-delivery-execution`.
 
 Added migration `0032_next_generation_corrective_delivery_execution.sql`, next-generation execution library/API/workbench, deterministic fresh package identity, capability + dry-run activation gate, durable idempotent reservation, five-attempt same-key retry boundary, terminal accepted/rejected handling, Build 061 planning freeze triggers, busy/wait mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #135 merged the implementation to `dev`;
+- PR #137 fixed only verifier TypeScript fixture typing; PR #138 fixed only verifier contract-key fixtures;
+- release PR #136 passed Verify #668 on corrected `dev` SHA `504f99f0893af026da9802e0b48f07558252f9aa`;
+- release `main` SHA: `39a7db1675934bbc86ae78975bb928021189faa6`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0032_next_generation_corrective_delivery_execution.sql`;
+- production verification confirmed both Build 062 tables have RLS, six intended policies exist, table-level runtime grants are SELECT/INSERT only, UPDATE is restricted to intended revocation/result columns, DELETE/unrestricted UPDATE are absent, both Build 061 freeze triggers are live, the single-active activation index exists, and the five-attempt retry check is enforced;
+- Vercel deployment `dpl_9c2wiJccrsHzPYcWcpUZbjcCsNG1` is READY, sourced from exact SHA `39a7db1675934bbc86ae78975bb928021189faa6`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 062 is **GREEN on main and production**.
 
 Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure.**
