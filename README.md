@@ -160,3 +160,10 @@ Operator UI: `/approved-data/reconciliation/next-generation-closure`.
 Build 064 monitors the exact Build 062 package after verified Build 063 re-closure. Stable, recurrent, rejected and transport-error read-backs are append-only evidence. Drift never reopens automatically: an owner/admin must explicitly govern recurrence from the newest recurrent check. The recurrence freezes the current Build 061–063 generation and direct closure is blocked until a later corrective generation creates fresh verified closure evidence.
 
 Operator UI: `/approved-data/reconciliation/post-next-generation-reclosure`.
+
+
+### Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning
+
+Build 065 consumes immutable Build 064 second-recurrence evidence and starts a distinct successor-generation decision cycle. It re-triages only the newest governed second recurrence, limits correction scope to fields proven recurrent by the exact Build 064 read-back and already governed by the approved Build 061 plan, and freezes an independently reviewable successor-generation corrective plan without rewriting the Build 061–063 history.
+
+Operator UI: `/approved-data/reconciliation/second-recurrence-planning`.
