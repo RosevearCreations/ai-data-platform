@@ -557,3 +557,9 @@ Only owners/admins may activate, execute, retry or revoke Build 062 delivery. Ac
 The consumer must freshly prove bearer authentication, dry-run support, live mutation and replay-key idempotency with return-original-ack duplicate semantics. An accepted dry-run of the exact package is mandatory before activation. Live sends reserve durable evidence first; retries are same-key and bounded to five. Accepted/rejected rows are terminal.
 
 Build 062 also freezes Build 061 planning once activation begins, extending the historical immutability chain already enforced for Build 057–060 predecessor generations.
+
+## Build 063 reconciliation and re-closure controls
+
+Only owners/admins may record Build 063 reconciliation evidence or create the next-generation re-closure. Reconciliation insertion requires an accepted Build 062 delivery, approved Build 061 plan/re-triage, an open case, the newest recurrence generation, unchanged recurrence/regression/predecessor-re-closure fingerprints and the exact Build 062 package identity.
+
+Re-closure requires the newest Build 063 verification for the delivery to be `matched`, the Build 062 delivery to remain accepted, the Build 061 plan/re-triage to remain approved, and the bound recurrence to remain the newest generation for the case. The database close trigger now requires Build 063 next-generation re-closure evidence whenever recurrence exists, while preserving the original Build 055 and Build 059 closure rules for earlier generations.
