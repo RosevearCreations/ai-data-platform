@@ -148,3 +148,9 @@ Operator UI: `/approved-data/reconciliation/recurrent-planning`.
 Build 062 turns an approved Build 061 next-generation plan into a separate controlled execution generation. It reconstructs the accepted Build 058 successor package only as immutable predecessor evidence, derives a new next-generation package ID/replay key/fingerprint, requires a fresh authenticated live-capability handshake and accepted dry-run, then reserves one durable live-delivery row before transport. Retries reuse the exact replay/idempotency key and stop after five attempts; accepted/rejected results are terminal.
 
 Operator UI: `/approved-data/reconciliation/next-generation-delivery`.
+
+### Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Build 063 independently reads back an accepted Build 062 next-generation corrective package and records immutable matched/drift/error evidence. A recurrent exception may close again only when the newest verification for the exact Build 062 delivery is matched and the delivery/plan belongs to the newest recurrence generation. Re-closure is written to a distinct next-generation ledger that binds the predecessor Build 059 re-closure, Build 060 recurrence, Build 061 plan and Build 062 delivery.
+
+Operator UI: `/approved-data/reconciliation/next-generation-closure`.
