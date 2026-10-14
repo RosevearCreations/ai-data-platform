@@ -31,6 +31,9 @@ export default async function NextGenerationCorrectiveDeliveryPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-generation-closure">
+            Next-generation reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/recurrent-planning">
             Recurrent exception planning
           </Link>
