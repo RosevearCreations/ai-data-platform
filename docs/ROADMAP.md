@@ -1588,7 +1588,7 @@ Next queued: **Build 064 — Post-Next-Generation Re-Closure Regression Monitori
 
 ## Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - monitor the exact accepted Build 062 package after Build 063 re-closure;
@@ -1600,5 +1600,15 @@ Scope:
 - make governed reopen recognize the new recurrence generation;
 - block direct closure after second recurrence until a future generation supplies fresh verified closure evidence;
 - expose wait/busy controls for monitoring and recurrence actions.
+
+Promotion evidence:
+- feature PR #145 merged Build 064 to `dev`;
+- release PR #146 passed Verify #682 on exact `dev` SHA `c7bc8868c0d79046dba2a0d32b050adbaf94bc8f`;
+- release merged to `main` at `564902a1218d5a569c8cf7dfd11209a784809c59`;
+- production Neon migration `0034_post_next_generation_reclosure_recurrence_governance.sql` is recorded with both Build 064 evidence tables under RLS, four intended policies, SELECT/INSERT-only runtime table grants, governed-reopen support, four Build 062/063 freeze triggers and fail-closed second-recurrence closure protection;
+- Vercel deployment `dpl_3GmjsFHq1XcD7qRTpsARCzX1fFhR` is READY for exact release SHA `564902a1218d5a569c8cf7dfd11209a784809c59`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 064 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning.**
