@@ -432,7 +432,7 @@ export function assertNextGenerationPackageExecutable(
 
 export async function loadApprovedNextGenerationCorrectivePlanContext(
   userId: string,
-  input: { workspaceId: string; nextGenerationPlanId: string }
+  input: { workspaceId: string; nextGenerationPlanId: string; allowClosedCase?: boolean }
 ): Promise<NextGenerationCorrectiveExecutionContext> {
   const planning = await listRecurrentExceptionPlanningForUser(userId);
   const plan = planning.plans.find(
@@ -506,7 +506,8 @@ export async function loadApprovedNextGenerationCorrectivePlanContext(
   if (
     gate.plan_status !== "approved" ||
     gate.retriage_status !== "approved" ||
-    gate.case_status !== "open"
+    (!input.allowClosedCase && gate.case_status !== "open") ||
+    (input.allowClosedCase && gate.case_status !== "open" && gate.case_status !== "closed")
   ) {
     throw new Error("next_generation_delivery_execution_gate_closed");
   }
@@ -532,7 +533,8 @@ export async function loadApprovedNextGenerationCorrectivePlanContext(
     userId,
     {
       workspaceId: input.workspaceId,
-      successorPlanId: plan.predecessorSuccessorPlanId
+      successorPlanId: plan.predecessorSuccessorPlanId,
+      allowClosedCase: input.allowClosedCase
     }
   );
   if (
