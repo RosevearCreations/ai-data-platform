@@ -1534,7 +1534,7 @@ Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Id
 
 ## Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct the exact accepted Build 058 successor package as predecessor evidence;
@@ -1546,5 +1546,16 @@ Scope:
 - treat accepted/rejected acknowledgements as terminal;
 - freeze Build 061 planning after execution starts;
 - expose wait/busy operator controls for activate, execute/retry and revoke actions.
+
+Promotion evidence:
+- feature PR #135 merged Build 062 to `dev`;
+- verifier-only compatibility fixes landed through PRs #137 and #138 without changing runtime application/database behavior;
+- release PR #136 passed Verify #668 on exact corrected `dev` SHA `504f99f0893af026da9802e0b48f07558252f9aa`;
+- release merged to `main` at `39a7db1675934bbc86ae78975bb928021189faa6`;
+- production Neon migration `0032_next_generation_corrective_delivery_execution.sql` is recorded with both Build 062 tables under RLS, six intended policies, SELECT/INSERT table grants, narrow column-level UPDATE grants, no unrestricted table UPDATE/DELETE, Build 061 freeze triggers, the single-active activation index and database retry cap;
+- Vercel deployment `dpl_9c2wiJccrsHzPYcWcpUZbjcCsNG1` is READY for exact release SHA `39a7db1675934bbc86ae78975bb928021189faa6`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 062 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure.**
