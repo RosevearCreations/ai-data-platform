@@ -174,3 +174,10 @@ Operator UI: `/approved-data/reconciliation/second-recurrence-planning`.
 Build 066 turns an approved Build 065 successor-generation plan into a separate controlled execution generation. It reconstructs the accepted Build 062 next-generation package only as immutable predecessor evidence, derives a fresh successor-generation package ID/replay key/fingerprint, requires a fresh authenticated live-capability handshake and accepted dry-run, then reserves one durable live-delivery row before transport. Retries reuse the exact replay/idempotency key, stop after five attempts, and accepted/rejected outcomes remain terminal.
 
 Operator UI: `/approved-data/reconciliation/successor-generation-delivery`.
+
+
+### Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Build 067 independently reads back an accepted Build 066 successor-generation package and records immutable matched/drift/error evidence. The second-recurrence case may close again only when the newest verification for the exact Build 066 delivery is matched and the delivery/plan still belongs to the newest Build 064 recurrence generation. Re-closure is written to a distinct successor-generation ledger that binds the Build 063 re-closure, Build 064 recurrence, Build 065 plan and Build 066 delivery.
+
+Operator UI: `/approved-data/reconciliation/successor-generation-closure`.
