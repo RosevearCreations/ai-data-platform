@@ -111,18 +111,18 @@ async function main() {
   )?.expression ?? "";
   for (const required of [
     "workspace_successor_generation_corrective_delivery_plans",
-    "workspace_recurrent_exception_triage_cycles",
-    "workspace_reconciliation_exception_recurrences",
-    "workspace_post_reclosure_regression_checks",
-    "workspace_reconciliation_exception_reclosures",
-    "workspace_successor_corrective_live_deliveries"
+    "workspace_second_recurrence_exception_triage_cycles",
+    "workspace_reconciliation_exception_next_generation_recurrences",
+    "workspace_post_next_generation_reclosure_regression_checks",
+    "workspace_reconciliation_exception_next_generation_reclosures",
+    "workspace_next_generation_corrective_live_deliveries"
   ]) {
     assert(activation.includes(required), "Build 066 activation gate is missing " + required + ".");
   }
   assert(
-    activation.includes("successor_package_id") &&
-      activation.includes("successor_replay_key") &&
-      activation.includes("successor_package_fingerprint"),
+    activation.includes("next_generation_package_id") &&
+      activation.includes("next_generation_replay_key") &&
+      activation.includes("next_generation_package_fingerprint"),
     "Build 066 activation gate must bind the exact predecessor successor package."
   );
 
@@ -132,8 +132,8 @@ async function main() {
   for (const required of [
     "workspace_successor_generation_corrective_delivery_activations",
     "workspace_successor_generation_corrective_delivery_plans",
-    "workspace_recurrent_exception_triage_cycles",
-    "workspace_reconciliation_exception_recurrences"
+    "workspace_second_recurrence_exception_triage_cycles",
+    "workspace_reconciliation_exception_next_generation_recurrences"
   ]) {
     assert(delivery.includes(required), "Build 066 delivery gate is missing " + required + ".");
   }
@@ -148,13 +148,13 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_successor_generation_execution_for_recurrent_planning'`
+       and p.proname='require_no_successor_generation_execution_for_second_recurrence_planning'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
       "workspace_successor_generation_corrective_delivery_activations"
     ),
-    "Build 066 must freeze Build 061 planning after execution begins."
+    "Build 066 must freeze Build 065 second-recurrence planning after execution begins."
   );
 
   const triggers = await authPool.query<{ trigger_name: string; table_name: string }>(
@@ -165,11 +165,11 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_recurrent_triage_execution_guard',
+         'workspace_second_recurrence_triage_execution_guard',
          'workspace_successor_generation_plan_execution_guard'
        )`
   );
-  assert(triggers.rows.length === 2, "Build 066 Build-061 freeze triggers must exist.");
+  assert(triggers.rows.length === 2, "Build 066 Build-065 freeze triggers must exist.");
 
   const attemptCheck = await authPool.query<{ definition: string }>(
     `select pg_get_constraintdef(con.oid) as definition
