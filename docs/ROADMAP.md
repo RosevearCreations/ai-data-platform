@@ -1531,3 +1531,20 @@ Promotion evidence:
 Build 061 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution
+
+Status: implementation ready for promotion.
+
+Scope:
+- reconstruct the exact accepted Build 058 successor package as predecessor evidence;
+- derive a new next-generation package ID, replay key and fingerprint from the approved Build 061 scope;
+- require fresh consumer capability proof and an accepted dry-run before activation;
+- create a short-lived, single-active activation window;
+- reserve one durable logical delivery before network mutation;
+- reuse the exact replay/idempotency key for bounded transport retries;
+- treat accepted/rejected acknowledgements as terminal;
+- freeze Build 061 planning after execution starts;
+- expose wait/busy operator controls for activate, execute/retry and revoke actions.
+
+Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure.**
