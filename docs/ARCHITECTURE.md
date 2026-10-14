@@ -450,3 +450,11 @@ Build 061 is the planning boundary after Build 060 recurrence. A recurrence beco
 Owners/admins can classify, investigate, dismiss or choose `plan-correction`. Plan creation freezes recurrence identity, re-closure identity, predecessor successor plan/delivery identity, exact successor package identity, recurrent verification fingerprint, scoped desired values and operator rationale. Approval advances only the Build 061 re-triage record; it does not execute a delivery.
 
 Database triggers added in Build 061 freeze Build 057 reopened re-triage and successor-plan mutation after recurrence. Build 060 already freezes Build 058/059 execution/reconciliation/re-closure surfaces, so the entire predecessor successor cycle becomes historical once recurrence is governed.
+
+## Build 062 — Next-generation corrective execution
+
+Build 062 is a distinct execution boundary after Build 061 planning. The server reconstructs the exact accepted Build 058 successor package as immutable predecessor evidence, validates the approved Build 061 plan against its recurrence/re-closure/predecessor identities, then derives a fresh next-generation package identity from the frozen Build 061 scope.
+
+Activation requires a current authenticated consumer handshake proving live mutation, dry-run support and replay-key idempotency with return-original-ack duplicate behavior. The exact package is dry-run first; only an accepted dry-run may open a short-lived activation. Before any live request, the platform inserts or locks one canonical next-generation delivery row keyed by consumer origin and package ID. The package replay key is the outbound idempotency key. Accepted/rejected results are terminal; transport errors may retry with the same key up to five total attempts while activation remains valid.
+
+Once any Build 062 activation exists, database triggers freeze Build 061 re-triage/plan mutation so planning evidence cannot move underneath execution.

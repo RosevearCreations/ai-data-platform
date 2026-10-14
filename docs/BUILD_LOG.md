@@ -2844,3 +2844,13 @@ Production promotion evidence:
 Build 061 is **GREEN on main and production**.
 
 Next queued: **Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution
+
+Implementation branch: `build-062-next-generation-delivery-execution`.
+
+Added migration `0032_next_generation_corrective_delivery_execution.sql`, next-generation execution library/API/workbench, deterministic fresh package identity, capability + dry-run activation gate, durable idempotent reservation, five-attempt same-key retry boundary, terminal accepted/rejected handling, Build 061 planning freeze triggers, busy/wait mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure.**

@@ -1035,3 +1035,11 @@ Frozen plan evidence for a recurrent exception. It binds the Build 061 re-triage
 Runtime grants remain SELECT/INSERT plus narrow column-level UPDATE only; DELETE and unrestricted table UPDATE are not granted.
 
 Migration: `0031_recurrent_exception_next_generation_planning.sql`.
+
+## Build 062 next-generation execution evidence
+
+- `app.workspace_next_generation_corrective_delivery_activations` binds one short execution window to an approved Build 061 plan, Build 060 recurrence, Build 059 re-closure, the accepted Build 058 predecessor successor delivery/package, the newly derived next-generation package, and accepted dry-run evidence.
+- `app.workspace_next_generation_corrective_live_deliveries` is the durable idempotent reservation/result ledger for the new package generation.
+- Runtime receives SELECT/INSERT plus narrow revocation/result UPDATE columns only; unrestricted UPDATE and DELETE remain absent.
+- One active activation per next-generation plan is enforced by a partial unique index; one logical delivery per workspace/consumer/package is enforced by a unique constraint; retry count is constrained to 1–5.
+- Migration: `0032_next_generation_corrective_delivery_execution.sql`.
