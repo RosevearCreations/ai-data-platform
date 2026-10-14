@@ -2937,3 +2937,14 @@ Production promotion evidence:
 Build 066 is **GREEN on main and production**.
 
 Next queued: **Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+
+## Build 067 — Successor-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Implementation branch: `build-067-successor-generation-reconciliation-reclosure`.
+
+Added migration `0037_successor_generation_corrective_reconciliation_reclosure.sql`, successor-generation reconciliation library/API/workbench, immutable Build 066 read-back evidence, newest-verification/newest-second-recurrence re-closure gates, a distinct successor-generation re-closure ledger, a second-recurrence-aware case-close guard preserving prior generations, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
