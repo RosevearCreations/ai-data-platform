@@ -56,10 +56,10 @@ create table if not exists app.workspace_successor_generation_corrective_deliver
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_plan_id)
-    references app.workspace_successor_generation_corrective_delivery_plans(workspace_id,successor_plan_id)
+    references app.workspace_next_generation_corrective_delivery_plans(workspace_id,next_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_delivery_id)
-    references app.workspace_successor_generation_corrective_live_deliveries(workspace_id,delivery_id)
+    references app.workspace_next_generation_corrective_live_deliveries(workspace_id,delivery_id)
     on delete restrict
 );
 
@@ -106,7 +106,7 @@ create table if not exists app.workspace_successor_generation_corrective_live_de
     references app.workspace_successor_generation_corrective_delivery_plans(workspace_id,successor_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_delivery_id)
-    references app.workspace_successor_generation_corrective_live_deliveries(workspace_id,delivery_id)
+    references app.workspace_next_generation_corrective_live_deliveries(workspace_id,delivery_id)
     on delete restrict
 );
 
@@ -165,7 +165,7 @@ with check (
       on c.workspace_id=p.workspace_id and c.case_id=p.case_id
     join app.workspace_next_generation_corrective_delivery_plans predecessor_plan
       on predecessor_plan.workspace_id=p.workspace_id
-     and predecessor_plan.successor_generation_plan_id=p.predecessor_next_generation_plan_id
+     and predecessor_plan.next_generation_plan_id=p.predecessor_next_generation_plan_id
     join app.workspace_next_generation_corrective_live_deliveries predecessor_delivery
       on predecessor_delivery.workspace_id=p.workspace_id
      and predecessor_delivery.delivery_id=p.predecessor_next_generation_delivery_id
@@ -196,9 +196,9 @@ with check (
       and predecessor_delivery.status='accepted'
       and predecessor_delivery.delivery_id=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_delivery_id
       and predecessor_delivery.consumer_id=workspace_successor_generation_corrective_delivery_activations.consumer_id
-      and predecessor_delivery.successor_generation_package_id=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_package_id
-      and predecessor_delivery.successor_generation_replay_key=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_replay_key
-      and predecessor_delivery.successor_generation_package_fingerprint=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_package_fingerprint
+      and predecessor_delivery.next_generation_package_id=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_package_id
+      and predecessor_delivery.next_generation_replay_key=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_replay_key
+      and predecessor_delivery.next_generation_package_fingerprint=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_package_fingerprint
       and recurrence.next_generation_recurrence_id=(
         select newest.next_generation_recurrence_id
         from app.workspace_reconciliation_exception_next_generation_recurrences newest
