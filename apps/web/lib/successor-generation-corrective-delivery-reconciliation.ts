@@ -90,7 +90,7 @@ export interface SuccessorGenerationCorrectiveClosureModel {
   reconciliations: SuccessorGenerationCorrectiveDeliveryReconciliation[];
   reclosures: SuccessorGenerationReconciliationExceptionReclosure[];
   totals: {
-    acceptedNextGenerationDeliveries: number;
+    acceptedSuccessorGenerationDeliveries: number;
     neverVerified: number;
     matchedLatest: number;
     driftLatest: number;
@@ -118,15 +118,15 @@ type ReconciliationRow = QueryResultRow & {
   successor_generation_plan_id: string;
   second_recurrence_retriage_id: string;
   next_generation_recurrence_id: string;
-  predecessor_successor_generation_reclosure_id: string;
-  successor_generation_reclosure_regression_check_id: string;
+  predecessor_next_generation_reclosure_id: string;
+  next_generation_reclosure_regression_check_id: string;
   case_id: string;
   target: IntegrationTarget;
   consumer_id: string;
   successor_generation_plan_fingerprint: string;
-  source_next_generation_next_generation_recurrence_fingerprint: string;
+  source_next_generation_recurrence_fingerprint: string;
   source_regression_fingerprint: string;
-  source_successor_generation_reclosure_fingerprint: string;
+  source_next_generation_next_generation_reclosure_fingerprint: string;
   successor_generation_package_id: string;
   successor_generation_replay_key: string;
   successor_generation_package_fingerprint: string;
@@ -149,7 +149,7 @@ type ReclosureRow = QueryResultRow & {
   workspace_name: string;
   role: WorkspaceRole;
   successor_generation_reclosure_id: string;
-  predecessor_successor_generation_reclosure_id: string;
+  predecessor_next_generation_reclosure_id: string;
   next_generation_recurrence_id: string;
   second_recurrence_retriage_id: string;
   successor_generation_plan_id: string;
@@ -157,12 +157,12 @@ type ReclosureRow = QueryResultRow & {
   successor_generation_reconciliation_id: string;
   case_id: string;
   target: IntegrationTarget;
-  predecessor_successor_generation_reclosure_fingerprint: string;
+  predecessor_next_generation_next_generation_reclosure_fingerprint: string;
   next_generation_recurrence_fingerprint: string;
   successor_generation_plan_fingerprint: string;
   successor_generation_package_fingerprint: string;
   verification_fingerprint: string;
-  successor_generation_reclosure_fingerprint: string;
+  successor_generation_next_generation_reclosure_fingerprint: string;
   reclosure_note: string;
   closed_by: string;
   closed_at: Date;
@@ -245,15 +245,15 @@ function reconciliationFromRow(
     successorGenerationPlanId: row.successor_generation_plan_id,
     secondRecurrenceRetriageId: row.second_recurrence_retriage_id,
     nextGenerationRecurrenceId: row.next_generation_recurrence_id,
-    predecessorNextGenerationReclosureId: row.predecessor_successor_generation_reclosure_id,
-    nextGenerationReclosureRegressionCheckId: row.successor_generation_reclosure_regression_check_id,
+    predecessorNextGenerationReclosureId: row.predecessor_next_generation_reclosure_id,
+    nextGenerationReclosureRegressionCheckId: row.next_generation_reclosure_regression_check_id,
     caseId: row.case_id,
     target: row.target,
     consumerId: row.consumer_id,
     successorGenerationPlanFingerprint: row.successor_generation_plan_fingerprint,
-    sourceNextGenerationRecurrenceFingerprint: row.source_next_generation_next_generation_recurrence_fingerprint,
+    sourceNextGenerationRecurrenceFingerprint: row.source_next_generation_recurrence_fingerprint,
     sourceRegressionFingerprint: row.source_regression_fingerprint,
-    sourceNextGenerationReclosureFingerprint: row.source_successor_generation_reclosure_fingerprint,
+    sourceNextGenerationReclosureFingerprint: row.source_next_generation_reclosure_fingerprint,
     successorGenerationPackageId: row.successor_generation_package_id,
     successorGenerationReplayKey: row.successor_generation_replay_key,
     successorGenerationPackageFingerprint: row.successor_generation_package_fingerprint,
@@ -281,7 +281,7 @@ function reclosureFromRow(
     workspaceName: row.workspace_name,
     role: row.role,
     successorGenerationReclosureId: row.successor_generation_reclosure_id,
-    predecessorNextGenerationReclosureId: row.predecessor_successor_generation_reclosure_id,
+    predecessorNextGenerationReclosureId: row.predecessor_next_generation_reclosure_id,
     nextGenerationRecurrenceId: row.next_generation_recurrence_id,
     secondRecurrenceRetriageId: row.second_recurrence_retriage_id,
     successorGenerationPlanId: row.successor_generation_plan_id,
@@ -289,7 +289,7 @@ function reclosureFromRow(
     successorGenerationReconciliationId: row.successor_generation_reconciliation_id,
     caseId: row.case_id,
     target: row.target,
-    predecessorNextGenerationReclosureFingerprint: row.predecessor_successor_generation_reclosure_fingerprint,
+    predecessorNextGenerationReclosureFingerprint: row.predecessor_next_generation_reclosure_fingerprint,
     nextGenerationRecurrenceFingerprint: row.next_generation_recurrence_fingerprint,
     successorGenerationPlanFingerprint: row.successor_generation_plan_fingerprint,
     successorGenerationPackageFingerprint: row.successor_generation_package_fingerprint,
@@ -349,7 +349,7 @@ export async function listSuccessorGenerationCorrectiveClosureForUser(
     reconciliations,
     reclosures,
     totals: {
-      acceptedNextGenerationDeliveries: accepted.length,
+      acceptedSuccessorGenerationDeliveries: accepted.length,
       neverVerified: accepted.filter(
         (delivery) =>
           !latestByDelivery.has(delivery.workspaceId + ":" + delivery.deliveryId)
@@ -386,14 +386,14 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
       successor_generation_package_id: string;
       successor_generation_replay_key: string;
       successor_generation_package_fingerprint: string;
-      source_next_generation_next_generation_recurrence_fingerprint: string;
+      source_next_generation_recurrence_fingerprint: string;
       source_regression_fingerprint: string;
-      source_successor_generation_reclosure_fingerprint: string;
+      source_next_generation_next_generation_reclosure_fingerprint: string;
       next_generation_recurrence_fingerprint: string;
       regression_fingerprint: string;
-      reclosure_fingerprint: string;
-      predecessor_successor_generation_reclosure_id: string;
-      predecessor_successor_generation_reclosure_fingerprint: string;
+      next_generation_reclosure_fingerprint: string;
+      predecessor_next_generation_reclosure_id: string;
+      predecessor_next_generation_next_generation_reclosure_fingerprint: string;
     }>(
       `select d.successor_generation_plan_id,d.status,c.status as case_status,
               p.status as plan_status,t.status as retriage_status,
@@ -408,11 +408,11 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
               ) as latest_next_generation_recurrence_id,
               d.consumer_id,d.activation_id,d.successor_generation_package_id,
               d.successor_generation_replay_key,d.successor_generation_package_fingerprint,
-              p.source_next_generation_next_generation_recurrence_fingerprint,p.source_regression_fingerprint,
-              p.source_successor_generation_reclosure_fingerprint,
+              p.source_next_generation_recurrence_fingerprint,p.source_regression_fingerprint,
+              p.source_next_generation_reclosure_fingerprint,
               recurrence.next_generation_recurrence_fingerprint,recurrence.regression_fingerprint,
-              recurrence.reclosure_fingerprint,p.reclosure_id as predecessor_successor_generation_reclosure_id,
-              predecessor_reclosure.reclosure_fingerprint as predecessor_successor_generation_reclosure_fingerprint
+              recurrence.next_generation_reclosure_fingerprint,p.next_generation_reclosure_id as predecessor_next_generation_reclosure_id,
+              predecessor_reclosure.next_generation_reclosure_fingerprint as predecessor_next_generation_reclosure_fingerprint
        from app.workspace_successor_generation_corrective_live_deliveries d
        join app.workspace_successor_generation_corrective_delivery_plans p
          on p.workspace_id=d.workspace_id
@@ -425,7 +425,7 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
         and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
        join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
          on predecessor_reclosure.workspace_id=p.workspace_id
-        and predecessor_reclosure.reclosure_id=p.reclosure_id
+        and predecessor_reclosure.reclosure_id=p.next_generation_reclosure_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        where d.workspace_id=$1 and d.delivery_id=$2
@@ -450,10 +450,10 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
     throw new Error("successor_generation_reconciliation_latest_recurrence_required");
   }
   if (
-    row.source_next_generation_next_generation_recurrence_fingerprint !== row.next_generation_recurrence_fingerprint ||
+    row.source_next_generation_recurrence_fingerprint !== row.next_generation_recurrence_fingerprint ||
     row.source_regression_fingerprint !== row.regression_fingerprint ||
-    row.source_successor_generation_reclosure_fingerprint !== row.reclosure_fingerprint ||
-    row.source_successor_generation_reclosure_fingerprint !== row.predecessor_successor_generation_reclosure_fingerprint
+    row.source_next_generation_reclosure_fingerprint !== row.next_generation_reclosure_fingerprint ||
+    row.source_next_generation_reclosure_fingerprint !== row.predecessor_next_generation_reclosure_fingerprint
   ) {
     throw new Error("successor_generation_reconciliation_next_generation_recurrence_identity_changed");
   }
@@ -493,8 +493,8 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
     delivery,
     execution,
     package: execution.successorGenerationPackage,
-    predecessorNextGenerationReclosureId: row.predecessor_successor_generation_reclosure_id,
-    predecessorNextGenerationReclosureFingerprint: row.predecessor_successor_generation_reclosure_fingerprint,
+    predecessorNextGenerationReclosureId: row.predecessor_next_generation_reclosure_id,
+    predecessorNextGenerationReclosureFingerprint: row.predecessor_next_generation_reclosure_fingerprint,
     nextGenerationRecurrenceFingerprint: row.next_generation_recurrence_fingerprint
   };
 }
@@ -537,7 +537,7 @@ export async function recordSuccessorGenerationCorrectiveDeliveryReconciliation(
       latest_next_generation_recurrence_id: string;
       next_generation_recurrence_fingerprint: string;
       regression_fingerprint: string;
-      reclosure_fingerprint: string;
+      next_generation_reclosure_fingerprint: string;
       consumer_id: string;
       plan_fingerprint: string;
       package_id: string;
@@ -556,7 +556,7 @@ export async function recordSuccessorGenerationCorrectiveDeliveryReconciliation(
               ) as latest_next_generation_recurrence_id,
               recurrence.next_generation_recurrence_fingerprint,
               recurrence.regression_fingerprint,
-              recurrence.reclosure_fingerprint,
+              recurrence.next_generation_reclosure_fingerprint,
               d.consumer_id,d.successor_generation_plan_fingerprint as plan_fingerprint,
               d.successor_generation_package_id as package_id,
               d.successor_generation_replay_key as replay_key,
@@ -592,7 +592,7 @@ export async function recordSuccessorGenerationCorrectiveDeliveryReconciliation(
     if (
       row.next_generation_recurrence_fingerprint !== plan.sourceNextGenerationRecurrenceFingerprint ||
       row.regression_fingerprint !== plan.sourceRegressionFingerprint ||
-      row.reclosure_fingerprint !== plan.sourceNextGenerationReclosureFingerprint ||
+      row.next_generation_reclosure_fingerprint !== plan.sourceNextGenerationReclosureFingerprint ||
       row.consumer_id !== delivery.consumerId ||
       row.plan_fingerprint !== plan.planFingerprint ||
       row.package_id !== input.context.package.packageId ||
@@ -607,10 +607,10 @@ export async function recordSuccessorGenerationCorrectiveDeliveryReconciliation(
       `insert into app.workspace_successor_generation_corrective_delivery_reconciliations (
         workspace_id,successor_generation_reconciliation_id,successor_generation_delivery_id,
         activation_id,successor_generation_plan_id,second_recurrence_retriage_id,
-        next_generation_recurrence_id,predecessor_successor_generation_reclosure_id,successor_generation_reclosure_regression_check_id,
+        next_generation_recurrence_id,predecessor_next_generation_reclosure_id,next_generation_reclosure_regression_check_id,
         case_id,target,consumer_id,successor_generation_plan_fingerprint,
-        source_next_generation_next_generation_recurrence_fingerprint,source_regression_fingerprint,
-        source_successor_generation_reclosure_fingerprint,successor_generation_package_id,
+        source_next_generation_recurrence_fingerprint,source_regression_fingerprint,
+        source_next_generation_reclosure_fingerprint,successor_generation_package_id,
         successor_generation_replay_key,successor_generation_package_fingerprint,status,
         expected_record_count,matched_count,mismatched_count,missing_count,
         validation_code,http_status,consumer_verified_at,verification_fingerprint,
@@ -678,7 +678,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
       successor_generation_plan_id: string;
       second_recurrence_retriage_id: string;
       next_generation_recurrence_id: string;
-      predecessor_successor_generation_reclosure_id: string;
+      predecessor_next_generation_reclosure_id: string;
       case_id: string;
       target: IntegrationTarget;
       successor_generation_plan_fingerprint: string;
@@ -691,12 +691,12 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
       case_status: string;
       latest_reconciliation_id: string;
       latest_next_generation_recurrence_id: string;
-      predecessor_successor_generation_reclosure_fingerprint: string;
+      predecessor_next_generation_next_generation_reclosure_fingerprint: string;
       next_generation_recurrence_fingerprint: string;
     }>(
       `select r.successor_generation_reconciliation_id,r.successor_generation_delivery_id,
               r.successor_generation_plan_id,r.second_recurrence_retriage_id,r.next_generation_recurrence_id,
-              r.predecessor_successor_generation_reclosure_id,r.case_id,r.target,
+              r.predecessor_next_generation_reclosure_id,r.case_id,r.target,
               r.successor_generation_plan_fingerprint,
               r.successor_generation_package_fingerprint,r.verification_fingerprint,
               r.status,d.status as delivery_status,p.status as plan_status,
@@ -717,7 +717,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
                 order by newest_recurrence.recurred_at desc,newest_recurrence.next_generation_recurrence_id desc
                 limit 1
               ) as latest_next_generation_recurrence_id,
-              predecessor_reclosure.reclosure_fingerprint as predecessor_successor_generation_reclosure_fingerprint,
+              predecessor_reclosure.next_generation_reclosure_fingerprint as predecessor_next_generation_reclosure_fingerprint,
               recurrence.next_generation_recurrence_fingerprint
        from app.workspace_successor_generation_corrective_delivery_reconciliations r
        join app.workspace_successor_generation_corrective_live_deliveries d
@@ -734,7 +734,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
         and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
        join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
          on predecessor_reclosure.workspace_id=p.workspace_id
-        and predecessor_reclosure.reclosure_id=p.reclosure_id
+        and predecessor_reclosure.reclosure_id=p.next_generation_reclosure_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        where r.workspace_id=$1
@@ -781,13 +781,13 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
     if (existing.rows[0]) return existing.rows[0].successor_generation_reclosure_id;
 
     const reclosureFingerprint = successorGenerationReclosureFingerprint({
-      predecessorNextGenerationReclosureId: row.predecessor_successor_generation_reclosure_id,
+      predecessorNextGenerationReclosureId: row.predecessor_next_generation_reclosure_id,
       nextGenerationRecurrenceId: row.next_generation_recurrence_id,
       secondRecurrenceRetriageId: row.second_recurrence_retriage_id,
       successorGenerationPlanId: row.successor_generation_plan_id,
       successorGenerationDeliveryId: row.successor_generation_delivery_id,
       successorGenerationReconciliationId: row.successor_generation_reconciliation_id,
-      predecessorNextGenerationReclosureFingerprint: row.predecessor_successor_generation_reclosure_fingerprint,
+      predecessorNextGenerationReclosureFingerprint: row.predecessor_next_generation_reclosure_fingerprint,
       nextGenerationRecurrenceFingerprint: row.next_generation_recurrence_fingerprint,
       successorGenerationPlanFingerprint: row.successor_generation_plan_fingerprint,
       successorGenerationPackageFingerprint: row.successor_generation_package_fingerprint,
@@ -798,10 +798,10 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
 
     await client.query(
       `insert into app.workspace_reconciliation_exception_successor_generation_reclosures (
-        workspace_id,successor_generation_reclosure_id,predecessor_successor_generation_reclosure_id,
+        workspace_id,successor_generation_reclosure_id,predecessor_next_generation_reclosure_id,
         next_generation_recurrence_id,second_recurrence_retriage_id,successor_generation_plan_id,
         successor_generation_delivery_id,successor_generation_reconciliation_id,case_id,
-        target,predecessor_successor_generation_reclosure_fingerprint,next_generation_recurrence_fingerprint,
+        target,predecessor_next_generation_reclosure_fingerprint,next_generation_recurrence_fingerprint,
         successor_generation_plan_fingerprint,successor_generation_package_fingerprint,
         verification_fingerprint,successor_generation_reclosure_fingerprint,
         reclosure_note,closed_by,closed_at
@@ -811,7 +811,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
       [
         input.workspaceId,
         successorGenerationReclosureId,
-        row.predecessor_successor_generation_reclosure_id,
+        row.predecessor_next_generation_reclosure_id,
         row.next_generation_recurrence_id,
         row.second_recurrence_retriage_id,
         row.successor_generation_plan_id,
@@ -819,7 +819,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
         row.successor_generation_reconciliation_id,
         row.case_id,
         row.target,
-        row.predecessor_successor_generation_reclosure_fingerprint,
+        row.predecessor_next_generation_reclosure_fingerprint,
         row.next_generation_recurrence_fingerprint,
         row.successor_generation_plan_fingerprint,
         row.successor_generation_package_fingerprint,
