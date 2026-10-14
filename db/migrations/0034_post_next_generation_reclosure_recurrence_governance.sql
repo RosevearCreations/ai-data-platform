@@ -345,3 +345,73 @@ create trigger workspace_next_generation_delivery_recurrence_guard
 before insert or update on app.workspace_next_generation_corrective_live_deliveries
 for each row
 execute function app.require_no_next_generation_recurrence_for_delivery();
+
+create or replace function app.require_verified_corrective_closure()
+returns trigger
+language plpgsql
+as $$
+begin
+  if new.status='closed' and old.status is distinct from 'closed' then
+    if exists (
+      select 1
+      from app.workspace_reconciliation_exception_next_generation_recurrences recurrence2
+      where recurrence2.workspace_id=new.workspace_id
+        and recurrence2.case_id=new.case_id
+    ) then
+      raise exception 'reconciliation_triage_second_generation_reclosure_required';
+    elsif exists (
+      select 1
+      from app.workspace_reconciliation_exception_recurrences recurrence
+      where recurrence.workspace_id=new.workspace_id
+        and recurrence.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1
+        from app.workspace_reconciliation_exception_next_generation_reclosures reclosure
+        where reclosure.workspace_id=new.workspace_id
+          and reclosure.case_id=new.case_id
+          and reclosure.recurrence_id=(
+            select latest_recurrence.recurrence_id
+            from app.workspace_reconciliation_exception_recurrences latest_recurrence
+            where latest_recurrence.workspace_id=new.workspace_id
+              and latest_recurrence.case_id=new.case_id
+            order by latest_recurrence.recurred_at desc,latest_recurrence.recurrence_id desc
+            limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_next_generation_reclosure_required';
+      end if;
+    elsif exists (
+      select 1
+      from app.workspace_reconciliation_exception_reopens reopen
+      where reopen.workspace_id=new.workspace_id
+        and reopen.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1
+        from app.workspace_reconciliation_exception_reclosures reclosure
+        where reclosure.workspace_id=new.workspace_id
+          and reclosure.case_id=new.case_id
+          and reclosure.reopen_id=(
+            select latest_reopen.reopen_id
+            from app.workspace_reconciliation_exception_reopens latest_reopen
+            where latest_reopen.workspace_id=new.workspace_id
+              and latest_reopen.case_id=new.case_id
+            order by latest_reopen.reopened_at desc,latest_reopen.reopen_id desc
+            limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_successor_reclosure_required';
+      end if;
+    elsif not exists (
+      select 1
+      from app.workspace_reconciliation_exception_closures closure
+      where closure.workspace_id=new.workspace_id
+        and closure.case_id=new.case_id
+    ) then
+      raise exception 'reconciliation_triage_verified_closure_required';
+    end if;
+  end if;
+  return new;
+end;
+$$;
