@@ -126,7 +126,7 @@ type ReconciliationRow = QueryResultRow & {
   successor_generation_plan_fingerprint: string;
   source_next_generation_recurrence_fingerprint: string;
   source_regression_fingerprint: string;
-  source_next_generation_next_generation_reclosure_fingerprint: string;
+  source_next_generation_reclosure_fingerprint: string;
   successor_generation_package_id: string;
   successor_generation_replay_key: string;
   successor_generation_package_fingerprint: string;
@@ -388,7 +388,7 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
       successor_generation_package_fingerprint: string;
       source_next_generation_recurrence_fingerprint: string;
       source_regression_fingerprint: string;
-      source_next_generation_next_generation_reclosure_fingerprint: string;
+      source_next_generation_reclosure_fingerprint: string;
       next_generation_recurrence_fingerprint: string;
       regression_fingerprint: string;
       next_generation_reclosure_fingerprint: string;
@@ -425,7 +425,7 @@ export async function loadAcceptedSuccessorGenerationCorrectiveReconciliationCon
         and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
        join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
          on predecessor_reclosure.workspace_id=p.workspace_id
-        and predecessor_reclosure.reclosure_id=p.next_generation_reclosure_id
+        and predecessor_reclosure.next_generation_reclosure_id=p.next_generation_reclosure_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        where d.workspace_id=$1 and d.delivery_id=$2
@@ -734,7 +734,7 @@ export async function closeVerifiedSuccessorGenerationReconciliationException(
         and recurrence.next_generation_recurrence_id=p.next_generation_recurrence_id
        join app.workspace_reconciliation_exception_next_generation_reclosures predecessor_reclosure
          on predecessor_reclosure.workspace_id=p.workspace_id
-        and predecessor_reclosure.reclosure_id=p.next_generation_reclosure_id
+        and predecessor_reclosure.next_generation_reclosure_id=p.next_generation_reclosure_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        where r.workspace_id=$1
