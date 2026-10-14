@@ -2899,3 +2899,14 @@ Production promotion evidence:
 Build 064 is **GREEN on main and production**.
 
 Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning.**
+
+
+## Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning
+
+Implementation branch: `build-065-second-recurrence-successor-generation-planning`.
+
+Added migration `0035_second_recurrence_successor_generation_planning.sql`, second-recurrence planning library/API/workbench, immutable successor-generation plan lineage, Build 061 predecessor-planning freeze guards, manager-only RLS policies, least-privilege mutation grants, single-flight wait controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**

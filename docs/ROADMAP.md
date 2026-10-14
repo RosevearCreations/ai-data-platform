@@ -1612,3 +1612,19 @@ Promotion evidence:
 Build 064 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning.**
+
+
+## Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning
+
+Status: implementation ready for promotion.
+
+Scope:
+- consume the newest governed Build 064 second recurrence without mutating prior generations;
+- create a fresh owner/admin second-recurrence re-triage cycle;
+- derive successor-generation scope only from fields both predecessor-governed and proven recurrent by the exact Build 064 read-back;
+- freeze immutable successor-generation source identities and fingerprints;
+- require explicit plan review before future execution;
+- freeze Build 061 planning after a second recurrence;
+- expose wait/busy controls for create/save/review actions.
+
+Next queued: **Build 066 — Successor-Generation Corrective Delivery Activation & Idempotent Execution.**
