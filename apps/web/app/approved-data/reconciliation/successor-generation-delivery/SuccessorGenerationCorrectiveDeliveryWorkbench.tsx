@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Next-generation delivery request failed."
+        : "Successor-generation delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -102,7 +102,7 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Next-generation activation recorded after a fresh capability check and accepted dry-run."
+        "Successor-generation activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal successor-generation delivery was returned without another send."
-          : "Next-generation corrective delivery completed."
+          : "Successor-generation corrective delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Next-generation activation revoked.");
+      setMessage("Successor-generation activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -173,11 +173,11 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 066 controlled execution</p>
-            <h2>Next-generation delivery readiness</h2>
+            <h2>Successor-generation delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
-          <article><strong>{model.totals.approvedPlans}</strong><span>approved next-gen plans</span></article>
+          <article><strong>{model.totals.approvedPlans}</strong><span>approved successor-gen plans</span></article>
           <article><strong>{model.totals.approvedPlansWithoutActiveActivation}</strong><span>await activation</span></article>
           <article><strong>{model.totals.activeActivations}</strong><span>active windows</span></article>
           <article><strong>{model.totals.acceptedDeliveries}</strong><span>accepted deliveries</span></article>
@@ -244,10 +244,10 @@ export function SuccessorGenerationCorrectiveDeliveryWorkbench({
                   </header>
 
                   <dl className="publicationEvidence">
-                    <div><dt>Next-generation plan</dt><dd>{plan.successorGenerationPlanId}</dd></div>
+                    <div><dt>Successor-generation plan</dt><dd>{plan.successorGenerationPlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceRecurrenceFingerprint}</dd></div>
-                    <div><dt>Predecessor successor delivery</dt><dd>{plan.predecessorSuccessorDeliveryId}</dd></div>
+                    <div><dt>Predecessor next-generation delivery</dt><dd>{plan.predecessorNextGenerationDeliveryId}</dd></div>
                     <div><dt>Predecessor successor package</dt><dd>{plan.sourceSuccessorPackageId}</dd></div>
                     {activation ? (
                       <>
