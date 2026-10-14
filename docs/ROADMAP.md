@@ -1562,7 +1562,7 @@ Next queued: **Build 063 — Next-Generation Corrective Delivery Reconciliation 
 
 ## Build 063 — Next-Generation Corrective Delivery Reconciliation & Re-Closure
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - reconstruct the exact accepted Build 062 package for read-only state verification;
@@ -1573,5 +1573,15 @@ Scope:
 - make the database case-close trigger recurrence-generation aware;
 - preserve owner/admin mutation boundaries and SELECT/INSERT-only evidence ledgers;
 - expose wait/busy controls for verification and re-closure.
+
+Promotion evidence:
+- feature PR #141 merged Build 063 to `dev`;
+- release PR #142 passed Verify #675 on exact `dev` SHA `0eac322b162def599986c2959dcb1628a8b5e4cb`;
+- release merged to `main` at `a71e08049fafcc0a6c25e34d0d27fc5a44e239cf`;
+- production Neon migration `0033_next_generation_corrective_reconciliation_reclosure.sql` is recorded with both Build 063 evidence tables under RLS, four intended policies, SELECT/INSERT-only runtime table grants, and the recurrence-aware case-close trigger;
+- Vercel deployment `dpl_H1VCTnGx6eneUamXoRWPkMCZvxUB` is READY for exact release SHA `a71e08049fafcc0a6c25e34d0d27fc5a44e239cf`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Build 063 application release is therefore **GREEN on main and production**.
 
 Next queued: **Build 064 — Post-Next-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
