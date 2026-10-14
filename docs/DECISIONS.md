@@ -1014,3 +1014,19 @@ Once recurrence evidence exists, the Build 057 reopened re-triage and successor-
 ## D0152 — Planning approval is not delivery authority
 
 Approving a Build 061 next-generation plan changes only planning evidence. External execution requires a later activation/delivery generation with its own capability, dry-run, idempotency and transport controls.
+
+## D0153 — Next-generation correction gets a new transport identity
+
+A Build 061 plan never reuses the Build 058 successor package ID, replay key, activation or delivery row. Build 062 derives a new package identity while retaining the predecessor successor delivery/package only as immutable evidence.
+
+## D0154 — Activation requires fresh capability proof and accepted dry-run
+
+Planning approval alone is not live authority. Build 062 requires a fresh authenticated consumer handshake plus an accepted dry-run of the exact next-generation package before opening a short activation window.
+
+## D0155 — Next-generation live delivery is idempotent and retry-bounded
+
+One canonical delivery row is reserved before transport. Its replay key is the outbound idempotency key. Accepted/rejected results are terminal; transport failures retry with the same key for at most five attempts.
+
+## D0156 — Execution freezes Build 061 planning
+
+Once a Build 062 activation exists, Build 061 recurrence re-triage and next-generation plan rows may no longer be inserted or updated for that case. Execution therefore consumes frozen planning evidence rather than mutable operator state.

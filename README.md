@@ -142,3 +142,9 @@ Operator UI: `/approved-data/reconciliation/post-reclosure-regression`.
 Build 061 consumes immutable Build 060 recurrence evidence and starts a distinct recurrence planning generation. It creates a new re-triage cycle and freezes a next-generation corrective plan only from fields proven recurrent by the latest post-re-closure read-back and values governed by the approved predecessor successor plan. Build 057 planning and the Build 058/059 execution chain remain historical evidence and cannot be reused after recurrence.
 
 Operator UI: `/approved-data/reconciliation/recurrent-planning`.
+
+### Build 062 — Next-Generation Corrective Delivery Activation & Idempotent Execution
+
+Build 062 turns an approved Build 061 next-generation plan into a separate controlled execution generation. It reconstructs the accepted Build 058 successor package only as immutable predecessor evidence, derives a new next-generation package ID/replay key/fingerprint, requires a fresh authenticated live-capability handshake and accepted dry-run, then reserves one durable live-delivery row before transport. Retries reuse the exact replay/idempotency key and stop after five attempts; accepted/rejected results are terminal.
+
+Operator UI: `/approved-data/reconciliation/next-generation-delivery`.

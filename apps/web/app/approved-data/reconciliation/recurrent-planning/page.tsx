@@ -31,6 +31,9 @@ export default async function RecurrentExceptionPlanningPage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-generation-delivery">
+            Next-generation corrective delivery
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-reclosure-regression">
             Post-re-closure recurrence monitoring
           </Link>
