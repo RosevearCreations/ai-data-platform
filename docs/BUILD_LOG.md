@@ -2888,6 +2888,14 @@ Implementation branch: `build-064-post-next-generation-reclosure-recurrence`.
 
 Added migration `0034_post_next_generation_reclosure_recurrence_governance.sql`, post-next-generation monitoring library/API/workbench, immutable monitoring and second-recurrence ledgers, explicit recurrence governance, Build 062/063 freeze triggers, governed-reopen support, fail-closed stale-closure protection, busy/wait mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #145 merged the implementation to `dev`;
+- release PR #146 passed Verify #682 on `dev` SHA `c7bc8868c0d79046dba2a0d32b050adbaf94bc8f`;
+- release `main` SHA: `564902a1218d5a569c8cf7dfd11209a784809c59`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0034_post_next_generation_reclosure_recurrence_governance.sql`;
+- production verification confirmed both Build 064 tables have RLS, all four intended policies exist, runtime table grants are SELECT/INSERT only with no UPDATE/DELETE, governed reopen recognizes the Build 064 recurrence, four Build 062/063 freeze triggers are live, and direct closure after second recurrence fails closed with `reconciliation_triage_second_generation_reclosure_required`;
+- Vercel deployment `dpl_3GmjsFHq1XcD7qRTpsARCzX1fFhR` is READY, sourced from exact SHA `564902a1218d5a569c8cf7dfd11209a784809c59`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 064 is **GREEN on main and production**.
 
 Next queued: **Build 065 — Second-Recurrence Re-Triage & Successor-Generation Corrective Planning.**
