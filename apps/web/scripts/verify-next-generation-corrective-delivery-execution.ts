@@ -28,7 +28,7 @@ const sourceDatasetUpdatedAt = "2026-10-13T19:00:00.000Z";
 const predecessorOperations = [
   {
     action: "update" as const,
-    integrationKey: "record-a",
+    integrationKey: "rosie-competitor::record-a",
     values: { priceMinimumCad: 249, offeringName: "Complete" },
     sourceEvidence: {
       sourceUrl: "https://example.test/record-a",
@@ -37,7 +37,7 @@ const predecessorOperations = [
   },
   {
     action: "create" as const,
-    integrationKey: "record-b",
+    integrationKey: "rosie-competitor::record-b",
     values: { offeringName: "Interior", priceMinimumCad: 195 },
     sourceEvidence: {
       sourceUrl: "https://example.test/record-b",
@@ -85,7 +85,7 @@ const predecessorPackage: IntegrationPackageV1 = {
 
 const correctionScope: CorrectivePlanScopeItem[] = [
   {
-    integrationKey: "record-a",
+    integrationKey: "rosie-competitor::record-a",
     issueStatus: "mismatched" as const,
     proposedAction: "update-existing" as const,
     desiredValues: { priceMinimumCad: 249 },
@@ -94,7 +94,7 @@ const correctionScope: CorrectivePlanScopeItem[] = [
     observedFingerprint: "observed-a"
   },
   {
-    integrationKey: "record-b",
+    integrationKey: "rosie-competitor::record-b",
     issueStatus: "missing" as const,
     proposedAction: "restore-missing" as const,
     desiredValues: { offeringName: "Interior", priceMinimumCad: 195 },
