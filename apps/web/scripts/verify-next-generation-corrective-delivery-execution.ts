@@ -15,6 +15,7 @@ import {
   nextGenerationCorrectivePlanFingerprint,
   type NextGenerationCorrectiveDeliveryPlan
 } from "../lib/recurrent-exception-planning";
+import type { CorrectivePlanScopeItem } from "../lib/reconciliation-exception-triage";
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -82,7 +83,7 @@ const predecessorPackage: IntegrationPackageV1 = {
   operations: predecessorOperations
 };
 
-const correctionScope = [
+const correctionScope: CorrectivePlanScopeItem[] = [
   {
     integrationKey: "record-a",
     issueStatus: "mismatched" as const,
