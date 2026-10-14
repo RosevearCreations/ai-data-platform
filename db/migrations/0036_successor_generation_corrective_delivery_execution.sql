@@ -185,12 +185,12 @@ with check (
       and p.predecessor_next_generation_plan_id=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_plan_id
       and p.predecessor_next_generation_delivery_id=workspace_successor_generation_corrective_delivery_activations.predecessor_next_generation_delivery_id
       and t.status='approved'
-      and recurrence.recurrence_fingerprint=p.source_next_generation_recurrence_fingerprint
+      and recurrence.next_generation_recurrence_fingerprint=p.source_next_generation_recurrence_fingerprint
       and recurrence.regression_fingerprint=p.source_regression_fingerprint
-      and recurrence.reclosure_fingerprint=p.source_next_generation_reclosure_fingerprint
+      and recurrence.next_generation_reclosure_fingerprint=p.source_next_generation_reclosure_fingerprint
       and regression.status='recurred'
       and regression.verification_fingerprint=p.source_regression_fingerprint
-      and reclosure.reclosure_fingerprint=p.source_next_generation_reclosure_fingerprint
+      and reclosure.next_generation_reclosure_fingerprint=p.source_next_generation_reclosure_fingerprint
       and c.status='open'
       and predecessor_plan.status='approved'
       and predecessor_delivery.status='accepted'
