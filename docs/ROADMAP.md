@@ -1696,7 +1696,7 @@ Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Mon
 
 ## Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - independently read back the exact accepted Build 066 package after verified Build 067 successor-generation re-closure;
@@ -1709,5 +1709,15 @@ Scope:
 - fail closed against direct stale re-closure after successor-generation recurrence;
 - keep both new ledgers append-only with RLS and runtime SELECT/INSERT only;
 - preserve single-flight wait/busy controls for verify and recurrence actions.
+
+Promotion evidence:
+- feature PR #158 merged the Build 068 implementation to `dev`;
+- release PR #159 passed Verify #719 on exact `dev` SHA `d4a3412ed86b93e7d47091696819885a598053b0`;
+- release merged to `main` at `cc0a70332c300bffb89856cc545e2387ea9b3a42`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0038_post_successor_generation_reclosure_recurrence_governance.sql`;
+- production verification confirms both Build 068 ledgers are under RLS, all four intended policies exist, all six Build 065–067 freeze triggers are live, governed reopen recognizes the successor-generation recurrence, stale direct closure fails closed with `reconciliation_triage_post_successor_generation_reclosure_required`, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- all new PostgreSQL identifiers were kept within the 63-byte identifier limit before release;
+- Vercel deployment `dpl_74NRMG7YMcuySgfquE3wr4mtdtg6` is READY from exact release SHA `cc0a70332c300bffb89856cc545e2387ea9b3a42`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning.**
