@@ -28,7 +28,7 @@ export default async function SuccessiveGenerationCorrectiveDeliveryPage() {
           Execute an approved Build 073 successive-generation plan through a fresh
           package identity, authenticated capability proof, accepted dry-run,
           short activation window, durable pre-send reservation and bounded
-          same-key retries without reusing the accepted Build 066 package identity.
+          same-key retries without reusing the accepted Build 070 subsequent-generation package identity.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
@@ -36,13 +36,10 @@ export default async function SuccessiveGenerationCorrectiveDeliveryPage() {
             Post-subsequent-generation recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-recurrence-planning">
-            Successor-generation recurrence planning
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-closure">
-            Subsequent-generation reconciliation & re-closure
+            Subsequent-generation recurrence planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-closure">
-            Successor-generation reconciliation & re-closure
+            Subsequent-generation reconciliation & re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
