@@ -16,9 +16,9 @@ create table if not exists app.workspace_subsequent_generation_corrective_delive
   source_successor_generation_reclosure_fingerprint text not null check (char_length(source_successor_generation_reclosure_fingerprint) between 1 and 128),
   predecessor_successor_generation_plan_id uuid not null,
   predecessor_successor_generation_delivery_id uuid not null,
-  predecessor_subsequent_generation_package_id text not null check (char_length(predecessor_subsequent_generation_package_id) between 1 and 512),
-  predecessor_subsequent_generation_replay_key text not null check (char_length(predecessor_subsequent_generation_replay_key) between 1 and 1024),
-  predecessor_subsequent_generation_package_fingerprint text not null check (char_length(predecessor_subsequent_generation_package_fingerprint) between 1 and 128),
+  predecessor_successor_generation_package_id text not null check (char_length(predecessor_successor_generation_package_id) between 1 and 512),
+  predecessor_successor_generation_replay_key text not null check (char_length(predecessor_successor_generation_replay_key) between 1 and 1024),
+  predecessor_successor_generation_package_fingerprint text not null check (char_length(predecessor_successor_generation_package_fingerprint) between 1 and 128),
   subsequent_generation_package_id text not null check (char_length(subsequent_generation_package_id) between 1 and 512),
   subsequent_generation_replay_key text not null check (char_length(subsequent_generation_replay_key) between 1 and 1024),
   subsequent_generation_package_fingerprint text not null check (char_length(subsequent_generation_package_fingerprint) between 1 and 128),
@@ -185,20 +185,20 @@ with check (
       and p.predecessor_successor_generation_plan_id=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_plan_id
       and p.predecessor_successor_generation_delivery_id=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_delivery_id
       and t.status='approved'
-      and recurrence.next_generation_recurrence_fingerprint=p.source_successor_generation_recurrence_fingerprint
+      and recurrence.successor_generation_recurrence_fingerprint=p.source_successor_generation_recurrence_fingerprint
       and recurrence.regression_fingerprint=p.source_regression_fingerprint
-      and recurrence.next_generation_reclosure_fingerprint=p.source_successor_generation_reclosure_fingerprint
+      and recurrence.successor_generation_reclosure_fingerprint=p.source_successor_generation_reclosure_fingerprint
       and regression.status='recurred'
       and regression.verification_fingerprint=p.source_regression_fingerprint
-      and reclosure.next_generation_reclosure_fingerprint=p.source_successor_generation_reclosure_fingerprint
+      and reclosure.successor_generation_reclosure_fingerprint=p.source_successor_generation_reclosure_fingerprint
       and c.status='open'
       and predecessor_plan.status='approved'
       and predecessor_delivery.status='accepted'
       and predecessor_delivery.delivery_id=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_delivery_id
       and predecessor_delivery.consumer_id=workspace_subsequent_generation_corrective_delivery_activations.consumer_id
-      and predecessor_delivery.successor_generation_package_id=workspace_subsequent_generation_corrective_delivery_activations.predecessor_subsequent_generation_package_id
-      and predecessor_delivery.successor_generation_replay_key=workspace_subsequent_generation_corrective_delivery_activations.predecessor_subsequent_generation_replay_key
-      and predecessor_delivery.successor_generation_package_fingerprint=workspace_subsequent_generation_corrective_delivery_activations.predecessor_subsequent_generation_package_fingerprint
+      and predecessor_delivery.successor_generation_package_id=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_package_id
+      and predecessor_delivery.successor_generation_replay_key=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_replay_key
+      and predecessor_delivery.successor_generation_package_fingerprint=workspace_subsequent_generation_corrective_delivery_activations.predecessor_successor_generation_package_fingerprint
       and recurrence.successor_generation_recurrence_id=(
         select newest.successor_generation_recurrence_id
         from app.workspace_reconciliation_successor_generation_recurrences newest
