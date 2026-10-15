@@ -155,7 +155,7 @@ export function PostSubsequentGenerationReclosureWorkbench({
           Build 072 monitors the exact Build 070 package that justified Build 071
           re-closure. Drift never reopens automatically. Only the newest recurrent
           read-back can support an explicit owner/admin recurrence action, and once
-          that action is recorded the current Build 069–067 generation is frozen.
+          that action is recorded the current Build 069–071 generation is frozen.
         </p>
       </section>
 
@@ -184,7 +184,7 @@ export function PostSubsequentGenerationReclosureWorkbench({
                 </header>
 
                 <dl className="publicationEvidence">
-                  <div><dt>Successor-generation re-closure</dt><dd>{reclosure.subsequentGenerationReclosureId}</dd></div>
+                  <div><dt>Subsequent-generation re-closure</dt><dd>{reclosure.subsequentGenerationReclosureId}</dd></div>
                   <div><dt>Re-closure fingerprint</dt><dd>{reclosure.subsequentGenerationReclosureFingerprint}</dd></div>
                   <div><dt>Build 068 recurrence</dt><dd>{reclosure.successorGenerationRecurrenceId}</dd></div>
                   <div><dt>Build 070 delivery</dt><dd>{reclosure.subsequentGenerationDeliveryId}</dd></div>
