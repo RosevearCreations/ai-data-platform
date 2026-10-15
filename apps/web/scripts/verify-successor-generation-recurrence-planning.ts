@@ -113,7 +113,7 @@ try {
 }
 assert(
   rejected,
-  "Build 069 must fail closed when successor-generation recurrent scope is not Build 061 governed."
+  "Build 069 must fail closed when successor-generation recurrent scope is not Build 065 governed."
 );
 
 console.log(
