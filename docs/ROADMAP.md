@@ -1813,7 +1813,7 @@ Next queued: **Build 072 — Post-Subsequent-Generation Re-Closure Regression Mo
 
 ## Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - independently re-read the exact accepted Build 070 package after verified Build 071 subsequent-generation re-closure;
@@ -1827,5 +1827,16 @@ Scope:
 - fail closed against direct stale re-closure after subsequent-generation recurrence;
 - keep both new ledgers append-only with RLS and runtime SELECT/INSERT only;
 - preserve single-flight busy/wait controls for verify and recurrence actions.
+
+Promotion evidence:
+- feature PR #170 merged the Build 072 implementation to `dev`;
+- release PR #171 passed Verify #747 on exact `dev` SHA `5bffc1bdf27f3b8f4045c52784e8297c8b48b168`;
+- release merged to `main` at `d8dcfed20c6b31171434bdc04d5094940b1f18fc`;
+- independent `main` Verify #748 passed on that exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0042_post_subsequent_generation_reclosure_recurrence_governance.sql`;
+- production verification confirms both Build 072 ledgers are under RLS, all four intended policies exist, exact Build 070 package/Build 071 re-closure/Build 068 recurrence gates are active, recurrence governance requires the newest recurrent monitor and newest Build 071 re-closure, governed reopen recognizes every recurrence generation, all six Build 069–071 freeze triggers are live, stale direct closure fails closed with `reconciliation_triage_post_subsequent_generation_reclosure_required`, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_7uzKEDBTFKjFd8cXv2JM9GVgc4Ns` is READY from exact release SHA `d8dcfed20c6b31171434bdc04d5094940b1f18fc`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning.**
