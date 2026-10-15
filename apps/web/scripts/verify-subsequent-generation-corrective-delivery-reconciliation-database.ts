@@ -119,7 +119,7 @@ async function main() {
   );
   assert(
     definition.includes("workspace_reconciliation_successor_generation_recurrences"),
-    "Build 071 close trigger must prioritize the second-recurrence generation."
+    "Build 071 close trigger must prioritize the successor-generation recurrence."
   );
   assert(
     definition.includes("reconciliation_triage_verified_subsequent_generation_reclosure_required"),
@@ -127,7 +127,15 @@ async function main() {
   );
   assert(
     definition.includes("workspace_reconciliation_successor_generation_reclosures"),
-    "Build 071 close trigger must preserve Build 063 successor-generation re-closure behavior."
+    "Build 071 close trigger must preserve Build 067 successor-generation re-closure behavior."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_exception_next_generation_recurrences"),
+    "Build 071 close trigger must preserve Build 064 second-recurrence detection."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_exception_next_generation_reclosures"),
+    "Build 071 close trigger must preserve Build 063 next-generation re-closure fallback."
   );
   assert(
     definition.includes("workspace_reconciliation_exception_recurrences"),
