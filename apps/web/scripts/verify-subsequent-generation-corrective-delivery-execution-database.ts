@@ -148,7 +148,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_subsequent_generation_execution_for_second_recurrence_planning'`
+       and p.proname='require_no_subsequent_execution_for_successor_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
@@ -165,11 +165,11 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_second_recurrence_triage_execution_guard',
+         'workspace_successor_recurrence_triage_execution_guard',
          'workspace_subsequent_generation_plan_execution_guard'
        )`
   );
-  assert(triggers.rows.length === 2, "Build 070 Build-065 freeze triggers must exist.");
+  assert(triggers.rows.length === 2, "Build 070 Build-069 freeze triggers must exist.");
 
   const attemptCheck = await authPool.query<{ definition: string }>(
     `select pg_get_constraintdef(con.oid) as definition
