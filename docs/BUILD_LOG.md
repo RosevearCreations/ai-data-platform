@@ -2959,3 +2959,14 @@ Production promotion evidence:
 Build 067 is **GREEN on main and production**.
 
 Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+
+## Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Implementation branch: `build-068-post-successor-generation-reclosure-governance`.
+
+Added migration `0038_post_successor_generation_reclosure_recurrence_governance.sql`, post-successor-generation monitoring library/API/workbench, immutable stable/recurrent evidence, explicit owner/admin recurrence governance, newest-check/newest-re-closure gates, governed reopen support, Build 065–067 freeze guards, stale direct-close blocking, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning.**

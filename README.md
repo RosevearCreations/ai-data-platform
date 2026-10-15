@@ -181,3 +181,10 @@ Operator UI: `/approved-data/reconciliation/successor-generation-delivery`.
 Build 067 independently reads back an accepted Build 066 successor-generation package and records immutable matched/drift/error evidence. The second-recurrence case may close again only when the newest verification for the exact Build 066 delivery is matched and the delivery/plan still belongs to the newest Build 064 recurrence generation. Re-closure is written to a distinct successor-generation ledger that binds the Build 063 re-closure, Build 064 recurrence, Build 065 plan and Build 066 delivery.
 
 Operator UI: `/approved-data/reconciliation/successor-generation-closure`.
+
+
+### Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 068 independently monitors the exact Build 066 successor-generation package after a verified Build 067 re-closure. Stable and recurrent read-backs are append-only evidence. Drift does not reopen a case automatically: owner/admin recurrence governance requires the newest recurrent check for the newest Build 067 re-closure, a reason and typed confirmation. Once recurrence is recorded, the Build 065–067 generation is frozen and stale/direct closure is blocked until a later corrective generation creates fresh verified closure evidence.
+
+Operator UI: `/approved-data/reconciliation/post-successor-generation-reclosure`.
