@@ -57,10 +57,10 @@ create table if not exists app.workspace_post_successor_generation_reclosure_che
   )
 );
 
-create index if not exists workspace_post_successor_generation_reclosure_checks_recent_idx
+create index if not exists workspace_post_sg_reclosure_checks_recent_idx
   on app.workspace_post_successor_generation_reclosure_checks(workspace_id,created_at desc);
 
-create index if not exists workspace_post_successor_generation_reclosure_checks_reclosure_idx
+create index if not exists workspace_post_sg_reclosure_checks_reclosure_idx
   on app.workspace_post_successor_generation_reclosure_checks(
     workspace_id,successor_generation_reclosure_id,created_at desc,successor_generation_reclosure_regression_check_id desc
   );
