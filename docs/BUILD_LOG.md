@@ -3083,3 +3083,20 @@ Production promotion evidence:
 Build 073 is **GREEN on main and production**.
 
 Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution
+
+Added migration `0044_successive_generation_corrective_delivery_execution.sql`, successive-generation package derivation, authenticated live capability and dry-run activation, durable pre-send reservation, replay-key idempotency, five-attempt retry bounds, terminal accepted/rejected outcomes, independent Build 074 planning freeze guards, API/workbench navigation, and application/database verification.
+
+Production promotion evidence:
+- release PR #176 passed Verify #778 on exact `dev` SHA `a630838f1027bddcc640fe20a7b3933987c552f6`;
+- release `main` SHA: `7b69ee6657abfbfdc90a4f3eb9eaeffae48e1fad`;
+- independent `main` Verify #779 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0044_successive_generation_corrective_delivery_execution.sql`;
+- production verification confirmed two Build 074 RLS tables, six intended policies, two independent Build 074 freeze triggers and recorded migration history while preserving the Build 070 predecessor freeze authority;
+- Vercel deployment `dpl_6AjXLU6qMg4gcwr7Uoqo8dTSFbdr` is READY from exact SHA `7b69ee6657abfbfdc90a4f3eb9eaeffae48e1fad`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 074 is **GREEN on main and production**.
+
+Next queued: **Build 075 — Successive-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
