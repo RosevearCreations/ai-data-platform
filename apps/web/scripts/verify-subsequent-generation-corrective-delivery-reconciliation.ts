@@ -22,14 +22,14 @@ const approvedAt = "2026-10-13T21:30:00.000Z";
 const sourceDatasetUpdatedAt = "2026-10-13T21:00:00.000Z";
 const operations = [{
   action: "update" as const,
-  integrationKey: "rosie-competitor::build-067-fixture",
+  integrationKey: "rosie-competitor::build-071-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
-    sourceUrl: "https://example.test/build-067",
+    sourceUrl: "https://example.test/build-071",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "subsequent-generation-plan:build-067-fixture";
+const batchId = "subsequent-generation-plan:build-071-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
@@ -118,14 +118,14 @@ assert(
 );
 
 const reclosureInput = {
-  predecessorSuccessorGenerationReclosureId: "reclosure-063",
-  successorGenerationRecurrenceId: "recurrence-064",
-  successorGenerationRetriageId: "retriage-065",
-  subsequentGenerationPlanId: "plan-065",
-  subsequentGenerationDeliveryId: "delivery-066",
-  subsequentGenerationReconciliationId: "reconciliation-067",
+  predecessorSuccessorGenerationReclosureId: "reclosure-067",
+  successorGenerationRecurrenceId: "recurrence-068",
+  successorGenerationRetriageId: "retriage-069",
+  subsequentGenerationPlanId: "plan-069",
+  subsequentGenerationDeliveryId: "delivery-070",
+  subsequentGenerationReconciliationId: "reconciliation-071",
   predecessorSuccessorGenerationReclosureFingerprint: "successor-generation-reclosure-fingerprint",
-  successorGenerationRecurrenceFingerprint: "second-recurrence-fingerprint",
+  successorGenerationRecurrenceFingerprint: "successor-generation-recurrence-fingerprint",
   subsequentGenerationPlanFingerprint: "subsequent-generation-plan-fingerprint",
   subsequentGenerationPackageFingerprint: fingerprint,
   verificationFingerprint: matched.verificationFingerprint,
