@@ -1844,7 +1844,7 @@ Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Succes
 
 ## Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - accept only the newest governed Build 072 subsequent-generation recurrence for an open reconciliation case;
@@ -1856,5 +1856,16 @@ Scope:
 - preserve Build 072 predecessor-generation freeze guards while allowing the new Build 073 planning generation;
 - keep table-level runtime grants at SELECT/INSERT with no DELETE;
 - preserve single-flight wait/busy controls for re-triage, plan creation and plan review.
+
+Promotion evidence:
+- feature PR #173 merged the Build 073 implementation to `dev`;
+- release PR #174 passed Verify #754 on exact `dev` SHA `a3fe52885ee5935a92291047a495238fbda99626`;
+- release merged to `main` at `8d0c2a59adbc20797bb0bfb40d25a0351f9fd5ab`;
+- independent `main` Verify #755 passed on that exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0043_subsequent_generation_recurrence_successive_planning.sql`;
+- production verification confirms both Build 073 tables are under RLS, all six intended policies exist, newest Build 072 recurrence and exact Build 072 monitor/Build 071 re-closure lineage are enforced, every successive-generation plan is bound to the approved Build 069 plan plus accepted Build 070 package identity, Build 072 predecessor freeze guards remain active, table-level runtime grants are exactly INSERT/SELECT, UPDATE is limited to the intended re-triage/review columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_8fGui3uxNtZrHjhNmaw1sSY4XPag` is READY from exact release SHA `8d0c2a59adbc20797bb0bfb40d25a0351f9fd5ab`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
