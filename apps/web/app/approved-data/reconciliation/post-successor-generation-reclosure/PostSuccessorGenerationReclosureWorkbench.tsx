@@ -150,7 +150,7 @@ export function PostSuccessorGenerationReclosureWorkbench({
       </section>
 
       <section className="correctiveNotice">
-        <strong>A second verified re-closure can regress again</strong>
+        <strong>A successor-generation verified re-closure can regress again</strong>
         <p>
           Build 068 monitors the exact Build 066 package that justified Build 067
           re-closure. Drift never reopens automatically. Only the newest recurrent
@@ -186,7 +186,7 @@ export function PostSuccessorGenerationReclosureWorkbench({
                 <dl className="publicationEvidence">
                   <div><dt>Successor-generation re-closure</dt><dd>{reclosure.successorGenerationReclosureId}</dd></div>
                   <div><dt>Re-closure fingerprint</dt><dd>{reclosure.successorGenerationReclosureFingerprint}</dd></div>
-                  <div><dt>Build 064 recurrence</dt><dd>{reclosure.recurrenceId}</dd></div>
+                  <div><dt>Build 064 recurrence</dt><dd>{reclosure.nextGenerationRecurrenceId}</dd></div>
                   <div><dt>Build 066 delivery</dt><dd>{reclosure.successorGenerationDeliveryId}</dd></div>
                   {check ? (
                     <>
@@ -198,7 +198,7 @@ export function PostSuccessorGenerationReclosureWorkbench({
                   {recurrence ? (
                     <>
                       <div><dt>Build 068 recurrence</dt><dd>{recurrence.successorGenerationRecurrenceId}</dd></div>
-                      <div><dt>Recurrence fingerprint</dt><dd>{recurrence.nextGenerationRecurrenceFingerprint}</dd></div>
+                      <div><dt>Recurrence fingerprint</dt><dd>{recurrence.successorGenerationRecurrenceFingerprint}</dd></div>
                     </>
                   ) : null}
                 </dl>
