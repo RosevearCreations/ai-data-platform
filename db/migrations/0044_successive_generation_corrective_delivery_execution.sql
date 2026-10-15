@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_subsequent_execution_for_successor_recurrence()
+create or replace function app.require_no_successive_execution_for_subsequent_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -367,22 +367,22 @@ begin
     where activation.workspace_id=new.workspace_id
       and activation.case_id=new.case_id
   ) then
-    raise exception 'successive_generation_execution_freezes_successor_recurrence_planning';
+    raise exception 'successive_generation_execution_freezes_subsequent_recurrence_planning';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists workspace_successor_recurrence_triage_execution_guard
+drop trigger if exists workspace_subsequent_retriage_successive_exec_guard
   on app.workspace_subsequent_generation_recurrence_triage_cycles;
-create trigger workspace_successor_recurrence_triage_execution_guard
+create trigger workspace_subsequent_retriage_successive_exec_guard
 before insert or update on app.workspace_subsequent_generation_recurrence_triage_cycles
 for each row
-execute function app.require_no_subsequent_execution_for_successor_recurrence();
+execute function app.require_no_successive_execution_for_subsequent_recurrence();
 
-drop trigger if exists workspace_successive_generation_plan_execution_guard
+drop trigger if exists workspace_successive_plan_execution_guard
   on app.workspace_successive_generation_corrective_delivery_plans;
-create trigger workspace_successive_generation_plan_execution_guard
+create trigger workspace_successive_plan_execution_guard
 before insert or update on app.workspace_successive_generation_corrective_delivery_plans
 for each row
-execute function app.require_no_subsequent_execution_for_successor_recurrence();
+execute function app.require_no_successive_execution_for_subsequent_recurrence();
