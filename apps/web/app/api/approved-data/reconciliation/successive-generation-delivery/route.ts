@@ -131,7 +131,7 @@ function deliveryEnvelope(
     dryRun,
     package: context.successiveGenerationPackage,
     correctiveContext: {
-      build: 70,
+      build: 74,
       purpose: "successive-generation-corrective-delivery",
       successiveGenerationPlanId: context.plan.successiveGenerationPlanId,
       successiveGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -239,7 +239,7 @@ export async function POST(request: Request) {
         validationCode: "successive-generation-live-capability-valid",
         httpStatus: handshakeResponse.status,
         details: {
-          build: 70,
+          build: 74,
           purpose: "successive-generation-corrective-delivery",
           successiveGenerationPlanId,
           successiveGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -263,7 +263,7 @@ export async function POST(request: Request) {
         fingerprint: context.successiveGenerationPackage.fingerprint,
         validationCode: "successive-generation-dry-run-attempted",
         details: {
-          build: 70,
+          build: 74,
           dryRun: true,
           successiveGenerationPlanId,
           successiveGenerationPlanFingerprint: context.plan.planFingerprint
@@ -302,7 +302,7 @@ export async function POST(request: Request) {
         validationCode: acknowledgement.code,
         httpStatus: dryRunResponse.status,
         details: {
-          build: 70,
+          build: 74,
           dryRun: true,
           successiveGenerationPlanId,
           successiveGenerationPlanFingerprint: context.plan.planFingerprint
@@ -358,7 +358,7 @@ export async function POST(request: Request) {
         fingerprint: context.successiveGenerationPackage.fingerprint,
         validationCode: code.slice(0,96),
         details: {
-          build: 70,
+          build: 74,
           purpose: "successive-generation-corrective-delivery",
           successiveGenerationPlanId
         }
@@ -425,7 +425,7 @@ export async function POST(request: Request) {
       validationCode: "successive-generation-live-capability-revalidated",
       httpStatus: response.status,
       details: {
-        build: 70,
+        build: 74,
         successiveGenerationPlanId,
         activationId: activation.activationId,
         activationFingerprint: activation.activationFingerprint,
@@ -450,7 +450,7 @@ export async function POST(request: Request) {
       fingerprint: context.successiveGenerationPackage.fingerprint,
       validationCode: code.slice(0,96),
       details: {
-        build: 70,
+        build: 74,
         successiveGenerationPlanId,
         activationId: activation.activationId
       }
@@ -507,7 +507,7 @@ export async function POST(request: Request) {
         ? "successive-generation-live-retry-attempted"
         : "successive-generation-live-attempted",
     details: {
-      build: 70,
+      build: 74,
       dryRun: false,
       successiveGenerationPlanId,
       successiveGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -564,7 +564,7 @@ export async function POST(request: Request) {
       validationCode: acknowledgement.code,
       httpStatus: response.status,
       details: {
-        build: 70,
+        build: 74,
         dryRun: false,
         successiveGenerationPlanId,
         successiveGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -619,7 +619,7 @@ export async function POST(request: Request) {
       fingerprint: context.successiveGenerationPackage.fingerprint,
       validationCode: code.slice(0,96),
       details: {
-        build: 70,
+        build: 74,
         dryRun: false,
         successiveGenerationPlanId,
         activationId: activation.activationId,
