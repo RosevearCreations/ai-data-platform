@@ -201,7 +201,7 @@ async function requireManager(client: PoolClient, workspaceId: string) {
 }
 
 export function subsequentGenerationReclosureConfirmation(target: IntegrationTarget) {
-  return "RE-CLOSE SUCCESSOR-GENERATION " + target.toUpperCase() + " EXCEPTION";
+  return "RE-CLOSE SUBSEQUENT-GENERATION " + target.toUpperCase() + " EXCEPTION";
 }
 
 export function subsequentGenerationReconciliationErrorFingerprint(input: {
