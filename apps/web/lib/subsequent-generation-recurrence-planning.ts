@@ -9,7 +9,7 @@ import {
   type PostSubsequentGenerationReclosureModel
 } from "./post-subsequent-generation-reclosure-regression";
 import {
-  buildSuccessorGenerationCorrectivePlanScope
+  buildNextGenerationCorrectivePlanScope
 } from "./recurrent-exception-planning";
 import type {
   CorrectivePlanScopeItem,
@@ -211,7 +211,7 @@ export function buildSuccessiveGenerationCorrectivePlanScope(
   predecessorScope: CorrectivePlanScopeItem[],
   recordResults: ReconciliationRecordResult[]
 ) {
-  return buildSuccessorGenerationCorrectivePlanScope(predecessorScope, recordResults);
+  return buildNextGenerationCorrectivePlanScope(predecessorScope, recordResults);
 }
 
 export function successiveGenerationCorrectivePlanFingerprint(input: {
