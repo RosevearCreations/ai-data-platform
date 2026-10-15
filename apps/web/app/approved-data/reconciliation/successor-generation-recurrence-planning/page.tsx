@@ -13,7 +13,7 @@ export default async function SuccessorGenerationRecurrencePlanningPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     redirect(
-      "/sign-in?callbackUrl=%2Fapproved-data%2Freconciliation%2Fsecond-recurrence-planning"
+      "/sign-in?callbackUrl=%2Fapproved-data%2Freconciliation%2Fsuccessor-generation-recurrence-planning"
     );
   }
 
