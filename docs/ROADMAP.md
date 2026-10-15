@@ -1784,7 +1784,7 @@ Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconcili
 
 ## Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - independently reconstruct the exact accepted Build 070 subsequent-generation package for read-only state verification;
@@ -1796,5 +1796,16 @@ Scope:
 - update `app.require_verified_corrective_closure()` so Build 068 recurrence requires Build 071 re-closure while preserving Build 067, Build 063 and earlier closure fallbacks;
 - preserve owner/admin mutation boundaries and SELECT/INSERT-only immutable evidence ledgers with no UPDATE/DELETE;
 - preserve single-flight wait/busy controls for verification and re-closure.
+
+Promotion evidence:
+- feature PR #167 merged the Build 071 implementation to `dev`;
+- release PR #168 passed Verify #740 on exact `dev` SHA `2e274b57174e7a166727b10fa88a0669dcaa7619`;
+- release merged to `main` at `161d2e97636424673ea7c36c31d9757f094581fc`;
+- independent `main` Verify #741 passed on that exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0041_subsequent_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirms both Build 071 ledgers are under RLS, all four intended policies exist, exact Build 070 package/current Build 068 recurrence and predecessor Build 067 re-closure gates are active, re-closure requires the newest matched verification and newest successor-generation recurrence, `app.require_verified_corrective_closure()` requires Build 071 evidence while preserving Build 067/063 and earlier fallbacks, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_FxaYNHNaagfNt5o9E3JwypJ3VExc` is READY from exact release SHA `161d2e97636424673ea7c36c31d9757f094581fc`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
