@@ -3028,6 +3028,16 @@ Implementation branch: `build-071-subsequent-generation-reconciliation-reclosure
 
 Added migration `0041_subsequent_generation_corrective_reconciliation_reclosure.sql`, subsequent-generation reconciliation library/API/workbench, immutable Build 070 read-back evidence, newest-verification/newest-successor-generation-recurrence re-closure gates, a distinct subsequent-generation re-closure ledger, strengthened generation-aware case-close guard preserving older fallbacks, compatibility verification for the Build 068 fail-closed rule, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #167 merged the Build 071 implementation to `dev`;
+- release PR #168 passed Verify #740 on exact `dev` SHA `2e274b57174e7a166727b10fa88a0669dcaa7619`, including migration 0041, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `161d2e97636424673ea7c36c31d9757f094581fc`;
+- independent `main` Verify #741 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0041_subsequent_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirmed both Build 071 ledgers have RLS, all four intended policies exist, exact Build 070 package/current Build 068 recurrence/predecessor Build 067 re-closure gates are active, re-closure requires the newest matched verification and newest recurrence, the generation-aware case-close guard requires Build 071 evidence while preserving older fallbacks, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_FxaYNHNaagfNt5o9E3JwypJ3VExc` is READY, sourced from exact SHA `161d2e97636424673ea7c36c31d9757f094581fc`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 071 is **GREEN on main and production**.
 
 Next queued: **Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
