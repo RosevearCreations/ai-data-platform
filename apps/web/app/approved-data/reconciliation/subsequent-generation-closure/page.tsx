@@ -37,6 +37,9 @@ export default async function SubsequentGenerationCorrectiveClosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-delivery">
             Subsequent-generation delivery
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-subsequent-generation-reclosure">
+            Post-subsequent-generation recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-recurrence-planning">
             Successor-generation recurrence planning
           </Link>
