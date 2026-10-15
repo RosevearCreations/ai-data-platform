@@ -25,7 +25,7 @@ import {
 } from "./subsequent-generation-recurrence-planning";
 import {
   loadApprovedSubsequentGenerationCorrectivePlanContext
-} from "./successive-generation-corrective-delivery-execution";
+} from "./subsequent-generation-corrective-delivery-execution";
 
 type WorkspaceRole = "owner" | "admin" | "member";
 type JsonRecord = Record<string, unknown>;
@@ -237,11 +237,11 @@ async function requireManager(client: PoolClient, workspaceId: string) {
 }
 
 export function successiveGenerationActivationConfirmation(target: IntegrationTarget) {
-  return "ACTIVATE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
+  return "ACTIVATE " + target.toUpperCase() + " SUCCESSIVE-GENERATION CORRECTIVE";
 }
 
 export function successiveGenerationExecutionConfirmation(target: IntegrationTarget) {
-  return "EXECUTE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
+  return "EXECUTE " + target.toUpperCase() + " SUCCESSIVE-GENERATION CORRECTIVE";
 }
 
 export function successiveGenerationActivationFingerprint(input: {
