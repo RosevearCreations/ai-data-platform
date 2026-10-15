@@ -1725,7 +1725,7 @@ Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequ
 
 ## Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - consume only the newest governed Build 068 successor-generation recurrence for an open case;
@@ -1737,5 +1737,15 @@ Scope:
 - preserve Build 068 predecessor-planning freeze guards;
 - keep table-level runtime grants at SELECT/INSERT with UPDATE limited to intended re-triage and review columns and no DELETE;
 - preserve single-flight busy/wait controls for create, save and review actions.
+
+Promotion evidence:
+- feature PR #161 merged the Build 069 implementation to `dev`;
+- release PR #162 passed Verify #726 on exact `dev` SHA `e09640fa4ce14ea91266db8f99933d4a1f6490e4`;
+- release merged to `main` at `5d670061383fb9f1114a3e7375f31e6045ee9ca5`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0039_successor_generation_recurrence_subsequent_planning.sql`;
+- production verification confirms both Build 069 tables are under RLS, all six intended policies exist, the exact Build 068 recurrence/Build 067 re-closure gate and exact Build 065/066 predecessor package gate are active, predecessor planning freeze guards remain live, runtime table grants are exactly INSERT/SELECT, UPDATE remains restricted to the intended re-triage/review columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_7jUCja29CfGHei1s32DHtF7XrfcW` is READY from exact release SHA `5d670061383fb9f1114a3e7375f31e6045ee9ca5`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution.**

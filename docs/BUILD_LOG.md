@@ -2987,6 +2987,15 @@ Implementation branch: `build-069-successor-recurrence-subsequent-planning`.
 
 Added migration `0039_successor_generation_recurrence_subsequent_planning.sql`, successor-generation recurrence re-triage library/API/workbench, deterministic subsequent-generation scope and plan fingerprints, newest-recurrence gates, exact Build 065/066 predecessor plan/delivery/package binding, Build 067 re-closure and Build 068 recurrence evidence binding, narrow review/re-triage UPDATE grants, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #161 merged the Build 069 implementation to `dev`;
+- release PR #162 passed Verify #726 on exact `dev` SHA `e09640fa4ce14ea91266db8f99933d4a1f6490e4`, including migration 0039, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `5d670061383fb9f1114a3e7375f31e6045ee9ca5`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0039_successor_generation_recurrence_subsequent_planning.sql`;
+- production verification confirmed both Build 069 tables have RLS, all six intended policies exist, exact Build 068 recurrence/Build 067 re-closure and Build 065/066 predecessor package gates are active, both predecessor-planning freeze triggers remain active, table-level runtime grants are exactly INSERT/SELECT, UPDATE is limited to the intended re-triage/review columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_7jUCja29CfGHei1s32DHtF7XrfcW` is READY, sourced from exact SHA `5d670061383fb9f1114a3e7375f31e6045ee9ca5`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 069 is **GREEN on main and production**.
 
 Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution.**
