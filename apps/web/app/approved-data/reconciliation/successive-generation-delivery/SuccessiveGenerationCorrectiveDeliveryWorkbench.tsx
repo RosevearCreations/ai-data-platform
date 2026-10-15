@@ -10,11 +10,11 @@ import type {
 import type { SuccessiveGenerationCorrectiveDeliveryPlan } from "@/lib/subsequent-generation-recurrence-planning";
 
 function activationPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
-  return "ACTIVATE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
+  return "ACTIVATE " + target.toUpperCase() + " SUCCESSIVE-GENERATION CORRECTIVE";
 }
 
 function executionPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
-  return "EXECUTE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
+  return "EXECUTE " + target.toUpperCase() + " SUCCESSIVE-GENERATION CORRECTIVE";
 }
 
 async function api(
@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Subsequent-generation delivery request failed."
+        : "Successive-generation delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -248,7 +248,7 @@ export function SuccessiveGenerationCorrectiveDeliveryWorkbench({
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceSubsequentGenerationRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor subsequent-generation delivery</dt><dd>{plan.predecessorSubsequentGenerationDeliveryId}</dd></div>
-                    <div><dt>Predecessor successor package</dt><dd>{plan.sourceSubsequentGenerationPackageId}</dd></div>
+                    <div><dt>Predecessor subsequent-generation package</dt><dd>{plan.sourceSubsequentGenerationPackageId}</dd></div>
                     {activation ? (
                       <>
                         <div><dt>Activation</dt><dd>{activation.activationId}</dd></div>
