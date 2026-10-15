@@ -2967,6 +2967,15 @@ Implementation branch: `build-068-post-successor-generation-reclosure-governance
 
 Added migration `0038_post_successor_generation_reclosure_recurrence_governance.sql`, post-successor-generation monitoring library/API/workbench, immutable stable/recurrent evidence, explicit owner/admin recurrence governance, newest-check/newest-re-closure gates, governed reopen support, Build 065–067 freeze guards, stale direct-close blocking, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #158 merged the Build 068 implementation to `dev`;
+- release PR #159 passed Verify #719 on exact `dev` SHA `d4a3412ed86b93e7d47091696819885a598053b0`, including migration 0038, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `cc0a70332c300bffb89856cc545e2387ea9b3a42`;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0038_post_successor_generation_reclosure_recurrence_governance.sql`;
+- production verification confirmed both Build 068 evidence ledgers have RLS, all four intended policies exist, all six successor-generation freeze triggers are live, governed reopen recognizes the Build 068 recurrence, stale direct closure is blocked by `reconciliation_triage_post_successor_generation_reclosure_required`, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- the Build 068 identifier audit caught and shortened an overlong index name before CI/release, so all new PostgreSQL identifiers are within the 63-byte limit;
+- Vercel deployment `dpl_74NRMG7YMcuySgfquE3wr4mtdtg6` is READY, sourced from exact SHA `cc0a70332c300bffb89856cc545e2387ea9b3a42`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 068 is **GREEN on main and production**.
 
 Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning.**
