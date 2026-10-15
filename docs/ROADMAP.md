@@ -1840,3 +1840,21 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning.**
+
+
+## Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning
+
+Status: implementation ready for promotion.
+
+Scope:
+- accept only the newest governed Build 072 subsequent-generation recurrence for an open reconciliation case;
+- create one RLS-scoped owner/admin re-triage cycle per subsequent-generation recurrence;
+- bind re-triage to the exact Build 072 recurrent monitor, Build 071 re-closure and predecessor Build 068 recurrence identities;
+- derive a deterministic successive-generation corrective scope only from records/fields that remain recurrent in the newest Build 072 read-back and were already governed by the approved Build 069 predecessor plan;
+- bind every successive-generation plan to the exact approved Build 069 predecessor plan, accepted Build 070 delivery, consumer package id, replay key and package fingerprint;
+- require explicit plan review and keep re-triage/review UPDATE grants restricted to intended columns only;
+- preserve Build 072 predecessor-generation freeze guards while allowing the new Build 073 planning generation;
+- keep table-level runtime grants at SELECT/INSERT with no DELETE;
+- preserve single-flight wait/busy controls for re-triage, plan creation and plan review.
+
+Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
