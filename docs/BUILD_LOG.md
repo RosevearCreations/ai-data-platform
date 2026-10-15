@@ -3007,6 +3007,16 @@ Implementation branch: `build-070-subsequent-generation-delivery-execution`.
 
 Added migration `0040_subsequent_generation_corrective_delivery_execution.sql`, subsequent-generation execution library/API/workbench, deterministic fresh package derivation from exact Build 066 predecessor evidence, fresh live handshake/dry-run activation, durable pre-send reservation, bounded same-key retries, terminal accepted/rejected delivery outcomes, Build 069 planning freeze guards, least-privilege RLS policies/grants, single-flight wait controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #164 merged the Build 070 implementation to `dev`;
+- release PR #165 passed Verify #733 on exact `dev` SHA `fecf03e5d44853f5444b6a00d687a107adab9709`, including migration 0040, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `e033b03efc4964a95fbbadeb2282722f0b6ad8cc`;
+- independent `main` Verify #734 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0040_subsequent_generation_corrective_delivery_execution.sql`;
+- production verification confirmed both Build 070 tables have RLS, all six intended policies exist, exact predecessor package/idempotency gates and both Build 069 planning freeze triggers are active, retry attempts are database-bounded to five, table-level runtime grants are exactly INSERT/SELECT, UPDATE is limited to intended activation/delivery columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_3P4HtzjePzavNdQdqCX5Bc1JyXZD` is READY, sourced from exact SHA `e033b03efc4964a95fbbadeb2282722f0b6ad8cc`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 070 is **GREEN on main and production**.
 
 Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure.**
