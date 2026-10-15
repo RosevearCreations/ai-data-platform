@@ -45,7 +45,7 @@ const predecessorOperations = [
     }
   }
 ];
-const predecessorBatchId = "successor-plan:predecessor";
+const predecessorBatchId = "subsequent-generation-plan:predecessor";
 const predecessorFingerprint = integrationFingerprint({
   target,
   adapterContract: contract.adapterContract,
@@ -197,12 +197,12 @@ assert(
 );
 assert(
   successiveGenerationActivationConfirmation(target) ===
-    "ACTIVATE ROSIE-DAZZLERS SUBSEQUENT-GENERATION CORRECTIVE",
+    "ACTIVATE ROSIE-DAZZLERS SUCCESSIVE-GENERATION CORRECTIVE",
   "Build 074 activation confirmation changed unexpectedly."
 );
 assert(
   successiveGenerationExecutionConfirmation(target) ===
-    "EXECUTE ROSIE-DAZZLERS SUBSEQUENT-GENERATION CORRECTIVE",
+    "EXECUTE ROSIE-DAZZLERS SUCCESSIVE-GENERATION CORRECTIVE",
   "Build 074 execution confirmation changed unexpectedly."
 );
 
@@ -230,7 +230,7 @@ try {
 }
 assert(
   rejected,
-  "Build 074 must reject desired values not frozen in predecessor successor evidence."
+  "Build 074 must reject desired values not frozen in predecessor subsequent-generation evidence."
 );
 
 console.log("Build 074 successive-generation corrective delivery verification passed.");
