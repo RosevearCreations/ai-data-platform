@@ -10,11 +10,11 @@ import type {
 import type { SubsequentGenerationCorrectiveDeliveryPlan } from "@/lib/successor-generation-recurrence-planning";
 
 function activationPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
-  return "ACTIVATE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
+  return "ACTIVATE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
 }
 
 function executionPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
-  return "EXECUTE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
+  return "EXECUTE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
 }
 
 async function api(
@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Successor-generation delivery request failed."
+        : "Subsequent-generation delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -102,7 +102,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Successor-generation activation recorded after a fresh capability check and accepted dry-run."
+        "Subsequent-generation activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal subsequent-generation delivery was returned without another send."
-          : "Successor-generation corrective delivery completed."
+          : "Subsequent-generation corrective delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Successor-generation activation revoked.");
+      setMessage("Subsequent-generation activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -173,11 +173,11 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 070 controlled execution</p>
-            <h2>Successor-generation delivery readiness</h2>
+            <h2>Subsequent-generation delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
-          <article><strong>{model.totals.approvedPlans}</strong><span>approved successor-gen plans</span></article>
+          <article><strong>{model.totals.approvedPlans}</strong><span>approved subsequent-gen plans</span></article>
           <article><strong>{model.totals.approvedPlansWithoutActiveActivation}</strong><span>await activation</span></article>
           <article><strong>{model.totals.activeActivations}</strong><span>active windows</span></article>
           <article><strong>{model.totals.acceptedDeliveries}</strong><span>accepted deliveries</span></article>
@@ -188,7 +188,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
       <section className="correctiveNotice">
         <strong>Approval is not delivery authority</strong>
         <p>
-          Build 070 derives a fresh package identity from the approved Build 061
+          Build 070 derives a fresh package identity from the approved Build 069
           plan, performs a fresh authenticated consumer capability check and
           accepted dry-run before opening a short activation window, then reserves
           one durable delivery before any live request. Retries reuse the exact
@@ -201,7 +201,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
 
       <section className="correctiveSection">
         <div className="sectionHeading">
-          <div><p className="eyebrow">Approved Build 061 plans</p><h2>Activate & execute</h2></div>
+          <div><p className="eyebrow">Approved Build 069 plans</p><h2>Activate & execute</h2></div>
         </div>
         <div className="publicationList">
           {model.planning.plans
@@ -244,7 +244,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
                   </header>
 
                   <dl className="publicationEvidence">
-                    <div><dt>Successor-generation plan</dt><dd>{plan.subsequentGenerationPlanId}</dd></div>
+                    <div><dt>Subsequent-generation plan</dt><dd>{plan.subsequentGenerationPlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceSuccessorGenerationRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor successor-generation delivery</dt><dd>{plan.predecessorSuccessorGenerationDeliveryId}</dd></div>
@@ -340,7 +340,7 @@ export function SubsequentGenerationCorrectiveDeliveryWorkbench({
             })}
           {!model.planning.plans.some((plan) => plan.status === "approved") ? (
             <div className="emptyState">
-              No approved Build 061 subsequent-generation corrective plan is ready for execution.
+              No approved Build 069 subsequent-generation corrective plan is ready for execution.
             </div>
           ) : null}
         </div>
