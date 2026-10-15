@@ -2979,3 +2979,14 @@ Production promotion evidence:
 Build 068 is **GREEN on main and production**.
 
 Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning.**
+
+
+## Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning
+
+Implementation branch: `build-069-successor-recurrence-subsequent-planning`.
+
+Added migration `0039_successor_generation_recurrence_subsequent_planning.sql`, successor-generation recurrence re-triage library/API/workbench, deterministic subsequent-generation scope and plan fingerprints, newest-recurrence gates, exact Build 065/066 predecessor plan/delivery/package binding, Build 067 re-closure and Build 068 recurrence evidence binding, narrow review/re-triage UPDATE grants, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution.**

@@ -188,3 +188,10 @@ Operator UI: `/approved-data/reconciliation/successor-generation-closure`.
 Build 068 independently monitors the exact Build 066 successor-generation package after a verified Build 067 re-closure. Stable and recurrent read-backs are append-only evidence. Drift does not reopen a case automatically: owner/admin recurrence governance requires the newest recurrent check for the newest Build 067 re-closure, a reason and typed confirmation. Once recurrence is recorded, the Build 065–067 generation is frozen and stale/direct closure is blocked until a later corrective generation creates fresh verified closure evidence.
 
 Operator UI: `/approved-data/reconciliation/post-successor-generation-reclosure`.
+
+
+### Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning
+
+Build 069 consumes the newest governed Build 068 successor-generation recurrence and starts a distinct subsequent-generation decision cycle. It re-triages only current recurrence evidence, narrows correction scope to fields still recurrent in the exact Build 068 read-back and already governed by the approved Build 065 plan, and freezes an independently reviewable subsequent-generation corrective plan bound to the exact accepted Build 066 package and Build 067 re-closure lineage.
+
+Operator UI: `/approved-data/reconciliation/successor-generation-recurrence-planning`.

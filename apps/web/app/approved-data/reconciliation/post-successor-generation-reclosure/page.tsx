@@ -33,6 +33,9 @@ export default async function PostSuccessorGenerationReclosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-closure">
             Successor-generation reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-recurrence-planning">
+            Successor-generation recurrence planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/second-recurrence-planning">
             Second-recurrence planning
           </Link>
