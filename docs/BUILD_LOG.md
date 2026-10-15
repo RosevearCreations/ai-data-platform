@@ -3020,3 +3020,14 @@ Production promotion evidence:
 Build 070 is **GREEN on main and production**.
 
 Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+
+## Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Implementation branch: `build-071-subsequent-generation-reconciliation-reclosure`.
+
+Added migration `0041_subsequent_generation_corrective_reconciliation_reclosure.sql`, subsequent-generation reconciliation library/API/workbench, immutable Build 070 read-back evidence, newest-verification/newest-successor-generation-recurrence re-closure gates, a distinct subsequent-generation re-closure ledger, strengthened generation-aware case-close guard preserving older fallbacks, compatibility verification for the Build 068 fail-closed rule, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
