@@ -232,7 +232,7 @@ export async function listPostSuccessorGenerationReclosureForUser(
   const data = await withUserDatabase(userId, async (client) => {
     const checks = await client.query<CheckRow>(
       `select x.*,w.name as workspace_name,wm.role
-       from app.workspace_post_successor_generation_reclosure_regression_checks x
+       from app.workspace_post_successor_generation_reclosure_checks x
        join app.workspaces w on w.id=x.workspace_id
        join app.workspace_members wm on wm.workspace_id=x.workspace_id
         and wm.user_id=nullif(current_setting('app.user_id',true),'')
@@ -413,7 +413,7 @@ export async function recordPostSuccessorGenerationReclosureCheck(
 
     const id=randomUUID();
     await client.query(
-      `insert into app.workspace_post_successor_generation_reclosure_regression_checks (
+      `insert into app.workspace_post_successor_generation_reclosure_checks (
         workspace_id,successor_generation_reclosure_regression_check_id,
         successor_generation_reclosure_id,predecessor_next_generation_reclosure_id,next_generation_recurrence_id,case_id,
         successor_generation_plan_id,successor_generation_delivery_id,target,consumer_id,
@@ -453,7 +453,7 @@ export async function recurSuccessorGenerationReclosedException(
   }
 ) {
   const reason=input.recurrenceReason.trim().slice(0,8000);
-  if(!reason) throw new Error("post_next_generation_recurrence_reason_required");
+  if(!reason) throw new Error("post_successor_generation_recurrence_reason_required");
   return withUserDatabase(userId,async(client)=>{
     await requireManager(client,input.workspaceId);
     const existing=await client.query<{successor_generation_recurrence_id:string}>(
@@ -478,7 +478,7 @@ export async function recurSuccessorGenerationReclosedException(
               c.status as case_status,
               (
                 select newest.successor_generation_reclosure_regression_check_id
-                from app.workspace_post_successor_generation_reclosure_regression_checks newest
+                from app.workspace_post_successor_generation_reclosure_checks newest
                 where newest.workspace_id=x.workspace_id
                   and newest.successor_generation_reclosure_id=x.successor_generation_reclosure_id
                 order by newest.created_at desc,newest.successor_generation_reclosure_regression_check_id desc limit 1
@@ -489,7 +489,7 @@ export async function recurSuccessorGenerationReclosedException(
                 where newest.workspace_id=x.workspace_id and newest.case_id=x.case_id
                 order by newest.closed_at desc,newest.successor_generation_reclosure_id desc limit 1
               ) as latest_reclosure_id
-       from app.workspace_post_successor_generation_reclosure_regression_checks x
+       from app.workspace_post_successor_generation_reclosure_checks x
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=x.workspace_id and c.case_id=x.case_id
        where x.workspace_id=$1 and x.successor_generation_reclosure_id=$2
@@ -497,12 +497,12 @@ export async function recurSuccessorGenerationReclosedException(
       [input.workspaceId,input.successorGenerationReclosureId,input.successorGenerationReclosureRegressionCheckId]
     );
     const row=result.rows[0];
-    if(!row) throw new Error("post_next_generation_recurrence_check_not_found");
+    if(!row) throw new Error("post_successor_generation_recurrence_check_not_found");
     if(row.status!=="recurred" || row.case_status!=="closed") {
-      throw new Error("post_next_generation_recurrence_recurred_closed_required");
+      throw new Error("post_successor_generation_recurrence_recurred_closed_required");
     }
-    if(row.latest_check_id!==row.check_id) throw new Error("post_next_generation_recurrence_latest_check_required");
-    if(row.latest_reclosure_id!==row.reclosure_id) throw new Error("post_next_generation_recurrence_latest_reclosure_required");
+    if(row.latest_check_id!==row.check_id) throw new Error("post_successor_generation_recurrence_latest_check_required");
+    if(row.latest_reclosure_id!==row.reclosure_id) throw new Error("post_successor_generation_recurrence_latest_reclosure_required");
 
     const nextGenerationRecurrenceId=randomUUID();
     const governed=successorGenerationRecurrenceFingerprint({
@@ -535,7 +535,7 @@ export async function recurSuccessorGenerationReclosedException(
        where workspace_id=$1 and case_id=$2 and status='closed'`,
       [input.workspaceId,row.case_id,userId,reason]
     );
-    if(!updated.rowCount) throw new Error("post_next_generation_recurrence_closed_case_required");
+    if(!updated.rowCount) throw new Error("post_successor_generation_recurrence_closed_case_required");
     return nextGenerationRecurrenceId;
   });
 }
