@@ -57,10 +57,10 @@ create table if not exists app.workspace_post_subsequent_generation_reclosure_ch
   )
 );
 
-create index if not exists workspace_post_sg_reclosure_checks_recent_idx
+create index if not exists workspace_post_subsequent_reclosure_checks_recent_idx
   on app.workspace_post_subsequent_generation_reclosure_checks(workspace_id,created_at desc);
 
-create index if not exists workspace_post_sg_reclosure_checks_reclosure_idx
+create index if not exists workspace_post_subsequent_reclosure_checks_reclosure_idx
   on app.workspace_post_subsequent_generation_reclosure_checks(
     workspace_id,subsequent_generation_reclosure_id,created_at desc,subsequent_generation_reclosure_regression_check_id desc
   );
@@ -269,17 +269,24 @@ begin
     )
     and not exists (
       select 1
-      from app.workspace_reconciliation_successor_generation_recurrences recurrence2
+      from app.workspace_reconciliation_exception_next_generation_recurrences recurrence2
       where recurrence2.workspace_id=new.workspace_id
         and recurrence2.case_id=new.case_id
         and recurrence2.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
     )
     and not exists (
       select 1
-      from app.workspace_reconciliation_subsequent_generation_recurrences recurrence3
+      from app.workspace_reconciliation_successor_generation_recurrences recurrence3
       where recurrence3.workspace_id=new.workspace_id
         and recurrence3.case_id=new.case_id
         and recurrence3.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
+    )
+    and not exists (
+      select 1
+      from app.workspace_reconciliation_subsequent_generation_recurrences recurrence4
+      where recurrence4.workspace_id=new.workspace_id
+        and recurrence4.case_id=new.case_id
+        and recurrence4.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
     ) then
       raise exception 'reconciliation_exception_governed_reopen_required';
     end if;
@@ -333,9 +340,9 @@ before insert or update on app.workspace_subsequent_generation_corrective_delive
 for each row
 execute function app.require_no_subsequent_generation_recurrence_for_case();
 
-drop trigger if exists workspace_second_recurrence_triage_successor_recurrence_guard
+drop trigger if exists workspace_successor_retriage_subsequent_recurrence_guard
   on app.workspace_successor_generation_recurrence_triage_cycles;
-create trigger workspace_second_recurrence_triage_successor_recurrence_guard
+create trigger workspace_successor_retriage_subsequent_recurrence_guard
 before insert or update on app.workspace_successor_generation_recurrence_triage_cycles
 for each row
 execute function app.require_no_subsequent_generation_recurrence_for_case();
