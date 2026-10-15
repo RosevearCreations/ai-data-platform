@@ -1753,7 +1753,7 @@ Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activatio
 
 ## Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution
 
-Status: implementation ready for promotion.
+Status: **production GREEN**.
 
 Scope:
 - execute only an approved Build 069 subsequent-generation corrective plan for the newest governed Build 068 recurrence and open case;
@@ -1767,5 +1767,16 @@ Scope:
 - freeze Build 069 successor-generation recurrence re-triage and subsequent-generation planning after execution begins;
 - preserve RLS, table-level SELECT/INSERT only, narrow activation/delivery UPDATE columns and no DELETE;
 - preserve single-flight busy/wait controls for activation, execution and revocation.
+
+Promotion evidence:
+- feature PR #164 merged the Build 070 implementation to `dev`;
+- release PR #165 passed Verify #733 on exact `dev` SHA `fecf03e5d44853f5444b6a00d687a107adab9709`;
+- release merged to `main` at `e033b03efc4964a95fbbadeb2282722f0b6ad8cc`;
+- independent `main` Verify #734 passed on that exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0040_subsequent_generation_corrective_delivery_execution.sql`;
+- production verification confirms both Build 070 execution tables are under RLS, all six intended policies exist, exact Build 069/068/067/066 lineage and predecessor-package gates are active, Build 069 planning freeze guards are live, idempotency is bound to the subsequent-generation replay key, retry attempts are database-bounded to five, table-level runtime grants are exactly INSERT/SELECT, UPDATE is restricted to intended activation/delivery columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_3P4HtzjePzavNdQdqCX5Bc1JyXZD` is READY from exact release SHA `e033b03efc4964a95fbbadeb2282722f0b6ad8cc`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure.**
