@@ -47,7 +47,7 @@ export interface SubsequentGenerationCorrectiveDeliveryActivation {
   role: WorkspaceRole;
   activationId: string;
   subsequentGenerationPlanId: string;
-  secondRecurrenceRetriageId: string;
+  successorGenerationRetriageId: string;
   successorGenerationRecurrenceId: string;
   successorGenerationReclosureId: string;
   successorGenerationReclosureRegressionCheckId: string;
@@ -134,7 +134,7 @@ type ActivationRow = QueryResultRow & {
   role?: WorkspaceRole;
   activation_id: string;
   subsequent_generation_plan_id: string;
-  second_recurrence_retriage_id: string;
+  successor_generation_retriage_id: string;
   successor_generation_recurrence_id: string;
   successor_generation_reclosure_id: string;
   successor_generation_reclosure_regression_check_id: string;
@@ -237,11 +237,11 @@ async function requireManager(client: PoolClient, workspaceId: string) {
 }
 
 export function subsequentGenerationActivationConfirmation(target: IntegrationTarget) {
-  return "ACTIVATE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
+  return "ACTIVATE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
 }
 
 export function subsequentGenerationExecutionConfirmation(target: IntegrationTarget) {
-  return "EXECUTE " + target.toUpperCase() + " SUCCESSOR-GENERATION CORRECTIVE";
+  return "EXECUTE " + target.toUpperCase() + " SUBSEQUENT-GENERATION CORRECTIVE";
 }
 
 export function subsequentGenerationActivationFingerprint(input: {
@@ -268,7 +268,7 @@ export function buildSubsequentGenerationCorrectiveExecutionPackage(
   }
 
   const expectedPlanFingerprint = subsequentGenerationCorrectivePlanFingerprint({
-    secondRecurrenceRetriageId: plan.secondRecurrenceRetriageId,
+    successorGenerationRetriageId: plan.successorGenerationRetriageId,
     successorGenerationRecurrenceId: plan.successorGenerationRecurrenceId,
     successorGenerationReclosureId: plan.successorGenerationReclosureId,
     successorGenerationReclosureRegressionCheckId: plan.successorGenerationReclosureRegressionCheckId,
@@ -483,7 +483,7 @@ export async function loadApprovedSubsequentGenerationCorrectivePlanContext(
        from app.workspace_subsequent_generation_corrective_delivery_plans p
        join app.workspace_successor_generation_recurrence_triage_cycles t
          on t.workspace_id=p.workspace_id
-        and t.second_recurrence_retriage_id=p.second_recurrence_retriage_id
+        and t.successor_generation_retriage_id=p.successor_generation_retriage_id
        join app.workspace_reconciliation_successor_generation_recurrences recurrence
          on recurrence.workspace_id=p.workspace_id
         and recurrence.successor_generation_recurrence_id=p.successor_generation_recurrence_id
@@ -569,7 +569,7 @@ function activationFromRow(
     role,
     activationId: row.activation_id,
     subsequentGenerationPlanId: row.subsequent_generation_plan_id,
-    secondRecurrenceRetriageId: row.second_recurrence_retriage_id,
+    successorGenerationRetriageId: row.successor_generation_retriage_id,
     successorGenerationRecurrenceId: row.successor_generation_recurrence_id,
     successorGenerationReclosureId: row.successor_generation_reclosure_id,
     successorGenerationReclosureRegressionCheckId: row.successor_generation_reclosure_regression_check_id,
@@ -817,7 +817,7 @@ export async function createSubsequentGenerationCorrectiveDeliveryActivation(
        from app.workspace_subsequent_generation_corrective_delivery_plans p
        join app.workspace_successor_generation_recurrence_triage_cycles t
          on t.workspace_id=p.workspace_id
-        and t.second_recurrence_retriage_id=p.second_recurrence_retriage_id
+        and t.successor_generation_retriage_id=p.successor_generation_retriage_id
        join app.workspace_reconciliation_successor_generation_recurrences recurrence
          on recurrence.workspace_id=p.workspace_id
         and recurrence.successor_generation_recurrence_id=p.successor_generation_recurrence_id
@@ -902,7 +902,7 @@ export async function createSubsequentGenerationCorrectiveDeliveryActivation(
     const activationId = randomUUID();
     await client.query(
       `insert into app.workspace_subsequent_generation_corrective_delivery_activations (
-        workspace_id,activation_id,subsequent_generation_plan_id,second_recurrence_retriage_id,
+        workspace_id,activation_id,subsequent_generation_plan_id,successor_generation_retriage_id,
         successor_generation_recurrence_id,successor_generation_reclosure_id,successor_generation_reclosure_regression_check_id,case_id,target,
         status,consumer_id,subsequent_generation_plan_fingerprint,
         source_successor_generation_recurrence_fingerprint,source_regression_fingerprint,
@@ -921,7 +921,7 @@ export async function createSubsequentGenerationCorrectiveDeliveryActivation(
         input.workspaceId,
         activationId,
         input.context.plan.subsequentGenerationPlanId,
-        input.context.plan.secondRecurrenceRetriageId,
+        input.context.plan.successorGenerationRetriageId,
         input.context.plan.successorGenerationRecurrenceId,
         input.context.plan.successorGenerationReclosureId,
         input.context.plan.successorGenerationReclosureRegressionCheckId,
@@ -973,7 +973,7 @@ export async function getActiveSubsequentGenerationCorrectiveDeliveryActivation(
         and p.subsequent_generation_plan_id=a.subsequent_generation_plan_id
        join app.workspace_successor_generation_recurrence_triage_cycles t
          on t.workspace_id=p.workspace_id
-        and t.second_recurrence_retriage_id=p.second_recurrence_retriage_id
+        and t.successor_generation_retriage_id=p.successor_generation_retriage_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
        where a.workspace_id=$1 and a.subsequent_generation_plan_id=$2
