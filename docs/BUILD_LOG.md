@@ -3049,6 +3049,16 @@ Implementation branch: `build-072-post-subsequent-generation-reclosure-recurrenc
 
 Added migration `0042_post_subsequent_generation_reclosure_recurrence_governance.sql`, post-subsequent-generation monitoring library/API/workbench, immutable stable/recurrent evidence, explicit owner/admin recurrence governance, newest-check/newest-Build-071-re-closure gates, exact Build 070 package binding, governed reopen support across all recurrence generations, Build 069–071 freeze guards, stale direct-close blocking, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #170 merged the Build 072 implementation to `dev`;
+- release PR #171 passed Verify #747 on exact `dev` SHA `5bffc1bdf27f3b8f4045c52784e8297c8b48b168`, including migration 0042, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `d8dcfed20c6b31171434bdc04d5094940b1f18fc`;
+- independent `main` Verify #748 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0042_post_subsequent_generation_reclosure_recurrence_governance.sql`;
+- production verification confirmed both Build 072 ledgers have RLS, all four intended policies exist, exact Build 070 package/Build 071 re-closure/Build 068 recurrence gates are active, recurrence governance requires newest monitor/newest re-closure evidence, governed reopen recognizes all recurrence generations, all six Build 069–071 freeze triggers are active, stale direct closure is blocked by `reconciliation_triage_post_subsequent_generation_reclosure_required`, and runtime table grants are exactly INSERT/SELECT with no UPDATE/DELETE;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_7uzKEDBTFKjFd8cXv2JM9GVgc4Ns` is READY, sourced from exact SHA `d8dcfed20c6b31171434bdc04d5094940b1f18fc`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 072 is **GREEN on main and production**.
 
 Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning.**
