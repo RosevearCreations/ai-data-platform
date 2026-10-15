@@ -123,7 +123,7 @@ async function main() {
     activation.includes("subsequent_generation_package_id") &&
       activation.includes("subsequent_generation_replay_key") &&
       activation.includes("subsequent_generation_package_fingerprint"),
-    "Build 074 activation gate must bind the exact predecessor successor package."
+    "Build 074 activation gate must bind the exact predecessor subsequent-generation package."
   );
 
   const delivery = insertPolicies.rows.find(
@@ -169,7 +169,7 @@ async function main() {
          'workspace_successive_generation_plan_execution_guard'
        )`
   );
-  assert(triggers.rows.length === 2, "Build 074 Build-069 freeze triggers must exist.");
+  assert(triggers.rows.length === 2, "Build 074 Build-073 freeze triggers must exist.");
 
   const attemptCheck = await authPool.query<{ definition: string }>(
     `select pg_get_constraintdef(con.oid) as definition
