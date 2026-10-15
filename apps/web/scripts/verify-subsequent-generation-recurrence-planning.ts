@@ -34,14 +34,14 @@ const recurrence: ReconciliationRecordResult[] = [
   {
     integrationKey: "record-a",
     status: "mismatched",
-    expectedFingerprint: "expected-a-successor",
-    observedFingerprint: "observed-a-successor",
+    expectedFingerprint: "expected-a-subsequent",
+    observedFingerprint: "observed-a-subsequent",
     differingFields: ["priceMinimumCad"]
   },
   {
     integrationKey: "record-b",
     status: "missing",
-    expectedFingerprint: "expected-b-successor",
+    expectedFingerprint: "expected-b-subsequent",
     observedFingerprint: null,
     differingFields: []
   }
@@ -67,7 +67,7 @@ assert(
 );
 
 const base = {
-  subsequentGenerationRetriageId: "successor-retriage-1",
+  subsequentGenerationRetriageId: "subsequent-retriage-1",
   subsequentGenerationRecurrenceId: "subsequent-generation-recurrence-1",
   subsequentGenerationReclosureId: "subsequent-generation-reclosure-1",
   subsequentGenerationReclosureRegressionCheckId: "post-subsequent-generation-check-1",
