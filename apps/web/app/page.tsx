@@ -43,6 +43,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/subsequent-generation-delivery", "Subsequent-generation corrective delivery execution"],
   ["/approved-data/reconciliation/subsequent-generation-closure", "Subsequent-generation reconciliation & re-closure"],
   ["/approved-data/reconciliation/post-subsequent-generation-reclosure", "Post-subsequent-generation re-closure monitoring & recurrence governance"],
+  ["/approved-data/reconciliation/subsequent-generation-recurrence-planning", "Subsequent-generation recurrence re-triage & successive-generation planning"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],
