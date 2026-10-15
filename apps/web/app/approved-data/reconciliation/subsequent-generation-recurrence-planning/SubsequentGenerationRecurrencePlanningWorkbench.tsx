@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Successor-generation recurrence planning request failed."
+        : "Subsequent-generation recurrence planning request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -110,10 +110,10 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
           subsequentGenerationRecurrenceId
         })
       );
-      setMessage("Successor-generation recurrence re-triage created.");
+      setMessage("Subsequent-generation recurrence re-triage created.");
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Successor-generation recurrence re-triage failed."
+        error instanceof Error ? error.message : "Subsequent-generation recurrence re-triage failed."
       );
     } finally {
       setBusy("");
@@ -141,8 +141,8 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
       );
       setMessage(
         status === "dismissed"
-          ? "Successor-generation recurrence cycle dismissed."
-          : "Successor-generation recurrence re-triage saved."
+          ? "Subsequent-generation recurrence cycle dismissed."
+          : "Subsequent-generation recurrence re-triage saved."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Save failed.");
@@ -165,7 +165,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
           rationale: rationales[item.subsequentGenerationRetriageId] ?? ""
         })
       );
-      setMessage("Subsequent-generation corrective plan frozen for review.");
+      setMessage("Successive-generation corrective plan frozen for review.");
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Plan creation failed."
@@ -194,7 +194,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
         })
       );
       setMessage(
-        "Subsequent-generation plan review recorded: " + decision + "."
+        "Successive-generation plan review recorded: " + decision + "."
       );
     } catch (error) {
       setMessage(
@@ -229,17 +229,17 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
           </article>
           <article>
             <strong>{model.totals.proposedPlans}</strong>
-            <span>proposed subsequent-gen plans</span>
+            <span>proposed successive-gen plans</span>
           </article>
           <article>
             <strong>{model.totals.approvedPlans}</strong>
-            <span>approved subsequent-gen plans</span>
+            <span>approved successive-gen plans</span>
           </article>
         </div>
       </section>
 
       <section className="correctiveNotice">
-        <strong>A subsequent-generation recurrence starts a subsequent corrective generation</strong>
+        <strong>A subsequent-generation recurrence starts a successive corrective generation</strong>
         <p>
           Build 073 never edits or reuses the Build 069 plan. It starts from the
           exact Build 072 recurrence and limits corrective scope to fields proven
@@ -287,11 +287,11 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
                   </header>
                   <dl className="publicationEvidence">
                     <div>
-                      <dt>Successor-generation recurrence</dt>
+                      <dt>Subsequent-generation recurrence</dt>
                       <dd>{recurrence.subsequentGenerationRecurrenceId}</dd>
                     </div>
                     <div>
-                      <dt>Successor-generation re-closure</dt>
+                      <dt>Subsequent-generation re-closure</dt>
                       <dd>{recurrence.subsequentGenerationReclosureId}</dd>
                     </div>
                     <div>
@@ -358,11 +358,11 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
 
                 <dl className="publicationEvidence">
                   <div>
-                    <dt>Successor-generation recurrence</dt>
+                    <dt>Subsequent-generation recurrence</dt>
                     <dd>{cycle.subsequentGenerationRecurrenceId}</dd>
                   </div>
                   <div>
-                    <dt>Successor-generation recurrence fingerprint</dt>
+                    <dt>Subsequent-generation recurrence fingerprint</dt>
                     <dd>{cycle.subsequentGenerationRecurrenceFingerprint}</dd>
                   </div>
                   <div>
@@ -500,7 +500,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
                   draft.resolutionIntent === "plan-correction" ? (
                     <>
                       <label>
-                        Subsequent-generation plan rationale
+                        Successive-generation plan rationale
                         <textarea
                           value={
                             rationales[cycle.subsequentGenerationRetriageId] ?? ""
@@ -512,7 +512,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this subsequent-generation recurrence enter a subsequent corrective generation?"
+                          placeholder="Why should this subsequent-generation recurrence enter a successive corrective generation?"
                         />
                       </label>
                       <button
@@ -545,7 +545,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Immutable subsequent-generation recurrence scope</p>
-            <h2>Subsequent-generation corrective plans</h2>
+            <h2>Successive-generation corrective plans</h2>
           </div>
         </div>
         <div className="publicationList">
@@ -578,7 +578,7 @@ export function SubsequentGenerationRecurrencePlanningWorkbench({
 
               <dl className="publicationEvidence">
                 <div>
-                  <dt>Subsequent-generation plan</dt>
+                  <dt>Successive-generation plan</dt>
                   <dd>{plan.successiveGenerationPlanId}</dd>
                 </div>
                 <div>
