@@ -49,7 +49,7 @@ create table if not exists app.workspace_successor_generation_recurrence_triage_
     references app.workspace_post_successor_generation_reclosure_checks(workspace_id,successor_generation_reclosure_regression_check_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_recurrence_id)
-    references app.workspace_reconciliation_exception_next_generation_recurrences(workspace_id,recurrence_id)
+    references app.workspace_reconciliation_exception_next_generation_recurrences(workspace_id,next_generation_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,case_id)
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
@@ -108,7 +108,7 @@ create table if not exists app.workspace_subsequent_generation_corrective_delive
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_successor_generation_plan_id)
-    references app.workspace_successor_generation_corrective_delivery_plans(workspace_id,next_generation_plan_id)
+    references app.workspace_successor_generation_corrective_delivery_plans(workspace_id,successor_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_successor_generation_delivery_id)
     references app.workspace_successor_generation_corrective_live_deliveries(workspace_id,delivery_id)
@@ -261,10 +261,10 @@ with check (
      and reclosure.successor_generation_reclosure_id=triage.successor_generation_reclosure_id
     join app.workspace_successor_generation_corrective_delivery_plans predecessor
       on predecessor.workspace_id=triage.workspace_id
-     and predecessor.next_generation_plan_id=reclosure.next_generation_plan_id
+     and predecessor.successor_generation_plan_id=reclosure.successor_generation_plan_id
     join app.workspace_successor_generation_corrective_live_deliveries delivery
       on delivery.workspace_id=triage.workspace_id
-     and delivery.delivery_id=reclosure.next_generation_delivery_id
+     and delivery.delivery_id=reclosure.successor_generation_delivery_id
     join app.workspace_reconciliation_exception_cases c
       on c.workspace_id=triage.workspace_id and c.case_id=triage.case_id
     where triage.workspace_id=workspace_subsequent_generation_corrective_delivery_plans.workspace_id
@@ -277,7 +277,7 @@ with check (
       and triage.successor_generation_recurrence_fingerprint=workspace_subsequent_generation_corrective_delivery_plans.source_successor_generation_recurrence_fingerprint
       and triage.regression_fingerprint=workspace_subsequent_generation_corrective_delivery_plans.source_regression_fingerprint
       and triage.successor_generation_reclosure_fingerprint=workspace_subsequent_generation_corrective_delivery_plans.source_successor_generation_reclosure_fingerprint
-      and predecessor.next_generation_plan_id=workspace_subsequent_generation_corrective_delivery_plans.predecessor_successor_generation_plan_id
+      and predecessor.successor_generation_plan_id=workspace_subsequent_generation_corrective_delivery_plans.predecessor_successor_generation_plan_id
       and delivery.delivery_id=workspace_subsequent_generation_corrective_delivery_plans.predecessor_successor_generation_delivery_id
       and predecessor.status='approved'
       and delivery.status='accepted'
