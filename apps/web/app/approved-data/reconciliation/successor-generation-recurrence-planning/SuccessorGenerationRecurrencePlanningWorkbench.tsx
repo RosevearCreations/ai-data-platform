@@ -244,7 +244,7 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
           Build 069 never edits or reuses the Build 065 plan. It starts from the
           exact Build 068 recurrence and limits corrective scope to fields proven
           recurrent by that newest read-back and already governed by the approved
-          Build 061 plan.
+          Build 065 plan.
         </p>
       </section>
 
@@ -291,7 +291,7 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
                       <dd>{recurrence.successorGenerationRecurrenceId}</dd>
                     </div>
                     <div>
-                      <dt>Next-generation re-closure</dt>
+                      <dt>Successor-generation re-closure</dt>
                       <dd>{recurrence.successorGenerationReclosureId}</dd>
                     </div>
                     <div>
@@ -512,7 +512,7 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this successor-generation recurrence enter a successor corrective generation?"
+                          placeholder="Why should this successor-generation recurrence enter a subsequent corrective generation?"
                         />
                       </label>
                       <button
@@ -535,7 +535,7 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
 
           {!model.recurrence.recurrences.length ? (
             <div className="emptyState">
-              No governed Build 064 successor-generation recurrence is available.
+              No governed Build 068 successor-generation recurrence is available.
             </div>
           ) : null}
         </div>
@@ -582,11 +582,11 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
                   <dd>{plan.subsequentGenerationPlanId}</dd>
                 </div>
                 <div>
-                  <dt>Predecessor next-generation plan</dt>
+                  <dt>Predecessor successor-generation plan</dt>
                   <dd>{plan.predecessorSuccessorGenerationPlanId}</dd>
                 </div>
                 <div>
-                  <dt>Predecessor next-generation delivery</dt>
+                  <dt>Predecessor successor-generation delivery</dt>
                   <dd>{plan.predecessorSuccessorGenerationDeliveryId}</dd>
                 </div>
                 <div>
@@ -639,7 +639,7 @@ export function SuccessorGenerationRecurrencePlanningWorkbench({
                         >
                           {busy ===
                           "review:" + plan.subsequentGenerationPlanId
-                            ? "Recording successor-generation review…"
+                            ? "Recording subsequent-generation review…"
                             : decision}
                         </button>
                       )
