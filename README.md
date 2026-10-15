@@ -216,3 +216,10 @@ Operator UI: `/approved-data/reconciliation/subsequent-generation-closure`.
 Build 072 independently reads back the exact accepted Build 070 subsequent-generation package after verified Build 071 re-closure, preserves immutable stable, recurrent, rejected and transport-error monitoring evidence, and permits recurrence governance only from the newest recurrent check for the newest Build 071 re-closure. Governed recurrence reopens the case explicitly, records a distinct subsequent-generation recurrence without rewriting Build 068 evidence, freezes Build 069–071 mutation paths, extends governed reopen across every recurrence generation, and blocks direct stale closure until a future corrective generation produces fresh verified evidence.
 
 Operator UI: `/approved-data/reconciliation/post-subsequent-generation-reclosure`.
+
+
+### Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning
+
+Build 073 consumes only the newest governed Build 072 subsequent-generation recurrence for an open case, creates an explicit owner/admin re-triage cycle, and derives a distinct successive-generation corrective plan whose scope is limited to fields proven recurrent by the newest Build 072 read-back and already governed by the approved Build 069 predecessor plan. The plan binds the exact Build 070 accepted delivery/package identity and Build 071 re-closure lineage, preserves deterministic fingerprints and narrow review mutation grants, and does not reuse or rewrite any prior plan or delivery evidence.
+
+Operator UI: `/approved-data/reconciliation/subsequent-generation-recurrence-planning`.
