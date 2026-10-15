@@ -3070,6 +3070,16 @@ Implementation branch: `build-073-subsequent-recurrence-successive-planning`.
 
 Added migration `0043_subsequent_generation_recurrence_successive_planning.sql`, subsequent-generation recurrence re-triage library/API/workbench, deterministic successive-generation scope and plan fingerprints, newest-recurrence gates, exact Build 069/070 predecessor plan/delivery/package binding, Build 071 re-closure and Build 072 recurrence evidence binding, narrow review/re-triage UPDATE grants, single-flight mutation controls, and application/database verification.
 
-Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+Production promotion evidence:
+- PR #173 merged the Build 073 implementation to `dev`;
+- release PR #174 passed Verify #754 on exact `dev` SHA `a3fe52885ee5935a92291047a495238fbda99626`, including migration 0043, typecheck, lint, production build, application tests and all database/RLS checks;
+- release `main` SHA: `8d0c2a59adbc20797bb0bfb40d25a0351f9fd5ab`;
+- independent `main` Verify #755 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0043_subsequent_generation_recurrence_successive_planning.sql`;
+- production verification confirmed both Build 073 tables have RLS, all six intended policies exist, exact Build 072 recurrence/monitor and Build 071 re-closure gates are active, successive-generation planning is bound to the exact approved Build 069 plan and accepted Build 070 package identity, Build 072 predecessor freeze guards remain active, table-level runtime grants are exactly INSERT/SELECT, UPDATE is limited to intended re-triage/review columns, and DELETE is absent;
+- all new PostgreSQL identifiers are within the 63-byte identifier limit;
+- Vercel deployment `dpl_8fGui3uxNtZrHjhNmaw1sSY4XPag` is READY, sourced from exact SHA `8d0c2a59adbc20797bb0bfb40d25a0351f9fd5ab`, with `ai-data-platform-beryl.vercel.app` attached and `aliasError=null`.
+
+Build 073 is **GREEN on main and production**.
 
 Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
