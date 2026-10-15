@@ -89,6 +89,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-closure">
             Subsequent-generation reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-subsequent-generation-reclosure">
+            Post-subsequent-generation recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>

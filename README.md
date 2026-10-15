@@ -209,3 +209,10 @@ Operator UI: `/approved-data/reconciliation/subsequent-generation-delivery`.
 Build 071 independently reconstructs the exact accepted Build 070 subsequent-generation package and performs read-only consumer state verification. It records immutable matched, drift, rejected and transport-error evidence, permits re-closure only from the newest matched verification for the newest governed Build 068 successor-generation recurrence, binds the new re-closure to Build 067 predecessor re-closure, Build 068 recurrence, Build 069 plan and Build 070 delivery/package identities, and strengthens the case-close guard without weakening earlier-generation fallbacks.
 
 Operator UI: `/approved-data/reconciliation/subsequent-generation-closure`.
+
+
+### Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 072 independently reads back the exact accepted Build 070 subsequent-generation package after verified Build 071 re-closure, preserves immutable stable, recurrent, rejected and transport-error monitoring evidence, and permits recurrence governance only from the newest recurrent check for the newest Build 071 re-closure. Governed recurrence reopens the case explicitly, records a distinct subsequent-generation recurrence without rewriting Build 068 evidence, freezes Build 069–071 mutation paths, extends governed reopen across every recurrence generation, and blocks direct stale closure until a future corrective generation produces fresh verified evidence.
+
+Operator UI: `/approved-data/reconciliation/post-subsequent-generation-reclosure`.

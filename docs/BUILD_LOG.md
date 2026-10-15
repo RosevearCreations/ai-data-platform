@@ -3041,3 +3041,14 @@ Production promotion evidence:
 Build 071 is **GREEN on main and production**.
 
 Next queued: **Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+
+## Build 072 — Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Implementation branch: `build-072-post-subsequent-generation-reclosure-recurrence`.
+
+Added migration `0042_post_subsequent_generation_reclosure_recurrence_governance.sql`, post-subsequent-generation monitoring library/API/workbench, immutable stable/recurrent evidence, explicit owner/admin recurrence governance, newest-check/newest-Build-071-re-closure gates, exact Build 070 package binding, governed reopen support across all recurrence generations, Build 069–071 freeze guards, stale direct-close blocking, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning.**
