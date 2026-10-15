@@ -504,7 +504,7 @@ export async function recurSuccessorGenerationReclosedException(
     if(row.latest_check_id!==row.check_id) throw new Error("post_successor_generation_recurrence_latest_check_required");
     if(row.latest_reclosure_id!==row.reclosure_id) throw new Error("post_successor_generation_recurrence_latest_reclosure_required");
 
-    const nextGenerationRecurrenceId=randomUUID();
+    const successorGenerationRecurrenceId=randomUUID();
     const governed=successorGenerationRecurrenceFingerprint({
       successorGenerationReclosureId:row.reclosure_id,
       successorGenerationReclosureRegressionCheckId:row.check_id,
@@ -520,7 +520,7 @@ export async function recurSuccessorGenerationReclosedException(
         case_id,target,successor_generation_reclosure_fingerprint,regression_fingerprint,
         successor_generation_recurrence_fingerprint,recurrence_reason,recurred_by,recurred_at
       ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,now())`,
-      [input.workspaceId,nextGenerationRecurrenceId,row.reclosure_id,row.check_id,
+      [input.workspaceId,successorGenerationRecurrenceId,row.reclosure_id,row.check_id,
        row.predecessor_next_generation_recurrence_id,row.case_id,row.target,row.reclosure_fingerprint,
        row.verification_fingerprint,governed,reason,userId]
     );
@@ -529,13 +529,13 @@ export async function recurSuccessorGenerationReclosedException(
        set status='open',closed_by=null,closed_at=null,updated_by=$3,updated_at=now(),
            investigation_note=left(
              case when investigation_note='' then $4
-               else investigation_note || E'\n\nBuild 068 governed recurrence: ' || $4 end,
+               else investigation_note || E'\n\nBuild 068 governed successor-generation recurrence: ' || $4 end,
              8000
            )
        where workspace_id=$1 and case_id=$2 and status='closed'`,
       [input.workspaceId,row.case_id,userId,reason]
     );
     if(!updated.rowCount) throw new Error("post_successor_generation_recurrence_closed_case_required");
-    return nextGenerationRecurrenceId;
+    return successorGenerationRecurrenceId;
   });
 }
