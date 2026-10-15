@@ -49,7 +49,7 @@ create table if not exists app.workspace_subsequent_generation_recurrence_triage
     references app.workspace_post_subsequent_generation_reclosure_checks(workspace_id,subsequent_generation_reclosure_regression_check_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_successor_generation_recurrence_id)
-    references app.workspace_reconciliation_exception_successor_generation_recurrences(workspace_id,successor_generation_recurrence_id)
+    references app.workspace_reconciliation_successor_generation_recurrences(workspace_id,successor_generation_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,case_id)
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
