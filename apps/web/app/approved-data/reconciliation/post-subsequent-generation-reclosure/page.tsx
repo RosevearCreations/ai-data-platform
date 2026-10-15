@@ -22,7 +22,7 @@ export default async function PostSubsequentGenerationReclosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 072</p>
-        <h1>Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance</h1>
+        <h1>Post-Subsequent-Generation Re-Closure Regression Monitoring & Recurrence Governance</h1>
         <p className="lead">
           Monitor the exact Build 070 package after verified Build 071 re-closure,
           preserve stable and recurrent evidence, and reopen only through an
@@ -31,16 +31,16 @@ export default async function PostSubsequentGenerationReclosurePage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-closure">
-            Successor-generation reconciliation & re-closure
+            Subsequent-generation reconciliation & re-closure
           </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-recurrence-planning">
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-recurrence-planning">
             Successor-generation recurrence planning
           </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/second-recurrence-planning">
-            Second-recurrence planning
-          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-delivery">
-            Successor-generation delivery
+            Subsequent-generation delivery
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-successor-generation-reclosure">
+            Predecessor post-successor-generation monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
