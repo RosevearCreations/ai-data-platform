@@ -3062,3 +3062,14 @@ Production promotion evidence:
 Build 072 is **GREEN on main and production**.
 
 Next queued: **Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning.**
+
+
+## Build 073 — Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning
+
+Implementation branch: `build-073-subsequent-recurrence-successive-planning`.
+
+Added migration `0043_subsequent_generation_recurrence_successive_planning.sql`, subsequent-generation recurrence re-triage library/API/workbench, deterministic successive-generation scope and plan fingerprints, newest-recurrence gates, exact Build 069/070 predecessor plan/delivery/package binding, Build 071 re-closure and Build 072 recurrence evidence binding, narrow review/re-triage UPDATE grants, single-flight mutation controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
