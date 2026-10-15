@@ -131,11 +131,11 @@ function deliveryEnvelope(
     dryRun,
     package: context.subsequentGenerationPackage,
     correctiveContext: {
-      build: 66,
+      build: 70,
       purpose: "subsequent-generation-corrective-delivery",
       subsequentGenerationPlanId: context.plan.subsequentGenerationPlanId,
       subsequentGenerationPlanFingerprint: context.plan.planFingerprint,
-      secondRecurrenceRetriageId: context.plan.secondRecurrenceRetriageId,
+      successorGenerationRetriageId: context.plan.successorGenerationRetriageId,
       successorGenerationRecurrenceId: context.plan.successorGenerationRecurrenceId,
       successorGenerationReclosureId: context.plan.successorGenerationReclosureId,
       successorGenerationReclosureRegressionCheckId: context.plan.successorGenerationReclosureRegressionCheckId,
@@ -239,7 +239,7 @@ export async function POST(request: Request) {
         validationCode: "subsequent-generation-live-capability-valid",
         httpStatus: handshakeResponse.status,
         details: {
-          build: 66,
+          build: 70,
           purpose: "subsequent-generation-corrective-delivery",
           subsequentGenerationPlanId,
           subsequentGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -263,7 +263,7 @@ export async function POST(request: Request) {
         fingerprint: context.subsequentGenerationPackage.fingerprint,
         validationCode: "subsequent-generation-dry-run-attempted",
         details: {
-          build: 66,
+          build: 70,
           dryRun: true,
           subsequentGenerationPlanId,
           subsequentGenerationPlanFingerprint: context.plan.planFingerprint
@@ -302,7 +302,7 @@ export async function POST(request: Request) {
         validationCode: acknowledgement.code,
         httpStatus: dryRunResponse.status,
         details: {
-          build: 66,
+          build: 70,
           dryRun: true,
           subsequentGenerationPlanId,
           subsequentGenerationPlanFingerprint: context.plan.planFingerprint
@@ -358,7 +358,7 @@ export async function POST(request: Request) {
         fingerprint: context.subsequentGenerationPackage.fingerprint,
         validationCode: code.slice(0,96),
         details: {
-          build: 66,
+          build: 70,
           purpose: "subsequent-generation-corrective-delivery",
           subsequentGenerationPlanId
         }
@@ -425,7 +425,7 @@ export async function POST(request: Request) {
       validationCode: "subsequent-generation-live-capability-revalidated",
       httpStatus: response.status,
       details: {
-        build: 66,
+        build: 70,
         subsequentGenerationPlanId,
         activationId: activation.activationId,
         activationFingerprint: activation.activationFingerprint,
@@ -450,7 +450,7 @@ export async function POST(request: Request) {
       fingerprint: context.subsequentGenerationPackage.fingerprint,
       validationCode: code.slice(0,96),
       details: {
-        build: 66,
+        build: 70,
         subsequentGenerationPlanId,
         activationId: activation.activationId
       }
@@ -507,7 +507,7 @@ export async function POST(request: Request) {
         ? "subsequent-generation-live-retry-attempted"
         : "subsequent-generation-live-attempted",
     details: {
-      build: 66,
+      build: 70,
       dryRun: false,
       subsequentGenerationPlanId,
       subsequentGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -564,7 +564,7 @@ export async function POST(request: Request) {
       validationCode: acknowledgement.code,
       httpStatus: response.status,
       details: {
-        build: 66,
+        build: 70,
         dryRun: false,
         subsequentGenerationPlanId,
         subsequentGenerationPlanFingerprint: context.plan.planFingerprint,
@@ -619,7 +619,7 @@ export async function POST(request: Request) {
       fingerprint: context.subsequentGenerationPackage.fingerprint,
       validationCode: code.slice(0,96),
       details: {
-        build: 66,
+        build: 70,
         dryRun: false,
         subsequentGenerationPlanId,
         activationId: activation.activationId,
