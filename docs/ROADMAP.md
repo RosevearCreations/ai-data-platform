@@ -1869,3 +1869,31 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 074 — Successive-Generation Corrective Delivery Activation & Idempotent Execution
+
+Status: **production GREEN**.
+
+Scope:
+- execute only an approved Build 073 successive-generation corrective plan;
+- reconstruct and verify the exact accepted Build 070 subsequent-generation predecessor package as immutable source evidence;
+- derive a distinct deterministic successive-generation package ID, replay key and package fingerprint without reusing predecessor delivery identity;
+- require a fresh authenticated live-capability handshake and accepted dry-run before activation;
+- open a short activation window and reserve durable live-delivery evidence before transport;
+- bind idempotency to the exact successive-generation replay key, reuse that key for retries and database-bound attempts to five;
+- treat accepted and rejected delivery outcomes as terminal while allowing bounded same-key retries for transport errors;
+- preserve Build 070 predecessor freeze authority and add independent Build 074 freeze guards over Build 073 re-triage/planning;
+- keep table-level runtime grants at SELECT/INSERT, narrow UPDATE to intended activation/delivery columns and expose no DELETE privilege;
+- provide the successive-generation delivery API/workbench and link it from the Build 073 planning workflow.
+
+Promotion evidence:
+- release PR #176 passed Verify #778 on exact `dev` SHA `a630838f1027bddcc640fe20a7b3933987c552f6`;
+- release merged to `main` at `7b69ee6657abfbfdc90a4f3eb9eaeffae48e1fad`;
+- independent `main` Verify #779 passed on that exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0044_successive_generation_corrective_delivery_execution.sql`;
+- production verification confirms both Build 074 tables are under RLS, all six intended policies exist, both independent Build 074 freeze triggers are active, migration history is recorded, and the predecessor Build 070 freeze authority remains intact;
+- Vercel deployment `dpl_6AjXLU6qMg4gcwr7Uoqo8dTSFbdr` is READY from exact release SHA `7b69ee6657abfbfdc90a4f3eb9eaeffae48e1fad`;
+- production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
+
+Next queued: **Build 075 — Successive-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
