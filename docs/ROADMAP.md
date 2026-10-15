@@ -1749,3 +1749,23 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+
+## Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution
+
+Status: implementation ready for promotion.
+
+Scope:
+- execute only an approved Build 069 subsequent-generation corrective plan for the newest governed Build 068 recurrence and open case;
+- independently reconstruct and verify the exact accepted Build 066 successor-generation predecessor package and consumer identity;
+- derive a fresh deterministic subsequent-generation package, replay key and fingerprint without reusing the Build 066 identity;
+- require a fresh authenticated live capability handshake and accepted dry-run before activation;
+- bind activation to the exact Build 069 plan fingerprint, Build 068 recurrence/Build 067 re-closure evidence and Build 065/066 predecessor lineage;
+- reserve durable delivery evidence before live mutation and bind idempotency to the subsequent-generation replay key;
+- permit bounded same-key retry after transport error/stale reservation, with database-enforced maximum five attempts;
+- treat accepted/rejected delivery outcomes as terminal and prevent duplicate live sends;
+- freeze Build 069 successor-generation recurrence re-triage and subsequent-generation planning after execution begins;
+- preserve RLS, table-level SELECT/INSERT only, narrow activation/delivery UPDATE columns and no DELETE;
+- preserve single-flight busy/wait controls for activation, execution and revocation.
+
+Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure.**
