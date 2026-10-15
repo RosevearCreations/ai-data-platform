@@ -156,7 +156,7 @@ async function requireManager(client: PoolClient, workspaceId: string) {
 }
 
 export function subsequentGenerationRecurrenceConfirmation(target: IntegrationTarget) {
-  return "REOPEN SUCCESSOR-GENERATION RECURRENT " + target.toUpperCase() + " EXCEPTION";
+  return "REOPEN SUBSEQUENT-GENERATION RECURRENT " + target.toUpperCase() + " EXCEPTION";
 }
 
 export function postSubsequentGenerationReclosureErrorFingerprint(input: {
@@ -529,7 +529,7 @@ export async function recurSubsequentGenerationReclosedException(
        set status='open',closed_by=null,closed_at=null,updated_by=$3,updated_at=now(),
            investigation_note=left(
              case when investigation_note='' then $4
-               else investigation_note || E'\n\nBuild 068 governed subsequent-generation recurrence: ' || $4 end,
+               else investigation_note || E'\n\nBuild 072 governed subsequent-generation recurrence: ' || $4 end,
              8000
            )
        where workspace_id=$1 and case_id=$2 and status='closed'`,
