@@ -36,7 +36,7 @@ create table if not exists app.workspace_post_successor_generation_reclosure_che
     references app.workspace_reconciliation_successor_generation_reclosures(workspace_id,successor_generation_reclosure_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_generation_reclosure_id)
-    references app.workspace_reconciliation_exception_reclosures(workspace_id,reclosure_id)
+    references app.workspace_reconciliation_exception_next_generation_reclosures(workspace_id,next_generation_reclosure_id)
     on delete restrict,
   foreign key (workspace_id,next_generation_recurrence_id)
     references app.workspace_reconciliation_exception_next_generation_recurrences(workspace_id,next_generation_recurrence_id)
