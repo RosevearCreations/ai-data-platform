@@ -98,8 +98,9 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_successor_generation_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_exception_next_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_exception_recurrences"),
-    "Build 072 governed reopen trigger must preserve prior recurrence generations."
+    "Build 072 governed reopen trigger must preserve all prior recurrence generations."
   );
 
   const closeGuard = await authPool.query<{ definition:string }>(
@@ -113,14 +114,14 @@ async function main() {
     "Build 072 close trigger must detect subsequent-generation recurrence."
   );
   assert(
-    closeDefinition.includes("reconciliation_triage_post_subsequent_generation_reclosure_required") ||
-      closeDefinition.includes("reconciliation_triage_verified_subsequent_generation_reclosure_required"),
-    "Build 072 must remain fail-closed after subsequent-generation recurrence, including the stronger Build 071 re-closure guard."
+    closeDefinition.includes("reconciliation_triage_post_subsequent_generation_reclosure_required"),
+    "Build 072 must fail closed after subsequent-generation recurrence."
   );
   assert(
     closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
-      closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures"),
-    "Build 072 close trigger must preserve Build 071 and Build 063 generation rules."
+      closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_exception_next_generation_reclosures"),
+    "Build 072 close trigger must preserve Build 071, Build 067 and Build 063 generation rules."
   );
 
   const triggers = await authPool.query<{ trigger_name:string }>(
