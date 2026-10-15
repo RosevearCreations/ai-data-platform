@@ -1692,3 +1692,22 @@ Promotion evidence:
 - production alias `ai-data-platform-beryl.vercel.app` is attached with `aliasError=null`.
 
 Next queued: **Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+
+## Build 068 — Post-Successor-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Status: implementation ready for promotion.
+
+Scope:
+- independently read back the exact accepted Build 066 package after verified Build 067 successor-generation re-closure;
+- preserve immutable stable, recurrent, rejected and transport-error monitoring evidence;
+- bind monitoring to the newest Build 067 re-closure, exact Build 066 delivery/package, approved Build 065 plan and Build 064 second recurrence;
+- require explicit owner/admin recurrence governance from the newest recurrent check with a typed confirmation and reason;
+- record a distinct successor-generation recurrence ledger without mutating Build 064 recurrence evidence;
+- allow governed closed→open transition only after current-generation recurrence evidence exists;
+- freeze Build 065 planning and Build 066/067 execution/reconciliation/re-closure artifacts once recurrence is recorded;
+- fail closed against direct stale re-closure after successor-generation recurrence;
+- keep both new ledgers append-only with RLS and runtime SELECT/INSERT only;
+- preserve single-flight wait/busy controls for verify and recurrence actions.
+
+Next queued: **Build 069 — Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning.**

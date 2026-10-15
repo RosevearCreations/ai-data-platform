@@ -38,6 +38,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/second-recurrence-planning", "Second-recurrence re-triage & successor-generation planning"],
   ["/approved-data/reconciliation/successor-generation-delivery", "Successor-generation corrective delivery execution"],
   ["/approved-data/reconciliation/successor-generation-closure", "Successor-generation reconciliation & re-closure"],
+  ["/approved-data/reconciliation/post-successor-generation-reclosure", "Post-successor-generation re-closure monitoring & recurrence governance"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],
