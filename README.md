@@ -202,3 +202,10 @@ Operator UI: `/approved-data/reconciliation/successor-generation-recurrence-plan
 Build 070 executes only an approved Build 069 subsequent-generation plan. It reconstructs and verifies the exact accepted Build 066 successor-generation predecessor package, derives a distinct deterministic subsequent-generation package/replay identity, requires a fresh authenticated live capability handshake plus accepted dry-run, opens a short activation window, reserves delivery evidence before the live request, reuses the exact replay/idempotency key for bounded retries, and treats accepted/rejected outcomes as terminal. Once execution begins, Build 069 re-triage and planning are frozen.
 
 Operator UI: `/approved-data/reconciliation/subsequent-generation-delivery`.
+
+
+### Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Build 071 independently reconstructs the exact accepted Build 070 subsequent-generation package and performs read-only consumer state verification. It records immutable matched, drift, rejected and transport-error evidence, permits re-closure only from the newest matched verification for the newest governed Build 068 successor-generation recurrence, binds the new re-closure to Build 067 predecessor re-closure, Build 068 recurrence, Build 069 plan and Build 070 delivery/package identities, and strengthens the case-close guard without weakening earlier-generation fallbacks.
+
+Operator UI: `/approved-data/reconciliation/subsequent-generation-closure`.
