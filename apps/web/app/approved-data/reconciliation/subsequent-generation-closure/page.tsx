@@ -23,7 +23,7 @@ export default async function SubsequentGenerationCorrectiveClosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 071</p>
-        <h1>Successor-Generation Corrective Delivery Reconciliation & Re-Closure</h1>
+        <h1>Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure</h1>
         <p className="lead">
           Independently read back the exact accepted Build 070 package, preserve
           matched/drift/error evidence, and close the recurrence generation only
@@ -31,17 +31,17 @@ export default async function SubsequentGenerationCorrectiveClosurePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/post-subsequent-generation-reclosure">
-            Post-subsequent-generation recurrence monitoring
-          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-successor-generation-reclosure">
             Post-successor-generation recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-delivery">
-            Successor-generation delivery
+            Subsequent-generation delivery
           </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/second-recurrence-planning">
-            Second-recurrence planning
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-recurrence-planning">
+            Successor-generation recurrence planning
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successor-generation-closure">
+            Predecessor successor-generation re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
