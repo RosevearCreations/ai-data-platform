@@ -24,11 +24,11 @@ export default async function SubsequentGenerationRecurrencePlanningPage() {
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 073</p>
         <h1>
-          Successor-Generation Recurrence Re-Triage & Subsequent-Generation Corrective Planning
+          Subsequent-Generation Recurrence Re-Triage & Successive-Generation Corrective Planning
         </h1>
         <p className="lead">
           Turn governed Build 072 subsequent-generation recurrence evidence into a new planning
-          generation without rewriting the Build 069-067 corrective history.
+          generation without rewriting the Build 069–071 corrective history.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">
@@ -42,7 +42,7 @@ export default async function SubsequentGenerationRecurrencePlanningPage() {
           </Link>
           <Link
             className="secondaryButton"
-            href="/approved-data/reconciliation/successive-generation-delivery"
+            href="/approved-data/reconciliation/subsequent-generation-delivery"
           >
             Subsequent-generation delivery
           </Link>
@@ -50,13 +50,13 @@ export default async function SubsequentGenerationRecurrencePlanningPage() {
             className="secondaryButton"
             href="/approved-data/reconciliation/subsequent-generation-closure"
           >
-            Successor-generation reconciliation & re-closure
+            Subsequent-generation reconciliation & re-closure
           </Link>
           <Link
             className="secondaryButton"
-            href="/approved-data/reconciliation/second-recurrence-planning"
+            href="/approved-data/reconciliation/successor-generation-recurrence-planning"
           >
-            Prior second-recurrence planning
+            Predecessor successor-generation recurrence planning
           </Link>
           <Link
             className="secondaryButton"
