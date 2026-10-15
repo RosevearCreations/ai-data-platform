@@ -197,12 +197,12 @@ assert(
 );
 assert(
   subsequentGenerationActivationConfirmation(target) ===
-    "ACTIVATE ROSIE-DAZZLERS SUCCESSOR-GENERATION CORRECTIVE",
+    "ACTIVATE ROSIE-DAZZLERS SUBSEQUENT-GENERATION CORRECTIVE",
   "Build 070 activation confirmation changed unexpectedly."
 );
 assert(
   subsequentGenerationExecutionConfirmation(target) ===
-    "EXECUTE ROSIE-DAZZLERS SUCCESSOR-GENERATION CORRECTIVE",
+    "EXECUTE ROSIE-DAZZLERS SUBSEQUENT-GENERATION CORRECTIVE",
   "Build 070 execution confirmation changed unexpectedly."
 );
 
