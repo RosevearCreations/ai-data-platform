@@ -195,3 +195,10 @@ Operator UI: `/approved-data/reconciliation/post-successor-generation-reclosure`
 Build 069 consumes the newest governed Build 068 successor-generation recurrence and starts a distinct subsequent-generation decision cycle. It re-triages only current recurrence evidence, narrows correction scope to fields still recurrent in the exact Build 068 read-back and already governed by the approved Build 065 plan, and freezes an independently reviewable subsequent-generation corrective plan bound to the exact accepted Build 066 package and Build 067 re-closure lineage.
 
 Operator UI: `/approved-data/reconciliation/successor-generation-recurrence-planning`.
+
+
+### Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution
+
+Build 070 executes only an approved Build 069 subsequent-generation plan. It reconstructs and verifies the exact accepted Build 066 successor-generation predecessor package, derives a distinct deterministic subsequent-generation package/replay identity, requires a fresh authenticated live capability handshake plus accepted dry-run, opens a short activation window, reserves delivery evidence before the live request, reuses the exact replay/idempotency key for bounded retries, and treats accepted/rejected outcomes as terminal. Once execution begins, Build 069 re-triage and planning are frozen.
+
+Operator UI: `/approved-data/reconciliation/subsequent-generation-delivery`.

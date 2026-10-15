@@ -2999,3 +2999,14 @@ Production promotion evidence:
 Build 069 is **GREEN on main and production**.
 
 Next queued: **Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+
+## Build 070 — Subsequent-Generation Corrective Delivery Activation & Idempotent Execution
+
+Implementation branch: `build-070-subsequent-generation-delivery-execution`.
+
+Added migration `0040_subsequent_generation_corrective_delivery_execution.sql`, subsequent-generation execution library/API/workbench, deterministic fresh package derivation from exact Build 066 predecessor evidence, fresh live handshake/dry-run activation, durable pre-send reservation, bounded same-key retries, terminal accepted/rejected delivery outcomes, Build 069 planning freeze guards, least-privilege RLS policies/grants, single-flight wait controls, and application/database verification.
+
+Promotion evidence will be appended after `dev`, `main`, Neon and Vercel are GREEN.
+
+Next queued: **Build 071 — Subsequent-Generation Corrective Delivery Reconciliation & Re-Closure.**
