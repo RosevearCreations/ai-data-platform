@@ -243,3 +243,10 @@ Operator UI: `/approved-data/reconciliation/successive-generation-closure`.
 Build 076 monitors the exact Build 074 package after verified Build 075 successive-generation re-closure. It records immutable stable, recurred, rejected and transport-error evidence, permits an explicit governed successive-generation recurrence only from the newest recurrent read-back for the newest Build 075 re-closure, freezes the completed Build 073–075 cycle after recurrence, and preserves all earlier reopen and re-closure generations. The two Build 076 ledgers remain append-only under RLS with runtime SELECT/INSERT only.
 
 Operator UI: `/approved-data/reconciliation/post-successive-generation-reclosure`.
+
+
+### Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning
+
+Build 077 consumes only the newest governed Build 076 successive-generation recurrence for an open case. It creates a distinct owner/admin re-triage cycle, derives correction scope only from the newest recurrent read-back, intersects that scope with values already governed by the approved Build 073 successive-generation plan, and freezes a new continuation-generation corrective plan without sending any downstream mutation. The plan binds the exact Build 074 accepted delivery/package identity, Build 075 re-closure lineage and Build 076 recurrence fingerprints.
+
+Operator UI: `/approved-data/reconciliation/successive-generation-recurrence-planning`.
