@@ -1953,7 +1953,7 @@ Next queued: **Build 077 — Successive-Generation Recurrence Re-Triage & Contin
 
 ## Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning
 
-Status: **implementation complete; promotion pending**.
+Status: **production GREEN**.
 
 Scope:
 - consume only the newest governed Build 076 successive-generation recurrence for an open case;
@@ -1967,4 +1967,14 @@ Scope:
 - expose the planning workflow through the reconciliation hub and Command Center;
 - cancel superseded Verify runs on the same Git ref so stale dev pushes no longer clog the release queue.
 
-Next queued after Build 077 promotion: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
+Promotion evidence:
+- exact `dev` SHA `ee4ae25d63016efcd3292ecb471f10b292f52a34` passed Verify #853;
+- release PR #183 passed Verify #854 on the same exact SHA and merged to `main`;
+- release `main` SHA is `275d916c97312d7513209eff387c380f48468eed`;
+- independent `main` Verify #855 passed on that release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0047_successive_generation_recurrence_continuation_planning.sql`;
+- production audit confirms both Build 077 tables exist with RLS, all six intended policies and both indexes exist, runtime has SELECT/INSERT plus only 10 re-triage and 4 plan-review UPDATE columns, DELETE and unrestricted UPDATE are absent, and both Build 076 predecessor freeze triggers remain active;
+- GitHub reports Vercel deployment status `success` for release SHA `275d916c97312d7513209eff387c380f48468eed`;
+- Verify now cancels superseded runs on the same Git ref, preventing stale dev pushes from continuing to clog the release queue.
+
+Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
