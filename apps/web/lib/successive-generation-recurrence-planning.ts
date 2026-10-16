@@ -5,9 +5,9 @@ import { withUserDatabase } from "./database";
 import type { IntegrationTarget } from "./integration-delivery";
 import type { ReconciliationRecordResult } from "./post-delivery-reconciliation";
 import {
-  listPostContinuationGenerationReclosureForUser,
-  type PostContinuationGenerationReclosureModel
-} from "./post-continuation-generation-reclosure-regression";
+  listPostSuccessiveGenerationReclosureForUser,
+  type PostSuccessiveGenerationReclosureModel
+} from "./post-successive-generation-reclosure-regression";
 import {
   buildNextGenerationCorrectivePlanScope
 } from "./recurrent-exception-planning";
@@ -96,7 +96,7 @@ export interface ContinuationGenerationCorrectiveDeliveryPlan {
 }
 
 export interface SuccessiveGenerationRecurrencePlanningModel {
-  recurrence: PostContinuationGenerationReclosureModel;
+  recurrence: PostSuccessiveGenerationReclosureModel;
   retriage: SuccessiveGenerationRecurrenceRetriage[];
   plans: ContinuationGenerationCorrectiveDeliveryPlan[];
   totals: {
@@ -317,7 +317,7 @@ function planFromRow(row: PlanRow): ContinuationGenerationCorrectiveDeliveryPlan
 export async function listSuccessiveGenerationRecurrencePlanningForUser(
   userId: string
 ): Promise<SuccessiveGenerationRecurrencePlanningModel> {
-  const recurrence = await listPostContinuationGenerationReclosureForUser(userId);
+  const recurrence = await listPostSuccessiveGenerationReclosureForUser(userId);
   const data = await withUserDatabase(userId, async (client) => {
     const retriage = await client.query<RetriageRow>(
       sql(
@@ -501,7 +501,7 @@ export async function createSuccessiveGenerationRecurrenceRetriage(
         row.case_id,
         row.target,
         classification,
-        "Re-triage successive-generation recurrence from post-continuation-generation re-closure check " +
+        "Re-triage successive-generation recurrence from post-successive-generation re-closure check " +
           row.successive_generation_reclosure_regression_check_id +
           ".",
         row.successive_generation_recurrence_fingerprint,
