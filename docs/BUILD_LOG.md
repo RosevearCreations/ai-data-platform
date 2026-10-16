@@ -3140,10 +3140,18 @@ Next queued: **Build 077 — Successive-Generation Recurrence Re-Triage & Contin
 
 ## Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning
 
-Implementation staged on `dev`.
+Build 077 is **GREEN on main and production**.
 
 Added migration `0047_successive_generation_recurrence_continuation_planning.sql`, successive-generation recurrence planning library/API/workbench, deterministic continuation-generation scope/fingerprints, exact Build 073/074/075/076 lineage gates, RLS with narrow review/re-triage UPDATE grants, application/database verification, Command Center/reconciliation navigation and same-ref CI concurrency cancellation.
 
-Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+Production promotion evidence:
+- exact `dev` SHA `ee4ae25d63016efcd3292ecb471f10b292f52a34` passed Verify #853;
+- release PR #183 passed Verify #854 on the same exact SHA;
+- release `main` SHA: `275d916c97312d7513209eff387c380f48468eed`;
+- independent `main` Verify #855 passed;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0047_successive_generation_recurrence_continuation_planning.sql`;
+- production audit confirmed 2 RLS tables, 6 intended policies, 2 indexes, SELECT/INSERT runtime grants, 10 narrow re-triage UPDATE columns, 4 narrow plan-review UPDATE columns, no DELETE or unrestricted UPDATE, and both Build 076 predecessor freeze triggers preserved;
+- GitHub reports Vercel deployment status `success` for the release SHA;
+- same-ref Verify concurrency now cancels superseded runs, eliminating new stale dev-run buildup.
 
-Next queued after promotion: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
+Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
