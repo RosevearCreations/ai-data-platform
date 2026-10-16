@@ -17,6 +17,20 @@ async function main() {
   assert(tables.rows.length === 2, "Build 076 tables must exist.");
   assert(tables.rows.every((row) => row.rowsecurity), "Build 076 tables must have RLS.");
 
+  const indexes = await authPool.query<{ indexname:string; tablename:string }>(
+    `select indexname,tablename from pg_indexes
+     where schemaname='app'
+       and indexname in (
+         'workspace_post_successive_reclosure_checks_recent_idx',
+         'workspace_post_successive_reclosure_checks_reclosure_idx'
+       )`
+  );
+  assert(indexes.rows.length === 2, "Build 076 successive-generation monitoring indexes must exist.");
+  assert(
+    indexes.rows.every((row)=>row.tablename==="workspace_post_successive_generation_reclosure_checks"),
+    "Build 076 monitoring indexes must belong to the successive-generation check ledger."
+  );
+
   const policies = await authPool.query<{ policyname: string }>(
     `select policyname from pg_policies
      where schemaname='app'
