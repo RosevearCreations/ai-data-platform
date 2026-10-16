@@ -3100,3 +3100,18 @@ Build 074 is **GREEN on main and production**.
 
 Next queued: **Build 075 — Successive-Generation Corrective Delivery Reconciliation & Re-Closure.**
 
+## Build 075 — Successive-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Added migration `0045_successive_generation_corrective_reconciliation_reclosure.sql`, successive-generation reconciliation library/API/workbench, immutable Build 074 read-back evidence, newest-verification/newest-Build-072-recurrence re-closure gates, a distinct successive-generation re-closure ledger, strengthened generation-aware case-close guards preserving prior fallbacks, compatibility verification for the Build 072 fail-closed rule, and application/database verification.
+
+Production promotion evidence:
+- release PR #178 passed Verify #799 on exact `dev` SHA `4a5fd33df3f2111f2f2ae5949a0793550a3cd131`;
+- release `main` SHA: `49913f570141f957b90adde07b20fb25bd31f7ea`;
+- independent `main` Verify #800 passed on the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0045_successive_generation_corrective_reconciliation_reclosure.sql`;
+- production verification confirmed both Build 075 ledgers have RLS enabled and the current close guard recognizes successive-generation re-closure while preserving earlier generation fallbacks;
+- GitHub reports Vercel deployment status `success` for the release SHA.
+
+Build 075 is **GREEN on main and production**.
+
+Next queued: **Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
