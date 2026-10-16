@@ -230,3 +230,9 @@ Operator UI: `/approved-data/reconciliation/subsequent-generation-recurrence-pla
 Build 074 executes only an approved Build 073 successive-generation plan. It reconstructs the exact accepted Build 070 subsequent-generation package as immutable predecessor evidence, derives a distinct deterministic successive-generation package/replay identity, requires a fresh authenticated live capability handshake plus accepted dry-run, opens a short activation window, reserves delivery evidence before transport, reuses the exact replay/idempotency key for bounded retries, and treats accepted/rejected outcomes as terminal. Build 074 preserves the older Build 070 freeze authority while independently freezing Build 073 re-triage/planning once successive-generation execution begins.
 
 Operator UI: `/approved-data/reconciliation/successive-generation-delivery`.
+
+### Build 075 — Successive-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Build 075 independently reads back an accepted Build 074 successive-generation package and records immutable matched, drift, rejected and transport-error evidence. A Build 072 recurrence may close again only when the newest verification for the exact Build 074 delivery is matched and still belongs to the newest governed recurrence generation. Re-closure is written to a distinct successive-generation ledger that binds the Build 071 predecessor re-closure, Build 072 recurrence, Build 073 plan and Build 074 delivery/package identities without rewriting prior evidence.
+
+Operator UI: `/approved-data/reconciliation/successive-generation-closure`.
