@@ -310,9 +310,9 @@ begin
   if new.status='closed' and old.status is distinct from 'closed' then
     if exists (
       select 1
-      from app.workspace_reconciliation_subsequent_generation_recurrences recurrence3
-      where recurrence3.workspace_id=new.workspace_id
-        and recurrence3.case_id=new.case_id
+      from app.workspace_reconciliation_subsequent_generation_recurrences recurrence4
+      where recurrence4.workspace_id=new.workspace_id
+        and recurrence4.case_id=new.case_id
     ) then
       if not exists (
         select 1
@@ -332,13 +332,35 @@ begin
       end if;
     elsif exists (
       select 1
+      from app.workspace_reconciliation_successor_generation_recurrences recurrence3
+      where recurrence3.workspace_id=new.workspace_id
+        and recurrence3.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1
+        from app.workspace_reconciliation_subsequent_generation_reclosures reclosure
+        where reclosure.workspace_id=new.workspace_id
+          and reclosure.case_id=new.case_id
+          and reclosure.successor_generation_recurrence_id=(
+            select latest_recurrence.successor_generation_recurrence_id
+            from app.workspace_reconciliation_successor_generation_recurrences latest_recurrence
+            where latest_recurrence.workspace_id=new.workspace_id
+              and latest_recurrence.case_id=new.case_id
+            order by latest_recurrence.recurred_at desc,latest_recurrence.successor_generation_recurrence_id desc
+            limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_subsequent_generation_reclosure_required';
+      end if;
+    elsif exists (
+      select 1
       from app.workspace_reconciliation_exception_next_generation_recurrences recurrence2
       where recurrence2.workspace_id=new.workspace_id
         and recurrence2.case_id=new.case_id
     ) then
       if not exists (
         select 1
-        from app.workspace_reconciliation_subsequent_generation_reclosures reclosure
+        from app.workspace_reconciliation_successor_generation_reclosures reclosure
         where reclosure.workspace_id=new.workspace_id
           and reclosure.case_id=new.case_id
           and reclosure.next_generation_recurrence_id=(
@@ -350,7 +372,7 @@ begin
             limit 1
           )
       ) then
-        raise exception 'reconciliation_triage_verified_subsequent_generation_reclosure_required';
+        raise exception 'reconciliation_triage_verified_successor_generation_reclosure_required';
       end if;
     elsif exists (
       select 1
