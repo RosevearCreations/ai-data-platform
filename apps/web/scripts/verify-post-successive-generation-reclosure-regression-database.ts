@@ -121,8 +121,9 @@ async function main() {
   assert(
     closeDefinition.includes("workspace_reconciliation_successive_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_exception_next_generation_reclosures"),
-    "Build 076 close trigger must preserve Build 075, Build 067 and Build 063 generation rules."
+    "Build 076 close trigger must preserve Build 075, Build 071, Build 067 and Build 063 generation rules."
   );
 
   const triggers = await authPool.query<{ trigger_name:string }>(
@@ -136,7 +137,7 @@ async function main() {
          'workspace_successive_generation_reconciliation_recurrence_guard',
          'workspace_successive_generation_reclosure_recurrence_guard',
          'workspace_successive_generation_plan_recurrence_guard',
-         'workspace_successor_retriage_subsequent_recurrence_guard'
+         'workspace_subsequent_retriage_successive_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 076 successive-generation freeze triggers must exist.");
