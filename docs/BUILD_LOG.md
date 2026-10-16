@@ -3136,4 +3136,14 @@ Production promotion evidence:
 
 Build 076 is **GREEN on main and production**.
 
-Next queued: **Build 077 — scope to be confirmed from the current project roadmap before implementation.**
+Next queued: **Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning.**
+
+## Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning
+
+Implementation staged on `dev`.
+
+Added migration `0047_successive_generation_recurrence_continuation_planning.sql`, successive-generation recurrence planning library/API/workbench, deterministic continuation-generation scope/fingerprints, exact Build 073/074/075/076 lineage gates, RLS with narrow review/re-triage UPDATE grants, application/database verification, Command Center/reconciliation navigation and same-ref CI concurrency cancellation.
+
+Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+
+Next queued after promotion: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
