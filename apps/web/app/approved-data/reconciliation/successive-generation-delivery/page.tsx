@@ -41,6 +41,9 @@ export default async function SuccessiveGenerationCorrectiveDeliveryPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-generation-closure">
             Subsequent-generation reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-closure">
+            Successive-generation reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
           </Link>
