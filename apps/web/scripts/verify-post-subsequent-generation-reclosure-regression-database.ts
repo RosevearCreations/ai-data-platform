@@ -114,8 +114,9 @@ async function main() {
     "Build 072 close trigger must detect subsequent-generation recurrence."
   );
   assert(
-    closeDefinition.includes("reconciliation_triage_post_subsequent_generation_reclosure_required"),
-    "Build 072 must fail closed after subsequent-generation recurrence."
+    closeDefinition.includes("reconciliation_triage_post_subsequent_generation_reclosure_required") ||
+      closeDefinition.includes("reconciliation_triage_verified_successive_generation_reclosure_required"),
+    "Build 072 must remain fail-closed after subsequent-generation recurrence, including the stronger Build 075 re-closure guard."
   );
   assert(
     closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
