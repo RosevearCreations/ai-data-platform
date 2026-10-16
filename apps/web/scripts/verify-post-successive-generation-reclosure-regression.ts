@@ -22,14 +22,14 @@ const approvedAt = "2026-10-14T12:00:00.000Z";
 const sourceDatasetUpdatedAt = "2026-10-14T11:30:00.000Z";
 const operations = [{
   action: "update" as const,
-  integrationKey: "rosie-competitor::build-072-fixture",
+  integrationKey: "rosie-competitor::build-076-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
-    sourceUrl: "https://example.test/build-072",
+    sourceUrl: "https://example.test/build-076",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "successive-generation-plan:build-072-fixture";
+const batchId = "successive-generation-plan:build-076-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
@@ -123,7 +123,7 @@ assert(
 
 const recurrenceInput = {
   successiveGenerationReclosureId: "reclosure-075",
-  successiveGenerationReclosureRegressionCheckId: "check-072",
+  successiveGenerationReclosureRegressionCheckId: "check-076",
   caseId: "case-053",
   successiveGenerationReclosureFingerprint: "reclosure-fingerprint",
   regressionFingerprint: recurred.verificationFingerprint,
