@@ -22,14 +22,14 @@ const approvedAt = "2026-10-13T21:30:00.000Z";
 const sourceDatasetUpdatedAt = "2026-10-13T21:00:00.000Z";
 const operations = [{
   action: "update" as const,
-  integrationKey: "rosie-competitor::build-071-fixture",
+  integrationKey: "rosie-competitor::build-075-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
-    sourceUrl: "https://example.test/build-071",
+    sourceUrl: "https://example.test/build-075",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "successive-generation-plan:build-071-fixture";
+const batchId = "successive-generation-plan:build-075-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
@@ -118,12 +118,12 @@ assert(
 );
 
 const reclosureInput = {
-  predecessorSubsequentGenerationReclosureId: "reclosure-067",
-  subsequentGenerationRecurrenceId: "recurrence-068",
-  subsequentGenerationRetriageId: "retriage-069",
-  successiveGenerationPlanId: "plan-069",
-  successiveGenerationDeliveryId: "delivery-070",
-  successiveGenerationReconciliationId: "reconciliation-071",
+  predecessorSubsequentGenerationReclosureId: "reclosure-071",
+  subsequentGenerationRecurrenceId: "recurrence-072",
+  subsequentGenerationRetriageId: "retriage-073",
+  successiveGenerationPlanId: "plan-073",
+  successiveGenerationDeliveryId: "delivery-074",
+  successiveGenerationReconciliationId: "reconciliation-075",
   predecessorSubsequentGenerationReclosureFingerprint: "subsequent-generation-reclosure-fingerprint",
   subsequentGenerationRecurrenceFingerprint: "subsequent-generation-recurrence-fingerprint",
   successiveGenerationPlanFingerprint: "successive-generation-plan-fingerprint",
@@ -142,7 +142,7 @@ assert(one !== changed, "Build 075 re-closure fingerprint must bind the closure 
 assert(one.startsWith("successive-generation-reclosure1-"), "Build 075 re-closure fingerprint must be versioned.");
 assert(
   successiveGenerationReclosureConfirmation("devil-n-dove") ===
-    "RE-CLOSE SUBSEQUENT-GENERATION DEVIL-N-DOVE EXCEPTION",
+    "RE-CLOSE SUCCESSIVE-GENERATION DEVIL-N-DOVE EXCEPTION",
   "Build 075 typed confirmation phrase changed unexpectedly."
 );
 
