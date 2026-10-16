@@ -236,3 +236,10 @@ Operator UI: `/approved-data/reconciliation/successive-generation-delivery`.
 Build 075 independently reads back an accepted Build 074 successive-generation package and records immutable matched, drift, rejected and transport-error evidence. A Build 072 recurrence may close again only when the newest verification for the exact Build 074 delivery is matched and still belongs to the newest governed recurrence generation. Re-closure is written to a distinct successive-generation ledger that binds the Build 071 predecessor re-closure, Build 072 recurrence, Build 073 plan and Build 074 delivery/package identities without rewriting prior evidence.
 
 Operator UI: `/approved-data/reconciliation/successive-generation-closure`.
+
+
+### Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 076 monitors the exact Build 074 package after verified Build 075 successive-generation re-closure. It records immutable stable, recurred, rejected and transport-error evidence, permits an explicit governed successive-generation recurrence only from the newest recurrent read-back for the newest Build 075 re-closure, freezes the completed Build 073–075 cycle after recurrence, and preserves all earlier reopen and re-closure generations. The two Build 076 ledgers remain append-only under RLS with runtime SELECT/INSERT only.
+
+Operator UI: `/approved-data/reconciliation/post-successive-generation-reclosure`.

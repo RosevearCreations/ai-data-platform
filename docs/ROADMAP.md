@@ -1920,3 +1920,33 @@ Promotion evidence:
 - GitHub reports Vercel deployment status `success` for the release SHA.
 
 Next queued: **Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+
+## Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Status: **production GREEN**.
+
+Scope:
+- independently re-read the exact accepted Build 074 package after verified Build 075 successive-generation re-closure;
+- preserve immutable stable, recurred, rejected and transport-error monitoring evidence;
+- bind monitoring to the newest Build 075 re-closure and exact Build 074 delivery/package identity;
+- permit governed successive-generation recurrence only from the newest recurrent read-back for that newest re-closure;
+- create a distinct successive-generation recurrence ledger without rewriting Build 075 or earlier evidence;
+- extend the governed reopen guard to recognize successive-generation recurrence while preserving successor/subsequent and earlier recurrence generations;
+- freeze Build 073–075 planning, activation, delivery, reconciliation and re-closure evidence once successive-generation recurrence exists;
+- keep both Build 076 ledgers append-only under RLS with runtime SELECT/INSERT only and no UPDATE/DELETE;
+- provide the post-successive-generation monitoring API/workbench and expose it from the Command Center and Build 075 re-closure workflow.
+
+Promotion evidence:
+- implementation Verify #818 passed on exact `dev` SHA `f5c3ebfc2289ed46045b6590f9755f4c3b45ed28`;
+- release PR #180 passed Verify #819 and merged to `main` at `05e2246ab8a4e9a30299731ce67d484beba3257d`;
+- independent initial `main` Verify #820 passed;
+- production preflight detected two predecessor index-name collisions before migration 0046 was applied;
+- corrective Verify #823 passed on exact `dev` SHA `a74740f2ebec7ffd78d5bbdf206c270f8968b902`;
+- corrective PR #181 passed Verify #824 and merged to `main` at `ab365dd3395d558cca3bf256c947f88a7e368a33`;
+- independent corrected `main` Verify #825 passed on that exact SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0046_post_successive_generation_reclosure_recurrence_governance.sql`;
+- production audit confirms both Build 076 tables use RLS, all four policies exist, both corrected monitoring indexes belong to the successive-generation ledger, all six freeze triggers exist, runtime grants are SELECT/INSERT only, and successor/subsequent/successive reopen/close guards are all preserved;
+- GitHub reports Vercel deployment status `success` for corrected release SHA `ab365dd3395d558cca3bf256c947f88a7e368a33`.
+
+Next queued: **Build 077 — scope to be confirmed from the current project roadmap before implementation.**
