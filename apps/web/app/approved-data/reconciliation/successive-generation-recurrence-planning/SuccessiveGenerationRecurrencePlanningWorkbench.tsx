@@ -239,7 +239,7 @@ export function SuccessiveGenerationRecurrencePlanningWorkbench({
       </section>
 
       <section className="correctiveNotice">
-        <strong>A successive-generation recurrence starts a successive corrective generation</strong>
+        <strong>A successive-generation recurrence starts a continuation corrective generation</strong>
         <p>
           Build 077 never edits or reuses the Build 073 plan. It starts from the
           exact Build 076 recurrence and limits corrective scope to fields proven
@@ -512,7 +512,7 @@ export function SuccessiveGenerationRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this successive-generation recurrence enter a successive corrective generation?"
+                          placeholder="Why should this successive-generation recurrence enter a continuation corrective generation?"
                         />
                       </label>
                       <button
