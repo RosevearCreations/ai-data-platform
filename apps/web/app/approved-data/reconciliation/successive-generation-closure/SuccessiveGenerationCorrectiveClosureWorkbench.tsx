@@ -9,7 +9,7 @@ import type {
 import type { SuccessiveGenerationCorrectiveLiveDelivery } from "@/lib/successive-generation-corrective-delivery-execution";
 
 function confirmationPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
-  return "RE-CLOSE SUBSEQUENT-GENERATION " + target.toUpperCase() + " EXCEPTION";
+  return "RE-CLOSE SUCCESSIVE-GENERATION " + target.toUpperCase() + " EXCEPTION";
 }
 
 async function callApi(
@@ -29,7 +29,7 @@ async function callApi(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Subsequent-generation reconciliation request failed."
+        : "Successive-generation reconciliation request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -95,8 +95,8 @@ export function SuccessiveGenerationCorrectiveClosureWorkbench({
       apply(payload);
       setMessage(
         payload.result === "matched"
-          ? "Subsequent-generation consumer state matches the exact delivered package."
-          : "Subsequent-generation read-back recorded without closing the exception."
+          ? "Successive-generation consumer state matches the exact delivered package."
+          : "Successive-generation read-back recorded without closing the exception."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Verification failed.");
@@ -141,7 +141,7 @@ export function SuccessiveGenerationCorrectiveClosureWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 075 independent read-back</p>
-            <h2>Subsequent-generation re-closure readiness</h2>
+            <h2>Successive-generation re-closure readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
