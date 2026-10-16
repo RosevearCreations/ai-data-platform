@@ -3115,3 +3115,25 @@ Production promotion evidence:
 Build 075 is **GREEN on main and production**.
 
 Next queued: **Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+
+## Build 076 — Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Added migration `0046_post_successive_generation_reclosure_recurrence_governance.sql`, post-successive-generation monitoring library/API/workbench, immutable stable/recurred/error evidence, governed successive-generation recurrence, independent recurrence freeze guards, stronger generation-aware reopen/close guards, corrected non-colliding monitoring indexes, Command Center navigation, and application/database verification.
+
+Production promotion evidence:
+- implementation Verify #818 passed on `dev` SHA `f5c3ebfc2289ed46045b6590f9755f4c3b45ed28`;
+- PR #180 passed Verify #819 and initially merged Build 076 to `main`;
+- independent initial `main` Verify #820 passed;
+- production preflight caught two Build 076 monitoring index names colliding with predecessor Build 072 before migration 0046 reached Neon;
+- corrected Verify #823 passed on `dev` SHA `a74740f2ebec7ffd78d5bbdf206c270f8968b902`;
+- corrective PR #181 passed Verify #824;
+- corrected release `main` SHA: `ab365dd3395d558cca3bf256c947f88a7e368a33`;
+- independent corrected `main` Verify #825 passed;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0046_post_successive_generation_reclosure_recurrence_governance.sql`;
+- production database verification confirms 2 RLS ledgers, 4 intended policies, 2 corrected monitoring indexes on the Build 076 ledger, 6 recurrence freeze triggers, SELECT/INSERT-only runtime grants, and preserved successor/subsequent/successive guard coverage;
+- GitHub reports Vercel deployment status `success` for the corrected release SHA.
+
+Build 076 is **GREEN on main and production**.
+
+Next queued: **Build 077 — scope to be confirmed from the current project roadmap before implementation.**
