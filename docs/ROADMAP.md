@@ -1949,4 +1949,22 @@ Promotion evidence:
 - production audit confirms both Build 076 tables use RLS, all four policies exist, both corrected monitoring indexes belong to the successive-generation ledger, all six freeze triggers exist, runtime grants are SELECT/INSERT only, and successor/subsequent/successive reopen/close guards are all preserved;
 - GitHub reports Vercel deployment status `success` for corrected release SHA `ab365dd3395d558cca3bf256c947f88a7e368a33`.
 
-Next queued: **Build 077 — scope to be confirmed from the current project roadmap before implementation.**
+Next queued: **Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning.**
+
+## Build 077 — Successive-Generation Recurrence Re-Triage & Continuation-Generation Corrective Planning
+
+Status: **implementation complete; promotion pending**.
+
+Scope:
+- consume only the newest governed Build 076 successive-generation recurrence for an open case;
+- create one distinct owner/admin successive-generation recurrence re-triage cycle without rewriting Build 073–076 evidence;
+- derive affected records/fields only from the newest Build 076 recurrent verification;
+- intersect proposed continuation-generation correction scope with values already governed by the approved Build 073 successive-generation plan;
+- bind the exact Build 074 accepted delivery/package identity, Build 075 re-closure and Build 076 recurrence fingerprints;
+- keep Build 077 planning-only: no consumer handshake, activation, delivery or downstream write;
+- store re-triage and continuation-generation plan evidence in separate RLS-protected tables with SELECT/INSERT plus narrow review/re-triage UPDATE columns and no DELETE;
+- preserve the Build 076 freeze authority over the completed Build 073–075 predecessor cycle;
+- expose the planning workflow through the reconciliation hub and Command Center;
+- cancel superseded Verify runs on the same Git ref so stale dev pushes no longer clog the release queue.
+
+Next queued after Build 077 promotion: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
