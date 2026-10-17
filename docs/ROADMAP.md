@@ -2043,3 +2043,21 @@ Promotion evidence:
 - the generation-aware close guard now requires continuation-generation re-closure for the newest successive-generation recurrence while preserving Build 075 successive-generation, Build 071 subsequent-generation, successor-generation, next-generation, successor re-closure and original closure fallbacks.
 
 Next queued: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+## Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Status: **implementation complete; promotion pending**.
+
+Scope:
+- independently re-read the exact accepted Build 078 continuation-generation package after verified Build 079 re-closure;
+- preserve immutable stable, recurred, rejected and transport-error monitoring evidence;
+- bind monitoring to the newest Build 079 continuation-generation re-closure and exact Build 078 delivery/package identity;
+- permit governed continuation-generation recurrence only from the newest recurrent read-back for that newest re-closure;
+- create a distinct continuation-generation recurrence ledger without rewriting Build 079 or earlier evidence;
+- extend governed reopen protection to continuation-generation recurrence while preserving all predecessor recurrence generations;
+- freeze Build 077–079 continuation planning, activation, delivery, reconciliation and re-closure evidence once continuation-generation recurrence exists;
+- keep both Build 080 ledgers append-only under RLS with runtime SELECT/INSERT only and no UPDATE/DELETE;
+- preserve PostgreSQL-safe unique identifier/index/trigger names and the shortened Build 078 activation-table lineage;
+- expose post-continuation monitoring through the Build 079 workflow, reconciliation hub and Command Center.
+
+Next queued after Build 080 promotion: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**
