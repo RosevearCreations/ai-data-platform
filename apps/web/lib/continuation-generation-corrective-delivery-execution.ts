@@ -653,7 +653,7 @@ export async function listContinuationGenerationCorrectiveDeliveryForUser(
   const data = await withUserDatabase(userId, async (client) => {
     const activations = await client.query<ActivationRow>(
       `select a.*,w.name as workspace_name,wm.role
-       from app.workspace_continuation_generation_corrective_delivery_activations a
+       from app.workspace_continuation_generation_delivery_activations a
        join app.workspaces w on w.id=a.workspace_id
        join app.workspace_members wm
          on wm.workspace_id=a.workspace_id
@@ -862,7 +862,7 @@ export async function createContinuationGenerationCorrectiveDeliveryActivation(
     }
 
     await client.query(
-      `update app.workspace_continuation_generation_corrective_delivery_activations
+      `update app.workspace_continuation_generation_delivery_activations
        set status='revoked',revoked_by=$3,revoked_at=now(),
            revocation_note='expired before replacement'
        where workspace_id=$1 and continuation_generation_plan_id=$2
@@ -875,7 +875,7 @@ export async function createContinuationGenerationCorrectiveDeliveryActivation(
       activation_fingerprint: string;
     }>(
       `select activation_id,activation_fingerprint
-       from app.workspace_continuation_generation_corrective_delivery_activations
+       from app.workspace_continuation_generation_delivery_activations
        where workspace_id=$1 and continuation_generation_plan_id=$2
          and status='active' and expires_at>now()
        limit 1`,
@@ -901,7 +901,7 @@ export async function createContinuationGenerationCorrectiveDeliveryActivation(
 
     const activationId = randomUUID();
     await client.query(
-      `insert into app.workspace_continuation_generation_corrective_delivery_activations (
+      `insert into app.workspace_continuation_generation_delivery_activations (
         workspace_id,activation_id,continuation_generation_plan_id,successive_generation_retriage_id,
         successive_generation_recurrence_id,successive_generation_reclosure_id,successive_generation_reclosure_regression_check_id,case_id,target,
         status,consumer_id,continuation_generation_plan_fingerprint,
@@ -966,7 +966,7 @@ export async function getActiveContinuationGenerationCorrectiveDeliveryActivatio
   return withUserDatabase(userId, async (client) => {
     const result = await client.query<ActivationRow>(
       `select a.*,w.name as workspace_name
-       from app.workspace_continuation_generation_corrective_delivery_activations a
+       from app.workspace_continuation_generation_delivery_activations a
        join app.workspaces w on w.id=a.workspace_id
        join app.workspace_continuation_generation_corrective_delivery_plans p
          on p.workspace_id=a.workspace_id
@@ -1028,7 +1028,7 @@ export async function reserveIdempotentContinuationGenerationCorrectiveDelivery(
       `select status,expires_at,activation_fingerprint,continuation_generation_plan_id,
               consumer_id,continuation_generation_package_id,continuation_generation_replay_key,
               continuation_generation_package_fingerprint
-       from app.workspace_continuation_generation_corrective_delivery_activations
+       from app.workspace_continuation_generation_delivery_activations
        where workspace_id=$1 and activation_id=$2
        limit 1`,
       [input.workspaceId, input.activation.activationId]
@@ -1190,7 +1190,7 @@ export async function revokeContinuationGenerationCorrectiveDeliveryActivation(
   return withUserDatabase(userId, async (client) => {
     await requireManager(client, input.workspaceId);
     const result = await client.query(
-      `update app.workspace_continuation_generation_corrective_delivery_activations
+      `update app.workspace_continuation_generation_delivery_activations
        set status='revoked',revoked_by=$3,revoked_at=now(),revocation_note=$4
        where workspace_id=$1 and activation_id=$2 and status='active'`,
       [
