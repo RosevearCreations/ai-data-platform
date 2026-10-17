@@ -5,6 +5,14 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
+  assert(
+    "workspace_continuation_generation_delivery_reconciliations".length <= 63 &&
+      "workspace_reconciliation_continuation_generation_reclosures".length <= 63 &&
+      "workspace_continuation_generation_reconciliations_recent_idx".length <= 63 &&
+      "workspace_continuation_generation_reconciliations_delivery_idx".length <= 63 &&
+      "workspace_continuation_generation_reclosures_recent_idx".length <= 63,
+    "Build 079 PostgreSQL identifiers must remain within 63 bytes."
+  );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
     `select c.relname as table_name,c.relrowsecurity as rowsecurity
      from pg_class c
@@ -128,6 +136,16 @@ async function main() {
   assert(
     definition.includes("workspace_reconciliation_successive_generation_reclosures"),
     "Build 079 close trigger must preserve Build 075 successive-generation re-closure behavior."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_subsequent_generation_recurrences") &&
+      definition.includes("workspace_reconciliation_subsequent_generation_reclosures"),
+    "Build 079 close trigger must preserve Build 071 subsequent-generation re-closure behavior."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_successor_generation_recurrences") &&
+      definition.includes("workspace_reconciliation_successor_generation_reclosures"),
+    "Build 079 close trigger must preserve successor-generation fallback behavior."
   );
   assert(
     definition.includes("workspace_reconciliation_exception_next_generation_recurrences"),
