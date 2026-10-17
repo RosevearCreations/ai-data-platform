@@ -3155,3 +3155,15 @@ Production promotion evidence:
 - same-ref Verify concurrency now cancels superseded runs, eliminating new stale dev-run buildup.
 
 Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution
+
+Implementation staged on `dev`.
+
+Added migration `0048_continuation_generation_corrective_delivery_execution.sql`, deterministic continuation-generation package derivation, fresh capability/dry-run activation, durable pre-send reservation, replay-key idempotency, five-attempt transport retry bounds, terminal accepted/rejected outcomes, independent Build 078 planning-freeze guards, API/workbench navigation and application/database verification.
+
+The first full Verify (#877) exposed a PostgreSQL identifier-length issue before promotion: the intended activation table name was 65 characters and PostgreSQL truncates identifiers at 63 bytes. The table was renamed to `workspace_continuation_generation_delivery_activations`, all runtime/verifier references were updated, and an explicit identifier-length assertion was added. Corrected Verify #880 passed the complete dev gate.
+
+Promotion evidence: pending PR, independent `main`, Neon and Vercel production verification.
+
+Next queued after promotion: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
