@@ -1,4 +1,4 @@
-create table if not exists app.workspace_continuation_generation_corrective_delivery_activations (
+create table if not exists app.workspace_continuation_generation_delivery_activations (
   workspace_id uuid not null references app.workspaces(id) on delete cascade,
   activation_id uuid not null,
   continuation_generation_plan_id uuid not null,
@@ -64,11 +64,11 @@ create table if not exists app.workspace_continuation_generation_corrective_deli
 );
 
 create unique index if not exists workspace_continuation_generation_activations_one_active_idx
-  on app.workspace_continuation_generation_corrective_delivery_activations(workspace_id,continuation_generation_plan_id)
+  on app.workspace_continuation_generation_delivery_activations(workspace_id,continuation_generation_plan_id)
   where status='active';
 
 create index if not exists workspace_continuation_generation_activations_recent_idx
-  on app.workspace_continuation_generation_corrective_delivery_activations(workspace_id,activated_at desc);
+  on app.workspace_continuation_generation_delivery_activations(workspace_id,activated_at desc);
 
 create table if not exists app.workspace_continuation_generation_corrective_live_deliveries (
   workspace_id uuid not null references app.workspaces(id) on delete cascade,
@@ -100,7 +100,7 @@ create table if not exists app.workspace_continuation_generation_corrective_live
   primary key (workspace_id,delivery_id),
   unique (workspace_id,consumer_id,continuation_generation_package_id),
   foreign key (workspace_id,activation_id)
-    references app.workspace_continuation_generation_corrective_delivery_activations(workspace_id,activation_id)
+    references app.workspace_continuation_generation_delivery_activations(workspace_id,activation_id)
     on delete restrict,
   foreign key (workspace_id,continuation_generation_plan_id)
     references app.workspace_continuation_generation_corrective_delivery_plans(workspace_id,continuation_generation_plan_id)
@@ -113,9 +113,9 @@ create table if not exists app.workspace_continuation_generation_corrective_live
 create index if not exists workspace_continuation_generation_live_recent_idx
   on app.workspace_continuation_generation_corrective_live_deliveries(workspace_id,updated_at desc);
 
-grant select,insert on app.workspace_continuation_generation_corrective_delivery_activations to ai_data_runtime;
+grant select,insert on app.workspace_continuation_generation_delivery_activations to ai_data_runtime;
 grant update (status,revoked_by,revoked_at,revocation_note)
-  on app.workspace_continuation_generation_corrective_delivery_activations to ai_data_runtime;
+  on app.workspace_continuation_generation_delivery_activations to ai_data_runtime;
 
 grant select,insert on app.workspace_continuation_generation_corrective_live_deliveries to ai_data_runtime;
 grant update (
@@ -123,26 +123,26 @@ grant update (
   acknowledgement,last_attempt_at,updated_at
 ) on app.workspace_continuation_generation_corrective_live_deliveries to ai_data_runtime;
 
-alter table app.workspace_continuation_generation_corrective_delivery_activations enable row level security;
+alter table app.workspace_continuation_generation_delivery_activations enable row level security;
 alter table app.workspace_continuation_generation_corrective_live_deliveries enable row level security;
 
 drop policy if exists continuation_generation_activations_member_select
-  on app.workspace_continuation_generation_corrective_delivery_activations;
+  on app.workspace_continuation_generation_delivery_activations;
 create policy continuation_generation_activations_member_select
-on app.workspace_continuation_generation_corrective_delivery_activations
+on app.workspace_continuation_generation_delivery_activations
 for select to ai_data_runtime
 using (
   exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_continuation_generation_corrective_delivery_activations.workspace_id
+    where wm.workspace_id=workspace_continuation_generation_delivery_activations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
   )
 );
 
 drop policy if exists continuation_generation_activations_manager_insert
-  on app.workspace_continuation_generation_corrective_delivery_activations;
+  on app.workspace_continuation_generation_delivery_activations;
 create policy continuation_generation_activations_manager_insert
-on app.workspace_continuation_generation_corrective_delivery_activations
+on app.workspace_continuation_generation_delivery_activations
 for insert to ai_data_runtime
 with check (
   activated_by=nullif(current_setting('app.user_id',true),'')
@@ -169,21 +169,21 @@ with check (
     join app.workspace_successive_generation_corrective_live_deliveries predecessor_delivery
       on predecessor_delivery.workspace_id=p.workspace_id
      and predecessor_delivery.delivery_id=p.predecessor_successive_generation_delivery_id
-    where p.workspace_id=workspace_continuation_generation_corrective_delivery_activations.workspace_id
-      and p.continuation_generation_plan_id=workspace_continuation_generation_corrective_delivery_activations.continuation_generation_plan_id
-      and p.successive_generation_retriage_id=workspace_continuation_generation_corrective_delivery_activations.successive_generation_retriage_id
-      and p.successive_generation_recurrence_id=workspace_continuation_generation_corrective_delivery_activations.successive_generation_recurrence_id
-      and p.successive_generation_reclosure_id=workspace_continuation_generation_corrective_delivery_activations.successive_generation_reclosure_id
-      and p.successive_generation_reclosure_regression_check_id=workspace_continuation_generation_corrective_delivery_activations.successive_generation_reclosure_regression_check_id
-      and p.case_id=workspace_continuation_generation_corrective_delivery_activations.case_id
-      and p.target=workspace_continuation_generation_corrective_delivery_activations.target
+    where p.workspace_id=workspace_continuation_generation_delivery_activations.workspace_id
+      and p.continuation_generation_plan_id=workspace_continuation_generation_delivery_activations.continuation_generation_plan_id
+      and p.successive_generation_retriage_id=workspace_continuation_generation_delivery_activations.successive_generation_retriage_id
+      and p.successive_generation_recurrence_id=workspace_continuation_generation_delivery_activations.successive_generation_recurrence_id
+      and p.successive_generation_reclosure_id=workspace_continuation_generation_delivery_activations.successive_generation_reclosure_id
+      and p.successive_generation_reclosure_regression_check_id=workspace_continuation_generation_delivery_activations.successive_generation_reclosure_regression_check_id
+      and p.case_id=workspace_continuation_generation_delivery_activations.case_id
+      and p.target=workspace_continuation_generation_delivery_activations.target
       and p.status='approved'
-      and p.plan_fingerprint=workspace_continuation_generation_corrective_delivery_activations.continuation_generation_plan_fingerprint
-      and p.source_successive_generation_recurrence_fingerprint=workspace_continuation_generation_corrective_delivery_activations.source_successive_generation_recurrence_fingerprint
-      and p.source_regression_fingerprint=workspace_continuation_generation_corrective_delivery_activations.source_regression_fingerprint
-      and p.source_successive_generation_reclosure_fingerprint=workspace_continuation_generation_corrective_delivery_activations.source_successive_generation_reclosure_fingerprint
-      and p.predecessor_successive_generation_plan_id=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_plan_id
-      and p.predecessor_successive_generation_delivery_id=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_delivery_id
+      and p.plan_fingerprint=workspace_continuation_generation_delivery_activations.continuation_generation_plan_fingerprint
+      and p.source_successive_generation_recurrence_fingerprint=workspace_continuation_generation_delivery_activations.source_successive_generation_recurrence_fingerprint
+      and p.source_regression_fingerprint=workspace_continuation_generation_delivery_activations.source_regression_fingerprint
+      and p.source_successive_generation_reclosure_fingerprint=workspace_continuation_generation_delivery_activations.source_successive_generation_reclosure_fingerprint
+      and p.predecessor_successive_generation_plan_id=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_plan_id
+      and p.predecessor_successive_generation_delivery_id=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_delivery_id
       and t.status='approved'
       and recurrence.successive_generation_recurrence_fingerprint=p.source_successive_generation_recurrence_fingerprint
       and recurrence.regression_fingerprint=p.source_regression_fingerprint
@@ -194,11 +194,11 @@ with check (
       and c.status='open'
       and predecessor_plan.status='approved'
       and predecessor_delivery.status='accepted'
-      and predecessor_delivery.delivery_id=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_delivery_id
-      and predecessor_delivery.consumer_id=workspace_continuation_generation_corrective_delivery_activations.consumer_id
-      and predecessor_delivery.successive_generation_package_id=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_package_id
-      and predecessor_delivery.successive_generation_replay_key=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_replay_key
-      and predecessor_delivery.successive_generation_package_fingerprint=workspace_continuation_generation_corrective_delivery_activations.predecessor_successive_generation_package_fingerprint
+      and predecessor_delivery.delivery_id=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_delivery_id
+      and predecessor_delivery.consumer_id=workspace_continuation_generation_delivery_activations.consumer_id
+      and predecessor_delivery.successive_generation_package_id=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_package_id
+      and predecessor_delivery.successive_generation_replay_key=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_replay_key
+      and predecessor_delivery.successive_generation_package_fingerprint=workspace_continuation_generation_delivery_activations.predecessor_successive_generation_package_fingerprint
       and recurrence.successive_generation_recurrence_id=(
         select newest.successive_generation_recurrence_id
         from app.workspace_reconciliation_successive_generation_recurrences newest
@@ -210,21 +210,21 @@ with check (
   )
   and exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_continuation_generation_corrective_delivery_activations.workspace_id
+    where wm.workspace_id=workspace_continuation_generation_delivery_activations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
       and wm.role in ('owner','admin')
   )
 );
 
 drop policy if exists continuation_generation_activations_manager_update
-  on app.workspace_continuation_generation_corrective_delivery_activations;
+  on app.workspace_continuation_generation_delivery_activations;
 create policy continuation_generation_activations_manager_update
-on app.workspace_continuation_generation_corrective_delivery_activations
+on app.workspace_continuation_generation_delivery_activations
 for update to ai_data_runtime
 using (
   exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_continuation_generation_corrective_delivery_activations.workspace_id
+    where wm.workspace_id=workspace_continuation_generation_delivery_activations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
       and wm.role in ('owner','admin')
   )
@@ -232,7 +232,7 @@ using (
 with check (
   exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_continuation_generation_corrective_delivery_activations.workspace_id
+    where wm.workspace_id=workspace_continuation_generation_delivery_activations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
       and wm.role in ('owner','admin')
   )
@@ -260,7 +260,7 @@ with check (
   created_by=nullif(current_setting('app.user_id',true),'')
   and exists (
     select 1
-    from app.workspace_continuation_generation_corrective_delivery_activations a
+    from app.workspace_continuation_generation_delivery_activations a
     join app.workspace_continuation_generation_corrective_delivery_plans p
       on p.workspace_id=a.workspace_id
      and p.continuation_generation_plan_id=a.continuation_generation_plan_id
@@ -363,7 +363,7 @@ as $$
 begin
   if exists (
     select 1
-    from app.workspace_continuation_generation_corrective_delivery_activations activation
+    from app.workspace_continuation_generation_delivery_activations activation
     where activation.workspace_id=new.workspace_id
       and activation.case_id=new.case_id
   ) then
