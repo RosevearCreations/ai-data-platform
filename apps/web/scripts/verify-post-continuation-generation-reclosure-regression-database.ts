@@ -5,6 +5,23 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
+  const postgresIdentifiers = [
+    "workspace_post_continuation_generation_reclosure_checks",
+    "workspace_reconciliation_continuation_generation_recurrences",
+    "workspace_post_continuation_reclosure_checks_recent_idx",
+    "workspace_post_continuation_reclosure_checks_reclosure_idx",
+    "workspace_continuation_generation_recurrences_recent_idx",
+    "workspace_continuation_activation_recurrence_guard",
+    "workspace_continuation_delivery_recurrence_guard",
+    "workspace_continuation_reconciliation_recurrence_guard",
+    "workspace_continuation_reclosure_recurrence_guard",
+    "workspace_continuation_plan_recurrence_guard",
+    "workspace_successive_retriage_continuation_recurrence_guard"
+  ];
+  assert(
+    postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
+    "Build 080 PostgreSQL identifiers must remain within the 63-byte limit."
+  );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
     `select c.relname as table_name,c.relrowsecurity as rowsecurity
      from pg_class c join pg_namespace n on n.oid=c.relnamespace
@@ -21,8 +38,8 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_post_successive_reclosure_checks_recent_idx',
-         'workspace_post_successive_reclosure_checks_reclosure_idx'
+         'workspace_post_continuation_reclosure_checks_recent_idx',
+         'workspace_post_continuation_reclosure_checks_reclosure_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 080 continuation-generation monitoring indexes must exist.");
@@ -146,12 +163,12 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_continuation_generation_activation_recurrence_guard',
-         'workspace_continuation_generation_delivery_recurrence_guard',
-         'workspace_continuation_generation_reconciliation_recurrence_guard',
-         'workspace_continuation_generation_reclosure_recurrence_guard',
-         'workspace_continuation_generation_plan_recurrence_guard',
-         'workspace_subsequent_retriage_successive_recurrence_guard'
+         'workspace_continuation_activation_recurrence_guard',
+         'workspace_continuation_delivery_recurrence_guard',
+         'workspace_continuation_reconciliation_recurrence_guard',
+         'workspace_continuation_reclosure_recurrence_guard',
+         'workspace_continuation_plan_recurrence_guard',
+         'workspace_successive_retriage_continuation_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 080 continuation-generation freeze triggers must exist.");

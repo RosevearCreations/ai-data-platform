@@ -22,7 +22,7 @@ export default async function PostContinuationGenerationReclosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 080</p>
-        <h1>Post-Successive-Generation Re-Closure Regression Monitoring & Recurrence Governance</h1>
+        <h1>Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance</h1>
         <p className="lead">
           Monitor the exact Build 078 package after verified Build 079 re-closure,
           preserve stable and recurrent evidence, and reopen only through an
