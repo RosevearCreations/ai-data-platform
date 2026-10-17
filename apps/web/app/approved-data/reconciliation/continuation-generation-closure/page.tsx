@@ -23,7 +23,7 @@ export default async function ContinuationGenerationCorrectiveClosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 079</p>
-        <h1>Successive-Generation Corrective Delivery Reconciliation & Re-Closure</h1>
+        <h1>Continuation-Generation Corrective Delivery Reconciliation & Re-Closure</h1>
         <p className="lead">
           Independently read back the exact accepted Build 078 package, preserve
           matched/drift/error evidence, and close the recurrence generation only
@@ -31,17 +31,14 @@ export default async function ContinuationGenerationCorrectiveClosurePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/post-continuation-generation-reclosure">
-            Post-continuation-generation recurrence monitoring
-          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-successive-generation-reclosure">
             Predecessor post-successive-generation monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-delivery">
-            Successive-generation delivery
+            Continuation-generation delivery
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-recurrence-planning">
-            Subsequent-generation recurrence planning
+            Successive-generation recurrence planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
