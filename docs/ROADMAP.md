@@ -1981,7 +1981,7 @@ Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activat
 
 ## Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution
 
-Status: **implementation complete; promotion pending**.
+Status: **production GREEN**.
 
 Scope:
 - execute only approved Build 077 continuation-generation plans for the newest governed Build 076 recurrence;
@@ -2002,4 +2002,15 @@ Implementation verification:
 - the activation table was renamed within PostgreSQL's 63-byte identifier limit and the verifier now asserts both Build 078 table identifiers remain within that limit;
 - corrected exact-`dev` Verify #880 passed migrations, typecheck/lint/build/tests and database/auth/workspace isolation.
 
-Next queued after Build 078 promotion: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
+Promotion evidence:
+- corrected implementation Verify #880 passed after the PostgreSQL identifier-length fix;
+- final exact `dev` SHA `ab97471891e83cbff81827bc731287721e8a7011` passed Verify #883;
+- release PR #185 passed independent Verify #884 on the same exact SHA and merged to `main`;
+- release `main` SHA is `27fd8c72d391445b7f188bc5ead5efb4e4f326e9`;
+- independent `main` Verify #885 passed migrations, application tests and database/auth/workspace isolation;
+- GitHub reports Vercel deployment status `success` for the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0048_continuation_generation_corrective_delivery_execution.sql`;
+- production audit confirms both Build 078 tables exist with RLS, all six intended policies, all three intended indexes, two SELECT and two INSERT runtime grants, no unrestricted UPDATE or DELETE, exactly 4 activation and 8 delivery UPDATE columns, both Build 078 freeze triggers/function, and a database retry bound of five attempts;
+- production identifier audit confirms `workspace_continuation_generation_delivery_activations` is 54 characters and `workspace_continuation_generation_corrective_live_deliveries` is 60, both within PostgreSQL's 63-byte limit.
+
+Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
