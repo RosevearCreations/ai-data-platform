@@ -2014,3 +2014,21 @@ Promotion evidence:
 - production identifier audit confirms `workspace_continuation_generation_delivery_activations` is 54 characters and `workspace_continuation_generation_corrective_live_deliveries` is 60, both within PostgreSQL's 63-byte limit.
 
 Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+## Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Status: **implementation complete; promotion pending**.
+
+Scope:
+- independently read back consumer state only after an accepted Build 078 continuation-generation delivery;
+- compare only fields governed by the exact immutable Build 078 package;
+- preserve matched, drift, rejected and transport-error verification evidence without silently mutating either side;
+- bind reconciliation to the exact Build 077 plan, newest Build 076 recurrence, Build 075 predecessor re-closure and Build 078 package identity;
+- permit continuation-generation re-closure only from the newest matched verification for the newest successive-generation recurrence;
+- record a distinct continuation-generation re-closure ledger without rewriting Build 075 or earlier evidence;
+- strengthen the generation-aware case-close guard so successive-generation recurrence requires Build 079 continuation-generation re-closure while preserving Build 075, Build 071 and all earlier fallbacks;
+- keep both Build 079 ledgers append-only under RLS with runtime SELECT/INSERT only and no UPDATE/DELETE;
+- keep all Build 079 table/index/policy identifiers within PostgreSQL's 63-byte identifier limit;
+- expose the re-closure workflow from Build 078 delivery, the reconciliation hub and Command Center.
+
+Next queued after Build 079 promotion: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
