@@ -29,7 +29,7 @@ async function callApi(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Successive-generation reconciliation request failed."
+        : "Continuation-generation reconciliation request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -95,8 +95,8 @@ export function ContinuationGenerationCorrectiveClosureWorkbench({
       apply(payload);
       setMessage(
         payload.result === "matched"
-          ? "Successive-generation consumer state matches the exact delivered package."
-          : "Successive-generation read-back recorded without closing the exception."
+          ? "Continuation-generation consumer state matches the exact delivered package."
+          : "Continuation-generation read-back recorded without closing the exception."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Verification failed.");
@@ -141,7 +141,7 @@ export function ContinuationGenerationCorrectiveClosureWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 079 independent read-back</p>
-            <h2>Successive-generation re-closure readiness</h2>
+            <h2>Continuation-generation re-closure readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
