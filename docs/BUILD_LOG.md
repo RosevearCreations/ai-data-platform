@@ -3193,3 +3193,13 @@ Production promotion evidence:
 - production database verification confirms 2 RLS ledgers, 4 policies, 3 correctly owned indexes, SELECT/INSERT-only runtime grants, no UPDATE/DELETE, preserved shortened Build 078 activation-table lineage, and the new continuation close requirement while preserving every prior generation fallback.
 
 Next queued: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+
+## Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Implementation staged on `dev`.
+
+Added migration `0050_post_continuation_generation_reclosure_recurrence_governance.sql`, post-continuation monitoring library/API/workbench, immutable stable/recurred/error evidence, governed continuation-generation recurrence, independent Build 080 recurrence freeze guards, stronger generation-aware reopen/close guards, PostgreSQL-safe object names, Command Center/reconciliation navigation and application/database verification.
+
+Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+
+Next queued after promotion: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**

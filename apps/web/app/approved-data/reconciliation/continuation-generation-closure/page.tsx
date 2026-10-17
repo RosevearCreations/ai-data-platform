@@ -31,6 +31,9 @@ export default async function ContinuationGenerationCorrectiveClosurePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-continuation-generation-reclosure">
+            Post-continuation-generation recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-successive-generation-reclosure">
             Predecessor post-successive-generation monitoring
           </Link>

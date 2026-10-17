@@ -264,3 +264,10 @@ Operator UI: `/approved-data/reconciliation/continuation-generation-delivery`.
 Build 079 independently reads consumer state after an accepted Build 078 continuation-generation delivery and compares only fields governed by that exact package. It preserves matched, drift, rejected and transport-error verification evidence, permits re-closure only from the newest matched verification for the newest Build 076 successive-generation recurrence, and records a distinct continuation-generation re-closure without rewriting Build 075 or earlier history. The generation-aware case-close guard now requires continuation-generation re-closure for successive-generation recurrence while preserving all earlier fallback branches.
 
 Operator UI: `/approved-data/reconciliation/continuation-generation-closure`.
+
+
+### Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance
+
+Build 080 independently re-reads the exact accepted Build 078 continuation-generation package after verified Build 079 re-closure. It preserves immutable stable, recurred, rejected and transport-error monitoring evidence; permits a governed continuation-generation recurrence only from the newest recurrent read-back for the newest Build 079 re-closure; extends reopen governance to recognize that recurrence; and freezes the completed Build 077–079 continuation cycle once recurrence exists.
+
+Operator UI: `/approved-data/reconciliation/post-continuation-generation-reclosure`.
