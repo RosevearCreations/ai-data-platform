@@ -169,7 +169,7 @@ async function main() {
          'workspace_continuation_plan_execution_guard'
        )`
   );
-  assert(triggers.rows.length === 2, "Build 078 Build-073 freeze triggers must exist.");
+  assert(triggers.rows.length === 2, "Build 078 continuation execution freeze triggers must exist.");
 
   const attemptCheck = await authPool.query<{ definition: string }>(
     `select pg_get_constraintdef(con.oid) as definition
