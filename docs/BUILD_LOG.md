@@ -3176,3 +3176,13 @@ Production promotion evidence:
 - both production table identifiers remain within PostgreSQL's 63-byte identifier limit.
 
 Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
+
+## Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Implementation staged on `dev`.
+
+Added migration `0049_continuation_generation_corrective_reconciliation_reclosure.sql`, continuation-generation reconciliation library/API/workbench, immutable Build 078 read-back evidence, newest-verification/newest-Build-076-recurrence re-closure gates, a distinct continuation-generation re-closure ledger, strengthened generation-aware case-close guard preserving prior fallbacks, PostgreSQL identifier-length verification, Command Center/reconciliation navigation and application/database verification.
+
+Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+
+Next queued after promotion: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**

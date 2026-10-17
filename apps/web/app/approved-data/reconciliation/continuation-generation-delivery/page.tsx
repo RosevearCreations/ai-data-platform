@@ -38,6 +38,9 @@ export default async function ContinuationGenerationCorrectiveDeliveryPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-recurrence-planning">
             Successive-generation recurrence planning
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-closure">
+            Continuation-generation reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-closure">
             Successive-generation reconciliation & re-closure
           </Link>
