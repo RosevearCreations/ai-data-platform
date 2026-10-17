@@ -2017,7 +2017,7 @@ Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconci
 
 ## Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure
 
-Status: **implementation complete; promotion pending**.
+Status: **production GREEN**.
 
 Scope:
 - independently read back consumer state only after an accepted Build 078 continuation-generation delivery;
@@ -2031,4 +2031,15 @@ Scope:
 - keep all Build 079 table/index/policy identifiers within PostgreSQL's 63-byte identifier limit;
 - expose the re-closure workflow from Build 078 delivery, the reconciliation hub and Command Center.
 
-Next queued after Build 079 promotion: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+Promotion evidence:
+- exact `dev` SHA `28511eed903413a5f3efe293f9f7f4e6af91f0ae` passed Verify #908;
+- release PR #187 passed independent Verify #909 on the same exact SHA and merged to `main`;
+- release `main` SHA is `0da50a8717f29ce8aae0cab2e3aaf5250eb3fe8f`;
+- independent `main` Verify #910 passed migrations, application tests and database/auth/workspace isolation;
+- GitHub reports Vercel deployment status `success` for the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0049_continuation_generation_corrective_reconciliation_reclosure.sql`;
+- production audit confirms both Build 079 ledgers exist with RLS, all four intended policies, all three intended indexes with correct table ownership, two SELECT and two INSERT runtime grants, no UPDATE or DELETE, and all index identifiers remain within PostgreSQL's 63-byte limit;
+- the Build 079 reconciliation ledger retains its foreign-key lineage to the shortened Build 078 activation table `workspace_continuation_generation_delivery_activations`;
+- the generation-aware close guard now requires continuation-generation re-closure for the newest successive-generation recurrence while preserving Build 075 successive-generation, Build 071 subsequent-generation, successor-generation, next-generation, successor re-closure and original closure fallbacks.
+
+Next queued: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**

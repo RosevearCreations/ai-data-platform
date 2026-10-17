@@ -3179,10 +3179,17 @@ Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconci
 
 ## Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure
 
-Implementation staged on `dev`.
+Build 079 is **GREEN on main and production**.
 
 Added migration `0049_continuation_generation_corrective_reconciliation_reclosure.sql`, continuation-generation reconciliation library/API/workbench, immutable Build 078 read-back evidence, newest-verification/newest-Build-076-recurrence re-closure gates, a distinct continuation-generation re-closure ledger, strengthened generation-aware case-close guard preserving prior fallbacks, PostgreSQL identifier-length verification, Command Center/reconciliation navigation and application/database verification.
 
-Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+Production promotion evidence:
+- exact `dev` SHA `28511eed903413a5f3efe293f9f7f4e6af91f0ae` passed Verify #908;
+- release PR #187 passed Verify #909 and merged to `main`;
+- release `main` SHA: `0da50a8717f29ce8aae0cab2e3aaf5250eb3fe8f`;
+- independent `main` Verify #910 passed;
+- GitHub reports Vercel deployment status `success` for the release SHA;
+- Neon production records migration `0049_continuation_generation_corrective_reconciliation_reclosure.sql`;
+- production database verification confirms 2 RLS ledgers, 4 policies, 3 correctly owned indexes, SELECT/INSERT-only runtime grants, no UPDATE/DELETE, preserved shortened Build 078 activation-table lineage, and the new continuation close requirement while preserving every prior generation fallback.
 
-Next queued after promotion: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
+Next queued: **Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance.**
