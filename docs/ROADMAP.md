@@ -1978,3 +1978,28 @@ Promotion evidence:
 - Verify now cancels superseded runs on the same Git ref, preventing stale dev pushes from continuing to clog the release queue.
 
 Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution.**
+
+## Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution
+
+Status: **implementation complete; promotion pending**.
+
+Scope:
+- execute only approved Build 077 continuation-generation plans for the newest governed Build 076 recurrence;
+- reconstruct and validate the exact accepted Build 074 successive-generation predecessor package without reusing its package or replay identity;
+- derive deterministic continuation-generation package, replay and package-fingerprint identities bound to the frozen Build 077 plan;
+- require a fresh authenticated live/idempotency capability handshake and accepted dry-run before activation;
+- keep activation short-lived, revocable and owner/admin controlled;
+- reserve the canonical continuation-generation delivery row before outbound mutation;
+- bind the outbound idempotency key to the continuation-generation replay key;
+- preserve accepted/rejected outcomes as terminal and permit transport-error retry only with the identical package/key for at most five attempts;
+- freeze Build 077 successive-generation recurrence re-triage and continuation planning once Build 078 execution begins;
+- keep activation/delivery identity columns immutable with narrow runtime UPDATE grants under RLS;
+- use PostgreSQL-safe identifier lengths, including the shortened `workspace_continuation_generation_delivery_activations` table name;
+- expose the execution workflow from Build 077 planning, the reconciliation hub and Command Center.
+
+Implementation verification:
+- initial exact-`dev` Verify #877 passed migrations/application tests but failed the database grant verifier because PostgreSQL truncated a 65-character activation-table identifier;
+- the activation table was renamed within PostgreSQL's 63-byte identifier limit and the verifier now asserts both Build 078 table identifiers remain within that limit;
+- corrected exact-`dev` Verify #880 passed migrations, typecheck/lint/build/tests and database/auth/workspace isolation.
+
+Next queued after Build 078 promotion: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**

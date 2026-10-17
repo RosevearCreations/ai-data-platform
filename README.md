@@ -250,3 +250,10 @@ Operator UI: `/approved-data/reconciliation/post-successive-generation-reclosure
 Build 077 consumes only the newest governed Build 076 successive-generation recurrence for an open case. It creates a distinct owner/admin re-triage cycle, derives correction scope only from the newest recurrent read-back, intersects that scope with values already governed by the approved Build 073 successive-generation plan, and freezes a new continuation-generation corrective plan without sending any downstream mutation. The plan binds the exact Build 074 accepted delivery/package identity, Build 075 re-closure lineage and Build 076 recurrence fingerprints.
 
 Operator UI: `/approved-data/reconciliation/successive-generation-recurrence-planning`.
+
+
+### Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution
+
+Build 078 executes only an approved Build 077 continuation-generation plan. It reconstructs the exact accepted Build 074 successive-generation predecessor package, derives a distinct continuation-generation package/replay identity, requires a fresh authenticated consumer capability handshake and accepted dry-run, opens a short activation window, reserves the canonical delivery row before network mutation, and permits only bounded same-key retries after transport uncertainty. Accepted/rejected outcomes are terminal. Build 078 also freezes Build 077 re-triage and planning once execution begins.
+
+Operator UI: `/approved-data/reconciliation/continuation-generation-delivery`.

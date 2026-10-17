@@ -42,6 +42,12 @@ export default async function SuccessiveGenerationRecurrencePlanningPage() {
           </Link>
           <Link
             className="secondaryButton"
+            href="/approved-data/reconciliation/continuation-generation-delivery"
+          >
+            Continuation-generation corrective delivery
+          </Link>
+          <Link
+            className="secondaryButton"
             href="/approved-data/reconciliation/successive-generation-delivery"
           >
             Successive-generation delivery
