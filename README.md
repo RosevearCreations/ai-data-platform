@@ -257,3 +257,10 @@ Operator UI: `/approved-data/reconciliation/successive-generation-recurrence-pla
 Build 078 executes only an approved Build 077 continuation-generation plan. It reconstructs the exact accepted Build 074 successive-generation predecessor package, derives a distinct continuation-generation package/replay identity, requires a fresh authenticated consumer capability handshake and accepted dry-run, opens a short activation window, reserves the canonical delivery row before network mutation, and permits only bounded same-key retries after transport uncertainty. Accepted/rejected outcomes are terminal. Build 078 also freezes Build 077 re-triage and planning once execution begins.
 
 Operator UI: `/approved-data/reconciliation/continuation-generation-delivery`.
+
+
+### Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure
+
+Build 079 independently reads consumer state after an accepted Build 078 continuation-generation delivery and compares only fields governed by that exact package. It preserves matched, drift, rejected and transport-error verification evidence, permits re-closure only from the newest matched verification for the newest Build 076 successive-generation recurrence, and records a distinct continuation-generation re-closure without rewriting Build 075 or earlier history. The generation-aware case-close guard now requires continuation-generation re-closure for successive-generation recurrence while preserving all earlier fallback branches.
+
+Operator UI: `/approved-data/reconciliation/continuation-generation-closure`.
