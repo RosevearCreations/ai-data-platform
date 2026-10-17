@@ -148,7 +148,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_successive_execution_for_subsequent_recurrence'`
+       and p.proname='require_no_continuation_execution_for_successive_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
@@ -165,8 +165,8 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_subsequent_retriage_successive_exec_guard',
-         'workspace_successive_plan_execution_guard'
+         'workspace_successive_retriage_continuation_exec_guard',
+         'workspace_continuation_plan_execution_guard'
        )`
   );
   assert(triggers.rows.length === 2, "Build 078 Build-073 freeze triggers must exist.");
