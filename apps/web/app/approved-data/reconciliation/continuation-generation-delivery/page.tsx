@@ -23,7 +23,7 @@ export default async function ContinuationGenerationCorrectiveDeliveryPage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 078</p>
-        <h1>Successive-Generation Corrective Delivery Activation & Idempotent Execution</h1>
+        <h1>Continuation-Generation Corrective Delivery Activation & Idempotent Execution</h1>
         <p className="lead">
           Execute an approved Build 077 continuation-generation plan through a fresh
           package identity, authenticated capability proof, accepted dry-run,
@@ -36,12 +36,9 @@ export default async function ContinuationGenerationCorrectiveDeliveryPage() {
             Post-successive-generation recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-recurrence-planning">
-            Subsequent-generation recurrence planning
+            Successive-generation recurrence planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-closure">
-            Subsequent-generation reconciliation & re-closure
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-closure">
             Successive-generation reconciliation & re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
