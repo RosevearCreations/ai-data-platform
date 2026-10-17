@@ -2046,7 +2046,7 @@ Next queued: **Build 080 — Post-Continuation-Generation Re-Closure Regression 
 
 ## Build 080 — Post-Continuation-Generation Re-Closure Regression Monitoring & Recurrence Governance
 
-Status: **implementation complete; promotion pending**.
+Status: **production GREEN**.
 
 Scope:
 - independently re-read the exact accepted Build 078 continuation-generation package after verified Build 079 re-closure;
@@ -2060,4 +2060,15 @@ Scope:
 - preserve PostgreSQL-safe unique identifier/index/trigger names and the shortened Build 078 activation-table lineage;
 - expose post-continuation monitoring through the Build 079 workflow, reconciliation hub and Command Center.
 
-Next queued after Build 080 promotion: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**
+Promotion evidence:
+- exact `dev` SHA `7b11fcb125357dc7e8453b7ce6cd898105609c74` passed Verify #918;
+- release PR #189 passed independent Verify #919 on the same exact SHA and merged to `main`;
+- release `main` SHA is `1cb0da3f7a38a608bf6d2c713af307824b23753d`;
+- independent `main` Verify #920 passed migrations, application tests and database/auth/workspace isolation;
+- GitHub reports Vercel deployment status `success` for the exact release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0050_post_continuation_generation_reclosure_recurrence_governance.sql`;
+- production audit confirms both Build 080 ledgers exist with RLS, all four intended policies, three correctly owned indexes, two SELECT and two INSERT runtime grants, no UPDATE or DELETE, and all six continuation-cycle freeze triggers;
+- governed reopen logic recognizes continuation-generation recurrence while preserving successive, subsequent and all earlier recurrence paths;
+- the case-close guard fails closed after continuation-generation recurrence and preserves Build 079 continuation, Build 075 successive, Build 071 subsequent and earlier closure fallbacks.
+
+Next queued: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**
