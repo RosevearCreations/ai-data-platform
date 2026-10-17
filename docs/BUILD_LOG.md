@@ -3158,12 +3158,21 @@ Next queued: **Build 078 — Continuation-Generation Corrective Delivery Activat
 
 ## Build 078 — Continuation-Generation Corrective Delivery Activation & Idempotent Execution
 
-Implementation staged on `dev`.
+Build 078 is **GREEN on main and production**.
 
 Added migration `0048_continuation_generation_corrective_delivery_execution.sql`, deterministic continuation-generation package derivation, fresh capability/dry-run activation, durable pre-send reservation, replay-key idempotency, five-attempt transport retry bounds, terminal accepted/rejected outcomes, independent Build 078 planning-freeze guards, API/workbench navigation and application/database verification.
 
 The first full Verify (#877) exposed a PostgreSQL identifier-length issue before promotion: the intended activation table name was 65 characters and PostgreSQL truncates identifiers at 63 bytes. The table was renamed to `workspace_continuation_generation_delivery_activations`, all runtime/verifier references were updated, and an explicit identifier-length assertion was added. Corrected Verify #880 passed the complete dev gate.
 
-Promotion evidence: pending PR, independent `main`, Neon and Vercel production verification.
+Production promotion evidence:
+- corrected implementation Verify #880 passed after the identifier-length correction;
+- final exact `dev` SHA `ab97471891e83cbff81827bc731287721e8a7011` passed Verify #883;
+- release PR #185 passed Verify #884 and merged to `main`;
+- release `main` SHA: `27fd8c72d391445b7f188bc5ead5efb4e4f326e9`;
+- independent `main` Verify #885 passed;
+- GitHub reports Vercel deployment status `success` for the release SHA;
+- Neon production branch `br-wandering-paper-b5wj4f1u` records migration `0048_continuation_generation_corrective_delivery_execution.sql`;
+- production database verification confirms 2 RLS tables, 6 policies, 3 indexes, SELECT/INSERT table grants, 4 activation and 8 delivery UPDATE columns only, no DELETE/unrestricted UPDATE, 2 continuation execution freeze triggers plus their function, and the 5-attempt database retry bound;
+- both production table identifiers remain within PostgreSQL's 63-byte identifier limit.
 
-Next queued after promotion: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
+Next queued: **Build 079 — Continuation-Generation Corrective Delivery Reconciliation & Re-Closure.**
