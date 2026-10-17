@@ -5,13 +5,18 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
+  assert(
+    "workspace_continuation_generation_delivery_activations".length <= 63 &&
+      "workspace_continuation_generation_corrective_live_deliveries".length <= 63,
+    "Build 078 database identifiers must fit PostgreSQL's 63-byte identifier limit."
+  );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
     `select c.relname as table_name,c.relrowsecurity as rowsecurity
      from pg_class c
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and c.relname in (
-         'workspace_continuation_generation_corrective_delivery_activations',
+         'workspace_continuation_generation_delivery_activations',
          'workspace_continuation_generation_corrective_live_deliveries'
        )`
   );
@@ -39,7 +44,7 @@ async function main() {
      where table_schema='app'
        and grantee='ai_data_runtime'
        and table_name in (
-         'workspace_continuation_generation_corrective_delivery_activations',
+         'workspace_continuation_generation_delivery_activations',
          'workspace_continuation_generation_corrective_live_deliveries'
        )`
   );
@@ -54,13 +59,13 @@ async function main() {
        and grantee='ai_data_runtime'
        and privilege_type='UPDATE'
        and table_name in (
-         'workspace_continuation_generation_corrective_delivery_activations',
+         'workspace_continuation_generation_delivery_activations',
          'workspace_continuation_generation_corrective_live_deliveries'
        )`
   );
 
   for (const table of [
-    "workspace_continuation_generation_corrective_delivery_activations",
+    "workspace_continuation_generation_delivery_activations",
     "workspace_continuation_generation_corrective_live_deliveries"
   ]) {
     const privileges = new Set(
@@ -75,7 +80,7 @@ async function main() {
 
   const activationUpdates = new Set(
     columnGrants.rows
-      .filter((row) => row.table_name === "workspace_continuation_generation_corrective_delivery_activations")
+      .filter((row) => row.table_name === "workspace_continuation_generation_delivery_activations")
       .map((row) => row.column_name)
   );
   for (const column of ["status","revoked_by","revoked_at","revocation_note"]) {
@@ -130,7 +135,7 @@ async function main() {
     (row) => row.policyname === "continuation_generation_deliveries_manager_insert"
   )?.expression ?? "";
   for (const required of [
-    "workspace_continuation_generation_corrective_delivery_activations",
+    "workspace_continuation_generation_delivery_activations",
     "workspace_continuation_generation_corrective_delivery_plans",
     "workspace_successive_generation_recurrence_triage_cycles",
     "workspace_reconciliation_successive_generation_recurrences"
@@ -152,7 +157,7 @@ async function main() {
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
-      "workspace_continuation_generation_corrective_delivery_activations"
+      "workspace_continuation_generation_delivery_activations"
     ),
     "Build 078 must freeze Build 077 successive-generation recurrence planning after execution begins."
   );
