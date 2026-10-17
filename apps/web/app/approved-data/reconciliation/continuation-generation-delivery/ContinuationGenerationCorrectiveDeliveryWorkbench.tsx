@@ -102,7 +102,7 @@ export function ContinuationGenerationCorrectiveDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Subsequent-generation activation recorded after a fresh capability check and accepted dry-run."
+        "Continuation-generation activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function ContinuationGenerationCorrectiveDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal continuation-generation delivery was returned without another send."
-          : "Subsequent-generation corrective delivery completed."
+          : "Continuation-generation corrective delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function ContinuationGenerationCorrectiveDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Subsequent-generation activation revoked.");
+      setMessage("Continuation-generation activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -173,7 +173,7 @@ export function ContinuationGenerationCorrectiveDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 078 controlled execution</p>
-            <h2>Subsequent-generation delivery readiness</h2>
+            <h2>Continuation-generation delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
@@ -244,7 +244,7 @@ export function ContinuationGenerationCorrectiveDeliveryWorkbench({
                   </header>
 
                   <dl className="publicationEvidence">
-                    <div><dt>Subsequent-generation plan</dt><dd>{plan.continuationGenerationPlanId}</dd></div>
+                    <div><dt>Continuation-generation plan</dt><dd>{plan.continuationGenerationPlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceSuccessiveGenerationRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor successive-generation delivery</dt><dd>{plan.predecessorSuccessiveGenerationDeliveryId}</dd></div>
