@@ -271,3 +271,10 @@ Operator UI: `/approved-data/reconciliation/continuation-generation-closure`.
 Build 080 independently re-reads the exact accepted Build 078 continuation-generation package after verified Build 079 re-closure. It preserves immutable stable, recurred, rejected and transport-error monitoring evidence; permits a governed continuation-generation recurrence only from the newest recurrent read-back for the newest Build 079 re-closure; extends reopen governance to recognize that recurrence; and freezes the completed Build 077–079 continuation cycle once recurrence exists.
 
 Operator UI: `/approved-data/reconciliation/post-continuation-generation-reclosure`.
+
+
+### Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning
+
+Build 081 consumes only the newest governed Build 080 continuation-generation recurrence for an open reconciliation case. It creates a distinct continuation-generation recurrence re-triage cycle, derives deterministic next-cycle correction scope only from fields still recurrent in the newest Build 080 read-back and already governed by the approved Build 077 continuation plan, and binds every next-cycle plan to exact Build 079 re-closure plus accepted Build 078 delivery/package/replay evidence. Build 081 is planning-only and performs no consumer activation or delivery.
+
+Operator UI: `/approved-data/reconciliation/continuation-generation-recurrence-planning`.

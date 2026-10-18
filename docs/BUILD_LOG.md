@@ -3209,4 +3209,14 @@ Production promotion evidence:
 - Neon production records migration `0050_post_continuation_generation_reclosure_recurrence_governance.sql`;
 - production database verification confirms 2 RLS ledgers, 4 policies, 3 correctly owned indexes, SELECT/INSERT-only runtime grants, no UPDATE/DELETE, all 6 continuation-cycle freeze triggers, continuation-aware governed reopen logic, and the new fail-closed continuation recurrence close rule while preserving prior generations.
 
-Next queued: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**
+Next queued: **Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning.**
+
+## Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning
+
+Implementation staged on `dev`.
+
+Added migration `0051_continuation_generation_recurrence_next_cycle_planning.sql`, continuation-generation recurrence re-triage library/API/workbench, deterministic next-cycle scope and plan fingerprints, newest-Build-080-recurrence gates, exact Build 077/078 predecessor plan/delivery/package binding, Build 079 re-closure and Build 080 recurrence evidence binding, narrow review/re-triage UPDATE grants, PostgreSQL identifier-length verification and operator navigation.
+
+Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+
+Next queued after promotion: **Build 082 — Next-Cycle Corrective Delivery Activation & Idempotent Execution.**
