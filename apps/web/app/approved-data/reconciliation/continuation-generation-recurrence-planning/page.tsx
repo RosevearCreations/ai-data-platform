@@ -28,7 +28,7 @@ export default async function ContinuationGenerationRecurrencePlanningPage() {
         </h1>
         <p className="lead">
           Turn governed Build 080 continuation-generation recurrence evidence into a new planning
-          generation without rewriting the Build 077–075 corrective history.
+          generation without rewriting the Build 077–080 corrective history.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">
@@ -39,12 +39,6 @@ export default async function ContinuationGenerationRecurrencePlanningPage() {
             href="/approved-data/reconciliation/post-continuation-generation-reclosure"
           >
             Post-continuation-generation recurrence monitoring
-          </Link>
-          <Link
-            className="secondaryButton"
-            href="/approved-data/reconciliation/next-cycle-delivery"
-          >
-            Continuation-generation corrective delivery
           </Link>
           <Link
             className="secondaryButton"
