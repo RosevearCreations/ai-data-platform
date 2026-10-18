@@ -3213,10 +3213,17 @@ Next queued: **Build 081 — Continuation-Generation Recurrence Re-Triage & Next
 
 ## Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning
 
-Implementation staged on `dev`.
+Build 081 is **GREEN on main and production**.
 
 Added migration `0051_continuation_generation_recurrence_next_cycle_planning.sql`, continuation-generation recurrence re-triage library/API/workbench, deterministic next-cycle scope and plan fingerprints, newest-Build-080-recurrence gates, exact Build 077/078 predecessor plan/delivery/package binding, Build 079 re-closure and Build 080 recurrence evidence binding, narrow review/re-triage UPDATE grants, PostgreSQL identifier-length verification and operator navigation.
 
-Promotion evidence: pending exact-SHA dev, PR, main, Neon and Vercel verification.
+Production promotion evidence:
+- exact `dev` SHA `9490be9a96cb296fda1e598ab2ac46c0a01dd4bf` passed Verify #928;
+- release PR #191 passed Verify #929 and merged to `main`;
+- release `main` SHA: `d0e9967441bed977686352f21df53de9ba7ea8b6`;
+- independent `main` Verify #930 passed;
+- GitHub reports Vercel deployment status `success`;
+- Neon production records migration `0051_continuation_generation_recurrence_next_cycle_planning.sql`;
+- production verification confirms 2 RLS tables, 6 policies, 2 correctly owned indexes, SELECT/INSERT-only table grants, no unrestricted UPDATE/DELETE, exactly 10 re-triage and 4 plan-review UPDATE columns, exact Build 077/078 package lineage, and both Build 080 predecessor freeze triggers still active.
 
-Next queued after promotion: **Build 082 — Next-Cycle Corrective Delivery Activation & Idempotent Execution.**
+Next queued: **Build 082 — Next-Cycle Corrective Delivery Activation & Idempotent Execution.**
