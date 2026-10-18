@@ -8,7 +8,7 @@ async function main() {
   assert(
     "workspace_next_cycle_delivery_activations".length <= 63 &&
       "workspace_next_cycle_corrective_live_deliveries".length <= 63,
-    "Build 078 database identifiers must fit PostgreSQL's 63-byte identifier limit."
+    "Build 082 database identifiers must fit PostgreSQL's 63-byte identifier limit."
   );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
     `select c.relname as table_name,c.relrowsecurity as rowsecurity
@@ -20,8 +20,8 @@ async function main() {
          'workspace_next_cycle_corrective_live_deliveries'
        )`
   );
-  assert(tables.rows.length === 2, "Build 078 tables must exist.");
-  assert(tables.rows.every((row) => row.rowsecurity), "Build 078 tables must have RLS enabled.");
+  assert(tables.rows.length === 2, "Build 082 tables must exist.");
+  assert(tables.rows.every((row) => row.rowsecurity), "Build 082 tables must have RLS enabled.");
 
   const policies = await authPool.query<{ policyname: string }>(
     `select policyname
@@ -36,7 +36,7 @@ async function main() {
          'next_cycle_deliveries_manager_update'
        )`
   );
-  assert(policies.rows.length === 6, "Build 078 intended RLS policies must exist.");
+  assert(policies.rows.length === 6, "Build 082 intended RLS policies must exist.");
 
   const tableGrants = await authPool.query<{ table_name: string; privilege_type: string }>(
     `select table_name,privilege_type
@@ -122,13 +122,13 @@ async function main() {
     "workspace_reconciliation_continuation_generation_reclosures",
     "workspace_continuation_generation_corrective_live_deliveries"
   ]) {
-    assert(activation.includes(required), "Build 078 activation gate is missing " + required + ".");
+    assert(activation.includes(required), "Build 082 activation gate is missing " + required + ".");
   }
   assert(
     activation.includes("continuation_generation_package_id") &&
       activation.includes("continuation_generation_replay_key") &&
       activation.includes("continuation_generation_package_fingerprint"),
-    "Build 078 activation gate must bind the exact predecessor continuation-generation package."
+    "Build 082 activation gate must bind the exact predecessor continuation-generation package."
   );
 
   const delivery = insertPolicies.rows.find(
@@ -140,12 +140,12 @@ async function main() {
     "workspace_continuation_generation_recurrence_triage_cycles",
     "workspace_reconciliation_continuation_generation_recurrences"
   ]) {
-    assert(delivery.includes(required), "Build 078 delivery gate is missing " + required + ".");
+    assert(delivery.includes(required), "Build 082 delivery gate is missing " + required + ".");
   }
   assert(
     delivery.includes("idempotency_key") &&
       delivery.includes("next_cycle_replay_key"),
-    "Build 078 delivery insert must bind idempotency to the next-cycle replay key."
+    "Build 082 delivery insert must bind idempotency to the next-cycle replay key."
   );
 
   const freezeFunction = await authPool.query<{ definition: string }>(
@@ -153,13 +153,13 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_continuation_execution_for_successive_recurrence'`
+       and p.proname='require_no_next_cycle_execution_for_continuation_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
       "workspace_next_cycle_delivery_activations"
     ),
-    "Build 078 must freeze Build 077 continuation-generation recurrence planning after execution begins."
+    "Build 082 must freeze Build 081 continuation-generation recurrence planning after execution begins."
   );
 
   const triggers = await authPool.query<{ trigger_name: string; table_name: string }>(
@@ -170,11 +170,11 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_successive_retriage_continuation_exec_guard',
-         'workspace_continuation_plan_execution_guard'
+         'workspace_continuation_retriage_next_cycle_exec_guard',
+         'workspace_next_cycle_plan_execution_guard'
        )`
   );
-  assert(triggers.rows.length === 2, "Build 078 continuation execution freeze triggers must exist.");
+  assert(triggers.rows.length === 2, "Build 082 next-cycle execution freeze triggers must exist.");
 
   const attemptCheck = await authPool.query<{ definition: string }>(
     `select pg_get_constraintdef(con.oid) as definition
@@ -188,10 +188,10 @@ async function main() {
   );
   assert(
     attemptCheck.rows.some((row) => row.definition.includes("5")),
-    "Build 078 retry bound must be enforced by a database check."
+    "Build 082 retry bound must be enforced by a database check."
   );
 
-  console.log("Build 078 next-cycle corrective delivery database verification passed.");
+  console.log("Build 082 next-cycle corrective delivery database verification passed.");
 }
 
 main()
