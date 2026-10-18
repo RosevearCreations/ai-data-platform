@@ -30,9 +30,9 @@ import {
 type WorkspaceRole = "owner" | "admin" | "member";
 type JsonRecord = Record<string, unknown>;
 
-export const CONTINUATION_GENERATION_ACTIVATION_WINDOW_MS = 60 * 60 * 1000;
-export const CONTINUATION_GENERATION_DELIVERY_RETRY_LIMIT = 5;
-export const CONTINUATION_GENERATION_DELIVERY_RESERVATION_STALE_MS = 2 * 60 * 1000;
+export const NEXT_CYCLE_ACTIVATION_WINDOW_MS = 60 * 60 * 1000;
+export const NEXT_CYCLE_DELIVERY_RETRY_LIMIT = 5;
+export const NEXT_CYCLE_DELIVERY_RESERVATION_STALE_MS = 2 * 60 * 1000;
 
 export interface NextCycleCorrectiveExecutionContext {
   plan: NextCycleCorrectiveDeliveryPlan;
@@ -720,7 +720,7 @@ export async function listNextCycleCorrectiveDeliveryForUser(
       retryableTransportErrors: deliveries.filter(
         (item) =>
           item.status === "transport-error" &&
-          item.attemptCount < CONTINUATION_GENERATION_DELIVERY_RETRY_LIMIT
+          item.attemptCount < NEXT_CYCLE_DELIVERY_RETRY_LIMIT
       ).length
     }
   };
@@ -893,7 +893,7 @@ export async function createNextCycleCorrectiveDeliveryActivation(
       input.context.nextCyclePackage.expiresAt
     ).getTime();
     const expiresAt = new Date(
-      Math.min(now + CONTINUATION_GENERATION_ACTIVATION_WINDOW_MS, packageExpiry)
+      Math.min(now + NEXT_CYCLE_ACTIVATION_WINDOW_MS, packageExpiry)
     );
     if (expiresAt.getTime() <= now) {
       throw new Error("next_cycle_delivery_plan_window_expired");
@@ -1077,11 +1077,11 @@ export async function reserveIdempotentNextCycleCorrectiveDelivery(
       }
       const stale =
         Date.now() - row.last_attempt_at.getTime() >=
-        CONTINUATION_GENERATION_DELIVERY_RESERVATION_STALE_MS;
+        NEXT_CYCLE_DELIVERY_RESERVATION_STALE_MS;
       if (row.status === "reserved" && !stale) {
         return { shouldSend: false, reason: "in-progress", delivery };
       }
-      if (row.attempt_count >= CONTINUATION_GENERATION_DELIVERY_RETRY_LIMIT) {
+      if (row.attempt_count >= NEXT_CYCLE_DELIVERY_RETRY_LIMIT) {
         throw new Error("next_cycle_delivery_retry_limit");
       }
 
