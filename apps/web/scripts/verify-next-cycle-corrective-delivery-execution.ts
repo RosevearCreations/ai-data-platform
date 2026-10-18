@@ -151,31 +151,31 @@ const nextAgain = buildNextCycleCorrectiveExecutionPackage(
 
 assert(
   next.packageId !== predecessorPackage.packageId,
-  "Build 078 must create a distinct package ID."
+  "Build 082 must create a distinct package ID."
 );
 assert(
   next.replayKey !== predecessorPackage.replayKey,
-  "Build 078 must create a distinct replay/idempotency key."
+  "Build 082 must create a distinct replay/idempotency key."
 );
 assert(
   next.packageId === nextAgain.packageId &&
     next.replayKey === nextAgain.replayKey &&
     next.fingerprint === nextAgain.fingerprint,
-  "Build 078 package identity must be deterministic for frozen plan evidence."
+  "Build 082 package identity must be deterministic for frozen plan evidence."
 );
 assert(
   next.batchId === "next-cycle-plan:" + plan.nextCyclePlanId,
-  "Build 078 batch identity must be next-cycle specific."
+  "Build 082 batch identity must be next-cycle specific."
 );
-assert(next.operations.length === 2, "Build 078 must preserve exact scoped records.");
+assert(next.operations.length === 2, "Build 082 must preserve exact scoped records.");
 assert(
   Object.keys(next.operations[0].values).length === 1 &&
     next.operations[0].values.priceMinimumCad === 249,
-  "Build 078 must not widen a mismatched record beyond governed fields."
+  "Build 082 must not widen a mismatched record beyond governed fields."
 );
 assert(
   next.operations[1].action === "create",
-  "Build 078 restore-missing scope must become a create operation."
+  "Build 082 restore-missing scope must become a create operation."
 );
 
 const activationInput = {
@@ -193,17 +193,17 @@ const activationInput = {
 assert(
   nextCycleActivationFingerprint(activationInput) ===
     nextCycleActivationFingerprint(activationInput),
-  "Build 078 activation fingerprint must be deterministic."
+  "Build 082 activation fingerprint must be deterministic."
 );
 assert(
   nextCycleActivationConfirmation(target) ===
     "ACTIVATE ROSIE-DAZZLERS NEXT-CYCLE CORRECTIVE",
-  "Build 078 activation confirmation changed unexpectedly."
+  "Build 082 activation confirmation changed unexpectedly."
 );
 assert(
   nextCycleExecutionConfirmation(target) ===
     "EXECUTE ROSIE-DAZZLERS NEXT-CYCLE CORRECTIVE",
-  "Build 078 execution confirmation changed unexpectedly."
+  "Build 082 execution confirmation changed unexpectedly."
 );
 
 let rejected = false;
@@ -230,7 +230,7 @@ try {
 }
 assert(
   rejected,
-  "Build 078 must reject desired values not frozen in predecessor continuation-generation evidence."
+  "Build 082 must reject desired values not frozen in predecessor continuation-generation evidence."
 );
 
-console.log("Build 078 next-cycle corrective delivery verification passed.");
+console.log("Build 082 next-cycle corrective delivery verification passed.");
