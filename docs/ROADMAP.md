@@ -2071,4 +2071,22 @@ Promotion evidence:
 - governed reopen logic recognizes continuation-generation recurrence while preserving successive, subsequent and all earlier recurrence paths;
 - the case-close guard fails closed after continuation-generation recurrence and preserves Build 079 continuation, Build 075 successive, Build 071 subsequent and earlier closure fallbacks.
 
-Next queued: **Build 081 — scope to be confirmed from the current project roadmap before implementation.**
+Next queued: **Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning.**
+
+## Build 081 — Continuation-Generation Recurrence Re-Triage & Next-Cycle Corrective Planning
+
+Status: **implementation complete; promotion pending**.
+
+Scope:
+- consume only the newest governed Build 080 continuation-generation recurrence for an open case;
+- create one distinct owner/admin continuation-generation recurrence re-triage cycle without rewriting Build 077–080 evidence;
+- derive affected records/fields only from the newest Build 080 recurrent verification;
+- intersect proposed next-cycle correction scope with values already governed by the approved Build 077 continuation-generation plan;
+- bind the exact Build 078 accepted delivery/package/replay identity, Build 079 re-closure and Build 080 recurrence fingerprints;
+- keep Build 081 planning-only: no consumer handshake, activation, delivery or downstream write;
+- preserve Build 080 freeze authority over the completed Build 077–079 predecessor cycle;
+- keep both Build 081 tables under RLS with runtime SELECT/INSERT, exactly narrow re-triage/review UPDATE columns and no DELETE;
+- keep every new Build 081 PostgreSQL identifier within the 63-byte identifier limit;
+- expose the planning workflow from Build 080 monitoring, the reconciliation hub and Command Center.
+
+Next queued after Build 081 promotion: **Build 082 — Next-Cycle Corrective Delivery Activation & Idempotent Execution.**

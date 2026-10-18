@@ -31,10 +31,10 @@ export default async function PostContinuationGenerationReclosurePage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-closure">
-            Successive-generation reconciliation & re-closure
+            Continuation-generation reconciliation & re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-recurrence-planning">
-            Successive-generation recurrence planning
+            Continuation-generation recurrence re-triage & next-cycle planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-generation-recurrence-planning">
             Predecessor successive-generation recurrence planning
