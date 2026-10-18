@@ -33,6 +33,21 @@ async function main() {
   assert(tables.rows.length === 2, "Build 081 tables must exist.");
   assert(tables.rows.every((row) => row.rowsecurity), "Build 081 tables must have RLS enabled.");
 
+  const indexes = await authPool.query<{ indexname:string; tablename:string }>(
+    `select indexname,tablename from pg_indexes
+     where schemaname='app'
+       and indexname in (
+         'workspace_continuation_retriage_recent_idx',
+         'workspace_next_cycle_plans_recent_idx'
+       )`
+  );
+  assert(indexes.rows.length === 2, "Build 081 intended indexes must exist.");
+  assert(
+    indexes.rows.some((row)=>row.indexname==="workspace_continuation_retriage_recent_idx" && row.tablename==="workspace_continuation_generation_recurrence_triage_cycles") &&
+      indexes.rows.some((row)=>row.indexname==="workspace_next_cycle_plans_recent_idx" && row.tablename==="workspace_next_cycle_corrective_delivery_plans"),
+    "Build 081 indexes must belong to the intended generation tables."
+  );
+
   const policies = await authPool.query<{ policyname: string }>(
     `select policyname from pg_policies
      where schemaname='app'
