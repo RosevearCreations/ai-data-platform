@@ -140,6 +140,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-following-cycle-reclosure">
             Post-following-cycle recurrence monitoring
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-recurrence-planning">
+            Following-cycle recurrence re-triage & subsequent-cycle planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>
