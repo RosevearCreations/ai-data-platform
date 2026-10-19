@@ -8,7 +8,7 @@ async function main() {
   const postgresIdentifiers = [
     "workspace_next_cycle_recurrence_triage_cycles",
     "workspace_following_cycle_corrective_delivery_plans",
-    "workspace_continuation_retriage_recent_idx",
+    "workspace_next_cycle_retriage_recent_idx",
     "workspace_following_cycle_plans_recent_idx",
     "next_cycle_recurrence_triage_member_select",
     "next_cycle_recurrence_triage_manager_insert",
@@ -37,13 +37,13 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_continuation_retriage_recent_idx',
+         'workspace_next_cycle_retriage_recent_idx',
          'workspace_following_cycle_plans_recent_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 085 intended indexes must exist.");
   assert(
-    indexes.rows.some((row)=>row.indexname==="workspace_continuation_retriage_recent_idx" && row.tablename==="workspace_next_cycle_recurrence_triage_cycles") &&
+    indexes.rows.some((row)=>row.indexname==="workspace_next_cycle_retriage_recent_idx" && row.tablename==="workspace_next_cycle_recurrence_triage_cycles") &&
       indexes.rows.some((row)=>row.indexname==="workspace_following_cycle_plans_recent_idx" && row.tablename==="workspace_following_cycle_corrective_delivery_plans"),
     "Build 085 indexes must belong to the intended generation tables."
   );
@@ -162,7 +162,7 @@ async function main() {
       planInsert.includes("source_next_cycle_package_fingerprint") &&
       planInsert.includes("predecessor_next_cycle_plan_id") &&
       planInsert.includes("predecessor_next_cycle_delivery_id"),
-    "Build 085 plan gate must bind the exact Build 081/078 predecessor package identity."
+    "Build 085 plan gate must bind the exact Build 081/082 predecessor package identity."
   );
 
   const freezeFunction = await authPool.query<{ definition:string }>(
@@ -182,8 +182,8 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_continuation_plan_recurrence_guard',
-         'workspace_successive_retriage_continuation_recurrence_guard'
+         'workspace_next_cycle_plan_recurrence_guard',
+         'workspace_continuation_retriage_next_cycle_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 2, "Build 085 predecessor planning freeze triggers must remain active.");
