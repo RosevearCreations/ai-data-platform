@@ -119,6 +119,18 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-generation-recurrence-planning">
             Continuation-generation recurrence re-triage & next-cycle planning
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-cycle-delivery">
+            Next-cycle corrective delivery
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-cycle-closure">
+            Next-cycle reconciliation & re-closure
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-next-cycle-reclosure">
+            Post-next-cycle recurrence monitoring
+          </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-cycle-recurrence-planning">
+            Next-cycle recurrence re-triage & following-cycle planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>
