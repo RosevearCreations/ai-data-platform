@@ -24,11 +24,11 @@ export default async function FollowingCycleRecurrencePlanningPage() {
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 089</p>
         <h1>
-          Next-Cycle Recurrence Re-Triage & Following-Cycle Corrective Planning
+          Following-Cycle Recurrence Re-Triage & Subsequent-Cycle Corrective Planning
         </h1>
         <p className="lead">
           Turn governed Build 088 following-cycle recurrence evidence into a new planning
-          generation without rewriting the Build 085–084 corrective history.
+          generation without rewriting the Build 085–088 following-cycle corrective history.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">
@@ -62,7 +62,7 @@ export default async function FollowingCycleRecurrencePlanningPage() {
             className="secondaryButton"
             href="/approved-data/reconciliation/next-cycle-recurrence-planning"
           >
-            Predecessor next-cycle recurrence planning
+            Predecessor next-cycle recurrence re-triage & following-cycle planning
           </Link>
           <Link
             className="secondaryButton"
