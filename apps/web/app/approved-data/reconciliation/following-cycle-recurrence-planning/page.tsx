@@ -44,19 +44,13 @@ export default async function FollowingCycleRecurrencePlanningPage() {
             className="secondaryButton"
             href="/approved-data/reconciliation/following-cycle-delivery"
           >
-            Next-cycle delivery
+            Following-cycle delivery
           </Link>
           <Link
             className="secondaryButton"
             href="/approved-data/reconciliation/following-cycle-closure"
           >
-            Next-cycle reconciliation & re-closure
-          </Link>
-          <Link
-            className="secondaryButton"
-            href="/approved-data/reconciliation/subsequent-cycle-delivery"
-          >
-            Following-cycle corrective delivery
+            Following-cycle reconciliation & re-closure
           </Link>
           <Link
             className="secondaryButton"
