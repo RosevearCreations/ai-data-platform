@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Successive-generation delivery request failed."
+        : "Following-cycle delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -102,7 +102,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Continuation-generation activation recorded after a fresh capability check and accepted dry-run."
+        "Following-cycle activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal following-cycle delivery was returned without another send."
-          : "Continuation-generation corrective delivery completed."
+          : "Following-cycle corrective delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Continuation-generation activation revoked.");
+      setMessage("Following-cycle activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -172,12 +172,12 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
       <section className="correctiveSummary">
         <div className="sectionHeading">
           <div>
-            <p className="eyebrow">Build 082 controlled execution</p>
-            <h2>Continuation-generation delivery readiness</h2>
+            <p className="eyebrow">Build 086 controlled execution</p>
+            <h2>Following-cycle delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
-          <article><strong>{model.totals.approvedPlans}</strong><span>approved subsequent-gen plans</span></article>
+          <article><strong>{model.totals.approvedPlans}</strong><span>approved following-cycle plans</span></article>
           <article><strong>{model.totals.approvedPlansWithoutActiveActivation}</strong><span>await activation</span></article>
           <article><strong>{model.totals.activeActivations}</strong><span>active windows</span></article>
           <article><strong>{model.totals.acceptedDeliveries}</strong><span>accepted deliveries</span></article>
@@ -188,7 +188,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
       <section className="correctiveNotice">
         <strong>Approval is not delivery authority</strong>
         <p>
-          Build 082 derives a fresh package identity from the approved Build 081
+          Build 086 derives a fresh package identity from the approved Build 085
           plan, performs a fresh authenticated consumer capability check and
           accepted dry-run before opening a short activation window, then reserves
           one durable delivery before any live request. Retries reuse the exact
@@ -201,7 +201,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
 
       <section className="correctiveSection">
         <div className="sectionHeading">
-          <div><p className="eyebrow">Approved Build 081 plans</p><h2>Activate & execute</h2></div>
+          <div><p className="eyebrow">Approved Build 085 plans</p><h2>Activate & execute</h2></div>
         </div>
         <div className="publicationList">
           {model.planning.plans
