@@ -135,12 +135,22 @@ async function main() {
   );
   assert(
     definition.includes("workspace_reconciliation_next_cycle_reclosures"),
-    "Build 087 close trigger must preserve Build 079 next-cycle re-closure behavior."
+    "Build 087 close trigger must preserve Build 083 next-cycle re-closure behavior."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
+      definition.includes("workspace_reconciliation_continuation_generation_reclosures"),
+    "Build 087 close trigger must preserve continuation-generation historical re-closure behavior."
+  );
+  assert(
+    definition.includes("workspace_reconciliation_successive_generation_recurrences") &&
+      definition.includes("workspace_reconciliation_successive_generation_reclosures"),
+    "Build 087 close trigger must preserve successive-generation historical re-closure behavior."
   );
   assert(
     definition.includes("workspace_reconciliation_subsequent_generation_recurrences") &&
       definition.includes("workspace_reconciliation_subsequent_generation_reclosures"),
-    "Build 087 close trigger must preserve Build 075 subsequent-generation re-closure behavior."
+    "Build 087 close trigger must preserve subsequent-generation historical re-closure behavior."
   );
   assert(
     definition.includes("workspace_reconciliation_successor_generation_recurrences") &&
