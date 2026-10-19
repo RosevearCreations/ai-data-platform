@@ -8,15 +8,15 @@ async function main() {
   const postgresIdentifiers = [
     "workspace_post_next_cycle_reclosure_checks",
     "workspace_reconciliation_next_cycle_recurrences",
-    "workspace_post_continuation_reclosure_checks_recent_idx",
-    "workspace_post_continuation_reclosure_checks_reclosure_idx",
+    "workspace_post_next_cycle_reclosure_checks_recent_idx",
+    "workspace_post_next_cycle_reclosure_checks_reclosure_idx",
     "workspace_next_cycle_recurrences_recent_idx",
-    "workspace_continuation_activation_recurrence_guard",
-    "workspace_continuation_delivery_recurrence_guard",
-    "workspace_continuation_reconciliation_recurrence_guard",
-    "workspace_continuation_reclosure_recurrence_guard",
-    "workspace_continuation_plan_recurrence_guard",
-    "workspace_successive_retriage_continuation_recurrence_guard"
+    "workspace_next_cycle_activation_recurrence_guard",
+    "workspace_next_cycle_delivery_recurrence_guard",
+    "workspace_next_cycle_reconciliation_recurrence_guard",
+    "workspace_next_cycle_reclosure_recurrence_guard",
+    "workspace_next_cycle_plan_recurrence_guard",
+    "workspace_continuation_retriage_next_cycle_recurrence_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -38,8 +38,8 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_post_continuation_reclosure_checks_recent_idx',
-         'workspace_post_continuation_reclosure_checks_reclosure_idx'
+         'workspace_post_next_cycle_reclosure_checks_recent_idx',
+         'workspace_post_next_cycle_reclosure_checks_reclosure_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 084 next-cycle monitoring indexes must exist.");
@@ -129,6 +129,7 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_successive_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_exception_next_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_exception_recurrences"),
     "Build 084 governed reopen trigger must preserve all prior recurrence generations."
@@ -152,6 +153,8 @@ async function main() {
   assert(
     closeDefinition.includes("workspace_reconciliation_next_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_continuation_generation_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_successive_generation_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_exception_next_generation_reclosures"),
     "Build 084 close trigger must preserve Build 083, Build 071, Build 067 and Build 063 generation rules."
@@ -163,12 +166,12 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_continuation_activation_recurrence_guard',
-         'workspace_continuation_delivery_recurrence_guard',
-         'workspace_continuation_reconciliation_recurrence_guard',
-         'workspace_continuation_reclosure_recurrence_guard',
-         'workspace_continuation_plan_recurrence_guard',
-         'workspace_successive_retriage_continuation_recurrence_guard'
+         'workspace_next_cycle_activation_recurrence_guard',
+         'workspace_next_cycle_delivery_recurrence_guard',
+         'workspace_next_cycle_reconciliation_recurrence_guard',
+         'workspace_next_cycle_reclosure_recurrence_guard',
+         'workspace_next_cycle_plan_recurrence_guard',
+         'workspace_continuation_retriage_next_cycle_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 084 next-cycle freeze triggers must exist.");
