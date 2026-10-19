@@ -57,10 +57,10 @@ create table if not exists app.workspace_post_next_cycle_reclosure_checks (
   )
 );
 
-create index if not exists workspace_post_continuation_reclosure_checks_recent_idx
+create index if not exists workspace_post_next_cycle_reclosure_checks_recent_idx
   on app.workspace_post_next_cycle_reclosure_checks(workspace_id,created_at desc);
 
-create index if not exists workspace_post_continuation_reclosure_checks_reclosure_idx
+create index if not exists workspace_post_next_cycle_reclosure_checks_reclosure_idx
   on app.workspace_post_next_cycle_reclosure_checks(
     workspace_id,next_cycle_reclosure_id,created_at desc,next_cycle_reclosure_regression_check_id desc
   );
@@ -280,6 +280,11 @@ begin
         and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
     )
     and not exists (
+      select 1 from app.workspace_reconciliation_successive_generation_recurrences x
+      where x.workspace_id=new.workspace_id and x.case_id=new.case_id
+        and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
+    )
+    and not exists (
       select 1 from app.workspace_reconciliation_continuation_generation_recurrences x
       where x.workspace_id=new.workspace_id and x.case_id=new.case_id
         and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
@@ -307,43 +312,43 @@ begin
     where recurrence4.workspace_id=new.workspace_id
       and recurrence4.case_id=new.case_id
   ) then
-    raise exception 'next_cycle_cycle_recurrence_requires_new_generation';
+    raise exception 'next_cycle_recurrence_requires_new_generation';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists workspace_continuation_activation_recurrence_guard
+drop trigger if exists workspace_next_cycle_activation_recurrence_guard
   on app.workspace_next_cycle_delivery_activations;
-create trigger workspace_continuation_activation_recurrence_guard
+create trigger workspace_next_cycle_activation_recurrence_guard
 before insert or update on app.workspace_next_cycle_delivery_activations
 for each row
 execute function app.require_no_next_cycle_recurrence_for_case();
 
-drop trigger if exists workspace_continuation_reconciliation_recurrence_guard
+drop trigger if exists workspace_next_cycle_reconciliation_recurrence_guard
   on app.workspace_next_cycle_delivery_reconciliations;
-create trigger workspace_continuation_reconciliation_recurrence_guard
+create trigger workspace_next_cycle_reconciliation_recurrence_guard
 before insert or update on app.workspace_next_cycle_delivery_reconciliations
 for each row
 execute function app.require_no_next_cycle_recurrence_for_case();
 
-drop trigger if exists workspace_continuation_reclosure_recurrence_guard
+drop trigger if exists workspace_next_cycle_reclosure_recurrence_guard
   on app.workspace_reconciliation_next_cycle_reclosures;
-create trigger workspace_continuation_reclosure_recurrence_guard
+create trigger workspace_next_cycle_reclosure_recurrence_guard
 before insert or update on app.workspace_reconciliation_next_cycle_reclosures
 for each row
 execute function app.require_no_next_cycle_recurrence_for_case();
 
-drop trigger if exists workspace_continuation_plan_recurrence_guard
+drop trigger if exists workspace_next_cycle_plan_recurrence_guard
   on app.workspace_next_cycle_corrective_delivery_plans;
-create trigger workspace_continuation_plan_recurrence_guard
+create trigger workspace_next_cycle_plan_recurrence_guard
 before insert or update on app.workspace_next_cycle_corrective_delivery_plans
 for each row
 execute function app.require_no_next_cycle_recurrence_for_case();
 
-drop trigger if exists workspace_successive_retriage_continuation_recurrence_guard
+drop trigger if exists workspace_continuation_retriage_next_cycle_recurrence_guard
   on app.workspace_continuation_generation_recurrence_triage_cycles;
-create trigger workspace_successive_retriage_continuation_recurrence_guard
+create trigger workspace_continuation_retriage_next_cycle_recurrence_guard
 before insert or update on app.workspace_continuation_generation_recurrence_triage_cycles
 for each row
 execute function app.require_no_next_cycle_recurrence_for_case();
@@ -362,15 +367,15 @@ begin
     where plan.workspace_id=new.workspace_id
       and plan.next_cycle_plan_id=new.next_cycle_plan_id
   ) then
-    raise exception 'next_cycle_cycle_recurrence_requires_new_generation';
+    raise exception 'next_cycle_recurrence_requires_new_generation';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists workspace_continuation_delivery_recurrence_guard
+drop trigger if exists workspace_next_cycle_delivery_recurrence_guard
   on app.workspace_next_cycle_corrective_live_deliveries;
-create trigger workspace_continuation_delivery_recurrence_guard
+create trigger workspace_next_cycle_delivery_recurrence_guard
 before insert or update on app.workspace_next_cycle_corrective_live_deliveries
 for each row
 execute function app.require_no_next_cycle_recurrence_for_delivery();
@@ -403,11 +408,27 @@ begin
         raise exception 'reconciliation_triage_verified_next_cycle_reclosure_required';
       end if;
     elsif exists (
-      select 1 from app.workspace_reconciliation_subsequent_generation_recurrences r
+      select 1 from app.workspace_reconciliation_successive_generation_recurrences r
       where r.workspace_id=new.workspace_id and r.case_id=new.case_id
     ) then
       if not exists (
         select 1 from app.workspace_reconciliation_continuation_generation_reclosures rc
+        where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
+          and rc.successive_generation_recurrence_id=(
+            select lr.successive_generation_recurrence_id
+            from app.workspace_reconciliation_successive_generation_recurrences lr
+            where lr.workspace_id=new.workspace_id and lr.case_id=new.case_id
+            order by lr.recurred_at desc,lr.successive_generation_recurrence_id desc limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_continuation_generation_reclosure_required';
+      end if;
+    elsif exists (
+      select 1 from app.workspace_reconciliation_subsequent_generation_recurrences r
+      where r.workspace_id=new.workspace_id and r.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1 from app.workspace_reconciliation_successive_generation_reclosures rc
         where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
           and rc.subsequent_generation_recurrence_id=(
             select lr.subsequent_generation_recurrence_id
@@ -416,7 +437,7 @@ begin
             order by lr.recurred_at desc,lr.subsequent_generation_recurrence_id desc limit 1
           )
       ) then
-        raise exception 'reconciliation_triage_verified_continuation_generation_reclosure_required';
+        raise exception 'reconciliation_triage_verified_successive_generation_reclosure_required';
       end if;
     elsif exists (
       select 1 from app.workspace_reconciliation_successor_generation_recurrences r
