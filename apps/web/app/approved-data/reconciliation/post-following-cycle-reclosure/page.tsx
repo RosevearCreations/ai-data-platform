@@ -31,16 +31,13 @@ export default async function PostFollowingCycleReclosurePage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-closure">
-            Continuation-generation reconciliation & re-closure
+            Following-cycle reconciliation & re-closure
           </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-recurrence-planning">
-            Continuation-generation recurrence re-triage & following-cycle planning
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/next-cycle-recurrence-planning">
-            Predecessor next-cycle recurrence planning
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-next-cycle-reclosure">
+            Predecessor next-cycle recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-delivery">
-            Successive-generation delivery
+            Following-cycle delivery
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-next-cycle-reclosure">
             Predecessor post-next-cycle monitoring
