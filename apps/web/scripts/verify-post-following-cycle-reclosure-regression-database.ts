@@ -159,7 +159,7 @@ async function main() {
       closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_exception_next_generation_reclosures"),
-    "Build 088 close trigger must preserve Build 087, Build 071, Build 067 and Build 063 generation rules."
+    "Build 088 close trigger must preserve the complete historical re-closure hierarchy."
   );
 
   const triggers = await authPool.query<{ trigger_name:string }>(
