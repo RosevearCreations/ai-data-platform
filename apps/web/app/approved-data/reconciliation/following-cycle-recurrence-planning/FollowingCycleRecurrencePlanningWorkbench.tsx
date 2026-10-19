@@ -239,7 +239,7 @@ export function FollowingCycleRecurrencePlanningWorkbench({
       </section>
 
       <section className="correctiveNotice">
-        <strong>A following-cycle recurrence starts a continuation corrective generation</strong>
+        <strong>A following-cycle recurrence starts a subsequent corrective cycle</strong>
         <p>
           Build 089 never edits or reuses the Build 085 plan. It starts from the
           exact Build 088 recurrence and limits corrective scope to fields proven
@@ -512,7 +512,7 @@ export function FollowingCycleRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this following-cycle recurrence enter a continuation corrective generation?"
+                          placeholder="Why should this following-cycle recurrence enter a subsequent corrective cycle?"
                         />
                       </label>
                       <button
