@@ -155,7 +155,7 @@ export function PostFollowingCycleReclosureWorkbench({
           Build 088 monitors the exact Build 086 package that justified Build 087
           re-closure. Drift never reopens automatically. Only the newest recurrent
           read-back can support an explicit owner/admin recurrence action, and once
-          that action is recorded the current Build 077–071 generation is frozen.
+          that action is recorded the current Build 085–087 following-cycle generation is frozen.
         </p>
       </section>
 
@@ -184,9 +184,9 @@ export function PostFollowingCycleReclosureWorkbench({
                 </header>
 
                 <dl className="publicationEvidence">
-                  <div><dt>Subsequent-generation re-closure</dt><dd>{reclosure.followingCycleReclosureId}</dd></div>
+                  <div><dt>Following-cycle re-closure</dt><dd>{reclosure.followingCycleReclosureId}</dd></div>
                   <div><dt>Re-closure fingerprint</dt><dd>{reclosure.followingCycleReclosureFingerprint}</dd></div>
-                  <div><dt>Build 068 recurrence</dt><dd>{reclosure.nextCycleRecurrenceId}</dd></div>
+                  <div><dt>Build 084 next-cycle recurrence</dt><dd>{reclosure.nextCycleRecurrenceId}</dd></div>
                   <div><dt>Build 086 delivery</dt><dd>{reclosure.followingCycleDeliveryId}</dd></div>
                   {check ? (
                     <>
