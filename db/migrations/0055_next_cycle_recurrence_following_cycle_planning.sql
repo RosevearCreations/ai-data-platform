@@ -56,7 +56,7 @@ create table if not exists app.workspace_next_cycle_recurrence_triage_cycles (
     on delete restrict
 );
 
-create index if not exists workspace_continuation_retriage_recent_idx
+create index if not exists workspace_next_cycle_retriage_recent_idx
   on app.workspace_next_cycle_recurrence_triage_cycles(workspace_id,updated_at desc);
 
 create table if not exists app.workspace_following_cycle_corrective_delivery_plans (
