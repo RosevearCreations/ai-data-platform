@@ -340,7 +340,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
             })}
           {!model.planning.plans.some((plan) => plan.status === "approved") ? (
             <div className="emptyState">
-              No approved Build 081 following-cycle corrective plan is ready for execution.
+              No approved Build 085 following-cycle corrective plan is ready for execution.
             </div>
           ) : null}
         </div>
@@ -373,7 +373,7 @@ export function FollowingCycleCorrectiveDeliveryWorkbench({
             </article>
           ))}
           {!model.deliveries.length ? (
-            <div className="emptyState">No Build 082 live delivery evidence exists yet.</div>
+            <div className="emptyState">No Build 086 live delivery evidence exists yet.</div>
           ) : null}
         </div>
       </section>
