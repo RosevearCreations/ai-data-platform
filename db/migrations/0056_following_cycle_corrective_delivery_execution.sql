@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_following_cycle_execution_for_continuation_recurrence()
+create or replace function app.require_no_following_cycle_execution_for_next_cycle_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -367,22 +367,22 @@ begin
     where activation.workspace_id=new.workspace_id
       and activation.case_id=new.case_id
   ) then
-    raise exception 'following_cycle_execution_freezes_continuation_recurrence_planning';
+    raise exception 'following_cycle_execution_freezes_next_cycle_recurrence_planning';
   end if;
   return new;
 end;
 $$;
 
-drop trigger if exists workspace_continuation_retriage_following_cycle_exec_guard
+drop trigger if exists workspace_next_cycle_retriage_following_cycle_exec_guard
   on app.workspace_next_cycle_recurrence_triage_cycles;
-create trigger workspace_continuation_retriage_following_cycle_exec_guard
+create trigger workspace_next_cycle_retriage_following_cycle_exec_guard
 before insert or update on app.workspace_next_cycle_recurrence_triage_cycles
 for each row
-execute function app.require_no_following_cycle_execution_for_continuation_recurrence();
+execute function app.require_no_following_cycle_execution_for_next_cycle_recurrence();
 
 drop trigger if exists workspace_following_cycle_plan_execution_guard
   on app.workspace_following_cycle_corrective_delivery_plans;
 create trigger workspace_following_cycle_plan_execution_guard
 before insert or update on app.workspace_following_cycle_corrective_delivery_plans
 for each row
-execute function app.require_no_following_cycle_execution_for_continuation_recurrence();
+execute function app.require_no_following_cycle_execution_for_next_cycle_recurrence();
