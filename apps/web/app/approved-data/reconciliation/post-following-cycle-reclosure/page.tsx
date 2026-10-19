@@ -22,7 +22,7 @@ export default async function PostFollowingCycleReclosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 088</p>
-        <h1>Post-Next-Cycle Re-Closure Regression Monitoring & Recurrence Governance</h1>
+        <h1>Post-Following-Cycle Re-Closure Regression Monitoring & Recurrence Governance</h1>
         <p className="lead">
           Monitor the exact Build 086 package after verified Build 087 re-closure,
           preserve stable and recurrent evidence, and reopen only through an
@@ -38,9 +38,6 @@ export default async function PostFollowingCycleReclosurePage() {
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-delivery">
             Following-cycle delivery
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/post-next-cycle-reclosure">
-            Predecessor post-next-cycle monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
