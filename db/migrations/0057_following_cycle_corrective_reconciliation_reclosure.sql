@@ -325,11 +325,27 @@ begin
         raise exception 'reconciliation_triage_verified_following_cycle_reclosure_required';
       end if;
     elsif exists (
-      select 1 from app.workspace_reconciliation_successive_generation_recurrences r
+      select 1 from app.workspace_reconciliation_continuation_generation_recurrences r
       where r.workspace_id=new.workspace_id and r.case_id=new.case_id
     ) then
       if not exists (
         select 1 from app.workspace_reconciliation_next_cycle_reclosures rc
+        where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
+          and rc.continuation_generation_recurrence_id=(
+            select lr.continuation_generation_recurrence_id
+            from app.workspace_reconciliation_continuation_generation_recurrences lr
+            where lr.workspace_id=new.workspace_id and lr.case_id=new.case_id
+            order by lr.recurred_at desc,lr.continuation_generation_recurrence_id desc limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_next_cycle_reclosure_required';
+      end if;
+    elsif exists (
+      select 1 from app.workspace_reconciliation_successive_generation_recurrences r
+      where r.workspace_id=new.workspace_id and r.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1 from app.workspace_reconciliation_continuation_generation_reclosures rc
         where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
           and rc.successive_generation_recurrence_id=(
             select lr.successive_generation_recurrence_id
@@ -338,7 +354,7 @@ begin
             order by lr.recurred_at desc,lr.successive_generation_recurrence_id desc limit 1
           )
       ) then
-        raise exception 'reconciliation_triage_verified_next_cycle_reclosure_required';
+        raise exception 'reconciliation_triage_verified_continuation_generation_reclosure_required';
       end if;
     elsif exists (
       select 1 from app.workspace_reconciliation_subsequent_generation_recurrences r
