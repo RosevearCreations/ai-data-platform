@@ -16,7 +16,7 @@ async function main() {
     "workspace_following_cycle_reconciliation_recurrence_guard",
     "workspace_following_cycle_reclosure_recurrence_guard",
     "workspace_following_cycle_plan_recurrence_guard",
-    "workspace_continuation_retriage_following_cycle_recurrence_guard"
+    "workspace_next_cycle_retriage_following_cycle_recurrence_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -129,6 +129,7 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_next_cycle_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_successive_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_exception_next_generation_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_exception_recurrences"),
@@ -153,6 +154,7 @@ async function main() {
   assert(
     closeDefinition.includes("workspace_reconciliation_following_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_cycle_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_continuation_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successive_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_subsequent_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successor_generation_reclosures") &&
@@ -171,7 +173,7 @@ async function main() {
          'workspace_following_cycle_reconciliation_recurrence_guard',
          'workspace_following_cycle_reclosure_recurrence_guard',
          'workspace_following_cycle_plan_recurrence_guard',
-         'workspace_continuation_retriage_following_cycle_recurrence_guard'
+         'workspace_next_cycle_retriage_following_cycle_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 088 following-cycle freeze triggers must exist.");
