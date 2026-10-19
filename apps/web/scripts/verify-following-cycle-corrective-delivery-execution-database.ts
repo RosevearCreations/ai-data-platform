@@ -153,7 +153,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_following_cycle_execution_for_continuation_recurrence'`
+       and p.proname='require_no_following_cycle_execution_for_next_cycle_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
@@ -170,7 +170,7 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_continuation_retriage_following_cycle_exec_guard',
+         'workspace_next_cycle_retriage_following_cycle_exec_guard',
          'workspace_following_cycle_plan_execution_guard'
        )`
   );
