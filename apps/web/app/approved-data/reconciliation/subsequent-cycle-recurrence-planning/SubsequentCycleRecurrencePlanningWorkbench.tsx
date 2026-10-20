@@ -239,12 +239,12 @@ export function SubsequentCycleRecurrencePlanningWorkbench({
       </section>
 
       <section className="correctiveNotice">
-        <strong>A subsequent-cycle recurrence starts a subsequent corrective cycle</strong>
+        <strong>A subsequent-cycle recurrence starts a successive corrective cycle</strong>
         <p>
-          Build 093 never edits or reuses the Build 089 plan. It starts from the
+          Build 093 never edits or reuses the Build 089 subsequent-cycle plan. It starts from the
           exact Build 092 recurrence and limits corrective scope to fields proven
           recurrent by that newest read-back and already governed by the approved
-          Build 089 plan.
+          Build 089 plan and Build 090 accepted package.
         </p>
       </section>
 
@@ -512,7 +512,7 @@ export function SubsequentCycleRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this subsequent-cycle recurrence enter a subsequent corrective cycle?"
+                          placeholder="Why should this subsequent-cycle recurrence enter a successive corrective cycle?"
                         />
                       </label>
                       <button
