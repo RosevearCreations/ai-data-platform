@@ -34,6 +34,9 @@ export default async function SubsequentCycleCorrectiveClosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-following-cycle-reclosure">
             Predecessor post-following-cycle monitoring
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-subsequent-cycle-reclosure">
+            Post-subsequent-cycle recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-cycle-delivery">
             Subsequent-cycle delivery
           </Link>
