@@ -5,9 +5,18 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
+  const postgresIdentifiers = [
+    "workspace_subsequent_cycle_delivery_activations",
+    "workspace_subsequent_cycle_corrective_live_deliveries",
+    "workspace_subsequent_cycle_activations_one_active_idx",
+    "workspace_subsequent_cycle_activations_recent_idx",
+    "workspace_subsequent_cycle_live_recent_idx",
+    "require_no_subcycle_exec_for_following_recurrence",
+    "workspace_following_cycle_retriage_subsequent_cycle_exec_guard",
+    "workspace_subsequent_cycle_plan_execution_guard"
+  ];
   assert(
-    "workspace_subsequent_cycle_delivery_activations".length <= 63 &&
-      "workspace_subsequent_cycle_corrective_live_deliveries".length <= 63,
+    postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
     "Build 090 database identifiers must fit PostgreSQL's 63-byte identifier limit."
   );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
@@ -153,7 +162,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_subsequent_cycle_execution_for_following_cycle_recurrence'`
+       and p.proname='require_no_subcycle_exec_for_following_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
