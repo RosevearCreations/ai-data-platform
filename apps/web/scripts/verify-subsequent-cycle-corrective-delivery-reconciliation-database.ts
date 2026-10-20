@@ -138,6 +138,11 @@ async function main() {
     "Build 091 close trigger must preserve Build 087 following-cycle re-closure behavior."
   );
   assert(
+    definition.includes("workspace_reconciliation_next_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_next_cycle_reclosures"),
+    "Build 091 close trigger must preserve Build 083 next-cycle re-closure behavior."
+  );
+  assert(
     definition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
       definition.includes("workspace_reconciliation_continuation_generation_reclosures"),
     "Build 091 close trigger must preserve continuation-generation historical re-closure behavior."
