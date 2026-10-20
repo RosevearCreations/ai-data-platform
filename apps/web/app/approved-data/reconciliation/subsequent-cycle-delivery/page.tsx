@@ -23,7 +23,7 @@ export default async function SubsequentCycleCorrectiveDeliveryPage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 090</p>
-        <h1>Following-Cycle Corrective Delivery Activation & Idempotent Execution</h1>
+        <h1>Subsequent-Cycle Corrective Delivery Activation & Idempotent Execution</h1>
         <p className="lead">
           Execute an approved Build 089 subsequent-cycle plan through a fresh
           package identity, authenticated capability proof, accepted dry-run,
@@ -36,13 +36,10 @@ export default async function SubsequentCycleCorrectiveDeliveryPage() {
             Post-following-cycle recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-recurrence-planning">
-            Next-cycle recurrence re-triage & subsequent-cycle planning
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-cycle-closure">
-            Following-cycle reconciliation & re-closure
+            Following-cycle recurrence re-triage & subsequent-cycle planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-closure">
-            Next-cycle reconciliation & re-closure
+            Following-cycle reconciliation & re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
