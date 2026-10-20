@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_subsequent_cycle_execution_for_following_cycle_recurrence()
+create or replace function app.require_no_subcycle_exec_for_following_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -378,11 +378,11 @@ drop trigger if exists workspace_following_cycle_retriage_subsequent_cycle_exec_
 create trigger workspace_following_cycle_retriage_subsequent_cycle_exec_guard
 before insert or update on app.workspace_following_cycle_recurrence_triage_cycles
 for each row
-execute function app.require_no_subsequent_cycle_execution_for_following_cycle_recurrence();
+execute function app.require_no_subcycle_exec_for_following_recurrence();
 
 drop trigger if exists workspace_subsequent_cycle_plan_execution_guard
   on app.workspace_subsequent_cycle_corrective_delivery_plans;
 create trigger workspace_subsequent_cycle_plan_execution_guard
 before insert or update on app.workspace_subsequent_cycle_corrective_delivery_plans
 for each row
-execute function app.require_no_subsequent_cycle_execution_for_following_cycle_recurrence();
+execute function app.require_no_subcycle_exec_for_following_recurrence();
