@@ -162,7 +162,7 @@ async function main() {
       planInsert.includes("source_subsequent_cycle_package_fingerprint") &&
       planInsert.includes("predecessor_subsequent_cycle_plan_id") &&
       planInsert.includes("predecessor_subsequent_cycle_delivery_id"),
-    "Build 093 plan gate must bind the exact Build 089/086 predecessor package identity."
+    "Build 093 plan gate must bind the exact Build 089/090 predecessor package identity."
   );
 
   const freezeFunction = await authPool.query<{ definition:string }>(
@@ -183,7 +183,7 @@ async function main() {
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
          'workspace_subsequent_cycle_plan_recurrence_guard',
-         'workspace_following_cycle_retriage_subsequent_cycle_recurrence_guard'
+         'workspace_following_retriage_subcycle_recurrence_guard'
        )`
   );
   assert(triggers.rows.length === 2, "Build 093 predecessor planning freeze triggers must remain active.");
