@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Following-cycle delivery request failed."
+        : "Subsequent-cycle delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -102,7 +102,7 @@ export function SubsequentCycleCorrectiveDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Following-cycle activation recorded after a fresh capability check and accepted dry-run."
+        "Subsequent-cycle activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function SubsequentCycleCorrectiveDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal subsequent-cycle delivery was returned without another send."
-          : "Following-cycle corrective delivery completed."
+          : "Subsequent-cycle corrective delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function SubsequentCycleCorrectiveDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Following-cycle activation revoked.");
+      setMessage("Subsequent-cycle activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -173,7 +173,7 @@ export function SubsequentCycleCorrectiveDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 090 controlled execution</p>
-            <h2>Following-cycle delivery readiness</h2>
+            <h2>Subsequent-cycle delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
@@ -244,7 +244,7 @@ export function SubsequentCycleCorrectiveDeliveryWorkbench({
                   </header>
 
                   <dl className="publicationEvidence">
-                    <div><dt>Continuation-generation plan</dt><dd>{plan.subsequentCyclePlanId}</dd></div>
+                    <div><dt>Subsequent-cycle plan</dt><dd>{plan.subsequentCyclePlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceFollowingCycleRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor following-cycle delivery</dt><dd>{plan.predecessorFollowingCycleDeliveryId}</dd></div>
