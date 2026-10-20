@@ -28,7 +28,7 @@ export default async function SubsequentCycleRecurrencePlanningPage() {
         </h1>
         <p className="lead">
           Turn governed Build 092 subsequent-cycle recurrence evidence into a new planning
-          generation without rewriting the Build 089–088 subsequent-cycle corrective history.
+          generation without rewriting the Build 089–092 subsequent-cycle corrective history.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">
