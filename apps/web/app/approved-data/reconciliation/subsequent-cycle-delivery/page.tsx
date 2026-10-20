@@ -38,6 +38,9 @@ export default async function SubsequentCycleCorrectiveDeliveryPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-recurrence-planning">
             Following-cycle recurrence re-triage & subsequent-cycle planning
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-cycle-closure">
+            Subsequent-cycle reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-cycle-closure">
             Following-cycle reconciliation & re-closure
           </Link>
