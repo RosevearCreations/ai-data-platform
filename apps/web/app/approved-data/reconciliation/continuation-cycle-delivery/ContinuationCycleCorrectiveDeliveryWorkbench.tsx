@@ -173,7 +173,7 @@ export function ContinuationCycleCorrectiveDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 098 controlled execution</p>
-            <h2>Successive-cycle delivery readiness</h2>
+            <h2>Continuation-cycle delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
