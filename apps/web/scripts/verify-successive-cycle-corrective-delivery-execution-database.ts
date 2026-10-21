@@ -11,7 +11,7 @@ async function main() {
     "workspace_successive_cycle_activations_one_active_idx",
     "workspace_successive_cycle_activations_recent_idx",
     "workspace_successive_cycle_live_recent_idx",
-    "require_no_subcycle_exec_for_following_recurrence",
+    "require_no_successive_exec_for_subcycle_recurrence",
     "workspace_subsequent_cycle_retriage_successive_cycle_exec_guard",
     "workspace_successive_cycle_plan_execution_guard"
   ];
@@ -162,7 +162,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_subcycle_exec_for_following_recurrence'`
+       and p.proname='require_no_successive_exec_for_subcycle_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
