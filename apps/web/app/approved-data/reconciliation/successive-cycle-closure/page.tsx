@@ -23,7 +23,7 @@ export default async function SuccessiveCycleCorrectiveClosurePage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 095</p>
-        <h1>Subsequent-Cycle Corrective Delivery Reconciliation & Re-Closure</h1>
+        <h1>Successive-Cycle Corrective Delivery Reconciliation & Re-Closure</h1>
         <p className="lead">
           Independently read back the exact accepted Build 094 package, preserve
           matched/drift/error evidence, and close the recurrence generation only
@@ -35,7 +35,7 @@ export default async function SuccessiveCycleCorrectiveClosurePage() {
             Predecessor post-subsequent-cycle monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-cycle-delivery">
-            Subsequent-cycle delivery
+            Successive-cycle delivery
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/subsequent-cycle-recurrence-planning">
             Subsequent-cycle recurrence re-triage & successive-cycle planning
