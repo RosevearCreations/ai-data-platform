@@ -22,14 +22,14 @@ const approvedAt = "2026-10-14T12:00:00.000Z";
 const sourceDatasetUpdatedAt = "2026-10-14T11:30:00.000Z";
 const operations = [{
   action: "update" as const,
-  integrationKey: "rosie-competitor::build-080-fixture",
+  integrationKey: "rosie-competitor::build-094-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
-    sourceUrl: "https://example.test/build-080",
+    sourceUrl: "https://example.test/build-094",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "successive-cycle-plan:build-080-fixture";
+const batchId = "successive-cycle-plan:build-094-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
@@ -107,7 +107,7 @@ assert(recurred.status === "recurred", "Build 096 drift must become recurrent ev
 assert(recurred.mismatchedCount === 1, "Build 096 recurrence must preserve mismatch evidence.");
 
 const errorInput = {
-  successiveCycleReclosureId: "reclosure-075",
+  successiveCycleReclosureId: "reclosure-095",
   successiveCyclePackageId: packageId,
   successiveCycleReplayKey: replayKey,
   successiveCyclePackageFingerprint: fingerprint,
@@ -122,8 +122,8 @@ assert(
 );
 
 const recurrenceInput = {
-  successiveCycleReclosureId: "reclosure-075",
-  successiveCycleReclosureRegressionCheckId: "check-076",
+  successiveCycleReclosureId: "reclosure-095",
+  successiveCycleReclosureRegressionCheckId: "check-096",
   caseId: "case-053",
   successiveCycleReclosureFingerprint: "reclosure-fingerprint",
   regressionFingerprint: recurred.verificationFingerprint,
