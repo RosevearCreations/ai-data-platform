@@ -29,7 +29,7 @@ const operations = [{
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "successive-cycle-plan:build-079-fixture";
+const batchId = "successive-cycle-plan:build-094-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
