@@ -30,6 +30,9 @@ export default async function PostSuccessiveCycleReclosurePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/successive-cycle-recurrence-planning">
+            Successive-cycle recurrence re-triage & continuation-cycle planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-cycle-closure">
             Successive-cycle reconciliation & re-closure
           </Link>
