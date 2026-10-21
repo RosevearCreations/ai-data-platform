@@ -12,7 +12,7 @@ async function main() {
     "workspace_continuation_cycle_activations_recent_idx",
     "workspace_continuation_cycle_live_recent_idx",
     "require_no_contcycle_exec_for_successive_recurrence",
-    "workspace_successive_cycle_retriage_continuation_cycle_exec_guard",
+    "workspace_successive_retriage_contcycle_exec_guard",
     "workspace_continuation_cycle_plan_execution_guard"
   ];
   assert(
@@ -179,7 +179,7 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_successive_cycle_retriage_continuation_cycle_exec_guard',
+         'workspace_successive_retriage_contcycle_exec_guard',
          'workspace_continuation_cycle_plan_execution_guard'
        )`
   );
