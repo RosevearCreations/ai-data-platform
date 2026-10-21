@@ -148,12 +148,19 @@ async function main() {
     "Build 092 close trigger must detect subsequent-cycle recurrence."
   );
   assert(
-    closeDefinition.includes("reconciliation_triage_post_subsequent_cycle_reclosure_required") &&
+    (
+      closeDefinition.includes("reconciliation_triage_post_subsequent_cycle_reclosure_required") ||
+      closeDefinition.includes("reconciliation_triage_verified_successive_cycle_reclosure_required")
+    ) &&
       closeDefinition.includes("reconciliation_triage_verified_subsequent_cycle_reclosure_required"),
-    "Build 092 must remain fail-closed after subsequent-cycle recurrence, including the stronger Build 091 re-closure guard."
+    "Build 092 must remain fail-closed after subsequent-cycle recurrence until either its original hold or the stronger Build 095 verified successive-cycle re-closure gate is present, while preserving the Build 091 guard."
   );
   assert(
-    closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
+    (
+      closeDefinition.includes("reconciliation_triage_post_subsequent_cycle_reclosure_required") ||
+      closeDefinition.includes("workspace_reconciliation_successive_cycle_reclosures")
+    ) &&
+      closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_following_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_continuation_generation_reclosures") &&
