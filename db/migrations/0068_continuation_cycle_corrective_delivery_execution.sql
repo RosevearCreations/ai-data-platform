@@ -373,9 +373,9 @@ begin
 end;
 $$;
 
-drop trigger if exists workspace_successive_cycle_retriage_continuation_cycle_exec_guard
+drop trigger if exists workspace_successive_retriage_contcycle_exec_guard
   on app.workspace_successive_cycle_recurrence_triage_cycles;
-create trigger workspace_successive_cycle_retriage_continuation_cycle_exec_guard
+create trigger workspace_successive_retriage_contcycle_exec_guard
 before insert or update on app.workspace_successive_cycle_recurrence_triage_cycles
 for each row
 execute function app.require_no_contcycle_exec_for_successive_recurrence();
