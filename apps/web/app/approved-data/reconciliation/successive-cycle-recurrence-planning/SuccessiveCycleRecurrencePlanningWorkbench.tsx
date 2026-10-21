@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Subsequent-generation recurrence planning request failed."
+        : "Successive-cycle recurrence planning request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -110,10 +110,10 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
           successiveCycleRecurrenceId
         })
       );
-      setMessage("Subsequent-generation recurrence re-triage created.");
+      setMessage("Successive-cycle recurrence re-triage created.");
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Subsequent-generation recurrence re-triage failed."
+        error instanceof Error ? error.message : "Successive-cycle recurrence re-triage failed."
       );
     } finally {
       setBusy("");
@@ -141,8 +141,8 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
       );
       setMessage(
         status === "dismissed"
-          ? "Subsequent-generation recurrence cycle dismissed."
-          : "Subsequent-generation recurrence re-triage saved."
+          ? "Successive-cycle recurrence cycle dismissed."
+          : "Successive-cycle recurrence re-triage saved."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Save failed.");
@@ -165,7 +165,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
           rationale: rationales[item.successiveCycleRetriageId] ?? ""
         })
       );
-      setMessage("Successive-generation corrective plan frozen for review.");
+      setMessage("Continuation-cycle corrective plan frozen for review.");
     } catch (error) {
       setMessage(
         error instanceof Error ? error.message : "Plan creation failed."
@@ -194,7 +194,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
         })
       );
       setMessage(
-        "Successive-generation plan review recorded: " + decision + "."
+        "Continuation-cycle plan review recorded: " + decision + "."
       );
     } catch (error) {
       setMessage(
@@ -229,17 +229,17 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
           </article>
           <article>
             <strong>{model.totals.proposedPlans}</strong>
-            <span>proposed successive-gen plans</span>
+            <span>proposed continuation-cycle plans</span>
           </article>
           <article>
             <strong>{model.totals.approvedPlans}</strong>
-            <span>approved successive-gen plans</span>
+            <span>approved continuation-cycle plans</span>
           </article>
         </div>
       </section>
 
       <section className="correctiveNotice">
-        <strong>A successive-cycle recurrence starts a successive corrective cycle</strong>
+        <strong>A successive-cycle recurrence starts a continuation corrective cycle</strong>
         <p>
           Build 097 never edits or reuses the Build 093 successive-cycle plan. It starts from the
           exact Build 096 recurrence and limits corrective scope to fields proven
@@ -287,11 +287,11 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
                   </header>
                   <dl className="publicationEvidence">
                     <div>
-                      <dt>Subsequent-generation recurrence</dt>
+                      <dt>Successive-cycle recurrence</dt>
                       <dd>{recurrence.successiveCycleRecurrenceId}</dd>
                     </div>
                     <div>
-                      <dt>Subsequent-generation re-closure</dt>
+                      <dt>Successive-cycle re-closure</dt>
                       <dd>{recurrence.successiveCycleReclosureId}</dd>
                     </div>
                     <div>
@@ -358,11 +358,11 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
 
                 <dl className="publicationEvidence">
                   <div>
-                    <dt>Subsequent-generation recurrence</dt>
+                    <dt>Successive-cycle recurrence</dt>
                     <dd>{cycle.successiveCycleRecurrenceId}</dd>
                   </div>
                   <div>
-                    <dt>Subsequent-generation recurrence fingerprint</dt>
+                    <dt>Successive-cycle recurrence fingerprint</dt>
                     <dd>{cycle.successiveCycleRecurrenceFingerprint}</dd>
                   </div>
                   <div>
@@ -500,7 +500,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
                   draft.resolutionIntent === "plan-correction" ? (
                     <>
                       <label>
-                        Successive-generation plan rationale
+                        Continuation-cycle plan rationale
                         <textarea
                           value={
                             rationales[cycle.successiveCycleRetriageId] ?? ""
@@ -512,7 +512,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this successive-cycle recurrence enter a successive corrective cycle?"
+                          placeholder="Why should this successive-cycle recurrence enter a continuation corrective cycle?"
                         />
                       </label>
                       <button
@@ -545,7 +545,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Immutable successive-cycle recurrence scope</p>
-            <h2>Successive-generation corrective plans</h2>
+            <h2>Continuation-cycle corrective plans</h2>
           </div>
         </div>
         <div className="publicationList">
@@ -578,7 +578,7 @@ export function SuccessiveCycleRecurrencePlanningWorkbench({
 
               <dl className="publicationEvidence">
                 <div>
-                  <dt>Successive-generation plan</dt>
+                  <dt>Continuation-cycle plan</dt>
                   <dd>{plan.continuationCyclePlanId}</dd>
                 </div>
                 <div>
