@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_successive_exec_for_subcycle_recurrence()
+create or replace function app.require_no_contcycle_exec_for_successive_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -378,11 +378,11 @@ drop trigger if exists workspace_successive_cycle_retriage_continuation_cycle_ex
 create trigger workspace_successive_cycle_retriage_continuation_cycle_exec_guard
 before insert or update on app.workspace_successive_cycle_recurrence_triage_cycles
 for each row
-execute function app.require_no_successive_exec_for_subcycle_recurrence();
+execute function app.require_no_contcycle_exec_for_successive_recurrence();
 
 drop trigger if exists workspace_continuation_cycle_plan_execution_guard
   on app.workspace_continuation_cycle_corrective_delivery_plans;
 create trigger workspace_continuation_cycle_plan_execution_guard
 before insert or update on app.workspace_continuation_cycle_corrective_delivery_plans
 for each row
-execute function app.require_no_successive_exec_for_subcycle_recurrence();
+execute function app.require_no_contcycle_exec_for_successive_recurrence();
