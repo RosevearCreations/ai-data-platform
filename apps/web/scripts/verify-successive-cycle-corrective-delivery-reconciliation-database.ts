@@ -130,12 +130,14 @@ async function main() {
     "Build 095 close trigger must prioritize the subsequent-cycle recurrence."
   );
   assert(
-    definition.includes("reconciliation_triage_verified_successive_cycle_reclosure_required"),
+    definition.includes("reconciliation_triage_verified_successive_cycle_reclosure_required") &&
+      definition.includes("reconciliation_triage_verified_subsequent_cycle_reclosure_required"),
     "Build 095 close trigger must fail closed with successive-cycle-specific evidence."
   );
   assert(
-    definition.includes("workspace_reconciliation_subsequent_cycle_reclosures"),
-    "Build 095 close trigger must preserve Build 091 subsequent-cycle re-closure behavior."
+    definition.includes("workspace_reconciliation_following_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_subsequent_cycle_reclosures"),
+    "Build 095 close trigger must preserve Build 091 following-cycle → subsequent-cycle re-closure behavior."
   );
   assert(
     definition.includes("workspace_reconciliation_next_cycle_recurrences") &&
