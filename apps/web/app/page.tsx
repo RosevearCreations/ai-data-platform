@@ -65,6 +65,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/post-subsequent-cycle-reclosure", "Post-subsequent-cycle recurrence monitoring"],
   ["/approved-data/reconciliation/subsequent-cycle-recurrence-planning", "Subsequent-cycle recurrence re-triage & successive-cycle planning"],
   ["/approved-data/reconciliation/successive-cycle-delivery", "Successive-cycle corrective delivery execution"],
+  ["/approved-data/reconciliation/successive-cycle-closure", "Successive-cycle reconciliation & re-closure"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],
