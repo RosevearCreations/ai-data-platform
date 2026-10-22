@@ -126,6 +126,11 @@ async function main() {
     "Build 107 close trigger must recognize following-corrective-generation re-closure evidence."
   );
   assert(
+    definition.includes("workspace_reconciliation_following_cg_recurrences") &&
+      definition.includes("reconciliation_triage_post_following_corrective_generation_reclosure_required"),
+    "Build 107 successor governance must allow Build 108 to block direct closure after a following-corrective-generation recurrence."
+  );
+  assert(
     definition.includes("workspace_reconciliation_next_corrective_generation_recurrences"),
     "Build 107 close trigger must prioritize the next-corrective-generation recurrence."
   );
