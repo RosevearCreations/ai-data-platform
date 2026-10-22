@@ -41,7 +41,7 @@ export default async function NextCorrectiveGenerationClosurePage() {
             Continuation-cycle delivery
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-recurrence-planning">
-            Successive-cycle recurrence re-triage & next-corrective-generation planning
+            Continuation-cycle recurrence re-triage & next corrective-generation planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
