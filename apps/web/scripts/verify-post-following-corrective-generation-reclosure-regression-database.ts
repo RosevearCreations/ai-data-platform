@@ -52,10 +52,10 @@ async function main() {
     `select policyname from pg_policies
      where schemaname='app'
        and policyname in (
-         'post_following_corrective_generation_reclosure_checks_member_select',
-         'post_following_corrective_generation_reclosure_checks_manager_insert',
-         'following_corrective_generation_recurrences_member_select',
-         'following_corrective_generation_recurrences_manager_insert'
+         'post_follow_cg_checks_member_select',
+         'post_follow_cg_checks_manager_insert',
+         'following_cg_recurrences_member_select',
+         'following_cg_recurrences_manager_insert'
        )`
   );
   assert(policies.rows.length === 4, "Build 108 intended policies must exist.");
@@ -88,11 +88,11 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and p.polname in (
-         'post_following_corrective_generation_reclosure_checks_manager_insert',
-         'following_corrective_generation_recurrences_manager_insert'
+         'post_follow_cg_checks_manager_insert',
+         'following_cg_recurrences_manager_insert'
        )`
   );
-  const monitor = policyText.rows.find(x=>x.policy_name==="post_following_corrective_generation_reclosure_checks_manager_insert")?.expression ?? "";
+  const monitor = policyText.rows.find(x=>x.policy_name==="post_follow_cg_checks_manager_insert")?.expression ?? "";
   for (const required of [
     "workspace_reconciliation_following_cg_reclosures",
     "workspace_following_corrective_generation_live_deliveries",
@@ -106,7 +106,7 @@ async function main() {
     "Build 108 monitoring gate must bind the exact Build 106 package."
   );
 
-  const recurrence = policyText.rows.find(x=>x.policy_name==="following_corrective_generation_recurrences_manager_insert")?.expression ?? "";
+  const recurrence = policyText.rows.find(x=>x.policy_name==="following_cg_recurrences_manager_insert")?.expression ?? "";
   for (const required of [
     "workspace_post_following_cg_reclosure_checks",
     "workspace_reconciliation_following_cg_reclosures"
