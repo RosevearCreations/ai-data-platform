@@ -41,6 +41,9 @@ export default async function FollowingCorrectiveGenerationDeliveryPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-closure">
             Predecessor next-corrective-generation reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/following-corrective-generation-closure">
+            Build 107 following corrective-generation reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">
             Reconciliation
           </Link>
