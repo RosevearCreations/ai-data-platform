@@ -25,7 +25,7 @@ const operations = [{
   integrationKey: "rosie-competitor::build-102-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
-    sourceUrl: "https://example.test/build-098",
+    sourceUrl: "https://example.test/build-102",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
@@ -107,7 +107,7 @@ assert(recurred.status === "recurred", "Build 104 drift must become recurrent ev
 assert(recurred.mismatchedCount === 1, "Build 104 recurrence must preserve mismatch evidence.");
 
 const errorInput = {
-  nextCorrectiveGenerationReclosureId: "reclosure-099",
+  nextCorrectiveGenerationReclosureId: "reclosure-103",
   nextCorrectiveGenerationPackageId: packageId,
   nextCorrectiveGenerationReplayKey: replayKey,
   nextCorrectiveGenerationPackageFingerprint: fingerprint,
@@ -122,8 +122,8 @@ assert(
 );
 
 const recurrenceInput = {
-  nextCorrectiveGenerationReclosureId: "reclosure-099",
-  nextCorrectiveGenerationReclosureRegressionCheckId: "check-100",
+  nextCorrectiveGenerationReclosureId: "reclosure-103",
+  nextCorrectiveGenerationReclosureRegressionCheckId: "check-104",
   caseId: "case-053",
   nextCorrectiveGenerationReclosureFingerprint: "reclosure-fingerprint",
   regressionFingerprint: recurred.verificationFingerprint,
