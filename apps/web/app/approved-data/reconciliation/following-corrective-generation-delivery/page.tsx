@@ -36,10 +36,7 @@ export default async function FollowingCorrectiveGenerationDeliveryPage() {
             Post-next-corrective-generation recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-recurrence-planning">
-            Continuation-cycle recurrence re-triage & following corrective-generation planning
-          </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/following-corrective-generation-closure">
-            Build 103 following corrective-generation reconciliation & re-closure
+            Build 105 next corrective-generation recurrence re-triage & following corrective-generation planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-closure">
             Predecessor next-corrective-generation reconciliation & re-closure
