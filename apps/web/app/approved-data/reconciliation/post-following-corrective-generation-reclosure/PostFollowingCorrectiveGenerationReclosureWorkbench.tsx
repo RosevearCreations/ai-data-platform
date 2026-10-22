@@ -155,7 +155,7 @@ export function PostFollowingCorrectiveGenerationReclosureWorkbench({
           Build 108 monitors the exact Build 106 package that justified Build 107
           re-closure. Drift never reopens automatically. Only the newest recurrent
           read-back can support an explicit owner/admin recurrence action, and once
-          that action is recorded, the current Build 105–103 following corrective-generation is frozen.
+          that action is recorded, the current Build 105–107 following corrective-generation is frozen.
         </p>
       </section>
 
