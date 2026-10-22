@@ -135,14 +135,16 @@ async function main() {
     "Build 099 close trigger must fail closed with continuation-cycle-specific evidence."
   );
   assert(
-    definition.includes("workspace_reconciliation_following_cycle_recurrences") &&
-      definition.includes("workspace_reconciliation_successive_cycle_reclosures"),
-    "Build 099 close trigger must preserve Build 095 following-cycle → successive-cycle re-closure behavior."
+    definition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
+      definition.includes("workspace_reconciliation_following_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_subsequent_cycle_reclosures"),
+    "Build 099 close trigger must preserve the Build 095 subsequent-cycle → successive-cycle branch and older following-cycle → subsequent-cycle branch."
   );
   assert(
     definition.includes("workspace_reconciliation_next_cycle_recurrences") &&
-      definition.includes("workspace_reconciliation_next_cycle_reclosures"),
-    "Build 099 close trigger must preserve Build 083 next-cycle re-closure behavior."
+      definition.includes("workspace_reconciliation_following_cycle_reclosures"),
+    "Build 099 close trigger must preserve the next-cycle → following-cycle re-closure branch."
   );
   assert(
     definition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
