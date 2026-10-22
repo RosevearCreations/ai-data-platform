@@ -1,4 +1,4 @@
-// Build 105 — Next Corrective-Generation Recurrence Re-Triage & Next Corrective-Planning Generation
+// Build 105 — Next Corrective-Generation Recurrence Re-Triage & Following Corrective-Generation Planning
 import { createHash, randomUUID } from "node:crypto";
 import type { PoolClient, QueryResultRow } from "pg";
 
@@ -679,10 +679,10 @@ export async function createFollowingCorrectiveGenerationPlan(
         "join app.workspace_reconciliation_next_corrective_generation_reclosures reclosure",
         "on reclosure.workspace_id=triage.workspace_id",
         "and reclosure.next_corrective_generation_reclosure_id=triage.next_corrective_generation_reclosure_id",
-        "join app.workspace_next_corrective_generation_corrective_delivery_plans predecessor",
+        "join app.workspace_next_corrective_generation_plans predecessor",
         "on predecessor.workspace_id=triage.workspace_id",
         "and predecessor.next_corrective_generation_plan_id=reclosure.next_corrective_generation_plan_id",
-        "join app.workspace_next_corrective_generation_corrective_live_deliveries delivery",
+        "join app.workspace_next_corrective_generation_live_deliveries delivery",
         "on delivery.workspace_id=triage.workspace_id",
         "and delivery.delivery_id=reclosure.next_corrective_generation_delivery_id",
         "join app.workspace_reconciliation_exception_cases c",
