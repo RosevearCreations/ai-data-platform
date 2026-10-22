@@ -1,7 +1,10 @@
 import { headers } from "next/headers";
 
 import { auth } from "@/lib/auth";
-import {\n  appendIntegrationDeliveryEvent,\n  recordIntegrationConsumerReceipt\n} from "@/lib/integration-delivery-database";
+import {
+  appendIntegrationDeliveryEvent,
+  recordIntegrationConsumerReceipt
+} from "@/lib/integration-delivery-database";
 import {
   INTEGRATION_CONSUMER_PROTOCOL,
   INTEGRATION_CONTRACTS,
