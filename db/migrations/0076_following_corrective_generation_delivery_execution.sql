@@ -56,18 +56,18 @@ create table if not exists app.workspace_following_corrective_generation_deliver
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_corrective_generation_plan_id)
-    references app.workspace_next_corrective_generation_corrective_delivery_plans(workspace_id,next_corrective_generation_plan_id)
+    references app.workspace_next_corrective_generation_plans(workspace_id,next_corrective_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_corrective_generation_delivery_id)
-    references app.workspace_next_corrective_generation_corrective_live_deliveries(workspace_id,delivery_id)
+    references app.workspace_next_corrective_generation_live_deliveries(workspace_id,delivery_id)
     on delete restrict
 );
 
-create unique index if not exists workspace_following_corrective_generation_activations_one_active_idx
+create unique index if not exists workspace_follow_act106_one_active_idx
   on app.workspace_following_corrective_generation_delivery_activations(workspace_id,following_corrective_generation_plan_id)
   where status='active';
 
-create index if not exists workspace_following_corrective_generation_activations_recent_idx
+create index if not exists workspace_follow_act106_recent_idx
   on app.workspace_following_corrective_generation_delivery_activations(workspace_id,activated_at desc);
 
 create table if not exists app.workspace_following_corrective_generation_live_deliveries (
@@ -106,11 +106,11 @@ create table if not exists app.workspace_following_corrective_generation_live_de
     references app.workspace_following_corrective_generation_plans(workspace_id,following_corrective_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_corrective_generation_delivery_id)
-    references app.workspace_next_corrective_generation_corrective_live_deliveries(workspace_id,delivery_id)
+    references app.workspace_next_corrective_generation_live_deliveries(workspace_id,delivery_id)
     on delete restrict
 );
 
-create index if not exists workspace_following_corrective_generation_live_recent_idx
+create index if not exists workspace_follow_live106_recent_idx
   on app.workspace_following_corrective_generation_live_deliveries(workspace_id,updated_at desc);
 
 grant select,insert on app.workspace_following_corrective_generation_delivery_activations to ai_data_runtime;
@@ -163,10 +163,10 @@ with check (
      and reclosure.next_corrective_generation_reclosure_id=p.next_corrective_generation_reclosure_id
     join app.workspace_reconciliation_exception_cases c
       on c.workspace_id=p.workspace_id and c.case_id=p.case_id
-    join app.workspace_next_corrective_generation_corrective_delivery_plans predecessor_plan
+    join app.workspace_next_corrective_generation_plans predecessor_plan
       on predecessor_plan.workspace_id=p.workspace_id
      and predecessor_plan.next_corrective_generation_plan_id=p.predecessor_next_corrective_generation_plan_id
-    join app.workspace_next_corrective_generation_corrective_live_deliveries predecessor_delivery
+    join app.workspace_next_corrective_generation_live_deliveries predecessor_delivery
       on predecessor_delivery.workspace_id=p.workspace_id
      and predecessor_delivery.delivery_id=p.predecessor_next_corrective_generation_delivery_id
     where p.workspace_id=workspace_following_corrective_generation_delivery_activations.workspace_id
@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_b102_ncg_exec_for_contcycle_recurrence()
+create or replace function app.require_no_b106_follow_exec_for_ncg_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -373,16 +373,16 @@ begin
 end;
 $$;
 
-drop trigger if exists workspace_contcycle_retriage_b102_ncg_exec_guard
+drop trigger if exists workspace_ncg_retriage_b106_follow_exec_guard
   on app.workspace_next_corrective_generation_recurrence_triage;
-create trigger workspace_contcycle_retriage_b102_ncg_exec_guard
+create trigger workspace_ncg_retriage_b106_follow_exec_guard
 before insert or update on app.workspace_next_corrective_generation_recurrence_triage
 for each row
-execute function app.require_no_b102_ncg_exec_for_contcycle_recurrence();
+execute function app.require_no_b106_follow_exec_for_ncg_recurrence();
 
-drop trigger if exists workspace_following_corrective_generation_plan_execution_guard
+drop trigger if exists workspace_follow_plan_b106_exec_guard
   on app.workspace_following_corrective_generation_plans;
-create trigger workspace_following_corrective_generation_plan_execution_guard
+create trigger workspace_follow_plan_b106_exec_guard
 before insert or update on app.workspace_following_corrective_generation_plans
 for each row
-execute function app.require_no_b102_ncg_exec_for_contcycle_recurrence();
+execute function app.require_no_b106_follow_exec_for_ncg_recurrence();
