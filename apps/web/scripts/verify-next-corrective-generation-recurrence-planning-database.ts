@@ -8,8 +8,8 @@ async function main() {
   const postgresIdentifiers = [
     "workspace_next_corrective_generation_recurrence_triage",
     "workspace_following_corrective_generation_plans",
-    "workspace_cont_cycle_retriage101_recent_idx",
-    "workspace_next_corrective_gen_plans_recent_idx",
+    "workspace_ncg_retriage105_recent_idx",
+    "workspace_following_corr_plans105_recent_idx",
     "next_corrective_generation_recurrence_triage_member_select",
     "next_corrective_generation_recurrence_triage_manager_insert",
     "next_corrective_generation_recurrence_triage_manager_update",
@@ -37,14 +37,14 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_cont_cycle_retriage101_recent_idx',
-         'workspace_next_corrective_gen_plans_recent_idx'
+         'workspace_ncg_retriage105_recent_idx',
+         'workspace_following_corr_plans105_recent_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 105 intended indexes must exist.");
   assert(
-    indexes.rows.some((row)=>row.indexname==="workspace_cont_cycle_retriage101_recent_idx" && row.tablename==="workspace_next_corrective_generation_recurrence_triage") &&
-      indexes.rows.some((row)=>row.indexname==="workspace_next_corrective_gen_plans_recent_idx" && row.tablename==="workspace_following_corrective_generation_plans"),
+    indexes.rows.some((row)=>row.indexname==="workspace_ncg_retriage105_recent_idx" && row.tablename==="workspace_next_corrective_generation_recurrence_triage") &&
+      indexes.rows.some((row)=>row.indexname==="workspace_following_corr_plans105_recent_idx" && row.tablename==="workspace_following_corrective_generation_plans"),
     "Build 105 indexes must belong to the intended generation tables."
   );
 
@@ -151,8 +151,8 @@ async function main() {
     "workspace_next_corrective_generation_recurrence_triage",
     "workspace_reconciliation_next_corrective_generation_recurrences",
     "workspace_reconciliation_next_corrective_generation_reclosures",
-    "workspace_next_corrective_generation_corrective_delivery_plans",
-    "workspace_next_corrective_generation_corrective_live_deliveries"
+    "workspace_next_corrective_generation_plans",
+    "workspace_next_corrective_generation_live_deliveries"
   ]) {
     assert(planInsert.includes(required), "Build 105 plan insert gate missing " + required + ".");
   }
@@ -162,7 +162,7 @@ async function main() {
       planInsert.includes("source_next_corrective_generation_package_fingerprint") &&
       planInsert.includes("predecessor_next_corrective_generation_plan_id") &&
       planInsert.includes("predecessor_next_corrective_generation_delivery_id"),
-    "Build 105 plan gate must bind the exact Build 101/094 predecessor package identity."
+    "Build 105 plan gate must bind the exact Build 101/102 predecessor package identity."
   );
 
   const freezeFunction = await authPool.query<{ definition:string }>(
@@ -182,8 +182,8 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_next_corrective_generation_plan_recurrence_guard',
-         'workspace_successive_retriage_contcycle_recur_guard'
+         'workspace_ncg_plan_recurrence_guard',
+         'workspace_contcycle_retriage_ncg_recur_guard'
        )`
   );
   assert(triggers.rows.length === 2, "Build 105 predecessor planning freeze triggers must remain active.");
