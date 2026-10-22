@@ -22,14 +22,14 @@ const approvedAt = "2026-10-14T12:00:00.000Z";
 const sourceDatasetUpdatedAt = "2026-10-14T11:30:00.000Z";
 const operations = [{
   action: "update" as const,
-  integrationKey: "rosie-competitor::build-098-fixture",
+  integrationKey: "rosie-competitor::build-102-fixture",
   values: { priceMinimumCad: 249 },
   sourceEvidence: {
     sourceUrl: "https://example.test/build-098",
     retrievedAt: sourceDatasetUpdatedAt
   }
 }];
-const batchId = "next-corrective-generation-plan:build-098-fixture";
+const batchId = "next-corrective-generation-plan:build-102-fixture";
 const fingerprint = integrationFingerprint({
   target: "rosie-dazzlers",
   adapterContract: INTEGRATION_CONTRACTS["rosie-dazzlers"].adapterContract,
