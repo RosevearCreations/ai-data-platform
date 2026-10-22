@@ -24,8 +24,8 @@ import {
   type NextCorrectiveGenerationRecurrencePlanningModel
 } from "./next-corrective-generation-recurrence-planning";
 import {
-  loadApprovedNextCorrectiveGenerationCorrectivePlanContext
-} from "./next-corrective-generation-corrective-delivery-execution";
+  loadApprovedNextCorrectiveGenerationPlanContext
+} from "./next-corrective-generation-delivery-execution";
 
 type WorkspaceRole = "owner" | "admin" | "member";
 type JsonRecord = Record<string, unknown>;
@@ -489,10 +489,10 @@ export async function loadApprovedFollowingCorrectiveGenerationPlanContext(
         and recurrence.next_corrective_generation_recurrence_id=p.next_corrective_generation_recurrence_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
-       join app.workspace_next_corrective_generation_corrective_delivery_plans predecessor_plan
+       join app.workspace_next_corrective_generation_plans predecessor_plan
          on predecessor_plan.workspace_id=p.workspace_id
         and predecessor_plan.next_corrective_generation_plan_id=p.predecessor_next_corrective_generation_plan_id
-       join app.workspace_next_corrective_generation_corrective_live_deliveries predecessor_delivery
+       join app.workspace_next_corrective_generation_live_deliveries predecessor_delivery
          on predecessor_delivery.workspace_id=p.workspace_id
         and predecessor_delivery.delivery_id=p.predecessor_next_corrective_generation_delivery_id
        where p.workspace_id=$1 and p.following_corrective_generation_plan_id=$2
@@ -529,7 +529,7 @@ export async function loadApprovedFollowingCorrectiveGenerationPlanContext(
     throw new Error("following_corrective_generation_delivery_predecessor_not_accepted");
   }
 
-  const predecessorContext = await loadApprovedNextCorrectiveGenerationCorrectivePlanContext(
+  const predecessorContext = await loadApprovedNextCorrectiveGenerationPlanContext(
     userId,
     {
       workspaceId: input.workspaceId,
@@ -823,10 +823,10 @@ export async function createFollowingCorrectiveGenerationDeliveryActivation(
         and recurrence.next_corrective_generation_recurrence_id=p.next_corrective_generation_recurrence_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=p.workspace_id and c.case_id=p.case_id
-       join app.workspace_next_corrective_generation_corrective_delivery_plans predecessor_plan
+       join app.workspace_next_corrective_generation_plans predecessor_plan
          on predecessor_plan.workspace_id=p.workspace_id
         and predecessor_plan.next_corrective_generation_plan_id=p.predecessor_next_corrective_generation_plan_id
-       join app.workspace_next_corrective_generation_corrective_live_deliveries predecessor_delivery
+       join app.workspace_next_corrective_generation_live_deliveries predecessor_delivery
          on predecessor_delivery.workspace_id=p.workspace_id
         and predecessor_delivery.delivery_id=p.predecessor_next_corrective_generation_delivery_id
        where p.workspace_id=$1 and p.following_corrective_generation_plan_id=$2
