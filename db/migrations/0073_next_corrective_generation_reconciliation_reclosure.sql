@@ -69,7 +69,7 @@ create table if not exists app.workspace_next_corrective_generation_delivery_rec
 create index if not exists workspace_next_corrective_generation_reconciliations_recent_idx
   on app.workspace_next_corrective_generation_delivery_reconciliations(workspace_id,created_at desc);
 
-create index if not exists workspace_next_corrective_generation_reconciliations_delivery_idx
+create index if not exists workspace_ncg_reconciliations_delivery_idx
   on app.workspace_next_corrective_generation_delivery_reconciliations(
     workspace_id,next_corrective_generation_delivery_id,created_at desc,next_corrective_generation_reconciliation_id desc
   );
