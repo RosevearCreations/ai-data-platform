@@ -60,7 +60,7 @@ create table if not exists app.workspace_post_continuation_cycle_reclosure_check
 create index if not exists workspace_post_continuation_cycle_reclosure_checks_recent_idx
   on app.workspace_post_continuation_cycle_reclosure_checks(workspace_id,created_at desc);
 
-create index if not exists workspace_post_continuation_cycle_reclosure_checks_reclosure_idx
+create index if not exists workspace_post_contcycle_reclosure_checks_reclosure_idx
   on app.workspace_post_continuation_cycle_reclosure_checks(
     workspace_id,continuation_cycle_reclosure_id,created_at desc,continuation_cycle_reclosure_regression_check_id desc
   );
