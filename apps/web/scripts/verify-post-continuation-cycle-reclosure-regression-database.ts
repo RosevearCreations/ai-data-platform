@@ -150,9 +150,10 @@ async function main() {
     "Build 100 close trigger must detect continuation-cycle recurrence."
   );
   assert(
-    closeDefinition.includes("reconciliation_triage_post_continuation_cycle_reclosure_required") &&
+    closeDefinition.includes("workspace_reconciliation_next_corrective_generation_reclosures") &&
+      closeDefinition.includes("reconciliation_triage_verified_next_corrective_generation_reclosure_required") &&
       closeDefinition.includes("reconciliation_triage_verified_continuation_cycle_reclosure_required"),
-    "Build 100 must fail closed after continuation-cycle recurrence while preserving the Build 099 continuation-cycle re-closure gate beneath it."
+    "Build 100 recurrence must remain fail-closed until the newest continuation-cycle recurrence has verified successor re-closure evidence, while preserving the Build 099 gate beneath it."
   );
   assert(
     closeDefinition.includes("workspace_reconciliation_continuation_cycle_reclosures") &&
