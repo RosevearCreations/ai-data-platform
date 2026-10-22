@@ -8,12 +8,12 @@ async function main() {
   const postgresIdentifiers = [
     "workspace_following_corrective_generation_delivery_activations",
     "workspace_following_corrective_generation_live_deliveries",
-    "workspace_following_corrective_generation_activations_one_active_idx",
-    "workspace_following_corrective_generation_activations_recent_idx",
-    "workspace_following_corrective_generation_live_recent_idx",
-    "require_no_b102_ncg_exec_for_contcycle_recurrence",
-    "workspace_contcycle_retriage_b102_ncg_exec_guard",
-    "workspace_following_corrective_generation_plan_execution_guard"
+    "workspace_follow_act106_one_active_idx",
+    "workspace_follow_act106_recent_idx",
+    "workspace_follow_live106_recent_idx",
+    "require_no_b106_follow_exec_for_ncg_recurrence",
+    "workspace_ncg_retriage_b106_follow_exec_guard",
+    "workspace_follow_plan_b106_exec_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -129,7 +129,7 @@ async function main() {
     "workspace_reconciliation_next_corrective_generation_recurrences",
     "workspace_post_next_corrective_generation_reclosure_checks",
     "workspace_reconciliation_next_corrective_generation_reclosures",
-    "workspace_next_corrective_generation_corrective_live_deliveries"
+    "workspace_next_corrective_generation_live_deliveries"
   ]) {
     assert(activation.includes(required), "Build 106 activation gate is missing " + required + ".");
   }
@@ -162,7 +162,7 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_b102_ncg_exec_for_contcycle_recurrence'`
+       and p.proname='require_no_b106_follow_exec_for_ncg_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
@@ -179,8 +179,8 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_contcycle_retriage_b102_ncg_exec_guard',
-         'workspace_following_corrective_generation_plan_execution_guard'
+         'workspace_ncg_retriage_b106_follow_exec_guard',
+         'workspace_follow_plan_b106_exec_guard'
        )`
   );
   assert(triggers.rows.length === 2, "Build 106 following-corrective-generation execution freeze triggers must exist.");
