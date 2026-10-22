@@ -1,4 +1,4 @@
-create table if not exists app.workspace_following_corrective_generation_delivery_reconciliations (
+create table if not exists app.workspace_following_cg_delivery_reconciliations (
   workspace_id uuid not null references app.workspaces(id) on delete cascade,
   following_corrective_generation_reconciliation_id uuid not null,
   following_corrective_generation_delivery_id uuid not null,
@@ -66,15 +66,15 @@ create table if not exists app.workspace_following_corrective_generation_deliver
   )
 );
 
-create index if not exists workspace_following_corrective_generation_reconciliations_recent_idx
-  on app.workspace_following_corrective_generation_delivery_reconciliations(workspace_id,created_at desc);
+create index if not exists workspace_follow_cg_recon_recent_idx
+  on app.workspace_following_cg_delivery_reconciliations(workspace_id,created_at desc);
 
-create index if not exists workspace_ncg_reconciliations_delivery_idx
-  on app.workspace_following_corrective_generation_delivery_reconciliations(
+create index if not exists workspace_follow_cg_recon_delivery_idx
+  on app.workspace_following_cg_delivery_reconciliations(
     workspace_id,following_corrective_generation_delivery_id,created_at desc,following_corrective_generation_reconciliation_id desc
   );
 
-create table if not exists app.workspace_reconciliation_following_corrective_generation_reclosures (
+create table if not exists app.workspace_reconciliation_following_cg_reclosures (
   workspace_id uuid not null references app.workspaces(id) on delete cascade,
   following_corrective_generation_reclosure_id uuid not null,
   predecessor_next_corrective_generation_reclosure_id uuid not null,
@@ -112,47 +112,47 @@ create table if not exists app.workspace_reconciliation_following_corrective_gen
     references app.workspace_following_corrective_generation_live_deliveries(workspace_id,delivery_id)
     on delete restrict,
   foreign key (workspace_id,following_corrective_generation_reconciliation_id)
-    references app.workspace_following_corrective_generation_delivery_reconciliations(workspace_id,following_corrective_generation_reconciliation_id)
+    references app.workspace_following_cg_delivery_reconciliations(workspace_id,following_corrective_generation_reconciliation_id)
     on delete restrict,
   foreign key (workspace_id,case_id)
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict
 );
 
-create index if not exists workspace_following_corrective_generation_reclosures_recent_idx
-  on app.workspace_reconciliation_following_corrective_generation_reclosures(
+create index if not exists workspace_follow_cg_reclosure_recent_idx
+  on app.workspace_reconciliation_following_cg_reclosures(
     workspace_id,closed_at desc,following_corrective_generation_reclosure_id desc
   );
 
-grant select,insert on app.workspace_following_corrective_generation_delivery_reconciliations to ai_data_runtime;
-grant select,insert on app.workspace_reconciliation_following_corrective_generation_reclosures to ai_data_runtime;
+grant select,insert on app.workspace_following_cg_delivery_reconciliations to ai_data_runtime;
+grant select,insert on app.workspace_reconciliation_following_cg_reclosures to ai_data_runtime;
 
-alter table app.workspace_following_corrective_generation_delivery_reconciliations enable row level security;
-alter table app.workspace_reconciliation_following_corrective_generation_reclosures enable row level security;
+alter table app.workspace_following_cg_delivery_reconciliations enable row level security;
+alter table app.workspace_reconciliation_following_cg_reclosures enable row level security;
 
 drop policy if exists following_corrective_generation_reconciliations_member_select
-  on app.workspace_following_corrective_generation_delivery_reconciliations;
+  on app.workspace_following_cg_delivery_reconciliations;
 create policy following_corrective_generation_reconciliations_member_select
-on app.workspace_following_corrective_generation_delivery_reconciliations
+on app.workspace_following_cg_delivery_reconciliations
 for select to ai_data_runtime
 using (
   exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_following_corrective_generation_delivery_reconciliations.workspace_id
+    where wm.workspace_id=workspace_following_cg_delivery_reconciliations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
   )
 );
 
 drop policy if exists following_corrective_generation_reconciliations_manager_insert
-  on app.workspace_following_corrective_generation_delivery_reconciliations;
+  on app.workspace_following_cg_delivery_reconciliations;
 create policy following_corrective_generation_reconciliations_manager_insert
-on app.workspace_following_corrective_generation_delivery_reconciliations
+on app.workspace_following_cg_delivery_reconciliations
 for insert to ai_data_runtime
 with check (
   actor_user_id=nullif(current_setting('app.user_id',true),'')
   and exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_following_corrective_generation_delivery_reconciliations.workspace_id
+    where wm.workspace_id=workspace_following_cg_delivery_reconciliations.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
       and wm.role in ('owner','admin')
   )
@@ -178,27 +178,27 @@ with check (
      and regression.next_corrective_generation_reclosure_regression_check_id=p.next_corrective_generation_reclosure_regression_check_id
     join app.workspace_reconciliation_exception_cases c
       on c.workspace_id=p.workspace_id and c.case_id=p.case_id
-    where d.workspace_id=workspace_following_corrective_generation_delivery_reconciliations.workspace_id
-      and d.delivery_id=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_delivery_id
-      and d.activation_id=workspace_following_corrective_generation_delivery_reconciliations.activation_id
-      and d.following_corrective_generation_plan_id=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_plan_id
-      and d.target=workspace_following_corrective_generation_delivery_reconciliations.target
-      and d.consumer_id=workspace_following_corrective_generation_delivery_reconciliations.consumer_id
-      and d.following_corrective_generation_plan_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_plan_fingerprint
-      and d.following_corrective_generation_package_id=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_package_id
-      and d.following_corrective_generation_replay_key=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_replay_key
-      and d.following_corrective_generation_package_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_package_fingerprint
+    where d.workspace_id=workspace_following_cg_delivery_reconciliations.workspace_id
+      and d.delivery_id=workspace_following_cg_delivery_reconciliations.following_corrective_generation_delivery_id
+      and d.activation_id=workspace_following_cg_delivery_reconciliations.activation_id
+      and d.following_corrective_generation_plan_id=workspace_following_cg_delivery_reconciliations.following_corrective_generation_plan_id
+      and d.target=workspace_following_cg_delivery_reconciliations.target
+      and d.consumer_id=workspace_following_cg_delivery_reconciliations.consumer_id
+      and d.following_corrective_generation_plan_fingerprint=workspace_following_cg_delivery_reconciliations.following_corrective_generation_plan_fingerprint
+      and d.following_corrective_generation_package_id=workspace_following_cg_delivery_reconciliations.following_corrective_generation_package_id
+      and d.following_corrective_generation_replay_key=workspace_following_cg_delivery_reconciliations.following_corrective_generation_replay_key
+      and d.following_corrective_generation_package_fingerprint=workspace_following_cg_delivery_reconciliations.following_corrective_generation_package_fingerprint
       and d.status='accepted'
-      and p.next_corrective_generation_retriage_id=workspace_following_corrective_generation_delivery_reconciliations.next_corrective_generation_retriage_id
-      and p.next_corrective_generation_recurrence_id=workspace_following_corrective_generation_delivery_reconciliations.next_corrective_generation_recurrence_id
-      and p.next_corrective_generation_reclosure_id=workspace_following_corrective_generation_delivery_reconciliations.predecessor_next_corrective_generation_reclosure_id
-      and p.next_corrective_generation_reclosure_regression_check_id=workspace_following_corrective_generation_delivery_reconciliations.next_corrective_generation_reclosure_regression_check_id
-      and p.case_id=workspace_following_corrective_generation_delivery_reconciliations.case_id
+      and p.next_corrective_generation_retriage_id=workspace_following_cg_delivery_reconciliations.next_corrective_generation_retriage_id
+      and p.next_corrective_generation_recurrence_id=workspace_following_cg_delivery_reconciliations.next_corrective_generation_recurrence_id
+      and p.next_corrective_generation_reclosure_id=workspace_following_cg_delivery_reconciliations.predecessor_next_corrective_generation_reclosure_id
+      and p.next_corrective_generation_reclosure_regression_check_id=workspace_following_cg_delivery_reconciliations.next_corrective_generation_reclosure_regression_check_id
+      and p.case_id=workspace_following_cg_delivery_reconciliations.case_id
       and p.status='approved'
-      and p.plan_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.following_corrective_generation_plan_fingerprint
-      and p.source_next_corrective_generation_recurrence_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.source_next_corrective_generation_recurrence_fingerprint
-      and p.source_regression_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.source_regression_fingerprint
-      and p.source_next_corrective_generation_reclosure_fingerprint=workspace_following_corrective_generation_delivery_reconciliations.source_next_corrective_generation_reclosure_fingerprint
+      and p.plan_fingerprint=workspace_following_cg_delivery_reconciliations.following_corrective_generation_plan_fingerprint
+      and p.source_next_corrective_generation_recurrence_fingerprint=workspace_following_cg_delivery_reconciliations.source_next_corrective_generation_recurrence_fingerprint
+      and p.source_regression_fingerprint=workspace_following_cg_delivery_reconciliations.source_regression_fingerprint
+      and p.source_next_corrective_generation_reclosure_fingerprint=workspace_following_cg_delivery_reconciliations.source_next_corrective_generation_reclosure_fingerprint
       and t.status='approved'
       and recurrence.next_corrective_generation_recurrence_fingerprint=p.source_next_corrective_generation_recurrence_fingerprint
       and recurrence.regression_fingerprint=p.source_regression_fingerprint
@@ -219,34 +219,34 @@ with check (
 );
 
 drop policy if exists following_corrective_generation_reclosures_member_select
-  on app.workspace_reconciliation_following_corrective_generation_reclosures;
+  on app.workspace_reconciliation_following_cg_reclosures;
 create policy following_corrective_generation_reclosures_member_select
-on app.workspace_reconciliation_following_corrective_generation_reclosures
+on app.workspace_reconciliation_following_cg_reclosures
 for select to ai_data_runtime
 using (
   exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_reconciliation_following_corrective_generation_reclosures.workspace_id
+    where wm.workspace_id=workspace_reconciliation_following_cg_reclosures.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
   )
 );
 
 drop policy if exists following_corrective_generation_reclosures_manager_insert
-  on app.workspace_reconciliation_following_corrective_generation_reclosures;
+  on app.workspace_reconciliation_following_cg_reclosures;
 create policy following_corrective_generation_reclosures_manager_insert
-on app.workspace_reconciliation_following_corrective_generation_reclosures
+on app.workspace_reconciliation_following_cg_reclosures
 for insert to ai_data_runtime
 with check (
   closed_by=nullif(current_setting('app.user_id',true),'')
   and exists (
     select 1 from app.workspace_members wm
-    where wm.workspace_id=workspace_reconciliation_following_corrective_generation_reclosures.workspace_id
+    where wm.workspace_id=workspace_reconciliation_following_cg_reclosures.workspace_id
       and wm.user_id=nullif(current_setting('app.user_id',true),'')
       and wm.role in ('owner','admin')
   )
   and exists (
     select 1
-    from app.workspace_following_corrective_generation_delivery_reconciliations r
+    from app.workspace_following_cg_delivery_reconciliations r
     join app.workspace_following_corrective_generation_live_deliveries d
       on d.workspace_id=r.workspace_id
      and d.delivery_id=r.following_corrective_generation_delivery_id
@@ -264,28 +264,28 @@ with check (
      and predecessor_reclosure.next_corrective_generation_reclosure_id=p.next_corrective_generation_reclosure_id
     join app.workspace_reconciliation_exception_cases c
       on c.workspace_id=p.workspace_id and c.case_id=p.case_id
-    where r.workspace_id=workspace_reconciliation_following_corrective_generation_reclosures.workspace_id
-      and r.following_corrective_generation_reconciliation_id=workspace_reconciliation_following_corrective_generation_reclosures.following_corrective_generation_reconciliation_id
-      and r.following_corrective_generation_delivery_id=workspace_reconciliation_following_corrective_generation_reclosures.following_corrective_generation_delivery_id
-      and r.following_corrective_generation_plan_id=workspace_reconciliation_following_corrective_generation_reclosures.following_corrective_generation_plan_id
-      and r.next_corrective_generation_retriage_id=workspace_reconciliation_following_corrective_generation_reclosures.next_corrective_generation_retriage_id
-      and r.next_corrective_generation_recurrence_id=workspace_reconciliation_following_corrective_generation_reclosures.next_corrective_generation_recurrence_id
-      and r.predecessor_next_corrective_generation_reclosure_id=workspace_reconciliation_following_corrective_generation_reclosures.predecessor_next_corrective_generation_reclosure_id
-      and r.case_id=workspace_reconciliation_following_corrective_generation_reclosures.case_id
-      and r.target=workspace_reconciliation_following_corrective_generation_reclosures.target
-      and r.following_corrective_generation_plan_fingerprint=workspace_reconciliation_following_corrective_generation_reclosures.following_corrective_generation_plan_fingerprint
-      and r.following_corrective_generation_package_fingerprint=workspace_reconciliation_following_corrective_generation_reclosures.following_corrective_generation_package_fingerprint
-      and r.verification_fingerprint=workspace_reconciliation_following_corrective_generation_reclosures.verification_fingerprint
+    where r.workspace_id=workspace_reconciliation_following_cg_reclosures.workspace_id
+      and r.following_corrective_generation_reconciliation_id=workspace_reconciliation_following_cg_reclosures.following_corrective_generation_reconciliation_id
+      and r.following_corrective_generation_delivery_id=workspace_reconciliation_following_cg_reclosures.following_corrective_generation_delivery_id
+      and r.following_corrective_generation_plan_id=workspace_reconciliation_following_cg_reclosures.following_corrective_generation_plan_id
+      and r.next_corrective_generation_retriage_id=workspace_reconciliation_following_cg_reclosures.next_corrective_generation_retriage_id
+      and r.next_corrective_generation_recurrence_id=workspace_reconciliation_following_cg_reclosures.next_corrective_generation_recurrence_id
+      and r.predecessor_next_corrective_generation_reclosure_id=workspace_reconciliation_following_cg_reclosures.predecessor_next_corrective_generation_reclosure_id
+      and r.case_id=workspace_reconciliation_following_cg_reclosures.case_id
+      and r.target=workspace_reconciliation_following_cg_reclosures.target
+      and r.following_corrective_generation_plan_fingerprint=workspace_reconciliation_following_cg_reclosures.following_corrective_generation_plan_fingerprint
+      and r.following_corrective_generation_package_fingerprint=workspace_reconciliation_following_cg_reclosures.following_corrective_generation_package_fingerprint
+      and r.verification_fingerprint=workspace_reconciliation_following_cg_reclosures.verification_fingerprint
       and r.status='matched'
       and d.status='accepted'
       and p.status='approved'
       and t.status='approved'
-      and predecessor_reclosure.next_corrective_generation_reclosure_fingerprint=workspace_reconciliation_following_corrective_generation_reclosures.predecessor_next_corrective_generation_reclosure_fingerprint
-      and recurrence.next_corrective_generation_recurrence_fingerprint=workspace_reconciliation_following_corrective_generation_reclosures.next_corrective_generation_recurrence_fingerprint
+      and predecessor_reclosure.next_corrective_generation_reclosure_fingerprint=workspace_reconciliation_following_cg_reclosures.predecessor_next_corrective_generation_reclosure_fingerprint
+      and recurrence.next_corrective_generation_recurrence_fingerprint=workspace_reconciliation_following_cg_reclosures.next_corrective_generation_recurrence_fingerprint
       and c.status='open'
       and r.following_corrective_generation_reconciliation_id=(
         select newest.following_corrective_generation_reconciliation_id
-        from app.workspace_following_corrective_generation_delivery_reconciliations newest
+        from app.workspace_following_cg_delivery_reconciliations newest
         where newest.workspace_id=r.workspace_id
           and newest.following_corrective_generation_delivery_id=r.following_corrective_generation_delivery_id
         order by newest.created_at desc,newest.following_corrective_generation_reconciliation_id desc
@@ -313,7 +313,7 @@ begin
       where r.workspace_id=new.workspace_id and r.case_id=new.case_id
     ) then
       if not exists (
-        select 1 from app.workspace_reconciliation_following_corrective_generation_reclosures rc
+        select 1 from app.workspace_reconciliation_following_cg_reclosures rc
         where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
           and rc.next_corrective_generation_recurrence_id=(
             select lr.next_corrective_generation_recurrence_id
@@ -325,11 +325,27 @@ begin
         raise exception 'reconciliation_triage_verified_following_corrective_generation_reclosure_required';
       end if;
     elsif exists (
-      select 1 from app.workspace_reconciliation_successive_cycle_recurrences r
+      select 1 from app.workspace_reconciliation_continuation_cycle_recurrences r
       where r.workspace_id=new.workspace_id and r.case_id=new.case_id
     ) then
       if not exists (
         select 1 from app.workspace_reconciliation_next_corrective_generation_reclosures rc
+        where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
+          and rc.continuation_cycle_recurrence_id=(
+            select lr.continuation_cycle_recurrence_id
+            from app.workspace_reconciliation_continuation_cycle_recurrences lr
+            where lr.workspace_id=new.workspace_id and lr.case_id=new.case_id
+            order by lr.recurred_at desc,lr.continuation_cycle_recurrence_id desc limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_next_corrective_generation_reclosure_required';
+      end if;
+    elsif exists (
+      select 1 from app.workspace_reconciliation_successive_cycle_recurrences r
+      where r.workspace_id=new.workspace_id and r.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1 from app.workspace_reconciliation_continuation_cycle_reclosures rc
         where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
           and rc.successive_cycle_recurrence_id=(
             select lr.successive_cycle_recurrence_id
@@ -338,7 +354,7 @@ begin
             order by lr.recurred_at desc,lr.successive_cycle_recurrence_id desc limit 1
           )
       ) then
-        raise exception 'reconciliation_triage_verified_next_corrective_generation_reclosure_required';
+        raise exception 'reconciliation_triage_verified_continuation_cycle_reclosure_required';
       end if;
     elsif exists (
       select 1 from app.workspace_reconciliation_subsequent_cycle_recurrences r
