@@ -33,9 +33,6 @@ export default async function PostNextCorrectiveGenerationReclosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-closure">
             Continuation-cycle reconciliation & re-closure
           </Link>
-          <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-recurrence-planning">
-            Build 101 recurrence re-triage & next corrective-planning generation
-          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-recurrence-planning">
             Successive-cycle recurrence re-triage & next-corrective-generation planning
           </Link>
