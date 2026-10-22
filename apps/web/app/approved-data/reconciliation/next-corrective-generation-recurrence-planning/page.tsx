@@ -24,10 +24,10 @@ export default async function NextCorrectiveGenerationRecurrencePlanningPage() {
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 105</p>
         <h1>
-          Next Corrective-Generation Recurrence Re-Triage & Next Corrective-Planning Generation
+          Next Corrective-Generation Recurrence Re-Triage & Following Corrective-Generation Planning
         </h1>
         <p className="lead">
-          Turn governed Build 104 next-corrective-generation recurrence evidence into a new frozen corrective-planning generation without rewriting the Build 101–100 next-corrective-generation history.
+          Turn governed Build 104 next-corrective-generation recurrence evidence into a new frozen following corrective-generation plan without rewriting the exact Build 101–104 lineage.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">
@@ -38,12 +38,6 @@ export default async function NextCorrectiveGenerationRecurrencePlanningPage() {
             href="/approved-data/reconciliation/post-next-corrective-generation-reclosure"
           >
             Post-next-corrective-generation recurrence monitoring
-          </Link>
-          <Link
-            className="secondaryButton"
-            href="/approved-data/reconciliation/following-corrective-generation-delivery"
-          >
-            Build 102 following corrective-generation delivery execution
           </Link>
           <Link
             className="secondaryButton"
@@ -65,9 +59,9 @@ export default async function NextCorrectiveGenerationRecurrencePlanningPage() {
           </Link>
           <Link
             className="secondaryButton"
-            href="/approved-data/reconciliation/subsequent-cycle-recurrence-planning"
+            href="/approved-data/reconciliation/continuation-cycle-recurrence-planning"
           >
-            Predecessor subsequent-cycle recurrence re-triage & following corrective-generation planning
+            Build 101 continuation-cycle recurrence planning
           </Link>
           <Link
             className="secondaryButton"
