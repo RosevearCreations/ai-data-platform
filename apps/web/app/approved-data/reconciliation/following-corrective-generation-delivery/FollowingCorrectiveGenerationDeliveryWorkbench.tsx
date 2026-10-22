@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Subsequent-cycle delivery request failed."
+        : "Following corrective-generation delivery request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -102,7 +102,7 @@ export function FollowingCorrectiveGenerationDeliveryWorkbench({
       });
       apply(payload);
       setMessage(
-        "Subsequent-cycle activation recorded after a fresh capability check and accepted dry-run."
+        "Following corrective-generation activation recorded after a fresh capability check and accepted dry-run."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Activation failed.");
@@ -127,7 +127,7 @@ export function FollowingCorrectiveGenerationDeliveryWorkbench({
       setMessage(
         payload.idempotent
           ? "The terminal following-corrective-generation delivery was returned without another send."
-          : "Subsequent-cycle corrective delivery completed."
+          : "Following corrective-generation delivery completed."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Execution failed.");
@@ -159,7 +159,7 @@ export function FollowingCorrectiveGenerationDeliveryWorkbench({
           note: revokeNotes[activation.activationId] ?? ""
         })
       );
-      setMessage("Subsequent-cycle activation revoked.");
+      setMessage("Following corrective-generation activation revoked.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Revocation failed.");
     } finally {
@@ -244,7 +244,7 @@ export function FollowingCorrectiveGenerationDeliveryWorkbench({
                   </header>
 
                   <dl className="publicationEvidence">
-                    <div><dt>Subsequent-cycle plan</dt><dd>{plan.followingCorrectiveGenerationPlanId}</dd></div>
+                    <div><dt>Following corrective-generation plan</dt><dd>{plan.followingCorrectiveGenerationPlanId}</dd></div>
                     <div><dt>Plan fingerprint</dt><dd>{plan.planFingerprint}</dd></div>
                     <div><dt>Source recurrence</dt><dd>{plan.sourceNextCorrectiveGenerationRecurrenceFingerprint}</dd></div>
                     <div><dt>Predecessor next-corrective-generation delivery</dt><dd>{plan.predecessorNextCorrectiveGenerationDeliveryId}</dd></div>
