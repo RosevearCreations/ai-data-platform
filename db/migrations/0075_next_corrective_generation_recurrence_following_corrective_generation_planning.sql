@@ -1,4 +1,4 @@
--- Build 105 — Next Corrective-Generation Recurrence Re-Triage & Next Corrective-Planning Generation
+-- Build 105 — Next Corrective-Generation Recurrence Re-Triage & Following Corrective-Generation Planning
 create table if not exists app.workspace_next_corrective_generation_recurrence_triage (
   workspace_id uuid not null references app.workspaces(id) on delete cascade,
   next_corrective_generation_retriage_id uuid not null,
@@ -50,14 +50,14 @@ create table if not exists app.workspace_next_corrective_generation_recurrence_t
     references app.workspace_post_next_corrective_generation_reclosure_checks(workspace_id,next_corrective_generation_reclosure_regression_check_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_continuation_cycle_recurrence_id)
-    references app.workspace_reconciliation_successive_cycle_recurrences(workspace_id,successive_cycle_recurrence_id)
+    references app.workspace_reconciliation_continuation_cycle_recurrences(workspace_id,continuation_cycle_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,case_id)
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict
 );
 
-create index if not exists workspace_cont_cycle_retriage101_recent_idx
+create index if not exists workspace_ncg_retriage105_recent_idx
   on app.workspace_next_corrective_generation_recurrence_triage(workspace_id,updated_at desc);
 
 create table if not exists app.workspace_following_corrective_generation_plans (
@@ -109,14 +109,14 @@ create table if not exists app.workspace_following_corrective_generation_plans (
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_corrective_generation_plan_id)
-    references app.workspace_next_corrective_generation_corrective_delivery_plans(workspace_id,next_corrective_generation_plan_id)
+    references app.workspace_next_corrective_generation_plans(workspace_id,next_corrective_generation_plan_id)
     on delete restrict,
   foreign key (workspace_id,predecessor_next_corrective_generation_delivery_id)
-    references app.workspace_next_corrective_generation_corrective_live_deliveries(workspace_id,delivery_id)
+    references app.workspace_next_corrective_generation_live_deliveries(workspace_id,delivery_id)
     on delete restrict
 );
 
-create index if not exists workspace_next_corrective_gen_plans_recent_idx
+create index if not exists workspace_following_corr_plans105_recent_idx
   on app.workspace_following_corrective_generation_plans(workspace_id,created_at desc);
 
 grant select,insert on app.workspace_next_corrective_generation_recurrence_triage to ai_data_runtime;
@@ -260,10 +260,10 @@ with check (
     join app.workspace_reconciliation_next_corrective_generation_reclosures reclosure
       on reclosure.workspace_id=triage.workspace_id
      and reclosure.next_corrective_generation_reclosure_id=triage.next_corrective_generation_reclosure_id
-    join app.workspace_next_corrective_generation_corrective_delivery_plans predecessor
+    join app.workspace_next_corrective_generation_plans predecessor
       on predecessor.workspace_id=triage.workspace_id
      and predecessor.next_corrective_generation_plan_id=reclosure.next_corrective_generation_plan_id
-    join app.workspace_next_corrective_generation_corrective_live_deliveries delivery
+    join app.workspace_next_corrective_generation_live_deliveries delivery
       on delivery.workspace_id=triage.workspace_id
      and delivery.delivery_id=reclosure.next_corrective_generation_delivery_id
     join app.workspace_reconciliation_exception_cases c
