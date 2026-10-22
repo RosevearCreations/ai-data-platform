@@ -13,9 +13,9 @@ async function main() {
     "continuation_cycle_recurrence_triage_member_select",
     "continuation_cycle_recurrence_triage_manager_insert",
     "continuation_cycle_recurrence_triage_manager_update",
-    "next_corrective_gen_plan_member_select",
-    "next_corrective_gen_plan_manager_insert",
-    "next_corrective_gen_plan_manager_update"
+    "next_corrective_generation_plan_member_select",
+    "next_corrective_generation_plan_manager_insert",
+    "next_corrective_generation_plan_manager_update"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -55,9 +55,9 @@ async function main() {
          'continuation_cycle_recurrence_triage_member_select',
          'continuation_cycle_recurrence_triage_manager_insert',
          'continuation_cycle_recurrence_triage_manager_update',
-         'next_corrective_gen_plan_member_select',
-         'next_corrective_gen_plan_manager_insert',
-         'next_corrective_gen_plan_manager_update'
+         'next_corrective_generation_plan_member_select',
+         'next_corrective_generation_plan_manager_insert',
+         'next_corrective_generation_plan_manager_update'
        )`
   );
   assert(policies.rows.length === 6, "Build 101 intended RLS policies must exist.");
@@ -121,8 +121,8 @@ async function main() {
        and p.polname in (
          'continuation_cycle_recurrence_triage_manager_insert',
          'continuation_cycle_recurrence_triage_manager_update',
-         'next_corrective_gen_plan_manager_insert',
-         'next_corrective_gen_plan_manager_update'
+         'next_corrective_generation_plan_manager_insert',
+         'next_corrective_generation_plan_manager_update'
        )`
   );
 
@@ -145,7 +145,7 @@ async function main() {
   );
 
   const planInsert = policyText.rows.find(
-    (row)=>row.policy_name==="next_corrective_gen_plan_manager_insert"
+    (row)=>row.policy_name==="next_corrective_generation_plan_manager_insert"
   )?.expression ?? "";
   for (const required of [
     "workspace_continuation_cycle_recurrence_triage",
