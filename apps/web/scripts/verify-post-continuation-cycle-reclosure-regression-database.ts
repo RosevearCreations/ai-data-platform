@@ -9,7 +9,7 @@ async function main() {
     "workspace_post_continuation_cycle_reclosure_checks",
     "workspace_reconciliation_continuation_cycle_recurrences",
     "workspace_post_continuation_cycle_reclosure_checks_recent_idx",
-    "workspace_post_continuation_cycle_reclosure_checks_reclosure_idx",
+    "workspace_post_contcycle_reclosure_checks_reclosure_idx",
     "workspace_continuation_cycle_recurrences_recent_idx",
     "workspace_continuation_cycle_activation_recurrence_guard",
     "workspace_continuation_cycle_delivery_recurrence_guard",
@@ -39,7 +39,7 @@ async function main() {
      where schemaname='app'
        and indexname in (
          'workspace_post_continuation_cycle_reclosure_checks_recent_idx',
-         'workspace_post_continuation_cycle_reclosure_checks_reclosure_idx'
+         'workspace_post_contcycle_reclosure_checks_reclosure_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 100 continuation-cycle monitoring indexes must exist.");
