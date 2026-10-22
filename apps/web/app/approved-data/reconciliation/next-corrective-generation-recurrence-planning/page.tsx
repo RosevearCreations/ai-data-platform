@@ -41,6 +41,12 @@ export default async function NextCorrectiveGenerationRecurrencePlanningPage() {
           </Link>
           <Link
             className="secondaryButton"
+            href="/approved-data/reconciliation/following-corrective-generation-delivery"
+          >
+            Build 106 following corrective-generation delivery
+          </Link>
+          <Link
+            className="secondaryButton"
             href="/approved-data/reconciliation/next-corrective-generation-delivery"
           >
             Continuation-cycle corrective delivery
