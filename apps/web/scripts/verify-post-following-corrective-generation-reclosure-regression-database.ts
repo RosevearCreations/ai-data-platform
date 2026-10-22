@@ -6,17 +6,17 @@ function assert(condition: unknown, message: string): asserts condition {
 
 async function main() {
   const postgresIdentifiers = [
-    "workspace_post_following_corrective_generation_reclosure_checks",
-    "workspace_reconciliation_following_corrective_generation_recurrences",
-    "workspace_post_ncg_reclosure_checks_recent_idx",
-    "workspace_post_ncg_reclosure_checks_reclosure_idx",
-    "workspace_ncg_recurrences_recent_idx",
-    "workspace_ncg_activation_recurrence_guard",
-    "workspace_ncg_delivery_recurrence_guard",
-    "workspace_ncg_reconciliation_recurrence_guard",
-    "workspace_ncg_reclosure_recurrence_guard",
-    "workspace_ncg_plan_recurrence_guard",
-    "workspace_contcycle_retriage_ncg_recur_guard"
+    "workspace_post_following_cg_reclosure_checks",
+    "workspace_reconciliation_following_cg_recurrences",
+    "workspace_post_follow_cg_reclosure_recent_idx",
+    "workspace_post_follow_cg_reclosure_link_idx",
+    "workspace_follow_cg_recurrences_recent_idx",
+    "workspace_follow_cg_activation_recur_guard",
+    "workspace_follow_cg_delivery_recur_guard",
+    "workspace_follow_cg_recon_recur_guard",
+    "workspace_follow_cg_reclosure_recur_guard",
+    "workspace_follow_cg_plan_recur_guard",
+    "workspace_ncg_retriage_follow_cg_recur_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -27,8 +27,8 @@ async function main() {
      from pg_class c join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and c.relname in (
-         'workspace_post_following_corrective_generation_reclosure_checks',
-         'workspace_reconciliation_following_corrective_generation_recurrences'
+         'workspace_post_following_cg_reclosure_checks',
+         'workspace_reconciliation_following_cg_recurrences'
        )`
   );
   assert(tables.rows.length === 2, "Build 108 tables must exist.");
@@ -38,13 +38,13 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_post_ncg_reclosure_checks_recent_idx',
-         'workspace_post_ncg_reclosure_checks_reclosure_idx'
+         'workspace_post_follow_cg_reclosure_recent_idx',
+         'workspace_post_follow_cg_reclosure_link_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 108 following-corrective-generation monitoring indexes must exist.");
   assert(
-    indexes.rows.every((row)=>row.tablename==="workspace_post_following_corrective_generation_reclosure_checks"),
+    indexes.rows.every((row)=>row.tablename==="workspace_post_following_cg_reclosure_checks"),
     "Build 108 monitoring indexes must belong to the following-corrective-generation check ledger."
   );
 
@@ -65,13 +65,13 @@ async function main() {
      from information_schema.role_table_grants
      where table_schema='app' and grantee='ai_data_runtime'
        and table_name in (
-         'workspace_post_following_corrective_generation_reclosure_checks',
-         'workspace_reconciliation_following_corrective_generation_recurrences'
+         'workspace_post_following_cg_reclosure_checks',
+         'workspace_reconciliation_following_cg_recurrences'
        )`
   );
   for (const table of [
-    "workspace_post_following_corrective_generation_reclosure_checks",
-    "workspace_reconciliation_following_corrective_generation_recurrences"
+    "workspace_post_following_cg_reclosure_checks",
+    "workspace_reconciliation_following_cg_recurrences"
   ]) {
     const privileges = new Set(
       grants.rows.filter((row)=>row.table_name===table).map((row)=>row.privilege_type)
@@ -94,7 +94,7 @@ async function main() {
   );
   const monitor = policyText.rows.find(x=>x.policy_name==="post_following_corrective_generation_reclosure_checks_manager_insert")?.expression ?? "";
   for (const required of [
-    "workspace_reconciliation_following_corrective_generation_reclosures",
+    "workspace_reconciliation_following_cg_reclosures",
     "workspace_following_corrective_generation_live_deliveries",
     "workspace_following_corrective_generation_plans",
     "workspace_reconciliation_next_corrective_generation_recurrences"
@@ -108,8 +108,8 @@ async function main() {
 
   const recurrence = policyText.rows.find(x=>x.policy_name==="following_corrective_generation_recurrences_manager_insert")?.expression ?? "";
   for (const required of [
-    "workspace_post_following_corrective_generation_reclosure_checks",
-    "workspace_reconciliation_following_corrective_generation_reclosures"
+    "workspace_post_following_cg_reclosure_checks",
+    "workspace_reconciliation_following_cg_reclosures"
   ]) assert(recurrence.includes(required), "Build 108 recurrence gate missing " + required + ".");
   assert(
     recurrence.includes("following_corrective_generation_reclosure_regression_check_id") &&
@@ -124,7 +124,7 @@ async function main() {
   );
   const reopenDefinition = reopenGuard.rows[0]?.definition ?? "";
   assert(
-    reopenDefinition.includes("workspace_reconciliation_following_corrective_generation_recurrences"),
+    reopenDefinition.includes("workspace_reconciliation_following_cg_recurrences"),
     "Build 108 governed reopen trigger must recognize following-corrective-generation recurrence."
   );
   assert(
@@ -147,17 +147,19 @@ async function main() {
   );
   const closeDefinition = closeGuard.rows[0]?.definition ?? "";
   assert(
-    closeDefinition.includes("workspace_reconciliation_following_corrective_generation_recurrences"),
+    closeDefinition.includes("workspace_reconciliation_following_cg_recurrences"),
     "Build 108 close trigger must detect following-corrective-generation recurrence."
   );
   assert(
-    closeDefinition.includes("workspace_reconciliation_following_cg_reclosures") &&
+    closeDefinition.includes("workspace_reconciliation_following_cg_recurrences") &&
+      closeDefinition.includes("reconciliation_triage_post_following_corrective_generation_reclosure_required") &&
+      closeDefinition.includes("workspace_reconciliation_following_cg_reclosures") &&
       closeDefinition.includes("reconciliation_triage_verified_following_corrective_generation_reclosure_required") &&
-      closeDefinition.includes("reconciliation_triage_verified_following_corrective_generation_reclosure_required"),
-    "Build 108 successor close governance must now require Build 107 following corrective-generation re-closure while preserving the Build 107 gate beneath it."
+      closeDefinition.includes("reconciliation_triage_verified_next_corrective_generation_reclosure_required"),
+    "Build 108 close governance must block direct closure after following-corrective-generation recurrence while preserving Build 107 and Build 103 gates beneath it."
   );
   assert(
-    closeDefinition.includes("workspace_reconciliation_following_corrective_generation_reclosures") &&
+    closeDefinition.includes("workspace_reconciliation_following_cg_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_corrective_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
@@ -177,12 +179,12 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_ncg_activation_recurrence_guard',
-         'workspace_ncg_delivery_recurrence_guard',
-         'workspace_ncg_reconciliation_recurrence_guard',
-         'workspace_ncg_reclosure_recurrence_guard',
-         'workspace_ncg_plan_recurrence_guard',
-         'workspace_contcycle_retriage_ncg_recur_guard'
+         'workspace_follow_cg_activation_recur_guard',
+         'workspace_follow_cg_delivery_recur_guard',
+         'workspace_follow_cg_recon_recur_guard',
+         'workspace_follow_cg_reclosure_recur_guard',
+         'workspace_follow_cg_plan_recur_guard',
+         'workspace_ncg_retriage_follow_cg_recur_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 108 following-corrective-generation freeze triggers must exist.");
