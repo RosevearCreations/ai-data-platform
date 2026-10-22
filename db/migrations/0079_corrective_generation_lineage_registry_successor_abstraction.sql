@@ -91,9 +91,10 @@ select
   d.next_corrective_generation_package_fingerprint,rc.next_corrective_generation_reclosure_id,
   rc.next_corrective_generation_reclosure_fingerprint,r.next_corrective_generation_recurrence_id,
   r.next_corrective_generation_recurrence_fingerprint,r.regression_fingerprint,
-  'corrective-generation-registry1:' || p.plan_fingerprint || ':' ||
-    rc.next_corrective_generation_reclosure_fingerprint || ':' ||
-    coalesce(r.next_corrective_generation_recurrence_fingerprint,'stable'),
+  'corrective-generation-registry1-' || md5(
+    concat_ws('|',p.plan_fingerprint,rc.next_corrective_generation_reclosure_fingerprint,
+      coalesce(r.next_corrective_generation_recurrence_fingerprint,'stable'))
+  ),
   rc.closed_at
 from app.workspace_next_corrective_generation_plans p
 join app.workspace_reconciliation_next_corrective_generation_reclosures rc
@@ -127,9 +128,10 @@ select
   rc.following_corrective_generation_reclosure_id,rc.following_corrective_generation_reclosure_fingerprint,
   r.following_corrective_generation_recurrence_id,r.following_corrective_generation_recurrence_fingerprint,
   r.regression_fingerprint,
-  'corrective-generation-registry1:' || p.plan_fingerprint || ':' ||
-    rc.following_corrective_generation_reclosure_fingerprint || ':' ||
-    coalesce(r.following_corrective_generation_recurrence_fingerprint,'stable'),
+  'corrective-generation-registry1-' || md5(
+    concat_ws('|',p.plan_fingerprint,rc.following_corrective_generation_reclosure_fingerprint,
+      coalesce(r.following_corrective_generation_recurrence_fingerprint,'stable'))
+  ),
   rc.closed_at
 from app.workspace_following_corrective_generation_plans p
 join app.workspace_reconciliation_following_cg_reclosures rc
@@ -156,8 +158,10 @@ select
   r.case_id,r.target,reg.generation_number + 1,'following-corrective-generation',
   r.following_corrective_generation_recurrence_id,r.following_corrective_generation_recurrence_fingerprint,
   r.regression_fingerprint,'ready-for-planning',
-  'corrective-generation-successor1:' || reg.registry_fingerprint || ':' ||
-    r.following_corrective_generation_recurrence_fingerprint,
+  'corrective-generation-successor1-' || md5(
+    concat_ws('|',reg.registry_fingerprint,r.following_corrective_generation_recurrence_fingerprint,
+      r.regression_fingerprint,(reg.generation_number + 1)::text)
+  ),
   r.recurred_at
 from app.workspace_reconciliation_following_cg_recurrences r
 join app.workspace_reconciliation_following_cg_reclosures rc
