@@ -40,6 +40,9 @@ export default async function NextCorrectiveGenerationClosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-delivery">
             Continuation-cycle delivery
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-next-corrective-generation-reclosure">
+            Build 104 post-re-closure monitoring & recurrence governance
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-recurrence-planning">
             Continuation-cycle recurrence re-triage & next corrective-generation planning
           </Link>
