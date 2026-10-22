@@ -528,7 +528,7 @@ export async function POST(request: Request) {
         validationCode: acknowledgement.code,
         httpStatus: response.status,
         consumerReceivedAt: acknowledgement.receivedAt,
-        acknowledgement
+        acknowledgement: object(responseBody)
       });
 
     await audit(userId, {
