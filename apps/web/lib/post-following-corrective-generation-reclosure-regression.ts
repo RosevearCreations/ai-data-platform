@@ -232,7 +232,7 @@ export async function listPostFollowingCorrectiveGenerationReclosureForUser(
   const data = await withUserDatabase(userId, async (client) => {
     const checks = await client.query<CheckRow>(
       `select x.*,w.name as workspace_name,wm.role
-       from app.workspace_post_following_corrective_generation_reclosure_checks x
+       from app.workspace_post_following_cg_reclosure_checks x
        join app.workspaces w on w.id=x.workspace_id
        join app.workspace_members wm on wm.workspace_id=x.workspace_id
         and wm.user_id=nullif(current_setting('app.user_id',true),'')
@@ -240,7 +240,7 @@ export async function listPostFollowingCorrectiveGenerationReclosureForUser(
     );
     const recurrences = await client.query<RecurrenceRow>(
       `select x.*,w.name as workspace_name,wm.role
-       from app.workspace_reconciliation_following_corrective_generation_recurrences x
+       from app.workspace_reconciliation_following_cg_recurrences x
        join app.workspaces w on w.id=x.workspace_id
        join app.workspace_members wm on wm.workspace_id=x.workspace_id
         and wm.user_id=nullif(current_setting('app.user_id',true),'')
@@ -297,12 +297,12 @@ export async function loadPostFollowingCorrectiveGenerationReclosureContext(
               recurrence.next_corrective_generation_recurrence_fingerprint,
               (
                 select latest.following_corrective_generation_reclosure_id
-                from app.workspace_reconciliation_following_corrective_generation_reclosures latest
+                from app.workspace_reconciliation_following_cg_reclosures latest
                 where latest.workspace_id=r.workspace_id and latest.case_id=r.case_id
                 order by latest.closed_at desc,latest.following_corrective_generation_reclosure_id desc limit 1
               ) as latest_reclosure_id,
               recurrence2.following_corrective_generation_recurrence_id as recurrence2_id
-       from app.workspace_reconciliation_following_corrective_generation_reclosures r
+       from app.workspace_reconciliation_following_cg_reclosures r
        join app.workspace_following_corrective_generation_live_deliveries d
          on d.workspace_id=r.workspace_id and d.delivery_id=r.following_corrective_generation_delivery_id
        join app.workspace_following_corrective_generation_plans p
@@ -311,7 +311,7 @@ export async function loadPostFollowingCorrectiveGenerationReclosureContext(
          on recurrence.workspace_id=r.workspace_id and recurrence.next_corrective_generation_recurrence_id=r.next_corrective_generation_recurrence_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=r.workspace_id and c.case_id=r.case_id
-       left join app.workspace_reconciliation_following_corrective_generation_recurrences recurrence2
+       left join app.workspace_reconciliation_following_cg_recurrences recurrence2
          on recurrence2.workspace_id=r.workspace_id
         and recurrence2.following_corrective_generation_reclosure_id=r.following_corrective_generation_reclosure_id
        where r.workspace_id=$1 and r.following_corrective_generation_reclosure_id=$2 limit 1`,
@@ -380,19 +380,19 @@ export async function recordPostFollowingCorrectiveGenerationReclosureCheck(
               r.following_corrective_generation_reclosure_fingerprint as reclosure_fingerprint,
               (
                 select latest.following_corrective_generation_reclosure_id
-                from app.workspace_reconciliation_following_corrective_generation_reclosures latest
+                from app.workspace_reconciliation_following_cg_reclosures latest
                 where latest.workspace_id=r.workspace_id and latest.case_id=r.case_id
                 order by latest.closed_at desc,latest.following_corrective_generation_reclosure_id desc limit 1
               ) as latest_reclosure_id,
               recurrence2.following_corrective_generation_recurrence_id as recurrence2_id
-       from app.workspace_reconciliation_following_corrective_generation_reclosures r
+       from app.workspace_reconciliation_following_cg_reclosures r
        join app.workspace_following_corrective_generation_live_deliveries d
          on d.workspace_id=r.workspace_id and d.delivery_id=r.following_corrective_generation_delivery_id
        join app.workspace_following_corrective_generation_plans p
          on p.workspace_id=r.workspace_id and p.following_corrective_generation_plan_id=r.following_corrective_generation_plan_id
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=r.workspace_id and c.case_id=r.case_id
-       left join app.workspace_reconciliation_following_corrective_generation_recurrences recurrence2
+       left join app.workspace_reconciliation_following_cg_recurrences recurrence2
          on recurrence2.workspace_id=r.workspace_id
         and recurrence2.following_corrective_generation_reclosure_id=r.following_corrective_generation_reclosure_id
        where r.workspace_id=$1 and r.following_corrective_generation_reclosure_id=$2 limit 1`,
@@ -413,7 +413,7 @@ export async function recordPostFollowingCorrectiveGenerationReclosureCheck(
 
     const id=randomUUID();
     await client.query(
-      `insert into app.workspace_post_following_corrective_generation_reclosure_checks (
+      `insert into app.workspace_post_following_cg_reclosure_checks (
         workspace_id,following_corrective_generation_reclosure_regression_check_id,
         following_corrective_generation_reclosure_id,predecessor_next_corrective_generation_reclosure_id,next_corrective_generation_recurrence_id,case_id,
         following_corrective_generation_plan_id,following_corrective_generation_delivery_id,target,consumer_id,
@@ -458,7 +458,7 @@ export async function recurFollowingCorrectiveGenerationReclosedException(
     await requireManager(client,input.workspaceId);
     const existing=await client.query<{following_corrective_generation_recurrence_id:string}>(
       `select following_corrective_generation_recurrence_id
-       from app.workspace_reconciliation_following_corrective_generation_recurrences
+       from app.workspace_reconciliation_following_cg_recurrences
        where workspace_id=$1 and following_corrective_generation_reclosure_id=$2 limit 1`,
       [input.workspaceId,input.followingCorrectiveGenerationReclosureId]
     );
@@ -478,18 +478,18 @@ export async function recurFollowingCorrectiveGenerationReclosedException(
               c.status as case_status,
               (
                 select newest.following_corrective_generation_reclosure_regression_check_id
-                from app.workspace_post_following_corrective_generation_reclosure_checks newest
+                from app.workspace_post_following_cg_reclosure_checks newest
                 where newest.workspace_id=x.workspace_id
                   and newest.following_corrective_generation_reclosure_id=x.following_corrective_generation_reclosure_id
                 order by newest.created_at desc,newest.following_corrective_generation_reclosure_regression_check_id desc limit 1
               ) as latest_check_id,
               (
                 select newest.following_corrective_generation_reclosure_id
-                from app.workspace_reconciliation_following_corrective_generation_reclosures newest
+                from app.workspace_reconciliation_following_cg_reclosures newest
                 where newest.workspace_id=x.workspace_id and newest.case_id=x.case_id
                 order by newest.closed_at desc,newest.following_corrective_generation_reclosure_id desc limit 1
               ) as latest_reclosure_id
-       from app.workspace_post_following_corrective_generation_reclosure_checks x
+       from app.workspace_post_following_cg_reclosure_checks x
        join app.workspace_reconciliation_exception_cases c
          on c.workspace_id=x.workspace_id and c.case_id=x.case_id
        where x.workspace_id=$1 and x.following_corrective_generation_reclosure_id=$2
@@ -514,7 +514,7 @@ export async function recurFollowingCorrectiveGenerationReclosedException(
       recurrenceReason:reason
     });
     await client.query(
-      `insert into app.workspace_reconciliation_following_corrective_generation_recurrences (
+      `insert into app.workspace_reconciliation_following_cg_recurrences (
         workspace_id,following_corrective_generation_recurrence_id,following_corrective_generation_reclosure_id,
         following_corrective_generation_reclosure_regression_check_id,predecessor_next_corrective_generation_recurrence_id,
         case_id,target,following_corrective_generation_reclosure_fingerprint,regression_fingerprint,
