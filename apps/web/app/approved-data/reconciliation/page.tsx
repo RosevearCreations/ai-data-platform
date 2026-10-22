@@ -191,6 +191,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-recurrence-planning">
             Next corrective-generation recurrence re-triage & following corrective-generation planning
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/following-corrective-generation-delivery">
+            Following corrective-generation delivery activation & idempotent execution
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>
