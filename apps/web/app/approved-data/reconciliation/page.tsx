@@ -203,6 +203,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-lineage">
             Corrective-generation lineage registry & successor abstraction
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-planning">
+            Unified corrective-generation recurrence re-triage & planning engine
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>

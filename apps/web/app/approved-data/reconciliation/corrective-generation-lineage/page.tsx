@@ -33,6 +33,9 @@ export default async function CorrectiveGenerationLineagePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-following-corrective-generation-reclosure">
             Build 108 regression monitoring & recurrence governance
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-planning">
+            Build 110 unified recurrence re-triage & planning
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/following-corrective-generation-closure">
             Build 107 reconciliation & re-closure
           </Link>
