@@ -9,7 +9,7 @@ async function main() {
     "workspace_next_corrective_generation_delivery_reconciliations".length <= 63 &&
       "workspace_reconciliation_next_corrective_generation_reclosures".length <= 63 &&
       "workspace_next_corrective_generation_reconciliations_recent_idx".length <= 63 &&
-      "workspace_next_corrective_generation_reconciliations_delivery_idx".length <= 63 &&
+      "workspace_ncg_reconciliations_delivery_idx".length <= 63 &&
       "workspace_next_corrective_generation_reclosures_recent_idx".length <= 63,
     "Build 103 PostgreSQL identifiers must remain within 63 bytes."
   );
