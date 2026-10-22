@@ -36,6 +36,9 @@ export default async function UnifiedCorrectiveGenerationPlanningPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-following-corrective-generation-reclosure">
             Build 108 recurrence governance
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-delivery">
+            Build 111 unified corrective-generation activation & idempotent delivery
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation">Reconciliation</Link>
         </div>
       </section>
