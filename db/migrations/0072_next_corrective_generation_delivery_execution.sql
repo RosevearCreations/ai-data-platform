@@ -356,7 +356,7 @@ with check (
   )
 );
 
-create or replace function app.require_no_contcycle_exec_for_successive_recurrence()
+create or replace function app.require_no_b102_ncg_exec_for_contcycle_recurrence()
 returns trigger
 language plpgsql
 as $$
@@ -373,16 +373,16 @@ begin
 end;
 $$;
 
-drop trigger if exists workspace_successive_retriage_contcycle_exec_guard
+drop trigger if exists workspace_contcycle_retriage_b102_ncg_exec_guard
   on app.workspace_continuation_cycle_recurrence_triage;
-create trigger workspace_successive_retriage_contcycle_exec_guard
+create trigger workspace_contcycle_retriage_b102_ncg_exec_guard
 before insert or update on app.workspace_continuation_cycle_recurrence_triage
 for each row
-execute function app.require_no_contcycle_exec_for_successive_recurrence();
+execute function app.require_no_b102_ncg_exec_for_contcycle_recurrence();
 
 drop trigger if exists workspace_next_corrective_generation_plan_execution_guard
   on app.workspace_next_corrective_generation_plans;
 create trigger workspace_next_corrective_generation_plan_execution_guard
 before insert or update on app.workspace_next_corrective_generation_plans
 for each row
-execute function app.require_no_contcycle_exec_for_successive_recurrence();
+execute function app.require_no_b102_ncg_exec_for_contcycle_recurrence();
