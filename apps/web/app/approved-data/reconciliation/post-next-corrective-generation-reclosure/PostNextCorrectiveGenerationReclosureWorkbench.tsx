@@ -7,7 +7,7 @@ import type {
   PostNextCorrectiveGenerationReclosureCheck,
   PostNextCorrectiveGenerationReclosureModel
 } from "@/lib/post-next-corrective-generation-reclosure-regression";
-import type { NextCorrectiveGenerationExceptionReclosure } from "@/lib/next-corrective-generation-corrective-delivery-reconciliation";
+import type { NextCorrectiveGenerationExceptionReclosure } from "@/lib/next-corrective-generation-delivery-reconciliation";
 
 function confirmationPhrase(target: "rosie-dazzlers" | "devil-n-dove") {
   return "REOPEN NEXT-CORRECTIVE-GENERATION RECURRENT " + target.toUpperCase() + " EXCEPTION";
@@ -155,7 +155,7 @@ export function PostNextCorrectiveGenerationReclosureWorkbench({
           Build 104 monitors the exact Build 102 package that justified Build 103
           re-closure. Drift never reopens automatically. Only the newest recurrent
           read-back can support an explicit owner/admin recurrence action, and once
-          that action is recorded, the current Build 101–099 next-corrective-generation generation is frozen.
+          that action is recorded, the current Build 101–103 next corrective-generation is frozen.
         </p>
       </section>
 
@@ -184,7 +184,7 @@ export function PostNextCorrectiveGenerationReclosureWorkbench({
                 </header>
 
                 <dl className="publicationEvidence">
-                  <div><dt>Continuation-cycle re-closure</dt><dd>{reclosure.nextCorrectiveGenerationReclosureId}</dd></div>
+                  <div><dt>Next corrective-generation re-closure</dt><dd>{reclosure.nextCorrectiveGenerationReclosureId}</dd></div>
                   <div><dt>Re-closure fingerprint</dt><dd>{reclosure.nextCorrectiveGenerationReclosureFingerprint}</dd></div>
                   <div><dt>Build 100 continuation-cycle recurrence</dt><dd>{reclosure.continuationCycleRecurrenceId}</dd></div>
                   <div><dt>Build 102 delivery</dt><dd>{reclosure.nextCorrectiveGenerationDeliveryId}</dd></div>
