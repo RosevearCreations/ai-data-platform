@@ -106,9 +106,9 @@ grant select,insert on app.workspace_reconciliation_following_cg_recurrences to 
 alter table app.workspace_post_following_cg_reclosure_checks enable row level security;
 alter table app.workspace_reconciliation_following_cg_recurrences enable row level security;
 
-drop policy if exists post_following_corrective_generation_reclosure_checks_member_select
+drop policy if exists post_follow_cg_checks_member_select
   on app.workspace_post_following_cg_reclosure_checks;
-create policy post_following_corrective_generation_reclosure_checks_member_select
+create policy post_follow_cg_checks_member_select
 on app.workspace_post_following_cg_reclosure_checks
 for select to ai_data_runtime
 using (
@@ -119,9 +119,9 @@ using (
   )
 );
 
-drop policy if exists post_following_corrective_generation_reclosure_checks_manager_insert
+drop policy if exists post_follow_cg_checks_manager_insert
   on app.workspace_post_following_cg_reclosure_checks;
-create policy post_following_corrective_generation_reclosure_checks_manager_insert
+create policy post_follow_cg_checks_manager_insert
 on app.workspace_post_following_cg_reclosure_checks
 for insert to ai_data_runtime
 with check (
@@ -183,9 +183,9 @@ with check (
   )
 );
 
-drop policy if exists following_corrective_generation_recurrences_member_select
+drop policy if exists following_cg_recurrences_member_select
   on app.workspace_reconciliation_following_cg_recurrences;
-create policy following_corrective_generation_recurrences_member_select
+create policy following_cg_recurrences_member_select
 on app.workspace_reconciliation_following_cg_recurrences
 for select to ai_data_runtime
 using (
@@ -196,9 +196,9 @@ using (
   )
 );
 
-drop policy if exists following_corrective_generation_recurrences_manager_insert
+drop policy if exists following_cg_recurrences_manager_insert
   on app.workspace_reconciliation_following_cg_recurrences;
-create policy following_corrective_generation_recurrences_manager_insert
+create policy following_cg_recurrences_manager_insert
 on app.workspace_reconciliation_following_cg_recurrences
 for insert to ai_data_runtime
 with check (
