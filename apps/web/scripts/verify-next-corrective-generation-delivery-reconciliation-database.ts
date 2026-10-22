@@ -130,6 +130,11 @@ async function main() {
     "Build 103 close trigger must prioritize the continuation-cycle recurrence."
   );
   assert(
+    definition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_continuation_cycle_reclosures"),
+    "Build 103 close trigger must preserve the successive-cycle → continuation-cycle historical re-closure branch."
+  );
+  assert(
     definition.includes("reconciliation_triage_verified_next_corrective_generation_reclosure_required") &&
       definition.includes("reconciliation_triage_verified_continuation_cycle_reclosure_required"),
     "Build 103 close trigger must fail closed with next-corrective-generation-specific evidence."
