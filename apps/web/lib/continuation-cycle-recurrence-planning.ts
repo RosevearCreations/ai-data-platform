@@ -116,7 +116,7 @@ type RetriageRow = QueryResultRow & {
   continuation_cycle_recurrence_id: string;
   continuation_cycle_reclosure_id: string;
   continuation_cycle_reclosure_regression_check_id: string;
-  predecessor_continuation_cycle_recurrence_id: string;
+  predecessor_successive_cycle_recurrence_id: string;
   case_id: string;
   target: IntegrationTarget;
   status: ContinuationCycleRecurrenceRetriageStatus;
@@ -244,7 +244,7 @@ function retriageFromRow(row: RetriageRow): ContinuationCycleRecurrenceRetriage 
     continuationCycleReclosureId: row.continuation_cycle_reclosure_id,
     continuationCycleReclosureRegressionCheckId:
       row.continuation_cycle_reclosure_regression_check_id,
-    predecessorSuccessiveCycleRecurrenceId: row.predecessor_continuation_cycle_recurrence_id,
+    predecessorSuccessiveCycleRecurrenceId: row.predecessor_successive_cycle_recurrence_id,
     caseId: row.case_id,
     target: row.target,
     status: row.status,
@@ -397,7 +397,7 @@ export async function createContinuationCycleRecurrenceRetriage(
       continuation_cycle_recurrence_id: string;
       continuation_cycle_reclosure_id: string;
       continuation_cycle_reclosure_regression_check_id: string;
-      predecessor_continuation_cycle_recurrence_id: string;
+      predecessor_successive_cycle_recurrence_id: string;
       case_id: string;
       target: IntegrationTarget;
       continuation_cycle_recurrence_fingerprint: string;
@@ -412,7 +412,7 @@ export async function createContinuationCycleRecurrenceRetriage(
         "select recurrence2.continuation_cycle_recurrence_id,",
         "recurrence2.continuation_cycle_reclosure_id,",
         "recurrence2.continuation_cycle_reclosure_regression_check_id,",
-        "recurrence2.predecessor_continuation_cycle_recurrence_id,recurrence2.case_id,",
+        "recurrence2.predecessor_successive_cycle_recurrence_id,recurrence2.case_id,",
         "recurrence2.target,recurrence2.continuation_cycle_recurrence_fingerprint,",
         "recurrence2.regression_fingerprint,",
         "recurrence2.continuation_cycle_reclosure_fingerprint,",
@@ -483,7 +483,7 @@ export async function createContinuationCycleRecurrenceRetriage(
         "insert into app.workspace_continuation_cycle_recurrence_triage (",
         "workspace_id,continuation_cycle_retriage_id,continuation_cycle_recurrence_id,",
         "continuation_cycle_reclosure_id,continuation_cycle_reclosure_regression_check_id,",
-        "predecessor_continuation_cycle_recurrence_id,case_id,target,status,classification,severity,",
+        "predecessor_successive_cycle_recurrence_id,case_id,target,status,classification,severity,",
         "resolution_intent,summary,investigation_note,",
         "continuation_cycle_recurrence_fingerprint,regression_fingerprint,",
         "continuation_cycle_reclosure_fingerprint,affected_record_count,",
@@ -498,7 +498,7 @@ export async function createContinuationCycleRecurrenceRetriage(
         row.continuation_cycle_recurrence_id,
         row.continuation_cycle_reclosure_id,
         row.continuation_cycle_reclosure_regression_check_id,
-        row.predecessor_continuation_cycle_recurrence_id,
+        row.predecessor_successive_cycle_recurrence_id,
         row.case_id,
         row.target,
         classification,
