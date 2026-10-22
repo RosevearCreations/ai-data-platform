@@ -300,6 +300,11 @@ begin
         and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
     )
     and not exists (
+      select 1 from app.workspace_reconciliation_subsequent_cycle_recurrences x
+      where x.workspace_id=new.workspace_id and x.case_id=new.case_id
+        and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
+    )
+    and not exists (
       select 1 from app.workspace_reconciliation_successive_cycle_recurrences x
       where x.workspace_id=new.workspace_id and x.case_id=new.case_id
         and x.recurred_at >= coalesce(old.closed_at,'epoch'::timestamptz)
@@ -361,9 +366,9 @@ before insert or update on app.workspace_continuation_cycle_corrective_delivery_
 for each row
 execute function app.require_no_continuation_cycle_recurrence_for_case();
 
-drop trigger if exists workspace_subcycle_retriage_successive_recurrence_guard
+drop trigger if exists workspace_successive_retriage_contcycle_recur_guard
   on app.workspace_successive_cycle_recurrence_triage_cycles;
-create trigger workspace_subcycle_retriage_successive_recurrence_guard
+create trigger workspace_successive_retriage_contcycle_recur_guard
 before insert or update on app.workspace_successive_cycle_recurrence_triage_cycles
 for each row
 execute function app.require_no_continuation_cycle_recurrence_for_case();
@@ -423,11 +428,27 @@ begin
         raise exception 'reconciliation_triage_verified_continuation_cycle_reclosure_required';
       end if;
     elsif exists (
-      select 1 from app.workspace_reconciliation_following_cycle_recurrences r
+      select 1 from app.workspace_reconciliation_subsequent_cycle_recurrences r
       where r.workspace_id=new.workspace_id and r.case_id=new.case_id
     ) then
       if not exists (
         select 1 from app.workspace_reconciliation_successive_cycle_reclosures rc
+        where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
+          and rc.subsequent_cycle_recurrence_id=(
+            select lr.subsequent_cycle_recurrence_id
+            from app.workspace_reconciliation_subsequent_cycle_recurrences lr
+            where lr.workspace_id=new.workspace_id and lr.case_id=new.case_id
+            order by lr.recurred_at desc,lr.subsequent_cycle_recurrence_id desc limit 1
+          )
+      ) then
+        raise exception 'reconciliation_triage_verified_successive_cycle_reclosure_required';
+      end if;
+    elsif exists (
+      select 1 from app.workspace_reconciliation_following_cycle_recurrences r
+      where r.workspace_id=new.workspace_id and r.case_id=new.case_id
+    ) then
+      if not exists (
+        select 1 from app.workspace_reconciliation_subsequent_cycle_reclosures rc
         where rc.workspace_id=new.workspace_id and rc.case_id=new.case_id
           and rc.following_cycle_recurrence_id=(
             select lr.following_cycle_recurrence_id
@@ -436,7 +457,7 @@ begin
             order by lr.recurred_at desc,lr.following_cycle_recurrence_id desc limit 1
           )
       ) then
-        raise exception 'reconciliation_triage_verified_successive_cycle_reclosure_required';
+        raise exception 'reconciliation_triage_verified_subsequent_cycle_reclosure_required';
       end if;
     elsif exists (
       select 1 from app.workspace_reconciliation_next_cycle_recurrences r
