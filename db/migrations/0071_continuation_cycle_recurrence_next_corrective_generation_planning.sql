@@ -5,7 +5,7 @@ create table if not exists app.workspace_continuation_cycle_recurrence_triage (
   continuation_cycle_recurrence_id uuid not null,
   continuation_cycle_reclosure_id uuid not null,
   continuation_cycle_reclosure_regression_check_id uuid not null,
-  predecessor_continuation_cycle_recurrence_id uuid not null,
+  predecessor_successive_cycle_recurrence_id uuid not null,
   case_id uuid not null,
   target text not null check (target in ('rosie-dazzlers','devil-n-dove')),
   status text not null default 'open'
@@ -49,8 +49,8 @@ create table if not exists app.workspace_continuation_cycle_recurrence_triage (
   foreign key (workspace_id,continuation_cycle_reclosure_regression_check_id)
     references app.workspace_post_continuation_cycle_reclosure_checks(workspace_id,continuation_cycle_reclosure_regression_check_id)
     on delete restrict,
-  foreign key (workspace_id,predecessor_continuation_cycle_recurrence_id)
-    references app.workspace_reconciliation_continuation_cycle_recurrences(workspace_id,subsequent_cycle_recurrence_id)
+  foreign key (workspace_id,predecessor_successive_cycle_recurrence_id)
+    references app.workspace_reconciliation_successive_cycle_recurrences(workspace_id,successive_cycle_recurrence_id)
     on delete restrict,
   foreign key (workspace_id,case_id)
     references app.workspace_reconciliation_exception_cases(workspace_id,case_id)
@@ -169,7 +169,7 @@ with check (
       and recurrence3.continuation_cycle_recurrence_id=workspace_continuation_cycle_recurrence_triage.continuation_cycle_recurrence_id
       and recurrence3.continuation_cycle_reclosure_id=workspace_continuation_cycle_recurrence_triage.continuation_cycle_reclosure_id
       and recurrence3.continuation_cycle_reclosure_regression_check_id=workspace_continuation_cycle_recurrence_triage.continuation_cycle_reclosure_regression_check_id
-      and recurrence3.predecessor_continuation_cycle_recurrence_id=workspace_continuation_cycle_recurrence_triage.predecessor_continuation_cycle_recurrence_id
+      and recurrence3.predecessor_successive_cycle_recurrence_id=workspace_continuation_cycle_recurrence_triage.predecessor_successive_cycle_recurrence_id
       and recurrence3.case_id=workspace_continuation_cycle_recurrence_triage.case_id
       and recurrence3.target=workspace_continuation_cycle_recurrence_triage.target
       and recurrence3.continuation_cycle_recurrence_fingerprint=workspace_continuation_cycle_recurrence_triage.continuation_cycle_recurrence_fingerprint
@@ -231,9 +231,9 @@ with check (
   )
 );
 
-drop policy if exists next_corrective_gen_plan_member_select
+drop policy if exists next_corrective_generation_plan_member_select
   on app.workspace_next_corrective_generation_plans;
-create policy next_corrective_gen_plan_member_select
+create policy next_corrective_generation_plan_member_select
 on app.workspace_next_corrective_generation_plans
 for select to ai_data_runtime
 using (
@@ -244,9 +244,9 @@ using (
   )
 );
 
-drop policy if exists next_corrective_gen_plan_manager_insert
+drop policy if exists next_corrective_generation_plan_manager_insert
   on app.workspace_next_corrective_generation_plans;
-create policy next_corrective_gen_plan_manager_insert
+create policy next_corrective_generation_plan_manager_insert
 on app.workspace_next_corrective_generation_plans
 for insert to ai_data_runtime
 with check (
@@ -296,9 +296,9 @@ with check (
   )
 );
 
-drop policy if exists next_corrective_gen_plan_manager_update
+drop policy if exists next_corrective_generation_plan_manager_update
   on app.workspace_next_corrective_generation_plans;
-create policy next_corrective_gen_plan_manager_update
+create policy next_corrective_generation_plan_manager_update
 on app.workspace_next_corrective_generation_plans
 for update to ai_data_runtime
 using (
