@@ -11,8 +11,8 @@ async function main() {
     "workspace_next_corrective_generation_activations_one_active_idx",
     "workspace_next_corrective_generation_activations_recent_idx",
     "workspace_next_corrective_generation_live_recent_idx",
-    "require_no_contcycle_exec_for_successive_recurrence",
-    "workspace_successive_retriage_contcycle_exec_guard",
+    "require_no_b102_ncg_exec_for_contcycle_recurrence",
+    "workspace_contcycle_retriage_b102_ncg_exec_guard",
     "workspace_next_corrective_generation_plan_execution_guard"
   ];
   assert(
@@ -162,13 +162,13 @@ async function main() {
      from pg_proc p
      join pg_namespace n on n.oid=p.pronamespace
      where n.nspname='app'
-       and p.proname='require_no_contcycle_exec_for_successive_recurrence'`
+       and p.proname='require_no_b102_ncg_exec_for_contcycle_recurrence'`
   );
   assert(
     freezeFunction.rows[0]?.definition.includes(
       "workspace_next_corrective_generation_delivery_activations"
     ),
-    "Build 102 must freeze Build 097 continuation-cycle recurrence planning after execution begins."
+    "Build 102 must freeze Build 101 continuation-cycle recurrence planning after execution begins."
   );
 
   const triggers = await authPool.query<{ trigger_name: string; table_name: string }>(
@@ -179,7 +179,7 @@ async function main() {
      where n.nspname='app'
        and not t.tgisinternal
        and t.tgname in (
-         'workspace_successive_retriage_contcycle_exec_guard',
+         'workspace_contcycle_retriage_b102_ncg_exec_guard',
          'workspace_next_corrective_generation_plan_execution_guard'
        )`
   );
