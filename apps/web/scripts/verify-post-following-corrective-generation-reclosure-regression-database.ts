@@ -129,6 +129,7 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_next_corrective_generation_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_continuation_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_following_cycle_recurrences") &&
@@ -161,6 +162,7 @@ async function main() {
   assert(
     closeDefinition.includes("workspace_reconciliation_following_cg_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_corrective_generation_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_continuation_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_following_cycle_reclosures") &&
