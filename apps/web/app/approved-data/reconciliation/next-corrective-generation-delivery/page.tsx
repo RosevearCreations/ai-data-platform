@@ -23,12 +23,12 @@ export default async function NextCorrectiveGenerationDeliveryPage() {
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
         <p className="eyebrow">Build 102</p>
-        <h1>Continuation-Cycle Corrective Delivery Activation & Idempotent Execution</h1>
+        <h1>Next Corrective-Generation Delivery Activation & Idempotent Execution</h1>
         <p className="lead">
-          Execute an approved Build 097 next-corrective-generation plan through a fresh
+          Execute an approved Build 101 next corrective-generation plan through a fresh
           package identity, authenticated capability proof, accepted dry-run,
           short activation window, durable pre-send reservation and bounded
-          same-key retries without reusing the accepted Build 094 continuation-cycle package identity.
+          same-key retries without reusing the accepted predecessor continuation-cycle package identity.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
@@ -36,10 +36,10 @@ export default async function NextCorrectiveGenerationDeliveryPage() {
             Post-continuation-cycle recurrence monitoring
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-recurrence-planning">
-            Successive-cycle recurrence re-triage & next-corrective-generation planning
+            Continuation-cycle recurrence re-triage & next corrective-generation planning
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-closure">
-            Continuation-cycle reconciliation & re-closure
+            Build 103 next corrective-generation reconciliation & re-closure
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-closure">
             Predecessor continuation-cycle reconciliation & re-closure
