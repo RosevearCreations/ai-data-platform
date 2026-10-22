@@ -34,7 +34,7 @@ async function api(
     throw new Error(
       payload && typeof payload.error === "string"
         ? payload.error
-        : "Continuation-cycle recurrence planning request failed."
+        : "Next corrective-generation recurrence planning request failed."
     );
   }
   return payload as Record<string, unknown>;
@@ -110,10 +110,10 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
           nextCorrectiveGenerationRecurrenceId
         })
       );
-      setMessage("Continuation-cycle recurrence re-triage created.");
+      setMessage("Next corrective-generation recurrence re-triage created.");
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Continuation-cycle recurrence re-triage failed."
+        error instanceof Error ? error.message : "Next corrective-generation recurrence re-triage failed."
       );
     } finally {
       setBusy("");
@@ -141,8 +141,8 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
       );
       setMessage(
         status === "dismissed"
-          ? "Continuation-cycle recurrence cycle dismissed."
-          : "Continuation-cycle recurrence re-triage saved."
+          ? "Next corrective-generation recurrence cycle dismissed."
+          : "Next corrective-generation recurrence re-triage saved."
       );
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Save failed.");
@@ -239,9 +239,9 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
       </section>
 
       <section className="correctiveNotice">
-        <strong>A next-corrective-generation recurrence starts a continuation corrective cycle</strong>
+        <strong>A next-corrective-generation recurrence starts a following corrective-generation cycle</strong>
         <p>
-          Build 105 never edits or reuses the Build 101 following corrective-generation plan. It starts from the
+          Build 105 never edits or reuses the Build 101 next corrective-generation plan. It starts from the
           exact Build 104 recurrence and limits corrective scope to fields proven
           recurrent by that newest read-back and already governed by the approved
           Build 101 plan and Build 102 accepted package.
@@ -287,11 +287,11 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
                   </header>
                   <dl className="publicationEvidence">
                     <div>
-                      <dt>Continuation-cycle recurrence</dt>
+                      <dt>Next corrective-generation recurrence</dt>
                       <dd>{recurrence.nextCorrectiveGenerationRecurrenceId}</dd>
                     </div>
                     <div>
-                      <dt>Continuation-cycle re-closure</dt>
+                      <dt>Next corrective-generation re-closure</dt>
                       <dd>{recurrence.nextCorrectiveGenerationReclosureId}</dd>
                     </div>
                     <div>
@@ -358,11 +358,11 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
 
                 <dl className="publicationEvidence">
                   <div>
-                    <dt>Continuation-cycle recurrence</dt>
+                    <dt>Next corrective-generation recurrence</dt>
                     <dd>{cycle.nextCorrectiveGenerationRecurrenceId}</dd>
                   </div>
                   <div>
-                    <dt>Continuation-cycle recurrence fingerprint</dt>
+                    <dt>Next corrective-generation recurrence fingerprint</dt>
                     <dd>{cycle.nextCorrectiveGenerationRecurrenceFingerprint}</dd>
                   </div>
                   <div>
@@ -512,7 +512,7 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
                                 event.target.value
                             }))
                           }
-                          placeholder="Why should this next-corrective-generation recurrence enter a continuation corrective cycle?"
+                          placeholder="Why should this next-corrective-generation recurrence enter a following corrective-generation cycle?"
                         />
                       </label>
                       <button
@@ -582,7 +582,7 @@ export function NextCorrectiveGenerationRecurrencePlanningWorkbench({
                   <dd>{plan.followingCorrectiveGenerationPlanId}</dd>
                 </div>
                 <div>
-                  <dt>Predecessor following corrective-generation plan</dt>
+                  <dt>Predecessor next corrective-generation plan</dt>
                   <dd>{plan.predecessorNextCorrectiveGenerationPlanId}</dd>
                 </div>
                 <div>
