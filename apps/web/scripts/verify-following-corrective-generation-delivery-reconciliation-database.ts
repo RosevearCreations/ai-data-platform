@@ -6,11 +6,11 @@ function assert(condition: unknown, message: string): asserts condition {
 
 async function main() {
   assert(
-    "workspace_following_corrective_generation_delivery_reconciliations".length <= 63 &&
-      "workspace_reconciliation_following_corrective_generation_reclosures".length <= 63 &&
-      "workspace_following_corrective_generation_reconciliations_recent_idx".length <= 63 &&
-      "workspace_ncg_reconciliations_delivery_idx".length <= 63 &&
-      "workspace_following_corrective_generation_reclosures_recent_idx".length <= 63,
+    "workspace_following_cg_delivery_reconciliations".length <= 63 &&
+      "workspace_reconciliation_following_cg_reclosures".length <= 63 &&
+      "workspace_follow_cg_recon_recent_idx".length <= 63 &&
+      "workspace_follow_cg_recon_delivery_idx".length <= 63 &&
+      "workspace_follow_cg_reclosure_recent_idx".length <= 63,
     "Build 107 PostgreSQL identifiers must remain within 63 bytes."
   );
   const tables = await authPool.query<{ table_name: string; rowsecurity: boolean }>(
@@ -19,8 +19,8 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and c.relname in (
-         'workspace_following_corrective_generation_delivery_reconciliations',
-         'workspace_reconciliation_following_corrective_generation_reclosures'
+         'workspace_following_cg_delivery_reconciliations',
+         'workspace_reconciliation_following_cg_reclosures'
        )`
   );
   assert(tables.rows.length === 2, "Build 107 tables must exist.");
@@ -45,13 +45,13 @@ async function main() {
      where table_schema='app'
        and grantee='ai_data_runtime'
        and table_name in (
-         'workspace_following_corrective_generation_delivery_reconciliations',
-         'workspace_reconciliation_following_corrective_generation_reclosures'
+         'workspace_following_cg_delivery_reconciliations',
+         'workspace_reconciliation_following_cg_reclosures'
        )`
   );
   for (const table of [
-    "workspace_following_corrective_generation_delivery_reconciliations",
-    "workspace_reconciliation_following_corrective_generation_reclosures"
+    "workspace_following_cg_delivery_reconciliations",
+    "workspace_reconciliation_following_cg_reclosures"
   ]) {
     const privileges = new Set(
       grants.rows.filter((row) => row.table_name === table).map((row) => row.privilege_type)
@@ -69,17 +69,17 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app'
        and (
-         (c.relname='workspace_following_corrective_generation_delivery_reconciliations'
+         (c.relname='workspace_following_cg_delivery_reconciliations'
           and p.polname='following_corrective_generation_reconciliations_manager_insert')
          or
-         (c.relname='workspace_reconciliation_following_corrective_generation_reclosures'
+         (c.relname='workspace_reconciliation_following_cg_reclosures'
           and p.polname='following_corrective_generation_reclosures_manager_insert')
        )`
   );
   assert(insertPolicies.rows.length === 2, "Build 107 insert gates must exist.");
 
   const reconciliationGate = insertPolicies.rows.find(
-    (row) => row.table_name === "workspace_following_corrective_generation_delivery_reconciliations"
+    (row) => row.table_name === "workspace_following_cg_delivery_reconciliations"
   )?.expression ?? "";
   for (const required of [
     "workspace_following_corrective_generation_live_deliveries",
@@ -99,10 +99,10 @@ async function main() {
   );
 
   const reclosureGate = insertPolicies.rows.find(
-    (row) => row.table_name === "workspace_reconciliation_following_corrective_generation_reclosures"
+    (row) => row.table_name === "workspace_reconciliation_following_cg_reclosures"
   )?.expression ?? "";
   for (const required of [
-    "workspace_following_corrective_generation_delivery_reconciliations",
+    "workspace_following_cg_delivery_reconciliations",
     "workspace_reconciliation_next_corrective_generation_recurrences",
     "workspace_reconciliation_next_corrective_generation_reclosures"
   ]) {
@@ -122,7 +122,7 @@ async function main() {
   );
   const definition = guard.rows[0]?.definition ?? "";
   assert(
-    definition.includes("workspace_reconciliation_following_corrective_generation_reclosures"),
+    definition.includes("workspace_reconciliation_following_cg_reclosures"),
     "Build 107 close trigger must recognize following-corrective-generation re-closure evidence."
   );
   assert(
@@ -130,9 +130,9 @@ async function main() {
     "Build 107 close trigger must prioritize the next-corrective-generation recurrence."
   );
   assert(
-    definition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
+    definition.includes("workspace_reconciliation_continuation_cycle_recurrences") &&
       definition.includes("workspace_reconciliation_next_corrective_generation_reclosures"),
-    "Build 107 close trigger must preserve the successive-cycle → next-corrective-generation historical re-closure branch."
+    "Build 107 close trigger must preserve the continuation-cycle → next-corrective-generation historical re-closure branch."
   );
   assert(
     definition.includes("reconciliation_triage_verified_following_corrective_generation_reclosure_required") &&
@@ -140,11 +140,13 @@ async function main() {
     "Build 107 close trigger must fail closed with following-corrective-generation-specific evidence."
   );
   assert(
-    definition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
-      definition.includes("workspace_reconciliation_next_corrective_generation_reclosures") &&
+    definition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_continuation_cycle_reclosures") &&
+      definition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
+      definition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
       definition.includes("workspace_reconciliation_following_cycle_recurrences") &&
       definition.includes("workspace_reconciliation_subsequent_cycle_reclosures"),
-    "Build 107 close trigger must preserve the Build 095 subsequent-cycle → next-corrective-generation branch and older following-cycle → subsequent-cycle branch."
+    "Build 107 close trigger must preserve continuation/successive/subsequent/following historical branches."
   );
   assert(
     definition.includes("workspace_reconciliation_next_cycle_recurrences") &&
