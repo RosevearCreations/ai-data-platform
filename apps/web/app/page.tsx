@@ -71,6 +71,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/continuation-cycle-delivery", "Continuation-cycle corrective delivery execution"],
   ["/approved-data/reconciliation/continuation-cycle-closure", "Continuation-cycle reconciliation & re-closure"],
   ["/approved-data/reconciliation/post-continuation-cycle-reclosure", "Post-continuation-cycle recurrence monitoring"],
+  ["/approved-data/reconciliation/continuation-cycle-recurrence-planning", "Continuation-cycle recurrence re-triage & next corrective-planning generation"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],

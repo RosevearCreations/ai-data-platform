@@ -33,6 +33,9 @@ export default async function PostContinuationCycleReclosurePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-closure">
             Continuation-cycle reconciliation & re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/continuation-cycle-recurrence-planning">
+            Build 101 recurrence re-triage & next corrective-planning generation
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-cycle-recurrence-planning">
             Successive-cycle recurrence re-triage & continuation-cycle planning
           </Link>
