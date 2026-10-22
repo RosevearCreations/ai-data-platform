@@ -8,15 +8,15 @@ async function main() {
   const postgresIdentifiers = [
     "workspace_post_next_corrective_generation_reclosure_checks",
     "workspace_reconciliation_next_corrective_generation_recurrences",
-    "workspace_post_next_corrective_generation_reclosure_checks_recent_idx",
-    "workspace_post_contcycle_reclosure_checks_reclosure_idx",
-    "workspace_next_corrective_generation_recurrences_recent_idx",
-    "workspace_next_corrective_generation_activation_recurrence_guard",
-    "workspace_next_corrective_generation_delivery_recurrence_guard",
-    "workspace_next_corrective_generation_reconciliation_recurrence_guard",
-    "workspace_next_corrective_generation_reclosure_recurrence_guard",
-    "workspace_next_corrective_generation_plan_recurrence_guard",
-    "workspace_successive_retriage_contcycle_recur_guard"
+    "workspace_post_ncg_reclosure_checks_recent_idx",
+    "workspace_post_ncg_reclosure_checks_reclosure_idx",
+    "workspace_ncg_recurrences_recent_idx",
+    "workspace_ncg_activation_recurrence_guard",
+    "workspace_ncg_delivery_recurrence_guard",
+    "workspace_ncg_reconciliation_recurrence_guard",
+    "workspace_ncg_reclosure_recurrence_guard",
+    "workspace_ncg_plan_recurrence_guard",
+    "workspace_contcycle_retriage_ncg_recur_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -38,8 +38,8 @@ async function main() {
     `select indexname,tablename from pg_indexes
      where schemaname='app'
        and indexname in (
-         'workspace_post_next_corrective_generation_reclosure_checks_recent_idx',
-         'workspace_post_contcycle_reclosure_checks_reclosure_idx'
+         'workspace_post_ncg_reclosure_checks_recent_idx',
+         'workspace_post_ncg_reclosure_checks_reclosure_idx'
        )`
   );
   assert(indexes.rows.length === 2, "Build 104 next-corrective-generation monitoring indexes must exist.");
@@ -129,6 +129,7 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_continuation_cycle_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_following_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_next_cycle_recurrences") &&
@@ -157,6 +158,7 @@ async function main() {
   assert(
     closeDefinition.includes("workspace_reconciliation_next_corrective_generation_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_continuation_cycle_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_following_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_cycle_reclosures") &&
@@ -174,12 +176,12 @@ async function main() {
      join pg_namespace n on n.oid=c.relnamespace
      where n.nspname='app' and not t.tgisinternal
        and t.tgname in (
-         'workspace_next_corrective_generation_activation_recurrence_guard',
-         'workspace_next_corrective_generation_delivery_recurrence_guard',
-         'workspace_next_corrective_generation_reconciliation_recurrence_guard',
-         'workspace_next_corrective_generation_reclosure_recurrence_guard',
-         'workspace_next_corrective_generation_plan_recurrence_guard',
-         'workspace_successive_retriage_contcycle_recur_guard'
+         'workspace_ncg_activation_recurrence_guard',
+         'workspace_ncg_delivery_recurrence_guard',
+         'workspace_ncg_reconciliation_recurrence_guard',
+         'workspace_ncg_reclosure_recurrence_guard',
+         'workspace_ncg_plan_recurrence_guard',
+         'workspace_contcycle_retriage_ncg_recur_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 104 next-corrective-generation freeze triggers must exist.");
