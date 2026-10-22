@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
 import { auth } from "@/lib/auth";
-import { appendIntegrationDeliveryEvent } from "@/lib/integration-delivery-database";
+import {\n  appendIntegrationDeliveryEvent,\n  recordIntegrationConsumerReceipt\n} from "@/lib/integration-delivery-database";
 import {
   INTEGRATION_CONSUMER_PROTOCOL,
   INTEGRATION_CONTRACTS,
@@ -542,6 +542,14 @@ export async function POST(request: Request) {
         attemptCount: delivery.attemptCount
       }
     });
+
+    if (accepted) {
+      await recordIntegrationConsumerReceipt(userId, {
+        workspaceId,
+        consumerId: consumerId.slice(0, 128),
+        package: context.unifiedPackage
+      });
+    }
 
     return Response.json(
       {
