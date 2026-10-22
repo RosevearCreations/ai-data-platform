@@ -182,6 +182,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-delivery">
             Next corrective-generation delivery activation & idempotent execution
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/next-corrective-generation-closure">
+            Next corrective-generation delivery reconciliation & re-closure
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>

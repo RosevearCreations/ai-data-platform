@@ -173,7 +173,7 @@ export function NextCorrectiveGenerationDeliveryWorkbench({
         <div className="sectionHeading">
           <div>
             <p className="eyebrow">Build 102 controlled execution</p>
-            <h2>Continuation-cycle delivery readiness</h2>
+            <h2>Next corrective-generation delivery readiness</h2>
           </div>
         </div>
         <div className="commandMetrics">
@@ -188,7 +188,7 @@ export function NextCorrectiveGenerationDeliveryWorkbench({
       <section className="correctiveNotice">
         <strong>Approval is not delivery authority</strong>
         <p>
-          Build 102 derives a fresh package identity from the approved Build 097
+          Build 102 derives a fresh package identity from the approved Build 101
           plan, performs a fresh authenticated consumer capability check and
           accepted dry-run before opening a short activation window, then reserves
           one durable delivery before any live request. Retries reuse the exact
@@ -201,7 +201,7 @@ export function NextCorrectiveGenerationDeliveryWorkbench({
 
       <section className="correctiveSection">
         <div className="sectionHeading">
-          <div><p className="eyebrow">Approved Build 097 plans</p><h2>Activate & execute</h2></div>
+          <div><p className="eyebrow">Approved Build 101 plans</p><h2>Activate & execute</h2></div>
         </div>
         <div className="publicationList">
           {model.planning.plans
@@ -340,7 +340,7 @@ export function NextCorrectiveGenerationDeliveryWorkbench({
             })}
           {!model.planning.plans.some((plan) => plan.status === "approved") ? (
             <div className="emptyState">
-              No approved Build 097 next-corrective-generation corrective plan is ready for execution.
+              No approved Build 101 next-corrective-generation corrective plan is ready for execution.
             </div>
           ) : null}
         </div>
