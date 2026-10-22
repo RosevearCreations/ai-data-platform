@@ -16,7 +16,7 @@ async function main() {
     "workspace_continuation_cycle_reconciliation_recurrence_guard",
     "workspace_continuation_cycle_reclosure_recurrence_guard",
     "workspace_continuation_cycle_plan_recurrence_guard",
-    "workspace_subcycle_retriage_successive_recurrence_guard"
+    "workspace_successive_retriage_contcycle_recur_guard"
   ];
   assert(
     postgresIdentifiers.every((identifier) => Buffer.byteLength(identifier, "utf8") <= 63),
@@ -129,6 +129,7 @@ async function main() {
   );
   assert(
     reopenDefinition.includes("workspace_reconciliation_successive_cycle_recurrences") &&
+      reopenDefinition.includes("workspace_reconciliation_subsequent_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_following_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_next_cycle_recurrences") &&
       reopenDefinition.includes("workspace_reconciliation_continuation_generation_recurrences") &&
@@ -149,16 +150,14 @@ async function main() {
     "Build 100 close trigger must detect continuation-cycle recurrence."
   );
   assert(
-    (
-      closeDefinition.includes("reconciliation_triage_post_continuation_cycle_reclosure_required") ||
-      closeDefinition.includes("reconciliation_triage_verified_continuation_cycle_reclosure_required")
-    ) &&
+    closeDefinition.includes("reconciliation_triage_post_continuation_cycle_reclosure_required") &&
       closeDefinition.includes("reconciliation_triage_verified_continuation_cycle_reclosure_required"),
-    "Build 100 must remain fail-closed after continuation-cycle recurrence, either at its original hold or the stronger Build 099 verified continuation-cycle re-closure gate, while preserving the Build 099 guard beneath it."
+    "Build 100 must fail closed after continuation-cycle recurrence while preserving the Build 099 continuation-cycle re-closure gate beneath it."
   );
   assert(
     closeDefinition.includes("workspace_reconciliation_continuation_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_successive_cycle_reclosures") &&
+      closeDefinition.includes("workspace_reconciliation_subsequent_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_following_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_next_cycle_reclosures") &&
       closeDefinition.includes("workspace_reconciliation_continuation_generation_reclosures") &&
@@ -180,7 +179,7 @@ async function main() {
          'workspace_continuation_cycle_reconciliation_recurrence_guard',
          'workspace_continuation_cycle_reclosure_recurrence_guard',
          'workspace_continuation_cycle_plan_recurrence_guard',
-         'workspace_subcycle_retriage_successive_recurrence_guard'
+         'workspace_successive_retriage_contcycle_recur_guard'
        )`
   );
   assert(triggers.rows.length === 6, "Build 100 continuation-cycle freeze triggers must exist.");
