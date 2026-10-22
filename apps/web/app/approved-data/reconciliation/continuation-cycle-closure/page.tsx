@@ -31,6 +31,9 @@ export default async function ContinuationCycleCorrectiveClosurePage() {
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-continuation-cycle-reclosure">
+            Post-continuation-cycle recurrence monitoring
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/successive-cycle-closure">
             Predecessor successive-cycle reconciliation & re-closure
           </Link>
