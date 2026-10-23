@@ -1341,6 +1341,67 @@ export const HELP_TOPICS = {
       "Help controls are guidance only and never replace permissions, confirmations, RLS or database enforcement."
     ]
   },
+  "appearance-design-system": {
+    title: "Marble Standard appearance & design system",
+    summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
+    steps: [
+      "Use the Appearance & Design System screen to inspect the active theme and reusable surface variants.",
+      "Treat Marble Standard as presentation only; business state, permissions and evidence remain authoritative.",
+      "Use the shared SurfaceCard framework for new major cards instead of inventing page-specific card styling.",
+      "Keep the circled help control visible on every major card according to the Build 117 help standard.",
+      "Add future themes through the theme registry and token contract rather than rewriting individual screens."
+    ],
+    notes: [
+      "Build 118 stores no per-user appearance preference yet; Marble Standard is the single active theme.",
+      "The marble treatment is CSS-generated and introduces no image asset dependency.",
+      "Status semantics and accessibility take priority over decorative styling."
+    ]
+  },
+  "appearance-card-framework": {
+    title: "Reusable marble card framework",
+    summary: "SurfaceCard is the Build 118 reusable presentation primitive for default, raised, metric, interactive and inset surfaces while preserving contextual help and status semantics.",
+    steps: [
+      "Choose the lowest-emphasis card variant that still communicates the content hierarchy.",
+      "Use raised for module or summary cards, metric for compact quantitative cards and inset for nested secondary evidence.",
+      "Use interactive only when the surface is meaningfully selectable or action-oriented.",
+      "Attach the correct centralized help topic when the card is a major interface surface.",
+      "Keep card content readable without depending on the marble pattern for meaning."
+    ],
+    notes: [
+      "Surface variants are visual hierarchy only and never imply permission or workflow state.",
+      "New cards should reuse this framework before adding one-off CSS."
+    ]
+  },
+  "appearance-status-system": {
+    title: "Operational status treatments",
+    summary: "Build 118 standardizes neutral, healthy, attention, critical and informational treatments so operational meaning remains consistent across marble surfaces.",
+    steps: [
+      "Use neutral for ordinary content with no status meaning.",
+      "Use healthy only for verified successful or normal state.",
+      "Use attention for pending review, caution or operator follow-up.",
+      "Use critical for failures, blockers or serious invariant conditions.",
+      "Use information for explanatory or evidence-only context."
+    ],
+    notes: [
+      "Never choose a status color for decoration.",
+      "Text labels must continue to communicate status even if color is unavailable."
+    ]
+  },
+  "appearance-accessibility": {
+    title: "Theme accessibility & interaction rules",
+    summary: "The Marble Standard theme keeps decoration subordinate to readable text, visible keyboard focus, semantic status labels and accessible contextual help.",
+    steps: [
+      "Keep text contrast readable over every marble surface.",
+      "Preserve visible focus indicators on links, buttons and the circled help controls.",
+      "Pair status color with text or icon meaning rather than color alone.",
+      "Reduce decorative intensity on compact or data-dense surfaces.",
+      "Keep responsive layouts usable without hiding required actions or help."
+    ],
+    notes: [
+      "Accessibility requirements override decorative theme choices.",
+      "The marble surface is generated with CSS gradients so it does not add alt-text or loading requirements."
+    ]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -1366,6 +1427,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 118 Marble Standard design system",
+    topics: ["appearance-design-system", "appearance-card-framework", "appearance-status-system", "appearance-accessibility"]
   },
   {
     title: "Collection & extraction",
