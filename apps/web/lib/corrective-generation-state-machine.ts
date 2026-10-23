@@ -412,7 +412,13 @@ export async function listCorrectiveGenerationStateMachineForUser(
             or p.source_recurrence_id<>s.source_recurrence_id
             or p.source_recurrence_fingerprint<>s.source_recurrence_fingerprint
             or p.source_regression_fingerprint<>s.source_regression_fingerprint
-            or p.predecessor_registry_fingerprint<>pred.registry_fingerprint
+            or p.predecessor_plan_id<>pred.plan_id
+            or p.predecessor_delivery_id<>pred.delivery_id
+            or p.predecessor_package_id<>pred.package_id
+            or p.predecessor_replay_key<>pred.replay_key
+            or p.predecessor_package_fingerprint<>pred.package_fingerprint
+            or p.predecessor_reclosure_id<>pred.reclosure_id
+            or p.predecessor_reclosure_fingerprint<>pred.reclosure_fingerprint
 
          union all
 
