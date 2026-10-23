@@ -42,7 +42,7 @@ async function main() {
   assert(
     page.includes("<ModuleHubTools") &&
       page.includes("moduleOperatorToolsById") &&
-      page.includes("Choose the next sub-screen") &&
+      client.includes("Choose the next sub-screen") &&
       page.includes('aria-label="Open sub-screen task panels"'),
     "Build 121 module hub must install the operator tools without breaking Build 120 progressive navigation."
   );
