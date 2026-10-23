@@ -153,6 +153,11 @@ async function main() {
     ),
     "Build 118 Appearance screen must be reachable from Workspace & Administration."
   );
+  assert(
+    navigation.includes('href: "/appearance"') &&
+      navigation.includes('helpTopic: "appearance-design-system"'),
+    "Build 118 navigation source must retain the Appearance route and help topic."
+  );
 
   for (const topic of [
     "appearance-design-system",
