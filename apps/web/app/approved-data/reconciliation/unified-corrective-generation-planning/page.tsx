@@ -21,20 +21,23 @@ export default async function UnifiedCorrectiveGenerationPlanningPage() {
   return (
     <main className="shell correctiveClosureShell">
       <section className="hero correctiveClosureHero">
-        <p className="eyebrow">Build 110</p>
+        <p className="eyebrow">Build 113</p>
         <h1>Unified Corrective-Generation Recurrence Re-Triage & Planning Engine</h1>
         <p className="lead">
-          Consume the Build 109 successor abstraction, re-triage the newest governed recurrence,
-          and create a generation-numbered corrective plan without introducing another hard-coded
-          next/following schema family.
+          Consume the newest governed successor from either the historical corrective-generation
+          path or the generic recurrence loop, re-triage its exact recurrence evidence, and create
+          the next generation-numbered corrective plan without another hard-coded schema family.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-lineage">
             Build 109 lineage registry
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-unified-corrective-generation-reclosure">
+            Build 113 generic recurrence governance source
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-following-corrective-generation-reclosure">
-            Build 108 recurrence governance
+            Historical Build 108 recurrence source
           </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-delivery">
             Build 111 unified corrective-generation activation & idempotent delivery
