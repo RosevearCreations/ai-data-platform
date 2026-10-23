@@ -3686,6 +3686,10 @@ h3 {
   color: var(--theme-text);
 }
 
+.uiSurfaceCard--default {
+  background: var(--marble-default);
+}
+
 .uiSurfaceCard--raised {
   background: var(--marble-raised);
   border-color: var(--theme-border-strong);
