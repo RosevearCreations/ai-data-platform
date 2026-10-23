@@ -229,6 +229,9 @@ export function requireUnifiedCorrectiveGenerationSourceEvidence(input: {
   recordResults: ReconciliationRecordResult[] | null;
 }) {
   if (
+    !["following-corrective-generation", "generic-corrective-generation"].includes(
+      input.sourceRecurrenceKind
+    ) ||
     input.regressionStatus !== "recurred" ||
     !input.recordResults?.length
   ) {
