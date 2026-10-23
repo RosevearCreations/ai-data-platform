@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
-import { MODULE_CARDS } from "@/lib/application-navigation";
+import { MODULE_CARDS, moduleHubHref } from "@/lib/application-navigation";
 import {
   buildCommandCenterHome,
   type CommandCenterAttentionSeverity,
@@ -332,8 +332,8 @@ export default async function HomePage() {
                   </div>
                   <p>{group.description}</p>
                   <div className="commandModuleActions">
-                    <Link className="primaryLink" href={group.items[0].href}>
-                      Open {group.shortLabel}
+                    <Link className="primaryLink" href={moduleHubHref(group.id)}>
+                      Open {group.shortLabel} hub
                     </Link>
                     <Link className="secondaryButton" href="/workflows">
                       Browse workflows

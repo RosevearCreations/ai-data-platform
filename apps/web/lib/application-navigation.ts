@@ -261,7 +261,36 @@ export const MODULE_CARDS = APPLICATION_NAVIGATION.filter(
   (group) => group.id !== "overview" && group.id !== "help"
 );
 
+export function moduleHubHref(groupId: string) {
+  return "/modules/" + groupId;
+}
+
+export function moduleNavigationGroupById(groupId: string) {
+  return MODULE_CARDS.find((group) => group.id === groupId) ?? null;
+}
+
+export function activeNavigationItem(pathname: string) {
+  const candidates = APPLICATION_NAVIGATION.flatMap((group) =>
+    group.items.map((item) => ({ group, item }))
+  ).sort((left, right) => right.item.href.length - left.item.href.length);
+
+  return (
+    candidates.find(({ item }) =>
+      item.href === "/"
+        ? pathname === "/"
+        : pathname === item.href || pathname.startsWith(item.href + "/")
+    )?.item ?? null
+  );
+}
+
 export function activeNavigationGroup(pathname: string) {
+  const moduleHub = MODULE_CARDS.find(
+    (group) =>
+      pathname === moduleHubHref(group.id) ||
+      pathname.startsWith(moduleHubHref(group.id) + "/")
+  );
+  if (moduleHub) return moduleHub;
+
   const candidates = APPLICATION_NAVIGATION.flatMap((group) =>
     group.items.map((item) => ({ group, item }))
   ).sort((left, right) => right.item.href.length - left.item.href.length);
