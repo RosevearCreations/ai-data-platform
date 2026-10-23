@@ -1438,6 +1438,47 @@ export const HELP_TOPICS = {
     ],
     notes: ["Workspace RLS and destination workflow role checks remain authoritative."]
   },
+  "module-task-panels": {
+    title: "In-module task panels",
+    summary: "Build 121 groups each module's existing sub-screens into explicit operator outcomes so the hub explains what kind of work each screen supports.",
+    steps: [
+      "Choose the task panel that matches the outcome in front of us.",
+      "Read the panel description before selecting a sub-screen.",
+      "Open the sub-screen and follow its own prerequisites, permissions and contextual help.",
+      "Return to the module hub when switching to another task inside the same business area."
+    ],
+    notes: [
+      "Task panels do not create new workflow state or reorder authoritative business prerequisites.",
+      "Every current module sub-screen remains reachable and is covered by at least one task panel."
+    ]
+  },
+  "module-search": {
+    title: "Module-local search",
+    summary: "Build 121 adds a client-side search field on each module hub that filters only the module's known task panels and registered sub-screens.",
+    steps: [
+      "Enter a task, screen name or descriptive term.",
+      "Review the matching panel and sub-screen count.",
+      "Open the matching governed screen or clear the search to restore the full module.",
+      "Use Workflow Directory when the needed work belongs to a different module."
+    ],
+    notes: [
+      "Search is local navigation only; it sends no query to the database or an external service.",
+      "Filtering never changes permissions, evidence or workflow state."
+    ]
+  },
+  "operator-shortcuts": {
+    title: "Operator shortcuts",
+    summary: "Build 121 exposes a small curated set of common destinations inside every module hub without turning navigation into an execution shortcut.",
+    steps: [
+      "Choose a common destination only when it matches the task you intend to perform.",
+      "Treat the shortcut as a link into the existing workflow, not an authorization or state transition.",
+      "Follow the destination screen's help, prerequisites and confirmations before taking consequential action."
+    ],
+    notes: [
+      "Shortcuts never bypass RLS, role checks, approvals, confirmation or source-evidence requirements.",
+      "No shortcut performs a mutation from the module hub."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1524,6 +1565,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 121 in-module task panels, search & operator shortcuts",
+    topics: ["module-task-panels", "module-search", "operator-shortcuts"]
   },
   {
     title: "Build 120 module hubs & progressive navigation",

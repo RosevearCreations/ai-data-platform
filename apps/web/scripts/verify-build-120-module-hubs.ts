@@ -29,11 +29,12 @@ async function main() {
   assert(activeNavigationGroup("/modules/corrective").id === "corrective", "Corrective module hub must keep Corrective Operations active.");
   assert(activeNavigationItem("/modules/collection") === null, "Module hubs must not pretend to be a workflow item.");
 
-  const [shell, home, directory, modulePage, css, help, pkg, doc] = await Promise.all([
+  const [shell, home, directory, modulePage, moduleTools, css, help, pkg, doc] = await Promise.all([
     source("../app/application-shell.tsx"),
     source("../app/page.tsx"),
     source("../app/workflows/page.tsx"),
     source("../app/modules/[moduleId]/page.tsx"),
+    source("../app/modules/[moduleId]/ModuleHubTools.tsx"),
     source("../app/globals.css"),
     source("../app/help/help-content.ts"),
     source("../package.json"),
@@ -60,10 +61,11 @@ async function main() {
   assert(
     modulePage.includes("moduleNavigationGroupById") &&
       modulePage.includes("notFound()") &&
-      modulePage.includes("Choose the next sub-screen") &&
+      moduleTools.includes("Choose the next sub-screen") &&
       modulePage.includes("cardHelpSurface") &&
-      modulePage.includes("Open sub-screen"),
-    "Build 120 dynamic module hub must render progressive help-enabled sub-screen cards."
+      moduleTools.includes("cardHelpSurface") &&
+      moduleTools.includes("Open sub-screen"),
+    "Build 120 dynamic module hub must retain progressive help-enabled sub-screen cards, including when later builds extract them into a client component."
   );
   assert(
     css.includes(".moduleHubGrid") &&

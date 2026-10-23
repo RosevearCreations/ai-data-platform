@@ -2,8 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { HelpInfo } from "@/app/help/HelpInfo";
-import type { HelpTopicKey } from "@/app/help/help-content";
 import { moduleNavigationGroupById } from "@/lib/application-navigation";
+import { moduleOperatorToolsById } from "@/lib/module-operator-tools";
+
+import { ModuleHubTools } from "./ModuleHubTools";
 
 export default async function ModuleHubPage({
   params
@@ -12,14 +14,15 @@ export default async function ModuleHubPage({
 }) {
   const { moduleId } = await params;
   const group = moduleNavigationGroupById(moduleId);
+  const operatorTools = moduleOperatorToolsById(moduleId);
 
-  if (!group) notFound();
+  if (!group || !operatorTools) notFound();
 
   return (
     <main className="shell shellWide moduleHubShell">
       <section className="hero compactHero moduleHubHero">
         <HelpInfo topic="module-hubs" />
-        <p className="eyebrow">Build 120 · {group.shortLabel}</p>
+        <p className="eyebrow">Build 121 · {group.shortLabel}</p>
         <h1>{group.label}</h1>
         <p className="lead">{group.description}</p>
         <div className="moduleHubHeroActions">
@@ -28,36 +31,9 @@ export default async function ModuleHubPage({
         </div>
       </section>
 
-      <section className="moduleHubSection" aria-labelledby="module-flow-heading">
-        <div className="sectionHeading">
-          <p className="eyebrow">Progressive navigation</p>
-          <h2 id="module-flow-heading">Choose the next sub-screen</h2>
-          <HelpInfo topic="progressive-navigation" />
-        </div>
-        <p className="moduleHubGuidance">
-          Work from the first relevant screen for the task in front of us. The numbered
-          order reduces hunting; it does not override workflow prerequisites, permissions,
-          approvals or state transitions.
-        </p>
-
-        <div className="moduleHubGrid">
-          {group.items.map((item, index) => (
-            <article
-              className="uiSurfaceCard uiSurfaceCard--interactive uiSurfaceCard--neutral moduleHubStepCard cardHelpSurface"
-              key={item.href}
-            >
-              <HelpInfo topic={item.helpTopic as HelpTopicKey} inline />
-              <div className="moduleHubStepHeader">
-                <span className="moduleHubStepNumber">{String(index + 1).padStart(2, "0")}</span>
-                <span className="badge">Sub-screen</span>
-              </div>
-              <h3>{item.label}</h3>
-              <p>{item.description}</p>
-              <Link className="primaryLink" href={item.href}>Open sub-screen →</Link>
-            </article>
-          ))}
-        </div>
-      </section>
+      <div aria-label="Open sub-screen task panels">
+        <ModuleHubTools group={group} tools={operatorTools} />
+      </div>
 
       <section className="moduleHubSection">
         <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--info moduleHubReminder cardHelpSurface">
