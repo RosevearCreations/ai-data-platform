@@ -39,6 +39,9 @@ export default async function CorrectiveGenerationLineagePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-state-machine">
             Build 115 state machine & invariant audit
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-operations">
+            Build 116 operations console & audit export
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-planning">
             Build 110 unified recurrence re-triage & planning
           </Link>
