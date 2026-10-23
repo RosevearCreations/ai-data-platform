@@ -253,7 +253,8 @@ export function buildCorrectiveGenerationAuditExport(
   };
 
   const content = {
-    schemaVersion: CORRECTIVE_GENERATION_AUDIT_SCHEMA_VERSION,
+    schemaVersion:
+      CORRECTIVE_GENERATION_AUDIT_SCHEMA_VERSION as typeof CORRECTIVE_GENERATION_AUDIT_SCHEMA_VERSION,
     filters,
     summary,
     cycles: filtered.cycles,
