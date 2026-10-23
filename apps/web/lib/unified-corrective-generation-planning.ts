@@ -424,7 +424,20 @@ export async function createCorrectiveGenerationRetriage(
               s.generation_number,s.source_recurrence_kind,s.source_recurrence_id,
               s.source_recurrence_fingerprint,s.source_regression_fingerprint,s.successor_fingerprint,
               s.status as successor_status,r.registry_fingerprint as predecessor_registry_fingerprint,
-              r.generation_state as predecessor_generation_state,c.status as case_status,
+              case
+                when r.generation_state='recurred'
+                  or exists (
+                    select 1
+                    from app.workspace_cg_legacy_terminal_events le
+                    where le.workspace_id=r.workspace_id
+                      and le.generation_lineage_id=r.generation_lineage_id
+                      and le.terminal_recurrence_id=s.source_recurrence_id
+                      and le.terminal_recurrence_fingerprint=s.source_recurrence_fingerprint
+                      and le.terminal_regression_fingerprint=s.source_regression_fingerprint
+                  )
+                then 'recurred'
+                else r.generation_state
+              end as predecessor_generation_state,c.status as case_status,
               (select newest.successor_source_id
                  from app.workspace_corrective_generation_successors newest
                 where newest.workspace_id=s.workspace_id and newest.case_id=s.case_id
