@@ -2,14 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import type {
-  CorrectiveGenerationOperationsModel,
-  CorrectiveGenerationTimelineEventType
-} from "@/lib/corrective-generation-operations";
-import type {
-  CorrectiveGenerationInvariantSeverity,
-  CorrectiveGenerationMachinePhase
-} from "@/lib/corrective-generation-state-machine";
+import type { CorrectiveGenerationOperationsModel } from "@/lib/corrective-generation-operations";
 
 type Filters = {
   workspaceId: string;
