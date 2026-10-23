@@ -603,6 +603,27 @@ export async function updateCorrectiveGenerationRetriage(
       throw new Error("unified_corrective_generation_planning_latest_successor_required");
     }
 
+    if (row.status === "planned" && (input.status === "open" || input.status === "dismissed")) {
+      await client.query(
+        `update app.workspace_corrective_generation_plans
+            set status='withdrawn',reviewed_by=$3,reviewed_at=now(),
+                review_note=left(
+                  case when review_note='' then $4
+                    else review_note || E'\\n\\n' || $4 end,
+                  8000
+                )
+          where workspace_id=$1
+            and corrective_generation_retriage_id=$2
+            and status='proposed'`,
+        [
+          input.workspaceId,
+          input.correctiveGenerationRetriageId,
+          userId,
+          "Build 115 state-machine withdrawal caused by re-triage reset."
+        ]
+      );
+    }
+
     await client.query(
       `update app.workspace_corrective_generation_retriage
           set status=$3,classification=$4,severity=$5,resolution_intent=$6,
