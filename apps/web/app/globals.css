@@ -3054,3 +3054,571 @@ h3 {
   min-height: 6rem;
   resize: vertical;
 }
+
+
+/* Build 117 — Application Shell, Navigation Architecture & Workflow Consolidation */
+.applicationFrame {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 292px minmax(0, 1fr);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(125, 226, 216, 0.055), transparent 32rem),
+    #071018;
+}
+
+.applicationSidebar {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  display: flex;
+  height: 100vh;
+  min-width: 0;
+  flex-direction: column;
+  overflow: auto;
+  border-right: 1px solid rgba(237, 246, 247, 0.08);
+  background: rgba(6, 15, 22, 0.96);
+  padding: 1rem;
+  backdrop-filter: blur(18px);
+}
+
+.applicationBrand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(237, 246, 247, 0.07);
+  padding: 0.25rem 0 1rem;
+}
+
+.applicationBrand > a:first-child {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.7rem;
+  color: #edf6f7;
+  text-decoration: none;
+}
+
+.applicationBrand > a:first-child > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 0.12rem;
+}
+
+.applicationBrand strong {
+  overflow: hidden;
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.applicationBrand small {
+  color: #72878a;
+  font-size: 0.68rem;
+}
+
+.applicationBrandMark {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(125, 226, 216, 0.3);
+  border-radius: 0.7rem;
+  background: rgba(125, 226, 216, 0.08);
+  color: #9ff2ea;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+}
+
+.shellHelpCircle {
+  display: inline-grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(125, 226, 216, 0.42);
+  border-radius: 50%;
+  background: rgba(125, 226, 216, 0.07);
+  color: #9ff2ea;
+  font-family: Georgia, serif;
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.shellHelpCircle:hover,
+.shellHelpCircle:focus-visible {
+  border-color: #7de2d8;
+  background: rgba(125, 226, 216, 0.15);
+  outline: 2px solid rgba(125, 226, 216, 0.16);
+  outline-offset: 2px;
+}
+
+.applicationNavigation {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+
+.applicationNavGroup {
+  border-radius: 0.8rem;
+}
+
+.applicationNavGroup > summary {
+  display: flex;
+  min-height: 2.6rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  border-radius: 0.7rem;
+  color: #bed0d2;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  list-style: none;
+  padding: 0.45rem 0.5rem 0.45rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.applicationNavGroup > summary::-webkit-details-marker {
+  display: none;
+}
+
+.applicationNavGroup[open] > summary {
+  background: rgba(125, 226, 216, 0.055);
+  color: #dff8f5;
+}
+
+.applicationNavItems {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.35rem 0 0.7rem 0.45rem;
+}
+
+.applicationNavItemRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.applicationNavLink {
+  display: grid;
+  gap: 0.14rem;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  color: #aabdc0;
+  padding: 0.55rem 0.65rem;
+  text-decoration: none;
+}
+
+.applicationNavLink strong {
+  color: #cfe0e2;
+  font-size: 0.76rem;
+}
+
+.applicationNavLink span {
+  color: #6f8588;
+  font-size: 0.64rem;
+  line-height: 1.35;
+}
+
+.applicationNavLink:hover,
+.applicationNavLink:focus-visible {
+  border-color: rgba(125, 226, 216, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+  outline: none;
+}
+
+.applicationNavLink.active {
+  border-color: rgba(125, 226, 216, 0.2);
+  background: rgba(125, 226, 216, 0.075);
+}
+
+.applicationNavLink.active strong {
+  color: #a9f0e9;
+}
+
+.applicationSidebarFooter {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: auto;
+  border-top: 1px solid rgba(237, 246, 247, 0.07);
+  padding-top: 0.9rem;
+  color: #617679;
+  font-size: 0.68rem;
+}
+
+.applicationSidebarFooter a {
+  color: #8fcac5;
+}
+
+.applicationContent {
+  min-width: 0;
+}
+
+.applicationTopbar {
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(237, 246, 247, 0.07);
+  background: rgba(7, 16, 24, 0.9);
+  padding: 0.7rem clamp(1rem, 3vw, 2.25rem);
+  backdrop-filter: blur(18px);
+}
+
+.applicationTopbar > div:first-child {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.applicationTopbarEyebrow {
+  color: #6f8588;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.applicationTopbar strong {
+  color: #eaf6f7;
+  font-size: 0.9rem;
+}
+
+.applicationTopbarActions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.applicationTopbarActions > a:not(.shellHelpCircle) {
+  color: #9db1b4;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.applicationTopbarActions > a:not(.shellHelpCircle):hover {
+  color: #baf2ed;
+}
+
+.applicationPage {
+  min-width: 0;
+}
+
+.shellWide {
+  width: min(1320px, calc(100% - 2rem));
+}
+
+.compactHero {
+  max-width: 980px;
+  padding-bottom: 2.5rem;
+}
+
+.compactHero h1 {
+  font-size: clamp(2.6rem, 6vw, 5rem);
+}
+
+.cardHelpSurface {
+  position: relative;
+}
+
+.cardHelpSurface > .helpInfoInline {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 35;
+  margin-top: 0;
+}
+
+.cardHelpSurface > .helpInfoInline .helpPopover {
+  right: 0;
+  left: auto;
+}
+
+.commandMetricCard {
+  padding-right: 3.5rem !important;
+}
+
+.commandMetricCard > .helpInfoInline {
+  top: 0.55rem;
+  right: 0.55rem;
+}
+
+.commandModuleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.commandModuleCard {
+  display: grid;
+  gap: 1rem;
+  min-height: 245px;
+  align-content: start;
+  border: 1px solid rgba(125, 226, 216, 0.12);
+  border-radius: 1rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+    rgba(8, 20, 28, 0.72);
+  padding: 1.25rem;
+  padding-right: 3.6rem;
+}
+
+.commandModuleCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.commandModuleCardHeader h3 {
+  margin: 0.25rem 0 0;
+  color: #eff9fa;
+  font-size: 1.35rem;
+}
+
+.commandModuleLabel {
+  color: #78d9d0;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.commandModuleCard > p {
+  color: #96aaad;
+  line-height: 1.55;
+}
+
+.commandModuleActions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.moduleDirectory {
+  display: grid;
+  gap: 1rem;
+}
+
+.moduleDirectoryCard {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid rgba(125, 226, 216, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1.3rem;
+  padding-right: 3.6rem;
+}
+
+.moduleDirectoryHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.moduleDirectoryHeader h2 {
+  margin-bottom: 0;
+}
+
+.moduleDirectoryHeader > span {
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.075);
+  color: #9ee9e2;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.moduleDirectoryCard > p {
+  max-width: 780px;
+  color: #93a7aa;
+  line-height: 1.55;
+}
+
+.moduleDirectoryLinks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.moduleDirectoryLinkRow {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: center;
+  border: 1px solid rgba(237, 246, 247, 0.07);
+  border-radius: 0.8rem;
+  background: rgba(4, 12, 17, 0.34);
+  padding: 0.75rem;
+  padding-right: 3rem;
+}
+
+.moduleDirectoryLinkRow > a:first-child {
+  display: grid;
+  min-width: 0;
+  gap: 0.24rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.moduleDirectoryLinkRow strong {
+  color: #dbecee;
+  font-size: 0.83rem;
+}
+
+.moduleDirectoryLinkRow span {
+  color: #748a8d;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.legacyWorkflowGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.legacyWorkflowCard {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+  border: 1px solid rgba(237, 246, 247, 0.09);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1.25rem;
+  padding-right: 3.6rem;
+}
+
+.legacyWorkflowCard h2 {
+  margin-bottom: 0;
+  font-size: 1.35rem;
+}
+
+.legacyWorkflowCard > p {
+  color: #8da2a5;
+  line-height: 1.5;
+}
+
+.legacyWorkflowLinks {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.legacyWorkflowLinks a {
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.025);
+  color: #a9d8d4;
+  padding: 0.55rem 0.65rem;
+  text-decoration: none;
+  font-size: 0.76rem;
+}
+
+.legacyWorkflowLinks a:hover,
+.legacyWorkflowLinks a:focus-visible {
+  background: rgba(125, 226, 216, 0.07);
+  color: #c9f7f1;
+  outline: none;
+}
+
+.helpCard:target {
+  border-color: rgba(125, 226, 216, 0.45);
+  box-shadow: 0 0 0 3px rgba(125, 226, 216, 0.08);
+}
+
+@media (max-width: 1080px) {
+  .applicationFrame {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+
+  .applicationNavLink span {
+    display: none;
+  }
+
+  .commandModuleGrid,
+  .moduleDirectoryLinks,
+  .legacyWorkflowGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .applicationFrame {
+    display: block;
+  }
+
+  .applicationSidebar {
+    position: relative;
+    height: auto;
+    max-height: none;
+    border-right: 0;
+    border-bottom: 1px solid rgba(237, 246, 247, 0.08);
+  }
+
+  .applicationNavigation {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .applicationNavGroup {
+    min-width: 0;
+  }
+
+  .applicationNavLink span {
+    display: block;
+  }
+
+  .applicationTopbar {
+    position: relative;
+  }
+
+  .applicationTopbarActions > a:not(.shellHelpCircle) {
+    display: none;
+  }
+
+  .shellWide {
+    width: min(100% - 1rem, 1320px);
+  }
+
+  .commandModuleGrid,
+  .moduleDirectoryLinks,
+  .legacyWorkflowGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .applicationNavigation {
+    grid-template-columns: 1fr;
+  }
+
+  .applicationTopbar {
+    padding-inline: 0.75rem;
+  }
+
+  .moduleDirectoryHeader,
+  .commandModuleCardHeader {
+    flex-direction: column;
+  }
+}
+
+
+/* Build 117 help spacing for compact AI cards */
+.aiTelemetryCard {
+  padding-right: 3rem !important;
+}
+
+.aiSuggestedFieldList article.cardHelpSurface {
+  padding-right: 3.2rem;
+}

@@ -29,7 +29,7 @@ export default function HelpPage() {
           </div>
           <div className="grid">
             {group.topics.map((topic) => (
-              <article className="card helpCard" key={topic}>
+              <article className="card helpCard cardHelpSurface" id={topic} key={topic}>
                 <h3>{HELP_TOPICS[topic].title}</h3>
                 <p>{HELP_TOPICS[topic].summary}</p>
                 <HelpInfo topic={topic} inline />
