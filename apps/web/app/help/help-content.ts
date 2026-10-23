@@ -1227,6 +1227,36 @@ export const HELP_TOPICS = {
       "A workflow appearing in the directory does not bypass its own permissions or prerequisites."
     ]
   },
+  "module-hubs": {
+    title: "Module hubs & sub-screen navigation",
+    summary: "Build 120 adds a dedicated landing hub for each major operator module so related work can be understood before entering a specific workflow.",
+    steps: [
+      "Open a module from Operator Home, Workflow Directory or the persistent left navigation.",
+      "Read the module purpose and choose the sub-screen that matches the task in front of us.",
+      "Use the numbered sub-screen cards as an orientation path rather than a forced business sequence.",
+      "After entering a sub-screen, use the breadcrumb or Module hub action to return to the module context.",
+      "Use the circled information control on the hub and every sub-screen card for focused operating guidance."
+    ],
+    notes: [
+      "Module hubs perform navigation only; they do not mutate data, advance state or grant permission.",
+      "Historical corrective workflows remain behind their dedicated history screen."
+    ]
+  },
+  "progressive-navigation": {
+    title: "Progressive workflow navigation",
+    summary: "Progressive navigation exposes one module context and its related sub-screens at a time, reducing a long flat menu without hiding authoritative workflows.",
+    steps: [
+      "Start from Operator Home when we need priority guidance or from Workflow Directory when we know the business area.",
+      "Enter the module hub before choosing a detailed sub-screen when context is useful.",
+      "Follow the breadcrumb to confirm the current module and screen.",
+      "Return to the module hub when switching tasks inside the same business area.",
+      "Use direct workflow links when we already know the destination."
+    ],
+    notes: [
+      "The displayed order is a navigation aid, not a workflow state machine.",
+      "Destination permissions, prerequisites, approvals and RLS remain authoritative."
+    ]
+  },
   "shell-data": {
     title: "Data & Review module",
     summary: "Data & Review groups record exploration, review and approved-data publishing so operators can move from evidence to governed data without searching the entire application.",
@@ -1494,6 +1524,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 120 module hubs & progressive navigation",
+    topics: ["module-hubs", "progressive-navigation"]
   },
   {
     title: "Build 119 Command Center V2",
