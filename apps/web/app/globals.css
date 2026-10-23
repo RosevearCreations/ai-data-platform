@@ -4031,3 +4031,152 @@ h3 {
     transform: none;
   }
 }
+
+
+/* Build 119 — Command Center V2 — Functional Dashboard & Operator Home */
+.commandV2Shell {
+  padding-top: 3.5rem;
+}
+
+.commandV2PriorityGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.commandV2PriorityColumn,
+.commandV2QuickColumn {
+  min-width: 0;
+}
+
+.commandAttentionQueue,
+.commandQuickActions {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.commandAttentionCard {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.15rem 3.6rem 1.15rem 1.2rem;
+}
+
+.commandAttentionCardHeader,
+.commandHealthCardHeader,
+.commandRecentWorkHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.commandAttentionCardHeader small,
+.commandRecentWorkHeader small {
+  color: var(--theme-text-muted);
+}
+
+.commandAttentionCard h3,
+.commandHealthCard h3,
+.commandQuickAction h3,
+.commandRecentWorkCard h3 {
+  margin: 0;
+}
+
+.commandAttentionCard p,
+.commandHealthCard p,
+.commandQuickAction p,
+.commandRecentWorkCard p {
+  margin: 0;
+  color: var(--theme-text-muted);
+  line-height: 1.5;
+}
+
+.commandAttentionCard .primaryLink {
+  width: fit-content;
+  min-height: 2.35rem;
+}
+
+.commandAllClear {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1.25rem 3.6rem 1.25rem 1.25rem;
+}
+
+.commandQuickAction {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 3.4rem 1rem 1rem;
+}
+
+.commandQuickActionGroup {
+  color: var(--theme-accent);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.commandQuickAction a,
+.commandHealthCard a,
+.commandRecentWorkCard a {
+  width: fit-content;
+  color: var(--theme-accent-strong);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.commandHealthGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.commandHealthCard {
+  display: grid;
+  gap: 0.65rem;
+  min-height: 180px;
+  padding: 1rem 3.4rem 1rem 1rem;
+}
+
+.commandHealthCardHeader strong {
+  color: var(--theme-text);
+  font-size: 1.35rem;
+}
+
+.commandV2SummaryBand {
+  border-top: 1px solid rgba(225, 235, 238, 0.06);
+  padding-top: 2rem;
+}
+
+.commandRecentWorkGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.commandRecentWorkCard {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem 3.5rem 1rem 1rem;
+}
+
+@media (max-width: 1080px) {
+  .commandV2PriorityGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .commandQuickActions,
+  .commandHealthGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .commandQuickActions,
+  .commandHealthGrid,
+  .commandRecentWorkGrid {
+    grid-template-columns: 1fr;
+  }
+}
