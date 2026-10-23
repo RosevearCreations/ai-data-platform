@@ -1197,6 +1197,150 @@ export const HELP_TOPICS = {
     ],
     notes: ["Business priorities can deliberately change this order, but the default queue follows current evidence."]
   },
+  "shell-overview": {
+    title: "Application shell & primary navigation",
+    summary: "Build 117 replaces flat workflow launching with a persistent task-oriented application shell. The shell groups current work into modules while preserving historical routes behind dedicated history screens.",
+    steps: [
+      "Use the left navigation to choose the business area you are working in rather than searching for a build-generation screen.",
+      "Expand only the module you need; the active module remains highlighted while you work.",
+      "Use Workflow Directory when you know the task but not the exact screen.",
+      "Use the circled information control beside a module, workflow or card whenever you need context without leaving the current page.",
+      "Use History & Legacy Workflows only for historical evidence, diagnostics or a specifically required legacy operation."
+    ],
+    notes: [
+      "Build 117 changes navigation and presentation only; existing workflow authorization, RLS and execution controls remain authoritative.",
+      "Historical screens are not deleted or rewritten."
+    ]
+  },
+  "workflow-directory": {
+    title: "Workflow directory",
+    summary: "The Workflow Directory is the task-oriented index for current operator work. It groups related workflows into modules and keeps historical corrective generations separate from the normal path.",
+    steps: [
+      "Choose the module that matches the outcome you need: data, collection, corrective operations, integrations or workspace administration.",
+      "Read the short description under each workflow before opening it.",
+      "Use the circled information control on every module and workflow row for operating guidance.",
+      "For corrective cases, start from Operations Console unless a current planning, delivery, verification or monitoring screen is explicitly required.",
+      "Open History & Legacy Workflows only when reviewing or operating historical generation-specific evidence."
+    ],
+    notes: [
+      "The directory is navigation only and performs no business mutation.",
+      "A workflow appearing in the directory does not bypass its own permissions or prerequisites."
+    ]
+  },
+  "shell-data": {
+    title: "Data & Review module",
+    summary: "Data & Review groups record exploration, review and approved-data publishing so operators can move from evidence to governed data without searching the entire application.",
+    steps: [
+      "Use Unified Data Library to find and inspect records and provenance.",
+      "Use Data Review when extracted data still needs review.",
+      "Use Approved Data only after review requirements are satisfied.",
+      "Follow each destination screen's own help and approval controls before publishing."
+    ],
+    notes: ["Build 117 does not change approval or publication authority."]
+  },
+  "shell-collection": {
+    title: "Collection & Intelligence module",
+    summary: "Collection & Intelligence groups barcode intake, source projects, extraction recipes, collection runs and derived intelligence.",
+    steps: [
+      "Start with Collection Projects when defining or reviewing a collection source.",
+      "Use Recipe Builder to define structured extraction behavior.",
+      "Use Collection Runs to inspect execution evidence.",
+      "Use Intelligence Library for evidence-backed derived information.",
+      "Use Barcode Intake for identifier-driven intake when that workflow is appropriate."
+    ],
+    notes: ["Remote execution and provider safety controls remain separate and authoritative."]
+  },
+  "shell-corrective": {
+    title: "Corrective Operations module",
+    summary: "Corrective Operations presents the current unified corrective lifecycle as operator tasks instead of exposing dozens of historical generation names in normal navigation.",
+    steps: [
+      "Start in Operations Console to see active case standing, timeline events and invariant findings.",
+      "Use Planning only when a case is ready for governed re-triage and plan creation.",
+      "Use Delivery only for an approved plan that satisfies its activation prerequisites.",
+      "Use Verification & Closure only after accepted delivery evidence exists.",
+      "Use Regression Monitoring after re-closure to determine stable state or recurrence.",
+      "Use History & Legacy Workflows only for older generation-specific evidence or diagnostics."
+    ],
+    notes: [
+      "The Build 115 state machine remains the lifecycle authority.",
+      "Build 117 changes navigation only and never infers or advances corrective state."
+    ]
+  },
+  "corrective-operations-console": {
+    title: "Corrective-generation operations console",
+    summary: "The Build 116 console is the preferred starting point for current corrective work. It combines state-machine standing, evidence timeline, invariant findings and deterministic audit exports.",
+    steps: [
+      "Filter by workspace, case, target, generation or phase to isolate the work you need.",
+      "Review Current cycle standing before opening a consequential workflow.",
+      "Treat invariant findings as evidence that requires review rather than as an automatic repair instruction.",
+      "Use the timeline to understand how the current generation reached its present state.",
+      "Export JSON or CSV when a durable operator-readable audit package is needed."
+    ],
+    notes: ["The console is read-only and does not bypass planning, activation, delivery or closure controls."]
+  },
+  "corrective-state-machine": {
+    title: "Corrective-generation state machine",
+    summary: "The Build 115 state machine derives one canonical phase for each generic corrective-generation cycle and audits cross-generation identity continuity.",
+    steps: [
+      "Use the displayed phase to understand the next eligible workflow.",
+      "Review critical invariant findings before attempting a later lifecycle stage.",
+      "Use the Operations Console for broader timeline and audit-export work.",
+      "Do not manually reinterpret a generation when the state-machine evidence disagrees."
+    ],
+    notes: ["Database transition and lineage guards remain authoritative even if a screen is opened directly."]
+  },
+  "corrective-history": {
+    title: "Corrective history & legacy workflows",
+    summary: "This screen preserves older generation-specific corrective workflows for traceability, diagnostics and exceptional historical operations without forcing normal operators to navigate them every day.",
+    steps: [
+      "Use current unified corrective workflows first for active cases.",
+      "Choose a historical group only when you know the evidence belongs to that earlier generation or cycle.",
+      "Read the destination screen's own help before taking any action.",
+      "Return to the current Operations Console when historical review is complete."
+    ],
+    notes: [
+      "No historical route is deleted by Build 117.",
+      "The history screen is an organizational boundary, not a new authorization boundary."
+    ]
+  },
+  "shell-integrations": {
+    title: "Integrations & Execution module",
+    summary: "Integrations & Execution groups connectors, remote-provider execution and downstream publication/delivery workflows.",
+    steps: [
+      "Use Connectors for installed capability and workspace grant review.",
+      "Use Remote Execution for controlled provider-side work.",
+      "Use Integration Delivery to review downstream readiness and evidence.",
+      "Use Publication Delivery and Controlled Live Delivery only when their existing prerequisites and approvals are satisfied."
+    ],
+    notes: ["Build 117 does not enable a connector, provider or downstream mutation by navigation alone."]
+  },
+  "shell-workspace": {
+    title: "Workspace & Administration module",
+    summary: "Workspace & Administration groups profiles, permissions, adoption, evidence runbooks, retention and production-learning views.",
+    steps: [
+      "Use Workspace Profiles to understand operating capabilities.",
+      "Use Adoption & Permissions to review measured use and access state.",
+      "Use First-Evidence Runbook for genuine evidence-creation guidance.",
+      "Use Retention & Cleanup to review storage lifecycle controls.",
+      "Use Production Learning for evidence-based operational follow-up."
+    ],
+    notes: ["Workspace RLS and existing role checks remain authoritative."]
+  },
+  "help-system-standard": {
+    title: "Build 117 contextual help standard",
+    summary: "Every new major card, panel, navigation module and workflow surface must expose a visible circled information control tied to a centralized help topic.",
+    steps: [
+      "Select the circled i on a card, panel or navigation item to open contextual guidance.",
+      "Read the summary first, then follow How to use this section in order.",
+      "Read Important before taking any consequential action.",
+      "Use Open full help topic to jump directly to the deep-linked Help Center entry.",
+      "When building a new interface card, create or reuse a centralized help topic before considering the card complete."
+    ],
+    notes: [
+      "Help text must explain purpose, normal operating sequence, important safety/authority boundaries and manual intervention when applicable.",
+      "Help controls are guidance only and never replace permissions, confirmations, RLS or database enforcement."
+    ]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -1218,6 +1362,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Platform & access",
     topics: ["command-center", "platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
+  },
+  {
+    title: "Build 117 application shell & contextual help",
+    topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
   },
   {
     title: "Collection & extraction",

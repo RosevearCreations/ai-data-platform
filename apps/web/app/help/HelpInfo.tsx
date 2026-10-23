@@ -38,7 +38,7 @@ export function HelpInfo({
             </ol>
           </>
         ) : null}
-        <a className="textLink" href="/help">Open full help center</a>
+        <a className="textLink" href={"/help#" + topic}>Open full help topic</a>
       </div>
     </details>
   );

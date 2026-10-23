@@ -169,19 +169,23 @@ export function AiFieldSuggestions() {
           </div>
 
           <div className="aiSuggestionTelemetry">
-            <div>
+            <div className="cardHelpSurface aiTelemetryCard">
+              <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.model}</strong>
               <span>model</span>
             </div>
-            <div>
+            <div className="cardHelpSurface aiTelemetryCard">
+              <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.inputTokens}</strong>
               <span>input tokens</span>
             </div>
-            <div>
+            <div className="cardHelpSurface aiTelemetryCard">
+              <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.outputTokens}</strong>
               <span>output tokens</span>
             </div>
-            <div>
+            <div className="cardHelpSurface aiTelemetryCard">
+              <HelpInfo topic="ai-fields" inline />
               <strong>
                 {formatCost(
                   result.telemetry.actualCostUsd ??
@@ -198,7 +202,8 @@ export function AiFieldSuggestions() {
 
           <div className="aiSuggestedFieldList">
             {result.suggestions.map((field) => (
-              <article key={field.key}>
+              <article className="cardHelpSurface" key={field.key}>
+                <HelpInfo topic="ai-fields" inline />
                 <div className="aiSuggestedFieldHeader">
                   <div>
                     <strong>{field.label}</strong>
