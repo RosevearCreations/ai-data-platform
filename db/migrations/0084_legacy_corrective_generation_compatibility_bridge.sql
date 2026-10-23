@@ -102,7 +102,7 @@ begin
      and wm.user_id=v_user_id
    limit 1;
 
-  if v_role not in ('owner','admin') then
+  if v_role is null or v_role not in ('owner','admin') then
     raise exception 'legacy_corrective_generation_bridge_manager_required';
   end if;
 
@@ -379,8 +379,6 @@ begin
        or v_event.terminal_regression_fingerprint is distinct from v_source.terminal_regression_fingerprint then
       raise exception 'legacy_corrective_generation_bridge_terminal_conflict';
     end if;
-  else
-    v_event := null;
   end if;
 
   if p_source_kind='legacy-following'
@@ -440,8 +438,6 @@ begin
        or v_successor.source_regression_fingerprint is distinct from v_source.terminal_regression_fingerprint then
       raise exception 'legacy_corrective_generation_bridge_successor_conflict';
     end if;
-  else
-    v_successor := null;
   end if;
 
   v_effective_state :=
