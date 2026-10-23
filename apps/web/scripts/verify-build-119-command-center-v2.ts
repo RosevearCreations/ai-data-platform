@@ -7,7 +7,7 @@ function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
 
-const now = new Date("2026-10-23T18:00:00.000Z");
+async function main() {\nconst now = new Date("2026-10-23T18:00:00.000Z");
 const summary = buildCommandCenterSummary({
   adoption: {
     generatedAt: now.toISOString(),
@@ -71,4 +71,4 @@ assert(command.includes("attentionQueue") && command.includes("healthSignals") &
 assert(css.includes(".commandV2PriorityGrid") && css.includes(".commandHealthGrid") && css.includes(".commandRecentWorkGrid"), "Build 119 dashboard styles are incomplete.");
 assert(doc.includes("no new mutation endpoint") && doc.includes("Build 120"), "Build 119 documentation must preserve safety boundary and next roadmap item.");
 
-console.log("Build 119 functional operator dashboard verification passed.");
+console.log("Build 119 functional operator dashboard verification passed.");\n}\n\nvoid main();
