@@ -1341,6 +1341,73 @@ export const HELP_TOPICS = {
       "Help controls are guidance only and never replace permissions, confirmations, RLS or database enforcement."
     ]
   },
+  "command-center-v2": {
+    title: "Command Center V2 operator home",
+    summary: "Build 119 turns Home into a read-only operational dashboard that prioritizes measured conditions and routes operators into the existing governed workflows.",
+    steps: [
+      "Start with Needs Attention and address critical items before lower-severity review items.",
+      "Use Quick Actions to enter a known workflow without browsing the full application.",
+      "Use Operational Health to inspect the measured state of governance, collection, remote execution, delivery, corrective invariants and retention.",
+      "Use Recent Work to continue collection, remote or delivery activity from the most recent evidence.",
+      "Use Workspaces and Application Modules for broader context after priority work is understood."
+    ],
+    notes: [
+      "The dashboard does not mutate business state or bypass workflow permissions.",
+      "All health and attention states are derived from existing governed evidence."
+    ]
+  },
+  "dashboard-attention": {
+    title: "Needs Attention queue",
+    summary: "The priority queue converts measured operational conditions into a sorted list of operator follow-up actions.",
+    steps: [
+      "Review Critical items first, then Review items.",
+      "Read the workspace/context label and condition description.",
+      "Use the action button to open the authoritative workflow for investigation or correction.",
+      "Resolve the condition in the destination workflow; the dashboard itself performs no mutation."
+    ],
+    notes: ["Severity is derived from measured evidence, not decorative card color."]
+  },
+  "dashboard-quick-actions": {
+    title: "Dashboard quick actions",
+    summary: "Quick Actions are navigation shortcuts to commonly used governed workflows.",
+    steps: [
+      "Choose the task you intend to perform.",
+      "Open the workflow and follow its own contextual help, prerequisites and permission rules.",
+      "Return to Operator Home to reassess measured attention and health."
+    ],
+    notes: ["A shortcut never grants permission or skips workflow prerequisites."]
+  },
+  "dashboard-health": {
+    title: "Operational health board",
+    summary: "The health board summarizes measured conditions across workspace governance, collection readiness, remote execution, integration delivery, corrective invariants and retention.",
+    steps: [
+      "Treat Critical as a blocking or failure condition requiring review.",
+      "Treat Attention as measured follow-up that is not necessarily a failure.",
+      "Treat Healthy as the absence of the dashboard's measured condition, not a guarantee that every external system is perfect.",
+      "Select Inspect to open the authoritative evidence screen."
+    ],
+    notes: ["Health is evidence-based and fail-closed; the dashboard does not invent external status."]
+  },
+  "dashboard-recent-work": {
+    title: "Recent work",
+    summary: "Recent Work merges the newest collection-project updates with recent remote execution and integration-delivery evidence.",
+    steps: [
+      "Use the newest entries to continue active work.",
+      "Check the kind, workspace and timestamp before opening the destination.",
+      "Use the destination workflow for complete evidence and any consequential action."
+    ],
+    notes: ["Recent Work is a convenience index and does not replace source audit history."]
+  },
+  "dashboard-workspaces": {
+    title: "Workspace operating context",
+    summary: "Workspace cards summarize durable activity, role/profile context, attention conditions and the latest remote or delivery evidence.",
+    steps: [
+      "Confirm the workspace name, profile and role.",
+      "Review any attention labels before starting new work.",
+      "Use the higher-priority Needs Attention queue for direct follow-up routes."
+    ],
+    notes: ["Workspace RLS and destination workflow role checks remain authoritative."]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1427,6 +1494,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 119 Command Center V2",
+    topics: ["command-center-v2", "dashboard-attention", "dashboard-quick-actions", "dashboard-health", "dashboard-recent-work", "dashboard-workspaces"]
   },
   {
     title: "Build 118 Marble Standard design system",
