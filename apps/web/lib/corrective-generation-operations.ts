@@ -227,10 +227,35 @@ export function buildCorrectiveGenerationAuditExport(
   generatedAt = new Date().toISOString()
 ): CorrectiveGenerationAuditExport {
   const filtered = filterCorrectiveGenerationOperations(model, filters);
+  const completed = new Set<CorrectiveGenerationMachinePhase>([
+    "reclosed-awaiting-monitor",
+    "reclosed-stable",
+    "recurrence-pending-governance",
+    "recurred"
+  ]);
+  const workspaceKeys = new Set<string>();
+  const caseKeys = new Set<string>();
+  for (const item of [...filtered.cycles, ...filtered.timeline, ...filtered.violations]) {
+    workspaceKeys.add(item.workspaceId);
+    caseKeys.add(item.workspaceId + ":" + item.caseId);
+  }
+
+  const summary: CorrectiveGenerationOperationsModel["summary"] = {
+    workspaces: workspaceKeys.size,
+    cases: caseKeys.size,
+    timelineEvents: filtered.timeline.length,
+    cycles: filtered.cycles.length,
+    activeCycles: filtered.cycles.filter((item) => !completed.has(item.phase)).length,
+    completedCycles: filtered.cycles.filter((item) => completed.has(item.phase)).length,
+    recurrentCycles: filtered.cycles.filter((item) => item.phase === "recurred").length,
+    criticalViolations: filtered.violations.filter((item) => item.severity === "critical").length,
+    warnings: filtered.violations.filter((item) => item.severity === "warning").length
+  };
+
   const content = {
     schemaVersion: CORRECTIVE_GENERATION_AUDIT_SCHEMA_VERSION,
     filters,
-    summary: model.summary,
+    summary,
     cycles: filtered.cycles,
     violations: filtered.violations,
     timeline: filtered.timeline
@@ -268,6 +293,8 @@ export function correctiveGenerationAuditExportCsv(
     "entity_id",
     "detail",
     "evidence_fingerprint",
+    "audit_schema_version",
+    "generated_at",
     "audit_digest"
   ];
   const rows: unknown[][] = [];
@@ -287,6 +314,8 @@ export function correctiveGenerationAuditExportCsv(
       cycle.successorSourceId,
       "predecessor=" + cycle.predecessorGenerationLineageId,
       "",
+      audit.schemaVersion,
+      audit.generatedAt,
       audit.digest.value
     ]);
   }
@@ -306,6 +335,8 @@ export function correctiveGenerationAuditExportCsv(
       "",
       violation.detail,
       "",
+      audit.schemaVersion,
+      audit.generatedAt,
       audit.digest.value
     ]);
   }
@@ -325,6 +356,8 @@ export function correctiveGenerationAuditExportCsv(
       event.entityId,
       event.title + " — " + event.detail,
       event.evidenceFingerprint ?? "",
+      audit.schemaVersion,
+      audit.generatedAt,
       audit.digest.value
     ]);
   }
