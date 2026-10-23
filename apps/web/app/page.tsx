@@ -82,6 +82,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/corrective-generation-lineage", "Corrective-generation lineage registry & successor generation abstraction"],
   ["/approved-data/reconciliation/unified-corrective-generation-planning", "Unified corrective-generation recurrence re-triage & planning engine"],
   ["/approved-data/reconciliation/unified-corrective-generation-delivery", "Unified corrective-generation activation & idempotent delivery execution"],
+  ["/approved-data/reconciliation/unified-corrective-generation-closure", "Unified corrective-generation delivery reconciliation & verified re-closure"],
   ["/collection-projects", "Collection projects"],
   ["/recipe-builder", "Visual recipe builder"],
   ["/collection-runs", "Collection run console"],
