@@ -34,6 +34,9 @@ export default async function CorrectiveGenerationStateMachinePage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-lineage">
             Corrective-generation lineage
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-operations">
+            Build 116 operations console & audit export
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/legacy-corrective-generation-compatibility">
             Legacy compatibility bridge
           </Link>
