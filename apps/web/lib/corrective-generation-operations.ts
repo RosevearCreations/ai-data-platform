@@ -605,8 +605,7 @@ export async function listCorrectiveGenerationOperationsForUser(
          on wm.workspace_id=x.workspace_id
         and wm.user_id=nullif(current_setting('app.user_id',true),'')
        where x.occurred_at is not null
-       order by x.occurred_at desc,x.generation_number desc,x.entity_id desc
-       limit 5000`
+       order by x.occurred_at desc,x.generation_number desc,x.entity_id desc`
     );
   });
 
