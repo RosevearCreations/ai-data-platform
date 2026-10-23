@@ -66,7 +66,12 @@ export function CorrectiveGenerationLineageWorkbench({
                     <td>{item.workspaceName}</td>
                     <td><code>{item.caseId}</code></td>
                     <td>G{item.generationNumber} · {item.generationLabel}</td>
-                    <td>{item.generationState}</td>
+                    <td>
+                      {item.generationState}
+                      {item.generationState !== item.registeredGenerationState
+                        ? <span className="muted"> · registered {item.registeredGenerationState}</span>
+                        : null}
+                    </td>
                     <td>{item.sourceKind}</td>
                     <td><code>{item.planId}</code></td>
                     <td><code>{item.packageId}</code></td>

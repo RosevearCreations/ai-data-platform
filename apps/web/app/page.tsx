@@ -80,6 +80,7 @@ const workflowLinks = [
   ["/approved-data/reconciliation/following-corrective-generation-closure", "Following corrective-generation delivery reconciliation & re-closure"],
   ["/approved-data/reconciliation/post-following-corrective-generation-reclosure", "Post-following-corrective-generation re-closure regression monitoring & recurrence governance"],
   ["/approved-data/reconciliation/corrective-generation-lineage", "Corrective-generation lineage registry & successor generation abstraction"],
+  ["/approved-data/reconciliation/legacy-corrective-generation-compatibility", "Legacy corrective-generation compatibility & historical lineage bridge"],
   ["/approved-data/reconciliation/unified-corrective-generation-planning", "Unified corrective-generation recurrence re-triage & planning engine"],
   ["/approved-data/reconciliation/unified-corrective-generation-delivery", "Unified corrective-generation activation & idempotent delivery execution"],
   ["/approved-data/reconciliation/unified-corrective-generation-closure", "Unified corrective-generation delivery reconciliation & verified re-closure"],
