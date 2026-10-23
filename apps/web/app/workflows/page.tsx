@@ -9,7 +9,7 @@ export default function WorkflowDirectoryPage() {
     <main className="shell shellWide">
       <section className="hero compactHero">
         <HelpInfo topic="workflow-directory" />
-        <p className="eyebrow">Build 117</p>
+        <p className="eyebrow">Build 118</p>
         <h1>Workflow Directory</h1>
         <p className="lead">
           Start from the business task you need to perform. Current operator workflows
@@ -20,7 +20,7 @@ export default function WorkflowDirectoryPage() {
 
       <section className="moduleDirectory" aria-label="Current application modules">
         {MODULE_CARDS.map((group) => (
-          <article className="moduleDirectoryCard cardHelpSurface" key={group.id}>
+          <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral moduleDirectoryCard cardHelpSurface" key={group.id}>
             <HelpInfo topic={group.helpTopic as HelpTopicKey} inline />
             <div className="moduleDirectoryHeader">
               <div>
@@ -32,7 +32,7 @@ export default function WorkflowDirectoryPage() {
             <p>{group.description}</p>
             <div className="moduleDirectoryLinks">
               {group.items.map((item) => (
-                <div className="moduleDirectoryLinkRow cardHelpSurface" key={item.href}>
+                <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral moduleDirectoryLinkRow cardHelpSurface" key={item.href}>
                   <Link href={item.href}>
                     <strong>{item.label}</strong>
                     <span>{item.description}</span>

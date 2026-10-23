@@ -231,6 +231,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Production Learning",
         description: "Review measured production outcomes and evidence gaps.",
         helpTopic: "learning-overview"
+      },
+      {
+        href: "/appearance",
+        label: "Appearance & Design System",
+        description: "Inspect the active theme, marble surfaces and reusable interface tokens.",
+        helpTopic: "appearance-design-system"
       }
     ]
   },
