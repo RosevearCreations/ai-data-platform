@@ -33,6 +33,9 @@ export default async function UnifiedCorrectiveGenerationPlanningPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-lineage">
             Build 109 lineage registry
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/legacy-corrective-generation-compatibility">
+            Build 114 legacy compatibility bridge
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/post-unified-corrective-generation-reclosure">
             Build 113 generic recurrence governance source
           </Link>
