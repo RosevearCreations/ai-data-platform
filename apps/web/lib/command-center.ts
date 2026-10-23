@@ -216,13 +216,13 @@ export function buildCommandCenterSummary(sources: CommandCenterSources) {
     (project) => project.status === "active"
   );
   const blockedProjects = collectionProjects.filter(
-    (project) => project.status !== "retired" && project.readiness === "blocked"
+    (project) => project.status !== "archived" && project.readiness === "blocked"
   );
   const incompleteProjects = collectionProjects.filter(
-    (project) => project.status !== "retired" && project.readiness === "incomplete"
+    (project) => project.status !== "archived" && project.readiness === "incomplete"
   );
   const readyProjects = collectionProjects.filter(
-    (project) => project.status !== "retired" && project.readiness === "ready"
+    (project) => project.status !== "archived" && project.readiness === "ready"
   );
   const blockedSources = collectionProjects.reduce(
     (sum, project) =>
