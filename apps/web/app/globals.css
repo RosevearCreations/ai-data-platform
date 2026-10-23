@@ -3622,3 +3622,408 @@ h3 {
 .aiSuggestedFieldList article.cardHelpSurface {
   padding-right: 3.2rem;
 }
+
+
+/* Build 118 — Marble Design System, Card Framework & Visual Theme Foundation */
+:root[data-theme="marble-standard"] {
+  --theme-bg: #070a0d;
+  --theme-bg-elevated: #0c1116;
+  --theme-text: #edf4f5;
+  --theme-text-muted: #99abad;
+  --theme-border: rgba(225, 235, 238, 0.12);
+  --theme-border-strong: rgba(225, 235, 238, 0.2);
+  --theme-accent: #77d8cf;
+  --theme-accent-strong: #a1eee7;
+  --theme-focus: rgba(119, 216, 207, 0.42);
+  --theme-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+  --theme-shadow-raised: 0 24px 58px rgba(0, 0, 0, 0.42);
+  --theme-radius-card: 1rem;
+  --theme-radius-compact: 0.72rem;
+  --theme-status-healthy: #82dcbf;
+  --theme-status-attention: #e7bd79;
+  --theme-status-critical: #ef8f8f;
+  --theme-status-info: #88cbe8;
+  --marble-default:
+    radial-gradient(ellipse at 12% 0%, rgba(255, 255, 255, 0.07), transparent 29%),
+    linear-gradient(125deg, transparent 0 18%, rgba(219, 229, 233, 0.045) 18.5%, transparent 19.4% 52%, rgba(255, 255, 255, 0.035) 52.5%, transparent 53.3% 100%),
+    linear-gradient(35deg, transparent 0 34%, rgba(154, 178, 185, 0.035) 34.6%, transparent 35.5% 73%, rgba(255, 255, 255, 0.025) 73.5%, transparent 74.2% 100%),
+    linear-gradient(145deg, #11171c, #090d11 58%, #0d1318);
+  --marble-raised:
+    radial-gradient(circle at 15% 5%, rgba(255, 255, 255, 0.095), transparent 26%),
+    linear-gradient(117deg, transparent 0 24%, rgba(229, 236, 239, 0.065) 24.5%, rgba(255, 255, 255, 0.018) 25.1%, transparent 26% 62%, rgba(196, 210, 215, 0.04) 62.7%, transparent 63.7%),
+    linear-gradient(33deg, transparent 0 41%, rgba(255, 255, 255, 0.028) 41.7%, transparent 42.6% 80%, rgba(255, 255, 255, 0.02) 80.6%, transparent 81.4%),
+    linear-gradient(145deg, #151b20, #0a0e12 62%, #11171c);
+  --marble-inset:
+    radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.04), transparent 30%),
+    linear-gradient(128deg, transparent 0 38%, rgba(201, 216, 221, 0.03) 38.5%, transparent 39.3%),
+    linear-gradient(145deg, #090d11, #070a0d);
+}
+
+:root[data-theme="marble-standard"],
+:root[data-theme="marble-standard"] body {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+:root[data-theme="marble-standard"] html,
+:root[data-theme="marble-standard"] body,
+:root[data-theme="marble-standard"] .applicationFrame {
+  background:
+    radial-gradient(circle at 9% 0%, rgba(119, 216, 207, 0.06), transparent 34rem),
+    radial-gradient(circle at 92% 8%, rgba(255, 255, 255, 0.022), transparent 28rem),
+    var(--theme-bg);
+}
+
+.uiSurfaceCard {
+  position: relative;
+  overflow: visible;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-card);
+  background: var(--marble-default);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.035),
+    var(--theme-shadow);
+  color: var(--theme-text);
+}
+
+.uiSurfaceCard--raised {
+  background: var(--marble-raised);
+  border-color: var(--theme-border-strong);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.05),
+    var(--theme-shadow-raised);
+}
+
+.uiSurfaceCard--metric {
+  background:
+    linear-gradient(155deg, rgba(119, 216, 207, 0.045), transparent 42%),
+    var(--marble-default);
+  border-color: rgba(119, 216, 207, 0.15);
+}
+
+.uiSurfaceCard--interactive {
+  background: var(--marble-raised);
+  transition:
+    transform 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.uiSurfaceCard--interactive:hover {
+  transform: translateY(-1px);
+  border-color: rgba(119, 216, 207, 0.28);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.05),
+    0 26px 58px rgba(0, 0, 0, 0.44);
+}
+
+.uiSurfaceCard--inset {
+  background: var(--marble-inset);
+  border-color: rgba(225, 235, 238, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    inset 0 0 28px rgba(0, 0, 0, 0.12);
+}
+
+.uiSurfaceCard--neutral {
+  --surface-status: var(--theme-border);
+}
+
+.uiSurfaceCard--healthy {
+  --surface-status: var(--theme-status-healthy);
+}
+
+.uiSurfaceCard--attention {
+  --surface-status: var(--theme-status-attention);
+}
+
+.uiSurfaceCard--critical {
+  --surface-status: var(--theme-status-critical);
+}
+
+.uiSurfaceCard--info {
+  --surface-status: var(--theme-status-info);
+}
+
+.uiSurfaceCard--healthy,
+.uiSurfaceCard--attention,
+.uiSurfaceCard--critical,
+.uiSurfaceCard--info {
+  border-color: color-mix(in srgb, var(--surface-status) 42%, transparent);
+}
+
+.uiSurfaceCard--healthy::after,
+.uiSurfaceCard--attention::after,
+.uiSurfaceCard--critical::after,
+.uiSurfaceCard--info::after {
+  position: absolute;
+  top: 0.78rem;
+  bottom: 0.78rem;
+  left: 0;
+  width: 3px;
+  border-radius: 0 999px 999px 0;
+  background: var(--surface-status);
+  content: "";
+}
+
+.uiStatusPill {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border: 1px solid var(--theme-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.035);
+  color: #c8d6d8;
+  padding: 0.32rem 0.58rem;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.uiStatusPill--healthy {
+  border-color: rgba(130, 220, 191, 0.25);
+  background: rgba(130, 220, 191, 0.08);
+  color: #a9ead4;
+}
+
+.uiStatusPill--attention {
+  border-color: rgba(231, 189, 121, 0.25);
+  background: rgba(231, 189, 121, 0.08);
+  color: #f0d4a7;
+}
+
+.uiStatusPill--critical {
+  border-color: rgba(239, 143, 143, 0.28);
+  background: rgba(239, 143, 143, 0.085);
+  color: #ffc0c0;
+}
+
+.uiStatusPill--info {
+  border-color: rgba(136, 203, 232, 0.27);
+  background: rgba(136, 203, 232, 0.08);
+  color: #b8e4f5;
+}
+
+:root[data-theme="marble-standard"] .card,
+:root[data-theme="marble-standard"] .panel,
+:root[data-theme="marble-standard"] .metricCard,
+:root[data-theme="marble-standard"] .principles,
+:root[data-theme="marble-standard"] .commandRecentList article,
+:root[data-theme="marble-standard"] .helpCard,
+:root[data-theme="marble-standard"] .collectionProjectCard,
+:root[data-theme="marble-standard"] .libraryRecord {
+  border-color: var(--theme-border);
+  background: var(--marble-default);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.028),
+    0 14px 34px rgba(0, 0, 0, 0.24);
+}
+
+:root[data-theme="marble-standard"] .applicationSidebar {
+  border-color: rgba(225, 235, 238, 0.08);
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.024), transparent 28%),
+    linear-gradient(180deg, #0b1014, #070a0d 76%);
+}
+
+:root[data-theme="marble-standard"] .applicationTopbar {
+  border-color: rgba(225, 235, 238, 0.08);
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.022), transparent 40%),
+    rgba(8, 12, 16, 0.92);
+}
+
+:root[data-theme="marble-standard"] .applicationNavGroup[open] > summary,
+:root[data-theme="marble-standard"] .applicationNavLink.active {
+  border-color: rgba(119, 216, 207, 0.18);
+  background:
+    linear-gradient(135deg, rgba(119, 216, 207, 0.075), transparent 62%),
+    rgba(255, 255, 255, 0.02);
+}
+
+:root[data-theme="marble-standard"] .primary,
+:root[data-theme="marble-standard"] .primaryLink {
+  border-color: rgba(119, 216, 207, 0.38);
+  background:
+    linear-gradient(145deg, rgba(119, 216, 207, 0.22), rgba(119, 216, 207, 0.09)),
+    #10191b;
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.075);
+  color: #dffffb;
+}
+
+:root[data-theme="marble-standard"] .secondaryButton {
+  border-color: rgba(225, 235, 238, 0.14);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012)),
+    #0c1115;
+  color: #cbd9da;
+}
+
+:root[data-theme="marble-standard"] button:focus-visible,
+:root[data-theme="marble-standard"] a:focus-visible,
+:root[data-theme="marble-standard"] input:focus-visible,
+:root[data-theme="marble-standard"] select:focus-visible,
+:root[data-theme="marble-standard"] textarea:focus-visible,
+:root[data-theme="marble-standard"] summary:focus-visible {
+  outline: 2px solid var(--theme-accent);
+  outline-offset: 3px;
+}
+
+:root[data-theme="marble-standard"] .badge {
+  color: var(--theme-accent-strong);
+}
+
+:root[data-theme="marble-standard"] .helpInfo > summary,
+:root[data-theme="marble-standard"] .shellHelpCircle {
+  border-color: rgba(119, 216, 207, 0.46);
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.09), transparent 42%),
+    rgba(119, 216, 207, 0.075);
+  color: #aaf3ec;
+}
+
+.designSystemSection {
+  margin-top: 3.25rem;
+}
+
+.themeSpecimenHero {
+  display: grid;
+  gap: 0.8rem;
+  min-height: 250px;
+  align-content: center;
+  padding: 1.4rem 4rem 1.4rem 1.4rem;
+}
+
+.themeSpecimenHero h3 {
+  margin-bottom: 0;
+  font-size: 1.6rem;
+}
+
+.themeSpecimenHero p {
+  max-width: 760px;
+  color: var(--theme-text-muted);
+  line-height: 1.6;
+}
+
+.themeSpecimenBadge {
+  width: fit-content;
+  border-radius: 999px;
+  background: rgba(119, 216, 207, 0.09);
+  color: var(--theme-accent-strong);
+  padding: 0.34rem 0.58rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.themeSwatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.themeSwatch {
+  display: inline-grid;
+  min-width: 96px;
+  min-height: 48px;
+  place-items: center;
+  border: 1px solid rgba(225, 235, 238, 0.13);
+  border-radius: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.themeSwatchStone {
+  background: #0d1216;
+  color: #dce7e8;
+}
+
+.themeSwatchVein {
+  background: linear-gradient(125deg, #0c1014 0 45%, #6c7479 47%, #0c1014 50% 100%);
+  color: white;
+}
+
+.themeSwatchAccent {
+  background: #173431;
+  color: #9fe9e2;
+}
+
+.themeSwatchText {
+  background: #edf4f5;
+  color: #101418;
+}
+
+.designCardGrid,
+.designStatusGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.designCardGrid > .uiSurfaceCard,
+.designStatusGrid > .uiSurfaceCard {
+  display: grid;
+  gap: 0.7rem;
+  min-height: 180px;
+  align-content: center;
+  padding: 1.2rem 3.6rem 1.2rem 1.2rem;
+}
+
+.designCardGrid p,
+.designStatusGrid p {
+  margin: 0;
+  color: var(--theme-text-muted);
+  line-height: 1.55;
+}
+
+.designMetric {
+  font-size: 2.2rem;
+  letter-spacing: -0.05em;
+}
+
+.designControlRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1.1rem 3.6rem 1.1rem 1.1rem;
+}
+
+.commandModuleCard,
+.moduleDirectoryCard,
+.legacyWorkflowCard {
+  background: var(--marble-raised) !important;
+}
+
+.moduleDirectoryLinkRow,
+.accountBar.uiSurfaceCard,
+.commandRecentList article.uiSurfaceCard {
+  background: var(--marble-inset) !important;
+}
+
+.commandMetricCard.uiSurfaceCard {
+  background:
+    linear-gradient(155deg, rgba(119, 216, 207, 0.05), transparent 42%),
+    var(--marble-default) !important;
+}
+
+@media (max-width: 760px) {
+  .designCardGrid,
+  .designStatusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .themeSpecimenHero,
+  .designCardGrid > .uiSurfaceCard,
+  .designStatusGrid > .uiSurfaceCard {
+    padding-right: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uiSurfaceCard--interactive {
+    transition: none;
+  }
+
+  .uiSurfaceCard--interactive:hover {
+    transform: none;
+  }
+}
