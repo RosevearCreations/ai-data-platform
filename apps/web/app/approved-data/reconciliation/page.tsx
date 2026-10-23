@@ -212,6 +212,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-closure">
             Unified corrective-generation delivery reconciliation & verified re-closure
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/post-unified-corrective-generation-reclosure">
+            Post-unified corrective-generation re-closure regression monitoring & recurrence governance
+          </Link>
           <Link className="secondaryButton" href="/approved-data/live-delivery">
             Controlled live delivery
           </Link>
