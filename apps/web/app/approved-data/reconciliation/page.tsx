@@ -206,6 +206,9 @@ export default async function PostDeliveryReconciliationPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/legacy-corrective-generation-compatibility">
             Legacy corrective-generation compatibility & historical lineage bridge
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-state-machine">
+            Corrective-generation state machine & cross-generation invariants
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-planning">
             Unified corrective-generation recurrence re-triage & planning engine
           </Link>
