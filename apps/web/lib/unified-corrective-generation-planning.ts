@@ -1,4 +1,4 @@
-// Build 110 — Unified Corrective-Generation Recurrence Re-Triage & Planning Engine
+// Build 110 foundation; Build 113 corrective continuation — Unified Corrective-Generation Recurrence Re-Triage & Planning Engine
 import { createHash, randomUUID } from "node:crypto";
 import type { PoolClient, QueryResultRow } from "pg";
 
@@ -223,6 +223,23 @@ export function buildUnifiedCorrectiveGenerationPlanScope(
   return buildNextGenerationCorrectivePlanScope(predecessorScope, recordResults);
 }
 
+export function requireUnifiedCorrectiveGenerationSourceEvidence(input: {
+  sourceRecurrenceKind: "following-corrective-generation" | "generic-corrective-generation";
+  regressionStatus: string | null;
+  recordResults: ReconciliationRecordResult[] | null;
+}) {
+  if (
+    !["following-corrective-generation", "generic-corrective-generation"].includes(
+      input.sourceRecurrenceKind
+    ) ||
+    input.regressionStatus !== "recurred" ||
+    !input.recordResults?.length
+  ) {
+    throw new Error("unified_corrective_generation_planning_source_evidence_required");
+  }
+  return input.recordResults;
+}
+
 export function unifiedCorrectiveGenerationPlanFingerprint(input: {
   correctiveGenerationRetriageId: string;
   successorSourceId: string;
@@ -413,7 +430,8 @@ export async function createCorrectiveGenerationRetriage(
                 where newest.workspace_id=s.workspace_id and newest.case_id=s.case_id
                 order by newest.generation_number desc,newest.created_at desc,newest.successor_source_id desc
                 limit 1) as latest_successor_source_id,
-              check108.status as regression_status,check108.record_results
+              coalesce(check113.status,check108.status) as regression_status,
+              coalesce(check113.record_results,check108.record_results) as record_results
        from app.workspace_corrective_generation_successors s
        join app.workspace_corrective_generation_registry r
          on r.workspace_id=s.workspace_id
@@ -428,6 +446,15 @@ export async function createCorrectiveGenerationRetriage(
          on check108.workspace_id=recurrence108.workspace_id
         and check108.following_corrective_generation_reclosure_regression_check_id=
             recurrence108.following_corrective_generation_reclosure_regression_check_id
+       left join app.workspace_reconciliation_unified_cg_recurrences recurrence113
+         on s.source_recurrence_kind='generic-corrective-generation'
+        and recurrence113.workspace_id=s.workspace_id
+        and recurrence113.recurrence_id=s.source_recurrence_id
+        and recurrence113.recurrence_fingerprint=s.source_recurrence_fingerprint
+       left join app.workspace_post_unified_cg_reclosure_checks check113
+         on check113.workspace_id=recurrence113.workspace_id
+        and check113.regression_check_id=recurrence113.regression_check_id
+        and check113.verification_fingerprint=s.source_regression_fingerprint
        where s.workspace_id=$1 and s.successor_source_id=$2
        limit 1`,
       [input.workspaceId, input.successorSourceId]
@@ -446,15 +473,13 @@ export async function createCorrectiveGenerationRetriage(
     if (row.latest_successor_source_id !== row.successor_source_id) {
       throw new Error("unified_corrective_generation_planning_latest_successor_required");
     }
-    if (
-      row.source_recurrence_kind !== "following-corrective-generation" ||
-      row.regression_status !== "recurred" ||
-      !row.record_results
-    ) {
-      throw new Error("unified_corrective_generation_planning_source_evidence_required");
-    }
+    const sourceEvidence = requireUnifiedCorrectiveGenerationSourceEvidence({
+      sourceRecurrenceKind: row.source_recurrence_kind,
+      regressionStatus: row.regression_status,
+      recordResults: row.record_results
+    });
 
-    const affected = row.record_results.filter(
+    const affected = sourceEvidence.filter(
       (record) => record.status === "mismatched" || record.status === "missing"
     );
     if (!affected.length) {
@@ -624,6 +649,7 @@ export async function createUnifiedCorrectiveGenerationPlan(
       predecessor_reclosure_fingerprint: string;
       predecessor_scope: CorrectivePlanScopeItem[] | null;
       record_results: ReconciliationRecordResult[] | null;
+      regression_status: string | null;
       case_status: string;
       latest_successor_source_id: string;
     }>(
@@ -639,7 +665,9 @@ export async function createUnifiedCorrectiveGenerationPlan(
               r.reclosure_fingerprint as predecessor_reclosure_fingerprint,
               coalesce(nextplan.correction_scope,followplan.correction_scope,genericplan.correction_scope)
                 as predecessor_scope,
-              check108.record_results,c.status as case_status,
+              coalesce(check113.record_results,check108.record_results) as record_results,
+              coalesce(check113.status,check108.status) as regression_status,
+              c.status as case_status,
               (select newest.successor_source_id
                  from app.workspace_corrective_generation_successors newest
                 where newest.workspace_id=t.workspace_id and newest.case_id=t.case_id
@@ -673,6 +701,15 @@ export async function createUnifiedCorrectiveGenerationPlan(
          on check108.workspace_id=recurrence108.workspace_id
         and check108.following_corrective_generation_reclosure_regression_check_id=
             recurrence108.following_corrective_generation_reclosure_regression_check_id
+       left join app.workspace_reconciliation_unified_cg_recurrences recurrence113
+         on t.source_recurrence_kind='generic-corrective-generation'
+        and recurrence113.workspace_id=t.workspace_id
+        and recurrence113.recurrence_id=t.source_recurrence_id
+        and recurrence113.recurrence_fingerprint=t.source_recurrence_fingerprint
+       left join app.workspace_post_unified_cg_reclosure_checks check113
+         on check113.workspace_id=recurrence113.workspace_id
+        and check113.regression_check_id=recurrence113.regression_check_id
+        and check113.verification_fingerprint=t.source_regression_fingerprint
        where t.workspace_id=$1 and t.corrective_generation_retriage_id=$2
        limit 1`,
       [input.workspaceId, input.correctiveGenerationRetriageId]
@@ -694,16 +731,20 @@ export async function createUnifiedCorrectiveGenerationPlan(
     if (!row.predecessor_scope?.length) {
       throw new Error("unified_corrective_generation_plan_predecessor_scope_required");
     }
-    if (
-      row.source_recurrence_kind !== "following-corrective-generation" ||
-      !row.record_results
-    ) {
+    let sourceEvidence: ReconciliationRecordResult[];
+    try {
+      sourceEvidence = requireUnifiedCorrectiveGenerationSourceEvidence({
+        sourceRecurrenceKind: row.source_recurrence_kind,
+        regressionStatus: row.regression_status,
+        recordResults: row.record_results
+      });
+    } catch {
       throw new Error("unified_corrective_generation_plan_source_evidence_required");
     }
 
     const correctionScope = buildUnifiedCorrectiveGenerationPlanScope(
       row.predecessor_scope,
-      row.record_results
+      sourceEvidence
     );
     if (!correctionScope.length) {
       throw new Error("unified_corrective_generation_plan_scope_empty");
