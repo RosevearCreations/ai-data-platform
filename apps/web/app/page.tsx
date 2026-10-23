@@ -33,7 +33,7 @@ function MetricCard({
   topic?: HelpTopicKey;
 }) {
   return (
-    <article className="commandMetricCard cardHelpSurface">
+    <article className="uiSurfaceCard uiSurfaceCard--metric uiSurfaceCard--neutral commandMetricCard cardHelpSurface">
       <HelpInfo topic={topic} inline />
       <strong>{value}</strong>
       <span>{label}</span>
@@ -53,7 +53,7 @@ export default async function HomePage() {
     <main className="shell shellWide">
       <section className="hero commandHero compactHero">
         <HelpInfo topic="command-center" />
-        <p className="eyebrow">Build 117</p>
+        <p className="eyebrow">Build 118</p>
         <h1>Application Command Center</h1>
         <p className="lead">
           See what needs attention, reopen recent evidence and enter the platform
@@ -61,7 +61,7 @@ export default async function HomePage() {
         </p>
 
         {session ? (
-          <div className="accountBar cardHelpSurface">
+          <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral accountBar cardHelpSurface">
             <HelpInfo topic="shell-overview" inline />
             <div>
               <strong>{session.user.name}</strong>
@@ -117,7 +117,7 @@ export default async function HomePage() {
             </div>
             <div className="commandModuleGrid">
               {MODULE_CARDS.map((group) => (
-                <article className="commandModuleCard cardHelpSurface" key={group.id}>
+                <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral commandModuleCard cardHelpSurface" key={group.id}>
                   <HelpInfo topic={group.helpTopic as HelpTopicKey} inline />
                   <div className="commandModuleCardHeader">
                     <div>
@@ -149,7 +149,7 @@ export default async function HomePage() {
             {commandCenter.workspaces.length ? (
               <div className="grid commandWorkspaceGrid">
                 {commandCenter.workspaces.map((workspace) => (
-                  <article className="card commandWorkspaceCard cardHelpSurface" key={workspace.workspaceId}>
+                  <article className="card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral commandWorkspaceCard cardHelpSurface" key={workspace.workspaceId}>
                     <HelpInfo topic="workspaces" inline />
                     <div>
                       <h3>{workspace.workspaceName}</h3>
@@ -179,7 +179,7 @@ export default async function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="emptyState cardHelpSurface">
+              <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
                 <HelpInfo topic="workspaces" inline />
                 <h3>No workspace access</h3>
                 <p>This authenticated account has not been granted a workspace.</p>
@@ -196,7 +196,7 @@ export default async function HomePage() {
             {commandCenter.latestEvents.length ? (
               <div className="commandRecentList">
                 {commandCenter.latestEvents.map((event, index) => (
-                  <article className="cardHelpSurface" key={event.workspaceName + event.label + index}>
+                  <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--info cardHelpSurface" key={event.workspaceName + event.label + index}>
                     <HelpInfo topic="command-center" inline />
                     <div><strong>{event.workspaceName}</strong><span>{event.kind}</span></div>
                     <p>{event.label}</p>
@@ -205,7 +205,7 @@ export default async function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="emptyState cardHelpSurface">
+              <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
                 <HelpInfo topic="command-center" inline />
                 No recent provider or delivery evidence yet.
               </div>
@@ -222,17 +222,17 @@ export default async function HomePage() {
             <HelpInfo topic="platform-overview" />
           </div>
           <div className="grid">
-            <article className="card cardHelpSurface">
+            <article className="card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral cardHelpSurface">
               <HelpInfo topic="platform-overview" inline />
               <h3>Rosie Dazzlers</h3>
               <p>Detailing intelligence, pricing history and operational evidence.</p>
             </article>
-            <article className="card cardHelpSurface">
+            <article className="card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral cardHelpSurface">
               <HelpInfo topic="platform-overview" inline />
               <h3>Devil n Dove</h3>
               <p>Supplier, product, tool and inventory intelligence.</p>
             </article>
-            <article className="card cardHelpSurface">
+            <article className="card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral cardHelpSurface">
               <HelpInfo topic="platform-overview" inline />
               <h3>Personal</h3>
               <p>Movie metadata enrichment and approved private datasets.</p>
@@ -241,7 +241,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="principles cardHelpSurface" aria-labelledby="principles-heading">
+      <section className="principles uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral cardHelpSurface" aria-labelledby="principles-heading">
         <HelpInfo topic="guardrails" />
         <div>
           <p className="eyebrow">Guardrails</p>

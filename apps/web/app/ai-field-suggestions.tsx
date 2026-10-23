@@ -169,22 +169,22 @@ export function AiFieldSuggestions() {
           </div>
 
           <div className="aiSuggestionTelemetry">
-            <div className="cardHelpSurface aiTelemetryCard">
+            <div className="uiSurfaceCard uiSurfaceCard--metric uiSurfaceCard--neutral cardHelpSurface aiTelemetryCard">
               <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.model}</strong>
               <span>model</span>
             </div>
-            <div className="cardHelpSurface aiTelemetryCard">
+            <div className="uiSurfaceCard uiSurfaceCard--metric uiSurfaceCard--neutral cardHelpSurface aiTelemetryCard">
               <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.inputTokens}</strong>
               <span>input tokens</span>
             </div>
-            <div className="cardHelpSurface aiTelemetryCard">
+            <div className="uiSurfaceCard uiSurfaceCard--metric uiSurfaceCard--neutral cardHelpSurface aiTelemetryCard">
               <HelpInfo topic="ai-fields" inline />
               <strong>{result.telemetry.outputTokens}</strong>
               <span>output tokens</span>
             </div>
-            <div className="cardHelpSurface aiTelemetryCard">
+            <div className="uiSurfaceCard uiSurfaceCard--metric uiSurfaceCard--neutral cardHelpSurface aiTelemetryCard">
               <HelpInfo topic="ai-fields" inline />
               <strong>
                 {formatCost(
@@ -202,7 +202,7 @@ export function AiFieldSuggestions() {
 
           <div className="aiSuggestedFieldList">
             {result.suggestions.map((field) => (
-              <article className="cardHelpSurface" key={field.key}>
+              <article className="uiSurfaceCard uiSurfaceCard--default uiSurfaceCard--neutral cardHelpSurface" key={field.key}>
                 <HelpInfo topic="ai-fields" inline />
                 <div className="aiSuggestedFieldHeader">
                   <div>

@@ -8,7 +8,7 @@ export default function CorrectiveHistoryPage() {
     <main className="shell shellWide">
       <section className="hero compactHero">
         <HelpInfo topic="corrective-history" />
-        <p className="eyebrow">Build 117 · Historical access</p>
+        <p className="eyebrow">Build 118 · Historical access</p>
         <h1>Corrective Operations History & Legacy Workflows</h1>
         <p className="lead">
           Historical generation-specific screens remain available for evidence review,
@@ -27,7 +27,7 @@ export default function CorrectiveHistoryPage() {
 
       <section className="legacyWorkflowGrid">
         {HISTORICAL_CORRECTIVE_WORKFLOW_GROUPS.map((group) => (
-          <article className="legacyWorkflowCard cardHelpSurface" key={group.title}>
+          <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral legacyWorkflowCard cardHelpSurface" key={group.title}>
             <HelpInfo topic="corrective-history" inline />
             <h2>{group.title}</h2>
             <p>{group.description}</p>
