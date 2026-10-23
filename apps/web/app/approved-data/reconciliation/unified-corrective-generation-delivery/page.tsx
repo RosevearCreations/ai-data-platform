@@ -41,6 +41,12 @@ export default async function UnifiedCorrectiveGenerationDeliveryPage() {
           </Link>
           <Link
             className="secondaryButton"
+            href="/approved-data/reconciliation/unified-corrective-generation-closure"
+          >
+            Build 112 unified reconciliation & verified re-closure
+          </Link>
+          <Link
+            className="secondaryButton"
             href="/approved-data/reconciliation/corrective-generation-lineage"
           >
             Build 109 corrective-generation lineage
