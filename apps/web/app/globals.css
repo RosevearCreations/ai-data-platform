@@ -3612,3 +3612,13 @@ h3 {
     flex-direction: column;
   }
 }
+
+
+/* Build 117 help spacing for compact AI cards */
+.aiTelemetryCard {
+  padding-right: 3rem !important;
+}
+
+.aiSuggestedFieldList article.cardHelpSurface {
+  padding-right: 3.2rem;
+}
