@@ -3,10 +3,12 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { buildCommandCenterHome } from "@/lib/command-center";
+import { MODULE_CARDS } from "@/lib/application-navigation";
 
 import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { SignOutButton } from "./sign-out-button";
 import { HelpInfo } from "./help/HelpInfo";
+import type { HelpTopicKey } from "./help/help-content";
 
 const foundations = [
   "PostgreSQL row-level workspace isolation",
@@ -15,97 +17,28 @@ const foundations = [
   "AI for interpretation; deterministic code for repetition"
 ] as const;
 
-const workflowLinks = [
-  ["/capture", "Barcode intake"],
-  ["/data-library", "Unified data library"],
-  ["/data-review", "Data review workbench"],
-  ["/approved-data", "Approved data publishing"],
-  ["/approved-data/delivery", "Publication delivery bridge"],
-  ["/approved-data/live-delivery", "Controlled live delivery"],
-  ["/approved-data/reconciliation", "Post-delivery reconciliation"],
-  ["/approved-data/reconciliation/triage", "Reconciliation exception triage"],
-  ["/approved-data/reconciliation/corrective-delivery", "Corrective delivery execution"],
-  ["/approved-data/reconciliation/corrective-closure", "Corrective reconciliation & closure"],
-  ["/approved-data/reconciliation/post-closure-regression", "Post-closure regression & reopen governance"],
-  ["/approved-data/reconciliation/reopened-planning", "Reopened exception re-triage & successor planning"],
-  ["/approved-data/reconciliation/successor-delivery", "Successor corrective delivery execution"],
-  ["/approved-data/reconciliation/successor-closure", "Successor reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-reclosure-regression", "Post-re-closure recurrence monitoring"],
-  ["/approved-data/reconciliation/recurrent-planning", "Recurrent exception re-triage & next-generation planning"],
-  ["/approved-data/reconciliation/next-generation-delivery", "Next-generation corrective delivery execution"],
-  ["/approved-data/reconciliation/next-generation-closure", "Next-generation reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-next-generation-reclosure", "Post-next-generation re-closure monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/second-recurrence-planning", "Second-recurrence re-triage & successor-generation planning"],
-  ["/approved-data/reconciliation/successor-generation-delivery", "Successor-generation corrective delivery execution"],
-  ["/approved-data/reconciliation/successor-generation-closure", "Successor-generation reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-successor-generation-reclosure", "Post-successor-generation re-closure monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/successor-generation-recurrence-planning", "Successor-generation recurrence re-triage & subsequent-generation planning"],
-  ["/approved-data/reconciliation/subsequent-generation-delivery", "Subsequent-generation corrective delivery execution"],
-  ["/approved-data/reconciliation/subsequent-generation-closure", "Subsequent-generation reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-subsequent-generation-reclosure", "Post-subsequent-generation re-closure monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/subsequent-generation-recurrence-planning", "Subsequent-generation recurrence re-triage & successive-generation planning"],
-  ["/approved-data/reconciliation/successive-generation-delivery", "Successive-generation corrective delivery execution"],
-  ["/approved-data/reconciliation/successive-generation-closure", "Successive-generation reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-successive-generation-reclosure", "Post-successive-generation re-closure monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/successive-generation-recurrence-planning", "Successive-generation recurrence re-triage & continuation-generation planning"],
-  ["/approved-data/reconciliation/continuation-generation-delivery", "Continuation-generation corrective delivery execution"],
-  ["/approved-data/reconciliation/continuation-generation-closure", "Continuation-generation reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-continuation-generation-reclosure", "Post-continuation-generation recurrence monitoring"],
-  ["/approved-data/reconciliation/continuation-generation-recurrence-planning", "Continuation-generation recurrence re-triage & next-cycle planning"],
-  ["/approved-data/reconciliation/next-cycle-delivery", "Next-cycle corrective delivery execution"],
-  ["/approved-data/reconciliation/next-cycle-closure", "Next-cycle reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-next-cycle-reclosure", "Post-next-cycle recurrence monitoring"],
-  ["/approved-data/reconciliation/next-cycle-recurrence-planning", "Next-cycle recurrence re-triage & following-cycle planning"],
-  ["/approved-data/reconciliation/following-cycle-delivery", "Following-cycle corrective delivery execution"],
-  ["/approved-data/reconciliation/following-cycle-closure", "Following-cycle reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-following-cycle-reclosure", "Post-following-cycle recurrence monitoring"],
-  ["/approved-data/reconciliation/following-cycle-recurrence-planning", "Following-cycle recurrence re-triage & subsequent-cycle planning"],
-  ["/approved-data/reconciliation/subsequent-cycle-delivery", "Subsequent-cycle corrective delivery execution"],
-  ["/approved-data/reconciliation/subsequent-cycle-closure", "Subsequent-cycle reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-subsequent-cycle-reclosure", "Post-subsequent-cycle recurrence monitoring"],
-  ["/approved-data/reconciliation/subsequent-cycle-recurrence-planning", "Subsequent-cycle recurrence re-triage & successive-cycle planning"],
-  ["/approved-data/reconciliation/successive-cycle-delivery", "Successive-cycle corrective delivery execution"],
-  ["/approved-data/reconciliation/successive-cycle-closure", "Successive-cycle reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-successive-cycle-reclosure", "Post-successive-cycle recurrence monitoring"],
-  ["/approved-data/reconciliation/successive-cycle-recurrence-planning", "Successive-cycle recurrence re-triage & continuation-cycle planning"],
-  ["/approved-data/reconciliation/continuation-cycle-delivery", "Continuation-cycle corrective delivery execution"],
-  ["/approved-data/reconciliation/continuation-cycle-closure", "Continuation-cycle reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-continuation-cycle-reclosure", "Post-continuation-cycle recurrence monitoring"],
-  ["/approved-data/reconciliation/continuation-cycle-recurrence-planning", "Continuation-cycle recurrence re-triage & next corrective-planning generation"],
-  ["/approved-data/reconciliation/next-corrective-generation-delivery", "Next corrective-generation delivery activation & idempotent execution"],
-  ["/approved-data/reconciliation/next-corrective-generation-closure", "Next corrective-generation delivery reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-next-corrective-generation-reclosure", "Post-next-corrective-generation re-closure regression monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/next-corrective-generation-recurrence-planning", "Next corrective-generation recurrence re-triage & following corrective-generation planning"],
-  ["/approved-data/reconciliation/following-corrective-generation-delivery", "Following corrective-generation delivery activation & idempotent execution"],
-  ["/approved-data/reconciliation/following-corrective-generation-closure", "Following corrective-generation delivery reconciliation & re-closure"],
-  ["/approved-data/reconciliation/post-following-corrective-generation-reclosure", "Post-following-corrective-generation re-closure regression monitoring & recurrence governance"],
-  ["/approved-data/reconciliation/corrective-generation-lineage", "Corrective-generation lineage registry & successor generation abstraction"],
-  ["/approved-data/reconciliation/legacy-corrective-generation-compatibility", "Legacy corrective-generation compatibility & historical lineage bridge"],
-  ["/approved-data/reconciliation/corrective-generation-state-machine", "Corrective-generation state machine & cross-generation invariant enforcement"],
-  ["/approved-data/reconciliation/corrective-generation-operations", "Corrective-generation operations console, timeline & audit export"],
-  ["/approved-data/reconciliation/unified-corrective-generation-planning", "Unified corrective-generation recurrence re-triage & planning engine"],
-  ["/approved-data/reconciliation/unified-corrective-generation-delivery", "Unified corrective-generation activation & idempotent delivery execution"],
-  ["/approved-data/reconciliation/unified-corrective-generation-closure", "Unified corrective-generation delivery reconciliation & verified re-closure"],
-  ["/approved-data/reconciliation/post-unified-corrective-generation-reclosure", "Post-unified corrective-generation re-closure regression monitoring & recurrence governance"],
-  ["/collection-projects", "Collection projects"],
-  ["/recipe-builder", "Visual recipe builder"],
-  ["/collection-runs", "Collection run console"],
-  ["/intelligence", "Intelligence library"],
-  ["/remote-execution", "Remote execution"],
-  ["/connectors", "Connectors"],
-  ["/integration-delivery", "Integration delivery"],
-  ["/retention", "Retention & cleanup"],
-  ["/adoption", "Adoption & permissions"],
-  ["/first-evidence", "First-evidence runbook"],
-  ["/workspace-profiles", "Workspace profiles"],
-  ["/production-learning", "Production learning"],
-  ["/help", "Help center"]
-] as const;
-
 function formatBytes(value: number) {
   if (value < 1024) return value + " B";
   if (value < 1024 * 1024) return (value / 1024).toFixed(1) + " KiB";
   return (value / (1024 * 1024)).toFixed(1) + " MiB";
+}
+
+function MetricCard({
+  value,
+  label,
+  topic = "command-center"
+}: {
+  value: string | number;
+  label: string;
+  topic?: HelpTopicKey;
+}) {
+  return (
+    <article className="commandMetricCard cardHelpSurface">
+      <HelpInfo topic={topic} inline />
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </article>
+  );
 }
 
 export const dynamic = "force-dynamic";
@@ -117,18 +50,19 @@ export default async function HomePage() {
     : null;
 
   return (
-    <main className="shell">
-      <section className="hero commandHero">
+    <main className="shell shellWide">
+      <section className="hero commandHero compactHero">
         <HelpInfo topic="command-center" />
-        <p className="eyebrow">Build 043</p>
+        <p className="eyebrow">Build 117</p>
         <h1>Application Command Center</h1>
         <p className="lead">
-          Start work, see workspace activity, and surface operational attention from
-          the durable evidence the platform already records.
+          See what needs attention, reopen recent evidence and enter the platform
+          through task-oriented modules instead of a long list of implementation screens.
         </p>
 
         {session ? (
-          <div className="accountBar">
+          <div className="accountBar cardHelpSurface">
+            <HelpInfo topic="shell-overview" inline />
             <div>
               <strong>{session.user.name}</strong>
               <span>{session.user.email}</span>
@@ -152,11 +86,11 @@ export default async function HomePage() {
               <HelpInfo topic="command-center" />
             </div>
             <div className="commandMetrics">
-              <article><strong>{commandCenter.totals.workspaces}</strong><span>authorized workspaces</span></article>
-              <article><strong>{commandCenter.totals.activeWorkspaces}</strong><span>with durable activity</span></article>
-              <article><strong>{commandCenter.totals.attentionWorkspaces}</strong><span>need review</span></article>
-              <article><strong>{commandCenter.totals.activityEvents}</strong><span>measured activity events</span></article>
-              <article><strong>{formatBytes(commandCenter.totals.measuredBytes)}</strong><span>managed evidence footprint</span></article>
+              <MetricCard value={commandCenter.totals.workspaces} label="authorized workspaces" />
+              <MetricCard value={commandCenter.totals.activeWorkspaces} label="with durable activity" />
+              <MetricCard value={commandCenter.totals.attentionWorkspaces} label="need review" />
+              <MetricCard value={commandCenter.totals.activityEvents} label="measured activity events" />
+              <MetricCard value={formatBytes(commandCenter.totals.measuredBytes)} label="managed evidence footprint" />
             </div>
           </section>
 
@@ -164,13 +98,45 @@ export default async function HomePage() {
             <div className="sectionHeading">
               <p className="eyebrow">Activity</p>
               <h2 id="activity-heading">Operational pulse</h2>
+              <HelpInfo topic="command-center" />
             </div>
             <div className="commandMetrics commandMetricsCompact">
-              <article><strong>{commandCenter.totals.sync}</strong><span>sync outcomes</span></article>
-              <article><strong>{commandCenter.totals.barcodeCaptures}</strong><span>barcode captures</span></article>
-              <article><strong>{commandCenter.totals.scheduledAttempts}</strong><span>scheduled attempts</span></article>
-              <article><strong>{commandCenter.totals.remoteRuns}</strong><span>remote runs</span></article>
-              <article><strong>{commandCenter.totals.integrationEvents}</strong><span>integration events</span></article>
+              <MetricCard value={commandCenter.totals.sync} label="sync outcomes" />
+              <MetricCard value={commandCenter.totals.barcodeCaptures} label="barcode captures" topic="barcode-overview" />
+              <MetricCard value={commandCenter.totals.scheduledAttempts} label="scheduled attempts" topic="collection-projects-readiness" />
+              <MetricCard value={commandCenter.totals.remoteRuns} label="remote runs" topic="remote-overview" />
+              <MetricCard value={commandCenter.totals.integrationEvents} label="integration events" topic="integration-delivery" />
+            </div>
+          </section>
+
+          <section className="commandSection" aria-labelledby="module-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Modules</p>
+              <h2 id="module-heading">Go directly to the work</h2>
+              <HelpInfo topic="workflow-directory" />
+            </div>
+            <div className="commandModuleGrid">
+              {MODULE_CARDS.map((group) => (
+                <article className="commandModuleCard cardHelpSurface" key={group.id}>
+                  <HelpInfo topic={group.helpTopic as HelpTopicKey} inline />
+                  <div className="commandModuleCardHeader">
+                    <div>
+                      <span className="commandModuleLabel">{group.shortLabel}</span>
+                      <h3>{group.label}</h3>
+                    </div>
+                    <span className="badge">{group.items.length} workflows</span>
+                  </div>
+                  <p>{group.description}</p>
+                  <div className="commandModuleActions">
+                    <Link className="primaryLink" href={group.items[0].href}>
+                      Open {group.shortLabel}
+                    </Link>
+                    <Link className="secondaryButton" href="/workflows">
+                      Browse workflows
+                    </Link>
+                  </div>
+                </article>
+              ))}
             </div>
           </section>
 
@@ -183,7 +149,8 @@ export default async function HomePage() {
             {commandCenter.workspaces.length ? (
               <div className="grid commandWorkspaceGrid">
                 {commandCenter.workspaces.map((workspace) => (
-                  <article className="card commandWorkspaceCard" key={workspace.workspaceId}>
+                  <article className="card commandWorkspaceCard cardHelpSurface" key={workspace.workspaceId}>
+                    <HelpInfo topic="workspaces" inline />
                     <div>
                       <h3>{workspace.workspaceName}</h3>
                       <span className="badge">{workspace.profileName} · {workspace.role}</span>
@@ -212,7 +179,8 @@ export default async function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="emptyState">
+              <div className="emptyState cardHelpSurface">
+                <HelpInfo topic="workspaces" inline />
                 <h3>No workspace access</h3>
                 <p>This authenticated account has not been granted a workspace.</p>
               </div>
@@ -223,11 +191,13 @@ export default async function HomePage() {
             <div className="sectionHeading">
               <p className="eyebrow">Recent evidence</p>
               <h2 id="recent-heading">Latest provider & delivery events</h2>
+              <HelpInfo topic="command-center" />
             </div>
             {commandCenter.latestEvents.length ? (
               <div className="commandRecentList">
                 {commandCenter.latestEvents.map((event, index) => (
-                  <article key={event.workspaceName + event.label + index}>
+                  <article className="cardHelpSurface" key={event.workspaceName + event.label + index}>
+                    <HelpInfo topic="command-center" inline />
                     <div><strong>{event.workspaceName}</strong><span>{event.kind}</span></div>
                     <p>{event.label}</p>
                     <small>{event.at.toLocaleString()}</small>
@@ -235,22 +205,11 @@ export default async function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="emptyState">No recent provider or delivery evidence yet.</div>
+              <div className="emptyState cardHelpSurface">
+                <HelpInfo topic="command-center" inline />
+                No recent provider or delivery evidence yet.
+              </div>
             )}
-          </section>
-
-          <section className="commandSection" aria-labelledby="launch-heading">
-            <div className="sectionHeading">
-              <p className="eyebrow">Launch</p>
-              <h2 id="launch-heading">Go directly to the work</h2>
-            </div>
-            <nav className="commandLaunchGrid" aria-label="Application workflows">
-              {workflowLinks.map(([href, label], index) => (
-                <Link className={index === 0 ? "primaryLink" : "secondaryButton"} href={href} key={href}>
-                  {label}
-                </Link>
-              ))}
-            </nav>
           </section>
 
           <AiFieldSuggestions />
@@ -263,16 +222,31 @@ export default async function HomePage() {
             <HelpInfo topic="platform-overview" />
           </div>
           <div className="grid">
-            <article className="card"><h3>Rosie Dazzlers</h3><p>Detailing intelligence, pricing history and operational evidence.</p></article>
-            <article className="card"><h3>Devil n Dove</h3><p>Supplier, product, tool and inventory intelligence.</p></article>
-            <article className="card"><h3>Personal</h3><p>Movie metadata enrichment and approved private datasets.</p></article>
+            <article className="card cardHelpSurface">
+              <HelpInfo topic="platform-overview" inline />
+              <h3>Rosie Dazzlers</h3>
+              <p>Detailing intelligence, pricing history and operational evidence.</p>
+            </article>
+            <article className="card cardHelpSurface">
+              <HelpInfo topic="platform-overview" inline />
+              <h3>Devil n Dove</h3>
+              <p>Supplier, product, tool and inventory intelligence.</p>
+            </article>
+            <article className="card cardHelpSurface">
+              <HelpInfo topic="platform-overview" inline />
+              <h3>Personal</h3>
+              <p>Movie metadata enrichment and approved private datasets.</p>
+            </article>
           </div>
         </section>
       )}
 
-      <section className="principles" aria-labelledby="principles-heading">
+      <section className="principles cardHelpSurface" aria-labelledby="principles-heading">
         <HelpInfo topic="guardrails" />
-        <div><p className="eyebrow">Guardrails</p><h2 id="principles-heading">Designed for traceable data</h2></div>
+        <div>
+          <p className="eyebrow">Guardrails</p>
+          <h2 id="principles-heading">Designed for traceable data</h2>
+        </div>
         <ul>{foundations.map((foundation) => <li key={foundation}>{foundation}</li>)}</ul>
       </section>
     </main>
