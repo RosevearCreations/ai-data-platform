@@ -106,7 +106,7 @@ begin
     raise exception 'legacy_corrective_generation_bridge_manager_required';
   end if;
 
-  if p_source_kind not in ('legacy-next','legacy-following') then
+  if p_source_kind is null or p_source_kind not in ('legacy-next','legacy-following') then
     raise exception 'legacy_corrective_generation_bridge_source_kind_invalid';
   end if;
 
