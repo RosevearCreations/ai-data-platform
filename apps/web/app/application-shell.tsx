@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
 import {
   APPLICATION_NAVIGATION,
   MODULE_CARDS,
@@ -113,7 +114,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 121 · Marble Standard</span>
+          <span>Build 122 · Marble Standard</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -146,6 +147,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
           </div>
           <div className="applicationTopbarActions">
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
+            <OperatorCommandPalette />
             <Link href="/workflows">Workflow directory</Link>
             <Link href="/help">Help</Link>
             <HelpCircle topic={activeGroup.helpTopic} label={activeGroup.label} />

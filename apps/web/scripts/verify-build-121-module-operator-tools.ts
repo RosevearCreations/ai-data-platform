@@ -62,8 +62,8 @@ async function main() {
     "Build 121 module operator registry or validation contract is incomplete."
   );
   assert(
-    shell.includes("Build 121 · Marble Standard"),
-    "Build 121 shared shell footer must expose the active interface build."
+    shell.includes("Marble Standard"),
+    "Build 121 shared shell must preserve the Marble Standard interface contract as later interface builds advance."
   );
   for (const selector of [
     ".moduleOperatorToolbar",

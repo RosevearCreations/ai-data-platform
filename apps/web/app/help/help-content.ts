@@ -1479,6 +1479,36 @@ export const HELP_TOPICS = {
       "No shortcut performs a mutation from the module hub."
     ]
   },
+  "command-palette": {
+    title: "Cross-module operator command palette",
+    summary: "Build 122 adds a global keyboard-first navigation palette that searches registered module hubs and operator screens without becoming an execution surface.",
+    steps: [
+      "Open the palette from the top bar or press Ctrl+K / Command+K.",
+      "Type a module name, workflow name or operator task.",
+      "Use the arrow keys or pointer to choose a registered destination.",
+      "Press Enter or select the result to open the existing governed screen.",
+      "Follow the destination screen's own contextual help, prerequisites and permission controls."
+    ],
+    notes: [
+      "Palette search is performed against the in-memory navigation registry and does not query PostgreSQL, an API or an external service.",
+      "Opening a result is navigation only; it never grants permission, creates evidence or changes workflow state."
+    ]
+  },
+  "recent-operator-destinations": {
+    title: "Recent operator destinations",
+    summary: "Build 122 keeps a short convenience list of recently visited registered operator destinations in this browser so common work can be resumed quickly.",
+    steps: [
+      "Open the command palette with an empty search to review recent destinations.",
+      "Choose a recent entry to return to that registered module or workflow.",
+      "Use Clear recent when the local convenience history is no longer useful.",
+      "Search normally when the desired destination is not in the recent list."
+    ],
+    notes: [
+      "Recent destinations are stored only in browser localStorage; they are not synchronized to the account, workspace or database.",
+      "Only registered navigation destinations are retained, duplicates are removed and unknown stored values are discarded.",
+      "Recent history does not record business data, search terms, approvals or workflow outcomes."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1565,6 +1595,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 122 cross-module command palette & recent operator destinations",
+    topics: ["command-palette", "recent-operator-destinations"]
   },
   {
     title: "Build 121 in-module task panels, search & operator shortcuts",
