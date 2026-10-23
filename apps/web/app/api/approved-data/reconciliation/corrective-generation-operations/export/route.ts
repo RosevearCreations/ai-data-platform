@@ -65,15 +65,17 @@ function trimmed(value: string | null) {
 function parseFilters(request: NextRequest): CorrectiveGenerationOperationsFilters {
   const search = request.nextUrl.searchParams;
   const generationRaw = trimmed(search.get("generation"));
-  const generationNumber = generationRaw ? Number(generationRaw) : undefined;
-  if (
-    generationRaw &&
-    (!Number.isInteger(generationNumber) ||
-      generationNumber == null ||
-      generationNumber < 1 ||
-      generationNumber > 10000)
-  ) {
-    throw new Error("corrective_generation_audit_generation_invalid");
+  let generationNumber: number | undefined;
+  if (generationRaw) {
+    const parsedGeneration = Number(generationRaw);
+    if (
+      !Number.isInteger(parsedGeneration) ||
+      parsedGeneration < 1 ||
+      parsedGeneration > 10000
+    ) {
+      throw new Error("corrective_generation_audit_generation_invalid");
+    }
+    generationNumber = parsedGeneration;
   }
 
   const target = trimmed(search.get("target"));
