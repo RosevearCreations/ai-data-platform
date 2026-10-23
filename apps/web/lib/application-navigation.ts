@@ -1,9 +1,11 @@
+import type { HelpTopicKey } from "@/app/help/help-content";
+
 // Build 117 — Application Shell, Navigation Architecture & Workflow Consolidation
 export type ApplicationNavigationItem = {
   href: string;
   label: string;
   description: string;
-  helpTopic: string;
+  helpTopic: HelpTopicKey;
 };
 
 export type ApplicationNavigationGroup = {
@@ -11,7 +13,7 @@ export type ApplicationNavigationGroup = {
   label: string;
   shortLabel: string;
   description: string;
-  helpTopic: string;
+  helpTopic: HelpTopicKey;
   items: ApplicationNavigationItem[];
 };
 
@@ -72,16 +74,16 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
     helpTopic: "shell-collection",
     items: [
       {
-        href: "/capture",
-        label: "Barcode Intake",
-        description: "Capture identifiers and route them through governed review.",
-        helpTopic: "barcode-overview"
-      },
-      {
         href: "/collection-projects",
         label: "Collection Projects",
         description: "Manage collection projects, source readiness and policy.",
         helpTopic: "collection-projects-overview"
+      },
+      {
+        href: "/capture",
+        label: "Barcode Intake",
+        description: "Capture identifiers and route them through governed review.",
+        helpTopic: "barcode-overview"
       },
       {
         href: "/recipe-builder",
