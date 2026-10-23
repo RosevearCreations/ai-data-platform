@@ -33,6 +33,9 @@ export default async function LegacyCorrectiveGenerationCompatibilityPage() {
           <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-lineage">
             Build 109 lineage registry
           </Link>
+          <Link className="secondaryButton" href="/approved-data/reconciliation/corrective-generation-state-machine">
+            Build 115 state machine & invariant audit
+          </Link>
           <Link className="secondaryButton" href="/approved-data/reconciliation/unified-corrective-generation-planning">
             Unified recurrence planning
           </Link>
