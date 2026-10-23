@@ -2,13 +2,17 @@ import { headers } from "next/headers";
 import Link from "next/link";
 
 import { auth } from "@/lib/auth";
-import { buildCommandCenterHome } from "@/lib/command-center";
 import { MODULE_CARDS } from "@/lib/application-navigation";
+import {
+  buildCommandCenterHome,
+  type CommandCenterAttentionSeverity,
+  type CommandCenterHealthState
+} from "@/lib/command-center";
 
 import { AiFieldSuggestions } from "./ai-field-suggestions";
-import { SignOutButton } from "./sign-out-button";
 import { HelpInfo } from "./help/HelpInfo";
 import type { HelpTopicKey } from "./help/help-content";
+import { SignOutButton } from "./sign-out-button";
 
 const foundations = [
   "PostgreSQL row-level workspace isolation",
@@ -23,10 +27,22 @@ function formatBytes(value: number) {
   return (value / (1024 * 1024)).toFixed(1) + " MiB";
 }
 
+function surfaceStatus(
+  state: CommandCenterAttentionSeverity | CommandCenterHealthState
+) {
+  return state === "critical"
+    ? "critical"
+    : state === "attention"
+      ? "attention"
+      : state === "info"
+        ? "info"
+        : "healthy";
+}
+
 function MetricCard({
   value,
   label,
-  topic = "command-center"
+  topic = "command-center-v2"
 }: {
   value: string | number;
   label: string;
@@ -50,19 +66,19 @@ export default async function HomePage() {
     : null;
 
   return (
-    <main className="shell shellWide">
+    <main className="shell shellWide commandV2Shell">
       <section className="hero commandHero compactHero">
-        <HelpInfo topic="command-center" />
-        <p className="eyebrow">Build 118</p>
-        <h1>Application Command Center</h1>
+        <HelpInfo topic="command-center-v2" />
+        <p className="eyebrow">Build 119</p>
+        <h1>Operator Home</h1>
         <p className="lead">
-          See what needs attention, reopen recent evidence and enter the platform
-          through task-oriented modules instead of a long list of implementation screens.
+          Start with what needs attention, move directly into the right workflow,
+          and continue recent work from one operational dashboard.
         </p>
 
         {session ? (
           <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral accountBar cardHelpSurface">
-            <HelpInfo topic="shell-overview" inline />
+            <HelpInfo topic="command-center-v2" inline />
             <div>
               <strong>{session.user.name}</strong>
               <span>{session.user.email}</span>
@@ -79,26 +95,160 @@ export default async function HomePage() {
 
       {commandCenter ? (
         <>
-          <section aria-labelledby="command-overview">
+          <section className="commandV2PriorityGrid" aria-label="Operator priorities">
+            <div className="commandV2PriorityColumn">
+              <div className="sectionHeading">
+                <p className="eyebrow">Priority queue</p>
+                <h2>Needs Attention</h2>
+                <HelpInfo topic="dashboard-attention" />
+              </div>
+
+              {commandCenter.dashboard.attentionQueue.length ? (
+                <div className="commandAttentionQueue">
+                  {commandCenter.dashboard.attentionQueue.slice(0, 8).map((item) => (
+                    <article
+                      className={
+                        "uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--" +
+                        surfaceStatus(item.severity) +
+                        " commandAttentionCard cardHelpSurface"
+                      }
+                      key={item.id}
+                    >
+                      <HelpInfo topic="dashboard-attention" inline />
+                      <div className="commandAttentionCardHeader">
+                        <span className={"uiStatusPill uiStatusPill--" + surfaceStatus(item.severity)}>
+                          {item.severity === "critical" ? "Critical" : "Review"}
+                        </span>
+                        <small>{item.workspaceName}</small>
+                      </div>
+                      <h3>{item.title}</h3>
+                      <p>{item.detail}</p>
+                      <Link className="primaryLink" href={item.href}>
+                        {item.actionLabel}
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--healthy commandAllClear cardHelpSurface">
+                  <HelpInfo topic="dashboard-attention" inline />
+                  <span className="uiStatusPill uiStatusPill--healthy">Healthy</span>
+                  <h3>No measured attention condition</h3>
+                  <p>
+                    Current workspace, collection, delivery, retention and corrective
+                    evidence does not surface an operator attention item.
+                  </p>
+                </article>
+              )}
+            </div>
+
+            <div className="commandV2QuickColumn">
+              <div className="sectionHeading">
+                <p className="eyebrow">Start work</p>
+                <h2>Quick Actions</h2>
+                <HelpInfo topic="dashboard-quick-actions" />
+              </div>
+              <div className="commandQuickActions">
+                {commandCenter.dashboard.quickActions.map((action) => (
+                  <article className="uiSurfaceCard uiSurfaceCard--interactive uiSurfaceCard--neutral commandQuickAction cardHelpSurface" key={action.id}>
+                    <HelpInfo topic="dashboard-quick-actions" inline />
+                    <span className="commandQuickActionGroup">{action.group}</span>
+                    <h3>{action.label}</h3>
+                    <p>{action.description}</p>
+                    <Link href={action.href}>Open workflow →</Link>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section className="commandSection" aria-labelledby="health-heading">
             <div className="sectionHeading">
-              <p className="eyebrow">Today&apos;s workspace home</p>
-              <h2 id="command-overview">What needs your attention</h2>
-              <HelpInfo topic="command-center" />
+              <p className="eyebrow">Operational health</p>
+              <h2 id="health-heading">
+                {commandCenter.dashboard.overallHealth === "healthy"
+                  ? "Measured systems are healthy"
+                  : commandCenter.dashboard.overallHealth === "critical"
+                    ? "Critical conditions need review"
+                    : "Some systems need attention"}
+              </h2>
+              <HelpInfo topic="dashboard-health" />
+            </div>
+            <div className="commandHealthGrid">
+              {commandCenter.dashboard.healthSignals.map((signal) => (
+                <article
+                  className={
+                    "uiSurfaceCard uiSurfaceCard--default uiSurfaceCard--" +
+                    signal.state +
+                    " commandHealthCard cardHelpSurface"
+                  }
+                  key={signal.id}
+                >
+                  <HelpInfo topic="dashboard-health" inline />
+                  <div className="commandHealthCardHeader">
+                    <span className={"uiStatusPill uiStatusPill--" + signal.state}>
+                      {signal.state}
+                    </span>
+                    <strong>{signal.count}</strong>
+                  </div>
+                  <h3>{signal.label}</h3>
+                  <p>{signal.detail}</p>
+                  <Link href={signal.href}>Inspect →</Link>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="commandSection commandV2SummaryBand" aria-labelledby="summary-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">At a glance</p>
+              <h2 id="summary-heading">Current operating picture</h2>
+              <HelpInfo topic="command-center-v2" />
             </div>
             <div className="commandMetrics">
               <MetricCard value={commandCenter.totals.workspaces} label="authorized workspaces" />
-              <MetricCard value={commandCenter.totals.activeWorkspaces} label="with durable activity" />
-              <MetricCard value={commandCenter.totals.attentionWorkspaces} label="need review" />
+              <MetricCard value={commandCenter.dashboard.collection.activeProjects} label="active collection projects" topic="dashboard-health" />
+              <MetricCard value={commandCenter.dashboard.corrective.activeCycles} label="active corrective cycles" topic="dashboard-health" />
               <MetricCard value={commandCenter.totals.activityEvents} label="measured activity events" />
               <MetricCard value={formatBytes(commandCenter.totals.measuredBytes)} label="managed evidence footprint" />
             </div>
           </section>
 
+          <section className="commandSection" aria-labelledby="recent-work-heading">
+            <div className="sectionHeading">
+              <p className="eyebrow">Continue</p>
+              <h2 id="recent-work-heading">Recent Work</h2>
+              <HelpInfo topic="dashboard-recent-work" />
+            </div>
+            {commandCenter.dashboard.recentWork.length ? (
+              <div className="commandRecentWorkGrid">
+                {commandCenter.dashboard.recentWork.map((item) => (
+                  <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--info commandRecentWorkCard cardHelpSurface" key={item.id}>
+                    <HelpInfo topic="dashboard-recent-work" inline />
+                    <div className="commandRecentWorkHeader">
+                      <span className="badge">{item.kind}</span>
+                      <small>{item.at.toLocaleString()}</small>
+                    </div>
+                    <h3>{item.label}</h3>
+                    <p>{item.workspaceName} · {item.detail}</p>
+                    <Link href={item.href}>Continue →</Link>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
+                <HelpInfo topic="dashboard-recent-work" inline />
+                <h3>No recent work yet</h3>
+                <p>Recent collection, remote execution and delivery evidence will appear here.</p>
+              </article>
+            )}
+          </section>
+
           <section className="commandSection" aria-labelledby="activity-heading">
             <div className="sectionHeading">
-              <p className="eyebrow">Activity</p>
-              <h2 id="activity-heading">Operational pulse</h2>
-              <HelpInfo topic="command-center" />
+              <p className="eyebrow">Measured activity</p>
+              <h2 id="activity-heading">Operational Pulse</h2>
+              <HelpInfo topic="command-center-v2" />
             </div>
             <div className="commandMetrics commandMetricsCompact">
               <MetricCard value={commandCenter.totals.sync} label="sync outcomes" />
@@ -109,48 +259,24 @@ export default async function HomePage() {
             </div>
           </section>
 
-          <section className="commandSection" aria-labelledby="module-heading">
-            <div className="sectionHeading">
-              <p className="eyebrow">Modules</p>
-              <h2 id="module-heading">Go directly to the work</h2>
-              <HelpInfo topic="workflow-directory" />
-            </div>
-            <div className="commandModuleGrid">
-              {MODULE_CARDS.map((group) => (
-                <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral commandModuleCard cardHelpSurface" key={group.id}>
-                  <HelpInfo topic={group.helpTopic as HelpTopicKey} inline />
-                  <div className="commandModuleCardHeader">
-                    <div>
-                      <span className="commandModuleLabel">{group.shortLabel}</span>
-                      <h3>{group.label}</h3>
-                    </div>
-                    <span className="badge">{group.items.length} workflows</span>
-                  </div>
-                  <p>{group.description}</p>
-                  <div className="commandModuleActions">
-                    <Link className="primaryLink" href={group.items[0].href}>
-                      Open {group.shortLabel}
-                    </Link>
-                    <Link className="secondaryButton" href="/workflows">
-                      Browse workflows
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
           <section className="commandSection" aria-labelledby="workspace-heading">
             <div className="sectionHeading">
-              <p className="eyebrow">Workspaces</p>
-              <h2 id="workspace-heading">Your working contexts</h2>
-              <HelpInfo topic="workspaces" />
+              <p className="eyebrow">Working contexts</p>
+              <h2 id="workspace-heading">Workspaces</h2>
+              <HelpInfo topic="dashboard-workspaces" />
             </div>
             {commandCenter.workspaces.length ? (
               <div className="grid commandWorkspaceGrid">
                 {commandCenter.workspaces.map((workspace) => (
-                  <article className="card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral commandWorkspaceCard cardHelpSurface" key={workspace.workspaceId}>
-                    <HelpInfo topic="workspaces" inline />
+                  <article
+                    className={
+                      "card uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--" +
+                      (workspace.attention.length ? "attention" : "healthy") +
+                      " commandWorkspaceCard cardHelpSurface"
+                    }
+                    key={workspace.workspaceId}
+                  >
+                    <HelpInfo topic="dashboard-workspaces" inline />
                     <div>
                       <h3>{workspace.workspaceName}</h3>
                       <span className="badge">{workspace.profileName} · {workspace.role}</span>
@@ -179,37 +305,43 @@ export default async function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
-                <HelpInfo topic="workspaces" inline />
+              <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
+                <HelpInfo topic="dashboard-workspaces" inline />
                 <h3>No workspace access</h3>
                 <p>This authenticated account has not been granted a workspace.</p>
-              </div>
+              </article>
             )}
           </section>
 
-          <section className="commandSection" aria-labelledby="recent-heading">
+          <section className="commandSection" aria-labelledby="module-heading">
             <div className="sectionHeading">
-              <p className="eyebrow">Recent evidence</p>
-              <h2 id="recent-heading">Latest provider & delivery events</h2>
-              <HelpInfo topic="command-center" />
+              <p className="eyebrow">Browse</p>
+              <h2 id="module-heading">Application Modules</h2>
+              <HelpInfo topic="workflow-directory" />
             </div>
-            {commandCenter.latestEvents.length ? (
-              <div className="commandRecentList">
-                {commandCenter.latestEvents.map((event, index) => (
-                  <article className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--info cardHelpSurface" key={event.workspaceName + event.label + index}>
-                    <HelpInfo topic="command-center" inline />
-                    <div><strong>{event.workspaceName}</strong><span>{event.kind}</span></div>
-                    <p>{event.label}</p>
-                    <small>{event.at.toLocaleString()}</small>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="uiSurfaceCard uiSurfaceCard--inset uiSurfaceCard--neutral emptyState cardHelpSurface">
-                <HelpInfo topic="command-center" inline />
-                No recent provider or delivery evidence yet.
-              </div>
-            )}
+            <div className="commandModuleGrid">
+              {MODULE_CARDS.map((group) => (
+                <article className="uiSurfaceCard uiSurfaceCard--raised uiSurfaceCard--neutral commandModuleCard cardHelpSurface" key={group.id}>
+                  <HelpInfo topic={group.helpTopic as HelpTopicKey} inline />
+                  <div className="commandModuleCardHeader">
+                    <div>
+                      <span className="commandModuleLabel">{group.shortLabel}</span>
+                      <h3>{group.label}</h3>
+                    </div>
+                    <span className="badge">{group.items.length} workflows</span>
+                  </div>
+                  <p>{group.description}</p>
+                  <div className="commandModuleActions">
+                    <Link className="primaryLink" href={group.items[0].href}>
+                      Open {group.shortLabel}
+                    </Link>
+                    <Link className="secondaryButton" href="/workflows">
+                      Browse workflows
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
           </section>
 
           <AiFieldSuggestions />
