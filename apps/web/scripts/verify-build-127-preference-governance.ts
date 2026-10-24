@@ -158,8 +158,8 @@ async function main() {
   assert(
     shell.includes("<InterfacePreferenceController />") &&
       shell.includes("<NavigationInsights />") &&
-      shell.includes("Build 127 · Marble Standard"),
-    "Build 127 shell must expose the current interface build while preserving the preference controller."
+      shell.includes("Marble Standard"),
+    "Build 127 shell must preserve the preference controller and Marble Standard as later interface builds advance."
   );
 
   for (const selector of [
