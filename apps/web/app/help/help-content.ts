@@ -1723,6 +1723,34 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "preference-profile-portability": {
+    title: "Preference profile portability",
+    summary: "Build 128 exports and imports a small versioned JSON profile containing only interface density, layout and recommendation preferences.",
+    steps: [
+      "Open Insights and find Preference profile portability.",
+      "Choose Export profile to download the current interface preference profile as JSON.",
+      "On another browser, choose Import profile and select that JSON file.",
+      "Review the reconciliation preview before applying the imported profile."
+    ],
+    notes: [
+      "Navigation usage insights, account information, workspace records and business data are never included.",
+      "Import is local to the current browser and does not create server-side profiles or synchronization."
+    ]
+  },
+  "preference-import-preview": {
+    title: "Preference import reconciliation preview",
+    summary: "Build 128 stages a valid imported profile without applying it, then shows the stored values beside the effective values after current accessibility safeguards are considered.",
+    steps: [
+      "Select a valid exported preference profile.",
+      "Compare stored and effective density, layout and recommendation values.",
+      "Review any high-contrast, narrow-viewport or reduced-motion reconciliation messages.",
+      "Choose Apply imported profile only when the preview matches your intent, or Cancel to leave current preferences unchanged."
+    ],
+    notes: [
+      "Invalid format, unsupported versions and invalid preference values are rejected before preview.",
+      "Accessibility reconciliation never rewrites the imported stored values."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1809,6 +1837,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 128 preference profile portability & reconciliation preview",
+    topics: ["preference-profile-portability", "preference-import-preview"]
   },
   {
     title: "Build 127 preference presets, accessibility reconciliation & reset governance",

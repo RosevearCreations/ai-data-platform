@@ -27,8 +27,11 @@ import {
   applyInterfacePreferencePreset,
   defaultInterfacePreferences,
   matchingInterfacePreferencePreset,
+  parseInterfacePreferenceProfile,
+  previewInterfacePreferenceProfile,
   recommendationPreferenceAllowsKind,
   sanitizeInterfacePreferences,
+  serializeInterfacePreferenceProfile,
   type InterfacePreferencePresetId,
   type InterfacePreferenceReconciliation,
   type InterfacePreferences
@@ -57,6 +60,7 @@ function writeSnapshot(snapshot: NavigationUsageSnapshot) {
 export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const importFileRef = useRef<HTMLInputElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const [snapshot, setSnapshot] = useState<NavigationUsageSnapshot>(
@@ -68,6 +72,10 @@ export function NavigationInsights() {
   const [reconciliation, setReconciliation] =
     useState<InterfacePreferenceReconciliation | null>(null);
   const [resetAllArmed, setResetAllArmed] = useState(false);
+  const [importPreview, setImportPreview] =
+    useState<InterfacePreferenceReconciliation | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [portabilityStatus, setPortabilityStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -231,6 +239,76 @@ export function NavigationInsights() {
     updatePreferences(applyInterfacePreferencePreset(id));
   }
 
+  function currentAccessibilityEnvironment() {
+    return {
+      viewportWidth: window.innerWidth,
+      forcedColors: window.matchMedia("(forced-colors: active)").matches,
+      prefersMoreContrast: window.matchMedia("(prefers-contrast: more)").matches,
+      prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    };
+  }
+
+  function exportPreferenceProfile() {
+    const payload = serializeInterfacePreferenceProfile(preferences);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "ai-data-platform-interface-preferences.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+    setImportError(null);
+    setPortabilityStatus(
+      "Preference profile exported. Navigation insights and business data were not included."
+    );
+  }
+
+  async function stagePreferenceProfileImport(file?: File) {
+    setImportError(null);
+    setPortabilityStatus(null);
+    setImportPreview(null);
+
+    if (!file) return;
+    if (file.size > 32 * 1024) {
+      setImportError("Preference profile files must be 32 KB or smaller.");
+      return;
+    }
+
+    const parsed = parseInterfacePreferenceProfile(await file.text());
+    if (!parsed.ok) {
+      setImportError(parsed.error);
+      return;
+    }
+
+    setImportPreview(
+      previewInterfacePreferenceProfile(
+        parsed.profile,
+        currentAccessibilityEnvironment()
+      )
+    );
+    setPortabilityStatus(
+      "Profile loaded for preview. Nothing has been applied yet."
+    );
+  }
+
+  function applyImportedPreferenceProfile() {
+    if (!importPreview) return;
+    updatePreferences(importPreview.storedPreferences);
+    setImportPreview(null);
+    setImportError(null);
+    setPortabilityStatus(
+      "Imported interface preferences are now active in this browser."
+    );
+  }
+
+  function cancelPreferenceProfileImport() {
+    setImportPreview(null);
+    setImportError(null);
+    setPortabilityStatus("Import cancelled. Current preferences were not changed.");
+  }
+
   function resetAllLocalNavigationData() {
     if (!resetAllArmed) {
       setResetAllArmed(true);
@@ -285,7 +363,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 127 · Preference presets & reset governance</p>
+                <p className="eyebrow">Build 128 · Preference profile portability & reconciliation preview</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -410,6 +488,93 @@ export function NavigationInsights() {
                 <small>Accessibility safeguards can temporarily change the effective shell without rewriting your saved preference.</small>
               </section>
 
+              <section className="interfacePortabilitySection" aria-labelledby="preference-portability-heading">
+                <div className="interfacePresetHeading">
+                  <div>
+                    <strong id="preference-portability-heading">Preference profile portability</strong>
+                    <span>Move interface preferences between browsers without syncing account, workspace or navigation-history data.</span>
+                  </div>
+                  <HelpInfo topic="preference-profile-portability" inline />
+                </div>
+
+                <div className="interfacePortabilityActions">
+                  <button type="button" onClick={exportPreferenceProfile}>
+                    Export profile
+                  </button>
+                  <button type="button" onClick={() => importFileRef.current?.click()}>
+                    Import profile
+                  </button>
+                  <input
+                    ref={importFileRef}
+                    hidden
+                    type="file"
+                    accept=".json,application/json"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0];
+                      void stagePreferenceProfileImport(file);
+                      event.currentTarget.value = "";
+                    }}
+                  />
+                </div>
+
+                <p className="interfacePortabilityBoundary">
+                  Portable files contain only density, layout and recommendation preferences. Navigation insights, account information and business data are excluded.
+                </p>
+
+                {importError ? (
+                  <div className="interfacePortabilityError" role="alert">{importError}</div>
+                ) : null}
+                {portabilityStatus ? (
+                  <div className="interfacePortabilityStatus" role="status">{portabilityStatus}</div>
+                ) : null}
+
+                {importPreview ? (
+                  <div className="interfaceImportPreview">
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Import reconciliation preview</strong>
+                        <span>Review stored values and the effective values this browser will use before applying.</span>
+                      </div>
+                      <HelpInfo topic="preference-import-preview" inline />
+                    </div>
+
+                    <dl>
+                      <div>
+                        <dt>Navigation density</dt>
+                        <dd>{importPreview.storedPreferences.navigationDensity} → {importPreview.effectivePreferences.navigationDensity}</dd>
+                      </div>
+                      <div>
+                        <dt>Workspace layout</dt>
+                        <dd>{importPreview.storedPreferences.workspaceLayout} → {importPreview.effectivePreferences.workspaceLayout}</dd>
+                      </div>
+                      <div>
+                        <dt>Recommendations</dt>
+                        <dd>{importPreview.storedPreferences.recommendations} → {importPreview.effectivePreferences.recommendations}</dd>
+                      </div>
+                    </dl>
+
+                    {importPreview.adjustments.length ? (
+                      <ul>
+                        {importPreview.adjustments.map((adjustment) => (
+                          <li key={adjustment}>{adjustment}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No accessibility reconciliation is required for this imported profile in the current browser.</p>
+                    )}
+
+                    <div className="interfaceImportPreviewActions">
+                      <button type="button" onClick={applyImportedPreferenceProfile}>
+                        Apply imported profile
+                      </button>
+                      <button type="button" onClick={cancelPreferenceProfileImport}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </section>
+
               <section className="interfaceResetGovernance" aria-labelledby="reset-governance-heading">
                 <div className="interfacePresetHeading">
                   <div>
@@ -501,7 +666,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local preferences and insights only · accessibility reconciliation never changes workflow authority.</span>
+              <span>Browser-local preferences and insights only · portable profiles contain no business data and never change workflow authority.</span>
             </footer>
           </section>
         </div>
