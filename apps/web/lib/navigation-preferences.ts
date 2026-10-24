@@ -268,3 +268,110 @@ export function reconcileInterfacePreferences(
     reducedMotion: environment.prefersReducedMotion
   };
 }
+
+export const INTERFACE_PREFERENCE_PROFILE_FORMAT =
+  "ai-data-platform-interface-preference-profile";
+
+export type InterfacePreferenceProfileV1 = {
+  format: typeof INTERFACE_PREFERENCE_PROFILE_FORMAT;
+  version: 1;
+  preferences: InterfacePreferences;
+};
+
+export type InterfacePreferenceProfileParseResult =
+  | { ok: true; profile: InterfacePreferenceProfileV1 }
+  | { ok: false; error: string };
+
+function isPortableInterfacePreferences(
+  value: unknown
+): value is InterfacePreferences {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return (
+    record.version === 1 &&
+    (record.navigationDensity === "adaptive" ||
+      record.navigationDensity === "comfortable" ||
+      record.navigationDensity === "compact") &&
+    (record.workspaceLayout === "balanced" ||
+      record.workspaceLayout === "wide" ||
+      record.workspaceLayout === "focused") &&
+    (record.recommendations === "all" ||
+      record.recommendations === "destinations" ||
+      record.recommendations === "shortcuts" ||
+      record.recommendations === "off")
+  );
+}
+
+export function createInterfacePreferenceProfile(
+  preferences: InterfacePreferences
+): InterfacePreferenceProfileV1 {
+  return {
+    format: INTERFACE_PREFERENCE_PROFILE_FORMAT,
+    version: 1,
+    preferences: sanitizeInterfacePreferences(preferences)
+  };
+}
+
+export function serializeInterfacePreferenceProfile(
+  preferences: InterfacePreferences
+) {
+  return JSON.stringify(createInterfacePreferenceProfile(preferences), null, 2);
+}
+
+export function parseInterfacePreferenceProfile(
+  input: unknown
+): InterfacePreferenceProfileParseResult {
+  let value = input;
+
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "This file is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "This file does not contain an interface preference profile."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (record.format !== INTERFACE_PREFERENCE_PROFILE_FORMAT) {
+    return {
+      ok: false,
+      error: "This file is not an AI Data Platform interface preference profile."
+    };
+  }
+
+  if (record.version !== 1) {
+    return {
+      ok: false,
+      error: "This preference profile version is not supported."
+    };
+  }
+
+  if (!isPortableInterfacePreferences(record.preferences)) {
+    return {
+      ok: false,
+      error: "The preference values in this file are incomplete or invalid."
+    };
+  }
+
+  return {
+    ok: true,
+    profile: createInterfacePreferenceProfile(record.preferences)
+  };
+}
+
+export function previewInterfacePreferenceProfile(
+  profile: InterfacePreferenceProfileV1,
+  environment: InterfaceAccessibilityEnvironment
+) {
+  return reconcileInterfacePreferences(profile.preferences, environment);
+}
