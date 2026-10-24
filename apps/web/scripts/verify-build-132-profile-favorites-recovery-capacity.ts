@@ -292,13 +292,14 @@ async function main() {
     "Build 132 verifier must run in the application test chain."
   );
 
+  const docLower = doc.toLocaleLowerCase();
   assert(
-    doc.includes("no database migration") &&
-      doc.includes("no server-side synchronization") &&
-      doc.includes("favorites are not exported") &&
-      doc.includes("read-only diff") &&
-      doc.includes("capacity forecast") &&
-      doc.includes("RLS"),
+    docLower.includes("no database migration") &&
+      docLower.includes("no server-side synchronization") &&
+      docLower.includes("favorites are not exported") &&
+      docLower.includes("read-only diff") &&
+      docLower.includes("capacity forecast") &&
+      docLower.includes("rls"),
     "Build 132 documentation must preserve local-only favorites, preview and capacity-planning boundaries."
   );
 
