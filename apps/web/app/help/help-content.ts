@@ -1637,6 +1637,49 @@ export const HELP_TOPICS = {
       "A recommendation is navigation guidance only; it never predicts business outcomes, changes workflow eligibility or bypasses RLS."
     ]
   },
+  "adaptive-navigation-density": {
+    title: "Adaptive navigation density",
+    summary: "Build 126 lets this browser use Adaptive, Comfortable or Compact navigation spacing without changing permissions, workflow state or the underlying route registry.",
+    steps: [
+      "Open Insights and find Interface preferences.",
+      "Choose Adaptive to let viewport width select comfortable or compact spacing.",
+      "Choose Comfortable for roomier navigation or Compact for denser navigation.",
+      "Use Reset interface preferences to return to Adaptive."
+    ],
+    notes: [
+      "Adaptive density responds only to viewport width.",
+      "Density never reads roles, permissions, usage scores or business state."
+    ]
+  },
+  "workspace-layout-preferences": {
+    title: "Role-neutral workspace layout preferences",
+    summary: "Build 126 provides Balanced, Wide and Focused shell layouts as browser-local presentation choices that are deliberately independent of user role or job function.",
+    steps: [
+      "Open Insights and find Workspace layout.",
+      "Choose Balanced to keep the standard shell proportions.",
+      "Choose Wide to reduce sidebar width and give more room to application content.",
+      "Choose Focused to center the application page within a bounded reading width.",
+      "Reset interface preferences to return to Balanced."
+    ],
+    notes: [
+      "Layout choices are presentation-only and are not stored on the account or workspace.",
+      "No role, permission, profile or employee classification is used to choose or suggest a layout."
+    ]
+  },
+  "recommendation-controls": {
+    title: "Interface recommendation controls",
+    summary: "Build 126 lets operators decide whether Suggested for you shows all local recommendations, destinations only, shortcuts only or none.",
+    steps: [
+      "Open Insights and find Recommendations.",
+      "Choose All, Destinations, Shortcuts or Off.",
+      "The recommendation panel updates immediately using the existing browser-local Build 125 data.",
+      "Reset interface preferences to restore All recommendations."
+    ],
+    notes: [
+      "Turning recommendations off hides recommendations; it does not change workflow authority or registered navigation.",
+      "Recommendation controls are stored only in this browser and never alter RLS or permission checks."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1723,6 +1766,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 126 adaptive density, role-neutral layout & recommendation controls",
+    topics: ["adaptive-navigation-density", "workspace-layout-preferences", "recommendation-controls"]
   },
   {
     title: "Build 125 navigation insights, shortcut metrics & interface recommendations",

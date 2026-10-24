@@ -89,8 +89,8 @@ async function main() {
       assist.includes('shortcutId: "keyboard-map"'),
     "Build 125 must measure discoverability through explicit command-palette and keyboard-map opens."
   );
-  assert(shell.includes("<NavigationInsights />") && shell.includes("Build 125 · Marble Standard"),
-    "Build 125 shared shell must install navigation insights and expose the current interface build.");
+  assert(shell.includes("<NavigationInsights />") && shell.includes("Marble Standard"),
+    "Build 125 shared shell must preserve navigation insights and Marble Standard as later interface builds advance.");
 
   for (const selector of [
     ".navigationInsightsTrigger", ".navigationInsightsBackdrop", ".navigationInsightsDialog",
