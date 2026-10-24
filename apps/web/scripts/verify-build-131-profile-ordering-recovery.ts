@@ -181,7 +181,7 @@ async function main() {
     "Import selected profiles",
     "Local recovery snapshot",
     "Save snapshot",
-    "Restore snapshot",
+    "restoreRecoverySnapshot",
     "captureRecoverySnapshot"
   ]) {
     assert(insights.includes(token), "Build 131 Insights UI missing: " + token);
