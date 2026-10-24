@@ -19,22 +19,34 @@ import {
   type NavigationUsageSnapshot
 } from "@/lib/navigation-insights";
 import {
+  INTERFACE_NAMED_PROFILES_STORAGE_KEY,
   INTERFACE_PREFERENCE_PRESETS,
   INTERFACE_PREFERENCES_EVENT,
   INTERFACE_PREFERENCES_RECONCILED_EVENT,
   INTERFACE_PREFERENCES_STORAGE_KEY,
   INTERFACE_RESET_GOVERNANCE,
+  MAX_NAMED_INTERFACE_PROFILES,
   applyInterfacePreferencePreset,
+  createNamedInterfacePreferenceProfile,
   defaultInterfacePreferences,
+  importedInterfacePreferenceProvenance,
   matchingInterfacePreferencePreset,
+  matchingNamedInterfacePreferenceProfile,
+  namedInterfacePreferenceProvenanceLabel,
   parseInterfacePreferenceProfile,
   previewInterfacePreferenceProfile,
   recommendationPreferenceAllowsKind,
+  removeNamedInterfacePreferenceProfile,
   sanitizeInterfacePreferences,
+  sanitizeNamedInterfacePreferenceName,
+  sanitizeNamedInterfacePreferenceProfiles,
   serializeInterfacePreferenceProfile,
+  upsertNamedInterfacePreferenceProfile,
   type InterfacePreferencePresetId,
+  type InterfacePreferenceProfileProvenance,
   type InterfacePreferenceReconciliation,
-  type InterfacePreferences
+  type InterfacePreferences,
+  type NamedInterfacePreferenceProfile
 } from "@/lib/navigation-preferences";
 
 function readSnapshot() {
@@ -57,6 +69,26 @@ function writeSnapshot(snapshot: NavigationUsageSnapshot) {
   }
 }
 
+function readNamedProfiles() {
+  try {
+    const raw = window.localStorage.getItem(INTERFACE_NAMED_PROFILES_STORAGE_KEY);
+    return sanitizeNamedInterfacePreferenceProfiles(raw ? JSON.parse(raw) : null);
+  } catch {
+    return [];
+  }
+}
+
+function writeNamedProfiles(profiles: NamedInterfacePreferenceProfile[]) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_NAMED_PROFILES_STORAGE_KEY,
+      JSON.stringify(sanitizeNamedInterfacePreferenceProfiles(profiles))
+    );
+  } catch {
+    // Named profiles are optional browser-local convenience state.
+  }
+}
+
 export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -76,6 +108,11 @@ export function NavigationInsights() {
     useState<InterfacePreferenceReconciliation | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
   const [portabilityStatus, setPortabilityStatus] = useState<string | null>(null);
+  const [namedProfiles, setNamedProfiles] = useState<NamedInterfacePreferenceProfile[]>([]);
+  const [profileName, setProfileName] = useState("");
+  const [selectedProfileId, setSelectedProfileId] = useState("");
+  const [importSource, setImportSource] =
+    useState<InterfacePreferenceProfileProvenance | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -91,6 +128,16 @@ export function NavigationInsights() {
       setPreferences(defaultInterfacePreferences());
     }
   }, [pathname]);
+
+  useEffect(() => {
+    const profiles = readNamedProfiles();
+    setNamedProfiles(profiles);
+    setSelectedProfileId((current) =>
+      profiles.some((profile) => profile.id === current)
+        ? current
+        : profiles[0]?.id ?? ""
+    );
+  }, []);
 
   useEffect(() => {
     function handleUsage(event: Event) {
@@ -151,6 +198,14 @@ export function NavigationInsights() {
   const activePreset = useMemo(
     () => matchingInterfacePreferencePreset(preferences),
     [preferences]
+  );
+  const activeNamedProfile = useMemo(
+    () => matchingNamedInterfacePreferenceProfile(namedProfiles, preferences),
+    [namedProfiles, preferences]
+  );
+  const selectedNamedProfile = useMemo(
+    () => namedProfiles.find((profile) => profile.id === selectedProfileId) ?? null,
+    [namedProfiles, selectedProfileId]
   );
 
   const openInsights = useCallback(() => {
@@ -239,6 +294,88 @@ export function NavigationInsights() {
     updatePreferences(applyInterfacePreferencePreset(id));
   }
 
+  function persistNamedProfiles(nextProfiles: NamedInterfacePreferenceProfile[]) {
+    const safe = sanitizeNamedInterfacePreferenceProfiles(nextProfiles);
+    setNamedProfiles(safe);
+    writeNamedProfiles(safe);
+    setSelectedProfileId((current) =>
+      safe.some((profile) => profile.id === current)
+        ? current
+        : safe[0]?.id ?? ""
+    );
+  }
+
+  function saveNamedProfile(
+    sourcePreferences: InterfacePreferences,
+    provenance: InterfacePreferenceProfileProvenance = { kind: "local" }
+  ) {
+    const safeName = sanitizeNamedInterfacePreferenceName(profileName);
+    if (!safeName) {
+      setPortabilityStatus(null);
+      setImportError("Enter a profile name before saving.");
+      return;
+    }
+
+    const existingByName = namedProfiles.find(
+      (profile) => profile.name.toLocaleLowerCase() === safeName.toLocaleLowerCase()
+    );
+    if (!existingByName && namedProfiles.length >= MAX_NAMED_INTERFACE_PROFILES) {
+      setPortabilityStatus(null);
+      setImportError(
+        "This browser already has the maximum of " +
+          MAX_NAMED_INTERFACE_PROFILES +
+          " named profiles."
+      );
+      return;
+    }
+
+    const id =
+      existingByName?.id ??
+      (typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : "profile-" + Date.now().toString(36));
+
+    const profile = createNamedInterfacePreferenceProfile({
+      id,
+      name: safeName,
+      preferences: sourcePreferences,
+      provenance
+    });
+    const updated = upsertNamedInterfacePreferenceProfile(namedProfiles, profile);
+    persistNamedProfiles(updated);
+    setSelectedProfileId(profile.id);
+    setProfileName("");
+    setImportError(null);
+    setPortabilityStatus(
+      existingByName
+        ? "Named profile updated in this browser."
+        : "Named profile saved in this browser."
+    );
+  }
+
+  function applySelectedNamedProfile() {
+    if (!selectedNamedProfile) return;
+    updatePreferences(selectedNamedProfile.preferences);
+    setImportError(null);
+    setPortabilityStatus(
+      "Applied named profile “" + selectedNamedProfile.name + "”."
+    );
+  }
+
+  function deleteSelectedNamedProfile() {
+    if (!selectedNamedProfile) return;
+    persistNamedProfiles(
+      removeNamedInterfacePreferenceProfile(
+        namedProfiles,
+        selectedNamedProfile.id
+      )
+    );
+    setImportError(null);
+    setPortabilityStatus(
+      "Deleted named profile “" + selectedNamedProfile.name + "” from this browser."
+    );
+  }
+
   function currentAccessibilityEnvironment() {
     return {
       viewportWidth: window.innerWidth,
@@ -269,6 +406,7 @@ export function NavigationInsights() {
     setImportError(null);
     setPortabilityStatus(null);
     setImportPreview(null);
+    setImportSource(null);
 
     if (!file) return;
     if (file.size > 32 * 1024) {
@@ -288,6 +426,9 @@ export function NavigationInsights() {
         currentAccessibilityEnvironment()
       )
     );
+    setImportSource(
+      importedInterfacePreferenceProvenance(file.name, parsed.profile)
+    );
     setPortabilityStatus(
       "Profile loaded for preview. Nothing has been applied yet."
     );
@@ -305,6 +446,7 @@ export function NavigationInsights() {
 
   function cancelPreferenceProfileImport() {
     setImportPreview(null);
+    setImportSource(null);
     setImportError(null);
     setPortabilityStatus("Import cancelled. Current preferences were not changed.");
   }
@@ -319,11 +461,14 @@ export function NavigationInsights() {
     const empty = emptyNavigationUsageSnapshot();
     setPreferences(defaults);
     setSnapshot(empty);
+    setNamedProfiles([]);
+    setSelectedProfileId("");
     setResetAllArmed(false);
 
     try {
       window.localStorage.removeItem(INTERFACE_PREFERENCES_STORAGE_KEY);
       window.localStorage.removeItem(NAVIGATION_INSIGHTS_STORAGE_KEY);
+      window.localStorage.removeItem(INTERFACE_NAMED_PROFILES_STORAGE_KEY);
     } catch {
       // Browser-local state is optional.
     }
@@ -363,7 +508,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 128 · Preference profile portability & reconciliation preview</p>
+                <p className="eyebrow">Build 129 · Named profiles, quick switcher & import provenance</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -488,6 +633,91 @@ export function NavigationInsights() {
                 <small>Accessibility safeguards can temporarily change the effective shell without rewriting your saved preference.</small>
               </section>
 
+              <section className="interfaceNamedProfilesSection" aria-labelledby="named-profiles-heading">
+                <div className="interfacePresetHeading">
+                  <div>
+                    <strong id="named-profiles-heading">Named local preference profiles</strong>
+                    <span>Save up to {MAX_NAMED_INTERFACE_PROFILES} reusable preference combinations in this browser and switch between them quickly.</span>
+                  </div>
+                  <HelpInfo topic="named-local-preference-profiles" inline />
+                </div>
+
+                <div className="interfaceNamedProfileSave">
+                  <label>
+                    <span>Profile name</span>
+                    <input
+                      type="text"
+                      maxLength={40}
+                      value={profileName}
+                      onChange={(event) => setProfileName(event.currentTarget.value)}
+                      placeholder="For example: Workshop focus"
+                    />
+                  </label>
+                  <button type="button" onClick={() => saveNamedProfile(preferences)}>
+                    Save current
+                  </button>
+                </div>
+
+                <div className="interfaceQuickSwitcher">
+                  <div>
+                    <strong>Quick switcher</strong>
+                    <HelpInfo topic="preference-quick-switcher" inline />
+                  </div>
+                  <select
+                    value={selectedProfileId}
+                    onChange={(event) => setSelectedProfileId(event.currentTarget.value)}
+                    aria-label="Choose named local preference profile"
+                  >
+                    <option value="">Choose a saved profile</option>
+                    {namedProfiles.map((profile) => (
+                      <option value={profile.id} key={profile.id}>
+                        {profile.name}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={applySelectedNamedProfile}
+                    disabled={!selectedNamedProfile}
+                  >
+                    Apply
+                  </button>
+                  <button
+                    type="button"
+                    onClick={deleteSelectedNamedProfile}
+                    disabled={!selectedNamedProfile}
+                  >
+                    Delete
+                  </button>
+                </div>
+
+                {activeNamedProfile ? (
+                  <p className="interfaceNamedProfileMatch" role="status">
+                    Current preferences exactly match “{activeNamedProfile.name}”.
+                  </p>
+                ) : null}
+
+                <div className="interfaceNamedProfileList">
+                  {namedProfiles.map((profile) => (
+                    <article
+                      className={activeNamedProfile?.id === profile.id ? "active" : ""}
+                      key={profile.id}
+                    >
+                      <div>
+                        <strong>{profile.name}</strong>
+                        <span>{namedInterfacePreferenceProvenanceLabel(profile)}</span>
+                      </div>
+                      <small>
+                        {profile.preferences.navigationDensity} · {profile.preferences.workspaceLayout} · {profile.preferences.recommendations}
+                      </small>
+                    </article>
+                  ))}
+                  {!namedProfiles.length ? (
+                    <p>No named profiles are saved in this browser yet.</p>
+                  ) : null}
+                </div>
+              </section>
+
               <section className="interfacePortabilitySection" aria-labelledby="preference-portability-heading">
                 <div className="interfacePresetHeading">
                   <div>
@@ -538,6 +768,16 @@ export function NavigationInsights() {
                       <HelpInfo topic="preference-import-preview" inline />
                     </div>
 
+                    {importSource?.kind === "imported" ? (
+                      <div className="interfaceImportProvenance">
+                        <strong>Import provenance</strong>
+                        <span>
+                          {importSource.sourceName} · {importSource.sourceFormat} v{importSource.sourceVersion}
+                        </span>
+                        <HelpInfo topic="preference-import-provenance" inline />
+                      </div>
+                    ) : null}
+
                     <dl>
                       <div>
                         <dt>Navigation density</dt>
@@ -566,6 +806,19 @@ export function NavigationInsights() {
                     <div className="interfaceImportPreviewActions">
                       <button type="button" onClick={applyImportedPreferenceProfile}>
                         Apply imported profile
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          importPreview && importSource
+                            ? saveNamedProfile(
+                                importPreview.storedPreferences,
+                                importSource
+                              )
+                            : undefined
+                        }
+                      >
+                        Save imported as named profile
                       </button>
                       <button type="button" onClick={cancelPreferenceProfileImport}>
                         Cancel
@@ -666,7 +919,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local preferences and insights only · portable profiles contain no business data and never change workflow authority.</span>
+              <span>Browser-local preferences, named profiles and insights only · provenance stays local and never changes workflow authority.</span>
             </footer>
           </section>
         </div>
