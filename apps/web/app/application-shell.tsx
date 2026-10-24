@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { NavigationAssist } from "@/app/NavigationAssist";
 import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
 import {
   APPLICATION_NAVIGATION,
@@ -50,6 +51,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="applicationFrame">
+      <a className="skipToContent" href="#application-main-content">Skip to main content</a>
       <aside className="applicationSidebar" aria-label="Primary application navigation">
         <div className="applicationBrand">
           <Link href="/">
@@ -114,7 +116,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 123 · Marble Standard</span>
+          <span>Build 124 · Marble Standard</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -148,12 +150,13 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
           <div className="applicationTopbarActions">
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
             <OperatorCommandPalette />
+            <NavigationAssist />
             <Link href="/workflows">Workflow directory</Link>
             <Link href="/help">Help</Link>
             <HelpCircle topic={activeGroup.helpTopic} label={activeGroup.label} />
           </div>
         </header>
-        <div className="applicationPage">{children}</div>
+        <main id="application-main-content" className="applicationPage" tabIndex={-1}>{children}</main>
       </div>
     </div>
   );
