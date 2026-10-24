@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "favorite-profile-quick-filters": {
+    title: "Favorite profile quick filters",
+    summary: "Build 133 adds All profiles and Favorites quick filters so operators can narrow the browser-local profile list without changing saved order or favorite metadata.",
+    steps: [
+      "Choose All profiles to show every named profile in its explicit saved order.",
+      "Choose Favorites to show only profiles currently marked with a star.",
+      "Use the filtered Quick switcher normally; applying a profile still changes only interface preferences.",
+      "Return to All profiles whenever you need to manage a non-favorite profile."
+    ],
+    notes: [
+      "The quick filter is temporary view state and is not exported, synced or treated as profile order.",
+      "Unfavoriting the selected profile while Favorites is active moves selection to the next visible favorite when available."
+    ]
+  },
+  "recovery-restore-confirmation": {
+    title: "Recovery restore confirmation",
+    summary: "Build 133 requires a second explicit confirmation before a local recovery snapshot can replace current interface preferences and named-profile state.",
+    steps: [
+      "Review the Recovery diff preview first.",
+      "Choose Review & confirm restore to arm the recovery action.",
+      "Review the preview again, then choose Confirm restore to apply the snapshot.",
+      "Choose Cancel confirmation to disarm the restore without changing local state."
+    ],
+    notes: [
+      "Arming confirmation does not write preferences, profiles or favorites.",
+      "Saving or clearing the recovery snapshot cancels any armed restore confirmation."
+    ]
+  },
+  "import-plan-outcome-reconciliation": {
+    title: "Import plan outcome reconciliation",
+    summary: "Build 133 compares the capacity forecast captured immediately before import with the actual bundle resolver outcome after the import completes.",
+    steps: [
+      "Review the Import capacity plan before importing selected profiles.",
+      "Run Import selected profiles when the forecast is acceptable.",
+      "Review the outcome reconciliation for planned versus actual additions, replacements, conflict skips, capacity skips and final count.",
+      "If any value differs, review the listed deviations before continuing with more profile changes."
+    ],
+    notes: [
+      "Reconciliation is browser-local evidence for the just-completed import and is not stored on the server.",
+      "The existing resolver remains authoritative; reconciliation reports differences rather than rewriting the completed result."
+    ]
+  },
   "named-profile-favorites": {
     title: "Named profile favorites",
     summary: "Build 132 lets operators mark selected browser-local named profiles as favorites without changing the explicit saved order.",
@@ -2008,6 +2050,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 133 favorite quick filters, recovery restore confirmation & import plan outcome reconciliation",
+    topics: ["favorite-profile-quick-filters", "recovery-restore-confirmation", "import-plan-outcome-reconciliation"]
   },
   {
     title: "Build 132 profile favorites, recovery diff preview & bundle capacity planning",
