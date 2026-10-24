@@ -89,8 +89,8 @@ async function main() {
       shell.includes('<main id="application-main-content"') &&
       shell.includes("tabIndex={-1}") &&
       shell.includes("<NavigationAssist />") &&
-      shell.includes("Build 124 · Marble Standard"),
-    "Build 124 shell must install skip navigation, semantic main content and the navigation assist."
+      shell.includes("Marble Standard"),
+    "Build 124 shell must preserve skip navigation, semantic main content, the navigation assist and Marble Standard as later interface builds advance."
   );
 
   for (const selector of [

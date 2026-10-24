@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { HelpInfo } from "@/app/help/HelpInfo";
+import { NAVIGATION_USAGE_EVENT } from "@/lib/navigation-insights";
 import {
   NAVIGATION_ACCESSIBILITY_AUDIT,
   NAVIGATION_KEYBOARD_ACTIONS,
@@ -44,6 +45,11 @@ export function NavigationAssist() {
   const openGuide = useCallback(() => {
     previousFocusRef.current =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    window.dispatchEvent(
+      new CustomEvent(NAVIGATION_USAGE_EVENT, {
+        detail: { shortcutId: "keyboard-map" }
+      })
+    );
     setOpen(true);
   }, []);
 

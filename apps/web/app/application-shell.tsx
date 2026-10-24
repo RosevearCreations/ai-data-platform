@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { NavigationAssist } from "@/app/NavigationAssist";
+import { NavigationInsights } from "@/app/NavigationInsights";
 import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
 import {
   APPLICATION_NAVIGATION,
@@ -116,7 +117,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 124 · Marble Standard</span>
+          <span>Build 125 · Marble Standard</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -151,6 +152,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
             <OperatorCommandPalette />
             <NavigationAssist />
+            <NavigationInsights />
             <Link href="/workflows">Workflow directory</Link>
             <Link href="/help">Help</Link>
             <HelpCircle topic={activeGroup.helpTopic} label={activeGroup.label} />

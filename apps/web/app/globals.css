@@ -5160,3 +5160,163 @@ h3 {
     transition: none;
   }
 }
+
+
+/* Build 125 — Navigation Usage Insights, Shortcut Discoverability Metrics & Personalized Interface Recommendations */
+.navigationInsightsTrigger {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .65rem;
+  background: var(--marble-inset, rgba(255,255,255,.035));
+  color: var(--theme-text, #edf6f7);
+  padding: .5rem .65rem;
+  cursor: pointer;
+  font: inherit;
+}
+.navigationInsightsTrigger:hover,
+.navigationInsightsTrigger:focus-visible { border-color: var(--theme-accent, #7de2d8); }
+
+.navigationInsightsBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1120;
+  display: grid;
+  place-items: start center;
+  overflow-y: auto;
+  background: rgba(2,8,12,.76);
+  backdrop-filter: blur(8px);
+  padding: min(9vh,5rem) 1rem 2rem;
+}
+.navigationInsightsDialog {
+  width: min(980px,100%);
+  max-height: min(84vh,880px);
+  display: grid;
+  gap: 1rem;
+  overflow-y: auto;
+  padding: 1.15rem;
+  box-shadow: 0 28px 90px rgba(0,0,0,.48);
+}
+.navigationInsightsHeader,
+.navigationInsightsHeaderActions,
+.navigationInsightsSectionHeading,
+.navigationInsightsFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+}
+.navigationInsightsHeader { align-items: flex-start; }
+.navigationInsightsHeader h2,
+.navigationInsightsHeader p,
+.navigationInsightsSectionHeading h3,
+.navigationInsightsSectionHeading p { margin: 0; }
+.navigationInsightsHeader > div:first-child { display: grid; gap: .35rem; }
+.navigationInsightsHeader > div:first-child > p:last-child {
+  color: var(--theme-text-muted, #91a5a8);
+  line-height: 1.5;
+}
+.navigationInsightsHeaderActions > button,
+.navigationInsightsFooter > button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .55rem;
+  background: var(--marble-inset, rgba(255,255,255,.035));
+  color: var(--theme-text, #edf6f7);
+  padding: .45rem .6rem;
+  cursor: pointer;
+  font: inherit;
+}
+.navigationInsightMetrics {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: .7rem;
+}
+.navigationInsightMetrics article,
+.navigationInsightsPanel {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.09));
+  border-radius: .8rem;
+  background: var(--marble-inset, rgba(255,255,255,.025));
+}
+.navigationInsightMetrics article { display: grid; gap: .2rem; padding: .85rem; }
+.navigationInsightMetrics strong { color: var(--theme-accent-soft, #a9eee8); font-size: 1.5rem; }
+.navigationInsightMetrics span,
+.shortcutDiscoverabilityList span,
+.interfaceRecommendationList small,
+.interfaceRecommendationList em,
+.navigationInsightsFooter {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .73rem;
+}
+.navigationInsightsGrid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: .9rem;
+}
+.navigationInsightsPanel { display: grid; gap: .8rem; padding: .95rem; }
+.shortcutDiscoverabilityList,
+.interfaceRecommendationList { display: grid; gap: .55rem; }
+.shortcutDiscoverabilityList article,
+.interfaceRecommendationList a,
+.interfaceRecommendationList > article {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  gap: .75rem;
+  align-items: center;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .65rem;
+  background: rgba(255,255,255,.02);
+  color: var(--theme-text, #edf6f7);
+  padding: .72rem .75rem;
+  text-decoration: none;
+}
+.shortcutDiscoverabilityList article > div:first-child,
+.interfaceRecommendationList a > span,
+.interfaceRecommendationList > article > span {
+  min-width: 0;
+  display: grid;
+  gap: .15rem;
+}
+.shortcutDiscoverabilityMeta,
+.interfaceRecommendationList > article > div {
+  display: grid;
+  justify-items: end;
+  gap: .2rem;
+  text-align: right;
+}
+.shortcutDiscoverabilityMeta kbd,
+.interfaceRecommendationList kbd {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .35rem;
+  background: rgba(255,255,255,.04);
+  color: var(--theme-accent-soft, #a9eee8);
+  padding: .14rem .32rem;
+  font-family: inherit;
+  font-size: .68rem;
+}
+.shortcutDiscoverabilityMeta em {
+  color: var(--theme-accent-soft, #a9eee8);
+  font-size: .66rem;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.interfaceRecommendationList a:hover,
+.interfaceRecommendationList a:focus-visible { border-color: var(--theme-accent, #7de2d8); }
+.interfaceRecommendationList em { font-style: normal; text-align: right; }
+.navigationInsightsFooter {
+  border-top: 1px solid rgba(255,255,255,.07);
+  padding-top: .8rem;
+}
+@media (max-width: 800px) {
+  .navigationInsightsBackdrop { place-items: stretch; padding-top: 1rem; }
+  .navigationInsightsDialog { max-height: calc(100vh - 2rem); }
+  .navigationInsightsGrid,
+  .navigationInsightMetrics { grid-template-columns: 1fr; }
+  .shortcutDiscoverabilityList article,
+  .interfaceRecommendationList a,
+  .interfaceRecommendationList > article { grid-template-columns: 1fr; }
+  .shortcutDiscoverabilityMeta,
+  .interfaceRecommendationList > article > div { justify-items: start; text-align: left; }
+  .interfaceRecommendationList em { text-align: left; }
+  .navigationInsightsFooter { align-items: flex-start; flex-direction: column; }
+}
