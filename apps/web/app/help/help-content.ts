@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "named-local-preference-profiles": {
+    title: "Named local preference profiles",
+    summary: "Build 129 lets operators save up to eight reusable interface preference combinations in the current browser without creating account or workspace profiles.",
+    steps: [
+      "Set density, workspace layout and recommendation visibility to the combination you want.",
+      "Enter a short profile name and choose Save current.",
+      "Saving again with the same name updates that local profile instead of creating a duplicate.",
+      "Use the profile list to see its exact preference combination and provenance."
+    ],
+    notes: [
+      "Named profiles use browser localStorage only and never synchronize to an account, workspace or server.",
+      "The broad All local navigation data reset also clears named local profiles."
+    ]
+  },
+  "preference-quick-switcher": {
+    title: "Named profile quick switcher",
+    summary: "The Build 129 quick switcher applies one saved local preference combination without changing roles, permissions, workflow state or business data.",
+    steps: [
+      "Open Insights and find Quick switcher.",
+      "Choose a saved profile.",
+      "Choose Apply to make its stored preferences active.",
+      "Use Delete only when you want to remove that named profile from this browser."
+    ],
+    notes: [
+      "Applying a profile still passes through the existing accessibility reconciliation layer.",
+      "A current-match message appears only when all stored preference values exactly match a saved profile."
+    ]
+  },
+  "preference-import-provenance": {
+    title: "Preference import provenance",
+    summary: "Build 129 records where a saved imported profile came from by retaining only the local source file name and supported preference-profile format/version.",
+    steps: [
+      "Import a Build 128-compatible preference JSON file.",
+      "Review the source file name and format/version in the staged import preview.",
+      "Enter a local profile name if you want to preserve that imported profile for quick switching.",
+      "Choose Save imported as named profile before leaving the preview."
+    ],
+    notes: [
+      "Provenance contains no file contents beyond the validated preference values and no filesystem path.",
+      "No import timestamp, account identity, analytics identifier or business record is stored."
+    ]
+  },
   "preference-profile-portability": {
     title: "Preference profile portability",
     summary: "Build 128 exports and imports a small versioned JSON profile containing only interface density, layout and recommendation preferences.",
@@ -1837,6 +1879,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 129 named local profiles, quick switcher & import provenance",
+    topics: ["named-local-preference-profiles", "preference-quick-switcher", "preference-import-provenance"]
   },
   {
     title: "Build 128 preference profile portability & reconciliation preview",
