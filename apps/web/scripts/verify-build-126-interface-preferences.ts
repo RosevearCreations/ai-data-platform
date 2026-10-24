@@ -109,8 +109,8 @@ async function main() {
       controller.includes("dataset.workspaceLayout") &&
       controller.includes("dataset.recommendationMode") &&
       controller.includes('window.addEventListener("resize"') &&
-      controller.includes('preferences.navigationDensity === "adaptive"'),
-    "Build 126 preference controller must apply local shell attributes and viewport-only adaptive density."
+      controller.includes("resolveNavigationDensity"),
+    "Build 126 preference controller must preserve local shell attributes and viewport-responsive density resolution."
   );
 
   assert(
@@ -118,7 +118,7 @@ async function main() {
       insights.includes("Navigation density") &&
       insights.includes("Workspace layout") &&
       insights.includes("Recommendations") &&
-      insights.includes("Reset interface preferences") &&
+      insights.includes("resetInterfacePreferences") &&
       insights.includes("recommendationPreferenceAllowsKind") &&
       insights.includes("INTERFACE_PREFERENCES_STORAGE_KEY") &&
       insights.includes("INTERFACE_PREFERENCES_EVENT") &&
@@ -131,8 +131,8 @@ async function main() {
   assert(
     shell.includes("<InterfacePreferenceController />") &&
       shell.includes("<NavigationInsights />") &&
-      shell.includes("Build 126 · Marble Standard"),
-    "Build 126 shared shell must install the preference controller and expose the current interface build."
+      shell.includes("Marble Standard"),
+    "Build 126 shared shell must preserve the preference controller, navigation insights and Marble Standard as later interface builds advance."
   );
 
   for (const selector of [

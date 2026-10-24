@@ -4,10 +4,13 @@ import { useEffect } from "react";
 
 import {
   INTERFACE_PREFERENCES_EVENT,
+  INTERFACE_PREFERENCES_RECONCILED_EVENT,
   INTERFACE_PREFERENCES_STORAGE_KEY,
   defaultInterfacePreferences,
+  reconcileInterfacePreferences,
   resolveNavigationDensity,
   sanitizeInterfacePreferences,
+  type InterfaceAccessibilityEnvironment,
   type InterfacePreferences
 } from "@/lib/navigation-preferences";
 
@@ -20,21 +23,53 @@ function readPreferences() {
   }
 }
 
+function readAccessibilityEnvironment(): InterfaceAccessibilityEnvironment {
+  return {
+    viewportWidth: window.innerWidth,
+    forcedColors: window.matchMedia("(forced-colors: active)").matches,
+    prefersMoreContrast: window.matchMedia("(prefers-contrast: more)").matches,
+    prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  };
+}
+
 function applyPreferences(preferences: InterfacePreferences) {
+  const reconciliation = reconcileInterfacePreferences(
+    preferences,
+    readAccessibilityEnvironment()
+  );
   const root = document.documentElement;
-  root.dataset.navigationDensityPreference = preferences.navigationDensity;
+  const effective = reconciliation.effectivePreferences;
+
+  root.dataset.navigationDensityPreference =
+    reconciliation.storedPreferences.navigationDensity;
   root.dataset.navigationDensity = resolveNavigationDensity(
-    preferences.navigationDensity,
+    effective.navigationDensity,
     window.innerWidth
   );
-  root.dataset.workspaceLayout = preferences.workspaceLayout;
-  root.dataset.recommendationMode = preferences.recommendations;
+  root.dataset.workspaceLayout = effective.workspaceLayout;
+  root.dataset.recommendationMode =
+    reconciliation.storedPreferences.recommendations;
+  root.dataset.preferenceReconciled =
+    reconciliation.accessibilityGuardActive ? "true" : "false";
+  root.dataset.reducedMotion = reconciliation.reducedMotion ? "true" : "false";
+
+  window.dispatchEvent(
+    new CustomEvent(INTERFACE_PREFERENCES_RECONCILED_EVENT, {
+      detail: reconciliation
+    })
+  );
 }
 
 export function InterfacePreferenceController() {
   useEffect(() => {
     let preferences = readPreferences();
     applyPreferences(preferences);
+
+    const contrastQuery = window.matchMedia("(prefers-contrast: more)");
+    const forcedColorsQuery = window.matchMedia("(forced-colors: active)");
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
 
     function handlePreferenceChange(event: Event) {
       const detail = (
@@ -46,30 +81,36 @@ export function InterfacePreferenceController() {
       applyPreferences(preferences);
     }
 
-    function handleResize() {
-      if (preferences.navigationDensity === "adaptive") {
-        applyPreferences(preferences);
-      }
+    function handleEnvironmentChange() {
+      applyPreferences(preferences);
     }
 
     window.addEventListener(
       INTERFACE_PREFERENCES_EVENT,
       handlePreferenceChange
     );
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleEnvironmentChange);
+    contrastQuery.addEventListener("change", handleEnvironmentChange);
+    forcedColorsQuery.addEventListener("change", handleEnvironmentChange);
+    reducedMotionQuery.addEventListener("change", handleEnvironmentChange);
 
     return () => {
       window.removeEventListener(
         INTERFACE_PREFERENCES_EVENT,
         handlePreferenceChange
       );
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleEnvironmentChange);
+      contrastQuery.removeEventListener("change", handleEnvironmentChange);
+      forcedColorsQuery.removeEventListener("change", handleEnvironmentChange);
+      reducedMotionQuery.removeEventListener("change", handleEnvironmentChange);
 
       const root = document.documentElement;
       delete root.dataset.navigationDensityPreference;
       delete root.dataset.navigationDensity;
       delete root.dataset.workspaceLayout;
       delete root.dataset.recommendationMode;
+      delete root.dataset.preferenceReconciled;
+      delete root.dataset.reducedMotion;
     };
   }, []);
 
