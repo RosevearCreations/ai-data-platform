@@ -1723,6 +1723,49 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "named-profile-rename-duplicate": {
+    title: "Rename & duplicate named profiles",
+    summary: "Build 130 lets operators rename a selected local profile or duplicate it into a new local profile without changing the underlying workflow authority.",
+    steps: [
+      "Choose a saved profile in Quick switcher.",
+      "For Rename, enter the new name in Profile name and choose Rename.",
+      "For Duplicate, enter an optional new name or leave Profile name blank to generate a copy name automatically.",
+      "Review the profile list to confirm the renamed or duplicated local profile."
+    ],
+    notes: [
+      "Names remain limited to 40 characters and duplicate names are rejected case-insensitively.",
+      "Duplicating preserves the source profile preferences and provenance but creates a new browser-local ID."
+    ]
+  },
+  "portable-preference-bundles": {
+    title: "Portable named preference bundles",
+    summary: "Build 130 can export all saved named profiles as one versioned JSON bundle and import compatible bundles into another browser.",
+    steps: [
+      "Save one or more named local profiles.",
+      "Choose Export named bundle to create a JSON file containing profile names and preference values.",
+      "On another browser, choose Import named bundle and select that file.",
+      "Review the staged conflict preview before importing."
+    ],
+    notes: [
+      "Bundles exclude local profile IDs, navigation insights, account information, business data and workflow evidence.",
+      "Bundle imports remain local to the current browser and do not create server-side synchronization."
+    ]
+  },
+  "preference-bundle-conflict-resolution": {
+    title: "Preference bundle conflict resolution",
+    summary: "Build 130 requires an explicit strategy when an incoming bundle profile has the same name as a local profile.",
+    steps: [
+      "Review the conflict count and incoming profile list.",
+      "Choose Skip to leave same-name local profiles unchanged.",
+      "Choose Replace to keep the local ID but replace that profile's preference values with the incoming profile.",
+      "Choose Keep both to preserve the local profile and import the incoming profile under an Imported suffix.",
+      "Choose Import bundle only after reviewing the strategy and available local profile slots."
+    ],
+    notes: [
+      "The eight-profile browser limit still applies; profiles beyond available capacity are skipped rather than evicting existing data.",
+      "No conflict strategy changes roles, permissions, RLS, business state or server-side records."
+    ]
+  },
   "named-local-preference-profiles": {
     title: "Named local preference profiles",
     summary: "Build 129 lets operators save up to eight reusable interface preference combinations in the current browser without creating account or workspace profiles.",
@@ -1879,6 +1922,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 130 profile rename/duplicate, portable bundles & conflict resolution",
+    topics: ["named-profile-rename-duplicate", "portable-preference-bundles", "preference-bundle-conflict-resolution"]
   },
   {
     title: "Build 129 named local profiles, quick switcher & import provenance",

@@ -20,16 +20,20 @@ import {
 } from "@/lib/navigation-insights";
 import {
   INTERFACE_NAMED_PROFILES_STORAGE_KEY,
+  INTERFACE_PREFERENCE_BUNDLE_FORMAT,
   INTERFACE_PREFERENCE_PRESETS,
   INTERFACE_PREFERENCES_EVENT,
   INTERFACE_PREFERENCES_RECONCILED_EVENT,
   INTERFACE_PREFERENCES_STORAGE_KEY,
   INTERFACE_RESET_GOVERNANCE,
   MAX_NAMED_INTERFACE_PROFILES,
+  analyzeInterfacePreferenceBundleImport,
   applyInterfacePreferencePreset,
   createNamedInterfacePreferenceProfile,
   defaultInterfacePreferences,
+  duplicateNamedInterfacePreferenceProfile,
   importedInterfacePreferenceProvenance,
+  parseInterfacePreferenceBundle,
   matchingInterfacePreferencePreset,
   matchingNamedInterfacePreferenceProfile,
   namedInterfacePreferenceProvenanceLabel,
@@ -37,11 +41,17 @@ import {
   previewInterfacePreferenceProfile,
   recommendationPreferenceAllowsKind,
   removeNamedInterfacePreferenceProfile,
+  renameNamedInterfacePreferenceProfile,
+  resolveInterfacePreferenceBundleImport,
   sanitizeInterfacePreferences,
   sanitizeNamedInterfacePreferenceName,
   sanitizeNamedInterfacePreferenceProfiles,
+  serializeInterfacePreferenceBundle,
   serializeInterfacePreferenceProfile,
+  suggestDuplicateNamedInterfacePreferenceName,
   upsertNamedInterfacePreferenceProfile,
+  type InterfacePreferenceBundleConflictStrategy,
+  type InterfacePreferenceBundleV1,
   type InterfacePreferencePresetId,
   type InterfacePreferenceProfileProvenance,
   type InterfacePreferenceReconciliation,
@@ -93,6 +103,7 @@ export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const importFileRef = useRef<HTMLInputElement>(null);
+  const bundleImportFileRef = useRef<HTMLInputElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const [snapshot, setSnapshot] = useState<NavigationUsageSnapshot>(
@@ -113,6 +124,11 @@ export function NavigationInsights() {
   const [selectedProfileId, setSelectedProfileId] = useState("");
   const [importSource, setImportSource] =
     useState<InterfacePreferenceProfileProvenance | null>(null);
+  const [bundlePreview, setBundlePreview] =
+    useState<InterfacePreferenceBundleV1 | null>(null);
+  const [bundleSourceName, setBundleSourceName] = useState("");
+  const [bundleConflictStrategy, setBundleConflictStrategy] =
+    useState<InterfacePreferenceBundleConflictStrategy>("skip");
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -206,6 +222,13 @@ export function NavigationInsights() {
   const selectedNamedProfile = useMemo(
     () => namedProfiles.find((profile) => profile.id === selectedProfileId) ?? null,
     [namedProfiles, selectedProfileId]
+  );
+  const bundleAnalysis = useMemo(
+    () =>
+      bundlePreview
+        ? analyzeInterfacePreferenceBundleImport(namedProfiles, bundlePreview)
+        : null,
+    [bundlePreview, namedProfiles]
   );
 
   const openInsights = useCallback(() => {
@@ -362,6 +385,55 @@ export function NavigationInsights() {
     );
   }
 
+  function renameSelectedNamedProfile() {
+    if (!selectedNamedProfile) return;
+    const result = renameNamedInterfacePreferenceProfile(
+      namedProfiles,
+      selectedNamedProfile.id,
+      profileName
+    );
+    if (!result.ok) {
+      setPortabilityStatus(null);
+      setImportError(result.error);
+      return;
+    }
+    persistNamedProfiles(result.profiles);
+    setSelectedProfileId(result.profile.id);
+    setProfileName("");
+    setImportError(null);
+    setPortabilityStatus("Named profile renamed to “" + result.profile.name + "”.");
+  }
+
+  function duplicateSelectedNamedProfile() {
+    if (!selectedNamedProfile) return;
+    const requestedName =
+      sanitizeNamedInterfacePreferenceName(profileName) ||
+      suggestDuplicateNamedInterfacePreferenceName(
+        namedProfiles,
+        selectedNamedProfile.name
+      );
+    const duplicateId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : "profile-" + Date.now().toString(36);
+    const result = duplicateNamedInterfacePreferenceProfile(
+      namedProfiles,
+      selectedNamedProfile.id,
+      duplicateId,
+      requestedName
+    );
+    if (!result.ok) {
+      setPortabilityStatus(null);
+      setImportError(result.error);
+      return;
+    }
+    persistNamedProfiles(result.profiles);
+    setSelectedProfileId(result.profile.id);
+    setProfileName("");
+    setImportError(null);
+    setPortabilityStatus("Duplicated named profile as “" + result.profile.name + "”.");
+  }
+
   function deleteSelectedNamedProfile() {
     if (!selectedNamedProfile) return;
     persistNamedProfiles(
@@ -383,6 +455,96 @@ export function NavigationInsights() {
       prefersMoreContrast: window.matchMedia("(prefers-contrast: more)").matches,
       prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches
     };
+  }
+
+  function exportPreferenceBundle() {
+    if (!namedProfiles.length) {
+      setPortabilityStatus(null);
+      setImportError("Save at least one named profile before exporting a bundle.");
+      return;
+    }
+
+    const payload = serializeInterfacePreferenceBundle(namedProfiles);
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "ai-data-platform-preference-bundle.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+    setImportError(null);
+    setPortabilityStatus(
+      "Named profile bundle exported. IDs, navigation insights and business data were not included."
+    );
+  }
+
+  async function stagePreferenceBundleImport(file?: File) {
+    setImportError(null);
+    setPortabilityStatus(null);
+    setBundlePreview(null);
+    setBundleSourceName("");
+
+    if (!file) return;
+    if (file.size > 64 * 1024) {
+      setImportError("Preference bundle files must be 64 KB or smaller.");
+      return;
+    }
+
+    const parsed = parseInterfacePreferenceBundle(await file.text());
+    if (!parsed.ok) {
+      setImportError(parsed.error);
+      return;
+    }
+
+    setBundlePreview(parsed.bundle);
+    setBundleSourceName(file.name);
+    setBundleConflictStrategy("skip");
+    setPortabilityStatus(
+      "Bundle loaded for conflict preview. Nothing has been imported yet."
+    );
+  }
+
+  function applyPreferenceBundleImport() {
+    if (!bundlePreview) return;
+    let sequence = 0;
+    const result = resolveInterfacePreferenceBundleImport(
+      namedProfiles,
+      bundlePreview,
+      bundleConflictStrategy,
+      bundleSourceName || "Imported bundle",
+      (name, index) => {
+        sequence += 1;
+        return typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : "bundle-" + index.toString(36) + "-" + sequence.toString(36) + "-" + Date.now().toString(36);
+      }
+    );
+    persistNamedProfiles(result.profiles);
+    setBundlePreview(null);
+    setBundleSourceName("");
+    setImportError(null);
+    setPortabilityStatus(
+      "Bundle import complete: " +
+        result.imported +
+        " added, " +
+        result.replaced +
+        " replaced, " +
+        result.skippedConflicts +
+        " conflict" +
+        (result.skippedConflicts === 1 ? "" : "s") +
+        " skipped, " +
+        result.skippedCapacity +
+        " skipped for capacity."
+    );
+  }
+
+  function cancelPreferenceBundleImport() {
+    setBundlePreview(null);
+    setBundleSourceName("");
+    setImportError(null);
+    setPortabilityStatus("Bundle import cancelled. Named profiles were not changed.");
   }
 
   function exportPreferenceProfile() {
@@ -508,7 +670,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 129 · Named profiles, quick switcher & import provenance</p>
+                <p className="eyebrow">Build 130 · Rename, duplicate, profile bundles & conflict resolution</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -637,7 +799,7 @@ export function NavigationInsights() {
                 <div className="interfacePresetHeading">
                   <div>
                     <strong id="named-profiles-heading">Named local preference profiles</strong>
-                    <span>Save up to {MAX_NAMED_INTERFACE_PROFILES} reusable preference combinations in this browser and switch between them quickly.</span>
+                    <span>Save up to {MAX_NAMED_INTERFACE_PROFILES} reusable combinations, then rename, duplicate or switch between them locally.</span>
                   </div>
                   <HelpInfo topic="named-local-preference-profiles" inline />
                 </div>
@@ -681,6 +843,20 @@ export function NavigationInsights() {
                     disabled={!selectedNamedProfile}
                   >
                     Apply
+                  </button>
+                  <button
+                    type="button"
+                    onClick={renameSelectedNamedProfile}
+                    disabled={!selectedNamedProfile || !sanitizeNamedInterfacePreferenceName(profileName)}
+                  >
+                    Rename
+                  </button>
+                  <button
+                    type="button"
+                    onClick={duplicateSelectedNamedProfile}
+                    disabled={!selectedNamedProfile}
+                  >
+                    Duplicate
                   </button>
                   <button
                     type="button"
@@ -734,6 +910,12 @@ export function NavigationInsights() {
                   <button type="button" onClick={() => importFileRef.current?.click()}>
                     Import profile
                   </button>
+                  <button type="button" onClick={exportPreferenceBundle}>
+                    Export named bundle
+                  </button>
+                  <button type="button" onClick={() => bundleImportFileRef.current?.click()}>
+                    Import named bundle
+                  </button>
                   <input
                     ref={importFileRef}
                     hidden
@@ -745,10 +927,21 @@ export function NavigationInsights() {
                       event.currentTarget.value = "";
                     }}
                   />
+                  <input
+                    ref={bundleImportFileRef}
+                    hidden
+                    type="file"
+                    accept=".json,application/json"
+                    onChange={(event) => {
+                      const file = event.currentTarget.files?.[0];
+                      void stagePreferenceBundleImport(file);
+                      event.currentTarget.value = "";
+                    }}
+                  />
                 </div>
 
                 <p className="interfacePortabilityBoundary">
-                  Portable files contain only density, layout and recommendation preferences. Navigation insights, account information and business data are excluded.
+                  Single-profile files contain one preference set. Named bundles contain profile names plus preference values only. Local IDs, navigation insights, account information and business data are excluded.
                 </p>
 
                 {importError ? (
@@ -756,6 +949,78 @@ export function NavigationInsights() {
                 ) : null}
                 {portabilityStatus ? (
                   <div className="interfacePortabilityStatus" role="status">{portabilityStatus}</div>
+                ) : null}
+
+                {bundlePreview && bundleAnalysis ? (
+                  <div className="interfaceBundlePreview">
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Named bundle conflict preview</strong>
+                        <span>Review incoming profiles and choose how same-name conflicts should be handled before import.</span>
+                      </div>
+                      <HelpInfo topic="preference-bundle-conflict-resolution" inline />
+                    </div>
+
+                    <div className="interfaceImportProvenance">
+                      <strong>Bundle source</strong>
+                      <span>
+                        {bundleSourceName || "Imported bundle"} · {INTERFACE_PREFERENCE_BUNDLE_FORMAT} v{bundlePreview.version}
+                      </span>
+                      <HelpInfo topic="portable-preference-bundles" inline />
+                    </div>
+
+                    <div className="interfaceBundleSummary">
+                      <span>{bundleAnalysis.incomingCount} incoming</span>
+                      <span>{bundleAnalysis.conflictCount} name conflict{bundleAnalysis.conflictCount === 1 ? "" : "s"}</span>
+                      <span>{bundleAnalysis.availableSlots} open slot{bundleAnalysis.availableSlots === 1 ? "" : "s"}</span>
+                    </div>
+
+                    <label className="interfaceBundleStrategy">
+                      <span>Conflict resolution</span>
+                      <select
+                        value={bundleConflictStrategy}
+                        onChange={(event) =>
+                          setBundleConflictStrategy(
+                            event.currentTarget.value as InterfacePreferenceBundleConflictStrategy
+                          )
+                        }
+                      >
+                        <option value="skip">Skip same-name incoming profiles</option>
+                        <option value="replace">Replace same-name local profiles</option>
+                        <option value="keep-both">Keep both with Imported suffix</option>
+                      </select>
+                    </label>
+
+                    <div className="interfaceBundleProfileList">
+                      {bundlePreview.profiles.map((profile) => {
+                        const conflict = bundleAnalysis.conflicts.find(
+                          (item) =>
+                            item.incomingName.toLocaleLowerCase() ===
+                            profile.name.toLocaleLowerCase()
+                        );
+                        return (
+                          <article className={conflict ? "conflict" : ""} key={profile.name}>
+                            <div>
+                              <strong>{profile.name}</strong>
+                              <span>
+                                {profile.preferences.navigationDensity} · {profile.preferences.workspaceLayout} · {profile.preferences.recommendations}
+                              </span>
+                            </div>
+                            <em>{conflict ? "Name conflict" : "New profile"}</em>
+                          </article>
+                        );
+                      })}
+                    </div>
+
+                    <div className="interfaceImportPreviewActions">
+                      <button type="button" onClick={applyPreferenceBundleImport}>
+                        Import bundle
+                      </button>
+                      <button type="button" onClick={cancelPreferenceBundleImport}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 ) : null}
 
                 {importPreview ? (
@@ -919,7 +1184,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local preferences, named profiles and insights only · provenance stays local and never changes workflow authority.</span>
+              <span>Browser-local preferences, named bundles and insights only · conflict resolution is explicit and never changes workflow authority.</span>
             </footer>
           </section>
         </div>
