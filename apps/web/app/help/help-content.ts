@@ -1723,6 +1723,50 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "named-profile-ordering": {
+    title: "Named profile ordering",
+    summary: "Build 131 preserves the named-profile array order in browser storage and lets operators move the selected profile up or down without changing its ID, values or provenance.",
+    steps: [
+      "Choose a saved named profile in Quick switcher.",
+      "Use Move up or Move down to change where it appears.",
+      "The quick switcher and exported named bundle follow the saved local order.",
+      "Use the recovery snapshot before larger experiments if you want a one-click local rollback."
+    ],
+    notes: [
+      "Ordering is browser-local presentation state only.",
+      "Moving a profile never changes its preference values, provenance, permissions or workflow authority."
+    ]
+  },
+  "selective-bundle-import": {
+    title: "Selective named bundle import",
+    summary: "Build 131 lets operators choose a subset of incoming bundle profiles before conflict analysis and import.",
+    steps: [
+      "Import a valid named preference bundle.",
+      "Use the checkboxes to select only the incoming profiles you want.",
+      "Use Select all or Clear selection for faster review.",
+      "Review the selected conflict count and conflict strategy.",
+      "Choose Import selected profiles only after the intended subset is selected."
+    ],
+    notes: [
+      "Unselected incoming profiles are ignored and never consume local profile capacity.",
+      "The existing Skip, Replace and Keep both rules apply only to selected incoming profiles."
+    ]
+  },
+  "local-preference-recovery-snapshot": {
+    title: "Local preference recovery snapshot",
+    summary: "Build 131 keeps one browser-local recovery point containing current interface preferences plus the complete ordered named-profile list.",
+    steps: [
+      "Choose Save snapshot to capture the current interface preferences and named-profile order.",
+      "Build 131 also refreshes the snapshot automatically before destructive named-profile deletion or bundle import.",
+      "Choose Restore snapshot to recover both current preferences and ordered named profiles.",
+      "Choose Clear snapshot when the recovery point is no longer needed."
+    ],
+    notes: [
+      "Only one recovery snapshot is retained; saving again replaces the previous one.",
+      "The snapshot stays in this browser and is cleared by All local navigation data reset.",
+      "Navigation insights, account data and business records are not included."
+    ]
+  },
   "named-profile-rename-duplicate": {
     title: "Rename & duplicate named profiles",
     summary: "Build 130 lets operators rename a selected local profile or duplicate it into a new local profile without changing the underlying workflow authority.",
@@ -1922,6 +1966,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 131 named profile ordering, selective bundle import & local recovery",
+    topics: ["named-profile-ordering", "selective-bundle-import", "local-preference-recovery-snapshot"]
   },
   {
     title: "Build 130 profile rename/duplicate, portable bundles & conflict resolution",
