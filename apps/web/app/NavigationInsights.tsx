@@ -32,10 +32,13 @@ import {
   applyInterfacePreferencePreset,
   createNamedInterfacePreferenceProfile,
   defaultInterfacePreferences,
+  diffInterfacePreferenceRecoverySnapshot,
   duplicateNamedInterfacePreferenceProfile,
+  favoriteNamedInterfacePreferenceProfiles,
   importedInterfacePreferenceProvenance,
   parseInterfacePreferenceBundle,
   parseInterfacePreferenceRecoverySnapshot,
+  planInterfacePreferenceBundleImportCapacity,
   matchingInterfacePreferencePreset,
   matchingNamedInterfacePreferenceProfile,
   namedInterfacePreferenceProvenanceLabel,
@@ -47,6 +50,7 @@ import {
   reorderNamedInterfacePreferenceProfile,
   resolveInterfacePreferenceBundleImport,
   selectInterfacePreferenceBundleProfiles,
+  setNamedInterfacePreferenceProfileFavorite,
   sanitizeInterfacePreferences,
   sanitizeNamedInterfacePreferenceName,
   sanitizeNamedInterfacePreferenceProfiles,
@@ -259,6 +263,10 @@ export function NavigationInsights() {
     () => namedProfiles.find((profile) => profile.id === selectedProfileId) ?? null,
     [namedProfiles, selectedProfileId]
   );
+  const favoriteProfiles = useMemo(
+    () => favoriteNamedInterfacePreferenceProfiles(namedProfiles),
+    [namedProfiles]
+  );
   const selectedBundlePreview = useMemo(
     () =>
       bundlePreview
@@ -278,6 +286,28 @@ export function NavigationInsights() {
           )
         : null,
     [namedProfiles, selectedBundlePreview]
+  );
+  const bundleCapacityPlan = useMemo(
+    () =>
+      selectedBundlePreview
+        ? planInterfacePreferenceBundleImportCapacity(
+            namedProfiles,
+            selectedBundlePreview,
+            bundleConflictStrategy
+          )
+        : null,
+    [bundleConflictStrategy, namedProfiles, selectedBundlePreview]
+  );
+  const recoveryDiff = useMemo(
+    () =>
+      recoverySnapshot
+        ? diffInterfacePreferenceRecoverySnapshot(
+            recoverySnapshot,
+            preferences,
+            namedProfiles
+          )
+        : null,
+    [namedProfiles, preferences, recoverySnapshot]
   );
 
   const openInsights = useCallback(() => {
@@ -392,6 +422,24 @@ export function NavigationInsights() {
         (direction === "up" ? "up." :
           direction === "down" ? "down." :
           direction === "top" ? "to the top." : "to the bottom.")
+    );
+  }
+
+  function toggleSelectedNamedProfileFavorite() {
+    if (!selectedNamedProfile) return;
+    const nextFavorite = !selectedNamedProfile.favorite;
+    const updated = setNamedInterfacePreferenceProfileFavorite(
+      namedProfiles,
+      selectedNamedProfile.id,
+      nextFavorite
+    );
+    persistNamedProfiles(updated);
+    setSelectedProfileId(selectedNamedProfile.id);
+    setImportError(null);
+    setPortabilityStatus(
+      (nextFavorite ? "Favorited “" : "Removed favorite from “") +
+        selectedNamedProfile.name +
+        "”."
     );
   }
 
@@ -797,7 +845,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 131 · Profile ordering, selective bundle import & local recovery</p>
+                <p className="eyebrow">Build 132 · Favorites, recovery diff & bundle capacity planning</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -960,7 +1008,7 @@ export function NavigationInsights() {
                     <option value="">Choose a saved profile</option>
                     {namedProfiles.map((profile) => (
                       <option value={profile.id} key={profile.id}>
-                        {profile.name}
+                        {profile.favorite ? "★ " : ""}{profile.name}
                       </option>
                     ))}
                   </select>
@@ -1008,6 +1056,14 @@ export function NavigationInsights() {
                   </button>
                   <button
                     type="button"
+                    onClick={toggleSelectedNamedProfileFavorite}
+                    disabled={!selectedNamedProfile}
+                    aria-pressed={selectedNamedProfile?.favorite ?? false}
+                  >
+                    {selectedNamedProfile?.favorite ? "Unfavorite" : "Favorite"}
+                  </button>
+                  <button
+                    type="button"
                     onClick={deleteSelectedNamedProfile}
                     disabled={!selectedNamedProfile}
                   >
@@ -1021,6 +1077,10 @@ export function NavigationInsights() {
                   </p>
                 ) : null}
 
+                <p className="interfaceFavoriteSummary">
+                  ★ {favoriteProfiles.length} favorite{favoriteProfiles.length === 1 ? "" : "s"} · favorites stay local and do not change explicit profile order.
+                </p>
+
                 <div className="interfaceNamedProfileList">
                   {namedProfiles.map((profile) => (
                     <article
@@ -1028,8 +1088,13 @@ export function NavigationInsights() {
                       key={profile.id}
                     >
                       <div>
-                        <strong>{profile.name}</strong>
-                        <span>{namedInterfacePreferenceProvenanceLabel(profile)}</span>
+                        <strong>
+                          {profile.favorite ? "★ " : ""}{profile.name}
+                        </strong>
+                        <span>
+                          {profile.favorite ? "Favorite · " : ""}
+                          {namedInterfacePreferenceProvenanceLabel(profile)}
+                        </span>
                       </div>
                       <small>
                         {profile.preferences.navigationDensity} · {profile.preferences.workspaceLayout} · {profile.preferences.recommendations}
@@ -1046,7 +1111,9 @@ export function NavigationInsights() {
                     <strong>Local recovery snapshot</strong>
                     <span>
                       {recoverySnapshot
-                        ? "A local recovery point is available for current preferences and named profile order."
+                        ? recoveryDiff?.hasChanges
+                          ? "A recovery point is available. Review the differences below before restoring."
+                          : "A recovery point is available and currently matches this browser state."
                         : "Save one local recovery point before experimenting with ordering or imports."}
                     </span>
                   </div>
@@ -1069,6 +1136,50 @@ export function NavigationInsights() {
                     Clear snapshot
                   </button>
                 </div>
+
+                {recoverySnapshot && recoveryDiff ? (
+                  <div className="interfaceRecoveryDiffPreview">
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Recovery diff preview</strong>
+                        <span>Shows what Restore snapshot would change before any local state is replaced.</span>
+                      </div>
+                      <HelpInfo topic="recovery-diff-preview" inline />
+                    </div>
+                    <div className="interfaceRecoveryDiffSummary">
+                      <span>{recoveryDiff.preferenceChanges.length} interface setting change{recoveryDiff.preferenceChanges.length === 1 ? "" : "s"}</span>
+                      <span>{recoveryDiff.currentOnlyProfiles.length} current-only profile{recoveryDiff.currentOnlyProfiles.length === 1 ? "" : "s"}</span>
+                      <span>{recoveryDiff.snapshotOnlyProfiles.length} profile{recoveryDiff.snapshotOnlyProfiles.length === 1 ? "" : "s"} restored</span>
+                      <span>{recoveryDiff.changedProfiles.length} profile detail change{recoveryDiff.changedProfiles.length === 1 ? "" : "s"}</span>
+                      <span>{recoveryDiff.favoriteChanges.length} favorite change{recoveryDiff.favoriteChanges.length === 1 ? "" : "s"}</span>
+                      <span>{recoveryDiff.orderChanged ? "Order will change" : "Order unchanged"}</span>
+                    </div>
+                    {recoveryDiff.preferenceChanges.length ? (
+                      <ul>
+                        {recoveryDiff.preferenceChanges.map((change) => (
+                          <li key={change.field}>
+                            {change.field}: {change.current} → {change.snapshot}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {recoveryDiff.currentOnlyProfiles.length ? (
+                      <p>Restore would remove current-only: {recoveryDiff.currentOnlyProfiles.join(", ")}.</p>
+                    ) : null}
+                    {recoveryDiff.snapshotOnlyProfiles.length ? (
+                      <p>Restore would bring back: {recoveryDiff.snapshotOnlyProfiles.join(", ")}.</p>
+                    ) : null}
+                    {recoveryDiff.changedProfiles.length ? (
+                      <p>Restore would reset profile details for: {recoveryDiff.changedProfiles.join(", ")}.</p>
+                    ) : null}
+                    {recoveryDiff.favoriteChanges.length ? (
+                      <p>Restore would change favorite state for: {recoveryDiff.favoriteChanges.join(", ")}.</p>
+                    ) : null}
+                    {!recoveryDiff.hasChanges ? (
+                      <p>No differences are currently detected between this browser and the saved recovery snapshot.</p>
+                    ) : null}
+                  </div>
+                ) : null}
               </section>
 
               <section className="interfacePortabilitySection" aria-labelledby="preference-portability-heading">
@@ -1152,6 +1263,39 @@ export function NavigationInsights() {
                       <span>{bundleAnalysis.conflictCount} name conflict{bundleAnalysis.conflictCount === 1 ? "" : "s"}</span>
                       <span>{bundleAnalysis.availableSlots} open slot{bundleAnalysis.availableSlots === 1 ? "" : "s"}</span>
                     </div>
+
+                    {bundleCapacityPlan ? (
+                      <div
+                        className={
+                          "interfaceBundleCapacityPlan " +
+                          (bundleCapacityPlan.fitsWithoutCapacitySkips
+                            ? "fits"
+                            : "capacityRisk")
+                        }
+                      >
+                        <div className="interfacePresetHeading">
+                          <div>
+                            <strong>Import capacity plan</strong>
+                            <span>Forecasts the selected import before any named-profile slots are written.</span>
+                          </div>
+                          <HelpInfo topic="bundle-import-capacity-planning" inline />
+                        </div>
+                        <div className="interfaceBundleCapacityMetrics">
+                          <span>{bundleCapacityPlan.currentCount}/{MAX_NAMED_INTERFACE_PROFILES} currently used</span>
+                          <span>{bundleCapacityPlan.newSlotDemand} new slot{bundleCapacityPlan.newSlotDemand === 1 ? "" : "s"} requested</span>
+                          <span>{bundleCapacityPlan.projectedAdded} projected add{bundleCapacityPlan.projectedAdded === 1 ? "" : "s"}</span>
+                          <span>{bundleCapacityPlan.projectedReplaced} projected replacement{bundleCapacityPlan.projectedReplaced === 1 ? "" : "s"}</span>
+                          <span>{bundleCapacityPlan.projectedSkippedConflicts} conflict skip{bundleCapacityPlan.projectedSkippedConflicts === 1 ? "" : "s"}</span>
+                          <span>{bundleCapacityPlan.projectedSkippedCapacity} capacity skip{bundleCapacityPlan.projectedSkippedCapacity === 1 ? "" : "s"}</span>
+                          <span>{bundleCapacityPlan.projectedFinalCount}/{MAX_NAMED_INTERFACE_PROFILES} projected final</span>
+                        </div>
+                        <p>
+                          {bundleCapacityPlan.fitsWithoutCapacitySkips
+                            ? "Selected profiles fit within local capacity under the current conflict strategy."
+                            : "Local capacity is insufficient for every selected profile under the current conflict strategy; excess additions will be skipped."}
+                        </p>
+                      </div>
+                    ) : null}
 
                     <label className="interfaceBundleStrategy">
                       <span>Conflict resolution</span>
@@ -1413,7 +1557,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local preferences, ordered named profiles, selective bundles and one recovery snapshot only · workflow authority never changes.</span>
+              <span>Browser-local favorites, recovery diffs and capacity forecasts only · no server sync or workflow authority changes.</span>
             </footer>
           </section>
         </div>
