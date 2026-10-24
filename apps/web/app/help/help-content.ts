@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "named-profile-favorites": {
+    title: "Named profile favorites",
+    summary: "Build 132 lets operators mark selected browser-local named profiles as favorites without changing the explicit saved order.",
+    steps: [
+      "Choose a saved profile in Quick switcher.",
+      "Choose Favorite to mark it, or Unfavorite to remove the marker.",
+      "Favorite profiles display a star in the quick switcher and profile list.",
+      "Use Move up or Move down separately when you want to change the explicit profile order."
+    ],
+    notes: [
+      "Favorite state stays browser-local and is preserved by the local recovery snapshot.",
+      "Portable bundle export does not include favorite state, so favorites do not silently transfer between browsers."
+    ]
+  },
+  "recovery-diff-preview": {
+    title: "Recovery diff preview",
+    summary: "Build 132 compares the current browser state with the saved recovery snapshot before Restore snapshot replaces anything.",
+    steps: [
+      "Save or automatically capture a local recovery snapshot.",
+      "Review the Recovery diff preview before choosing Restore snapshot.",
+      "Check interface-setting changes, current-only profiles, profiles that would return, profile-detail changes, favorite changes and ordering differences.",
+      "Choose Restore snapshot only when the preview matches the recovery you intend."
+    ],
+    notes: [
+      "The preview is read-only and does not change current preferences or named profiles.",
+      "A matching snapshot reports no differences rather than manufacturing a restore action."
+    ]
+  },
+  "bundle-import-capacity-planning": {
+    title: "Bundle import capacity planning",
+    summary: "Build 132 forecasts how the selected bundle subset and current conflict strategy will use the eight browser-local named-profile slots.",
+    steps: [
+      "Stage a named preference bundle and select the incoming profiles you want.",
+      "Choose Skip, Replace or Keep both for same-name conflicts.",
+      "Review requested new slots, projected additions, replacements, conflict skips, capacity skips and projected final count.",
+      "Adjust the selected subset or conflict strategy before importing when capacity skips are forecast."
+    ],
+    notes: [
+      "Capacity planning is a read-only forecast over the selected incoming subset.",
+      "The import resolver remains authoritative and still refuses to evict existing local profiles automatically."
+    ]
+  },
   "named-profile-ordering": {
     title: "Named profile ordering",
     summary: "Build 131 preserves the named-profile array order in browser storage and lets operators move the selected profile up or down without changing its ID, values or provenance.",
@@ -1966,6 +2008,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 132 profile favorites, recovery diff preview & bundle capacity planning",
+    topics: ["named-profile-favorites", "recovery-diff-preview", "bundle-import-capacity-planning"]
   },
   {
     title: "Build 131 named profile ordering, selective bundle import & local recovery",
