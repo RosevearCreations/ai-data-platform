@@ -104,8 +104,8 @@ async function main() {
     "Build 123 registry helpers are incomplete."
   );
   assert(
-    shell.includes("Build 123 · Marble Standard"),
-    "Build 123 shared shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 123 shared shell must preserve the Marble Standard interface contract as later interface builds advance."
   );
 
   for (const selector of [

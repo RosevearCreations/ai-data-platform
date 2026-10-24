@@ -1552,6 +1552,49 @@ export const HELP_TOPICS = {
       "A workspace shortcut is navigation only and cannot change roles, profiles, connector grants, retention state or evidence."
     ]
   },
+  "keyboard-action-map": {
+    title: "Keyboard action map",
+    summary: "Build 124 adds an explicit keyboard guide for navigation-only shortcuts so operators do not have to memorize or discover key combinations by trial and error.",
+    steps: [
+      "Press Shift+? outside editable fields or select Keyboard in the top bar.",
+      "Review the supported navigation shortcuts and their scope.",
+      "Use Tab or Shift+Tab to move through the guide.",
+      "Press Escape to close the guide and return focus to the control that opened it."
+    ],
+    notes: [
+      "The action map includes navigation and guidance shortcuts only; it does not expose mutation or workflow-execution hotkeys.",
+      "Global shortcuts are suppressed while typing in inputs, textareas, selects or content-editable controls."
+    ]
+  },
+  "context-jump-suggestions": {
+    title: "Context-aware jump suggestions",
+    summary: "Build 124 derives a small set of nearby registered destinations from the current route and navigation group.",
+    steps: [
+      "Open the keyboard action map from the current screen.",
+      "Review Suggested jumps for the current module or navigation context.",
+      "Open a suggestion to navigate to that existing registered destination.",
+      "Use the command palette when the desired destination is outside the nearby context."
+    ],
+    notes: [
+      "Suggestions are deterministic and registry-derived; they do not inspect business data, operator history or external services.",
+      "A suggestion is navigation only and never implies permission, eligibility or workflow readiness."
+    ]
+  },
+  "navigation-accessibility-audit": {
+    title: "Navigation accessibility audit",
+    summary: "Build 124 audits and enforces the shell-level keyboard baseline: skip navigation, semantic main content, visible focus, modal focus containment, focus restoration and editable-control shortcut guards.",
+    steps: [
+      "Use the Skip to main content link as the first keyboard focus target when bypassing repeated navigation.",
+      "Confirm the main page region receives focus when the skip link is activated.",
+      "Use visible focus indicators to track the active interactive control.",
+      "When the keyboard guide is open, Tab stays within the dialog until it is closed.",
+      "Close the guide with Escape and confirm focus returns to the opening control."
+    ],
+    notes: [
+      "The audit concerns navigation behavior and does not replace page-specific accessibility review.",
+      "Reduced-motion preferences and existing semantic status text remain authoritative presentation requirements."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1638,6 +1681,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 124 keyboard action map, context jumps & navigation accessibility",
+    topics: ["keyboard-action-map", "context-jump-suggestions", "navigation-accessibility-audit"]
   },
   {
     title: "Build 123 pinned favorites, saved navigation sets & workspace shortcuts",

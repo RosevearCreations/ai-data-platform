@@ -4888,3 +4888,275 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 124 — Keyboard Action Map, Context-Aware Jump Suggestions & Navigation Accessibility Audit */
+.skipToContent {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 1300;
+  transform: translateY(-180%);
+  border: 2px solid var(--theme-focus, #7de2d8);
+  border-radius: 0.55rem;
+  background: var(--theme-bg-elevated, #0c1116);
+  color: var(--theme-text, #edf6f7);
+  padding: 0.65rem 0.8rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.skipToContent:focus {
+  transform: translateY(0);
+}
+
+#application-main-content:focus {
+  outline: none;
+}
+
+.applicationFrame :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--theme-focus, #7de2d8);
+  outline-offset: 3px;
+}
+
+.navigationAssistTrigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.65rem;
+  background: var(--marble-inset, rgba(255, 255, 255, 0.035));
+  color: var(--theme-text, #edf6f7);
+  padding: 0.5rem 0.65rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.navigationAssistTrigger:hover,
+.navigationAssistTrigger:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+}
+
+.navigationAssistTrigger kbd,
+.navigationActionKeys kbd,
+.navigationAssistFooter kbd {
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.12));
+  border-radius: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--theme-text-muted, #91a5a8);
+  padding: 0.12rem 0.3rem;
+  font-family: inherit;
+  font-size: 0.68rem;
+}
+
+.navigationAssistBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: start center;
+  overflow-y: auto;
+  background: rgba(2, 8, 12, 0.76);
+  backdrop-filter: blur(8px);
+  padding: min(9vh, 5rem) 1rem 2rem;
+}
+
+.navigationAssistDialog {
+  width: min(980px, 100%);
+  max-height: min(84vh, 880px);
+  display: grid;
+  gap: 1rem;
+  overflow-y: auto;
+  padding: 1.15rem;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
+}
+
+.navigationAssistHeader,
+.navigationAssistHeaderActions,
+.navigationAssistSectionHeading,
+.navigationAssistFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.navigationAssistHeader {
+  align-items: flex-start;
+}
+
+.navigationAssistHeader h2,
+.navigationAssistHeader p,
+.navigationAssistSectionHeading h3,
+.navigationAssistSectionHeading p {
+  margin: 0;
+}
+
+#navigation-assist-description,
+.navigationAssistGuidance {
+  color: var(--theme-text-muted, #91a5a8);
+  line-height: 1.5;
+}
+
+.navigationAssistHeaderActions {
+  flex: 0 0 auto;
+}
+
+.navigationAssistHeaderActions > button {
+  min-width: 2.2rem;
+  min-height: 2.2rem;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.55rem;
+  background: var(--marble-inset, rgba(255, 255, 255, 0.035));
+  color: var(--theme-text, #edf6f7);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.1rem;
+}
+
+.navigationAssistGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.navigationAssistPanel,
+.navigationAccessibilityAudit {
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.09));
+  border-radius: 0.85rem;
+  background: var(--marble-inset, rgba(255, 255, 255, 0.025));
+  padding: 0.95rem;
+}
+
+.navigationActionList,
+.navigationJumpList,
+.navigationAuditGrid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.navigationActionRow {
+  display: grid;
+  grid-template-columns: minmax(125px, auto) minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.6rem;
+}
+
+.navigationActionRow:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.navigationActionKeys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.navigationActionRow > div:last-child,
+.navigationJumpList a > span,
+.navigationAuditGrid article > div {
+  min-width: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.navigationActionRow span,
+.navigationJumpList small,
+.navigationAuditGrid small,
+.navigationAssistFooter {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: 0.73rem;
+}
+
+.navigationJumpList a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.7rem;
+  align-items: center;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.08));
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--theme-text, #edf6f7);
+  padding: 0.7rem 0.75rem;
+  text-decoration: none;
+}
+
+.navigationJumpList a:hover,
+.navigationJumpList a:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+}
+
+.navigationJumpList em {
+  color: var(--theme-accent-soft, #a9eee8);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.navigationAuditGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.navigationAuditGrid article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.07));
+  border-radius: 0.65rem;
+  padding: 0.65rem;
+}
+
+.navigationAuditStatus {
+  display: grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 999px;
+  background: rgba(125, 226, 216, 0.1);
+  color: var(--theme-accent-soft, #a9eee8);
+  font-weight: 900;
+}
+
+.navigationAssistFooter {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 0.8rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 800px) {
+  .navigationAssistBackdrop {
+    place-items: stretch;
+    padding-top: 1rem;
+  }
+
+  .navigationAssistDialog {
+    max-height: calc(100vh - 2rem);
+  }
+
+  .navigationAssistGrid,
+  .navigationAuditGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigationActionRow {
+    grid-template-columns: 1fr;
+  }
+
+  .navigationAssistTrigger kbd {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skipToContent {
+    transition: none;
+  }
+}
