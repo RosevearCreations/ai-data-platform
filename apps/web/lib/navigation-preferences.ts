@@ -375,3 +375,195 @@ export function previewInterfacePreferenceProfile(
 ) {
   return reconcileInterfacePreferences(profile.preferences, environment);
 }
+
+export const INTERFACE_NAMED_PROFILES_STORAGE_KEY =
+  "ai-data-platform:named-interface-profiles:v1";
+export const MAX_NAMED_INTERFACE_PROFILES = 8;
+
+export type InterfacePreferenceProfileProvenance =
+  | { kind: "local" }
+  | {
+      kind: "imported";
+      sourceName: string;
+      sourceFormat: typeof INTERFACE_PREFERENCE_PROFILE_FORMAT;
+      sourceVersion: 1;
+    };
+
+export type NamedInterfacePreferenceProfile = {
+  version: 1;
+  id: string;
+  name: string;
+  preferences: InterfacePreferences;
+  provenance: InterfacePreferenceProfileProvenance;
+};
+
+export function sanitizeNamedInterfacePreferenceName(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().slice(0, 40);
+}
+
+function sanitizeNamedInterfacePreferenceId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 80);
+}
+
+function sanitizePreferenceProfileSourceName(value: unknown) {
+  if (typeof value !== "string") return "Imported profile";
+  const cleaned = value
+    .replace(/[\u0000-\u001f\u007f]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 80);
+  return cleaned || "Imported profile";
+}
+
+export function importedInterfacePreferenceProvenance(
+  sourceName: string,
+  profile: InterfacePreferenceProfileV1
+): InterfacePreferenceProfileProvenance {
+  return {
+    kind: "imported",
+    sourceName: sanitizePreferenceProfileSourceName(sourceName),
+    sourceFormat: profile.format,
+    sourceVersion: profile.version
+  };
+}
+
+export function createNamedInterfacePreferenceProfile(input: {
+  id: string;
+  name: string;
+  preferences: InterfacePreferences;
+  provenance?: InterfacePreferenceProfileProvenance;
+}): NamedInterfacePreferenceProfile {
+  const id = sanitizeNamedInterfacePreferenceId(input.id);
+  const name = sanitizeNamedInterfacePreferenceName(input.name);
+  if (!id) throw new Error("Named interface profile ID is required.");
+  if (!name) throw new Error("Named interface profile name is required.");
+
+  const provenance: InterfacePreferenceProfileProvenance =
+    input.provenance?.kind === "imported"
+      ? {
+          kind: "imported",
+          sourceName: sanitizePreferenceProfileSourceName(
+            input.provenance.sourceName
+          ),
+          sourceFormat: INTERFACE_PREFERENCE_PROFILE_FORMAT,
+          sourceVersion: 1 as const
+        }
+      : { kind: "local" as const };
+
+  return {
+    version: 1,
+    id,
+    name,
+    preferences: sanitizeInterfacePreferences(input.preferences),
+    provenance
+  };
+}
+
+export function sanitizeNamedInterfacePreferenceProfiles(
+  value: unknown
+): NamedInterfacePreferenceProfile[] {
+  if (!Array.isArray(value)) return [];
+
+  const result: NamedInterfacePreferenceProfile[] = [];
+  const ids = new Set<string>();
+
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const record = item as Record<string, unknown>;
+    if (record.version !== 1) continue;
+
+    const id = sanitizeNamedInterfacePreferenceId(record.id);
+    const name = sanitizeNamedInterfacePreferenceName(record.name);
+    if (!id || !name || ids.has(id)) continue;
+    if (!isPortableInterfacePreferences(record.preferences)) continue;
+
+    let provenance: InterfacePreferenceProfileProvenance = { kind: "local" };
+    if (
+      record.provenance &&
+      typeof record.provenance === "object" &&
+      (record.provenance as Record<string, unknown>).kind === "imported"
+    ) {
+      const source = record.provenance as Record<string, unknown>;
+      if (
+        source.sourceFormat === INTERFACE_PREFERENCE_PROFILE_FORMAT &&
+        source.sourceVersion === 1
+      ) {
+        provenance = {
+          kind: "imported",
+          sourceName: sanitizePreferenceProfileSourceName(source.sourceName),
+          sourceFormat: INTERFACE_PREFERENCE_PROFILE_FORMAT,
+          sourceVersion: 1
+        };
+      }
+    }
+
+    result.push(
+      createNamedInterfacePreferenceProfile({
+        id,
+        name,
+        preferences: record.preferences,
+        provenance
+      })
+    );
+    ids.add(id);
+    if (result.length >= MAX_NAMED_INTERFACE_PROFILES) break;
+  }
+
+  return result;
+}
+
+export function upsertNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  profile: NamedInterfacePreferenceProfile
+) {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  const existingIndex = safe.findIndex((item) => item.id === profile.id);
+  if (existingIndex >= 0) {
+    const next = safe.slice();
+    next[existingIndex] = createNamedInterfacePreferenceProfile(profile);
+    return next;
+  }
+
+  if (safe.length >= MAX_NAMED_INTERFACE_PROFILES) return safe;
+  return [...safe, createNamedInterfacePreferenceProfile(profile)];
+}
+
+export function removeNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  id: string
+) {
+  const safeId = sanitizeNamedInterfacePreferenceId(id);
+  return sanitizeNamedInterfacePreferenceProfiles(profiles).filter(
+    (profile) => profile.id !== safeId
+  );
+}
+
+export function matchingNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  preferences: InterfacePreferences
+) {
+  const safePreferences = sanitizeInterfacePreferences(preferences);
+  return (
+    sanitizeNamedInterfacePreferenceProfiles(profiles).find(
+      (profile) =>
+        profile.preferences.navigationDensity ===
+          safePreferences.navigationDensity &&
+        profile.preferences.workspaceLayout === safePreferences.workspaceLayout &&
+        profile.preferences.recommendations === safePreferences.recommendations
+    ) ?? null
+  );
+}
+
+export function namedInterfacePreferenceProvenanceLabel(
+  profile: NamedInterfacePreferenceProfile
+) {
+  if (profile.provenance.kind === "local") return "Created in this browser";
+  return (
+    "Imported from " +
+    profile.provenance.sourceName +
+    " · format v" +
+    profile.provenance.sourceVersion
+  );
+}
