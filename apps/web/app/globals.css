@@ -6180,3 +6180,102 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 133 — Favorite Quick Filters, Recovery Restore Confirmation & Import Plan Outcome Reconciliation */
+.interfaceFavoriteQuickFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem;
+}
+
+.interfaceFavoriteQuickFilters button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: 999px;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .42rem .62rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.interfaceFavoriteQuickFilters button[aria-pressed="true"] {
+  border-color: rgba(125,226,216,.5);
+  background: rgba(125,226,216,.09);
+}
+
+.interfaceFavoriteQuickFilters > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+}
+
+.interfaceRecoverySnapshot {
+  grid-template-columns: minmax(0, 1fr) repeat(5, auto);
+}
+
+.interfaceBundleOutcomeReconciliation {
+  display: grid;
+  gap: .55rem;
+  border: 1px solid rgba(125,226,216,.32);
+  border-radius: .62rem;
+  background: rgba(125,226,216,.04);
+  padding: .62rem;
+}
+
+.interfaceBundleOutcomeReconciliation.deviated {
+  border-color: rgba(245,190,80,.5);
+  background: rgba(245,190,80,.05);
+}
+
+.interfaceBundleOutcomeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .4rem;
+}
+
+.interfaceBundleOutcomeGrid span {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .5rem;
+  padding: .42rem .5rem;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+}
+
+.interfaceBundleOutcomeReconciliation ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.interfaceBundleOutcomeReconciliation p {
+  margin: 0;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .69rem;
+  line-height: 1.45;
+}
+
+@media (forced-colors: active) {
+  .interfaceFavoriteQuickFilters button,
+  .interfaceBundleOutcomeReconciliation,
+  .interfaceBundleOutcomeGrid span {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 1180px) {
+  .interfaceRecoverySnapshot {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceFavoriteQuickFilters,
+  .interfaceBundleOutcomeGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceRecoverySnapshot {
+    grid-template-columns: 1fr;
+  }
+}
