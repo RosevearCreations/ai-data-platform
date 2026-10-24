@@ -376,6 +376,7 @@ export function NavigationInsights() {
     });
     setPreferences(sanitized);
     setResetAllArmed(false);
+    setRecoveryRestoreArmed(false);
 
     try {
       window.localStorage.setItem(
@@ -417,6 +418,7 @@ export function NavigationInsights() {
     const safe = sanitizeNamedInterfacePreferenceProfiles(nextProfiles);
     setNamedProfiles(safe);
     writeNamedProfiles(safe);
+    setRecoveryRestoreArmed(false);
     setSelectedProfileId((current) =>
       safe.some((profile) => profile.id === current)
         ? current
@@ -865,6 +867,9 @@ export function NavigationInsights() {
     setNamedProfiles([]);
     setSelectedProfileId("");
     setRecoverySnapshot(null);
+    setRecoveryRestoreArmed(false);
+    setBundleImportOutcome(null);
+    setProfileQuickFilter("all");
     setResetAllArmed(false);
 
     try {
