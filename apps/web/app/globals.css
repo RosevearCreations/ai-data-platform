@@ -5981,3 +5981,115 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     flex-direction: column;
   }
 }
+
+/* Build 131 — Ordering, Selective Bundle Import & Local Recovery Snapshot */
+.interfaceQuickSwitcher {
+  grid-template-columns: minmax(8rem, .7fr) minmax(10rem, 1.35fr) repeat(7, auto);
+}
+
+.interfaceRecoverySnapshot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid rgba(125,226,216,.24);
+  border-radius: .62rem;
+  background: rgba(125,226,216,.035);
+  padding: .62rem;
+}
+
+.interfaceRecoverySnapshot > div {
+  display: grid;
+  gap: .15rem;
+}
+
+.interfaceRecoverySnapshot span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+
+.interfaceRecoverySnapshot button,
+.interfaceBundleSelectionControls button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .55rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .5rem .62rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.interfaceRecoverySnapshot button:disabled,
+.interfaceBundleSelectionControls button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.interfaceBundleSelectionControls {
+  display: grid;
+  gap: .35rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .58rem;
+  padding: .55rem;
+}
+
+.interfaceBundleSelectionControls > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+}
+
+.interfaceBundleSelectionControls > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.interfaceBundleProfileList article {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.interfaceBundleProfileList article.notSelected {
+  opacity: .55;
+}
+
+.interfaceBundleProfileList article.selected {
+  box-shadow: inset 0 0 0 1px rgba(125,226,216,.1);
+}
+
+.interfaceBundleProfileSelect {
+  display: inline-grid;
+  place-items: center;
+}
+
+.interfaceBundleProfileSelect input {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoverySnapshot,
+  .interfaceRecoverySnapshot button,
+  .interfaceBundleSelectionControls,
+  .interfaceBundleSelectionControls button {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 1180px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .interfaceRecoverySnapshot {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceQuickSwitcher,
+  .interfaceRecoverySnapshot {
+    grid-template-columns: 1fr;
+  }
+}

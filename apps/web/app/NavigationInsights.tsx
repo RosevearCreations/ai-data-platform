@@ -21,6 +21,7 @@ import {
 import {
   INTERFACE_NAMED_PROFILES_STORAGE_KEY,
   INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+  INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY,
   INTERFACE_PREFERENCE_PRESETS,
   INTERFACE_PREFERENCES_EVENT,
   INTERFACE_PREFERENCES_RECONCILED_EVENT,
@@ -34,6 +35,7 @@ import {
   duplicateNamedInterfacePreferenceProfile,
   importedInterfacePreferenceProvenance,
   parseInterfacePreferenceBundle,
+  parseInterfacePreferenceRecoverySnapshot,
   matchingInterfacePreferencePreset,
   matchingNamedInterfacePreferenceProfile,
   namedInterfacePreferenceProvenanceLabel,
@@ -42,18 +44,22 @@ import {
   recommendationPreferenceAllowsKind,
   removeNamedInterfacePreferenceProfile,
   renameNamedInterfacePreferenceProfile,
+  reorderNamedInterfacePreferenceProfile,
   resolveInterfacePreferenceBundleImport,
+  selectInterfacePreferenceBundleProfiles,
   sanitizeInterfacePreferences,
   sanitizeNamedInterfacePreferenceName,
   sanitizeNamedInterfacePreferenceProfiles,
   serializeInterfacePreferenceBundle,
   serializeInterfacePreferenceProfile,
+  serializeInterfacePreferenceRecoverySnapshot,
   suggestDuplicateNamedInterfacePreferenceName,
   upsertNamedInterfacePreferenceProfile,
   type InterfacePreferenceBundleConflictStrategy,
   type InterfacePreferenceBundleV1,
   type InterfacePreferencePresetId,
   type InterfacePreferenceProfileProvenance,
+  type InterfacePreferenceRecoverySnapshotV1,
   type InterfacePreferenceReconciliation,
   type InterfacePreferences,
   type NamedInterfacePreferenceProfile
@@ -99,6 +105,32 @@ function writeNamedProfiles(profiles: NamedInterfacePreferenceProfile[]) {
   }
 }
 
+function readRecoverySnapshot() {
+  try {
+    const raw = window.localStorage.getItem(
+      INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY
+    );
+    if (!raw) return null;
+    const parsed = parseInterfacePreferenceRecoverySnapshot(raw);
+    return parsed.ok ? parsed.snapshot : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeRecoverySnapshot(
+  snapshot: InterfacePreferenceRecoverySnapshotV1
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY,
+      JSON.stringify(snapshot)
+    );
+  } catch {
+    // Recovery snapshots are optional browser-local safety state.
+  }
+}
+
 export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -129,6 +161,9 @@ export function NavigationInsights() {
   const [bundleSourceName, setBundleSourceName] = useState("");
   const [bundleConflictStrategy, setBundleConflictStrategy] =
     useState<InterfacePreferenceBundleConflictStrategy>("skip");
+  const [bundleSelectedNames, setBundleSelectedNames] = useState<string[]>([]);
+  const [recoverySnapshot, setRecoverySnapshot] =
+    useState<InterfacePreferenceRecoverySnapshotV1 | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -147,6 +182,7 @@ export function NavigationInsights() {
 
   useEffect(() => {
     const profiles = readNamedProfiles();
+    setRecoverySnapshot(readRecoverySnapshot());
     setNamedProfiles(profiles);
     setSelectedProfileId((current) =>
       profiles.some((profile) => profile.id === current)
@@ -223,12 +259,25 @@ export function NavigationInsights() {
     () => namedProfiles.find((profile) => profile.id === selectedProfileId) ?? null,
     [namedProfiles, selectedProfileId]
   );
-  const bundleAnalysis = useMemo(
+  const selectedBundlePreview = useMemo(
     () =>
       bundlePreview
-        ? analyzeInterfacePreferenceBundleImport(namedProfiles, bundlePreview)
+        ? selectInterfacePreferenceBundleProfiles(
+            bundlePreview,
+            bundleSelectedNames
+          )
         : null,
-    [bundlePreview, namedProfiles]
+    [bundlePreview, bundleSelectedNames]
+  );
+  const bundleAnalysis = useMemo(
+    () =>
+      selectedBundlePreview
+        ? analyzeInterfacePreferenceBundleImport(
+            namedProfiles,
+            selectedBundlePreview
+          )
+        : null,
+    [namedProfiles, selectedBundlePreview]
   );
 
   const openInsights = useCallback(() => {
@@ -326,6 +375,66 @@ export function NavigationInsights() {
         ? current
         : safe[0]?.id ?? ""
     );
+  }
+
+  function moveSelectedNamedProfile(direction: "up" | "down" | "top" | "bottom") {
+    if (!selectedNamedProfile) return;
+    const reordered = reorderNamedInterfacePreferenceProfile(
+      namedProfiles,
+      selectedNamedProfile.id,
+      direction
+    );
+    persistNamedProfiles(reordered);
+    setSelectedProfileId(selectedNamedProfile.id);
+    setImportError(null);
+    setPortabilityStatus(
+      "Moved named profile “" + selectedNamedProfile.name + "” " +
+        (direction === "up" ? "up." :
+          direction === "down" ? "down." :
+          direction === "top" ? "to the top." : "to the bottom.")
+    );
+  }
+
+  function captureRecoverySnapshot(message = "Local recovery snapshot saved.") {
+    const snapshot = parseInterfacePreferenceRecoverySnapshot(
+      serializeInterfacePreferenceRecoverySnapshot(preferences, namedProfiles)
+    );
+    if (!snapshot.ok) {
+      setPortabilityStatus(null);
+      setImportError(snapshot.error);
+      return null;
+    }
+    writeRecoverySnapshot(snapshot.snapshot);
+    setRecoverySnapshot(snapshot.snapshot);
+    setImportError(null);
+    setPortabilityStatus(message);
+    return snapshot.snapshot;
+  }
+
+  function restoreRecoverySnapshot() {
+    if (!recoverySnapshot) return;
+    const nextPreferences = recoverySnapshot.preferences;
+    const nextProfiles = recoverySnapshot.namedProfiles;
+    persistNamedProfiles(nextProfiles);
+    setSelectedProfileId(nextProfiles[0]?.id ?? "");
+    updatePreferences(nextPreferences);
+    setImportError(null);
+    setPortabilityStatus(
+      "Local recovery snapshot restored. Current preferences and named profile order were recovered."
+    );
+  }
+
+  function clearRecoverySnapshot() {
+    try {
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY
+      );
+    } catch {
+      // Recovery snapshots are optional browser-local safety state.
+    }
+    setRecoverySnapshot(null);
+    setImportError(null);
+    setPortabilityStatus("Local recovery snapshot cleared.");
   }
 
   function saveNamedProfile(
@@ -436,6 +545,9 @@ export function NavigationInsights() {
 
   function deleteSelectedNamedProfile() {
     if (!selectedNamedProfile) return;
+    captureRecoverySnapshot(
+      "Recovery snapshot saved before deleting “" + selectedNamedProfile.name + "”."
+    );
     persistNamedProfiles(
       removeNamedInterfacePreferenceProfile(
         namedProfiles,
@@ -485,6 +597,7 @@ export function NavigationInsights() {
     setPortabilityStatus(null);
     setBundlePreview(null);
     setBundleSourceName("");
+    setBundleSelectedNames([]);
 
     if (!file) return;
     if (file.size > 64 * 1024) {
@@ -500,6 +613,7 @@ export function NavigationInsights() {
 
     setBundlePreview(parsed.bundle);
     setBundleSourceName(file.name);
+    setBundleSelectedNames(parsed.bundle.profiles.map((profile) => profile.name));
     setBundleConflictStrategy("skip");
     setPortabilityStatus(
       "Bundle loaded for conflict preview. Nothing has been imported yet."
@@ -507,11 +621,18 @@ export function NavigationInsights() {
   }
 
   function applyPreferenceBundleImport() {
-    if (!bundlePreview) return;
+    if (!selectedBundlePreview || !selectedBundlePreview.profiles.length) {
+      setPortabilityStatus(null);
+      setImportError("Select at least one incoming bundle profile to import.");
+      return;
+    }
+    captureRecoverySnapshot(
+      "Recovery snapshot saved before importing the selected bundle profiles."
+    );
     let sequence = 0;
     const result = resolveInterfacePreferenceBundleImport(
       namedProfiles,
-      bundlePreview,
+      selectedBundlePreview,
       bundleConflictStrategy,
       bundleSourceName || "Imported bundle",
       (name, index) => {
@@ -524,6 +645,7 @@ export function NavigationInsights() {
     persistNamedProfiles(result.profiles);
     setBundlePreview(null);
     setBundleSourceName("");
+    setBundleSelectedNames([]);
     setImportError(null);
     setPortabilityStatus(
       "Bundle import complete: " +
@@ -543,6 +665,7 @@ export function NavigationInsights() {
   function cancelPreferenceBundleImport() {
     setBundlePreview(null);
     setBundleSourceName("");
+    setBundleSelectedNames([]);
     setImportError(null);
     setPortabilityStatus("Bundle import cancelled. Named profiles were not changed.");
   }
@@ -625,12 +748,16 @@ export function NavigationInsights() {
     setSnapshot(empty);
     setNamedProfiles([]);
     setSelectedProfileId("");
+    setRecoverySnapshot(null);
     setResetAllArmed(false);
 
     try {
       window.localStorage.removeItem(INTERFACE_PREFERENCES_STORAGE_KEY);
       window.localStorage.removeItem(NAVIGATION_INSIGHTS_STORAGE_KEY);
       window.localStorage.removeItem(INTERFACE_NAMED_PROFILES_STORAGE_KEY);
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY
+      );
     } catch {
       // Browser-local state is optional.
     }
@@ -670,7 +797,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 130 · Rename, duplicate, profile bundles & conflict resolution</p>
+                <p className="eyebrow">Build 131 · Profile ordering, selective bundle import & local recovery</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -860,6 +987,27 @@ export function NavigationInsights() {
                   </button>
                   <button
                     type="button"
+                    onClick={() => moveSelectedNamedProfile("up")}
+                    disabled={
+                      !selectedNamedProfile ||
+                      namedProfiles[0]?.id === selectedNamedProfile.id
+                    }
+                  >
+                    Move up
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveSelectedNamedProfile("down")}
+                    disabled={
+                      !selectedNamedProfile ||
+                      namedProfiles[namedProfiles.length - 1]?.id ===
+                        selectedNamedProfile.id
+                    }
+                  >
+                    Move down
+                  </button>
+                  <button
+                    type="button"
                     onClick={deleteSelectedNamedProfile}
                     disabled={!selectedNamedProfile}
                   >
@@ -891,6 +1039,35 @@ export function NavigationInsights() {
                   {!namedProfiles.length ? (
                     <p>No named profiles are saved in this browser yet.</p>
                   ) : null}
+                </div>
+
+                <div className="interfaceRecoverySnapshot">
+                  <div>
+                    <strong>Local recovery snapshot</strong>
+                    <span>
+                      {recoverySnapshot
+                        ? "A local recovery point is available for current preferences and named profile order."
+                        : "Save one local recovery point before experimenting with ordering or imports."}
+                    </span>
+                  </div>
+                  <HelpInfo topic="local-preference-recovery-snapshot" inline />
+                  <button type="button" onClick={() => captureRecoverySnapshot()}>
+                    Save snapshot
+                  </button>
+                  <button
+                    type="button"
+                    onClick={restoreRecoverySnapshot}
+                    disabled={!recoverySnapshot}
+                  >
+                    Restore snapshot
+                  </button>
+                  <button
+                    type="button"
+                    onClick={clearRecoverySnapshot}
+                    disabled={!recoverySnapshot}
+                  >
+                    Clear snapshot
+                  </button>
                 </div>
               </section>
 
@@ -970,7 +1147,8 @@ export function NavigationInsights() {
                     </div>
 
                     <div className="interfaceBundleSummary">
-                      <span>{bundleAnalysis.incomingCount} incoming</span>
+                      <span>{bundleSelectedNames.length} selected of {bundlePreview.profiles.length}</span>
+                      <span>{bundleAnalysis.incomingCount} selected incoming</span>
                       <span>{bundleAnalysis.conflictCount} name conflict{bundleAnalysis.conflictCount === 1 ? "" : "s"}</span>
                       <span>{bundleAnalysis.availableSlots} open slot{bundleAnalysis.availableSlots === 1 ? "" : "s"}</span>
                     </div>
@@ -991,6 +1169,29 @@ export function NavigationInsights() {
                       </select>
                     </label>
 
+                    <div className="interfaceBundleSelectionControls">
+                      <strong>Selective import</strong>
+                      <span>Choose exactly which incoming named profiles should participate in conflict resolution.</span>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setBundleSelectedNames(
+                              bundlePreview.profiles.map((profile) => profile.name)
+                            )
+                          }
+                        >
+                          Select all
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setBundleSelectedNames([])}
+                        >
+                          Clear selection
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="interfaceBundleProfileList">
                       {bundlePreview.profiles.map((profile) => {
                         const conflict = bundleAnalysis.conflicts.find(
@@ -999,7 +1200,31 @@ export function NavigationInsights() {
                             profile.name.toLocaleLowerCase()
                         );
                         return (
-                          <article className={conflict ? "conflict" : ""} key={profile.name}>
+                          <article
+                            className={
+                              (conflict ? "conflict " : "") +
+                              (bundleSelectedNames.includes(profile.name)
+                                ? "selected"
+                                : "notSelected")
+                            }
+                            key={profile.name}
+                          >
+                            <label className="interfaceBundleProfileSelect">
+                              <input
+                                type="checkbox"
+                                checked={bundleSelectedNames.includes(profile.name)}
+                                onChange={(event) =>
+                                  setBundleSelectedNames((current) =>
+                                    event.currentTarget.checked
+                                      ? [...current, profile.name]
+                                      : current.filter((name) => name !== profile.name)
+                                  )
+                                }
+                              />
+                              <span className="srOnly">
+                                Select {profile.name} for bundle import
+                              </span>
+                            </label>
                             <div>
                               <strong>{profile.name}</strong>
                               <span>
@@ -1013,8 +1238,12 @@ export function NavigationInsights() {
                     </div>
 
                     <div className="interfaceImportPreviewActions">
-                      <button type="button" onClick={applyPreferenceBundleImport}>
-                        Import bundle
+                      <button
+                        type="button"
+                        onClick={applyPreferenceBundleImport}
+                        disabled={!bundleSelectedNames.length}
+                      >
+                        Import selected profiles
                       </button>
                       <button type="button" onClick={cancelPreferenceBundleImport}>
                         Cancel
@@ -1184,7 +1413,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local preferences, named bundles and insights only · conflict resolution is explicit and never changes workflow authority.</span>
+              <span>Browser-local preferences, ordered named profiles, selective bundles and one recovery snapshot only · workflow authority never changes.</span>
             </footer>
           </section>
         </div>
