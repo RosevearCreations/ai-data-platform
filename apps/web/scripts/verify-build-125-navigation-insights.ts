@@ -75,7 +75,7 @@ async function main() {
     insights.includes("NAVIGATION_INSIGHTS_STORAGE_KEY") &&
       insights.includes("window.localStorage") &&
       insights.includes("NAVIGATION_USAGE_EVENT") &&
-      insights.includes("Reset local insights") &&
+      insights.includes("resetLocalInsights") &&
       insights.includes("Shortcut metrics") &&
       insights.includes("Suggested for you") &&
       insights.includes('role="dialog"') &&
