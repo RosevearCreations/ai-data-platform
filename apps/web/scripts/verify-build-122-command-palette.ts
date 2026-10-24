@@ -93,8 +93,8 @@ async function main() {
   );
   assert(
     shell.includes("<OperatorCommandPalette />") &&
-      shell.includes("Build 122 · Marble Standard"),
-    "Build 122 shared shell must expose the palette and current interface build."
+      shell.includes("Marble Standard"),
+    "Build 122 shared shell must preserve the command palette and Marble Standard interface contract as later interface builds advance."
   );
 
   for (const selector of [

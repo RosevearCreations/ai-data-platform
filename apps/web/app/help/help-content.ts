@@ -1509,6 +1509,49 @@ export const HELP_TOPICS = {
       "Recent history does not record business data, search terms, approvals or workflow outcomes."
     ]
   },
+  "operator-favorites": {
+    title: "Pinned operator favorites",
+    summary: "Build 123 lets operators pin registered command-palette destinations for faster browser-local navigation without creating account-level preferences or changing workflow authority.",
+    steps: [
+      "Open the command palette and search or browse to a registered destination.",
+      "Select the star control to pin or unpin that destination.",
+      "Open Favorites to review the current pinned list.",
+      "Select a favorite to navigate to its existing governed screen."
+    ],
+    notes: [
+      "Favorites are stored only in this browser and are bounded to eight registered destinations.",
+      "Pinning a favorite does not grant access, imply eligibility or create operational evidence."
+    ]
+  },
+  "saved-navigation-sets": {
+    title: "Saved navigation sets",
+    summary: "Build 123 can snapshot the current pinned favorites into a small named browser-local set for recurring navigation patterns.",
+    steps: [
+      "Pin the destinations that belong together.",
+      "Enter a short set name in the command palette.",
+      "Choose Save set to capture the current favorites.",
+      "Use the named set tab later to reopen those registered destinations.",
+      "Remove the saved set when the collection is no longer useful."
+    ],
+    notes: [
+      "Saved sets are browser-local convenience data, not workspace configuration or shared team state.",
+      "Unknown routes are discarded during loading, names are bounded and each set is limited to registered destinations."
+    ]
+  },
+  "workspace-shortcuts": {
+    title: "Workspace navigation shortcuts",
+    summary: "Build 123 derives a dedicated shortcut collection from the existing Workspace & Administration navigation registry.",
+    steps: [
+      "Open the command palette and select Workspace.",
+      "Choose the Workspace module hub or one of its registered administrative screens.",
+      "Follow the destination screen's own permissions, help and confirmation rules.",
+      "Pin frequently used workspace destinations when they should also appear in Favorites."
+    ],
+    notes: [
+      "Workspace shortcuts are derived from the registered navigation model rather than a separate hard-coded route list.",
+      "A workspace shortcut is navigation only and cannot change roles, profiles, connector grants, retention state or evidence."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1595,6 +1638,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 123 pinned favorites, saved navigation sets & workspace shortcuts",
+    topics: ["operator-favorites", "saved-navigation-sets", "workspace-shortcuts"]
   },
   {
     title: "Build 122 cross-module command palette & recent operator destinations",

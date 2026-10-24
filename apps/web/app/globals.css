@@ -4715,3 +4715,176 @@ h3 {
     display: none;
   }
 }
+
+
+/* Build 123 — Pinned Operator Favorites, Saved Navigation Sets & Workspace Shortcuts */
+.commandPaletteCollections {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.commandPaletteCollectionTabs {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.commandPaletteCollectionTabs > button,
+.commandPaletteSavedSetTab > button:first-child {
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 999px;
+  background: var(--marble-inset, rgba(255, 255, 255, 0.035));
+  color: var(--theme-text-muted, #91a5a8);
+  padding: 0.42rem 0.65rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.74rem;
+}
+
+.commandPaletteCollectionTabs > button.active,
+.commandPaletteCollectionTabs > button:hover,
+.commandPaletteCollectionTabs > button:focus-visible,
+.commandPaletteSavedSetTab > button:first-child.active,
+.commandPaletteSavedSetTab > button:first-child:hover,
+.commandPaletteSavedSetTab > button:first-child:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+  color: var(--theme-text, #edf6f7);
+}
+
+.commandPaletteSavedSetTab {
+  display: inline-flex;
+  align-items: center;
+}
+
+.commandPaletteSavedSetTab > button:first-child {
+  border-radius: 999px 0 0 999px;
+}
+
+.commandPaletteSavedSetRemove {
+  align-self: stretch;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--theme-text-muted, #91a5a8);
+  padding: 0.3rem 0.48rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.commandPaletteSavedSetRemove:hover,
+.commandPaletteSavedSetRemove:focus-visible {
+  color: var(--theme-text, #edf6f7);
+  border-color: var(--theme-accent, #7de2d8);
+}
+
+.commandPaletteResultRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.4rem;
+  align-items: stretch;
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+}
+
+.commandPaletteResultRow.active {
+  border-color: var(--theme-accent, #7de2d8);
+  background: var(--marble-inset, rgba(255, 255, 255, 0.045));
+}
+
+.commandPaletteResultRow .commandPaletteResult {
+  border: 0;
+}
+
+.commandPaletteResultRow .commandPaletteResult:hover,
+.commandPaletteResultRow .commandPaletteResult:focus-visible {
+  border-color: transparent;
+  background: transparent;
+}
+
+.commandPaletteFavorite {
+  width: 2.55rem;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--theme-text-muted, #91a5a8);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.commandPaletteFavorite:hover,
+.commandPaletteFavorite:focus-visible,
+.commandPaletteFavorite.active {
+  border-color: var(--theme-accent, #7de2d8);
+  color: var(--theme-accent, #a9eee8);
+  outline: none;
+}
+
+.commandPaletteSetBuilder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, auto);
+  gap: 0.8rem;
+  align-items: center;
+  padding: 0.8rem;
+}
+
+.commandPaletteSetBuilder > div:first-child {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.commandPaletteSetBuilder span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: 0.72rem;
+}
+
+.commandPaletteSetForm {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  gap: 0.45rem;
+}
+
+.commandPaletteSetForm input {
+  min-width: 0;
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.6rem;
+  background: var(--theme-bg-elevated, #0c1116);
+  color: var(--theme-text, #edf6f7);
+  padding: 0.55rem 0.65rem;
+  font: inherit;
+}
+
+.commandPaletteSetForm input:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+  outline: 2px solid rgba(125, 226, 216, 0.1);
+  outline-offset: 1px;
+}
+
+.commandPaletteSetForm button {
+  border: 1px solid var(--theme-border, rgba(255, 255, 255, 0.1));
+  border-radius: 0.6rem;
+  background: var(--marble-inset, rgba(255, 255, 255, 0.045));
+  color: var(--theme-text, #edf6f7);
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.commandPaletteSetForm button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+@media (max-width: 760px) {
+  .commandPaletteCollections {
+    align-items: stretch;
+  }
+
+  .commandPaletteSetBuilder,
+  .commandPaletteSetForm {
+    grid-template-columns: 1fr;
+  }
+}
