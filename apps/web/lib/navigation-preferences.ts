@@ -401,6 +401,7 @@ export type NamedInterfacePreferenceProfile = {
   name: string;
   preferences: InterfacePreferences;
   provenance: InterfacePreferenceProfileProvenance;
+  favorite: boolean;
 };
 
 export function sanitizeNamedInterfacePreferenceName(value: unknown) {
@@ -440,6 +441,7 @@ export function createNamedInterfacePreferenceProfile(input: {
   name: string;
   preferences: InterfacePreferences;
   provenance?: InterfacePreferenceProfileProvenance;
+  favorite?: boolean;
 }): NamedInterfacePreferenceProfile {
   const id = sanitizeNamedInterfacePreferenceId(input.id);
   const name = sanitizeNamedInterfacePreferenceName(input.name);
@@ -466,7 +468,8 @@ export function createNamedInterfacePreferenceProfile(input: {
     id,
     name,
     preferences: sanitizeInterfacePreferences(input.preferences),
-    provenance
+    provenance,
+    favorite: input.favorite === true
   };
 }
 
@@ -517,7 +520,8 @@ export function sanitizeNamedInterfacePreferenceProfiles(
         id,
         name,
         preferences: record.preferences,
-        provenance
+        provenance,
+        favorite: record.favorite === true
       })
     );
     ids.add(id);
@@ -550,6 +554,31 @@ export function removeNamedInterfacePreferenceProfile(
   const safeId = sanitizeNamedInterfacePreferenceId(id);
   return sanitizeNamedInterfacePreferenceProfiles(profiles).filter(
     (profile) => profile.id !== safeId
+  );
+}
+
+export function setNamedInterfacePreferenceProfileFavorite(
+  profiles: NamedInterfacePreferenceProfile[],
+  id: string,
+  favorite: boolean
+) {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  const safeId = sanitizeNamedInterfacePreferenceId(id);
+  return safe.map((profile) =>
+    profile.id === safeId
+      ? createNamedInterfacePreferenceProfile({
+          ...profile,
+          favorite
+        })
+      : profile
+  );
+}
+
+export function favoriteNamedInterfacePreferenceProfiles(
+  profiles: NamedInterfacePreferenceProfile[]
+) {
+  return sanitizeNamedInterfacePreferenceProfiles(profiles).filter(
+    (profile) => profile.favorite
   );
 }
 
@@ -947,7 +976,8 @@ export function resolveInterfacePreferenceBundleImport(
         id: existing.id,
         name: incoming.name,
         preferences: incoming.preferences,
-        provenance
+        provenance,
+        favorite: existing.favorite
       });
       replaced += 1;
       return;
@@ -1132,5 +1162,209 @@ export function parseInterfacePreferenceRecoverySnapshot(
       record.preferences,
       namedProfiles
     )
+  };
+}
+
+export type InterfacePreferenceRecoveryDiffField =
+  | "navigationDensity"
+  | "workspaceLayout"
+  | "recommendations";
+
+export type InterfacePreferenceRecoveryDiff = {
+  hasChanges: boolean;
+  preferenceChanges: Array<{
+    field: InterfacePreferenceRecoveryDiffField;
+    current: string;
+    snapshot: string;
+  }>;
+  currentOnlyProfiles: string[];
+  snapshotOnlyProfiles: string[];
+  changedProfiles: string[];
+  favoriteChanges: string[];
+  orderChanged: boolean;
+};
+
+function sameInterfacePreferenceValues(
+  left: InterfacePreferences,
+  right: InterfacePreferences
+) {
+  return (
+    left.navigationDensity === right.navigationDensity &&
+    left.workspaceLayout === right.workspaceLayout &&
+    left.recommendations === right.recommendations
+  );
+}
+
+function sameProfileProvenance(
+  left: InterfacePreferenceProfileProvenance,
+  right: InterfacePreferenceProfileProvenance
+) {
+  if (left.kind !== right.kind) return false;
+  if (left.kind === "local" && right.kind === "local") return true;
+  if (left.kind !== "imported" || right.kind !== "imported") return false;
+  return (
+    left.sourceName === right.sourceName &&
+    left.sourceFormat === right.sourceFormat &&
+    left.sourceVersion === right.sourceVersion
+  );
+}
+
+export function diffInterfacePreferenceRecoverySnapshot(
+  snapshot: InterfacePreferenceRecoverySnapshotV1,
+  currentPreferences: InterfacePreferences,
+  currentProfiles: NamedInterfacePreferenceProfile[]
+): InterfacePreferenceRecoveryDiff {
+  const current = sanitizeInterfacePreferences(currentPreferences);
+  const target = sanitizeInterfacePreferences(snapshot.preferences);
+  const currentNamed = sanitizeNamedInterfacePreferenceProfiles(currentProfiles);
+  const snapshotNamed = sanitizeNamedInterfacePreferenceProfiles(
+    snapshot.namedProfiles
+  );
+
+  const preferenceChanges: InterfacePreferenceRecoveryDiff["preferenceChanges"] = [];
+  for (const field of [
+    "navigationDensity",
+    "workspaceLayout",
+    "recommendations"
+  ] as const) {
+    if (current[field] !== target[field]) {
+      preferenceChanges.push({
+        field,
+        current: current[field],
+        snapshot: target[field]
+      });
+    }
+  }
+
+  const currentById = new Map(currentNamed.map((profile) => [profile.id, profile]));
+  const snapshotById = new Map(snapshotNamed.map((profile) => [profile.id, profile]));
+
+  const currentOnlyProfiles = currentNamed
+    .filter((profile) => !snapshotById.has(profile.id))
+    .map((profile) => profile.name);
+  const snapshotOnlyProfiles = snapshotNamed
+    .filter((profile) => !currentById.has(profile.id))
+    .map((profile) => profile.name);
+
+  const changedProfiles: string[] = [];
+  const favoriteChanges: string[] = [];
+
+  for (const snapshotProfile of snapshotNamed) {
+    const currentProfile = currentById.get(snapshotProfile.id);
+    if (!currentProfile) continue;
+
+    if (currentProfile.favorite !== snapshotProfile.favorite) {
+      favoriteChanges.push(snapshotProfile.name);
+    }
+
+    if (
+      currentProfile.name !== snapshotProfile.name ||
+      !sameInterfacePreferenceValues(
+        currentProfile.preferences,
+        snapshotProfile.preferences
+      ) ||
+      !sameProfileProvenance(
+        currentProfile.provenance,
+        snapshotProfile.provenance
+      )
+    ) {
+      changedProfiles.push(snapshotProfile.name);
+    }
+  }
+
+  const currentSharedOrder = currentNamed
+    .filter((profile) => snapshotById.has(profile.id))
+    .map((profile) => profile.id);
+  const snapshotSharedOrder = snapshotNamed
+    .filter((profile) => currentById.has(profile.id))
+    .map((profile) => profile.id);
+  const orderChanged =
+    currentSharedOrder.join("|") !== snapshotSharedOrder.join("|");
+
+  return {
+    hasChanges:
+      preferenceChanges.length > 0 ||
+      currentOnlyProfiles.length > 0 ||
+      snapshotOnlyProfiles.length > 0 ||
+      changedProfiles.length > 0 ||
+      favoriteChanges.length > 0 ||
+      orderChanged,
+    preferenceChanges,
+    currentOnlyProfiles,
+    snapshotOnlyProfiles,
+    changedProfiles,
+    favoriteChanges,
+    orderChanged
+  };
+}
+
+export type InterfacePreferenceBundleCapacityPlan = {
+  currentCount: number;
+  selectedCount: number;
+  availableSlots: number;
+  conflictCount: number;
+  newSlotDemand: number;
+  projectedAdded: number;
+  projectedReplaced: number;
+  projectedSkippedConflicts: number;
+  projectedSkippedCapacity: number;
+  projectedFinalCount: number;
+  fitsWithoutCapacitySkips: boolean;
+};
+
+export function planInterfacePreferenceBundleImportCapacity(
+  existingProfiles: NamedInterfacePreferenceProfile[],
+  bundle: InterfacePreferenceBundleV1,
+  strategy: InterfacePreferenceBundleConflictStrategy
+): InterfacePreferenceBundleCapacityPlan {
+  const existing = sanitizeNamedInterfacePreferenceProfiles(existingProfiles);
+  const existingNames = new Set(
+    existing.map((profile) => normalizedNamedProfileKey(profile.name))
+  );
+  const availableSlots = Math.max(
+    0,
+    MAX_NAMED_INTERFACE_PROFILES - existing.length
+  );
+
+  let conflicts = 0;
+  let newSlotDemand = 0;
+  let projectedReplaced = 0;
+  let projectedSkippedConflicts = 0;
+
+  for (const incoming of bundle.profiles) {
+    const conflict = existingNames.has(normalizedNamedProfileKey(incoming.name));
+    if (conflict) conflicts += 1;
+
+    if (conflict && strategy === "skip") {
+      projectedSkippedConflicts += 1;
+      continue;
+    }
+
+    if (conflict && strategy === "replace") {
+      projectedReplaced += 1;
+      continue;
+    }
+
+    newSlotDemand += 1;
+  }
+
+  const projectedAdded = Math.min(newSlotDemand, availableSlots);
+  const projectedSkippedCapacity = Math.max(
+    0,
+    newSlotDemand - availableSlots
+  );
+
+  return {
+    currentCount: existing.length,
+    selectedCount: bundle.profiles.length,
+    availableSlots,
+    conflictCount: conflicts,
+    newSlotDemand,
+    projectedAdded,
+    projectedReplaced,
+    projectedSkippedConflicts,
+    projectedSkippedCapacity,
+    projectedFinalCount: existing.length + projectedAdded,
+    fitsWithoutCapacitySkips: projectedSkippedCapacity === 0
   };
 }

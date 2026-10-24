@@ -6093,3 +6093,90 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 132 — Favorites, Recovery Diff Preview & Bundle Import Capacity Planning */
+.interfaceQuickSwitcher {
+  grid-template-columns: minmax(8rem, .65fr) minmax(10rem, 1.25fr) repeat(8, auto);
+}
+
+.interfaceFavoriteSummary {
+  margin: 0;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .7rem;
+}
+
+.interfaceRecoveryDiffPreview,
+.interfaceBundleCapacityPlan {
+  display: grid;
+  gap: .55rem;
+  border: 1px solid rgba(125,226,216,.24);
+  border-radius: .62rem;
+  background: rgba(125,226,216,.035);
+  padding: .62rem;
+}
+
+.interfaceRecoveryDiffSummary,
+.interfaceBundleCapacityMetrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.interfaceRecoveryDiffSummary span,
+.interfaceBundleCapacityMetrics span {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: 999px;
+  padding: .28rem .48rem;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .67rem;
+}
+
+.interfaceRecoveryDiffPreview ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.interfaceRecoveryDiffPreview p,
+.interfaceBundleCapacityPlan p {
+  margin: 0;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .69rem;
+  line-height: 1.45;
+}
+
+.interfaceBundleCapacityPlan.capacityRisk {
+  border-color: rgba(245,190,80,.48);
+  background: rgba(245,190,80,.045);
+}
+
+.interfaceBundleCapacityPlan.fits {
+  border-color: rgba(125,226,216,.35);
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryDiffPreview,
+  .interfaceBundleCapacityPlan,
+  .interfaceRecoveryDiffSummary span,
+  .interfaceBundleCapacityMetrics span {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 1260px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceRecoveryDiffSummary,
+  .interfaceBundleCapacityMetrics {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
