@@ -18,6 +18,14 @@ import {
   type NavigationShortcutId,
   type NavigationUsageSnapshot
 } from "@/lib/navigation-insights";
+import {
+  INTERFACE_PREFERENCES_EVENT,
+  INTERFACE_PREFERENCES_STORAGE_KEY,
+  defaultInterfacePreferences,
+  recommendationPreferenceAllowsKind,
+  sanitizeInterfacePreferences,
+  type InterfacePreferences
+} from "@/lib/navigation-preferences";
 
 function readSnapshot() {
   try {
@@ -47,11 +55,23 @@ export function NavigationInsights() {
   const [snapshot, setSnapshot] = useState<NavigationUsageSnapshot>(
     emptyNavigationUsageSnapshot
   );
+  const [preferences, setPreferences] = useState<InterfacePreferences>(
+    defaultInterfacePreferences
+  );
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
     setSnapshot(next);
     writeSnapshot(next);
+
+    try {
+      const raw = window.localStorage.getItem(INTERFACE_PREFERENCES_STORAGE_KEY);
+      setPreferences(
+        sanitizeInterfacePreferences(raw ? JSON.parse(raw) : null)
+      );
+    } catch {
+      setPreferences(defaultInterfacePreferences());
+    }
   }, [pathname]);
 
   useEffect(() => {
@@ -79,6 +99,16 @@ export function NavigationInsights() {
   const recommendations = useMemo(
     () => personalizedInterfaceRecommendations(snapshot, pathname, 6),
     [pathname, snapshot]
+  );
+  const visibleRecommendations = useMemo(
+    () =>
+      recommendations.filter((recommendation) =>
+        recommendationPreferenceAllowsKind(
+          preferences.recommendations,
+          recommendation.kind
+        )
+      ),
+    [preferences.recommendations, recommendations]
   );
 
   const openInsights = useCallback(() => {
@@ -116,6 +146,45 @@ export function NavigationInsights() {
     }
   }
 
+  function updatePreferences(next: Partial<InterfacePreferences>) {
+    const sanitized = sanitizeInterfacePreferences({
+      ...preferences,
+      ...next,
+      version: 1
+    });
+    setPreferences(sanitized);
+
+    try {
+      window.localStorage.setItem(
+        INTERFACE_PREFERENCES_STORAGE_KEY,
+        JSON.stringify(sanitized)
+      );
+    } catch {
+      // Browser-local preferences are optional.
+    }
+
+    window.dispatchEvent(
+      new CustomEvent(INTERFACE_PREFERENCES_EVENT, {
+        detail: { preferences: sanitized }
+      })
+    );
+  }
+
+  function resetInterfacePreferences() {
+    const defaults = defaultInterfacePreferences();
+    setPreferences(defaults);
+    try {
+      window.localStorage.removeItem(INTERFACE_PREFERENCES_STORAGE_KEY);
+    } catch {
+      // Browser-local preferences are optional.
+    }
+    window.dispatchEvent(
+      new CustomEvent(INTERFACE_PREFERENCES_EVENT, {
+        detail: { preferences: defaults }
+      })
+    );
+  }
+
   return (
     <>
       <button
@@ -144,7 +213,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 125 · Local navigation intelligence</p>
+                <p className="eyebrow">Build 126 · Adaptive interface preferences</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -162,6 +231,80 @@ export function NavigationInsights() {
                 </button>
               </div>
             </header>
+
+            <section className="interfacePreferencePanel" aria-labelledby="interface-preferences-heading">
+              <div className="navigationInsightsSectionHeading">
+                <div>
+                  <p className="eyebrow">Role-neutral browser preferences</p>
+                  <h3 id="interface-preferences-heading">Interface preferences</h3>
+                </div>
+                <HelpInfo topic="adaptive-navigation-density" inline />
+              </div>
+
+              <div className="interfacePreferenceGrid">
+                <fieldset>
+                  <legend>Navigation density</legend>
+                  <div className="interfacePreferenceChoices">
+                    {(["adaptive", "comfortable", "compact"] as const).map((value) => (
+                      <button
+                        type="button"
+                        className={preferences.navigationDensity === value ? "active" : ""}
+                        aria-pressed={preferences.navigationDensity === value}
+                        onClick={() => updatePreferences({ navigationDensity: value })}
+                        key={value}
+                      >
+                        {value === "adaptive" ? "Adaptive" : value === "comfortable" ? "Comfortable" : "Compact"}
+                      </button>
+                    ))}
+                  </div>
+                  <small>Adaptive responds only to viewport width.</small>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Workspace layout</legend>
+                  <div className="interfacePreferenceChoices">
+                    {(["balanced", "wide", "focused"] as const).map((value) => (
+                      <button
+                        type="button"
+                        className={preferences.workspaceLayout === value ? "active" : ""}
+                        aria-pressed={preferences.workspaceLayout === value}
+                        onClick={() => updatePreferences({ workspaceLayout: value })}
+                        key={value}
+                      >
+                        {value === "balanced" ? "Balanced" : value === "wide" ? "Wide" : "Focused"}
+                      </button>
+                    ))}
+                  </div>
+                  <small>No role, permission or job-function inference is used.</small>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Recommendations</legend>
+                  <div className="interfacePreferenceChoices">
+                    {(["all", "destinations", "shortcuts", "off"] as const).map((value) => (
+                      <button
+                        type="button"
+                        className={preferences.recommendations === value ? "active" : ""}
+                        aria-pressed={preferences.recommendations === value}
+                        onClick={() => updatePreferences({ recommendations: value })}
+                        key={value}
+                      >
+                        {value === "all" ? "All" : value === "destinations" ? "Destinations" : value === "shortcuts" ? "Shortcuts" : "Off"}
+                      </button>
+                    ))}
+                  </div>
+                  <small>Controls what appears in Suggested for you.</small>
+                </fieldset>
+              </div>
+
+              <div className="interfacePreferenceActions">
+                <HelpInfo topic="workspace-layout-preferences" inline />
+                <HelpInfo topic="recommendation-controls" inline />
+                <button type="button" onClick={resetInterfacePreferences}>
+                  Reset interface preferences
+                </button>
+              </div>
+            </section>
 
             <div className="navigationInsightMetrics" aria-label="Local navigation usage summary">
               <article><strong>{totals.totalVisits}</strong><span>Registered visits</span></article>
@@ -195,7 +338,7 @@ export function NavigationInsights() {
                   <HelpInfo topic="personalized-interface-recommendations" inline />
                 </div>
                 <div className="interfaceRecommendationList">
-                  {recommendations.map((recommendation) =>
+                  {visibleRecommendations.map((recommendation) =>
                     recommendation.kind === "destination" ? (
                       <Link href={recommendation.href} onClick={closeInsights} key={recommendation.id}>
                         <span><strong>{recommendation.label}</strong><small>{recommendation.description}</small></span>
@@ -208,6 +351,11 @@ export function NavigationInsights() {
                       </article>
                     )
                   )}
+                  {!visibleRecommendations.length ? (
+                    <div className="interfaceRecommendationEmpty">
+                      Recommendations are hidden by your local interface preference.
+                    </div>
+                  ) : null}
                 </div>
               </section>
             </div>

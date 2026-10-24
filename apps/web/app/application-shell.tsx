@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { InterfacePreferenceController } from "@/app/InterfacePreferenceController";
 import { NavigationAssist } from "@/app/NavigationAssist";
 import { NavigationInsights } from "@/app/NavigationInsights";
 import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
@@ -52,6 +53,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="applicationFrame">
+      <InterfacePreferenceController />
       <a className="skipToContent" href="#application-main-content">Skip to main content</a>
       <aside className="applicationSidebar" aria-label="Primary application navigation">
         <div className="applicationBrand">
@@ -117,7 +119,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 125 · Marble Standard</span>
+          <span>Build 126 · Marble Standard</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>

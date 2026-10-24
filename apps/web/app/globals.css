@@ -5320,3 +5320,158 @@ h3 {
   .interfaceRecommendationList em { text-align: left; }
   .navigationInsightsFooter { align-items: flex-start; flex-direction: column; }
 }
+
+
+/* Build 126 — Adaptive Navigation Density, Role-Neutral Workspace Layout Preferences & Interface Recommendation Controls */
+.interfacePreferencePanel {
+  display: grid;
+  gap: 0.85rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.09));
+  border-radius: .85rem;
+  background: var(--marble-inset, rgba(255,255,255,.025));
+  padding: .95rem;
+}
+
+.interfacePreferenceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.interfacePreferenceGrid fieldset {
+  min-width: 0;
+  display: grid;
+  gap: .55rem;
+  margin: 0;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .7rem;
+  padding: .75rem;
+}
+
+.interfacePreferenceGrid legend {
+  padding: 0 .25rem;
+  color: var(--theme-text, #edf6f7);
+  font-size: .78rem;
+  font-weight: 850;
+}
+
+.interfacePreferenceGrid small,
+.interfaceRecommendationEmpty {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
+.interfacePreferenceChoices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.interfacePreferenceChoices button,
+.interfacePreferenceActions > button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .55rem;
+  background: rgba(255,255,255,.025);
+  color: var(--theme-text-muted, #91a5a8);
+  padding: .42rem .58rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: .72rem;
+}
+
+.interfacePreferenceChoices button:hover,
+.interfacePreferenceChoices button:focus-visible,
+.interfacePreferenceChoices button.active,
+.interfacePreferenceActions > button:hover,
+.interfacePreferenceActions > button:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+  color: var(--theme-text, #edf6f7);
+}
+
+.interfacePreferenceChoices button.active {
+  background: rgba(125,226,216,.08);
+}
+
+.interfacePreferenceActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .45rem;
+}
+
+.interfacePreferenceActions > button {
+  margin-left: auto;
+}
+
+.interfaceRecommendationEmpty {
+  border: 1px dashed var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .65rem;
+  padding: .8rem;
+}
+
+/* Resolved density is set by the Build 126 browser-local controller. */
+html[data-navigation-density="compact"] .applicationFrame {
+  grid-template-columns: 258px minmax(0, 1fr);
+}
+
+html[data-navigation-density="compact"] .applicationSidebar {
+  padding: .72rem;
+}
+
+html[data-navigation-density="compact"] .applicationBrand {
+  padding-bottom: .7rem;
+}
+
+html[data-navigation-density="compact"] .applicationNavLink,
+html[data-navigation-density="compact"] .applicationNavHubLink {
+  padding: .5rem .58rem;
+}
+
+html[data-navigation-density="compact"] .applicationTopbar {
+  min-height: 56px;
+  padding-block: .5rem;
+}
+
+html[data-navigation-density="compact"] .applicationTopbarActions {
+  gap: .55rem;
+}
+
+html[data-navigation-density="comfortable"] .applicationFrame {
+  grid-template-columns: 292px minmax(0, 1fr);
+}
+
+/* Role-neutral workspace layout options. */
+html[data-workspace-layout="wide"] .applicationFrame {
+  grid-template-columns: 248px minmax(0, 1fr);
+}
+
+html[data-workspace-layout="wide"] .applicationTopbar {
+  padding-inline: clamp(.9rem, 2vw, 1.6rem);
+}
+
+html[data-workspace-layout="focused"] .applicationPage {
+  width: min(1180px, 100%);
+  margin-inline: auto;
+}
+
+html[data-workspace-layout="focused"] .applicationTopbar {
+  padding-inline: clamp(1rem, 4vw, 3rem);
+}
+
+@media (max-width: 900px) {
+  .interfacePreferenceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .interfacePreferenceActions > button {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  html[data-navigation-density="compact"] .applicationFrame,
+  html[data-navigation-density="comfortable"] .applicationFrame,
+  html[data-workspace-layout="wide"] .applicationFrame {
+    grid-template-columns: 1fr;
+  }
+}
