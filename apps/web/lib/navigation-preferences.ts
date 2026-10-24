@@ -440,10 +440,10 @@ export function createNamedInterfacePreferenceProfile(input: {
   if (!id) throw new Error("Named interface profile ID is required.");
   if (!name) throw new Error("Named interface profile name is required.");
 
-  const provenance =
+  const provenance: InterfacePreferenceProfileProvenance =
     input.provenance?.kind === "imported"
       ? {
-          kind: "imported" as const,
+          kind: "imported",
           sourceName: sanitizePreferenceProfileSourceName(
             input.provenance.sourceName
           ),
