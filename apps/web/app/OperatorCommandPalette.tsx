@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { HelpInfo } from "@/app/help/HelpInfo";
+import { NAVIGATION_USAGE_EVENT } from "@/lib/navigation-insights";
 import {
   type SavedOperatorNavigationSet,
   operatorCommandTargetByHref,
@@ -174,6 +175,15 @@ export function OperatorCommandPalette() {
     setActiveIndex(0);
   }, []);
 
+  const openPalette = useCallback(() => {
+    window.dispatchEvent(
+      new CustomEvent(NAVIGATION_USAGE_EVENT, {
+        detail: { shortcutId: "command-palette" }
+      })
+    );
+    setOpen(true);
+  }, []);
+
   const navigate = useCallback(
     (href: string) => {
       router.push(href);
@@ -187,13 +197,13 @@ export function OperatorCommandPalette() {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         if (open) closePalette();
-        else setOpen(true);
+        else openPalette();
       }
     }
 
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [closePalette, open]);
+  }, [closePalette, open, openPalette]);
 
   useEffect(() => {
     if (!open) return;
@@ -284,7 +294,7 @@ export function OperatorCommandPalette() {
       <button
         className="commandPaletteTrigger"
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={openPalette}
         aria-haspopup="dialog"
         aria-expanded={open}
       >

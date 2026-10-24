@@ -1595,6 +1595,48 @@ export const HELP_TOPICS = {
       "Reduced-motion preferences and existing semantic status text remain authoritative presentation requirements."
     ]
   },
+  "navigation-usage-insights": {
+    title: "Navigation usage insights",
+    summary: "Build 125 keeps bounded aggregate counts of registered destination visits and navigation-shortcut opens in this browser so interface guidance can adapt without server-side profiling.",
+    steps: [
+      "Open Insights from the application top bar.",
+      "Review registered visits, distinct registered destinations and navigation-shortcut opens.",
+      "Use the shortcut and recommendation sections to identify navigation features that may save time.",
+      "Choose Reset local insights at any time to clear the browser-local aggregate counts."
+    ],
+    notes: [
+      "Build 125 stores no timestamps, search terms, business records, approval outcomes or workflow evidence.",
+      "Insights are not synchronized to the account, workspace, database, analytics service or another device."
+    ]
+  },
+  "shortcut-discoverability-metrics": {
+    title: "Shortcut discoverability metrics",
+    summary: "Build 125 counts opens of the command palette and keyboard action map to show whether those navigation aids are unused, being explored or established in this browser.",
+    steps: [
+      "Open Insights and review Shortcut metrics.",
+      "Use Ctrl/Command+K to open the command palette when cross-module navigation is useful.",
+      "Use Shift+? to open the keyboard action map when shortcut or accessibility guidance is useful.",
+      "Reopen Insights to see the bounded local usage counts update."
+    ],
+    notes: [
+      "The metrics count only shortcut-guide opens, not search text, selected results or workflow actions.",
+      "Discoverability levels are descriptive interface guidance and never affect permissions or application state."
+    ]
+  },
+  "personalized-interface-recommendations": {
+    title: "Personalized interface recommendations",
+    summary: "Build 125 ranks previously visited registered destinations and underused navigation shortcuts locally to produce small, explainable interface recommendations.",
+    steps: [
+      "Open Insights and review Suggested for you.",
+      "Use destination recommendations to return to registered screens used in this browser.",
+      "Use shortcut recommendations when a navigation aid has not yet been tried locally.",
+      "Reset local insights when you want recommendations to start from an empty browser-local baseline."
+    ],
+    notes: [
+      "Recommendations are derived only from bounded aggregate visit and shortcut counts plus the current registered route.",
+      "A recommendation is navigation guidance only; it never predicts business outcomes, changes workflow eligibility or bypasses RLS."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1681,6 +1723,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 125 navigation insights, shortcut metrics & interface recommendations",
+    topics: ["navigation-usage-insights", "shortcut-discoverability-metrics", "personalized-interface-recommendations"]
   },
   {
     title: "Build 124 keyboard action map, context jumps & navigation accessibility",
