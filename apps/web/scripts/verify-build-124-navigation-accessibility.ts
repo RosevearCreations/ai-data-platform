@@ -35,7 +35,7 @@ async function main() {
     "dialog-focus",
     "editable-guard",
     "navigation-only"
-  ]) {
+  ] as const) {
     assert(auditIds.includes(id), "Build 124 accessibility audit item missing: " + id);
   }
 
