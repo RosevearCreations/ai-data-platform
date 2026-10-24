@@ -5475,3 +5475,130 @@ html[data-workspace-layout="focused"] .applicationTopbar {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 127 — Interface Preference Presets, Accessibility-Safe Preference Reconciliation & Operator Reset Governance */
+.interfacePresetSection,
+.interfaceReconciliationStatus,
+.interfaceResetGovernance {
+  display: grid;
+  gap: .65rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .75rem;
+  background: rgba(255,255,255,.018);
+  padding: .8rem;
+}
+
+.interfacePresetHeading,
+.interfaceReconciliationStatus > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.interfacePresetHeading > div,
+.interfaceReconciliationStatus > div:first-child {
+  min-width: 0;
+}
+
+.interfacePresetHeading > div {
+  display: grid;
+  gap: .16rem;
+}
+
+.interfacePresetHeading span,
+.interfaceReconciliationStatus p,
+.interfaceReconciliationStatus li,
+.interfaceReconciliationStatus small {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
+.interfacePresetGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .5rem;
+}
+
+.interfacePresetGrid button,
+.interfaceResetChoices button {
+  min-width: 0;
+  display: grid;
+  gap: .18rem;
+  text-align: left;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .65rem;
+  background: rgba(255,255,255,.02);
+  color: var(--theme-text, #edf6f7);
+  padding: .68rem .7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.interfacePresetGrid button span,
+.interfaceResetChoices button span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .69rem;
+  line-height: 1.4;
+}
+
+.interfacePresetGrid button:hover,
+.interfacePresetGrid button:focus-visible,
+.interfacePresetGrid button.active,
+.interfaceResetChoices button:hover,
+.interfaceResetChoices button:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+}
+
+.interfacePresetGrid button.active {
+  background: rgba(125,226,216,.08);
+}
+
+.interfaceReconciliationStatus ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+html[data-preference-reconciled="true"] .interfaceReconciliationStatus {
+  border-color: rgba(125,226,216,.3);
+  background: rgba(125,226,216,.045);
+}
+
+.interfaceResetChoices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+}
+
+.interfaceResetChoices button.armed {
+  border-color: rgba(255,190,120,.7);
+  background: rgba(255,190,120,.08);
+}
+
+html[data-reduced-motion="true"] .interfacePresetGrid button,
+html[data-reduced-motion="true"] .interfacePreferenceChoices button,
+html[data-reduced-motion="true"] .interfaceResetChoices button,
+html[data-reduced-motion="true"] .navigationInsightsDialog {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto;
+}
+
+@media (forced-colors: active) {
+  .interfacePresetGrid button.active,
+  .interfacePreferenceChoices button.active,
+  .interfaceResetChoices button.armed,
+  .interfaceReconciliationStatus {
+    forced-color-adjust: auto;
+    border: 2px solid ButtonText;
+  }
+}
+
+@media (max-width: 900px) {
+  .interfacePresetGrid,
+  .interfaceResetChoices {
+    grid-template-columns: 1fr;
+  }
+}

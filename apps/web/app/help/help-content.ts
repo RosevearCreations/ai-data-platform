@@ -1680,6 +1680,49 @@ export const HELP_TOPICS = {
       "Recommendation controls are stored only in this browser and never alter RLS or permission checks."
     ]
   },
+  "interface-preference-presets": {
+    title: "Interface preference presets",
+    summary: "Build 127 provides named browser-local presets that apply known combinations of density, layout and recommendation visibility without changing workflow permissions or saved business state.",
+    steps: [
+      "Open Insights and find Preference presets.",
+      "Choose Standard, Focus, Wide Canvas or Compact Workspace.",
+      "Fine-tune any individual preference after applying a preset.",
+      "A preset is highlighted only while the current preferences still match that preset exactly."
+    ],
+    notes: [
+      "Presets write only the existing browser-local interface preference object.",
+      "Accessibility reconciliation may temporarily adjust the effective shell without rewriting the selected preset values."
+    ]
+  },
+  "accessibility-preference-reconciliation": {
+    title: "Accessibility-safe preference reconciliation",
+    summary: "Build 127 separates stored preferences from effective shell preferences so accessibility safeguards can temporarily reconcile presentation choices without deleting the operator's saved values.",
+    steps: [
+      "Choose any interface preset or individual preference.",
+      "The shared shell evaluates viewport width, forced colors, increased contrast and reduced-motion preferences.",
+      "When a safeguard is needed, Insights lists the effective adjustment.",
+      "When the environment no longer requires the safeguard, the stored browser preference becomes effective again automatically."
+    ],
+    notes: [
+      "High-contrast display preferences prevent Compact density and Wide layout from remaining effective.",
+      "Narrow viewports reconcile non-Balanced layouts to Balanced.",
+      "Reduced-motion preference suppresses preference-interface transitions without modifying stored density, layout or recommendation choices."
+    ]
+  },
+  "operator-reset-governance": {
+    title: "Operator reset governance",
+    summary: "Build 127 makes local reset scope explicit so interface preferences and navigation insights can be cleared independently, while the full local reset requires a second deliberate activation.",
+    steps: [
+      "Use Interface only to restore Adaptive, Balanced and All while keeping navigation insights.",
+      "Use Insights only to clear local navigation counts while keeping interface preferences.",
+      "Choose All local navigation data once to arm the full reset.",
+      "Activate Confirm full local reset to clear both local preference and insight storage."
+    ],
+    notes: [
+      "All reset actions affect only this browser.",
+      "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
+    ]
+  },
   "appearance-design-system": {
     title: "Marble Standard appearance & design system",
     summary: "Build 118 establishes Marble Standard as the active visual foundation: deep charcoal stone, restrained pale veining, translucent depth and teal operational accents backed by reusable theme tokens.",
@@ -1766,6 +1809,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 127 preference presets, accessibility reconciliation & reset governance",
+    topics: ["interface-preference-presets", "accessibility-preference-reconciliation", "operator-reset-governance"]
   },
   {
     title: "Build 126 adaptive density, role-neutral layout & recommendation controls",

@@ -19,11 +19,18 @@ import {
   type NavigationUsageSnapshot
 } from "@/lib/navigation-insights";
 import {
+  INTERFACE_PREFERENCE_PRESETS,
   INTERFACE_PREFERENCES_EVENT,
+  INTERFACE_PREFERENCES_RECONCILED_EVENT,
   INTERFACE_PREFERENCES_STORAGE_KEY,
+  INTERFACE_RESET_GOVERNANCE,
+  applyInterfacePreferencePreset,
   defaultInterfacePreferences,
+  matchingInterfacePreferencePreset,
   recommendationPreferenceAllowsKind,
   sanitizeInterfacePreferences,
+  type InterfacePreferencePresetId,
+  type InterfacePreferenceReconciliation,
   type InterfacePreferences
 } from "@/lib/navigation-preferences";
 
@@ -58,6 +65,9 @@ export function NavigationInsights() {
   const [preferences, setPreferences] = useState<InterfacePreferences>(
     defaultInterfacePreferences
   );
+  const [reconciliation, setReconciliation] =
+    useState<InterfacePreferenceReconciliation | null>(null);
+  const [resetAllArmed, setResetAllArmed] = useState(false);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -91,6 +101,26 @@ export function NavigationInsights() {
     return () => window.removeEventListener(NAVIGATION_USAGE_EVENT, handleUsage);
   }, []);
 
+  useEffect(() => {
+    function handleReconciliation(event: Event) {
+      const detail = (
+        event as CustomEvent<InterfacePreferenceReconciliation>
+      ).detail;
+      if (!detail?.effectivePreferences) return;
+      setReconciliation(detail);
+    }
+
+    window.addEventListener(
+      INTERFACE_PREFERENCES_RECONCILED_EVENT,
+      handleReconciliation
+    );
+    return () =>
+      window.removeEventListener(
+        INTERFACE_PREFERENCES_RECONCILED_EVENT,
+        handleReconciliation
+      );
+  }, []);
+
   const totals = useMemo(() => navigationUsageTotals(snapshot), [snapshot]);
   const shortcutMetrics = useMemo(
     () => shortcutDiscoverabilityMetrics(snapshot),
@@ -110,12 +140,21 @@ export function NavigationInsights() {
       ),
     [preferences.recommendations, recommendations]
   );
+  const activePreset = useMemo(
+    () => matchingInterfacePreferencePreset(preferences),
+    [preferences]
+  );
 
   const openInsights = useCallback(() => {
     previousFocusRef.current =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpen(true);
-  }, []);
+    window.dispatchEvent(
+      new CustomEvent(INTERFACE_PREFERENCES_EVENT, {
+        detail: { preferences }
+      })
+    );
+  }, [preferences]);
 
   const closeInsights = useCallback(() => {
     setOpen(false);
@@ -139,6 +178,7 @@ export function NavigationInsights() {
   function resetLocalInsights() {
     const empty = emptyNavigationUsageSnapshot();
     setSnapshot(empty);
+    setResetAllArmed(false);
     try {
       window.localStorage.removeItem(NAVIGATION_INSIGHTS_STORAGE_KEY);
     } catch {
@@ -153,6 +193,7 @@ export function NavigationInsights() {
       version: 1
     });
     setPreferences(sanitized);
+    setResetAllArmed(false);
 
     try {
       window.localStorage.setItem(
@@ -173,11 +214,42 @@ export function NavigationInsights() {
   function resetInterfacePreferences() {
     const defaults = defaultInterfacePreferences();
     setPreferences(defaults);
+    setResetAllArmed(false);
     try {
       window.localStorage.removeItem(INTERFACE_PREFERENCES_STORAGE_KEY);
     } catch {
       // Browser-local preferences are optional.
     }
+    window.dispatchEvent(
+      new CustomEvent(INTERFACE_PREFERENCES_EVENT, {
+        detail: { preferences: defaults }
+      })
+    );
+  }
+
+  function applyPreset(id: InterfacePreferencePresetId) {
+    updatePreferences(applyInterfacePreferencePreset(id));
+  }
+
+  function resetAllLocalNavigationData() {
+    if (!resetAllArmed) {
+      setResetAllArmed(true);
+      return;
+    }
+
+    const defaults = defaultInterfacePreferences();
+    const empty = emptyNavigationUsageSnapshot();
+    setPreferences(defaults);
+    setSnapshot(empty);
+    setResetAllArmed(false);
+
+    try {
+      window.localStorage.removeItem(INTERFACE_PREFERENCES_STORAGE_KEY);
+      window.localStorage.removeItem(NAVIGATION_INSIGHTS_STORAGE_KEY);
+    } catch {
+      // Browser-local state is optional.
+    }
+
     window.dispatchEvent(
       new CustomEvent(INTERFACE_PREFERENCES_EVENT, {
         detail: { preferences: defaults }
@@ -213,7 +285,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 126 · Adaptive interface preferences</p>
+                <p className="eyebrow">Build 127 · Preference presets & reset governance</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -238,8 +310,32 @@ export function NavigationInsights() {
                   <p className="eyebrow">Role-neutral browser preferences</p>
                   <h3 id="interface-preferences-heading">Interface preferences</h3>
                 </div>
-                <HelpInfo topic="adaptive-navigation-density" inline />
+                <HelpInfo topic="interface-preference-presets" inline />
               </div>
+
+              <section className="interfacePresetSection" aria-labelledby="interface-preset-heading">
+                <div className="interfacePresetHeading">
+                  <div>
+                    <strong id="interface-preset-heading">Preference presets</strong>
+                    <span>Apply a known browser-local combination, then fine-tune any setting below.</span>
+                  </div>
+                  <HelpInfo topic="interface-preference-presets" inline />
+                </div>
+                <div className="interfacePresetGrid">
+                  {INTERFACE_PREFERENCE_PRESETS.map((preset) => (
+                    <button
+                      type="button"
+                      className={activePreset?.id === preset.id ? "active" : ""}
+                      aria-pressed={activePreset?.id === preset.id}
+                      onClick={() => applyPreset(preset.id)}
+                      key={preset.id}
+                    >
+                      <strong>{preset.label}</strong>
+                      <span>{preset.description}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
 
               <div className="interfacePreferenceGrid">
                 <fieldset>
@@ -297,13 +393,57 @@ export function NavigationInsights() {
                 </fieldset>
               </div>
 
-              <div className="interfacePreferenceActions">
-                <HelpInfo topic="workspace-layout-preferences" inline />
-                <HelpInfo topic="recommendation-controls" inline />
-                <button type="button" onClick={resetInterfacePreferences}>
-                  Reset interface preferences
-                </button>
-              </div>
+              <section className="interfaceReconciliationStatus" aria-live="polite">
+                <div>
+                  <strong>Accessibility-safe reconciliation</strong>
+                  <HelpInfo topic="accessibility-preference-reconciliation" inline />
+                </div>
+                {reconciliation?.accessibilityGuardActive ? (
+                  <ul>
+                    {reconciliation.adjustments.map((adjustment) => (
+                      <li key={adjustment}>{adjustment}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No accessibility reconciliation is currently required. Stored preferences are active as selected.</p>
+                )}
+                <small>Accessibility safeguards can temporarily change the effective shell without rewriting your saved preference.</small>
+              </section>
+
+              <section className="interfaceResetGovernance" aria-labelledby="reset-governance-heading">
+                <div className="interfacePresetHeading">
+                  <div>
+                    <strong id="reset-governance-heading">Operator reset governance</strong>
+                    <span>Choose the reset scope deliberately. Full reset requires a second activation.</span>
+                  </div>
+                  <HelpInfo topic="operator-reset-governance" inline />
+                </div>
+                <div className="interfaceResetChoices">
+                  <button type="button" onClick={resetInterfacePreferences}>
+                    <strong>{INTERFACE_RESET_GOVERNANCE.preferences.label}</strong>
+                    <span>{INTERFACE_RESET_GOVERNANCE.preferences.description}</span>
+                  </button>
+                  <button type="button" onClick={resetLocalInsights}>
+                    <strong>{INTERFACE_RESET_GOVERNANCE.insights.label}</strong>
+                    <span>{INTERFACE_RESET_GOVERNANCE.insights.description}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={resetAllArmed ? "armed" : ""}
+                    onClick={resetAllLocalNavigationData}
+                    aria-pressed={resetAllArmed}
+                  >
+                    <strong>
+                      {resetAllArmed ? "Confirm full local reset" : INTERFACE_RESET_GOVERNANCE.all.label}
+                    </strong>
+                    <span>
+                      {resetAllArmed
+                        ? "Activate once more to clear preferences and insights in this browser."
+                        : INTERFACE_RESET_GOVERNANCE.all.description}
+                    </span>
+                  </button>
+                </div>
+              </section>
             </section>
 
             <div className="navigationInsightMetrics" aria-label="Local navigation usage summary">
@@ -361,8 +501,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local aggregate counts only · navigation recommendations never change workflow authority.</span>
-              <button type="button" onClick={resetLocalInsights}>Reset local insights</button>
+              <span>Browser-local preferences and insights only · accessibility reconciliation never changes workflow authority.</span>
             </footer>
           </section>
         </div>
