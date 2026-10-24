@@ -984,3 +984,153 @@ export function resolveInterfacePreferenceBundleImport(
     renamedCopies
   };
 }
+
+export type NamedInterfacePreferenceMoveDirection =
+  | "up"
+  | "down"
+  | "top"
+  | "bottom";
+
+export function reorderNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  id: string,
+  direction: NamedInterfacePreferenceMoveDirection
+) {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  const safeId = sanitizeNamedInterfacePreferenceId(id);
+  const index = safe.findIndex((profile) => profile.id === safeId);
+  if (index < 0 || safe.length < 2) return safe;
+
+  let targetIndex = index;
+  if (direction === "up") targetIndex = Math.max(0, index - 1);
+  if (direction === "down") targetIndex = Math.min(safe.length - 1, index + 1);
+  if (direction === "top") targetIndex = 0;
+  if (direction === "bottom") targetIndex = safe.length - 1;
+  if (targetIndex === index) return safe;
+
+  const next = safe.slice();
+  const [profile] = next.splice(index, 1);
+  next.splice(targetIndex, 0, profile);
+  return next;
+}
+
+export function selectInterfacePreferenceBundleProfiles(
+  bundle: InterfacePreferenceBundleV1,
+  selectedNames: string[]
+): InterfacePreferenceBundleV1 {
+  const selected = new Set(
+    selectedNames
+      .map((name) => sanitizeNamedInterfacePreferenceName(name))
+      .filter(Boolean)
+      .map((name) => normalizedNamedProfileKey(name))
+  );
+
+  return {
+    format: INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+    version: 1,
+    profiles: bundle.profiles.filter((profile) =>
+      selected.has(normalizedNamedProfileKey(profile.name))
+    )
+  };
+}
+
+export const INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT =
+  "ai-data-platform-interface-preference-recovery-snapshot";
+export const INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY =
+  "ai-data-platform:interface-preference-recovery-snapshot:v1";
+
+export type InterfacePreferenceRecoverySnapshotV1 = {
+  format: typeof INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT;
+  version: 1;
+  preferences: InterfacePreferences;
+  namedProfiles: NamedInterfacePreferenceProfile[];
+};
+
+export type InterfacePreferenceRecoverySnapshotParseResult =
+  | { ok: true; snapshot: InterfacePreferenceRecoverySnapshotV1 }
+  | { ok: false; error: string };
+
+export function createInterfacePreferenceRecoverySnapshot(
+  preferences: InterfacePreferences,
+  namedProfiles: NamedInterfacePreferenceProfile[]
+): InterfacePreferenceRecoverySnapshotV1 {
+  return {
+    format: INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT,
+    version: 1,
+    preferences: sanitizeInterfacePreferences(preferences),
+    namedProfiles: sanitizeNamedInterfacePreferenceProfiles(namedProfiles)
+  };
+}
+
+export function serializeInterfacePreferenceRecoverySnapshot(
+  preferences: InterfacePreferences,
+  namedProfiles: NamedInterfacePreferenceProfile[]
+) {
+  return JSON.stringify(
+    createInterfacePreferenceRecoverySnapshot(preferences, namedProfiles)
+  );
+}
+
+export function parseInterfacePreferenceRecoverySnapshot(
+  input: unknown
+): InterfacePreferenceRecoverySnapshotParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return { ok: false, error: "The local recovery snapshot is not valid JSON." };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "The local recovery snapshot is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (record.format !== INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT) {
+    return {
+      ok: false,
+      error: "The local recovery snapshot format is not supported."
+    };
+  }
+  if (record.version !== 1) {
+    return {
+      ok: false,
+      error: "The local recovery snapshot version is not supported."
+    };
+  }
+  if (!isPortableInterfacePreferences(record.preferences)) {
+    return {
+      ok: false,
+      error: "The local recovery snapshot has invalid interface preferences."
+    };
+  }
+  if (!Array.isArray(record.namedProfiles)) {
+    return {
+      ok: false,
+      error: "The local recovery snapshot has invalid named profiles."
+    };
+  }
+
+  const namedProfiles = sanitizeNamedInterfacePreferenceProfiles(
+    record.namedProfiles
+  );
+  if (namedProfiles.length !== record.namedProfiles.length) {
+    return {
+      ok: false,
+      error: "The local recovery snapshot contains invalid or duplicate named profiles."
+    };
+  }
+
+  return {
+    ok: true,
+    snapshot: createInterfacePreferenceRecoverySnapshot(
+      record.preferences,
+      namedProfiles
+    )
+  };
+}
