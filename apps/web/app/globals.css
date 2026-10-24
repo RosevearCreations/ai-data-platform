@@ -5715,3 +5715,162 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 129 — Named Local Preference Profiles, Quick Switcher & Import Provenance */
+.interfaceNamedProfilesSection {
+  display: grid;
+  gap: .7rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .75rem;
+  background: rgba(255,255,255,.018);
+  padding: .8rem;
+}
+
+.interfaceNamedProfileSave {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .55rem;
+  align-items: end;
+}
+
+.interfaceNamedProfileSave label {
+  display: grid;
+  gap: .28rem;
+}
+
+.interfaceNamedProfileSave label > span,
+.interfaceQuickSwitcher strong,
+.interfaceImportProvenance strong {
+  font-size: .72rem;
+}
+
+.interfaceNamedProfileSave input,
+.interfaceQuickSwitcher select {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .58rem;
+  background: rgba(0,0,0,.16);
+  color: var(--theme-text, #edf6f7);
+  padding: .58rem .65rem;
+  font: inherit;
+}
+
+.interfaceNamedProfileSave button,
+.interfaceQuickSwitcher button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .58rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .58rem .7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.interfaceNamedProfileSave button:hover,
+.interfaceNamedProfileSave button:focus-visible,
+.interfaceQuickSwitcher button:hover,
+.interfaceQuickSwitcher button:focus-visible {
+  border-color: var(--theme-accent, #7de2d8);
+}
+
+.interfaceQuickSwitcher {
+  display: grid;
+  grid-template-columns: minmax(8rem, .85fr) minmax(12rem, 1.6fr) auto auto;
+  gap: .5rem;
+  align-items: center;
+}
+
+.interfaceQuickSwitcher > div {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+}
+
+.interfaceQuickSwitcher button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.interfaceNamedProfileMatch {
+  margin: 0;
+  color: var(--theme-accent, #7de2d8);
+  font-size: .72rem;
+}
+
+.interfaceNamedProfileList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+}
+
+.interfaceNamedProfileList article {
+  display: grid;
+  gap: .35rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .62rem;
+  background: rgba(255,255,255,.015);
+  padding: .6rem;
+}
+
+.interfaceNamedProfileList article.active {
+  border-color: rgba(125,226,216,.5);
+  background: rgba(125,226,216,.055);
+}
+
+.interfaceNamedProfileList article > div {
+  display: grid;
+  gap: .12rem;
+}
+
+.interfaceNamedProfileList article span,
+.interfaceNamedProfileList article small,
+.interfaceNamedProfileList > p,
+.interfaceImportProvenance span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+  line-height: 1.4;
+}
+
+.interfaceNamedProfileList > p {
+  margin: 0;
+}
+
+.interfaceImportProvenance {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .55rem;
+  padding: .55rem;
+}
+
+@media (forced-colors: active) {
+  .interfaceNamedProfilesSection,
+  .interfaceNamedProfileList article,
+  .interfaceNamedProfileSave input,
+  .interfaceNamedProfileSave button,
+  .interfaceQuickSwitcher select,
+  .interfaceQuickSwitcher button,
+  .interfaceImportProvenance {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 900px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceNamedProfileList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .interfaceNamedProfileSave {
+    grid-template-columns: 1fr;
+  }
+}
