@@ -1368,3 +1368,104 @@ export function planInterfacePreferenceBundleImportCapacity(
     fitsWithoutCapacitySkips: projectedSkippedCapacity === 0
   };
 }
+
+export type NamedInterfacePreferenceQuickFilter = "all" | "favorites";
+
+export function filterNamedInterfacePreferenceProfiles(
+  profiles: NamedInterfacePreferenceProfile[],
+  filter: NamedInterfacePreferenceQuickFilter
+) {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  return filter === "favorites"
+    ? safe.filter((profile) => profile.favorite)
+    : safe;
+}
+
+export type InterfacePreferenceBundleImportOutcomeReconciliation = {
+  matchesPlan: boolean;
+  planned: {
+    added: number;
+    replaced: number;
+    skippedConflicts: number;
+    skippedCapacity: number;
+    finalCount: number;
+  };
+  actual: {
+    added: number;
+    replaced: number;
+    skippedConflicts: number;
+    skippedCapacity: number;
+    finalCount: number;
+  };
+  deviations: string[];
+};
+
+export function reconcileInterfacePreferenceBundleImportOutcome(
+  plan: InterfacePreferenceBundleCapacityPlan,
+  outcome: InterfacePreferenceBundleResolution
+): InterfacePreferenceBundleImportOutcomeReconciliation {
+  const planned = {
+    added: plan.projectedAdded,
+    replaced: plan.projectedReplaced,
+    skippedConflicts: plan.projectedSkippedConflicts,
+    skippedCapacity: plan.projectedSkippedCapacity,
+    finalCount: plan.projectedFinalCount
+  };
+  const actual = {
+    added: outcome.imported,
+    replaced: outcome.replaced,
+    skippedConflicts: outcome.skippedConflicts,
+    skippedCapacity: outcome.skippedCapacity,
+    finalCount: outcome.profiles.length
+  };
+  const deviations: string[] = [];
+
+  if (planned.added !== actual.added) {
+    deviations.push(
+      "Added profiles: planned " + planned.added + ", actual " + actual.added + "."
+    );
+  }
+  if (planned.replaced !== actual.replaced) {
+    deviations.push(
+      "Replacements: planned " +
+        planned.replaced +
+        ", actual " +
+        actual.replaced +
+        "."
+    );
+  }
+  if (planned.skippedConflicts !== actual.skippedConflicts) {
+    deviations.push(
+      "Conflict skips: planned " +
+        planned.skippedConflicts +
+        ", actual " +
+        actual.skippedConflicts +
+        "."
+    );
+  }
+  if (planned.skippedCapacity !== actual.skippedCapacity) {
+    deviations.push(
+      "Capacity skips: planned " +
+        planned.skippedCapacity +
+        ", actual " +
+        actual.skippedCapacity +
+        "."
+    );
+  }
+  if (planned.finalCount !== actual.finalCount) {
+    deviations.push(
+      "Final profile count: planned " +
+        planned.finalCount +
+        ", actual " +
+        actual.finalCount +
+        "."
+    );
+  }
+
+  return {
+    matchesPlan: deviations.length === 0,
+    planned,
+    actual,
+    deviations
+  };
+}
