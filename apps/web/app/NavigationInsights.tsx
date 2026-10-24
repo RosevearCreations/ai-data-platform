@@ -35,6 +35,7 @@ import {
   diffInterfacePreferenceRecoverySnapshot,
   duplicateNamedInterfacePreferenceProfile,
   favoriteNamedInterfacePreferenceProfiles,
+  filterNamedInterfacePreferenceProfiles,
   importedInterfacePreferenceProvenance,
   parseInterfacePreferenceBundle,
   parseInterfacePreferenceRecoverySnapshot,
@@ -45,6 +46,7 @@ import {
   parseInterfacePreferenceProfile,
   previewInterfacePreferenceProfile,
   recommendationPreferenceAllowsKind,
+  reconcileInterfacePreferenceBundleImportOutcome,
   removeNamedInterfacePreferenceProfile,
   renameNamedInterfacePreferenceProfile,
   reorderNamedInterfacePreferenceProfile,
@@ -60,13 +62,15 @@ import {
   suggestDuplicateNamedInterfacePreferenceName,
   upsertNamedInterfacePreferenceProfile,
   type InterfacePreferenceBundleConflictStrategy,
+  type InterfacePreferenceBundleImportOutcomeReconciliation,
   type InterfacePreferenceBundleV1,
   type InterfacePreferencePresetId,
   type InterfacePreferenceProfileProvenance,
   type InterfacePreferenceRecoverySnapshotV1,
   type InterfacePreferenceReconciliation,
   type InterfacePreferences,
-  type NamedInterfacePreferenceProfile
+  type NamedInterfacePreferenceProfile,
+  type NamedInterfacePreferenceQuickFilter
 } from "@/lib/navigation-preferences";
 
 function readSnapshot() {
@@ -168,6 +172,11 @@ export function NavigationInsights() {
   const [bundleSelectedNames, setBundleSelectedNames] = useState<string[]>([]);
   const [recoverySnapshot, setRecoverySnapshot] =
     useState<InterfacePreferenceRecoverySnapshotV1 | null>(null);
+  const [profileQuickFilter, setProfileQuickFilter] =
+    useState<NamedInterfacePreferenceQuickFilter>("all");
+  const [recoveryRestoreArmed, setRecoveryRestoreArmed] = useState(false);
+  const [bundleImportOutcome, setBundleImportOutcome] =
+    useState<InterfacePreferenceBundleImportOutcomeReconciliation | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -266,6 +275,14 @@ export function NavigationInsights() {
   const favoriteProfiles = useMemo(
     () => favoriteNamedInterfacePreferenceProfiles(namedProfiles),
     [namedProfiles]
+  );
+  const filteredNamedProfiles = useMemo(
+    () =>
+      filterNamedInterfacePreferenceProfiles(
+        namedProfiles,
+        profileQuickFilter
+      ),
+    [namedProfiles, profileQuickFilter]
   );
   const selectedBundlePreview = useMemo(
     () =>
@@ -407,6 +424,22 @@ export function NavigationInsights() {
     );
   }
 
+  function chooseProfileQuickFilter(
+    filter: NamedInterfacePreferenceQuickFilter
+  ) {
+    setProfileQuickFilter(filter);
+    const visible = filterNamedInterfacePreferenceProfiles(namedProfiles, filter);
+    if (!visible.some((profile) => profile.id === selectedProfileId)) {
+      setSelectedProfileId(visible[0]?.id ?? "");
+    }
+    setImportError(null);
+    setPortabilityStatus(
+      filter === "favorites"
+        ? "Showing favorite named profiles only."
+        : "Showing all named profiles."
+    );
+  }
+
   function moveSelectedNamedProfile(direction: "up" | "down" | "top" | "bottom") {
     if (!selectedNamedProfile) return;
     const reordered = reorderNamedInterfacePreferenceProfile(
@@ -436,6 +469,10 @@ export function NavigationInsights() {
     persistNamedProfiles(updated);
     setSelectedProfileId(selectedNamedProfile.id);
     setImportError(null);
+    if (profileQuickFilter === "favorites" && !nextFavorite) {
+      const remainingFavorite = updated.find((profile) => profile.favorite);
+      setSelectedProfileId(remainingFavorite?.id ?? "");
+    }
     setPortabilityStatus(
       (nextFavorite ? "Favorited “" : "Removed favorite from “") +
         selectedNamedProfile.name +
@@ -454,6 +491,7 @@ export function NavigationInsights() {
     }
     writeRecoverySnapshot(snapshot.snapshot);
     setRecoverySnapshot(snapshot.snapshot);
+    setRecoveryRestoreArmed(false);
     setImportError(null);
     setPortabilityStatus(message);
     return snapshot.snapshot;
@@ -461,15 +499,33 @@ export function NavigationInsights() {
 
   function restoreRecoverySnapshot() {
     if (!recoverySnapshot) return;
+    if (!recoveryRestoreArmed) {
+      setRecoveryRestoreArmed(true);
+      setImportError(null);
+      setPortabilityStatus(
+        recoveryDiff?.hasChanges
+          ? "Restore confirmation armed. Review the diff, then choose Confirm restore."
+          : "Restore confirmation armed. The snapshot currently matches this browser; confirm only if you still want to reapply it."
+      );
+      return;
+    }
+
     const nextPreferences = recoverySnapshot.preferences;
     const nextProfiles = recoverySnapshot.namedProfiles;
     persistNamedProfiles(nextProfiles);
     setSelectedProfileId(nextProfiles[0]?.id ?? "");
     updatePreferences(nextPreferences);
+    setRecoveryRestoreArmed(false);
     setImportError(null);
     setPortabilityStatus(
-      "Local recovery snapshot restored. Current preferences and named profile order were recovered."
+      "Local recovery snapshot restored after confirmation. Current preferences, favorites and named profile order were recovered."
     );
+  }
+
+  function cancelRecoveryRestore() {
+    setRecoveryRestoreArmed(false);
+    setImportError(null);
+    setPortabilityStatus("Recovery restore confirmation cancelled. Nothing changed.");
   }
 
   function clearRecoverySnapshot() {
@@ -481,6 +537,7 @@ export function NavigationInsights() {
       // Recovery snapshots are optional browser-local safety state.
     }
     setRecoverySnapshot(null);
+    setRecoveryRestoreArmed(false);
     setImportError(null);
     setPortabilityStatus("Local recovery snapshot cleared.");
   }
@@ -643,6 +700,7 @@ export function NavigationInsights() {
   async function stagePreferenceBundleImport(file?: File) {
     setImportError(null);
     setPortabilityStatus(null);
+    setBundleImportOutcome(null);
     setBundlePreview(null);
     setBundleSourceName("");
     setBundleSelectedNames([]);
@@ -678,6 +736,7 @@ export function NavigationInsights() {
       "Recovery snapshot saved before importing the selected bundle profiles."
     );
     let sequence = 0;
+    const plan = bundleCapacityPlan;
     const result = resolveInterfacePreferenceBundleImport(
       namedProfiles,
       selectedBundlePreview,
@@ -690,6 +749,10 @@ export function NavigationInsights() {
           : "bundle-" + index.toString(36) + "-" + sequence.toString(36) + "-" + Date.now().toString(36);
       }
     );
+    const outcome = plan
+      ? reconcileInterfacePreferenceBundleImportOutcome(plan, result)
+      : null;
+    setBundleImportOutcome(outcome);
     persistNamedProfiles(result.profiles);
     setBundlePreview(null);
     setBundleSourceName("");
@@ -706,7 +769,12 @@ export function NavigationInsights() {
         (result.skippedConflicts === 1 ? "" : "s") +
         " skipped, " +
         result.skippedCapacity +
-        " skipped for capacity."
+        " skipped for capacity." +
+        (outcome
+          ? outcome.matchesPlan
+            ? " Import outcome matched the capacity plan."
+            : " Import outcome differed from the capacity plan; review the reconciliation below."
+          : "")
     );
   }
 
@@ -845,7 +913,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 132 · Favorites, recovery diff & bundle capacity planning</p>
+                <p className="eyebrow">Build 133 · Favorite filters, restore confirmation & import reconciliation</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -995,6 +1063,31 @@ export function NavigationInsights() {
                   </button>
                 </div>
 
+                <div
+                  className="interfaceFavoriteQuickFilters"
+                  role="group"
+                  aria-label="Filter named preference profiles"
+                >
+                  <button
+                    type="button"
+                    aria-pressed={profileQuickFilter === "all"}
+                    onClick={() => chooseProfileQuickFilter("all")}
+                  >
+                    All profiles ({namedProfiles.length})
+                  </button>
+                  <button
+                    type="button"
+                    aria-pressed={profileQuickFilter === "favorites"}
+                    onClick={() => chooseProfileQuickFilter("favorites")}
+                  >
+                    ★ Favorites ({favoriteProfiles.length})
+                  </button>
+                  <span>
+                    Showing {filteredNamedProfiles.length} of {namedProfiles.length}
+                  </span>
+                  <HelpInfo topic="favorite-profile-quick-filters" inline />
+                </div>
+
                 <div className="interfaceQuickSwitcher">
                   <div>
                     <strong>Quick switcher</strong>
@@ -1006,7 +1099,7 @@ export function NavigationInsights() {
                     aria-label="Choose named local preference profile"
                   >
                     <option value="">Choose a saved profile</option>
-                    {namedProfiles.map((profile) => (
+                    {filteredNamedProfiles.map((profile) => (
                       <option value={profile.id} key={profile.id}>
                         {profile.favorite ? "★ " : ""}{profile.name}
                       </option>
@@ -1082,7 +1175,7 @@ export function NavigationInsights() {
                 </p>
 
                 <div className="interfaceNamedProfileList">
-                  {namedProfiles.map((profile) => (
+                  {filteredNamedProfiles.map((profile) => (
                     <article
                       className={activeNamedProfile?.id === profile.id ? "active" : ""}
                       key={profile.id}
@@ -1103,6 +1196,8 @@ export function NavigationInsights() {
                   ))}
                   {!namedProfiles.length ? (
                     <p>No named profiles are saved in this browser yet.</p>
+                  ) : profileQuickFilter === "favorites" && !filteredNamedProfiles.length ? (
+                    <p>No favorite named profiles match this quick filter yet.</p>
                   ) : null}
                 </div>
 
@@ -1125,9 +1220,15 @@ export function NavigationInsights() {
                     type="button"
                     onClick={restoreRecoverySnapshot}
                     disabled={!recoverySnapshot}
+                    aria-pressed={recoveryRestoreArmed}
                   >
-                    Restore snapshot
+                    {recoveryRestoreArmed ? "Confirm restore" : "Review & confirm restore"}
                   </button>
+                  {recoveryRestoreArmed ? (
+                    <button type="button" onClick={cancelRecoveryRestore}>
+                      Cancel confirmation
+                    </button>
+                  ) : null}
                   <button
                     type="button"
                     onClick={clearRecoverySnapshot}
@@ -1142,7 +1243,7 @@ export function NavigationInsights() {
                     <div className="interfacePresetHeading">
                       <div>
                         <strong>Recovery diff preview</strong>
-                        <span>Shows what Restore snapshot would change before any local state is replaced.</span>
+                        <span>Shows what a confirmed restore would change before any local state is replaced.</span>
                       </div>
                       <HelpInfo topic="recovery-diff-preview" inline />
                     </div>
@@ -1396,6 +1497,44 @@ export function NavigationInsights() {
                   </div>
                 ) : null}
 
+                {bundleImportOutcome ? (
+                  <div
+                    className={
+                      "interfaceBundleOutcomeReconciliation " +
+                      (bundleImportOutcome.matchesPlan ? "matched" : "deviated")
+                    }
+                    role="status"
+                  >
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Import plan outcome reconciliation</strong>
+                        <span>
+                          {bundleImportOutcome.matchesPlan
+                            ? "The completed import matched every forecasted capacity outcome."
+                            : "The completed import differed from at least one forecasted capacity outcome."}
+                        </span>
+                      </div>
+                      <HelpInfo topic="import-plan-outcome-reconciliation" inline />
+                    </div>
+                    <div className="interfaceBundleOutcomeGrid">
+                      <span>Added: {bundleImportOutcome.planned.added} planned / {bundleImportOutcome.actual.added} actual</span>
+                      <span>Replaced: {bundleImportOutcome.planned.replaced} planned / {bundleImportOutcome.actual.replaced} actual</span>
+                      <span>Conflict skips: {bundleImportOutcome.planned.skippedConflicts} planned / {bundleImportOutcome.actual.skippedConflicts} actual</span>
+                      <span>Capacity skips: {bundleImportOutcome.planned.skippedCapacity} planned / {bundleImportOutcome.actual.skippedCapacity} actual</span>
+                      <span>Final count: {bundleImportOutcome.planned.finalCount} planned / {bundleImportOutcome.actual.finalCount} actual</span>
+                    </div>
+                    {bundleImportOutcome.deviations.length ? (
+                      <ul>
+                        {bundleImportOutcome.deviations.map((deviation) => (
+                          <li key={deviation}>{deviation}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No deviations were detected between the import plan and the resolver outcome.</p>
+                    )}
+                  </div>
+                ) : null}
+
                 {importPreview ? (
                   <div className="interfaceImportPreview">
                     <div className="interfacePresetHeading">
@@ -1557,7 +1696,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local favorites, recovery diffs and capacity forecasts only · no server sync or workflow authority changes.</span>
+              <span>Browser-local favorite filters, confirmed recovery restores and import reconciliation only · no server sync or workflow authority changes.</span>
             </footer>
           </section>
         </div>
