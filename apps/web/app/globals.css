@@ -5874,3 +5874,110 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 130 — Rename/Duplicate, Portable Profile Bundles & Import Conflict Resolution */
+.interfaceQuickSwitcher {
+  grid-template-columns: minmax(8rem, .75fr) minmax(11rem, 1.4fr) repeat(5, auto);
+}
+
+.interfaceBundlePreview {
+  display: grid;
+  gap: .7rem;
+  border: 1px solid rgba(125,226,216,.3);
+  border-radius: .7rem;
+  background: rgba(125,226,216,.04);
+  padding: .72rem;
+}
+
+.interfaceBundleSummary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+
+.interfaceBundleSummary span {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: 999px;
+  padding: .3rem .5rem;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+}
+
+.interfaceBundleStrategy {
+  display: grid;
+  gap: .28rem;
+}
+
+.interfaceBundleStrategy > span {
+  font-size: .7rem;
+  font-weight: 600;
+}
+
+.interfaceBundleStrategy select {
+  width: 100%;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .58rem;
+  background: rgba(0,0,0,.16);
+  color: var(--theme-text, #edf6f7);
+  padding: .58rem .65rem;
+  font: inherit;
+}
+
+.interfaceBundleProfileList {
+  display: grid;
+  gap: .45rem;
+}
+
+.interfaceBundleProfileList article {
+  display: flex;
+  justify-content: space-between;
+  gap: .7rem;
+  align-items: center;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .58rem;
+  padding: .55rem .62rem;
+}
+
+.interfaceBundleProfileList article > div {
+  display: grid;
+  gap: .12rem;
+}
+
+.interfaceBundleProfileList article span,
+.interfaceBundleProfileList article em {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+  font-style: normal;
+}
+
+.interfaceBundleProfileList article.conflict {
+  border-color: rgba(245,190,80,.45);
+  background: rgba(245,190,80,.045);
+}
+
+@media (forced-colors: active) {
+  .interfaceBundlePreview,
+  .interfaceBundleStrategy select,
+  .interfaceBundleProfileList article,
+  .interfaceBundleSummary span {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 1100px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceQuickSwitcher {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceBundleProfileList article {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
