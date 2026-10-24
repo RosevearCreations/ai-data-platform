@@ -379,13 +379,19 @@ export function previewInterfacePreferenceProfile(
 export const INTERFACE_NAMED_PROFILES_STORAGE_KEY =
   "ai-data-platform:named-interface-profiles:v1";
 export const MAX_NAMED_INTERFACE_PROFILES = 8;
+export const INTERFACE_PREFERENCE_BUNDLE_FORMAT =
+  "ai-data-platform-interface-preference-bundle";
+
+export type InterfacePreferenceImportFormat =
+  | typeof INTERFACE_PREFERENCE_PROFILE_FORMAT
+  | typeof INTERFACE_PREFERENCE_BUNDLE_FORMAT;
 
 export type InterfacePreferenceProfileProvenance =
   | { kind: "local" }
   | {
       kind: "imported";
       sourceName: string;
-      sourceFormat: typeof INTERFACE_PREFERENCE_PROFILE_FORMAT;
+      sourceFormat: InterfacePreferenceImportFormat;
       sourceVersion: 1;
     };
 
@@ -447,7 +453,10 @@ export function createNamedInterfacePreferenceProfile(input: {
           sourceName: sanitizePreferenceProfileSourceName(
             input.provenance.sourceName
           ),
-          sourceFormat: INTERFACE_PREFERENCE_PROFILE_FORMAT,
+          sourceFormat:
+            input.provenance.sourceFormat === INTERFACE_PREFERENCE_BUNDLE_FORMAT
+              ? INTERFACE_PREFERENCE_BUNDLE_FORMAT
+              : INTERFACE_PREFERENCE_PROFILE_FORMAT,
           sourceVersion: 1 as const
         }
       : { kind: "local" as const };
@@ -487,13 +496,17 @@ export function sanitizeNamedInterfacePreferenceProfiles(
     ) {
       const source = record.provenance as Record<string, unknown>;
       if (
-        source.sourceFormat === INTERFACE_PREFERENCE_PROFILE_FORMAT &&
+        (source.sourceFormat === INTERFACE_PREFERENCE_PROFILE_FORMAT ||
+          source.sourceFormat === INTERFACE_PREFERENCE_BUNDLE_FORMAT) &&
         source.sourceVersion === 1
       ) {
         provenance = {
           kind: "imported",
           sourceName: sanitizePreferenceProfileSourceName(source.sourceName),
-          sourceFormat: INTERFACE_PREFERENCE_PROFILE_FORMAT,
+          sourceFormat:
+            source.sourceFormat === INTERFACE_PREFERENCE_BUNDLE_FORMAT
+              ? INTERFACE_PREFERENCE_BUNDLE_FORMAT
+              : INTERFACE_PREFERENCE_PROFILE_FORMAT,
           sourceVersion: 1
         };
       }
@@ -566,4 +579,408 @@ export function namedInterfacePreferenceProvenanceLabel(
     " · format v" +
     profile.provenance.sourceVersion
   );
+}
+
+export type NamedInterfacePreferenceMutationResult =
+  | {
+      ok: true;
+      profiles: NamedInterfacePreferenceProfile[];
+      profile: NamedInterfacePreferenceProfile;
+    }
+  | { ok: false; error: string };
+
+function normalizedNamedProfileKey(name: string) {
+  return sanitizeNamedInterfacePreferenceName(name).toLocaleLowerCase();
+}
+
+export function renameNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  id: string,
+  nextName: string
+): NamedInterfacePreferenceMutationResult {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  const safeId = sanitizeNamedInterfacePreferenceId(id);
+  const name = sanitizeNamedInterfacePreferenceName(nextName);
+  if (!name) return { ok: false, error: "Enter a valid profile name." };
+
+  const index = safe.findIndex((profile) => profile.id === safeId);
+  if (index < 0) return { ok: false, error: "Choose a saved profile first." };
+
+  const key = normalizedNamedProfileKey(name);
+  if (
+    safe.some(
+      (profile, profileIndex) =>
+        profileIndex !== index &&
+        normalizedNamedProfileKey(profile.name) === key
+    )
+  ) {
+    return {
+      ok: false,
+      error: "Another named profile already uses that name."
+    };
+  }
+
+  const renamed = createNamedInterfacePreferenceProfile({
+    ...safe[index],
+    name
+  });
+  const next = safe.slice();
+  next[index] = renamed;
+  return { ok: true, profiles: next, profile: renamed };
+}
+
+export function suggestDuplicateNamedInterfacePreferenceName(
+  profiles: NamedInterfacePreferenceProfile[],
+  sourceName: string
+) {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  const base = sanitizeNamedInterfacePreferenceName(sourceName) || "Profile";
+  const used = new Set(
+    safe.map((profile) => normalizedNamedProfileKey(profile.name))
+  );
+
+  for (let index = 1; index <= MAX_NAMED_INTERFACE_PROFILES + 1; index += 1) {
+    const suffix = index === 1 ? " copy" : " copy " + index;
+    const candidate = sanitizeNamedInterfacePreferenceName(
+      base.slice(0, Math.max(1, 40 - suffix.length)) + suffix
+    );
+    if (!used.has(normalizedNamedProfileKey(candidate))) return candidate;
+  }
+
+  return sanitizeNamedInterfacePreferenceName("Copy of " + base);
+}
+
+export function duplicateNamedInterfacePreferenceProfile(
+  profiles: NamedInterfacePreferenceProfile[],
+  id: string,
+  newId: string,
+  requestedName?: string
+): NamedInterfacePreferenceMutationResult {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  if (safe.length >= MAX_NAMED_INTERFACE_PROFILES) {
+    return {
+      ok: false,
+      error:
+        "This browser already has the maximum of " +
+        MAX_NAMED_INTERFACE_PROFILES +
+        " named profiles."
+    };
+  }
+
+  const source = safe.find(
+    (profile) => profile.id === sanitizeNamedInterfacePreferenceId(id)
+  );
+  if (!source) return { ok: false, error: "Choose a saved profile first." };
+
+  const name = sanitizeNamedInterfacePreferenceName(
+    requestedName || suggestDuplicateNamedInterfacePreferenceName(safe, source.name)
+  );
+  if (!name) return { ok: false, error: "Enter a valid duplicate profile name." };
+
+  if (
+    safe.some(
+      (profile) =>
+        normalizedNamedProfileKey(profile.name) === normalizedNamedProfileKey(name)
+    )
+  ) {
+    return {
+      ok: false,
+      error: "Another named profile already uses that name."
+    };
+  }
+
+  const duplicate = createNamedInterfacePreferenceProfile({
+    id: newId,
+    name,
+    preferences: source.preferences,
+    provenance: source.provenance
+  });
+
+  return {
+    ok: true,
+    profiles: [...safe, duplicate],
+    profile: duplicate
+  };
+}
+
+export type InterfacePreferenceBundleProfileV1 = {
+  name: string;
+  preferences: InterfacePreferences;
+};
+
+export type InterfacePreferenceBundleV1 = {
+  format: typeof INTERFACE_PREFERENCE_BUNDLE_FORMAT;
+  version: 1;
+  profiles: InterfacePreferenceBundleProfileV1[];
+};
+
+export type InterfacePreferenceBundleParseResult =
+  | { ok: true; bundle: InterfacePreferenceBundleV1 }
+  | { ok: false; error: string };
+
+export type InterfacePreferenceBundleConflictStrategy =
+  | "skip"
+  | "replace"
+  | "keep-both";
+
+export type InterfacePreferenceBundleConflict = {
+  incomingName: string;
+  existingId: string;
+  existingName: string;
+};
+
+export type InterfacePreferenceBundleImportAnalysis = {
+  incomingCount: number;
+  conflictCount: number;
+  conflicts: InterfacePreferenceBundleConflict[];
+  availableSlots: number;
+};
+
+export type InterfacePreferenceBundleResolution = {
+  profiles: NamedInterfacePreferenceProfile[];
+  imported: number;
+  replaced: number;
+  skippedConflicts: number;
+  skippedCapacity: number;
+  renamedCopies: number;
+};
+
+export function createInterfacePreferenceBundle(
+  profiles: NamedInterfacePreferenceProfile[]
+): InterfacePreferenceBundleV1 {
+  const safe = sanitizeNamedInterfacePreferenceProfiles(profiles);
+  return {
+    format: INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+    version: 1,
+    profiles: safe.map((profile) => ({
+      name: profile.name,
+      preferences: sanitizeInterfacePreferences(profile.preferences)
+    }))
+  };
+}
+
+export function serializeInterfacePreferenceBundle(
+  profiles: NamedInterfacePreferenceProfile[]
+) {
+  return JSON.stringify(createInterfacePreferenceBundle(profiles), null, 2);
+}
+
+export function parseInterfacePreferenceBundle(
+  input: unknown
+): InterfacePreferenceBundleParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return { ok: false, error: "This bundle is not valid JSON." };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "This file does not contain an interface preference bundle."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (record.format !== INTERFACE_PREFERENCE_BUNDLE_FORMAT) {
+    return {
+      ok: false,
+      error: "This file is not an AI Data Platform preference bundle."
+    };
+  }
+  if (record.version !== 1) {
+    return {
+      ok: false,
+      error: "This preference bundle version is not supported."
+    };
+  }
+  if (!Array.isArray(record.profiles) || record.profiles.length < 1) {
+    return { ok: false, error: "This preference bundle is empty." };
+  }
+  if (record.profiles.length > MAX_NAMED_INTERFACE_PROFILES) {
+    return {
+      ok: false,
+      error:
+        "A preference bundle can contain at most " +
+        MAX_NAMED_INTERFACE_PROFILES +
+        " profiles."
+    };
+  }
+
+  const profiles: InterfacePreferenceBundleProfileV1[] = [];
+  const names = new Set<string>();
+  for (const item of record.profiles) {
+    if (!item || typeof item !== "object") {
+      return {
+        ok: false,
+        error: "The bundle contains an invalid profile record."
+      };
+    }
+    const itemRecord = item as Record<string, unknown>;
+    const name = sanitizeNamedInterfacePreferenceName(itemRecord.name);
+    if (!name || !isPortableInterfacePreferences(itemRecord.preferences)) {
+      return {
+        ok: false,
+        error: "The bundle contains an invalid profile name or preference value."
+      };
+    }
+    const key = normalizedNamedProfileKey(name);
+    if (names.has(key)) {
+      return {
+        ok: false,
+        error: "The bundle contains duplicate profile names."
+      };
+    }
+    names.add(key);
+    profiles.push({
+      name,
+      preferences: sanitizeInterfacePreferences(itemRecord.preferences)
+    });
+  }
+
+  return {
+    ok: true,
+    bundle: {
+      format: INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+      version: 1,
+      profiles
+    }
+  };
+}
+
+export function importedInterfacePreferenceBundleProvenance(
+  sourceName: string
+): InterfacePreferenceProfileProvenance {
+  return {
+    kind: "imported",
+    sourceName: sanitizePreferenceProfileSourceName(sourceName),
+    sourceFormat: INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+    sourceVersion: 1
+  };
+}
+
+export function analyzeInterfacePreferenceBundleImport(
+  existingProfiles: NamedInterfacePreferenceProfile[],
+  bundle: InterfacePreferenceBundleV1
+): InterfacePreferenceBundleImportAnalysis {
+  const existing = sanitizeNamedInterfacePreferenceProfiles(existingProfiles);
+  const conflicts: InterfacePreferenceBundleConflict[] = [];
+
+  for (const incoming of bundle.profiles) {
+    const match = existing.find(
+      (profile) =>
+        normalizedNamedProfileKey(profile.name) ===
+        normalizedNamedProfileKey(incoming.name)
+    );
+    if (match) {
+      conflicts.push({
+        incomingName: incoming.name,
+        existingId: match.id,
+        existingName: match.name
+      });
+    }
+  }
+
+  return {
+    incomingCount: bundle.profiles.length,
+    conflictCount: conflicts.length,
+    conflicts,
+    availableSlots: Math.max(0, MAX_NAMED_INTERFACE_PROFILES - existing.length)
+  };
+}
+
+function uniqueImportedCopyName(
+  profiles: NamedInterfacePreferenceProfile[],
+  incomingName: string
+) {
+  const used = new Set(
+    profiles.map((profile) => normalizedNamedProfileKey(profile.name))
+  );
+  const base = sanitizeNamedInterfacePreferenceName(incomingName) || "Imported";
+
+  for (let index = 1; index <= MAX_NAMED_INTERFACE_PROFILES + 1; index += 1) {
+    const suffix =
+      index === 1 ? " (Imported)" : " (Imported " + index + ")";
+    const candidate = sanitizeNamedInterfacePreferenceName(
+      base.slice(0, Math.max(1, 40 - suffix.length)) + suffix
+    );
+    if (!used.has(normalizedNamedProfileKey(candidate))) return candidate;
+  }
+
+  return suggestDuplicateNamedInterfacePreferenceName(profiles, base);
+}
+
+export function resolveInterfacePreferenceBundleImport(
+  existingProfiles: NamedInterfacePreferenceProfile[],
+  bundle: InterfacePreferenceBundleV1,
+  strategy: InterfacePreferenceBundleConflictStrategy,
+  sourceName: string,
+  createId: (name: string, index: number) => string
+): InterfacePreferenceBundleResolution {
+  let profiles = sanitizeNamedInterfacePreferenceProfiles(existingProfiles);
+  const provenance = importedInterfacePreferenceBundleProvenance(sourceName);
+  let imported = 0;
+  let replaced = 0;
+  let skippedConflicts = 0;
+  let skippedCapacity = 0;
+  let renamedCopies = 0;
+
+  bundle.profiles.forEach((incoming, index) => {
+    const conflictIndex = profiles.findIndex(
+      (profile) =>
+        normalizedNamedProfileKey(profile.name) ===
+        normalizedNamedProfileKey(incoming.name)
+    );
+
+    if (conflictIndex >= 0 && strategy === "skip") {
+      skippedConflicts += 1;
+      return;
+    }
+
+    if (conflictIndex >= 0 && strategy === "replace") {
+      const existing = profiles[conflictIndex];
+      profiles = profiles.slice();
+      profiles[conflictIndex] = createNamedInterfacePreferenceProfile({
+        id: existing.id,
+        name: incoming.name,
+        preferences: incoming.preferences,
+        provenance
+      });
+      replaced += 1;
+      return;
+    }
+
+    if (profiles.length >= MAX_NAMED_INTERFACE_PROFILES) {
+      skippedCapacity += 1;
+      return;
+    }
+
+    const name =
+      conflictIndex >= 0
+        ? uniqueImportedCopyName(profiles, incoming.name)
+        : incoming.name;
+    if (conflictIndex >= 0) renamedCopies += 1;
+
+    profiles.push(
+      createNamedInterfacePreferenceProfile({
+        id: createId(name, index),
+        name,
+        preferences: incoming.preferences,
+        provenance
+      })
+    );
+    imported += 1;
+  });
+
+  return {
+    profiles: sanitizeNamedInterfacePreferenceProfiles(profiles),
+    imported,
+    replaced,
+    skippedConflicts,
+    skippedCapacity,
+    renamedCopies
+  };
 }
