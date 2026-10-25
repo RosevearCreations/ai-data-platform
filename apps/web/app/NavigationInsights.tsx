@@ -691,6 +691,16 @@ export function NavigationInsights() {
       interfaceRecoveryRenewalHistorySearchPresetById(
         persistedRenewalHistoryPresetId
       );
+    const receiptPresetRecovery = readReceiptSearchPresetRecovery();
+    const persistedReceiptPreset =
+      interfacePreferenceReceiptSearchPresetById(
+        receiptPresetRecovery.presetId
+      );
+    let receiptHistory = readImportReconciliationReceiptHistory();
+    let recoveryAudit = readFavoriteViewRecoveryAudit();
+    let receiptRecoveryAudit = readReceiptPresetRecoveryAudit();
+    let recoveryAuditRecoveryAudit = readRecoveryAuditPresetRecoveryAudit();
+
     if (auditPresetRecovery.recovered) {
       writeRecoveryAuditSearchPreset(auditPresetRecovery.presetId);
       const recoveryEntry =
@@ -711,15 +721,6 @@ export function NavigationInsights() {
         );
       writeRecoveryAuditPresetRecoveryAudit(recoveryAuditRecoveryAudit);
     }
-    const receiptPresetRecovery = readReceiptSearchPresetRecovery();
-    const persistedReceiptPreset =
-      interfacePreferenceReceiptSearchPresetById(
-        receiptPresetRecovery.presetId
-      );
-    let receiptHistory = readImportReconciliationReceiptHistory();
-    let recoveryAudit = readFavoriteViewRecoveryAudit();
-    let receiptRecoveryAudit = readReceiptPresetRecoveryAudit();
-    let recoveryAuditRecoveryAudit = readRecoveryAuditPresetRecoveryAudit();
 
     if (receiptPresetRecovery.recovered) {
       writeReceiptSearchPreset(receiptPresetRecovery.presetId);
@@ -2071,6 +2072,12 @@ export function NavigationInsights() {
       );
       window.localStorage.removeItem(
         INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESET_STORAGE_KEY
       );
     } catch {
       // Browser-local state is optional.
