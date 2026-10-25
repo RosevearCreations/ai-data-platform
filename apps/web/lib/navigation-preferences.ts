@@ -2201,6 +2201,20 @@ export type InterfaceRecoveryAuditSearchPreset = {
   query: string;
 };
 
+export const INTERFACE_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryAuditSearchPresetId {
+  return value === "initial-load" ||
+    value === "filter-selection" ||
+    value === "last-favorite-removed" ||
+    value === "favorites"
+    ? value
+    : "all";
+}
+
 export const INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditSearchPreset[] = [
   {
     id: "all",
@@ -2560,6 +2574,33 @@ export function filterInterfacePreferenceRecoveryRenewalReceiptHistory(
       );
 }
 
+function normalizeRecoveryRenewalHistorySearchQuery(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfacePreferenceRecoveryRenewalReceiptHistory(
+  receipts: InterfacePreferenceRecoveryRenewalReceiptV1[],
+  query: unknown
+) {
+  const normalized = normalizeRecoveryRenewalHistorySearchQuery(query);
+  if (!normalized) return receipts;
+
+  return receipts.filter((receipt) => {
+    const haystack = [
+      receipt.receiptId,
+      receipt.previousFreshness,
+      receipt.previousFreshness === "unknown" ? "legacy unknown" : "",
+      String(receipt.profileCount) + " profiles",
+      String(receipt.favoriteCount) + " favorites"
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
+  });
+}
+
 function normalizeReceiptHistorySearchQuery(value: unknown) {
   if (typeof value !== "string") return "";
   return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
@@ -2616,6 +2657,41 @@ export function sanitizeInterfacePreferenceReceiptSearchPresetId(
     value === "capacity"
     ? value
     : "all";
+}
+
+export type InterfacePreferenceReceiptSearchPresetRecovery = {
+  presetId: InterfacePreferenceReceiptSearchPresetId;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverInterfacePreferenceReceiptSearchPresetId(
+  value: unknown
+): InterfacePreferenceReceiptSearchPresetRecovery {
+  const presetId = sanitizeInterfacePreferenceReceiptSearchPresetId(value);
+  const hasStoredValue =
+    typeof value === "string" && value.trim().length > 0;
+  const isValidStoredValue =
+    value === "all" ||
+    value === "deviations" ||
+    value === "replacements" ||
+    value === "keep-both" ||
+    value === "capacity";
+
+  if (hasStoredValue && !isValidStoredValue) {
+    return {
+      presetId: "all",
+      recovered: true,
+      reason:
+        "Receipt search preset recovered to All receipts because the saved preset ID is no longer supported."
+    };
+  }
+
+  return {
+    presetId,
+    recovered: false,
+    reason: null
+  };
 }
 
 export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS: InterfacePreferenceReceiptSearchPreset[] = [

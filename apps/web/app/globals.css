@@ -6839,3 +6839,66 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 140 — Recovery Audit Preset Persistence, Renewal Receipt History Search & Receipt Preset Recovery */
+.interfaceRenewalHistorySearch {
+  display: grid;
+  gap: .18rem;
+  min-width: min(18rem, 100%);
+}
+
+.interfaceRenewalHistorySearch > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+}
+
+.interfaceRenewalHistorySearch input {
+  min-width: 13rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceReceiptPresetRecovery {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgba(245,190,80,.45);
+  border-radius: .55rem;
+  background: rgba(245,190,80,.045);
+  padding: .48rem .58rem;
+}
+
+.interfaceReceiptPresetRecovery strong {
+  font-size: .69rem;
+}
+
+.interfaceReceiptPresetRecovery span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+@media (forced-colors: active) {
+  .interfaceRenewalHistorySearch input,
+  .interfaceReceiptPresetRecovery {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceRenewalHistorySearch,
+  .interfaceRenewalHistorySearch input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .interfaceReceiptPresetRecovery {
+    grid-template-columns: 1fr;
+  }
+}
