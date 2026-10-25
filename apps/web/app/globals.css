@@ -7158,3 +7158,99 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     width: 100%;
   }
 }
+
+/* Build 144 — Recovery Audit Recovery Search, Renewal Search Preset Recovery Audit & Receipt Recovery Audit Search Presets */
+.interfaceRecoveryAuditRecoverySearch,
+.interfaceRenewalPresetRecoveryAudit,
+.interfaceReceiptRecoveryAuditSearchPresets {
+  display: grid;
+  gap: .45rem;
+}
+
+.interfaceRecoveryAuditRecoverySearch > span,
+.interfaceRenewalPresetRecoveryAudit span,
+.interfaceRenewalPresetRecoveryAudit small {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceRecoveryAuditRecoverySearch input {
+  min-width: 13rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceRenewalPresetRecoveryAudit {
+  border: 1px solid rgba(245,190,80,.32);
+  border-radius: .62rem;
+  background: rgba(245,190,80,.025);
+  padding: .65rem;
+}
+
+.interfaceRenewalPresetRecoveryAuditList {
+  display: grid;
+  gap: .42rem;
+}
+
+.interfaceRenewalPresetRecoveryAuditList article {
+  display: grid;
+  gap: .22rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .5rem;
+  padding: .48rem .55rem;
+}
+
+.interfaceRenewalPresetRecoveryAuditList article > div {
+  display: flex;
+  justify-content: space-between;
+  gap: .65rem;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresets > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresets button {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresets button[aria-pressed="true"] {
+  border-color: rgba(125,226,216,.5);
+  background: rgba(125,226,216,.08);
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRecoverySearch input,
+  .interfaceRenewalPresetRecoveryAudit,
+  .interfaceRenewalPresetRecoveryAuditList article,
+  .interfaceReceiptRecoveryAuditSearchPresets button {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceRecoveryAuditRecoverySearch,
+  .interfaceRecoveryAuditRecoverySearch input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .interfaceRenewalPresetRecoveryAuditList article > div,
+  .interfaceReceiptRecoveryAuditSearchPresets > div:last-child {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}

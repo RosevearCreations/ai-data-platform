@@ -150,7 +150,7 @@ async function main() {
   for (const token of [
     "filteredRecoveryAuditPresetRecoveryAudit",
     "All audit recoveries",
-    "No recovery-audit preset repairs match the selected age filter.",
+    "No recovery-audit preset repairs match the selected age filter",
     "readRecoveryRenewalHistorySearchPresetRecovery",
     "renewalHistoryPresetRecoveryNotice",
     "Renewal history preset recovered",
@@ -222,8 +222,8 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 143 · Marble Standard"),
-    "Build 143 shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 143 shell must preserve Marble Standard as later interface builds advance."
   );
 
   assert(
