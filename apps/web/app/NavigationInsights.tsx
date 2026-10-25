@@ -464,6 +464,68 @@ function clearRecoveryRenewalHistorySearchPreset() {
   }
 }
 
+function readRecoveryAuditRepairSearchPresetRecoveryAudit() {
+  try {
+    const raw = window.localStorage.getItem(
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+    );
+    if (!raw) return [];
+    const parsed =
+      parseInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit(raw);
+    return parsed.ok ? parsed.audit.entries : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeRecoveryAuditRepairSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditEntryV1[]
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
+      serializeInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit(entries)
+    );
+  } catch {
+    // Repair-search-preset recovery audit is optional browser-local evidence.
+  }
+}
+
+function readRenewalRecoveryAuditSearchPreset(): InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId {
+  try {
+    return sanitizeInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId(
+      window.localStorage.getItem(
+        INTERFACE_RECOVERY_RENEWAL_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      )
+    );
+  } catch {
+    return "all";
+  }
+}
+
+function writeRenewalRecoveryAuditSearchPreset(
+  id: InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_RECOVERY_RENEWAL_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
+      id
+    );
+  } catch {
+    // Renewal recovery-audit preset persistence is optional browser-local view state.
+  }
+}
+
+function clearRenewalRecoveryAuditSearchPreset() {
+  try {
+    window.localStorage.removeItem(
+      INTERFACE_RECOVERY_RENEWAL_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+    );
+  } catch {
+    // Renewal recovery-audit preset persistence is optional browser-local view state.
+  }
+}
+
 function readReceiptRecoveryAuditSearchPresetRecoveryAudit() {
   try {
     const raw = window.localStorage.getItem(
@@ -880,6 +942,8 @@ export function NavigationInsights() {
     useState<InterfaceRecoveryAuditPresetRecoveryAuditSearchPresetId | null>("all");
   const [recoveryAuditPresetRecoveryAuditSearchPresetRecoveryNotice, setRecoveryAuditPresetRecoveryAuditSearchPresetRecoveryNotice] =
     useState<string | null>(null);
+  const [recoveryAuditRepairSearchPresetRecoveryAudit, setRecoveryAuditRepairSearchPresetRecoveryAudit] =
+    useState<InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditEntryV1[]>([]);
   const [renewalHistoryPresetRecoveryAudit, setRenewalHistoryPresetRecoveryAudit] =
     useState<InterfaceRecoveryRenewalSearchPresetRecoveryAuditEntryV1[]>([]);
   const [renewalHistoryPresetRecoveryAuditAgeFilter, setRenewalHistoryPresetRecoveryAuditAgeFilter] =
@@ -894,6 +958,8 @@ export function NavigationInsights() {
     useState<string | null>(null);
   const [receiptRecoveryAuditSearchPresetRecoveryAudit, setReceiptRecoveryAuditSearchPresetRecoveryAudit] =
     useState<InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditEntryV1[]>([]);
+  const [receiptRecoveryAuditSearchPresetRecoveryAuditAgeFilter, setReceiptRecoveryAuditSearchPresetRecoveryAuditAgeFilter] =
+    useState<InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditAgeFilter>("all");
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -944,6 +1010,10 @@ export function NavigationInsights() {
       );
     const receiptRecoveryAuditSearchPresetRecovery =
       readReceiptPresetRecoveryAuditSearchPresetRecovery();
+    const persistedRenewalRecoveryAuditSearchPreset =
+      interfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetById(
+        readRenewalRecoveryAuditSearchPreset()
+      );
     const persistedReceiptRecoveryAuditSearchPreset =
       interfaceReceiptPresetRecoveryAuditSearchPresetById(
         receiptRecoveryAuditSearchPresetRecovery.presetId
@@ -952,6 +1022,8 @@ export function NavigationInsights() {
     let recoveryAudit = readFavoriteViewRecoveryAudit();
     let receiptRecoveryAudit = readReceiptPresetRecoveryAudit();
     let recoveryAuditRecoveryAudit = readRecoveryAuditPresetRecoveryAudit();
+    let repairSearchPresetRecoveryAudit =
+      readRecoveryAuditRepairSearchPresetRecoveryAudit();
     let renewalPresetRecoveryAudit =
       readRecoveryRenewalSearchPresetRecoveryAudit();
     let receiptRecoveryAuditPresetRecoveryAudit =
@@ -960,6 +1032,28 @@ export function NavigationInsights() {
     if (recoveryAuditRepairSearchPresetRecovery.recovered) {
       writeRecoveryAuditPresetRecoveryAuditSearchPreset(
         recoveryAuditRepairSearchPresetRecovery.presetId
+      );
+      const recoveryEntry =
+        createInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditEntry({
+          auditId:
+            typeof crypto !== "undefined" && "randomUUID" in crypto
+              ? crypto.randomUUID()
+              : "repair-search-preset-recovery-" + Date.now().toString(36),
+          requestedPresetId:
+            recoveryAuditRepairSearchPresetRecovery.requestedPresetId,
+          recoveredPresetId:
+            recoveryAuditRepairSearchPresetRecovery.presetId,
+          reason:
+            recoveryAuditRepairSearchPresetRecovery.reason ??
+            "Recovery-audit repair search preset recovered."
+        });
+      repairSearchPresetRecoveryAudit =
+        prependInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditEntry(
+          repairSearchPresetRecoveryAudit,
+          recoveryEntry
+        );
+      writeRecoveryAuditRepairSearchPresetRecoveryAudit(
+        repairSearchPresetRecoveryAudit
       );
     }
 
@@ -1135,6 +1229,9 @@ export function NavigationInsights() {
     setRecoveryAuditPresetRecoveryAuditSearchPresetRecoveryNotice(
       recoveryAuditRepairSearchPresetRecovery.reason
     );
+    setRecoveryAuditRepairSearchPresetRecoveryAudit(
+      repairSearchPresetRecoveryAudit
+    );
     setRecoveryAuditFilter(persistedAuditPreset.triggerFilter);
     setRecoveryAuditSearch(persistedAuditPreset.query);
     setRecoveryAuditSearchPresetId(persistedAuditPreset.id);
@@ -1147,6 +1244,15 @@ export function NavigationInsights() {
       renewalHistoryPresetRecovery.reason
     );
     setRenewalHistoryPresetRecoveryAudit(renewalPresetRecoveryAudit);
+    setRenewalHistoryPresetRecoveryAuditAgeFilter(
+      persistedRenewalRecoveryAuditSearchPreset.ageFilter
+    );
+    setRenewalHistoryPresetRecoveryAuditSearch(
+      persistedRenewalRecoveryAuditSearchPreset.query
+    );
+    setRenewalHistoryPresetRecoveryAuditSearchPresetId(
+      persistedRenewalRecoveryAuditSearchPreset.id
+    );
     setFavoriteViewRecoveryAudit(recoveryAudit);
     setFavoriteViewRecoveryNotice(recoveredView.reason);
     setNamedProfiles(profiles);
