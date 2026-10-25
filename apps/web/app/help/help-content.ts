@@ -2517,6 +2517,36 @@ export const HELP_TOPICS = {
     ],
     notes: ["Only the preset ID is persisted. Manual query text remains temporary and no server synchronization is added."]
   },
+  "recovery-audit-recovery-search-preset-persistence": {
+    title: "Recovery-audit repair search preset persistence",
+    summary: "Keep the selected repair-ledger quick preset across reloads without persisting arbitrary custom search text.",
+    steps: [
+      "Choose a recovery-audit repair search preset.",
+      "The preset ID is saved locally and restored on the next load.",
+      "Manually changing age or search clears the saved preset and enters a temporary custom view."
+    ],
+    notes: ["Only a known preset ID is persisted. Stored repair evidence is not changed."]
+  },
+  "renewal-search-preset-recovery-audit-search": {
+    title: "Renewal search preset recovery audit search",
+    summary: "Search renewal-preset recovery evidence by audit ID, requested preset, recovered preset, or reason.",
+    steps: [
+      "Optionally choose an age window first.",
+      "Enter text in Search recovery audit.",
+      "The search composes with age filtering and leaves the complete export unchanged."
+    ],
+    notes: ["Search text is temporary and browser-local."]
+  },
+  "receipt-recovery-audit-search-preset-recovery": {
+    title: "Receipt recovery audit search preset recovery",
+    summary: "Repair an unsupported saved receipt-recovery audit preset to the safe All recovery events view.",
+    steps: [
+      "On load, the saved preset ID is validated.",
+      "An unsupported saved ID is replaced with All recovery events.",
+      "A recovery notice explains the repair until a preset or custom view is selected."
+    ],
+    notes: ["Recovery changes only browser-local view state and never stored receipt recovery evidence."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -2542,6 +2572,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 146 recovery preset persistence, renewal recovery audit search & receipt recovery preset recovery",
+    topics: ["recovery-audit-recovery-search-preset-persistence", "renewal-search-preset-recovery-audit-search", "receipt-recovery-audit-search-preset-recovery"]
   },
   {
     title: "Build 145 recovery search presets, renewal recovery audit filtering & receipt recovery preset persistence",

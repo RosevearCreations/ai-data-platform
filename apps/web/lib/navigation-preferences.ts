@@ -2547,6 +2547,20 @@ export function interfaceRecoveryAuditPresetRecoveryAuditSearchPresetById(
   );
 }
 
+export const INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:recovery-audit-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceRecoveryAuditPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryAuditPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
+}
+
 export const INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditSearchPreset[] = [
   {
     id: "all",
@@ -3217,6 +3231,35 @@ export function filterInterfaceRecoveryRenewalSearchPresetRecoveryAudit(
   });
 }
 
+function normalizeRecoveryRenewalSearchPresetRecoveryAuditSearchQuery(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfaceRecoveryRenewalSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryRenewalSearchPresetRecoveryAuditEntryV1[],
+  query: unknown
+) {
+  const normalized =
+    normalizeRecoveryRenewalSearchPresetRecoveryAuditSearchQuery(query);
+  if (!normalized) return entries;
+
+  return entries.filter((entry) => {
+    const haystack = [
+      entry.auditId,
+      entry.requestedPresetId,
+      entry.recoveredPresetId,
+      entry.reason
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
+  });
+}
+
 export const INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESETS: InterfaceRecoveryRenewalHistorySearchPreset[] = [
   {
     id: "all",
@@ -3659,6 +3702,42 @@ export function sanitizeInterfaceReceiptPresetRecoveryAuditSearchPresetId(
     value === "recovery-reasons"
     ? value
     : "all";
+}
+
+export type InterfaceReceiptPresetRecoveryAuditSearchPresetRecovery = {
+  presetId: InterfaceReceiptPresetRecoveryAuditSearchPresetId;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverInterfaceReceiptPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceReceiptPresetRecoveryAuditSearchPresetRecovery {
+  const presetId =
+    sanitizeInterfaceReceiptPresetRecoveryAuditSearchPresetId(value);
+  const hasStoredValue =
+    typeof value === "string" && value.trim().length > 0;
+  const isValidStoredValue =
+    value === "all" ||
+    value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons";
+
+  if (hasStoredValue && !isValidStoredValue) {
+    return {
+      presetId: "all",
+      recovered: true,
+      reason:
+        "Receipt recovery audit search preset recovered to All recovery events because the saved preset ID is no longer supported."
+    };
+  }
+
+  return {
+    presetId,
+    recovered: false,
+    reason: null
+  };
 }
 
 export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS: InterfacePreferenceReceiptSearchPreset[] = [
