@@ -4768,6 +4768,39 @@ export function NavigationInsights() {
                   </div>
                 ) : null}
 
+                {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
+                  <div className="interfaceReceiptRecoveryAuditSearchPresetRecoveryAudit">
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Receipt preset-repair audit search preset recovery audit</strong>
+                        <span>
+                          {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length} of {MAX_INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT} local recovery events retained
+                        </span>
+                      </div>
+                      <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit" inline />
+                    </div>
+                    <div className="interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditList">
+                      {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
+                        <article key={entry.auditId}>
+                          <div>
+                            <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
+                            <span>{new Date(entry.createdAt).toLocaleString()}</span>
+                          </div>
+                          <small>{entry.reason}</small>
+                        </article>
+                      ))}
+                    </div>
+                    <div className="interfaceImportPreviewActions">
+                      <button type="button" onClick={exportReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
+                        Export search preset recovery audit
+                      </button>
+                      <button type="button" onClick={clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
+                        Clear search preset recovery audit
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
                 {receiptPresetRecoveryAudit.length ? (
                   <div className="interfaceReceiptPresetRecoveryAudit">
                     <div className="interfacePresetHeading">
@@ -4802,38 +4835,6 @@ export function NavigationInsights() {
                             <strong>Receipt preset-repair audit search preset recovered</strong>
                             <span>{receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice}</span>
                             <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery" inline />
-                          </div>
-                        ) : null}
-                        {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
-                          <div className="interfaceReceiptRecoveryAuditSearchPresetRecoveryAudit">
-                            <div className="interfacePresetHeading">
-                              <div>
-                                <strong>Receipt preset-repair audit search preset recovery audit</strong>
-                                <span>
-                                  {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length} of {MAX_INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT} local recovery events retained
-                                </span>
-                              </div>
-                              <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit" inline />
-                            </div>
-                            <div className="interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditList">
-                              {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
-                                <article key={entry.auditId}>
-                                  <div>
-                                    <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
-                                    <span>{new Date(entry.createdAt).toLocaleString()}</span>
-                                  </div>
-                                  <small>{entry.reason}</small>
-                                </article>
-                              ))}
-                            </div>
-                            <div className="interfaceImportPreviewActions">
-                              <button type="button" onClick={exportReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
-                                Export search preset recovery audit
-                              </button>
-                              <button type="button" onClick={clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
-                                Clear search preset recovery audit
-                              </button>
-                            </div>
                           </div>
                         ) : null}
                         <div className="interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets">
