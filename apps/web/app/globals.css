@@ -7590,3 +7590,34 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     outline-offset: 2px;
   }
 }
+
+
+/* Build 154 — repair recovery audit, renewal persistence and receipt filtering */
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAudit,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditFilters {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) auto;
+  align-items: end;
+}
+
+@media (max-width: 760px) {
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRepairSearchPresetRecoveryAudit,
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditFilters {
+    border-color: CanvasText;
+  }
+}

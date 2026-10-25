@@ -2866,6 +2866,218 @@ export function recoverInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSear
   };
 }
 
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT =
+  "ai-data-platform-recovery-audit-repair-preset-recovery-audit-search-preset-recovery-audit";
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY =
+  "ai-data-platform:recovery-audit-repair-preset-recovery-audit-search-preset-recovery-audit:v1";
+export const MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT = 10;
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1 = {
+  version: 1;
+  auditId: string;
+  createdAt: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId;
+  reason: string;
+};
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1 = {
+  format: typeof INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT;
+  version: 1;
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[];
+};
+
+function sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+function sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryRequestedId(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
+export function createInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry(input: {
+  auditId: string;
+  createdAt?: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId;
+  reason: string;
+}): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1 {
+  const auditId =
+    sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+      input.auditId
+    );
+  if (!auditId) {
+    throw new Error("Repair-preset recovery audit search preset recovery audit ID is required.");
+  }
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+
+  return {
+    version: 1,
+    auditId,
+    createdAt,
+    requestedPresetId:
+      sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryRequestedId(
+        input.requestedPresetId
+      ),
+    recoveredPresetId:
+      sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId(
+        input.recoveredPresetId
+      ),
+    reason:
+      typeof input.reason === "string"
+        ? input.reason.replace(/\s+/g, " ").trim().slice(0, 240)
+        : ""
+  };
+}
+
+export function prependInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  entry: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1
+) {
+  const next = [entry, ...entries].filter(
+    (candidate, index, all) =>
+      all.findIndex((item) => item.auditId === candidate.auditId) === index
+  );
+  return next.slice(
+    0,
+    MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT
+  );
+}
+
+export function serializeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[]
+) {
+  return JSON.stringify(
+    {
+      format:
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries
+    } satisfies InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1,
+    null,
+    2
+  );
+}
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
+  | {
+      ok: true;
+      audit: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1;
+    }
+  | { ok: false; error: string };
+
+export function parseInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  input: unknown
+): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error:
+          "Repair-preset recovery audit search preset recovery audit is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error:
+        "Repair-preset recovery audit search preset recovery audit is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !==
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.entries)
+  ) {
+    return {
+      ok: false,
+      error:
+        "Repair-preset recovery audit search preset recovery audit format is not supported."
+    };
+  }
+
+  const entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[] =
+    [];
+  for (const candidate of record.entries) {
+    if (!candidate || typeof candidate !== "object") {
+      return {
+        ok: false,
+        error:
+          "Repair-preset recovery audit search preset recovery audit contains an invalid entry."
+      };
+    }
+
+    const item = candidate as Record<string, unknown>;
+    const auditId =
+      sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+        item.auditId
+      );
+    const createdAt =
+      typeof item.createdAt === "number" &&
+      Number.isFinite(item.createdAt) &&
+      item.createdAt > 0
+        ? item.createdAt
+        : 0;
+
+    if (!auditId || !createdAt) {
+      return {
+        ok: false,
+        error:
+          "Repair-preset recovery audit search preset recovery audit contains an invalid entry."
+      };
+    }
+
+    entries.push(
+      createInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry({
+        auditId,
+        createdAt,
+        requestedPresetId:
+          typeof item.requestedPresetId === "string"
+            ? item.requestedPresetId
+            : "",
+        recoveredPresetId:
+          sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId(
+            item.recoveredPresetId
+          ),
+        reason: typeof item.reason === "string" ? item.reason : ""
+      })
+    );
+  }
+
+  return {
+    ok: true,
+    audit: {
+      format:
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries: entries.slice(
+        0,
+        MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT
+      )
+    }
+  };
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -4002,6 +4214,20 @@ export function interfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPres
   );
 }
 
+export const INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:renewal-recovery-audit-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
+}
+
 export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -5063,6 +5289,29 @@ export function serializeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditS
     null,
     2
   );
+}
+
+export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter =
+  | "all"
+  | "24h"
+  | "7d";
+
+export function filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  ageFilter: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter,
+  now: number = Date.now()
+) {
+  if (ageFilter === "all") return entries;
+
+  const maxAge =
+    ageFilter === "24h"
+      ? 24 * 60 * 60 * 1000
+      : 7 * 24 * 60 * 60 * 1000;
+
+  return entries.filter((entry) => {
+    const age = now - entry.createdAt;
+    return age >= 0 && age <= maxAge;
+  });
 }
 
 export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
