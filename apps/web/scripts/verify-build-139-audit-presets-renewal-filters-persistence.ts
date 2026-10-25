@@ -4,7 +4,6 @@ import { HELP_TOPICS } from "../app/help/help-content";
 import {
   INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS,
-  createInterfaceFavoriteViewRecoveryAuditEntry,
   createInterfacePreferenceRecoveryRenewalReceipt,
   createInterfacePreferenceRecoverySnapshot,
   createNamedInterfacePreferenceProfile,
