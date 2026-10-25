@@ -7293,3 +7293,34 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     outline-offset: 2px;
   }
 }
+
+
+/* Build 146 — recovery preset persistence and audit search */
+.interfaceRenewalPresetRecoveryAuditSearch {
+  min-width: min(22rem, 100%);
+}
+
+.interfaceRenewalPresetRecoveryAuditSearch input {
+  width: 100%;
+}
+
+.interfaceReceiptRecoveryAuditPresetRecovery {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .interfaceRenewalPresetRecoveryAuditSearch {
+    min-width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceReceiptRecoveryAuditPresetRecovery {
+    border-color: CanvasText;
+  }
+}
