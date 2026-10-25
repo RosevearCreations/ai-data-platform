@@ -2186,6 +2186,69 @@ export function searchInterfaceFavoriteViewRecoveryAudit(
   });
 }
 
+export type InterfaceRecoveryAuditSearchPresetId =
+  | "all"
+  | "initial-load"
+  | "filter-selection"
+  | "last-favorite-removed"
+  | "favorites";
+
+export type InterfaceRecoveryAuditSearchPreset = {
+  id: InterfaceRecoveryAuditSearchPresetId;
+  label: string;
+  description: string;
+  triggerFilter: InterfaceFavoriteViewRecoveryAuditFilter;
+  query: string;
+};
+
+export const INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditSearchPreset[] = [
+  {
+    id: "all",
+    label: "All recoveries",
+    description: "Clear audit search and show every retained recovery event.",
+    triggerFilter: "all",
+    query: ""
+  },
+  {
+    id: "initial-load",
+    label: "Initial load",
+    description: "Show recoveries that occurred while persisted browser state was loading.",
+    triggerFilter: "initial-load",
+    query: ""
+  },
+  {
+    id: "filter-selection",
+    label: "Filter selection",
+    description: "Show recoveries caused by selecting Favorites when no favorites remained.",
+    triggerFilter: "filter-selection",
+    query: ""
+  },
+  {
+    id: "last-favorite-removed",
+    label: "Last favorite removed",
+    description: "Show recoveries caused by removing the final favorite while Favorites was active.",
+    triggerFilter: "last-favorite-removed",
+    query: ""
+  },
+  {
+    id: "favorites",
+    label: "Favorites mentions",
+    description: "Search all retained recovery evidence for references to favorites.",
+    triggerFilter: "all",
+    query: "favorites"
+  }
+];
+
+export function interfaceRecoveryAuditSearchPresetById(
+  id: InterfaceRecoveryAuditSearchPresetId
+) {
+  return (
+    INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS.find(
+      (preset) => preset.id === id
+    ) ?? INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS[0]
+  );
+}
+
 export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT =
   "ai-data-platform-recovery-snapshot-renewal-receipt";
 export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY =
@@ -2481,6 +2544,22 @@ export function parseInterfacePreferenceRecoveryRenewalReceiptHistory(
   };
 }
 
+
+export type InterfacePreferenceRecoveryRenewalHistoryFreshnessFilter =
+  | "all"
+  | InterfacePreferenceRecoverySnapshotFreshnessStatus;
+
+export function filterInterfacePreferenceRecoveryRenewalReceiptHistory(
+  receipts: InterfacePreferenceRecoveryRenewalReceiptV1[],
+  previousFreshness: InterfacePreferenceRecoveryRenewalHistoryFreshnessFilter
+) {
+  return previousFreshness === "all"
+    ? receipts
+    : receipts.filter(
+        (receipt) => receipt.previousFreshness === previousFreshness
+      );
+}
+
 function normalizeReceiptHistorySearchQuery(value: unknown) {
   if (typeof value !== "string") return "";
   return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
@@ -2524,6 +2603,20 @@ export type InterfacePreferenceReceiptSearchPreset = {
   strategyFilter: InterfacePreferenceReceiptHistoryStrategyFilter;
   query: string;
 };
+
+export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:receipt-search-preset:v1";
+
+export function sanitizeInterfacePreferenceReceiptSearchPresetId(
+  value: unknown
+): InterfacePreferenceReceiptSearchPresetId {
+  return value === "deviations" ||
+    value === "replacements" ||
+    value === "keep-both" ||
+    value === "capacity"
+    ? value
+    : "all";
+}
 
 export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS: InterfacePreferenceReceiptSearchPreset[] = [
   {
