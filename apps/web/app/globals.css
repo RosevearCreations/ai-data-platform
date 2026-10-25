@@ -6360,3 +6360,92 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     min-width: 0;
   }
 }
+
+/* Build 135 — Favorite View Recovery, Snapshot Expiry Guidance & Import Receipt History */
+.interfaceFavoriteViewRecovery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem;
+  border: 1px solid rgba(125,226,216,.35);
+  border-radius: .55rem;
+  background: rgba(125,226,216,.045);
+  padding: .5rem .6rem;
+}
+
+.interfaceFavoriteViewRecovery strong {
+  font-size: .72rem;
+}
+
+.interfaceFavoriteViewRecovery span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .67rem;
+}
+
+.interfaceRecoveryFreshness.expired {
+  border-color: rgba(235,100,80,.62);
+  background: rgba(235,100,80,.06);
+}
+
+.interfaceRecoveryExpiryGuidance {
+  margin: .15rem 0 0;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.4;
+}
+
+.interfaceImportReceiptHistory {
+  display: grid;
+  gap: .6rem;
+  border: 1px solid rgba(171,151,255,.3);
+  border-radius: .62rem;
+  background: rgba(171,151,255,.035);
+  padding: .65rem;
+}
+
+.interfaceImportReceiptHistoryList {
+  display: grid;
+  gap: .42rem;
+}
+
+.interfaceImportReceiptHistoryList article {
+  display: flex;
+  justify-content: space-between;
+  gap: .65rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .5rem;
+  padding: .48rem .55rem;
+}
+
+.interfaceImportReceiptHistoryList article > div {
+  display: grid;
+  gap: .1rem;
+}
+
+.interfaceImportReceiptHistoryList strong {
+  font-size: .7rem;
+}
+
+.interfaceImportReceiptHistoryList span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .64rem;
+  line-height: 1.35;
+}
+
+@media (forced-colors: active) {
+  .interfaceFavoriteViewRecovery,
+  .interfaceRecoveryFreshness.expired,
+  .interfaceImportReceiptHistory,
+  .interfaceImportReceiptHistoryList article {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceFavoriteViewRecovery,
+  .interfaceImportReceiptHistoryList article {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
