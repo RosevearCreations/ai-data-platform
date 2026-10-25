@@ -114,7 +114,7 @@ async function main() {
 
   assert(
     insights.includes("Repair-preset recovery audit search presets") &&
-      insights.includes("No renewal recovery-audit preset repairs match the selected age filter.") &&
+      insights.includes("No renewal recovery-audit preset repairs match the selected age filter and search.") &&
       insights.includes("selected preset persists in this browser") &&
       insights.includes("writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset(preset.id)") &&
       insights.includes("clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset();"),
