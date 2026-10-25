@@ -2487,6 +2487,36 @@ export const HELP_TOPICS = {
       "The marble surface is generated with CSS gradients so it does not add alt-text or loading requirements."
     ]
   },
+  "recovery-audit-recovery-search-presets": {
+    title: "Recovery-audit repair search presets",
+    summary: "Apply deterministic browser-local views to the recovery-audit preset repair ledger without changing stored evidence.",
+    steps: [
+      "Choose All, Recent 24 hours, Recent 7 days, Recovered to All, or Recovery reasons.",
+      "The preset applies the matching age filter and text query together.",
+      "Change the age filter or search manually to leave preset mode."
+    ],
+    notes: ["Search presets are view-only and are not persisted."]
+  },
+  "renewal-search-preset-recovery-audit-filtering": {
+    title: "Renewal search preset recovery audit filtering",
+    summary: "Limit the local renewal-preset recovery audit by age while preserving the complete retained evidence.",
+    steps: [
+      "Choose All recovery events, Last 24 hours, or Last 7 days.",
+      "Review the filtered events in newest-first order.",
+      "Export still includes the complete retained audit, not only the filtered view."
+    ],
+    notes: ["Filtering is temporary, browser-local, and does not change recovery events."]
+  },
+  "receipt-recovery-audit-search-preset-persistence": {
+    title: "Receipt recovery audit search preset persistence",
+    summary: "Keep the last selected receipt-recovery audit quick preset across browser reloads without persisting arbitrary manual search text.",
+    steps: [
+      "Choose a receipt recovery audit search preset.",
+      "The selected preset ID is saved locally and restored on the next load.",
+      "Manually changing age or search clears the saved preset and returns to an unsaved custom view."
+    ],
+    notes: ["Only the preset ID is persisted. Manual query text remains temporary and no server synchronization is added."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -2512,6 +2542,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 145 recovery search presets, renewal recovery audit filtering & receipt recovery preset persistence",
+    topics: ["recovery-audit-recovery-search-presets", "renewal-search-preset-recovery-audit-filtering", "receipt-recovery-audit-search-preset-persistence"]
   },
   {
     title: "Build 144 recovery audit recovery search, renewal search preset recovery audit & receipt recovery audit search presets",
