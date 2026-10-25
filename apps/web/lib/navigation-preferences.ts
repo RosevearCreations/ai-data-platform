@@ -2215,6 +2215,41 @@ export function sanitizeInterfaceRecoveryAuditSearchPresetId(
     : "all";
 }
 
+export type InterfaceRecoveryAuditSearchPresetRecovery = {
+  presetId: InterfaceRecoveryAuditSearchPresetId;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverInterfaceRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryAuditSearchPresetRecovery {
+  const presetId = sanitizeInterfaceRecoveryAuditSearchPresetId(value);
+  const hasStoredValue =
+    typeof value === "string" && value.trim().length > 0;
+  const isValidStoredValue =
+    value === "all" ||
+    value === "initial-load" ||
+    value === "filter-selection" ||
+    value === "last-favorite-removed" ||
+    value === "favorites";
+
+  if (hasStoredValue && !isValidStoredValue) {
+    return {
+      presetId: "all",
+      recovered: true,
+      reason:
+        "Recovery audit preset recovered to All recoveries because the saved preset ID is no longer supported."
+    };
+  }
+
+  return {
+    presetId,
+    recovered: false,
+    reason: null
+  };
+}
+
 export const INTERFACE_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditSearchPreset[] = [
   {
     id: "all",
@@ -2601,6 +2636,69 @@ export function searchInterfacePreferenceRecoveryRenewalReceiptHistory(
   });
 }
 
+export type InterfaceRecoveryRenewalHistorySearchPresetId =
+  | "all"
+  | "expired"
+  | "stale"
+  | "legacy"
+  | "favorites";
+
+export type InterfaceRecoveryRenewalHistorySearchPreset = {
+  id: InterfaceRecoveryRenewalHistorySearchPresetId;
+  label: string;
+  description: string;
+  freshnessFilter: InterfacePreferenceRecoveryRenewalHistoryFreshnessFilter;
+  query: string;
+};
+
+export const INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESETS: InterfaceRecoveryRenewalHistorySearchPreset[] = [
+  {
+    id: "all",
+    label: "All renewals",
+    description: "Clear renewal-history search and freshness filtering.",
+    freshnessFilter: "all",
+    query: ""
+  },
+  {
+    id: "expired",
+    label: "Expired prior",
+    description: "Show renewals whose previous recovery point was outside the 30-day guidance window.",
+    freshnessFilter: "expired",
+    query: ""
+  },
+  {
+    id: "stale",
+    label: "Stale prior",
+    description: "Show renewals whose previous recovery point was stale.",
+    freshnessFilter: "stale",
+    query: ""
+  },
+  {
+    id: "legacy",
+    label: "Legacy prior",
+    description: "Show renewals whose previous recovery point had unknown legacy freshness.",
+    freshnessFilter: "unknown",
+    query: ""
+  },
+  {
+    id: "favorites",
+    label: "Favorites count",
+    description: "Search all renewal receipts for favorite-count evidence.",
+    freshnessFilter: "all",
+    query: "favorites"
+  }
+];
+
+export function interfaceRecoveryRenewalHistorySearchPresetById(
+  id: InterfaceRecoveryRenewalHistorySearchPresetId
+) {
+  return (
+    INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESETS.find(
+      (preset) => preset.id === id
+    ) ?? INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESETS[0]
+  );
+}
+
 function normalizeReceiptHistorySearchQuery(value: unknown) {
   if (typeof value !== "string") return "";
   return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
@@ -2691,6 +2789,183 @@ export function recoverInterfacePreferenceReceiptSearchPresetId(
     presetId,
     recovered: false,
     reason: null
+  };
+}
+
+export const INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_FORMAT =
+  "ai-data-platform-receipt-preset-recovery-audit";
+export const INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_STORAGE_KEY =
+  "ai-data-platform:receipt-preset-recovery-audit:v1";
+export const MAX_INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT = 10;
+
+export type InterfaceReceiptPresetRecoveryAuditEntryV1 = {
+  version: 1;
+  auditId: string;
+  createdAt: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfacePreferenceReceiptSearchPresetId;
+  reason: string;
+};
+
+export type InterfaceReceiptPresetRecoveryAuditV1 = {
+  format: typeof INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_FORMAT;
+  version: 1;
+  entries: InterfaceReceiptPresetRecoveryAuditEntryV1[];
+};
+
+function sanitizeReceiptPresetRecoveryAuditId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+function sanitizeReceiptPresetRecoveryRequestedId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
+export function createInterfaceReceiptPresetRecoveryAuditEntry(input: {
+  auditId: string;
+  createdAt?: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfacePreferenceReceiptSearchPresetId;
+  reason: string;
+}): InterfaceReceiptPresetRecoveryAuditEntryV1 {
+  const auditId = sanitizeReceiptPresetRecoveryAuditId(input.auditId);
+  if (!auditId) throw new Error("Receipt preset recovery audit ID is required.");
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+
+  return {
+    version: 1,
+    auditId,
+    createdAt,
+    requestedPresetId: sanitizeReceiptPresetRecoveryRequestedId(
+      input.requestedPresetId
+    ),
+    recoveredPresetId: sanitizeInterfacePreferenceReceiptSearchPresetId(
+      input.recoveredPresetId
+    ),
+    reason:
+      typeof input.reason === "string"
+        ? input.reason.replace(/\s+/g, " ").trim().slice(0, 240)
+        : ""
+  };
+}
+
+export function prependInterfaceReceiptPresetRecoveryAuditEntry(
+  entries: InterfaceReceiptPresetRecoveryAuditEntryV1[],
+  entry: InterfaceReceiptPresetRecoveryAuditEntryV1
+) {
+  const next = [entry, ...entries].filter(
+    (candidate, index, all) =>
+      all.findIndex((item) => item.auditId === candidate.auditId) === index
+  );
+  return next.slice(0, MAX_INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT);
+}
+
+export function serializeInterfaceReceiptPresetRecoveryAudit(
+  entries: InterfaceReceiptPresetRecoveryAuditEntryV1[]
+) {
+  return JSON.stringify(
+    {
+      format: INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries
+    } satisfies InterfaceReceiptPresetRecoveryAuditV1,
+    null,
+    2
+  );
+}
+
+export type InterfaceReceiptPresetRecoveryAuditParseResult =
+  | { ok: true; audit: InterfaceReceiptPresetRecoveryAuditV1 }
+  | { ok: false; error: string };
+
+export function parseInterfaceReceiptPresetRecoveryAudit(
+  input: unknown
+): InterfaceReceiptPresetRecoveryAuditParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "Receipt preset recovery audit is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "Receipt preset recovery audit is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !== INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.entries)
+  ) {
+    return {
+      ok: false,
+      error: "Receipt preset recovery audit format is not supported."
+    };
+  }
+
+  const entries: InterfaceReceiptPresetRecoveryAuditEntryV1[] = [];
+  for (const candidate of record.entries) {
+    if (!candidate || typeof candidate !== "object") {
+      return {
+        ok: false,
+        error: "Receipt preset recovery audit contains an invalid entry."
+      };
+    }
+    const item = candidate as Record<string, unknown>;
+    const auditId = sanitizeReceiptPresetRecoveryAuditId(item.auditId);
+    const createdAt =
+      typeof item.createdAt === "number" &&
+      Number.isFinite(item.createdAt) &&
+      item.createdAt > 0
+        ? item.createdAt
+        : 0;
+    if (!auditId || !createdAt) {
+      return {
+        ok: false,
+        error: "Receipt preset recovery audit contains an invalid entry."
+      };
+    }
+
+    entries.push(
+      createInterfaceReceiptPresetRecoveryAuditEntry({
+        auditId,
+        createdAt,
+        requestedPresetId:
+          typeof item.requestedPresetId === "string"
+            ? item.requestedPresetId
+            : "",
+        recoveredPresetId: sanitizeInterfacePreferenceReceiptSearchPresetId(
+          item.recoveredPresetId
+        ),
+        reason: typeof item.reason === "string" ? item.reason : ""
+      })
+    );
+  }
+
+  return {
+    ok: true,
+    audit: {
+      format: INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries: entries.slice(0, MAX_INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT)
+    }
   };
 }
 
