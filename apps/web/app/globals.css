@@ -6279,3 +6279,84 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 134 — Favorite View Persistence, Recovery Snapshot Freshness & Import Reconciliation Receipt */
+.interfaceRecoveryFreshness {
+  display: grid;
+  gap: .14rem;
+  min-width: 10rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .52rem;
+  padding: .4rem .5rem;
+  background: rgba(255,255,255,.025);
+}
+
+.interfaceRecoveryFreshness strong {
+  font-size: .7rem;
+}
+
+.interfaceRecoveryFreshness span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceRecoveryFreshness.fresh {
+  border-color: rgba(125,226,216,.4);
+}
+
+.interfaceRecoveryFreshness.aging {
+  border-color: rgba(245,190,80,.4);
+}
+
+.interfaceRecoveryFreshness.stale {
+  border-color: rgba(245,138,80,.55);
+  background: rgba(245,138,80,.045);
+}
+
+.interfaceRecoveryFreshness.unknown {
+  border-style: dashed;
+}
+
+.interfaceImportReceipt {
+  display: grid;
+  gap: .6rem;
+  border: 1px solid rgba(171,151,255,.35);
+  border-radius: .62rem;
+  background: rgba(171,151,255,.045);
+  padding: .65rem;
+}
+
+.interfaceImportReceiptMeta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .42rem;
+}
+
+.interfaceImportReceiptMeta span {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .48rem;
+  padding: .42rem .5rem;
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .68rem;
+  overflow-wrap: anywhere;
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryFreshness,
+  .interfaceImportReceipt,
+  .interfaceImportReceiptMeta span {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceImportReceiptMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceRecoveryFreshness {
+    min-width: 0;
+  }
+}
