@@ -2409,7 +2409,7 @@ export function NavigationInsights() {
     writeRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPreset(preset.id);
     setImportError(null);
     setPortabilityStatus(
-      "Renewal preset-recovery audit preset “" + preset.label + "” applied."
+      "Renewal preset-recovery audit preset “" + preset.label + "” applied and saved locally."
     );
   }
 
@@ -2770,6 +2770,9 @@ export function NavigationInsights() {
     try {
       window.localStorage.removeItem(
         INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
       );
     } catch {
       // Renewal recovery-audit search preset recovery evidence is optional browser-local state.
@@ -3483,6 +3486,9 @@ export function NavigationInsights() {
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
@@ -3508,6 +3514,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearch("");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setRenewalHistoryPresetRecoveryAuditAgeFilter("all");
     setRenewalHistoryPresetRecoveryAuditSearch("");
     setRenewalHistoryPresetRecoveryAuditSearchPresetId("all");
@@ -3524,6 +3531,7 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearch("");
 
