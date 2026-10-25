@@ -150,7 +150,7 @@ async function main() {
   for (const token of [
     "filteredRecoveryAuditPresetRecoveryAudit",
     "All audit recoveries",
-    "No recovery-audit preset repairs match the selected age filter.",
+    "No recovery-audit preset repairs match the selected age filter",
     "readRecoveryRenewalHistorySearchPresetRecovery",
     "renewalHistoryPresetRecoveryNotice",
     "Renewal history preset recovered",
