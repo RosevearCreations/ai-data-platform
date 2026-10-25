@@ -140,7 +140,7 @@ async function main() {
   }
 
   assert(
-    insights.includes("No repair-preset recovery events match the selected age filter.") &&
+    insights.includes("No repair-preset recovery events match the selected age filter and search.") &&
       insights.includes("Renewal recovery audit preset recovered") &&
       insights.includes("writeRenewalRecoveryAuditSearchPreset(") &&
       insights.includes("Search preset repairs") &&

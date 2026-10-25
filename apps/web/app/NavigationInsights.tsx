@@ -39,10 +39,12 @@ import {
   INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
   INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
+  INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
+  INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
@@ -101,6 +103,7 @@ import {
   filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit,
   filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAudit,
+  filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAudit,
   filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   filterInterfaceRecoveryRenewalSearchPresetRecoveryAudit,
@@ -109,6 +112,7 @@ import {
   interfaceReceiptPresetRecoveryAuditSearchPresetById,
   interfaceRecoveryAuditPresetRecoveryAuditSearchPresetById,
   interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetById,
+  interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById,
   interfaceRecoveryAuditSearchPresetById,
   interfaceRecoveryRenewalHistorySearchPresetById,
   interfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetById,
@@ -182,14 +186,9 @@ import {
   searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   setNamedInterfacePreferenceProfileFavorite,
   sanitizeInterfacePreferenceReceiptSearchPresetId,
-  sanitizeInterfaceReceiptPresetRecoveryAuditSearchPresetId,
-  sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
-  sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId,
-  sanitizeInterfaceRecoveryAuditPresetRecoveryAuditSearchPresetId,
+  sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   sanitizeInterfaceRecoveryAuditSearchPresetId,
   sanitizeInterfaceRecoveryRenewalHistorySearchPresetId,
-  sanitizeInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId,
-  sanitizeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetId,
   sanitizeInterfacePreferences,
   sanitizeNamedInterfacePreferenceName,
   sanitizeNamedInterfacePreferenceProfiles,
@@ -241,6 +240,7 @@ import {
   type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId,
   type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1,
   type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter,
+  type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   type InterfaceRecoveryAuditPresetRecoveryAuditSearchPresetId,
   type InterfaceRecoveryAuditSearchPresetId,
   type InterfaceRecoveryRenewalHistorySearchPresetId,
@@ -250,6 +250,7 @@ import {
   type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditEntryV1,
   type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetId,
   type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1,
+  type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter,
   type InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId,
   type InterfacePreferenceReceiptHistoryOutcomeFilter,
   type InterfacePreferenceReceiptHistoryStrategyFilter,
@@ -827,6 +828,41 @@ function clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset() {
   }
 }
 
+function readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(): InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+  try {
+    return sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+      window.localStorage.getItem(
+        INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      )
+    );
+  } catch {
+    return "all";
+  }
+}
+
+function writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+  id: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
+      id
+    );
+  } catch {
+    // Receipt search-preset recovery audit preset persistence is optional browser-local view state.
+  }
+}
+
+function clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset() {
+  try {
+    window.localStorage.removeItem(
+      INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+    );
+  } catch {
+    // Receipt search-preset recovery audit preset persistence is optional browser-local view state.
+  }
+}
+
 function readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit() {
   try {
     const raw = window.localStorage.getItem(
@@ -1290,6 +1326,8 @@ export function NavigationInsights() {
     useState<InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter>("all");
   const [recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch, setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch] =
     useState("");
+  const [recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId, setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId] =
+    useState<InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId | null>("all");
   const [renewalHistoryPresetRecoveryAudit, setRenewalHistoryPresetRecoveryAudit] =
     useState<InterfaceRecoveryRenewalSearchPresetRecoveryAuditEntryV1[]>([]);
   const [renewalHistoryPresetRecoveryAuditAgeFilter, setRenewalHistoryPresetRecoveryAuditAgeFilter] =
@@ -1312,6 +1350,8 @@ export function NavigationInsights() {
     useState<string | null>(null);
   const [renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit, setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit] =
     useState<InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[]>([]);
+  const [renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter, setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter] =
+    useState<InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter>("all");
   const [receiptPresetRecoveryAuditSearchPresetId, setReceiptPresetRecoveryAuditSearchPresetId] =
     useState<InterfaceReceiptPresetRecoveryAuditSearchPresetId | null>("all");
   const [receiptPresetRecoveryAuditSearchPresetRecoveryNotice, setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice] =
@@ -1411,6 +1451,10 @@ export function NavigationInsights() {
     const persistedReceiptRepairAuditSearchPreset =
       interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
         receiptRepairAuditSearchPresetRecovery.presetId
+      );
+    const persistedReceiptSearchPresetRecoveryAuditSearchPreset =
+      interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
+        readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset()
       );
     let receiptHistory = readImportReconciliationReceiptHistory();
     let recoveryAudit = readFavoriteViewRecoveryAudit();
@@ -1748,6 +1792,15 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
       receiptRepairAuditSearchPresetRecoveryAudit
     );
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
+      persistedReceiptSearchPresetRecoveryAuditSearchPreset.ageFilter
+    );
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch(
+      persistedReceiptSearchPresetRecoveryAuditSearchPreset.query
+    );
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+      persistedReceiptSearchPresetRecoveryAuditSearchPreset.id
+    );
     setRecoveryAuditPresetRecoveryNotice(auditPresetRecovery.reason);
     setRecoveryAuditPresetRecoveryAudit(recoveryAuditRecoveryAudit);
     setRecoveryAuditPresetRecoveryAuditAgeFilter(
@@ -2040,7 +2093,18 @@ export function NavigationInsights() {
       recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch
     ]
   );
-    const filteredReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit = useMemo(
+    const filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit = useMemo(
+    () =>
+      filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+        renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+        renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
+      ),
+    [
+      renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+      renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
+    ]
+  );
+  const filteredReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit = useMemo(
     () =>
       filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
         receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
@@ -2556,6 +2620,28 @@ export function NavigationInsights() {
     );
   }
 
+  function applyRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+    id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId
+  ) {
+    const preset =
+      interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
+        id
+      );
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
+      preset.ageFilter
+    );
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch(
+      preset.query
+    );
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+      preset.id
+    );
+    setImportError(null);
+    setPortabilityStatus(
+      "Repair search-preset recovery audit preset “" + preset.label + "” applied."
+    );
+  }
+
   function applyReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
     id: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId
   ) {
@@ -2572,9 +2658,12 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
       preset.id
     );
+    writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+      preset.id
+    );
     setImportError(null);
     setPortabilityStatus(
-      "Receipt search-preset recovery audit preset “" + preset.label + "” applied."
+      "Receipt search-preset recovery audit preset “" + preset.label + "” applied and saved locally."
     );
   }
 
@@ -2706,6 +2795,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setImportError(null);
     setPortabilityStatus(
       "Repair-preset recovery audit search preset recovery audit cleared."
@@ -2830,6 +2920,7 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
+    clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
     setImportError(null);
     setPortabilityStatus(
       "Receipt preset-repair audit search preset recovery audit cleared."
@@ -2944,6 +3035,7 @@ export function NavigationInsights() {
       // Renewal preset-recovery audit search preset recovery audit is optional browser-local evidence.
     }
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setImportError(null);
     setPortabilityStatus(
       "Renewal preset-recovery audit search preset recovery audit cleared."
@@ -3696,6 +3788,9 @@ export function NavigationInsights() {
         INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
+        INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
@@ -3730,6 +3825,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setRenewalHistoryPresetRecoveryAuditAgeFilter("all");
     setRenewalHistoryPresetRecoveryAuditSearch("");
     setRenewalHistoryPresetRecoveryAuditSearchPresetId("all");
@@ -3740,6 +3836,7 @@ export function NavigationInsights() {
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAudit([]);
@@ -3789,7 +3886,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 156 · Repair recovery search, renewal recovery audit & receipt recovery presets</p>
+                <p className="eyebrow">Build 157 · Repair recovery presets, renewal recovery filtering & receipt preset persistence</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -3983,16 +4080,39 @@ export function NavigationInsights() {
                       </div>
                       <HelpInfo topic="recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit" inline />
                     </div>
+                    <div className="interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresets">
+                      <div className="interfacePresetHeading">
+                        <div>
+                          <strong>Repair search-preset recovery audit search presets</strong>
+                          <span>Apply a common repair search-preset recovery evidence view without changing retained audit events.</span>
+                        </div>
+                        <HelpInfo topic="recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-presets" inline />
+                      </div>
+                      <div role="group" aria-label="Repair search-preset recovery audit search presets">
+                        {INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS.map((preset) => (
+                          <button
+                            type="button"
+                            key={preset.id}
+                            aria-pressed={recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId === preset.id}
+                            title={preset.description}
+                            onClick={() => applyRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(preset.id)}
+                          >
+                            {preset.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                     <div className="interfaceRecoveryAuditRepairSearchPresetRecoveryAuditFilters">
                       <label>
                         <span>Recovery age</span>
                         <select
                           value={recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter}
-                          onChange={(event) =>
+                          onChange={(event) => {
                             setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
                               event.currentTarget.value as InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
-                            )
-                          }
+                            );
+                            setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                          }}
                         >
                           <option value="all">All search preset recoveries</option>
                           <option value="24h">Last 24 hours</option>
@@ -4004,11 +4124,12 @@ export function NavigationInsights() {
                         <input
                           type="search"
                           value={recoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch}
-                          onChange={(event) =>
+                          onChange={(event) => {
                             setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch(
                               event.currentTarget.value
-                            )
-                          }
+                            );
+                            setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                          }}
                           placeholder="Audit ID, requested preset, reason…"
                           aria-label="Search repair-preset recovery audit search preset recovery evidence"
                         />
@@ -4625,8 +4746,29 @@ export function NavigationInsights() {
                                 </div>
                                 <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit" inline />
                               </div>
+                              <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditFilters">
+                                <label>
+                                  <span>Recovery age</span>
+                                  <select
+                                    value={renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter}
+                                    onChange={(event) =>
+                                      setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
+                                        event.currentTarget.value as InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
+                                      )
+                                    }
+                                  >
+                                    <option value="all">All preset recoveries</option>
+                                    <option value="24h">Last 24 hours</option>
+                                    <option value="7d">Last 7 days</option>
+                                  </select>
+                                </label>
+                                <span>
+                                  Showing {filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length} of {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length}
+                                </span>
+                                <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering" inline />
+                              </div>
                               <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditList">
-                                {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
+                                {filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
                                   <article key={entry.auditId}>
                                     <div>
                                       <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
@@ -4635,6 +4777,9 @@ export function NavigationInsights() {
                                     <small>{entry.reason}</small>
                                   </article>
                                 ))}
+                                {!filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
+                                  <p>No renewal preset-recovery audit search preset repairs match the selected age filter.</p>
+                                ) : null}
                               </div>
                               <div className="interfaceImportPreviewActions">
                                 <button type="button" onClick={exportRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
@@ -5299,7 +5444,7 @@ export function NavigationInsights() {
                       <div className="interfacePresetHeading">
                         <div>
                           <strong>Receipt search-preset recovery audit search presets</strong>
-                          <span>Apply a common receipt search-preset recovery evidence view without changing stored recovery events.</span>
+                          <span>Apply a common receipt search-preset recovery evidence view; the selected preset persists in this browser.</span>
                         </div>
                         <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-presets" inline />
                       </div>
@@ -5327,6 +5472,7 @@ export function NavigationInsights() {
                               event.currentTarget.value as InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
                             );
                             setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                            clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
                           }}
                         >
                           <option value="all">All search preset recoveries</option>
@@ -5344,6 +5490,7 @@ export function NavigationInsights() {
                               event.currentTarget.value
                             );
                             setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                            clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
                           }}
                           placeholder="Audit ID, requested preset, reason…"
                           aria-label="Search receipt preset-repair search preset recovery audit evidence"
@@ -5890,7 +6037,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local repair-preset search preset recovery audit search, renewal preset-recovery audit search preset recovery audit and receipt search-preset recovery audit search presets only · no server sync or workflow authority changes.</span>
+              <span>Browser-local repair search-preset recovery audit search presets, renewal preset-recovery audit filtering and receipt search-preset recovery audit preset persistence only · no server sync or workflow authority changes.</span>
             </footer>
           </section>
         </div>

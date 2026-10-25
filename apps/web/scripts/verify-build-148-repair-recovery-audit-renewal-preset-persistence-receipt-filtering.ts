@@ -133,8 +133,8 @@ async function main() {
       insights.includes("Clear repair preset recovery audit") &&
       insights.includes("writeRenewalRecoveryAuditSearchPreset(preset.id)") &&
       insights.includes("clearRenewalRecoveryAuditSearchPreset();") &&
-      insights.includes("Showing {filteredReceiptRecoveryAuditSearchPresetRecoveryAudit.length}") &&
-      insights.includes("No receipt recovery-audit preset repairs match the selected age filter."),
+      insights.includes("Showing {searchedReceiptRecoveryAuditSearchPresetRecoveryAudit.length}") &&
+      insights.includes("No receipt recovery-audit preset repairs match the selected age filter and search."),
     "Build 148 must expose repair recovery evidence, persist renewal audit presets, and filter receipt preset-repair evidence."
   );
 
