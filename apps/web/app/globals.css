@@ -6449,3 +6449,130 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 136 — Favorite View Recovery Audit, Recovery Snapshot Renewal Workflow & Receipt History Filtering */
+.interfaceFavoriteRecoveryAudit {
+  display: grid;
+  gap: .6rem;
+  border: 1px solid rgba(125,226,216,.3);
+  border-radius: .62rem;
+  background: rgba(125,226,216,.035);
+  padding: .65rem;
+}
+
+.interfaceFavoriteRecoveryAuditList {
+  display: grid;
+  gap: .4rem;
+}
+
+.interfaceFavoriteRecoveryAuditList article {
+  display: grid;
+  gap: .12rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .5rem;
+  padding: .45rem .52rem;
+}
+
+.interfaceFavoriteRecoveryAuditList strong {
+  text-transform: capitalize;
+  font-size: .69rem;
+}
+
+.interfaceFavoriteRecoveryAuditList span,
+.interfaceFavoriteRecoveryAuditList small {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceRecoveryRenewal {
+  display: grid;
+  gap: .12rem;
+  min-width: 12rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.1));
+  border-radius: .52rem;
+  padding: .42rem .52rem;
+  background: rgba(255,255,255,.025);
+}
+
+.interfaceRecoveryRenewal.consider {
+  border-color: rgba(245,190,80,.42);
+}
+
+.interfaceRecoveryRenewal.recommended {
+  border-color: rgba(235,100,80,.58);
+  background: rgba(235,100,80,.05);
+}
+
+.interfaceRecoveryRenewal strong {
+  font-size: .69rem;
+}
+
+.interfaceRecoveryRenewal span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceReceiptHistoryFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .45rem;
+}
+
+.interfaceReceiptHistoryFilters > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+.interfaceReceiptHistoryFilters button,
+.interfaceReceiptHistoryFilters select {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceReceiptHistoryFilters button[aria-pressed="true"] {
+  border-color: rgba(125,226,216,.5);
+  background: rgba(125,226,216,.08);
+}
+
+.interfaceReceiptHistoryFilters label {
+  display: grid;
+  gap: .18rem;
+}
+
+.interfaceReceiptHistoryFilters label > span,
+.interfaceReceiptHistoryFilters > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+}
+
+@media (forced-colors: active) {
+  .interfaceFavoriteRecoveryAudit,
+  .interfaceFavoriteRecoveryAuditList article,
+  .interfaceRecoveryRenewal,
+  .interfaceReceiptHistoryFilters button,
+  .interfaceReceiptHistoryFilters select {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceReceiptHistoryFilters,
+  .interfaceReceiptHistoryFilters > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .interfaceRecoveryRenewal {
+    min-width: 0;
+  }
+}

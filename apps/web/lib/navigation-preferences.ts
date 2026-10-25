@@ -1163,6 +1163,61 @@ export function interfacePreferenceRecoverySnapshotFreshness(
   };
 }
 
+export type InterfacePreferenceRecoveryRenewalAssessment = {
+  recommended: boolean;
+  priority: "none" | "consider" | "recommended";
+  reason: string;
+};
+
+export function assessInterfacePreferenceRecoverySnapshotRenewal(
+  snapshot: InterfacePreferenceRecoverySnapshotV1,
+  now: number = Date.now()
+): InterfacePreferenceRecoveryRenewalAssessment {
+  const freshness = interfacePreferenceRecoverySnapshotFreshness(snapshot, now);
+
+  if (freshness.status === "expired") {
+    return {
+      recommended: true,
+      priority: "recommended",
+      reason:
+        "This recovery snapshot is outside the 30-day guidance window. Renew it from current browser state before further risky changes when practical."
+    };
+  }
+
+  if (freshness.status === "unknown") {
+    return {
+      recommended: true,
+      priority: "recommended",
+      reason:
+        "This legacy recovery snapshot has no reliable capture time. Renew it to establish a timestamped recovery point."
+    };
+  }
+
+  if (freshness.status === "stale") {
+    return {
+      recommended: true,
+      priority: "consider",
+      reason:
+        "This recovery snapshot is at least seven days old. Consider renewing it if current browser state is now the desired recovery point."
+    };
+  }
+
+  if (freshness.status === "aging") {
+    return {
+      recommended: false,
+      priority: "consider",
+      reason:
+        "This recovery snapshot is more than 24 hours old but still inside the seven-day freshness window."
+    };
+  }
+
+  return {
+    recommended: false,
+    priority: "none",
+    reason: "This recovery snapshot is still fresh."
+  };
+}
+
 export function parseInterfacePreferenceRecoverySnapshot(
   input: unknown
 ): InterfacePreferenceRecoverySnapshotParseResult {
@@ -1912,4 +1967,205 @@ export function parseInterfacePreferenceBundleImportReceiptHistory(
       parsedReceipts
     )
   };
+}
+
+export const INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_FORMAT =
+  "ai-data-platform-favorite-view-recovery-audit";
+export const INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_STORAGE_KEY =
+  "ai-data-platform:favorite-view-recovery-audit:v1";
+export const MAX_INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT = 12;
+
+export type InterfaceFavoriteViewRecoveryAuditTrigger =
+  | "initial-load"
+  | "filter-selection"
+  | "last-favorite-removed";
+
+export type InterfaceFavoriteViewRecoveryAuditEntryV1 = {
+  version: 1;
+  auditId: string;
+  createdAt: number;
+  trigger: InterfaceFavoriteViewRecoveryAuditTrigger;
+  requestedFilter: NamedInterfacePreferenceQuickFilter;
+  resolvedFilter: NamedInterfacePreferenceQuickFilter;
+  reason: string;
+};
+
+export type InterfaceFavoriteViewRecoveryAuditV1 = {
+  format: typeof INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_FORMAT;
+  version: 1;
+  entries: InterfaceFavoriteViewRecoveryAuditEntryV1[];
+};
+
+function sanitizeFavoriteViewAuditId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+function sanitizeFavoriteViewAuditTrigger(
+  value: unknown
+): InterfaceFavoriteViewRecoveryAuditTrigger | null {
+  return value === "initial-load" ||
+    value === "filter-selection" ||
+    value === "last-favorite-removed"
+    ? value
+    : null;
+}
+
+export function createInterfaceFavoriteViewRecoveryAuditEntry(input: {
+  auditId: string;
+  createdAt?: number;
+  trigger: InterfaceFavoriteViewRecoveryAuditTrigger;
+  requestedFilter: NamedInterfacePreferenceQuickFilter;
+  resolvedFilter: NamedInterfacePreferenceQuickFilter;
+  reason: string;
+}): InterfaceFavoriteViewRecoveryAuditEntryV1 {
+  const auditId = sanitizeFavoriteViewAuditId(input.auditId);
+  if (!auditId) throw new Error("Favorite view recovery audit ID is required.");
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+
+  return {
+    version: 1,
+    auditId,
+    createdAt,
+    trigger: input.trigger,
+    requestedFilter: sanitizeNamedInterfacePreferenceQuickFilter(
+      input.requestedFilter
+    ),
+    resolvedFilter: sanitizeNamedInterfacePreferenceQuickFilter(
+      input.resolvedFilter
+    ),
+    reason: typeof input.reason === "string"
+      ? input.reason.replace(/\s+/g, " ").trim().slice(0, 240)
+      : ""
+  };
+}
+
+export function prependInterfaceFavoriteViewRecoveryAuditEntry(
+  entries: InterfaceFavoriteViewRecoveryAuditEntryV1[],
+  entry: InterfaceFavoriteViewRecoveryAuditEntryV1
+) {
+  const next = [entry, ...entries].filter(
+    (candidate, index, all) =>
+      all.findIndex((item) => item.auditId === candidate.auditId) === index
+  );
+  return next.slice(0, MAX_INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT);
+}
+
+export function serializeInterfaceFavoriteViewRecoveryAudit(
+  entries: InterfaceFavoriteViewRecoveryAuditEntryV1[]
+) {
+  return JSON.stringify(
+    {
+      format: INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries
+    } satisfies InterfaceFavoriteViewRecoveryAuditV1,
+    null,
+    2
+  );
+}
+
+export type InterfaceFavoriteViewRecoveryAuditParseResult =
+  | { ok: true; audit: InterfaceFavoriteViewRecoveryAuditV1 }
+  | { ok: false; error: string };
+
+export function parseInterfaceFavoriteViewRecoveryAudit(
+  input: unknown
+): InterfaceFavoriteViewRecoveryAuditParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return { ok: false, error: "Favorite view recovery audit is not valid JSON." };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return { ok: false, error: "Favorite view recovery audit is not available." };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !== INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.entries)
+  ) {
+    return {
+      ok: false,
+      error: "Favorite view recovery audit format is not supported."
+    };
+  }
+
+  const entries: InterfaceFavoriteViewRecoveryAuditEntryV1[] = [];
+  for (const candidate of record.entries) {
+    if (!candidate || typeof candidate !== "object") {
+      return { ok: false, error: "Favorite view recovery audit contains an invalid entry." };
+    }
+    const item = candidate as Record<string, unknown>;
+    const auditId = sanitizeFavoriteViewAuditId(item.auditId);
+    const trigger = sanitizeFavoriteViewAuditTrigger(item.trigger);
+    const createdAt =
+      typeof item.createdAt === "number" &&
+      Number.isFinite(item.createdAt) &&
+      item.createdAt > 0
+        ? item.createdAt
+        : 0;
+    if (!auditId || !trigger || !createdAt) {
+      return { ok: false, error: "Favorite view recovery audit contains an invalid entry." };
+    }
+    entries.push(
+      createInterfaceFavoriteViewRecoveryAuditEntry({
+        auditId,
+        createdAt,
+        trigger,
+        requestedFilter: sanitizeNamedInterfacePreferenceQuickFilter(
+          item.requestedFilter
+        ),
+        resolvedFilter: sanitizeNamedInterfacePreferenceQuickFilter(
+          item.resolvedFilter
+        ),
+        reason: typeof item.reason === "string" ? item.reason : ""
+      })
+    );
+  }
+
+  return {
+    ok: true,
+    audit: {
+      format: INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries: entries.slice(0, MAX_INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT)
+    }
+  };
+}
+
+export type InterfacePreferenceReceiptHistoryOutcomeFilter =
+  | "all"
+  | "matched"
+  | "deviated";
+export type InterfacePreferenceReceiptHistoryStrategyFilter =
+  | "all"
+  | InterfacePreferenceBundleConflictStrategy;
+
+export function filterInterfacePreferenceBundleImportReceiptHistory(
+  receipts: InterfacePreferenceBundleImportReceiptV1[],
+  outcomeFilter: InterfacePreferenceReceiptHistoryOutcomeFilter,
+  strategyFilter: InterfacePreferenceReceiptHistoryStrategyFilter
+) {
+  return receipts.filter((receipt) => {
+    const outcomeMatches =
+      outcomeFilter === "all" ||
+      (outcomeFilter === "matched" && receipt.reconciliation.matchesPlan) ||
+      (outcomeFilter === "deviated" && !receipt.reconciliation.matchesPlan);
+    const strategyMatches =
+      strategyFilter === "all" || receipt.strategy === strategyFilter;
+    return outcomeMatches && strategyMatches;
+  });
 }
