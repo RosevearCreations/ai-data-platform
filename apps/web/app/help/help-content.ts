@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "recovery-audit-search": {
+    title: "Recovery audit search",
+    summary: "Build 138 adds temporary text search across the bounded favorite-view recovery audit and composes it with Build 137 trigger filtering.",
+    steps: [
+      "Enter text in Search recovery audit.",
+      "Search can match audit ID, trigger, requested filter, resolved filter or recovery reason.",
+      "Combine search with Initial load, Filter selection or Last favorite removed.",
+      "Clear the search field to return to the trigger-filtered audit."
+    ],
+    notes: [
+      "Search is case-insensitive and view-only.",
+      "Search does not delete, reorder or rewrite audit events and does not change complete audit export."
+    ]
+  },
+  "renewal-receipt-history": {
+    title: "Renewal receipt history",
+    summary: "Build 138 expands the latest snapshot-renewal receipt into a bounded newest-first browser-local history of the ten most recent confirmed renewals.",
+    steps: [
+      "Confirm snapshot renewals normally; each new receipt is placed at the top of renewal history.",
+      "Review previous freshness, renewal time, profile count and favorite count for recent renewals.",
+      "Choose Export renewal history to save the complete bounded history as versioned JSON.",
+      "Choose Clear renewal history to remove the history and current latest renewal receipt."
+    ],
+    notes: [
+      "A Build 137 latest renewal receipt is migrated into history when no history exists yet.",
+      "History is capped at ten unique receipts and remains browser-local evidence."
+    ]
+  },
+  "receipt-search-presets": {
+    title: "Receipt search presets",
+    summary: "Build 138 adds quick presets that apply common receipt-history outcome, strategy and search combinations without changing stored receipt evidence.",
+    steps: [
+      "Choose All receipts to clear search and filters.",
+      "Choose Deviations to show only receipts where actual import results differed from the plan.",
+      "Choose Replacements or Keep both to focus on those conflict strategies.",
+      "Choose Capacity to search receipt evidence for capacity-related details."
+    ],
+    notes: [
+      "Manually changing outcome, strategy or search clears the active preset indicator.",
+      "Presets affect only the current receipt-history view and never rewrite or persist receipt evidence."
+    ]
+  },
   "recovery-audit-filtering": {
     title: "Recovery audit filtering",
     summary: "Build 137 lets operators narrow the favorite-view recovery audit by recovery trigger without deleting, reordering or rewriting audit evidence.",
@@ -2218,6 +2260,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 138 recovery audit search, renewal receipt history & receipt search presets",
+    topics: ["recovery-audit-search", "renewal-receipt-history", "receipt-search-presets"]
   },
   {
     title: "Build 137 recovery audit filtering, snapshot renewal receipt & receipt history search",
