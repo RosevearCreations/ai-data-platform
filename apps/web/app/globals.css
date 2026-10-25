@@ -7082,3 +7082,79 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 143 — Recovery Audit Recovery Filtering, Renewal Search Preset Recovery & Receipt Recovery Audit Search */
+.interfaceRecoveryAuditRecoveryFilters,
+.interfaceReceiptRecoveryAuditSearch {
+  display: grid;
+  gap: .18rem;
+}
+
+.interfaceRecoveryAuditRecoveryFilters {
+  grid-template-columns: minmax(12rem, 18rem) auto auto;
+  align-items: end;
+  gap: .45rem;
+}
+
+.interfaceRecoveryAuditRecoveryFilters label,
+.interfaceReceiptRecoveryAuditSearch {
+  display: grid;
+  gap: .18rem;
+}
+
+.interfaceRecoveryAuditRecoveryFilters label > span,
+.interfaceRecoveryAuditRecoveryFilters > span,
+.interfaceReceiptRecoveryAuditSearch > span,
+.interfaceRenewalPresetRecovery span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceRecoveryAuditRecoveryFilters select,
+.interfaceReceiptRecoveryAuditSearch input {
+  min-width: 13rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceRenewalPresetRecovery {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .45rem;
+  border: 1px solid rgba(245,190,80,.45);
+  border-radius: .55rem;
+  background: rgba(245,190,80,.045);
+  padding: .48rem .58rem;
+}
+
+.interfaceRenewalPresetRecovery strong {
+  font-size: .69rem;
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRecoveryFilters select,
+  .interfaceReceiptRecoveryAuditSearch input,
+  .interfaceRenewalPresetRecovery {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceRecoveryAuditRecoveryFilters,
+  .interfaceRenewalPresetRecovery {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceReceiptRecoveryAuditSearch,
+  .interfaceReceiptRecoveryAuditSearch input {
+    min-width: 0;
+    width: 100%;
+  }
+}
