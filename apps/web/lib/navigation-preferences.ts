@@ -2146,6 +2146,222 @@ export function parseInterfaceFavoriteViewRecoveryAudit(
   };
 }
 
+export type InterfaceFavoriteViewRecoveryAuditFilter =
+  | "all"
+  | InterfaceFavoriteViewRecoveryAuditTrigger;
+
+export function filterInterfaceFavoriteViewRecoveryAudit(
+  entries: InterfaceFavoriteViewRecoveryAuditEntryV1[],
+  filter: InterfaceFavoriteViewRecoveryAuditFilter
+) {
+  return filter === "all"
+    ? entries
+    : entries.filter((entry) => entry.trigger === filter);
+}
+
+export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT =
+  "ai-data-platform-recovery-snapshot-renewal-receipt";
+export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY =
+  "ai-data-platform:recovery-snapshot-renewal-receipt:v1";
+
+export type InterfacePreferenceRecoveryRenewalReceiptV1 = {
+  format: typeof INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT;
+  version: 1;
+  receiptId: string;
+  createdAt: number;
+  previousCapturedAt: number | null;
+  renewedCapturedAt: number;
+  previousFreshness: InterfacePreferenceRecoverySnapshotFreshnessStatus;
+  profileCount: number;
+  favoriteCount: number;
+};
+
+function sanitizeRecoveryRenewalReceiptId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+export function createInterfacePreferenceRecoveryRenewalReceipt(input: {
+  receiptId: string;
+  createdAt?: number;
+  previousSnapshot: InterfacePreferenceRecoverySnapshotV1;
+  renewedSnapshot: InterfacePreferenceRecoverySnapshotV1;
+}): InterfacePreferenceRecoveryRenewalReceiptV1 {
+  const receiptId = sanitizeRecoveryRenewalReceiptId(input.receiptId);
+  if (!receiptId) {
+    throw new Error("Recovery snapshot renewal receipt ID is required.");
+  }
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+  const renewedCapturedAt =
+    input.renewedSnapshot.capturedAt !== null &&
+    Number.isFinite(input.renewedSnapshot.capturedAt) &&
+    input.renewedSnapshot.capturedAt > 0
+      ? input.renewedSnapshot.capturedAt
+      : createdAt;
+  const renewedProfiles = sanitizeNamedInterfacePreferenceProfiles(
+    input.renewedSnapshot.namedProfiles
+  );
+
+  return {
+    format: INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT,
+    version: 1,
+    receiptId,
+    createdAt,
+    previousCapturedAt: input.previousSnapshot.capturedAt,
+    renewedCapturedAt,
+    previousFreshness: interfacePreferenceRecoverySnapshotFreshness(
+      input.previousSnapshot,
+      createdAt
+    ).status,
+    profileCount: renewedProfiles.length,
+    favoriteCount: renewedProfiles.filter((profile) => profile.favorite).length
+  };
+}
+
+export function serializeInterfacePreferenceRecoveryRenewalReceipt(
+  receipt: InterfacePreferenceRecoveryRenewalReceiptV1
+) {
+  return JSON.stringify(receipt, null, 2);
+}
+
+export type InterfacePreferenceRecoveryRenewalReceiptParseResult =
+  | { ok: true; receipt: InterfacePreferenceRecoveryRenewalReceiptV1 }
+  | { ok: false; error: string };
+
+export function parseInterfacePreferenceRecoveryRenewalReceipt(
+  input: unknown
+): InterfacePreferenceRecoveryRenewalReceiptParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "Recovery snapshot renewal receipt is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "Recovery snapshot renewal receipt is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  const receiptId = sanitizeRecoveryRenewalReceiptId(record.receiptId);
+  const createdAt =
+    typeof record.createdAt === "number" &&
+    Number.isFinite(record.createdAt) &&
+    record.createdAt > 0
+      ? record.createdAt
+      : 0;
+  const previousCapturedAt =
+    record.previousCapturedAt === null
+      ? null
+      : typeof record.previousCapturedAt === "number" &&
+          Number.isFinite(record.previousCapturedAt) &&
+          record.previousCapturedAt > 0
+        ? record.previousCapturedAt
+        : -1;
+  const renewedCapturedAt =
+    typeof record.renewedCapturedAt === "number" &&
+    Number.isFinite(record.renewedCapturedAt) &&
+    record.renewedCapturedAt > 0
+      ? record.renewedCapturedAt
+      : 0;
+  const previousFreshness =
+    record.previousFreshness === "unknown" ||
+    record.previousFreshness === "fresh" ||
+    record.previousFreshness === "aging" ||
+    record.previousFreshness === "stale" ||
+    record.previousFreshness === "expired"
+      ? record.previousFreshness
+      : null;
+  const profileCount =
+    typeof record.profileCount === "number" &&
+    Number.isInteger(record.profileCount) &&
+    record.profileCount >= 0 &&
+    record.profileCount <= MAX_NAMED_INTERFACE_PROFILES
+      ? record.profileCount
+      : -1;
+  const favoriteCount =
+    typeof record.favoriteCount === "number" &&
+    Number.isInteger(record.favoriteCount) &&
+    record.favoriteCount >= 0 &&
+    record.favoriteCount <= profileCount
+      ? record.favoriteCount
+      : -1;
+
+  if (
+    record.format !== INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT ||
+    record.version !== 1 ||
+    !receiptId ||
+    !createdAt ||
+    previousCapturedAt === -1 ||
+    !renewedCapturedAt ||
+    !previousFreshness ||
+    profileCount < 0 ||
+    favoriteCount < 0
+  ) {
+    return {
+      ok: false,
+      error: "Recovery snapshot renewal receipt is incomplete or invalid."
+    };
+  }
+
+  return {
+    ok: true,
+    receipt: {
+      format: INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT,
+      version: 1,
+      receiptId,
+      createdAt,
+      previousCapturedAt,
+      renewedCapturedAt,
+      previousFreshness,
+      profileCount,
+      favoriteCount
+    }
+  };
+}
+
+function normalizeReceiptHistorySearchQuery(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfacePreferenceBundleImportReceiptHistory(
+  receipts: InterfacePreferenceBundleImportReceiptV1[],
+  query: unknown
+) {
+  const normalized = normalizeReceiptHistorySearchQuery(query);
+  if (!normalized) return receipts;
+
+  return receipts.filter((receipt) => {
+    const haystack = [
+      receipt.receiptId,
+      receipt.sourceName,
+      receipt.strategy,
+      ...receipt.selectedNames,
+      ...receipt.reconciliation.deviations,
+      receipt.reconciliation.matchesPlan ? "matched" : "deviated"
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
+  });
+}
+
 export type InterfacePreferenceReceiptHistoryOutcomeFilter =
   | "all"
   | "matched"
