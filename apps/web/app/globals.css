@@ -7398,3 +7398,41 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     padding: 0.5rem;
   }
 }
+
+
+/* Build 149 — recovery filtering and search */
+.interfaceRecoveryAuditRepairPresetRecoveryAuditFilters,
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+  display: grid;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.interfaceRecoveryAuditRepairPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) auto;
+}
+
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) minmax(14rem, 1fr) auto;
+}
+
+.interfaceRenewalRecoveryAuditPresetRecovery {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .interfaceRecoveryAuditRepairPresetRecoveryAuditFilters,
+  .interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRenewalRecoveryAuditPresetRecovery {
+    border-color: CanvasText;
+  }
+}

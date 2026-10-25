@@ -2698,6 +2698,29 @@ export function serializeInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit(
   );
 }
 
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter =
+  | "all"
+  | "24h"
+  | "7d";
+
+export function filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditEntryV1[],
+  ageFilter: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter,
+  now: number = Date.now()
+) {
+  if (ageFilter === "all") return entries;
+
+  const maxAge =
+    ageFilter === "24h"
+      ? 24 * 60 * 60 * 1000
+      : 7 * 24 * 60 * 60 * 1000;
+
+  return entries.filter((entry) => {
+    const age = now - entry.createdAt;
+    return age >= 0 && age <= maxAge;
+  });
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -3579,6 +3602,44 @@ export function sanitizeInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchP
     : "all";
 }
 
+export type InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetRecovery = {
+  presetId: InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetRecovery {
+  const presetId =
+    sanitizeInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId(
+      value
+    );
+  const hasStoredValue =
+    typeof value === "string" && value.trim().length > 0;
+  const isValidStoredValue =
+    value === "all" ||
+    value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons";
+
+  if (hasStoredValue && !isValidStoredValue) {
+    return {
+      presetId: "all",
+      recovered: true,
+      reason:
+        "Renewal recovery audit search preset recovered to All recovery events because the saved preset ID is no longer supported."
+    };
+  }
+
+  return {
+    presetId,
+    recovered: false,
+    reason: null
+  };
+}
+
 export const INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESETS: InterfaceRecoveryRenewalHistorySearchPreset[] = [
   {
     id: "all",
@@ -4285,6 +4346,35 @@ export function filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAudit(
   return entries.filter((entry) => {
     const age = now - entry.createdAt;
     return age >= 0 && age <= maxAge;
+  });
+}
+
+function normalizeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchQuery(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  query: unknown
+) {
+  const normalized =
+    normalizeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchQuery(query);
+  if (!normalized) return entries;
+
+  return entries.filter((entry) => {
+    const haystack = [
+      entry.auditId,
+      entry.requestedPresetId,
+      entry.recoveredPresetId,
+      entry.reason
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
   });
 }
 
