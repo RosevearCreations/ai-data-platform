@@ -1072,8 +1072,21 @@ export const INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY =
 export type InterfacePreferenceRecoverySnapshotV1 = {
   format: typeof INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT;
   version: 1;
+  capturedAt: number | null;
   preferences: InterfacePreferences;
   namedProfiles: NamedInterfacePreferenceProfile[];
+};
+
+export type InterfacePreferenceRecoverySnapshotFreshnessStatus =
+  | "unknown"
+  | "fresh"
+  | "aging"
+  | "stale";
+
+export type InterfacePreferenceRecoverySnapshotFreshness = {
+  status: InterfacePreferenceRecoverySnapshotFreshnessStatus;
+  ageMs: number | null;
+  ageHours: number | null;
 };
 
 export type InterfacePreferenceRecoverySnapshotParseResult =
@@ -1082,11 +1095,20 @@ export type InterfacePreferenceRecoverySnapshotParseResult =
 
 export function createInterfacePreferenceRecoverySnapshot(
   preferences: InterfacePreferences,
-  namedProfiles: NamedInterfacePreferenceProfile[]
+  namedProfiles: NamedInterfacePreferenceProfile[],
+  capturedAt: number | null = Date.now()
 ): InterfacePreferenceRecoverySnapshotV1 {
+  const safeCapturedAt =
+    typeof capturedAt === "number" &&
+    Number.isFinite(capturedAt) &&
+    capturedAt > 0
+      ? Math.floor(capturedAt)
+      : null;
+
   return {
     format: INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_FORMAT,
     version: 1,
+    capturedAt: safeCapturedAt,
     preferences: sanitizeInterfacePreferences(preferences),
     namedProfiles: sanitizeNamedInterfacePreferenceProfiles(namedProfiles)
   };
@@ -1094,11 +1116,44 @@ export function createInterfacePreferenceRecoverySnapshot(
 
 export function serializeInterfacePreferenceRecoverySnapshot(
   preferences: InterfacePreferences,
-  namedProfiles: NamedInterfacePreferenceProfile[]
+  namedProfiles: NamedInterfacePreferenceProfile[],
+  capturedAt: number | null = Date.now()
 ) {
   return JSON.stringify(
-    createInterfacePreferenceRecoverySnapshot(preferences, namedProfiles)
+    createInterfacePreferenceRecoverySnapshot(
+      preferences,
+      namedProfiles,
+      capturedAt
+    )
   );
+}
+
+export function interfacePreferenceRecoverySnapshotFreshness(
+  snapshot: InterfacePreferenceRecoverySnapshotV1,
+  now: number = Date.now()
+): InterfacePreferenceRecoverySnapshotFreshness {
+  if (
+    snapshot.capturedAt === null ||
+    !Number.isFinite(now) ||
+    now < snapshot.capturedAt
+  ) {
+    return {
+      status: "unknown",
+      ageMs: null,
+      ageHours: null
+    };
+  }
+
+  const ageMs = Math.max(0, now - snapshot.capturedAt);
+  const ageHours = ageMs / (60 * 60 * 1000);
+  const status: InterfacePreferenceRecoverySnapshotFreshnessStatus =
+    ageHours < 24 ? "fresh" : ageHours < 24 * 7 ? "aging" : "stale";
+
+  return {
+    status,
+    ageMs,
+    ageHours
+  };
 }
 
 export function parseInterfacePreferenceRecoverySnapshot(
@@ -1160,7 +1215,12 @@ export function parseInterfacePreferenceRecoverySnapshot(
     ok: true,
     snapshot: createInterfacePreferenceRecoverySnapshot(
       record.preferences,
-      namedProfiles
+      namedProfiles,
+      typeof record.capturedAt === "number" &&
+        Number.isFinite(record.capturedAt) &&
+        record.capturedAt > 0
+        ? record.capturedAt
+        : null
     )
   };
 }
@@ -1369,7 +1429,16 @@ export function planInterfacePreferenceBundleImportCapacity(
   };
 }
 
+export const INTERFACE_NAMED_PROFILE_VIEW_STORAGE_KEY =
+  "ai-data-platform:named-profile-view:v1";
+
 export type NamedInterfacePreferenceQuickFilter = "all" | "favorites";
+
+export function sanitizeNamedInterfacePreferenceQuickFilter(
+  value: unknown
+): NamedInterfacePreferenceQuickFilter {
+  return value === "favorites" ? "favorites" : "all";
+}
 
 export function filterNamedInterfacePreferenceProfiles(
   profiles: NamedInterfacePreferenceProfile[],
@@ -1467,5 +1536,226 @@ export function reconcileInterfacePreferenceBundleImportOutcome(
     planned,
     actual,
     deviations
+  };
+}
+
+export const INTERFACE_PREFERENCE_IMPORT_RECEIPT_FORMAT =
+  "ai-data-platform-interface-preference-import-reconciliation-receipt";
+export const INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY =
+  "ai-data-platform:preference-import-reconciliation-receipt:v1";
+
+export type InterfacePreferenceBundleImportReceiptV1 = {
+  format: typeof INTERFACE_PREFERENCE_IMPORT_RECEIPT_FORMAT;
+  version: 1;
+  receiptId: string;
+  createdAt: number;
+  sourceName: string;
+  strategy: InterfacePreferenceBundleConflictStrategy;
+  selectedNames: string[];
+  plan: InterfacePreferenceBundleCapacityPlan;
+  reconciliation: InterfacePreferenceBundleImportOutcomeReconciliation;
+};
+
+function sanitizeInterfacePreferenceReceiptId(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+function isNonNegativeFiniteNumber(value: unknown): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isFinite(value) &&
+    value >= 0
+  );
+}
+
+function validReceiptPlan(
+  value: unknown
+): value is InterfacePreferenceBundleCapacityPlan {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return (
+    isNonNegativeFiniteNumber(record.currentCount) &&
+    isNonNegativeFiniteNumber(record.selectedCount) &&
+    isNonNegativeFiniteNumber(record.availableSlots) &&
+    isNonNegativeFiniteNumber(record.conflictCount) &&
+    isNonNegativeFiniteNumber(record.newSlotDemand) &&
+    isNonNegativeFiniteNumber(record.projectedAdded) &&
+    isNonNegativeFiniteNumber(record.projectedReplaced) &&
+    isNonNegativeFiniteNumber(record.projectedSkippedConflicts) &&
+    isNonNegativeFiniteNumber(record.projectedSkippedCapacity) &&
+    isNonNegativeFiniteNumber(record.projectedFinalCount) &&
+    typeof record.fitsWithoutCapacitySkips === "boolean"
+  );
+}
+
+function validReceiptReconciliation(
+  value: unknown
+): value is InterfacePreferenceBundleImportOutcomeReconciliation {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  if (
+    typeof record.matchesPlan !== "boolean" ||
+    !record.planned ||
+    typeof record.planned !== "object" ||
+    !record.actual ||
+    typeof record.actual !== "object" ||
+    !Array.isArray(record.deviations) ||
+    !record.deviations.every((item) => typeof item === "string")
+  ) {
+    return false;
+  }
+
+  for (const counts of [record.planned, record.actual]) {
+    const countRecord = counts as Record<string, unknown>;
+    for (const key of [
+      "added",
+      "replaced",
+      "skippedConflicts",
+      "skippedCapacity",
+      "finalCount"
+    ]) {
+      if (!isNonNegativeFiniteNumber(countRecord[key])) return false;
+    }
+  }
+
+  return true;
+}
+
+export function createInterfacePreferenceBundleImportReceipt(input: {
+  receiptId: string;
+  createdAt?: number;
+  sourceName: string;
+  strategy: InterfacePreferenceBundleConflictStrategy;
+  selectedNames: string[];
+  plan: InterfacePreferenceBundleCapacityPlan;
+  reconciliation: InterfacePreferenceBundleImportOutcomeReconciliation;
+}): InterfacePreferenceBundleImportReceiptV1 {
+  const receiptId = sanitizeInterfacePreferenceReceiptId(input.receiptId);
+  if (!receiptId) {
+    throw new Error("Import reconciliation receipt ID is required.");
+  }
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+
+  const selectedNames = input.selectedNames
+    .map((name) => sanitizeNamedInterfacePreferenceName(name))
+    .filter(Boolean)
+    .slice(0, MAX_NAMED_INTERFACE_PROFILES);
+
+  return {
+    format: INTERFACE_PREFERENCE_IMPORT_RECEIPT_FORMAT,
+    version: 1,
+    receiptId,
+    createdAt,
+    sourceName: sanitizePreferenceProfileSourceName(input.sourceName),
+    strategy:
+      input.strategy === "replace" || input.strategy === "keep-both"
+        ? input.strategy
+        : "skip",
+    selectedNames,
+    plan: { ...input.plan },
+    reconciliation: {
+      matchesPlan: input.reconciliation.matchesPlan,
+      planned: { ...input.reconciliation.planned },
+      actual: { ...input.reconciliation.actual },
+      deviations: input.reconciliation.deviations.slice(0, 20)
+    }
+  };
+}
+
+export function serializeInterfacePreferenceBundleImportReceipt(
+  receipt: InterfacePreferenceBundleImportReceiptV1
+) {
+  return JSON.stringify(receipt, null, 2);
+}
+
+export type InterfacePreferenceBundleImportReceiptParseResult =
+  | { ok: true; receipt: InterfacePreferenceBundleImportReceiptV1 }
+  | { ok: false; error: string };
+
+export function parseInterfacePreferenceBundleImportReceipt(
+  input: unknown
+): InterfacePreferenceBundleImportReceiptParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "The import reconciliation receipt is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "The import reconciliation receipt is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !== INTERFACE_PREFERENCE_IMPORT_RECEIPT_FORMAT ||
+    record.version !== 1
+  ) {
+    return {
+      ok: false,
+      error: "The import reconciliation receipt format is not supported."
+    };
+  }
+
+  const receiptId = sanitizeInterfacePreferenceReceiptId(record.receiptId);
+  const createdAt =
+    typeof record.createdAt === "number" &&
+    Number.isFinite(record.createdAt) &&
+    record.createdAt > 0
+      ? record.createdAt
+      : 0;
+  const sourceName = sanitizePreferenceProfileSourceName(record.sourceName);
+  const strategy =
+    record.strategy === "skip" ||
+    record.strategy === "replace" ||
+    record.strategy === "keep-both"
+      ? record.strategy
+      : null;
+  const selectedNames = Array.isArray(record.selectedNames)
+    ? record.selectedNames
+        .map((name) => sanitizeNamedInterfacePreferenceName(name))
+        .filter(Boolean)
+    : [];
+
+  if (
+    !receiptId ||
+    !createdAt ||
+    !strategy ||
+    selectedNames.length > MAX_NAMED_INTERFACE_PROFILES ||
+    !validReceiptPlan(record.plan) ||
+    !validReceiptReconciliation(record.reconciliation)
+  ) {
+    return {
+      ok: false,
+      error: "The import reconciliation receipt is incomplete or invalid."
+    };
+  }
+
+  return {
+    ok: true,
+    receipt: createInterfacePreferenceBundleImportReceipt({
+      receiptId,
+      createdAt,
+      sourceName,
+      strategy,
+      selectedNames,
+      plan: record.plan,
+      reconciliation: record.reconciliation
+    })
   };
 }

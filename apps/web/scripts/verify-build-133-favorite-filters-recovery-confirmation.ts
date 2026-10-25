@@ -188,8 +188,8 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 133 · Marble Standard"),
-    "Build 133 shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 133 shell must preserve Marble Standard as later interface builds advance."
   );
 
   assert(

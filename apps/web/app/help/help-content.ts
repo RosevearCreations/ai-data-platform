@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "favorite-view-persistence": {
+    title: "Favorite view persistence",
+    summary: "Build 134 remembers whether All profiles or Favorites was selected so the browser reopens the same local profile view after reload.",
+    steps: [
+      "Choose All profiles or Favorites in the named-profile quick filters.",
+      "Continue using the quick switcher normally.",
+      "Reload or reopen the application in the same browser to return to the saved view.",
+      "Use All profiles whenever you need access to non-favorite saved profiles."
+    ],
+    notes: [
+      "Only the view choice is persisted; explicit profile order and favorite flags remain separate profile data.",
+      "The persisted view is browser-local, is not exported in bundles and is cleared by All local navigation data reset."
+    ]
+  },
+  "recovery-snapshot-freshness": {
+    title: "Recovery snapshot freshness",
+    summary: "Build 134 timestamps new recovery snapshots and classifies their age so operators can judge whether a restore point is still representative.",
+    steps: [
+      "Review the freshness badge beside Local recovery snapshot.",
+      "Fresh means less than 24 hours old; Aging means at least 24 hours but less than seven days old.",
+      "Stale means seven days old or older and should be reviewed especially carefully before restore.",
+      "Legacy means the snapshot was created before Build 134 and has no reliable capture timestamp."
+    ],
+    notes: [
+      "Freshness is advisory and never bypasses the Build 133 two-step restore confirmation.",
+      "Older recovery snapshots remain readable and are marked Legacy rather than being rejected."
+    ]
+  },
+  "import-reconciliation-receipt": {
+    title: "Import reconciliation receipt",
+    summary: "Build 134 saves the latest completed named-bundle reconciliation as a browser-local receipt that records what was planned and what actually occurred.",
+    steps: [
+      "Complete a selected named-bundle import.",
+      "Review Latest import reconciliation receipt for source, strategy, selected profile names and whether the result matched the plan.",
+      "Choose Export receipt to save the JSON receipt for operator records.",
+      "Choose Clear receipt when the saved local evidence is no longer needed."
+    ],
+    notes: [
+      "Only the latest receipt is retained in this browser.",
+      "The receipt contains interface-profile import evidence only; it does not contain navigation insights, account data or business records."
+    ]
+  },
   "favorite-profile-quick-filters": {
     title: "Favorite profile quick filters",
     summary: "Build 133 adds All profiles and Favorites quick filters so operators can narrow the browser-local profile list without changing saved order or favorite metadata.",
@@ -2050,6 +2092,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 134 favorite view persistence, recovery snapshot freshness & import reconciliation receipt",
+    topics: ["favorite-view-persistence", "recovery-snapshot-freshness", "import-reconciliation-receipt"]
   },
   {
     title: "Build 133 favorite quick filters, recovery restore confirmation & import plan outcome reconciliation",
