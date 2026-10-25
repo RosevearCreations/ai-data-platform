@@ -45,6 +45,7 @@ import {
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
+  INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS,
   INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
@@ -167,6 +168,7 @@ import {
   recoverInterfaceRecoveryRenewalHistorySearchPresetId,
   recoverInterfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetId,
   recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
+  recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   recoverNamedInterfacePreferenceQuickFilter,
   removeNamedInterfacePreferenceProfile,
   renameNamedInterfacePreferenceProfile,
@@ -181,12 +183,13 @@ import {
   searchInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   searchInterfaceRecoveryRenewalSearchPresetRecoveryAudit,
   searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAudit,
+  searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   searchInterfaceReceiptPresetRecoveryAudit,
   searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAudit,
   searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   setNamedInterfacePreferenceProfileFavorite,
   sanitizeInterfacePreferenceReceiptSearchPresetId,
-  sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
+  sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   sanitizeInterfaceRecoveryAuditSearchPresetId,
   sanitizeInterfaceRecoveryRenewalHistorySearchPresetId,
   sanitizeInterfacePreferences,
@@ -828,15 +831,61 @@ function clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset() {
   }
 }
 
-function readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(): InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+function readRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
   try {
-    return sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+    return sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
       window.localStorage.getItem(
-        INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
       )
     );
   } catch {
     return "all";
+  }
+}
+
+function writeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+  id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY,
+      id
+    );
+  } catch {
+    // Repair search-preset recovery audit search preset persistence is optional browser-local view state.
+  }
+}
+
+function clearRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset() {
+  try {
+    window.localStorage.removeItem(
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+    );
+  } catch {
+    // Repair search-preset recovery audit search preset persistence is optional browser-local view state.
+  }
+}
+
+function readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery() {
+  try {
+    const raw = window.localStorage.getItem(
+      INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+    );
+    const recovery =
+      recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+        raw
+      );
+    return {
+      ...recovery,
+      requestedPresetId: raw ?? ""
+    };
+  } catch {
+    return {
+      presetId: "all" as InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
+      recovered: false,
+      reason: null,
+      requestedPresetId: ""
+    };
   }
 }
 
@@ -1352,6 +1401,8 @@ export function NavigationInsights() {
     useState<InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[]>([]);
   const [renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter, setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter] =
     useState<InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter>("all");
+  const [renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch, setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch] =
+    useState("");
   const [receiptPresetRecoveryAuditSearchPresetId, setReceiptPresetRecoveryAuditSearchPresetId] =
     useState<InterfaceReceiptPresetRecoveryAuditSearchPresetId | null>("all");
   const [receiptPresetRecoveryAuditSearchPresetRecoveryNotice, setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice] =
@@ -1374,6 +1425,8 @@ export function NavigationInsights() {
     useState("");
   const [receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId, setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId] =
     useState<InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId | null>("all");
+  const [receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice, setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice] =
+    useState<string | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -1452,9 +1505,15 @@ export function NavigationInsights() {
       interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
         receiptRepairAuditSearchPresetRecovery.presetId
       );
+    const persistedRepairSearchPresetRecoveryAuditSearchPreset =
+      interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
+        readRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset()
+      );
+    const receiptSearchPresetRecoveryAuditSearchPresetRecovery =
+      readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery();
     const persistedReceiptSearchPresetRecoveryAuditSearchPreset =
       interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
-        readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset()
+        receiptSearchPresetRecoveryAuditSearchPresetRecovery.presetId
       );
     let receiptHistory = readImportReconciliationReceiptHistory();
     let recoveryAudit = readFavoriteViewRecoveryAudit();
@@ -1474,6 +1533,12 @@ export function NavigationInsights() {
       readReceiptRecoveryAuditSearchPresetRecoveryAudit();
     let receiptRepairAuditSearchPresetRecoveryAudit =
       readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit();
+
+    if (receiptSearchPresetRecoveryAuditSearchPresetRecovery.recovered) {
+      writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+        receiptSearchPresetRecoveryAuditSearchPresetRecovery.presetId
+      );
+    }
 
     if (renewalRecoveryAuditRepairSearchPresetRecovery.recovered) {
       writeRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
@@ -1801,6 +1866,9 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
       persistedReceiptSearchPresetRecoveryAuditSearchPreset.id
     );
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(
+      receiptSearchPresetRecoveryAuditSearchPresetRecovery.reason
+    );
     setRecoveryAuditPresetRecoveryNotice(auditPresetRecovery.reason);
     setRecoveryAuditPresetRecoveryAudit(recoveryAuditRecoveryAudit);
     setRecoveryAuditPresetRecoveryAuditAgeFilter(
@@ -1833,7 +1901,15 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
       repairSearchPresetRecoveryAuditSearchPresetRecoveryAudit
     );
-    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
+      persistedRepairSearchPresetRecoveryAuditSearchPreset.ageFilter
+    );
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch(
+      persistedRepairSearchPresetRecoveryAuditSearchPreset.query
+    );
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+      persistedRepairSearchPresetRecoveryAuditSearchPreset.id
+    );
     setRecoveryAuditFilter(persistedAuditPreset.triggerFilter);
     setRecoveryAuditSearch(persistedAuditPreset.query);
     setRecoveryAuditSearchPresetId(persistedAuditPreset.id);
@@ -2102,6 +2178,17 @@ export function NavigationInsights() {
     [
       renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
       renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
+    ]
+  );
+  const searchedRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit = useMemo(
+    () =>
+      searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+        filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+        renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch
+      ),
+    [
+      filteredRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+      renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch
     ]
   );
   const filteredReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit = useMemo(
@@ -2636,9 +2723,12 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
       preset.id
     );
+    writeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+      preset.id
+    );
     setImportError(null);
     setPortabilityStatus(
-      "Repair search-preset recovery audit preset “" + preset.label + "” applied."
+      "Repair search-preset recovery audit preset “" + preset.label + "” applied and saved locally."
     );
   }
 
@@ -2661,6 +2751,7 @@ export function NavigationInsights() {
     writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
       preset.id
     );
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setImportError(null);
     setPortabilityStatus(
       "Receipt search-preset recovery audit preset “" + preset.label + "” applied and saved locally."
@@ -2796,6 +2887,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
+    clearRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
     setImportError(null);
     setPortabilityStatus(
       "Repair-preset recovery audit search preset recovery audit cleared."
@@ -2920,6 +3012,7 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
     setImportError(null);
     setPortabilityStatus(
@@ -3036,6 +3129,7 @@ export function NavigationInsights() {
     }
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setImportError(null);
     setPortabilityStatus(
       "Renewal preset-recovery audit search preset recovery audit cleared."
@@ -3797,6 +3891,9 @@ export function NavigationInsights() {
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
@@ -3837,6 +3934,7 @@ export function NavigationInsights() {
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAudit([]);
@@ -3848,6 +3946,7 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearch("");
 
