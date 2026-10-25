@@ -769,6 +769,18 @@ export function NavigationInsights() {
       interfaceRecoveryRenewalHistorySearchPresetById(
         renewalHistoryPresetRecovery.presetId
       );
+    const receiptPresetRecovery = readReceiptSearchPresetRecovery();
+    const persistedReceiptPreset =
+      interfacePreferenceReceiptSearchPresetById(
+        receiptPresetRecovery.presetId
+      );
+    let receiptHistory = readImportReconciliationReceiptHistory();
+    let recoveryAudit = readFavoriteViewRecoveryAudit();
+    let receiptRecoveryAudit = readReceiptPresetRecoveryAudit();
+    let recoveryAuditRecoveryAudit = readRecoveryAuditPresetRecoveryAudit();
+    let renewalPresetRecoveryAudit =
+      readRecoveryRenewalSearchPresetRecoveryAudit();
+
     if (renewalHistoryPresetRecovery.recovered) {
       writeRecoveryRenewalHistorySearchPreset(
         renewalHistoryPresetRecovery.presetId
@@ -794,17 +806,6 @@ export function NavigationInsights() {
         renewalPresetRecoveryAudit
       );
     }
-    const receiptPresetRecovery = readReceiptSearchPresetRecovery();
-    const persistedReceiptPreset =
-      interfacePreferenceReceiptSearchPresetById(
-        receiptPresetRecovery.presetId
-      );
-    let receiptHistory = readImportReconciliationReceiptHistory();
-    let recoveryAudit = readFavoriteViewRecoveryAudit();
-    let receiptRecoveryAudit = readReceiptPresetRecoveryAudit();
-    let recoveryAuditRecoveryAudit = readRecoveryAuditPresetRecoveryAudit();
-    let renewalPresetRecoveryAudit =
-      readRecoveryRenewalSearchPresetRecoveryAudit();
 
     if (auditPresetRecovery.recovered) {
       writeRecoveryAuditSearchPreset(auditPresetRecovery.presetId);
@@ -3425,7 +3426,7 @@ export function NavigationInsights() {
                               event.currentTarget.value as InterfaceReceiptPresetRecoveryAuditAgeFilter
                             );
                             setReceiptPresetRecoveryAuditSearchPresetId(null);
-                          }
+                          }}
                         >
                           <option value="all">All recovery events</option>
                           <option value="24h">Last 24 hours</option>
@@ -3442,7 +3443,7 @@ export function NavigationInsights() {
                               event.currentTarget.value
                             );
                             setReceiptPresetRecoveryAuditSearchPresetId(null);
-                          }
+                          }}
                           placeholder="Audit ID, requested preset, reason…"
                           aria-label="Search receipt preset recovery audit"
                         />
