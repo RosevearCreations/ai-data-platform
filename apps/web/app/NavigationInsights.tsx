@@ -251,11 +251,16 @@ function clearReceiptSearchPreset() {
 
 function readReceiptSearchPresetRecovery() {
   try {
-    return recoverInterfacePreferenceReceiptSearchPresetId(
-      window.localStorage.getItem(
-        INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY
-      )
+    const raw = window.localStorage.getItem(
+      INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY
     );
+    const recovery = recoverInterfacePreferenceReceiptSearchPresetId(raw);
+    return recovery.recovered
+      ? recovery
+      : {
+          ...recovery,
+          presetId: readReceiptSearchPreset()
+        };
   } catch {
     return {
       presetId: "all" as InterfacePreferenceReceiptSearchPresetId,
@@ -1223,6 +1228,7 @@ export function NavigationInsights() {
     setRecoveryRenewalReceiptHistory([]);
     setRecoveryRenewalReceipt(null);
     setRenewalHistoryFreshnessFilter("all");
+    setRenewalHistorySearch("");
     setImportError(null);
     setPortabilityStatus("Recovery snapshot renewal receipt history cleared.");
   }
