@@ -2288,6 +2288,9 @@ export function NavigationInsights() {
       window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
+      window.localStorage.removeItem(
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      );
     } catch {
       // Repair-search-preset recovery audit is optional browser-local evidence.
     }
@@ -3182,12 +3185,14 @@ export function NavigationInsights() {
     setRenewalHistoryPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setRenewalRecoveryAuditSearchPresetRecoveryAudit([]);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAudit([]);
     setReceiptRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearch("");
 
@@ -3452,6 +3457,7 @@ export function NavigationInsights() {
                               event.currentTarget.value as InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter
                             );
                             setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId(null);
+                            clearRecoveryAuditRepairSearchPresetRecoveryAuditSearchPreset();
                           }}
                         >
                           <option value="all">All repair-preset recoveries</option>
@@ -3469,6 +3475,7 @@ export function NavigationInsights() {
                               event.currentTarget.value
                             );
                             setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId(null);
+                            clearRecoveryAuditRepairSearchPresetRecoveryAuditSearchPreset();
                           }}
                           placeholder="Audit ID, requested preset, reason…"
                           aria-label="Search recovery-audit repair preset recovery evidence"
@@ -3995,13 +4002,28 @@ export function NavigationInsights() {
                                     <option value="7d">Last 7 days</option>
                                   </select>
                                 </label>
+                                <label className="interfaceRenewalRecoveryAuditPresetRecoveryAuditSearch">
+                                  <span>Search preset recoveries</span>
+                                  <input
+                                    type="search"
+                                    value={renewalRecoveryAuditSearchPresetRecoveryAuditSearch}
+                                    onChange={(event) =>
+                                      setRenewalRecoveryAuditSearchPresetRecoveryAuditSearch(
+                                        event.currentTarget.value
+                                      )
+                                    }
+                                    placeholder="Audit ID, requested preset, reason…"
+                                    aria-label="Search renewal recovery audit preset repair evidence"
+                                  />
+                                </label>
                                 <span>
-                                  Showing {filteredRenewalRecoveryAuditSearchPresetRecoveryAudit.length} of {renewalRecoveryAuditSearchPresetRecoveryAudit.length}
+                                  Showing {searchedRenewalRecoveryAuditSearchPresetRecoveryAudit.length} of {renewalRecoveryAuditSearchPresetRecoveryAudit.length}
                                 </span>
                                 <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-filtering" inline />
+                                <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-search" inline />
                               </div>
                               <div className="interfaceRenewalRecoveryAuditPresetRecoveryAuditList">
-                                {filteredRenewalRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
+                                {searchedRenewalRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
                                   <article key={entry.auditId}>
                                     <div>
                                       <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
@@ -4010,8 +4032,8 @@ export function NavigationInsights() {
                                     <small>{entry.reason}</small>
                                   </article>
                                 ))}
-                                {!filteredRenewalRecoveryAuditSearchPresetRecoveryAudit.length ? (
-                                  <p>No renewal recovery-audit preset repairs match the selected age filter.</p>
+                                {!searchedRenewalRecoveryAuditSearchPresetRecoveryAudit.length ? (
+                                  <p>No renewal recovery-audit preset repairs match the selected age filter and search.</p>
                                 ) : null}
                               </div>
                               <div className="interfaceImportPreviewActions">
@@ -4584,6 +4606,13 @@ export function NavigationInsights() {
                           </div>
                           <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit" inline />
                         </div>
+                        {receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice ? (
+                          <div className="interfaceReceiptRecoveryAuditSearchPresetRecovery" role="status">
+                            <strong>Receipt preset-repair audit search preset recovered</strong>
+                            <span>{receiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice}</span>
+                            <HelpInfo topic="receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery" inline />
+                          </div>
+                        ) : null}
                         <div className="interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets">
                           <div className="interfacePresetHeading">
                             <div>
@@ -4616,6 +4645,7 @@ export function NavigationInsights() {
                                   event.currentTarget.value as InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditAgeFilter
                                 );
                                 setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                                setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
                                 clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
                               }}
                             >
@@ -4634,6 +4664,7 @@ export function NavigationInsights() {
                                   event.currentTarget.value
                                 );
                                 setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
+                                setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
                                 clearReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
                               }}
                               placeholder="Audit ID, requested preset, reason…"
