@@ -3304,6 +3304,9 @@ export function NavigationInsights() {
         INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
       );
       window.localStorage.removeItem(
+        INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
@@ -3331,6 +3334,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearch("");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId("all");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setRenewalHistoryPresetRecoveryAuditAgeFilter("all");
     setRenewalHistoryPresetRecoveryAuditSearch("");
     setRenewalHistoryPresetRecoveryAuditSearchPresetId("all");
@@ -3338,6 +3342,7 @@ export function NavigationInsights() {
     setRenewalRecoveryAuditSearchPresetRecoveryAudit([]);
     setRenewalRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setRenewalRecoveryAuditSearchPresetRecoveryAuditSearch("");
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAudit([]);
@@ -3345,6 +3350,7 @@ export function NavigationInsights() {
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearch("");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("all");
     setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(null);
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit([]);
     setReceiptPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearch("");
 
