@@ -2750,6 +2750,70 @@ export function searchInterfaceRecoveryAuditRepairSearchPresetRecoveryAudit(
   });
 }
 
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId =
+  | "all"
+  | "recent-24h"
+  | "recent-7d"
+  | "recovered-all"
+  | "recovery-reasons";
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPreset = {
+  id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId;
+  label: string;
+  description: string;
+  ageFilter: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter;
+  query: string;
+};
+
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPreset[] = [
+  {
+    id: "all",
+    label: "All repair-preset recoveries",
+    description: "Clear repair-preset recovery audit search and age filtering.",
+    ageFilter: "all",
+    query: ""
+  },
+  {
+    id: "recent-24h",
+    label: "Recent 24 hours",
+    description: "Show repair-preset recovery events from the last 24 hours.",
+    ageFilter: "24h",
+    query: ""
+  },
+  {
+    id: "recent-7d",
+    label: "Recent 7 days",
+    description: "Show repair-preset recovery events from the last seven days.",
+    ageFilter: "7d",
+    query: ""
+  },
+  {
+    id: "recovered-all",
+    label: "Recovered to All",
+    description: "Search repair-preset recovery evidence for the All fallback.",
+    ageFilter: "all",
+    query: "all"
+  },
+  {
+    id: "recovery-reasons",
+    label: "Recovery reasons",
+    description: "Search repair-preset recovery evidence for recovery reason text.",
+    ageFilter: "all",
+    query: "recovered"
+  }
+];
+
+export function interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetById(
+  id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId
+) {
+  return (
+    INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS.find(
+      (preset) => preset.id === id
+    ) ??
+    INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS[0]
+  );
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -3770,6 +3834,29 @@ export function serializeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAudit(
   );
 }
 
+export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditAgeFilter =
+  | "all"
+  | "24h"
+  | "7d";
+
+export function filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditEntryV1[],
+  ageFilter: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditAgeFilter,
+  now: number = Date.now()
+) {
+  if (ageFilter === "all") return entries;
+
+  const maxAge =
+    ageFilter === "24h"
+      ? 24 * 60 * 60 * 1000
+      : 7 * 24 * 60 * 60 * 1000;
+
+  return entries.filter((entry) => {
+    const age = now - entry.createdAt;
+    return age >= 0 && age <= maxAge;
+  });
+}
+
 export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -4674,6 +4761,20 @@ export function interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPres
       (preset) => preset.id === id
     ) ?? INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS[0]
   );
+}
+
+export const INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:receipt-recovery-audit-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
 }
 
 export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS: InterfacePreferenceReceiptSearchPreset[] = [
