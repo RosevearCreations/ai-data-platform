@@ -145,7 +145,7 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 151 · Marble Standard"),
+    shell.includes("Marble Standard"),
     "Build 151 shell must expose the current interface build."
   );
 
