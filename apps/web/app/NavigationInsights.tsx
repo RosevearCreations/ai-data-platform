@@ -1135,9 +1135,6 @@ export function NavigationInsights() {
         INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_STORAGE_KEY
       );
       window.localStorage.removeItem(
-        INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY
-      );
-      window.localStorage.removeItem(
         INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY
       );
     } catch {
@@ -1145,6 +1142,7 @@ export function NavigationInsights() {
     }
     setRecoveryRenewalReceiptHistory([]);
     setRecoveryRenewalReceipt(null);
+    setRenewalHistoryFreshnessFilter("all");
     setImportError(null);
     setPortabilityStatus("Recovery snapshot renewal receipt history cleared.");
   }
@@ -1677,6 +1675,9 @@ export function NavigationInsights() {
       window.localStorage.removeItem(
         INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_STORAGE_KEY
       );
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESET_STORAGE_KEY
+      );
     } catch {
       // Browser-local state is optional.
     }
@@ -1937,12 +1938,12 @@ export function NavigationInsights() {
                         <span>Recovery trigger</span>
                         <select
                           value={recoveryAuditFilter}
-                          onChange={(event) =>
+                          onChange={(event) => {
                             setRecoveryAuditFilter(
                               event.currentTarget.value as InterfaceFavoriteViewRecoveryAuditFilter
                             );
-                            setRecoveryAuditSearchPresetId(null)
-                          }
+                            setRecoveryAuditSearchPresetId(null);
+                          }}
                         >
                           <option value="all">All recovery triggers</option>
                           <option value="initial-load">Initial load</option>
