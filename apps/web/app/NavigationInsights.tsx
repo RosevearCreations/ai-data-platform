@@ -2546,12 +2546,12 @@ export function NavigationInsights() {
                         <span>Strategy</span>
                         <select
                           value={receiptStrategyFilter}
-                          onChange={(event) =>
+                          onChange={(event) => {
                             setReceiptStrategyFilter(
                               event.currentTarget.value as InterfacePreferenceReceiptHistoryStrategyFilter
                             );
-                            setReceiptSearchPresetId(null)
-                          }
+                            setReceiptSearchPresetId(null);
+                          }}
                         >
                           <option value="all">All strategies</option>
                           <option value="skip">Skip</option>
