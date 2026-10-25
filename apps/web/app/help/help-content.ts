@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "recovery-audit-search-presets": {
+    title: "Recovery audit search presets",
+    summary: "Build 139 adds quick presets for common recovery-audit trigger and text-search views without modifying stored audit evidence.",
+    steps: [
+      "Choose All recoveries to clear the trigger filter and audit search.",
+      "Choose Initial load, Filter selection or Last favorite removed to focus on a recovery trigger.",
+      "Choose Favorites mentions to search all retained audit evidence for favorites.",
+      "Manually changing the trigger or audit search clears the active audit preset indicator."
+    ],
+    notes: [
+      "Audit presets are temporary view state and are not persisted.",
+      "Audit export still contains the complete stored audit regardless of the active preset."
+    ]
+  },
+  "renewal-receipt-history-filtering": {
+    title: "Renewal receipt history filtering",
+    summary: "Build 139 filters the bounded renewal receipt history by the previous snapshot freshness recorded on each confirmed renewal receipt.",
+    steps: [
+      "Choose All prior freshness to view all retained renewal receipts.",
+      "Choose Fresh, Aging, Stale, Expired or Legacy / unknown to narrow history.",
+      "Review the Showing count to see how many receipts match.",
+      "Return to All prior freshness to restore the complete history view."
+    ],
+    notes: [
+      "Filtering is view-only and does not delete, reorder or rewrite renewal receipts.",
+      "Export renewal history still exports the complete stored history."
+    ]
+  },
+  "receipt-search-preset-persistence": {
+    title: "Receipt search preset persistence",
+    summary: "Build 139 remembers the active receipt-search preset in this browser and restores its outcome, strategy and query values on reload.",
+    steps: [
+      "Apply a receipt-search preset such as Deviations, Replacements, Keep both or Capacity.",
+      "Reload the browser; the selected preset and its deterministic values are restored.",
+      "Manually change outcome, strategy or search to leave preset mode and clear the persisted preset choice.",
+      "Use the full local-navigation reset to clear the persisted preset as well."
+    ],
+    notes: [
+      "Only the preset ID is persisted; arbitrary manual search text is not stored.",
+      "Preset persistence is browser-local and is not account or workspace synchronization."
+    ]
+  },
   "recovery-audit-search": {
     title: "Recovery audit search",
     summary: "Build 138 adds temporary text search across the bounded favorite-view recovery audit and composes it with Build 137 trigger filtering.",
@@ -2260,6 +2302,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 139 recovery audit search presets, renewal receipt history filtering & receipt search preset persistence",
+    topics: ["recovery-audit-search-presets", "renewal-receipt-history-filtering", "receipt-search-preset-persistence"]
   },
   {
     title: "Build 138 recovery audit search, renewal receipt history & receipt search presets",
