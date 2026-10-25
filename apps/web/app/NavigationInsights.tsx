@@ -778,6 +778,37 @@ export function NavigationInsights() {
     return snapshot.snapshot;
   }
 
+  function exportFavoriteViewRecoveryAudit() {
+    if (!favoriteViewRecoveryAudit.length) return;
+    const payload = serializeInterfaceFavoriteViewRecoveryAudit(
+      favoriteViewRecoveryAudit
+    );
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "ai-data-platform-favorite-view-recovery-audit.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+    setImportError(null);
+    setPortabilityStatus("Favorite view recovery audit exported.");
+  }
+
+  function clearFavoriteViewRecoveryAudit() {
+    try {
+      window.localStorage.removeItem(
+        INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_STORAGE_KEY
+      );
+    } catch {
+      // Recovery audit is optional browser-local evidence.
+    }
+    setFavoriteViewRecoveryAudit([]);
+    setImportError(null);
+    setPortabilityStatus("Favorite view recovery audit cleared.");
+  }
+
   function renewRecoverySnapshot() {
     if (!recoverySnapshot) return;
     if (!snapshotRenewalArmed) {
@@ -1563,6 +1594,14 @@ export function NavigationInsights() {
                           <small>{entry.reason}</small>
                         </article>
                       ))}
+                    </div>
+                    <div className="interfaceImportPreviewActions">
+                      <button type="button" onClick={exportFavoriteViewRecoveryAudit}>
+                        Export audit
+                      </button>
+                      <button type="button" onClick={clearFavoriteViewRecoveryAudit}>
+                        Clear audit
+                      </button>
                     </div>
                   </div>
                 ) : null}
