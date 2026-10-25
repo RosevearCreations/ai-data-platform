@@ -3089,6 +3089,20 @@ export function interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPrese
   );
 }
 
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:recovery-audit-repair-search-preset-recovery-audit-search-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -4512,6 +4526,37 @@ export function filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSear
   });
 }
 
+function normalizeRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchQuery(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  query: unknown
+) {
+  const normalized =
+    normalizeRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchQuery(
+      query
+    );
+  if (!normalized) return entries;
+
+  return entries.filter((entry) => {
+    const haystack = [
+      entry.auditId,
+      entry.requestedPresetId,
+      entry.recoveredPresetId,
+      entry.reason
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
+  });
+}
+
 export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -5812,6 +5857,44 @@ export function sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSe
     value === "recovery-reasons"
     ? value
     : "all";
+}
+
+export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery = {
+  presetId: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+  const presetId =
+    sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+      value
+    );
+  const hasStoredValue =
+    typeof value === "string" && value.trim().length > 0;
+  const isValidStoredValue =
+    value === "all" ||
+    value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons";
+
+  if (hasStoredValue && !isValidStoredValue) {
+    return {
+      presetId: "all",
+      recovered: true,
+      reason:
+        "Receipt search-preset recovery audit search preset recovered to All recoveries because the saved preset ID is no longer supported."
+    };
+  }
+
+  return {
+    presetId,
+    recovered: false,
+    reason: null
+  };
 }
 
 export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
