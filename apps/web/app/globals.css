@@ -7758,3 +7758,46 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 159 — repair recovery, renewal presets and receipt recovery audit */
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecovery,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecovery {
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresets > [role="group"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, max-content));
+  gap: 0.5rem;
+}
+
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresets button[aria-pressed="true"] {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+@media (max-width: 760px) {
+  .interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresets > [role="group"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecovery {
+    border-color: CanvasText;
+  }
+
+  .interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresets button[aria-pressed="true"] {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+}
