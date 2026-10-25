@@ -216,11 +216,8 @@ async function main() {
     "readRecoveryRenewalReceiptHistory",
     "writeRecoveryRenewalReceiptHistory",
     "Receipt search presets",
-    "All receipts",
-    "Deviations",
-    "Replacements",
-    "Keep both",
-    "Capacity",
+    "INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS.map",
+    "preset.label",
     "applyReceiptSearchPreset",
     "setReceiptSearchPresetId(null)"
   ]) {
