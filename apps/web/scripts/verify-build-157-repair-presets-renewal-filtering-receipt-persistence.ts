@@ -128,7 +128,7 @@ async function main() {
   assert(
     insights.includes("Repair search-preset recovery audit search presets") &&
       insights.includes(
-        "No renewal preset-recovery audit search preset repairs match the selected age filter."
+        "No renewal preset-recovery audit search preset repairs match the selected age filter and search."
       ) &&
       insights.includes("the selected preset persists in this browser.") &&
       insights.includes(
@@ -164,8 +164,8 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 157 · Marble Standard"),
-    "Build 157 shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 157 verifier must remain forward-compatible with later shell labels."
   );
 
   assert(
