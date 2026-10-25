@@ -1483,12 +1483,6 @@ export function NavigationInsights() {
       window.localStorage.removeItem(
         INTERFACE_RECEIPT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
-      window.localStorage.removeItem(
-        INTERFACE_RECOVERY_AUDIT_PRESET_RECOVERY_AUDIT_STORAGE_KEY
-      );
-      window.localStorage.removeItem(
-        INTERFACE_RECOVERY_RENEWAL_HISTORY_SEARCH_PRESET_STORAGE_KEY
-      );
     } catch {
       // Receipt preset recovery audit is optional browser-local evidence.
     }
