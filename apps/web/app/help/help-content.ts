@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "recovery-audit-preset-persistence": {
+    title: "Recovery audit preset persistence",
+    summary: "Build 140 remembers the selected recovery-audit preset in this browser and restores its deterministic trigger and search values on reload.",
+    steps: [
+      "Apply a recovery-audit preset such as Initial load or Favorites mentions.",
+      "Reload the browser; the selected audit preset and its trigger/search values are restored.",
+      "Manually change the recovery trigger or audit search to leave preset mode and clear the persisted preset choice.",
+      "Use the full local-navigation reset to clear the persisted audit preset."
+    ],
+    notes: [
+      "Only the audit preset ID is persisted; arbitrary manual audit search text is not stored.",
+      "Audit preset persistence is browser-local and is not account or workspace synchronization."
+    ]
+  },
+  "renewal-receipt-history-search": {
+    title: "Renewal receipt history search",
+    summary: "Build 140 adds temporary case-insensitive search across renewal receipt history and composes it with the prior-freshness filter.",
+    steps: [
+      "Enter text in Search renewal history.",
+      "Search can match renewal receipt ID, previous freshness, legacy/unknown wording, profile count or favorite count.",
+      "Combine search with the previous-freshness filter to narrow the ten-entry history.",
+      "Clear the search field to return to the freshness-filtered history."
+    ],
+    notes: [
+      "Search is view-only and does not delete, reorder or rewrite renewal receipts.",
+      "Complete renewal-history export remains unaffected by the active search."
+    ]
+  },
+  "receipt-preset-recovery": {
+    title: "Receipt preset recovery",
+    summary: "Build 140 detects unsupported persisted receipt-search preset IDs and safely recovers the browser to All receipts.",
+    steps: [
+      "If a saved preset ID is no longer recognized, the browser falls back to All receipts.",
+      "A Receipt preset recovered notice explains why the fallback occurred.",
+      "The repaired All receipts preset ID is written back to local storage.",
+      "Applying a valid preset or manually changing receipt filters/search clears the recovery notice."
+    ],
+    notes: [
+      "Recovery affects only the browser-local preset view and never changes receipt evidence.",
+      "Missing preset state is treated as the normal All receipts default rather than an error."
+    ]
+  },
   "recovery-audit-search-presets": {
     title: "Recovery audit search presets",
     summary: "Build 139 adds quick presets for common recovery-audit trigger and text-search views without modifying stored audit evidence.",
@@ -2302,6 +2344,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 140 recovery audit preset persistence, renewal receipt history search & receipt preset recovery",
+    topics: ["recovery-audit-preset-persistence", "renewal-receipt-history-search", "receipt-preset-recovery"]
   },
   {
     title: "Build 139 recovery audit search presets, renewal receipt history filtering & receipt search preset persistence",
