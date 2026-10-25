@@ -25,6 +25,7 @@ import {
   INTERFACE_PREFERENCE_BUNDLE_FORMAT,
   INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY,
   INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY,
+  INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY,
   INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY,
   INTERFACE_PREFERENCE_PRESETS,
   INTERFACE_PREFERENCES_EVENT,
@@ -38,12 +39,14 @@ import {
   applyInterfacePreferencePreset,
   assessInterfacePreferenceRecoverySnapshotRenewal,
   createInterfaceFavoriteViewRecoveryAuditEntry,
+  createInterfacePreferenceRecoveryRenewalReceipt,
   createInterfacePreferenceBundleImportReceipt,
   createNamedInterfacePreferenceProfile,
   defaultInterfacePreferences,
   diffInterfacePreferenceRecoverySnapshot,
   duplicateNamedInterfacePreferenceProfile,
   favoriteNamedInterfacePreferenceProfiles,
+  filterInterfaceFavoriteViewRecoveryAudit,
   filterInterfacePreferenceBundleImportReceiptHistory,
   filterNamedInterfacePreferenceProfiles,
   importedInterfacePreferenceProvenance,
@@ -52,6 +55,7 @@ import {
   parseInterfacePreferenceBundle,
   parseInterfacePreferenceBundleImportReceipt,
   parseInterfacePreferenceBundleImportReceiptHistory,
+  parseInterfacePreferenceRecoveryRenewalReceipt,
   parseInterfacePreferenceRecoverySnapshot,
   planInterfacePreferenceBundleImportCapacity,
   matchingInterfacePreferencePreset,
@@ -69,6 +73,7 @@ import {
   reorderNamedInterfacePreferenceProfile,
   resolveInterfacePreferenceBundleImport,
   selectInterfacePreferenceBundleProfiles,
+  searchInterfacePreferenceBundleImportReceiptHistory,
   setNamedInterfacePreferenceProfileFavorite,
   sanitizeInterfacePreferences,
   sanitizeNamedInterfacePreferenceName,
@@ -79,10 +84,12 @@ import {
   serializeInterfacePreferenceBundleImportReceipt,
   serializeInterfacePreferenceBundleImportReceiptHistory,
   serializeInterfacePreferenceProfile,
+  serializeInterfacePreferenceRecoveryRenewalReceipt,
   serializeInterfacePreferenceRecoverySnapshot,
   suggestDuplicateNamedInterfacePreferenceName,
   upsertNamedInterfacePreferenceProfile,
   type InterfaceFavoriteViewRecoveryAuditEntryV1,
+  type InterfaceFavoriteViewRecoveryAuditFilter,
   type InterfaceFavoriteViewRecoveryAuditTrigger,
   type InterfacePreferenceBundleConflictStrategy,
   type InterfacePreferenceBundleImportOutcomeReconciliation,
@@ -90,6 +97,7 @@ import {
   type InterfacePreferenceBundleV1,
   type InterfacePreferencePresetId,
   type InterfacePreferenceProfileProvenance,
+  type InterfacePreferenceRecoveryRenewalReceiptV1,
   type InterfacePreferenceReceiptHistoryOutcomeFilter,
   type InterfacePreferenceReceiptHistoryStrategyFilter,
   type InterfacePreferenceRecoverySnapshotV1,
@@ -266,6 +274,32 @@ function writeFavoriteViewRecoveryAudit(
   }
 }
 
+function readRecoveryRenewalReceipt() {
+  try {
+    const raw = window.localStorage.getItem(
+      INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY
+    );
+    if (!raw) return null;
+    const parsed = parseInterfacePreferenceRecoveryRenewalReceipt(raw);
+    return parsed.ok ? parsed.receipt : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeRecoveryRenewalReceipt(
+  receipt: InterfacePreferenceRecoveryRenewalReceiptV1
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY,
+      serializeInterfacePreferenceRecoveryRenewalReceipt(receipt)
+    );
+  } catch {
+    // Renewal receipt is optional browser-local evidence.
+  }
+}
+
 export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -319,6 +353,11 @@ export function NavigationInsights() {
     useState<InterfacePreferenceReceiptHistoryOutcomeFilter>("all");
   const [receiptStrategyFilter, setReceiptStrategyFilter] =
     useState<InterfacePreferenceReceiptHistoryStrategyFilter>("all");
+  const [recoveryAuditFilter, setRecoveryAuditFilter] =
+    useState<InterfaceFavoriteViewRecoveryAuditFilter>("all");
+  const [recoveryRenewalReceipt, setRecoveryRenewalReceipt] =
+    useState<InterfacePreferenceRecoveryRenewalReceiptV1 | null>(null);
+  const [receiptHistorySearch, setReceiptHistorySearch] = useState("");
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -378,6 +417,7 @@ export function NavigationInsights() {
     }
 
     setRecoverySnapshot(readRecoverySnapshot());
+    setRecoveryRenewalReceipt(readRecoveryRenewalReceipt());
     setImportReconciliationReceipt(receiptHistory[0] ?? receipt);
     setImportReceiptHistory(receiptHistory);
     setFavoriteViewRecoveryAudit(recoveryAudit);
@@ -471,6 +511,14 @@ export function NavigationInsights() {
       ),
     [namedProfiles, profileQuickFilter]
   );
+  const filteredFavoriteViewRecoveryAudit = useMemo(
+    () =>
+      filterInterfaceFavoriteViewRecoveryAudit(
+        favoriteViewRecoveryAudit,
+        recoveryAuditFilter
+      ),
+    [favoriteViewRecoveryAudit, recoveryAuditFilter]
+  );
   const filteredImportReceiptHistory = useMemo(
     () =>
       filterInterfacePreferenceBundleImportReceiptHistory(
@@ -479,6 +527,14 @@ export function NavigationInsights() {
         receiptStrategyFilter
       ),
     [importReceiptHistory, receiptOutcomeFilter, receiptStrategyFilter]
+  );
+  const searchedImportReceiptHistory = useMemo(
+    () =>
+      searchInterfacePreferenceBundleImportReceiptHistory(
+        filteredImportReceiptHistory,
+        receiptHistorySearch
+      ),
+    [filteredImportReceiptHistory, receiptHistorySearch]
   );
   const selectedBundlePreview = useMemo(
     () =>
@@ -821,11 +877,25 @@ export function NavigationInsights() {
       return;
     }
 
+    const previousSnapshot = recoverySnapshot;
     const renewed = captureRecoverySnapshot(
       "Recovery snapshot renewed from current browser state."
     );
     if (renewed) {
+      const receipt = createInterfacePreferenceRecoveryRenewalReceipt({
+        receiptId:
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : "renewal-" + Date.now().toString(36),
+        previousSnapshot,
+        renewedSnapshot: renewed
+      });
+      writeRecoveryRenewalReceipt(receipt);
+      setRecoveryRenewalReceipt(receipt);
       setSnapshotRenewalArmed(false);
+      setPortabilityStatus(
+        "Recovery snapshot renewed from current browser state and a local renewal receipt was saved."
+      );
     }
   }
 
@@ -835,6 +905,40 @@ export function NavigationInsights() {
     setPortabilityStatus(
       "Recovery snapshot renewal cancelled. The existing recovery point was preserved."
     );
+  }
+
+  function exportRecoveryRenewalReceipt() {
+    if (!recoveryRenewalReceipt) return;
+    const payload = serializeInterfacePreferenceRecoveryRenewalReceipt(
+      recoveryRenewalReceipt
+    );
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download =
+      "ai-data-platform-recovery-renewal-" +
+      recoveryRenewalReceipt.receiptId +
+      ".json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+    setImportError(null);
+    setPortabilityStatus("Recovery snapshot renewal receipt exported.");
+  }
+
+  function clearRecoveryRenewalReceipt() {
+    try {
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY
+      );
+    } catch {
+      // Renewal receipt is optional browser-local evidence.
+    }
+    setRecoveryRenewalReceipt(null);
+    setImportError(null);
+    setPortabilityStatus("Recovery snapshot renewal receipt cleared.");
   }
 
   function restoreRecoverySnapshot() {
@@ -1328,9 +1432,12 @@ export function NavigationInsights() {
     setImportReceiptHistory([]);
     setFavoriteViewRecoveryNotice(null);
     setFavoriteViewRecoveryAudit([]);
+    setRecoveryAuditFilter("all");
     setSnapshotRenewalArmed(false);
+    setRecoveryRenewalReceipt(null);
     setReceiptOutcomeFilter("all");
     setReceiptStrategyFilter("all");
+    setReceiptHistorySearch("");
     setProfileQuickFilter("all");
     setResetAllArmed(false);
 
@@ -1350,6 +1457,9 @@ export function NavigationInsights() {
       );
       window.localStorage.removeItem(
         INTERFACE_FAVORITE_VIEW_RECOVERY_AUDIT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY
       );
     } catch {
       // Browser-local state is optional.
@@ -1390,7 +1500,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 136 · Recovery audit, snapshot renewal & receipt history filters</p>
+                <p className="eyebrow">Build 137 · Audit filters, renewal receipt & receipt history search</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -1584,8 +1694,30 @@ export function NavigationInsights() {
                       </div>
                       <HelpInfo topic="favorite-view-recovery-audit" inline />
                     </div>
+                    <div className="interfaceRecoveryAuditFilters">
+                      <label>
+                        <span>Recovery trigger</span>
+                        <select
+                          value={recoveryAuditFilter}
+                          onChange={(event) =>
+                            setRecoveryAuditFilter(
+                              event.currentTarget.value as InterfaceFavoriteViewRecoveryAuditFilter
+                            )
+                          }
+                        >
+                          <option value="all">All recovery triggers</option>
+                          <option value="initial-load">Initial load</option>
+                          <option value="filter-selection">Filter selection</option>
+                          <option value="last-favorite-removed">Last favorite removed</option>
+                        </select>
+                      </label>
+                      <span>
+                        Showing {filteredFavoriteViewRecoveryAudit.length} of {favoriteViewRecoveryAudit.length}
+                      </span>
+                      <HelpInfo topic="recovery-audit-filtering" inline />
+                    </div>
                     <div className="interfaceFavoriteRecoveryAuditList">
-                      {favoriteViewRecoveryAudit.map((entry) => (
+                      {filteredFavoriteViewRecoveryAudit.map((entry) => (
                         <article key={entry.auditId}>
                           <strong>{entry.trigger.replaceAll("-", " ")}</strong>
                           <span>
@@ -1594,6 +1726,9 @@ export function NavigationInsights() {
                           <small>{entry.reason}</small>
                         </article>
                       ))}
+                      {!filteredFavoriteViewRecoveryAudit.length ? (
+                        <p>No recovery audit events match the selected trigger.</p>
+                      ) : null}
                     </div>
                     <div className="interfaceImportPreviewActions">
                       <button type="button" onClick={exportFavoriteViewRecoveryAudit}>
@@ -1797,6 +1932,28 @@ export function NavigationInsights() {
                     <button type="button" onClick={cancelRecoverySnapshotRenewal}>
                       Cancel renewal
                     </button>
+                  ) : null}
+                  {recoveryRenewalReceipt ? (
+                    <div className="interfaceRecoveryRenewalReceipt">
+                      <div>
+                        <strong>Latest snapshot renewal receipt</strong>
+                        <span>
+                          {new Date(recoveryRenewalReceipt.createdAt).toLocaleString()} · previous {recoveryRenewalReceipt.previousFreshness}
+                        </span>
+                      </div>
+                      <span>
+                        {recoveryRenewalReceipt.profileCount} profiles · {recoveryRenewalReceipt.favoriteCount} favorites · renewed {new Date(recoveryRenewalReceipt.renewedCapturedAt).toLocaleString()}
+                      </span>
+                      <HelpInfo topic="snapshot-renewal-receipt" inline />
+                      <div className="interfaceImportPreviewActions">
+                        <button type="button" onClick={exportRecoveryRenewalReceipt}>
+                          Export renewal receipt
+                        </button>
+                        <button type="button" onClick={clearRecoveryRenewalReceipt}>
+                          Clear renewal receipt
+                        </button>
+                      </div>
+                    </div>
                   ) : null}
                   <button
                     type="button"
@@ -2190,13 +2347,24 @@ export function NavigationInsights() {
                           <option value="keep-both">Keep both</option>
                         </select>
                       </label>
+                      <label className="interfaceReceiptHistorySearch">
+                        <span>Search receipts</span>
+                        <input
+                          type="search"
+                          value={receiptHistorySearch}
+                          onChange={(event) => setReceiptHistorySearch(event.currentTarget.value)}
+                          placeholder="Source, profile, receipt ID, strategy…"
+                          aria-label="Search import reconciliation receipt history"
+                        />
+                      </label>
                       <span>
-                        Showing {filteredImportReceiptHistory.length} of {importReceiptHistory.length}
+                        Showing {searchedImportReceiptHistory.length} of {importReceiptHistory.length}
                       </span>
                       <HelpInfo topic="receipt-history-filtering" inline />
+                      <HelpInfo topic="receipt-history-search" inline />
                     </div>
                     <div className="interfaceImportReceiptHistoryList">
-                      {filteredImportReceiptHistory.map((receipt) => (
+                      {searchedImportReceiptHistory.map((receipt) => (
                         <article key={receipt.receiptId}>
                           <div>
                             <strong>
@@ -2212,8 +2380,8 @@ export function NavigationInsights() {
                           </span>
                         </article>
                       ))}
-                      {!filteredImportReceiptHistory.length ? (
-                        <p>No receipts match the selected history filters.</p>
+                      {!searchedImportReceiptHistory.length ? (
+                        <p>No receipts match the selected history filters and search.</p>
                       ) : null}
                     </div>
                     <div className="interfaceImportPreviewActions">
@@ -2394,7 +2562,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local recovery audit, confirmed snapshot renewal and receipt-history filters only · no server sync or workflow authority changes.</span>
+              <span>Browser-local recovery-audit filters, renewal receipts and receipt-history search only · no server sync or workflow authority changes.</span>
             </footer>
           </section>
         </div>
