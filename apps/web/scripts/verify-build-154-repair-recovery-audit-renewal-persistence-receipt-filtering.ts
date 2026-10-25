@@ -135,7 +135,7 @@ async function main() {
       insights.includes("writeRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPreset(preset.id)") &&
       insights.includes("clearRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPreset();") &&
       insights.includes("selected preset persists in this browser") &&
-      insights.includes("No receipt preset-repair search preset recoveries match the selected age filter."),
+      insights.includes("No receipt preset-repair search preset recoveries match the selected age filter and search."),
     "Build 154 must expose repair recovery evidence, persist renewal presets, and filter receipt recovery evidence."
   );
 
