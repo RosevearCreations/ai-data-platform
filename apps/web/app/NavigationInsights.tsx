@@ -22,6 +22,7 @@ import {
   INTERFACE_NAMED_PROFILES_STORAGE_KEY,
   INTERFACE_NAMED_PROFILE_VIEW_STORAGE_KEY,
   INTERFACE_PREFERENCE_BUNDLE_FORMAT,
+  INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY,
   INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY,
   INTERFACE_PREFERENCE_RECOVERY_SNAPSHOT_STORAGE_KEY,
   INTERFACE_PREFERENCE_PRESETS,
@@ -29,6 +30,7 @@ import {
   INTERFACE_PREFERENCES_RECONCILED_EVENT,
   INTERFACE_PREFERENCES_STORAGE_KEY,
   INTERFACE_RESET_GOVERNANCE,
+  MAX_INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY,
   MAX_NAMED_INTERFACE_PROFILES,
   analyzeInterfacePreferenceBundleImport,
   applyInterfacePreferencePreset,
@@ -43,6 +45,7 @@ import {
   interfacePreferenceRecoverySnapshotFreshness,
   parseInterfacePreferenceBundle,
   parseInterfacePreferenceBundleImportReceipt,
+  parseInterfacePreferenceBundleImportReceiptHistory,
   parseInterfacePreferenceRecoverySnapshot,
   planInterfacePreferenceBundleImportCapacity,
   matchingInterfacePreferencePreset,
@@ -50,8 +53,10 @@ import {
   namedInterfacePreferenceProvenanceLabel,
   parseInterfacePreferenceProfile,
   previewInterfacePreferenceProfile,
+  prependInterfacePreferenceBundleImportReceipt,
   recommendationPreferenceAllowsKind,
   reconcileInterfacePreferenceBundleImportOutcome,
+  recoverNamedInterfacePreferenceQuickFilter,
   removeNamedInterfacePreferenceProfile,
   renameNamedInterfacePreferenceProfile,
   reorderNamedInterfacePreferenceProfile,
@@ -64,6 +69,7 @@ import {
   sanitizeNamedInterfacePreferenceQuickFilter,
   serializeInterfacePreferenceBundle,
   serializeInterfacePreferenceBundleImportReceipt,
+  serializeInterfacePreferenceBundleImportReceiptHistory,
   serializeInterfacePreferenceProfile,
   serializeInterfacePreferenceRecoverySnapshot,
   suggestDuplicateNamedInterfacePreferenceName,
@@ -196,6 +202,32 @@ function writeImportReconciliationReceipt(
   }
 }
 
+function readImportReconciliationReceiptHistory() {
+  try {
+    const raw = window.localStorage.getItem(
+      INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY
+    );
+    if (!raw) return [];
+    const parsed = parseInterfacePreferenceBundleImportReceiptHistory(raw);
+    return parsed.ok ? parsed.history.receipts : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeImportReconciliationReceiptHistory(
+  receipts: InterfacePreferenceBundleImportReceiptV1[]
+) {
+  try {
+    window.localStorage.setItem(
+      INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY,
+      serializeInterfacePreferenceBundleImportReceiptHistory(receipts)
+    );
+  } catch {
+    // Receipt history is optional browser-local evidence.
+  }
+}
+
 export function NavigationInsights() {
   const pathname = usePathname();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -236,6 +268,11 @@ export function NavigationInsights() {
     useState<InterfacePreferenceBundleImportOutcomeReconciliation | null>(null);
   const [importReconciliationReceipt, setImportReconciliationReceipt] =
     useState<InterfacePreferenceBundleImportReceiptV1 | null>(null);
+  const [importReceiptHistory, setImportReceiptHistory] = useState<
+    InterfacePreferenceBundleImportReceiptV1[]
+  >([]);
+  const [favoriteViewRecoveryNotice, setFavoriteViewRecoveryNotice] =
+    useState<string | null>(null);
 
   useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
@@ -255,16 +292,35 @@ export function NavigationInsights() {
   useEffect(() => {
     const profiles = readNamedProfiles();
     const savedFilter = readProfileQuickFilter();
-    const visibleProfiles = filterNamedInterfacePreferenceProfiles(
+    const recoveredView = recoverNamedInterfacePreferenceQuickFilter(
       profiles,
       savedFilter
     );
+    const visibleProfiles = filterNamedInterfacePreferenceProfiles(
+      profiles,
+      recoveredView.filter
+    );
     const receipt = readImportReconciliationReceipt();
+    let receiptHistory = readImportReconciliationReceiptHistory();
+
+    if (!receiptHistory.length && receipt) {
+      receiptHistory = prependInterfacePreferenceBundleImportReceipt(
+        receiptHistory,
+        receipt
+      );
+      writeImportReconciliationReceiptHistory(receiptHistory);
+    }
+
+    if (recoveredView.recovered) {
+      writeProfileQuickFilter(recoveredView.filter);
+    }
 
     setRecoverySnapshot(readRecoverySnapshot());
-    setImportReconciliationReceipt(receipt);
+    setImportReconciliationReceipt(receiptHistory[0] ?? receipt);
+    setImportReceiptHistory(receiptHistory);
+    setFavoriteViewRecoveryNotice(recoveredView.reason);
     setNamedProfiles(profiles);
-    setProfileQuickFilter(savedFilter);
+    setProfileQuickFilter(recoveredView.filter);
     setSelectedProfileId((current) =>
       visibleProfiles.some((profile) => profile.id === current)
         ? current
@@ -504,17 +560,27 @@ export function NavigationInsights() {
   function chooseProfileQuickFilter(
     filter: NamedInterfacePreferenceQuickFilter
   ) {
-    setProfileQuickFilter(filter);
-    writeProfileQuickFilter(filter);
-    const visible = filterNamedInterfacePreferenceProfiles(namedProfiles, filter);
+    const recovered = recoverNamedInterfacePreferenceQuickFilter(
+      namedProfiles,
+      filter
+    );
+    setProfileQuickFilter(recovered.filter);
+    writeProfileQuickFilter(recovered.filter);
+    setFavoriteViewRecoveryNotice(recovered.reason);
+    const visible = filterNamedInterfacePreferenceProfiles(
+      namedProfiles,
+      recovered.filter
+    );
     if (!visible.some((profile) => profile.id === selectedProfileId)) {
       setSelectedProfileId(visible[0]?.id ?? "");
     }
     setImportError(null);
     setPortabilityStatus(
-      filter === "favorites"
-        ? "Showing favorite named profiles only."
-        : "Showing all named profiles."
+      recovered.recovered
+        ? recovered.reason
+        : recovered.filter === "favorites"
+          ? "Showing favorite named profiles only."
+          : "Showing all named profiles."
     );
   }
 
@@ -548,13 +614,28 @@ export function NavigationInsights() {
     setSelectedProfileId(selectedNamedProfile.id);
     setImportError(null);
     if (profileQuickFilter === "favorites" && !nextFavorite) {
-      const remainingFavorite = updated.find((profile) => profile.favorite);
-      setSelectedProfileId(remainingFavorite?.id ?? "");
+      const recovered = recoverNamedInterfacePreferenceQuickFilter(
+        updated,
+        profileQuickFilter
+      );
+      setProfileQuickFilter(recovered.filter);
+      writeProfileQuickFilter(recovered.filter);
+      setFavoriteViewRecoveryNotice(recovered.reason);
+      const visible = filterNamedInterfacePreferenceProfiles(
+        updated,
+        recovered.filter
+      );
+      setSelectedProfileId(visible[0]?.id ?? "");
     }
     setPortabilityStatus(
       (nextFavorite ? "Favorited “" : "Removed favorite from “") +
         selectedNamedProfile.name +
-        "”."
+        "”." +
+        (profileQuickFilter === "favorites" &&
+        !nextFavorite &&
+        !updated.some((profile) => profile.favorite)
+          ? " Favorites view recovered to All profiles."
+          : "")
     );
   }
 
@@ -581,9 +662,11 @@ export function NavigationInsights() {
       setRecoveryRestoreArmed(true);
       setImportError(null);
       setPortabilityStatus(
-        recoveryFreshness?.status === "stale"
-          ? "Restore confirmation armed for a stale snapshot. Review its age and diff carefully, then choose Confirm restore."
-          : recoveryDiff?.hasChanges
+        recoveryFreshness?.status === "expired"
+          ? "Restore confirmation armed for a snapshot past the 30-day guidance window. Consider saving a newer point first; review age and diff carefully before Confirm restore."
+          : recoveryFreshness?.status === "stale"
+            ? "Restore confirmation armed for a stale snapshot. Review its age and diff carefully, then choose Confirm restore."
+            : recoveryDiff?.hasChanges
             ? "Restore confirmation armed. Review the diff, then choose Confirm restore."
             : "Restore confirmation armed. The snapshot currently matches this browser; confirm only if you still want to reapply it."
       );
@@ -807,16 +890,34 @@ export function NavigationInsights() {
   }
 
   function clearImportReconciliationReceipt() {
+    const nextHistory = importReconciliationReceipt
+      ? importReceiptHistory.filter(
+          (receipt) =>
+            receipt.receiptId !== importReconciliationReceipt.receiptId
+        )
+      : importReceiptHistory;
+    const nextLatest = nextHistory[0] ?? null;
+
     try {
-      window.localStorage.removeItem(
-        INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY
-      );
+      if (nextLatest) {
+        writeImportReconciliationReceipt(nextLatest);
+      } else {
+        window.localStorage.removeItem(
+          INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY
+        );
+      }
+      writeImportReconciliationReceiptHistory(nextHistory);
     } catch {
       // Import receipt persistence is optional browser-local evidence.
     }
-    setImportReconciliationReceipt(null);
+    setImportReceiptHistory(nextHistory);
+    setImportReconciliationReceipt(nextLatest);
     setImportError(null);
-    setPortabilityStatus("Saved import reconciliation receipt cleared.");
+    setPortabilityStatus(
+      nextLatest
+        ? "Latest receipt cleared. The previous receipt is now current."
+        : "Saved import reconciliation receipt cleared."
+    );
   }
 
   function exportImportReconciliationReceipt() {
@@ -838,6 +939,44 @@ export function NavigationInsights() {
     window.URL.revokeObjectURL(url);
     setImportError(null);
     setPortabilityStatus("Import reconciliation receipt exported.");
+  }
+
+  function exportImportReconciliationReceiptHistory() {
+    if (!importReceiptHistory.length) return;
+    const payload = serializeInterfacePreferenceBundleImportReceiptHistory(
+      importReceiptHistory
+    );
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = "ai-data-platform-import-reconciliation-history.json";
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+    setImportError(null);
+    setPortabilityStatus("Import reconciliation receipt history exported.");
+  }
+
+  function clearImportReconciliationReceiptHistory() {
+    try {
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_IMPORT_RECEIPT_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
+        INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY
+      );
+    } catch {
+      // Receipt history is optional browser-local evidence.
+    }
+    setImportReceiptHistory([]);
+    setImportReconciliationReceipt(null);
+    setImportError(null);
+    setPortabilityStatus("Import reconciliation receipt history cleared.");
   }
 
   function applyPreferenceBundleImport() {
@@ -882,8 +1021,14 @@ export function NavigationInsights() {
         plan,
         reconciliation: outcome
       });
+      const nextHistory = prependInterfacePreferenceBundleImportReceipt(
+        importReceiptHistory,
+        receipt
+      );
       writeImportReconciliationReceipt(receipt);
+      writeImportReconciliationReceiptHistory(nextHistory);
       setImportReconciliationReceipt(receipt);
+      setImportReceiptHistory(nextHistory);
     }
 
     persistNamedProfiles(result.profiles);
@@ -1001,6 +1146,8 @@ export function NavigationInsights() {
     setRecoveryRestoreArmed(false);
     setBundleImportOutcome(null);
     setImportReconciliationReceipt(null);
+    setImportReceiptHistory([]);
+    setFavoriteViewRecoveryNotice(null);
     setProfileQuickFilter("all");
     setResetAllArmed(false);
 
@@ -1054,7 +1201,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 134 · Persistent favorites, recovery freshness & import receipts</p>
+                <p className="eyebrow">Build 135 · Favorite recovery, snapshot expiry guidance & receipt history</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
@@ -1229,6 +1376,14 @@ export function NavigationInsights() {
                   <HelpInfo topic="favorite-profile-quick-filters" inline />
                 </div>
 
+                {favoriteViewRecoveryNotice ? (
+                  <div className="interfaceFavoriteViewRecovery" role="status">
+                    <strong>Favorite view recovered</strong>
+                    <span>{favoriteViewRecoveryNotice}</span>
+                    <HelpInfo topic="favorite-view-recovery" inline />
+                  </div>
+                ) : null}
+
                 <div className="interfaceQuickSwitcher">
                   <div>
                     <strong>Quick switcher</strong>
@@ -1367,7 +1522,9 @@ export function NavigationInsights() {
                             ? "Aging snapshot"
                             : recoveryFreshness.status === "stale"
                               ? "Stale snapshot"
-                              : "Legacy snapshot"}
+                              : recoveryFreshness.status === "expired"
+                                ? "Expired guidance window"
+                                : "Legacy snapshot"}
                       </strong>
                       <span>
                         {recoverySnapshot.capturedAt
@@ -1382,7 +1539,13 @@ export function NavigationInsights() {
                             " old"
                           : "Capture time unavailable for a pre-Build-134 recovery snapshot."}
                       </span>
+                      {recoveryFreshness.status === "expired" ? (
+                        <p className="interfaceRecoveryExpiryGuidance">
+                          This snapshot is 30 days old or older. Capture a new recovery point before restore when practical; the existing snapshot remains available behind the two-step confirmation.
+                        </p>
+                      ) : null}
                       <HelpInfo topic="recovery-snapshot-freshness" inline />
+                      <HelpInfo topic="snapshot-expiry-guidance" inline />
                     </div>
                   ) : null}
                   <button type="button" onClick={() => captureRecoverySnapshot()}>
@@ -1740,6 +1903,52 @@ export function NavigationInsights() {
                   </div>
                 ) : null}
 
+                {importReceiptHistory.length ? (
+                  <div className="interfaceImportReceiptHistory">
+                    <div className="interfacePresetHeading">
+                      <div>
+                        <strong>Import reconciliation receipt history</strong>
+                        <span>
+                          {importReceiptHistory.length} of {MAX_INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY} local receipt slots used
+                        </span>
+                      </div>
+                      <HelpInfo topic="import-receipt-history" inline />
+                    </div>
+                    <div className="interfaceImportReceiptHistoryList">
+                      {importReceiptHistory.map((receipt, index) => (
+                        <article key={receipt.receiptId}>
+                          <div>
+                            <strong>
+                              {index === 0 ? "Latest · " : ""}
+                              {receipt.sourceName}
+                            </strong>
+                            <span>
+                              {new Date(receipt.createdAt).toLocaleString()} · {receipt.strategy}
+                            </span>
+                          </div>
+                          <span>
+                            {receipt.selectedNames.length} selected · {receipt.reconciliation.matchesPlan ? "matched plan" : "deviated"}
+                          </span>
+                        </article>
+                      ))}
+                    </div>
+                    <div className="interfaceImportPreviewActions">
+                      <button
+                        type="button"
+                        onClick={exportImportReconciliationReceiptHistory}
+                      >
+                        Export history
+                      </button>
+                      <button
+                        type="button"
+                        onClick={clearImportReconciliationReceiptHistory}
+                      >
+                        Clear history
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
                 {importPreview ? (
                   <div className="interfaceImportPreview">
                     <div className="interfacePresetHeading">
@@ -1901,7 +2110,7 @@ export function NavigationInsights() {
             </div>
 
             <footer className="navigationInsightsFooter">
-              <span>Browser-local persisted favorite views, recovery freshness and import receipts only · no server sync or workflow authority changes.</span>
+              <span>Browser-local favorite view recovery, snapshot expiry guidance and bounded receipt history only · no server sync or workflow authority changes.</span>
             </footer>
           </section>
         </div>

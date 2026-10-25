@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "favorite-view-recovery": {
+    title: "Favorite view recovery",
+    summary: "Build 135 recovers a saved Favorites-only view to All profiles when no favorite profiles remain, preventing a persistent empty profile view.",
+    steps: [
+      "Use Favorites normally while at least one named profile is marked favorite.",
+      "If the last favorite is removed, the view automatically recovers to All profiles.",
+      "If a browser reload finds a persisted Favorites view with no favorites, it also recovers to All profiles.",
+      "Review the Favorite view recovered notice when the fallback occurs."
+    ],
+    notes: [
+      "Recovery changes only the browser-local view filter; it does not reorder profiles or change preference values.",
+      "The recovered All profiles choice replaces the unusable Favorites value in local storage."
+    ]
+  },
+  "snapshot-expiry-guidance": {
+    title: "Snapshot expiry guidance",
+    summary: "Build 135 adds a 30-day guidance window so very old recovery snapshots are clearly identified before restore without being automatically deleted.",
+    steps: [
+      "Fresh snapshots are less than 24 hours old.",
+      "Aging snapshots are at least 24 hours but less than seven days old.",
+      "Stale snapshots are at least seven days but less than 30 days old.",
+      "Snapshots 30 days old or older show Expired guidance window and recommend capturing a newer recovery point."
+    ],
+    notes: [
+      "Expiry is guidance, not forced deletion; an older snapshot remains readable and restorable.",
+      "The Build 133 two-step restore confirmation and Build 132 recovery diff still apply."
+    ]
+  },
+  "import-receipt-history": {
+    title: "Import receipt history",
+    summary: "Build 135 keeps a bounded browser-local history of the ten most recent named-bundle import reconciliation receipts.",
+    steps: [
+      "Complete named-bundle imports normally; each completed reconciliation is placed at the top of history.",
+      "Review source, time, strategy, selected count and matched/deviated status for recent receipts.",
+      "Choose Export history to save the bounded history as versioned JSON.",
+      "Choose Clear history to remove all receipt history and the current latest receipt."
+    ],
+    notes: [
+      "History is capped at ten receipts and duplicate receipt IDs are removed.",
+      "A pre-Build-135 latest receipt is migrated into history when no history exists yet."
+    ]
+  },
   "favorite-view-persistence": {
     title: "Favorite view persistence",
     summary: "Build 134 remembers whether All profiles or Favorites was selected so the browser reopens the same local profile view after reload.",
@@ -2092,6 +2134,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 135 favorite view recovery, snapshot expiry guidance & import receipt history",
+    topics: ["favorite-view-recovery", "snapshot-expiry-guidance", "import-receipt-history"]
   },
   {
     title: "Build 134 favorite view persistence, recovery snapshot freshness & import reconciliation receipt",

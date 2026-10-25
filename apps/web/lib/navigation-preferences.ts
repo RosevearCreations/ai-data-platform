@@ -1081,7 +1081,8 @@ export type InterfacePreferenceRecoverySnapshotFreshnessStatus =
   | "unknown"
   | "fresh"
   | "aging"
-  | "stale";
+  | "stale"
+  | "expired";
 
 export type InterfacePreferenceRecoverySnapshotFreshness = {
   status: InterfacePreferenceRecoverySnapshotFreshnessStatus;
@@ -1147,7 +1148,13 @@ export function interfacePreferenceRecoverySnapshotFreshness(
   const ageMs = Math.max(0, now - snapshot.capturedAt);
   const ageHours = ageMs / (60 * 60 * 1000);
   const status: InterfacePreferenceRecoverySnapshotFreshnessStatus =
-    ageHours < 24 ? "fresh" : ageHours < 24 * 7 ? "aging" : "stale";
+    ageHours < 24
+      ? "fresh"
+      : ageHours < 24 * 7
+        ? "aging"
+        : ageHours < 24 * 30
+          ? "stale"
+          : "expired";
 
   return {
     status,
@@ -1438,6 +1445,38 @@ export function sanitizeNamedInterfacePreferenceQuickFilter(
   value: unknown
 ): NamedInterfacePreferenceQuickFilter {
   return value === "favorites" ? "favorites" : "all";
+}
+
+export type NamedInterfacePreferenceQuickFilterRecovery = {
+  filter: NamedInterfacePreferenceQuickFilter;
+  recovered: boolean;
+  reason: string | null;
+};
+
+export function recoverNamedInterfacePreferenceQuickFilter(
+  profiles: NamedInterfacePreferenceProfile[],
+  requested: unknown
+): NamedInterfacePreferenceQuickFilterRecovery {
+  const filter = sanitizeNamedInterfacePreferenceQuickFilter(requested);
+  if (
+    filter === "favorites" &&
+    !sanitizeNamedInterfacePreferenceProfiles(profiles).some(
+      (profile) => profile.favorite
+    )
+  ) {
+    return {
+      filter: "all",
+      recovered: true,
+      reason:
+        "Favorites view recovered to All profiles because no favorite profiles remain."
+    };
+  }
+
+  return {
+    filter,
+    recovered: false,
+    reason: null
+  };
 }
 
 export function filterNamedInterfacePreferenceProfiles(
@@ -1757,5 +1796,120 @@ export function parseInterfacePreferenceBundleImportReceipt(
       plan: record.plan,
       reconciliation: record.reconciliation
     })
+  };
+}
+
+export const INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_FORMAT =
+  "ai-data-platform-interface-preference-import-reconciliation-history";
+export const INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_STORAGE_KEY =
+  "ai-data-platform:preference-import-reconciliation-history:v1";
+export const MAX_INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY = 10;
+
+export type InterfacePreferenceBundleImportReceiptHistoryV1 = {
+  format: typeof INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_FORMAT;
+  version: 1;
+  receipts: InterfacePreferenceBundleImportReceiptV1[];
+};
+
+export function createInterfacePreferenceBundleImportReceiptHistory(
+  receipts: InterfacePreferenceBundleImportReceiptV1[]
+): InterfacePreferenceBundleImportReceiptHistoryV1 {
+  const result: InterfacePreferenceBundleImportReceiptV1[] = [];
+  const seen = new Set<string>();
+
+  for (const candidate of receipts) {
+    const parsed = parseInterfacePreferenceBundleImportReceipt(candidate);
+    if (!parsed.ok || seen.has(parsed.receipt.receiptId)) continue;
+    result.push(parsed.receipt);
+    seen.add(parsed.receipt.receiptId);
+    if (result.length >= MAX_INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY) break;
+  }
+
+  return {
+    format: INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_FORMAT,
+    version: 1,
+    receipts: result
+  };
+}
+
+export function prependInterfacePreferenceBundleImportReceipt(
+  history: InterfacePreferenceBundleImportReceiptV1[],
+  receipt: InterfacePreferenceBundleImportReceiptV1
+) {
+  return createInterfacePreferenceBundleImportReceiptHistory([
+    receipt,
+    ...history.filter((item) => item.receiptId !== receipt.receiptId)
+  ]).receipts;
+}
+
+export function serializeInterfacePreferenceBundleImportReceiptHistory(
+  receipts: InterfacePreferenceBundleImportReceiptV1[]
+) {
+  return JSON.stringify(
+    createInterfacePreferenceBundleImportReceiptHistory(receipts),
+    null,
+    2
+  );
+}
+
+export type InterfacePreferenceBundleImportReceiptHistoryParseResult =
+  | {
+      ok: true;
+      history: InterfacePreferenceBundleImportReceiptHistoryV1;
+    }
+  | { ok: false; error: string };
+
+export function parseInterfacePreferenceBundleImportReceiptHistory(
+  input: unknown
+): InterfacePreferenceBundleImportReceiptHistoryParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "The import reconciliation receipt history is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "The import reconciliation receipt history is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !== INTERFACE_PREFERENCE_IMPORT_RECEIPT_HISTORY_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.receipts)
+  ) {
+    return {
+      ok: false,
+      error: "The import reconciliation receipt history format is not supported."
+    };
+  }
+
+  const parsedReceipts: InterfacePreferenceBundleImportReceiptV1[] = [];
+  for (const candidate of record.receipts) {
+    const parsed = parseInterfacePreferenceBundleImportReceipt(candidate);
+    if (!parsed.ok) {
+      return {
+        ok: false,
+        error:
+          "The import reconciliation receipt history contains an invalid receipt."
+      };
+    }
+    parsedReceipts.push(parsed.receipt);
+  }
+
+  return {
+    ok: true,
+    history: createInterfacePreferenceBundleImportReceiptHistory(
+      parsedReceipts
+    )
   };
 }

@@ -227,12 +227,13 @@ async function main() {
   }
 
   assert(
-    insights.includes("setProfileQuickFilter(savedFilter)") &&
+    insights.includes("readProfileQuickFilter") &&
+      insights.includes("setProfileQuickFilter(") &&
       insights.includes("window.localStorage.setItem(\n      INTERFACE_NAMED_PROFILE_VIEW_STORAGE_KEY") &&
       insights.includes("window.localStorage.removeItem(INTERFACE_NAMED_PROFILE_VIEW_STORAGE_KEY)") &&
       insights.includes("createInterfacePreferenceBundleImportReceipt") &&
       insights.includes("setImportReconciliationReceipt(receipt)"),
-    "Build 134 must restore persisted view state, clear it on full reset and persist the latest completed import receipt."
+    "Build 134 must preserve persisted view restoration, full-reset cleanup and latest-receipt persistence as later recovery logic evolves."
   );
 
   for (const selector of [
@@ -259,8 +260,8 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 134 · Marble Standard"),
-    "Build 134 shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 134 shell must preserve Marble Standard as later interface builds advance."
   );
 
   assert(
