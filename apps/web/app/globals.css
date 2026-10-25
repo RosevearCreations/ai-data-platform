@@ -7517,3 +7517,29 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     outline-offset: 2px;
   }
 }
+
+
+/* Build 152 — repair persistence, renewal search and receipt recovery */
+.interfaceRenewalRecoveryAuditPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) minmax(14rem, 1fr) auto;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresetRecovery {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .interfaceRenewalRecoveryAuditPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceReceiptRecoveryAuditSearchPresetRecovery {
+    border-color: CanvasText;
+  }
+}
