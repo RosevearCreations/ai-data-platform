@@ -2847,6 +2847,36 @@ export const HELP_TOPICS = {
     ],
     notes: ["These Build 156 presets are temporary browser-local view state and are not persisted."]
   },
+  "recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-presets": {
+    title: "Repair search-preset recovery audit search presets",
+    summary: "Apply deterministic age-and-search views to repair search-preset recovery audit evidence without changing retained recovery events.",
+    steps: [
+      "Choose All search preset recoveries, Recent 24 hours, Recent 7 days, Recovered to All, or Recovery reasons.",
+      "The preset applies the matching age filter and search query together.",
+      "Changing age or search manually leaves preset mode."
+    ],
+    notes: ["These Build 157 presets are temporary browser-local view state and are not persisted."]
+  },
+  "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering": {
+    title: "Renewal preset-recovery audit search preset recovery filtering",
+    summary: "Filter renewal preset-recovery audit search-preset repair evidence by age without changing retained recovery events.",
+    steps: [
+      "Choose All preset recoveries, Last 24 hours, or Last 7 days.",
+      "The visible renewal recovery ledger updates immediately.",
+      "Export continues to use the complete retained ledger."
+    ],
+    notes: ["Filtering is temporary browser-local view state."]
+  },
+  "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence": {
+    title: "Receipt search-preset recovery audit search preset persistence",
+    summary: "Keep the selected receipt search-preset recovery audit preset across reloads without persisting arbitrary manual search text.",
+    steps: [
+      "Choose a receipt search-preset recovery audit search preset.",
+      "The known preset ID is saved locally and restored on the next load.",
+      "Changing age or search manually clears the saved preset and enters a temporary custom view."
+    ],
+    notes: ["Only a known preset ID is persisted; retained receipt recovery evidence is unchanged."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -2872,6 +2902,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 157 repair recovery audit search presets, renewal recovery audit filtering & receipt recovery preset persistence",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-presets", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence"]
   },
   {
     title: "Build 156 repair recovery audit search, renewal preset recovery audit & receipt recovery audit search presets",
