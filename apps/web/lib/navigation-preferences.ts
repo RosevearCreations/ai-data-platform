@@ -3141,6 +3141,220 @@ export function recoverInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSear
   };
 }
 
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT =
+  "ai-data-platform-recovery-audit-repair-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit";
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY =
+  "ai-data-platform:recovery-audit-repair-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit:v1";
+export const MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT = 10;
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1 = {
+  version: 1;
+  auditId: string;
+  createdAt: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId;
+  reason: string;
+};
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1 = {
+  format: typeof INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT;
+  version: 1;
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[];
+};
+
+function sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 100);
+}
+
+function sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryRequestedId(
+  value: unknown
+) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
+export function createInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry(input: {
+  auditId: string;
+  createdAt?: number;
+  requestedPresetId: string;
+  recoveredPresetId: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId;
+  reason: string;
+}): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1 {
+  const auditId =
+    sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+      input.auditId
+    );
+  if (!auditId) {
+    throw new Error(
+      "Repair search-preset recovery audit search preset recovery audit search preset recovery audit ID is required."
+    );
+  }
+
+  const createdAt =
+    typeof input.createdAt === "number" &&
+    Number.isFinite(input.createdAt) &&
+    input.createdAt > 0
+      ? Math.floor(input.createdAt)
+      : Date.now();
+
+  return {
+    version: 1,
+    auditId,
+    createdAt,
+    requestedPresetId:
+      sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryRequestedId(
+        input.requestedPresetId
+      ),
+    recoveredPresetId:
+      sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+        input.recoveredPresetId
+      ),
+    reason:
+      typeof input.reason === "string"
+        ? input.reason.replace(/\s+/g, " ").trim().slice(0, 240)
+        : ""
+  };
+}
+
+export function prependInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  entry: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1
+) {
+  const next = [entry, ...entries].filter(
+    (candidate, index, all) =>
+      all.findIndex((item) => item.auditId === candidate.auditId) === index
+  );
+  return next.slice(
+    0,
+    MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT
+  );
+}
+
+export function serializeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[]
+) {
+  return JSON.stringify(
+    {
+      format:
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries
+    } satisfies InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1,
+    null,
+    2
+  );
+}
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
+  | {
+      ok: true;
+      audit: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1;
+    }
+  | { ok: false; error: string };
+
+export function parseInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  input: unknown
+): InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error:
+          "Repair search-preset recovery audit search preset recovery audit search preset recovery audit is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error:
+        "Repair search-preset recovery audit search preset recovery audit search preset recovery audit is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !==
+      INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.entries)
+  ) {
+    return {
+      ok: false,
+      error:
+        "Repair search-preset recovery audit search preset recovery audit search preset recovery audit format is not supported."
+    };
+  }
+
+  const entries: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[] =
+    [];
+  for (const candidate of record.entries) {
+    if (!candidate || typeof candidate !== "object") {
+      return {
+        ok: false,
+        error:
+          "Repair search-preset recovery audit search preset recovery audit search preset recovery audit contains an invalid entry."
+      };
+    }
+
+    const item = candidate as Record<string, unknown>;
+    const auditId =
+      sanitizeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditId(
+        item.auditId
+      );
+    const createdAt =
+      typeof item.createdAt === "number" &&
+      Number.isFinite(item.createdAt) &&
+      item.createdAt > 0
+        ? item.createdAt
+        : 0;
+
+    if (!auditId || !createdAt) {
+      return {
+        ok: false,
+        error:
+          "Repair search-preset recovery audit search preset recovery audit search preset recovery audit contains an invalid entry."
+      };
+    }
+
+    entries.push(
+      createInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry({
+        auditId,
+        createdAt,
+        requestedPresetId:
+          typeof item.requestedPresetId === "string"
+            ? item.requestedPresetId
+            : "",
+        recoveredPresetId:
+          sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+            item.recoveredPresetId
+          ),
+        reason: typeof item.reason === "string" ? item.reason : ""
+      })
+    );
+  }
+
+  return {
+    ok: true,
+    audit: {
+      format:
+        INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_FORMAT,
+      version: 1,
+      entries: entries.slice(
+        0,
+        MAX_INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT
+      )
+    }
+  };
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -4659,6 +4873,20 @@ export function interfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPres
   );
 }
 
+export const INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:renewal-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
+}
+
 export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -6102,6 +6330,29 @@ export function serializeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditS
     null,
     2
   );
+}
+
+export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter =
+  | "all"
+  | "24h"
+  | "7d";
+
+export function filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  ageFilter: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter,
+  now: number = Date.now()
+) {
+  if (ageFilter === "all") return entries;
+
+  const maxAge =
+    ageFilter === "24h"
+      ? 24 * 60 * 60 * 1000
+      : 7 * 24 * 60 * 60 * 1000;
+
+  return entries.filter((entry) => {
+    const age = now - entry.createdAt;
+    return age >= 0 && age <= maxAge;
+  });
 }
 
 export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
