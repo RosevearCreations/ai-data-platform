@@ -2159,6 +2159,33 @@ export function filterInterfaceFavoriteViewRecoveryAudit(
     : entries.filter((entry) => entry.trigger === filter);
 }
 
+function normalizeRecoveryAuditSearchQuery(value: unknown) {
+  if (typeof value !== "string") return "";
+  return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
+}
+
+export function searchInterfaceFavoriteViewRecoveryAudit(
+  entries: InterfaceFavoriteViewRecoveryAuditEntryV1[],
+  query: unknown
+) {
+  const normalized = normalizeRecoveryAuditSearchQuery(query);
+  if (!normalized) return entries;
+
+  return entries.filter((entry) => {
+    const haystack = [
+      entry.auditId,
+      entry.trigger,
+      entry.requestedFilter,
+      entry.resolvedFilter,
+      entry.reason
+    ]
+      .join(" ")
+      .toLocaleLowerCase();
+
+    return haystack.includes(normalized);
+  });
+}
+
 export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_FORMAT =
   "ai-data-platform-recovery-snapshot-renewal-receipt";
 export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_STORAGE_KEY =
@@ -2334,6 +2361,126 @@ export function parseInterfacePreferenceRecoveryRenewalReceipt(
   };
 }
 
+
+export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_FORMAT =
+  "ai-data-platform-recovery-snapshot-renewal-receipt-history";
+export const INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_STORAGE_KEY =
+  "ai-data-platform:recovery-snapshot-renewal-receipt-history:v1";
+export const MAX_INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY = 10;
+
+export type InterfacePreferenceRecoveryRenewalReceiptHistoryV1 = {
+  format: typeof INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_FORMAT;
+  version: 1;
+  receipts: InterfacePreferenceRecoveryRenewalReceiptV1[];
+};
+
+export function createInterfacePreferenceRecoveryRenewalReceiptHistory(
+  receipts: InterfacePreferenceRecoveryRenewalReceiptV1[]
+): InterfacePreferenceRecoveryRenewalReceiptHistoryV1 {
+  const result: InterfacePreferenceRecoveryRenewalReceiptV1[] = [];
+  const seen = new Set<string>();
+
+  for (const candidate of receipts) {
+    const parsed = parseInterfacePreferenceRecoveryRenewalReceipt(candidate);
+    if (!parsed.ok || seen.has(parsed.receipt.receiptId)) continue;
+    result.push(parsed.receipt);
+    seen.add(parsed.receipt.receiptId);
+    if (
+      result.length >=
+      MAX_INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY
+    ) {
+      break;
+    }
+  }
+
+  return {
+    format: INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_FORMAT,
+    version: 1,
+    receipts: result
+  };
+}
+
+export function prependInterfacePreferenceRecoveryRenewalReceipt(
+  history: InterfacePreferenceRecoveryRenewalReceiptV1[],
+  receipt: InterfacePreferenceRecoveryRenewalReceiptV1
+) {
+  return createInterfacePreferenceRecoveryRenewalReceiptHistory([
+    receipt,
+    ...history.filter((item) => item.receiptId !== receipt.receiptId)
+  ]).receipts;
+}
+
+export function serializeInterfacePreferenceRecoveryRenewalReceiptHistory(
+  receipts: InterfacePreferenceRecoveryRenewalReceiptV1[]
+) {
+  return JSON.stringify(
+    createInterfacePreferenceRecoveryRenewalReceiptHistory(receipts),
+    null,
+    2
+  );
+}
+
+export type InterfacePreferenceRecoveryRenewalReceiptHistoryParseResult =
+  | {
+      ok: true;
+      history: InterfacePreferenceRecoveryRenewalReceiptHistoryV1;
+    }
+  | { ok: false; error: string };
+
+export function parseInterfacePreferenceRecoveryRenewalReceiptHistory(
+  input: unknown
+): InterfacePreferenceRecoveryRenewalReceiptHistoryParseResult {
+  let value = input;
+  if (typeof input === "string") {
+    try {
+      value = JSON.parse(input);
+    } catch {
+      return {
+        ok: false,
+        error: "Recovery snapshot renewal receipt history is not valid JSON."
+      };
+    }
+  }
+
+  if (!value || typeof value !== "object") {
+    return {
+      ok: false,
+      error: "Recovery snapshot renewal receipt history is not available."
+    };
+  }
+
+  const record = value as Record<string, unknown>;
+  if (
+    record.format !==
+      INTERFACE_PREFERENCE_RECOVERY_RENEWAL_RECEIPT_HISTORY_FORMAT ||
+    record.version !== 1 ||
+    !Array.isArray(record.receipts)
+  ) {
+    return {
+      ok: false,
+      error: "Recovery snapshot renewal receipt history format is not supported."
+    };
+  }
+
+  const receipts: InterfacePreferenceRecoveryRenewalReceiptV1[] = [];
+  for (const candidate of record.receipts) {
+    const parsed = parseInterfacePreferenceRecoveryRenewalReceipt(candidate);
+    if (!parsed.ok) {
+      return {
+        ok: false,
+        error:
+          "Recovery snapshot renewal receipt history contains an invalid receipt."
+      };
+    }
+    receipts.push(parsed.receipt);
+  }
+
+  return {
+    ok: true,
+    history: createInterfacePreferenceRecoveryRenewalReceiptHistory(receipts)
+  };
+}
+
 function normalizeReceiptHistorySearchQuery(value: unknown) {
   if (typeof value !== "string") return "";
   return value.replace(/\s+/g, " ").trim().toLocaleLowerCase().slice(0, 100);
@@ -2360,6 +2507,75 @@ export function searchInterfacePreferenceBundleImportReceiptHistory(
 
     return haystack.includes(normalized);
   });
+}
+
+export type InterfacePreferenceReceiptSearchPresetId =
+  | "all"
+  | "deviations"
+  | "replacements"
+  | "keep-both"
+  | "capacity";
+
+export type InterfacePreferenceReceiptSearchPreset = {
+  id: InterfacePreferenceReceiptSearchPresetId;
+  label: string;
+  description: string;
+  outcomeFilter: InterfacePreferenceReceiptHistoryOutcomeFilter;
+  strategyFilter: InterfacePreferenceReceiptHistoryStrategyFilter;
+  query: string;
+};
+
+export const INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS: InterfacePreferenceReceiptSearchPreset[] = [
+  {
+    id: "all",
+    label: "All receipts",
+    description: "Clear receipt search and show every stored reconciliation receipt.",
+    outcomeFilter: "all",
+    strategyFilter: "all",
+    query: ""
+  },
+  {
+    id: "deviations",
+    label: "Deviations",
+    description: "Show only receipts where the actual import differed from the plan.",
+    outcomeFilter: "deviated",
+    strategyFilter: "all",
+    query: ""
+  },
+  {
+    id: "replacements",
+    label: "Replacements",
+    description: "Show imports completed with the Replace conflict strategy.",
+    outcomeFilter: "all",
+    strategyFilter: "replace",
+    query: ""
+  },
+  {
+    id: "keep-both",
+    label: "Keep both",
+    description: "Show imports completed with the Keep both conflict strategy.",
+    outcomeFilter: "all",
+    strategyFilter: "keep-both",
+    query: ""
+  },
+  {
+    id: "capacity",
+    label: "Capacity",
+    description: "Search receipt evidence for capacity-related reconciliation details.",
+    outcomeFilter: "all",
+    strategyFilter: "all",
+    query: "capacity"
+  }
+];
+
+export function interfacePreferenceReceiptSearchPresetById(
+  id: InterfacePreferenceReceiptSearchPresetId
+) {
+  return (
+    INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS.find(
+      (preset) => preset.id === id
+    ) ?? INTERFACE_PREFERENCE_RECEIPT_SEARCH_PRESETS[0]
+  );
 }
 
 export type InterfacePreferenceReceiptHistoryOutcomeFilter =
