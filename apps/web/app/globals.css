@@ -7366,3 +7366,35 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     outline-offset: 2px;
   }
 }
+
+
+/* Build 148 — recovery audit evidence and filtering */
+.interfaceRecoveryAuditRepairPresetRecoveryAudit,
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.interfaceRecoveryAuditRepairPresetRecoveryAuditList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+  align-items: end;
+  grid-template-columns: minmax(12rem, 18rem) auto;
+}
+
+@media (max-width: 760px) {
+  .interfaceReceiptRecoveryAuditPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRepairPresetRecoveryAudit {
+    border: 1px solid CanvasText;
+    padding: 0.5rem;
+  }
+}
