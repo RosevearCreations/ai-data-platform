@@ -7001,3 +7001,84 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     grid-template-columns: 1fr;
   }
 }
+
+/* Build 142 — Recovery Audit Recovery Audit, Renewal Search Preset Persistence & Receipt Recovery Audit Filtering */
+.interfaceRecoveryAuditPresetRecoveryAudit {
+  display: grid;
+  gap: .5rem;
+  border: 1px solid rgba(245,190,80,.32);
+  border-radius: .62rem;
+  background: rgba(245,190,80,.025);
+  padding: .65rem;
+}
+
+.interfaceRecoveryAuditPresetRecoveryAuditList {
+  display: grid;
+  gap: .42rem;
+}
+
+.interfaceRecoveryAuditPresetRecoveryAuditList article {
+  display: grid;
+  gap: .22rem;
+  border: 1px solid var(--theme-border, rgba(255,255,255,.08));
+  border-radius: .5rem;
+  padding: .48rem .55rem;
+}
+
+.interfaceRecoveryAuditPresetRecoveryAuditList article > div {
+  display: flex;
+  justify-content: space-between;
+  gap: .65rem;
+}
+
+.interfaceRecoveryAuditPresetRecoveryAudit strong,
+.interfaceReceiptRecoveryAuditFilters strong {
+  font-size: .69rem;
+}
+
+.interfaceRecoveryAuditPresetRecoveryAudit span,
+.interfaceRecoveryAuditPresetRecoveryAudit small,
+.interfaceReceiptRecoveryAuditFilters label > span,
+.interfaceReceiptRecoveryAuditFilters > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.35;
+}
+
+.interfaceReceiptRecoveryAuditFilters {
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) auto auto;
+  align-items: end;
+  gap: .45rem;
+}
+
+.interfaceReceiptRecoveryAuditFilters label {
+  display: grid;
+  gap: .18rem;
+}
+
+.interfaceReceiptRecoveryAuditFilters select {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditPresetRecoveryAudit,
+  .interfaceRecoveryAuditPresetRecoveryAuditList article,
+  .interfaceReceiptRecoveryAuditFilters select {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceRecoveryAuditPresetRecoveryAuditList article > div,
+  .interfaceReceiptRecoveryAuditFilters {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
