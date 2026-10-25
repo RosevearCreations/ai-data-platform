@@ -2203,6 +2203,7 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAudit([]);
     setRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearch("");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId("all");
     setImportError(null);
     setPortabilityStatus(
       "Recovery-audit repair search preset recovery audit cleared."
@@ -3051,6 +3052,9 @@ export function NavigationInsights() {
         INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
+        INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
+      );
+      window.localStorage.removeItem(
         INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_STORAGE_KEY
       );
       window.localStorage.removeItem(
@@ -3077,11 +3081,13 @@ export function NavigationInsights() {
     setRecoveryAuditRepairSearchPresetRecoveryAudit([]);
     setRecoveryAuditRepairSearchPresetRecoveryAuditAgeFilter("all");
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearch("");
+    setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetId("all");
     setRenewalHistoryPresetRecoveryAuditAgeFilter("all");
     setRenewalHistoryPresetRecoveryAuditSearch("");
     setRenewalHistoryPresetRecoveryAuditSearchPresetId("all");
     setRenewalHistoryPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setRenewalRecoveryAuditSearchPresetRecoveryAudit([]);
+    setRenewalRecoveryAuditSearchPresetRecoveryAuditAgeFilter("all");
     setReceiptPresetRecoveryAuditSearchPresetId("all");
     setReceiptPresetRecoveryAuditSearchPresetRecoveryNotice(null);
     setReceiptRecoveryAuditSearchPresetRecoveryAudit([]);
