@@ -2497,7 +2497,7 @@ export function NavigationInsights() {
                                 event.currentTarget.value as InterfacePreferenceRecoveryRenewalHistoryFreshnessFilter
                               );
                               setRenewalHistorySearchPresetId(null);
-                            }
+                            }}
                           >
                             <option value="all">All prior freshness</option>
                             <option value="fresh">Fresh</option>
@@ -2515,7 +2515,7 @@ export function NavigationInsights() {
                             onChange={(event) => {
                               setRenewalHistorySearch(event.currentTarget.value);
                               setRenewalHistorySearchPresetId(null);
-                            }
+                            }}
                             placeholder="Receipt ID, freshness, profile count…"
                             aria-label="Search recovery snapshot renewal receipt history"
                           />
