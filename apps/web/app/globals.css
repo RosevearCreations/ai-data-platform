@@ -7436,3 +7436,48 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 150 — second-order recovery search and presets */
+.interfaceRecoveryAuditRepairPresetRecoveryAuditFilters,
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets > [role="group"] {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceRecoveryAuditRepairPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) minmax(14rem, 1fr) auto;
+  align-items: end;
+}
+
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets > [role="group"] {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, max-content));
+}
+
+.interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets button[aria-pressed="true"] {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.interfaceRenewalRecoveryAuditPresetRecoveryAudit,
+.interfaceRenewalRecoveryAuditPresetRecoveryAuditList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .interfaceRecoveryAuditRepairPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+
+  .interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets > [role="group"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceReceiptRecoveryAuditPresetRecoveryAuditSearchPresets button[aria-pressed="true"] {
+    outline: 2px solid CanvasText;
+    outline-offset: 2px;
+  }
+}
