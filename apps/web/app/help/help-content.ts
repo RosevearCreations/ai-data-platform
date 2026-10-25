@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "recovery-audit-recovery-filtering": {
+    title: "Recovery audit recovery filtering",
+    summary: "Build 143 adds temporary age filters to the recovery-audit preset repair ledger without changing stored repair evidence.",
+    steps: [
+      "Choose All audit recoveries to view the complete bounded repair ledger.",
+      "Choose Last 24 hours or Last 7 days to focus recent audit-preset repairs.",
+      "Review the Showing count to see how many retained events match.",
+      "Return to All audit recoveries to restore the complete ledger view."
+    ],
+    notes: [
+      "Filtering is view-only and preserves event order, timestamps, requested IDs, reasons and the ten-entry cap.",
+      "Export audit recovery log still exports the complete stored ledger rather than only the filtered view."
+    ]
+  },
+  "renewal-search-preset-recovery": {
+    title: "Renewal search preset recovery",
+    summary: "Build 143 detects unsupported persisted renewal-history search preset IDs and safely recovers the browser to All renewals.",
+    steps: [
+      "If a saved renewal preset ID is no longer recognized, the browser falls back to All renewals.",
+      "A Renewal history preset recovered notice explains why the fallback occurred.",
+      "The repaired All renewals preset ID is written back to browser-local storage.",
+      "Applying a valid preset or manually changing renewal freshness/search clears the recovery notice."
+    ],
+    notes: [
+      "Missing renewal-preset state is the normal All renewals default and does not produce a warning.",
+      "Recovery changes only the browser-local renewal-history view and never modifies renewal receipt evidence."
+    ]
+  },
+  "receipt-recovery-audit-search": {
+    title: "Receipt recovery audit search",
+    summary: "Build 143 adds temporary text search across receipt-preset recovery audit evidence and composes it with the Build 142 age filter.",
+    steps: [
+      "Enter text in Search recovery audit.",
+      "Search can match audit ID, requested preset ID, recovered preset ID or recovery reason.",
+      "Combine search with All recovery events, Last 24 hours or Last 7 days.",
+      "Clear the search field to return to the age-filtered recovery audit."
+    ],
+    notes: [
+      "Search is case-insensitive and view-only.",
+      "Search does not delete, reorder or rewrite recovery events and complete export remains unfiltered."
+    ]
+  },
   "recovery-audit-recovery-audit": {
     title: "Recovery audit recovery audit",
     summary: "Build 142 records actual invalid recovery-audit preset repairs in a bounded browser-local evidence ledger.",
@@ -2428,6 +2470,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 143 recovery audit recovery filtering, renewal search preset recovery & receipt recovery audit search",
+    topics: ["recovery-audit-recovery-filtering", "renewal-search-preset-recovery", "receipt-recovery-audit-search"]
   },
   {
     title: "Build 142 recovery audit recovery audit, renewal search preset persistence & receipt recovery audit filtering",
