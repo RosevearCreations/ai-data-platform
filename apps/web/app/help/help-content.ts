@@ -1723,6 +1723,48 @@ export const HELP_TOPICS = {
       "A reset never changes account data, workspace data, permissions, RLS, workflow state or server-side evidence."
     ]
   },
+  "favorite-view-recovery-audit": {
+    title: "Favorite view recovery audit",
+    summary: "Build 136 records each automatic Favorites-to-All recovery as a bounded browser-local audit event so operators can see when and why the fallback occurred.",
+    steps: [
+      "Review Favorite view recovery audit after a recovery notice appears.",
+      "Each event records time, trigger, requested filter, resolved filter and the recovery reason.",
+      "Use Export audit to save the local audit as JSON when needed.",
+      "Use Clear audit to remove only the recovery audit without changing profiles or preferences."
+    ],
+    notes: [
+      "The audit stores recovery events only; ordinary filter changes are not logged.",
+      "The audit is capped at twelve entries and is cleared by the full local-navigation reset."
+    ]
+  },
+  "recovery-snapshot-renewal": {
+    title: "Recovery snapshot renewal",
+    summary: "Build 136 adds a deliberate two-step renewal workflow that replaces the existing recovery point with current browser state only after explicit confirmation.",
+    steps: [
+      "Review Snapshot renewal guidance beside the current recovery point.",
+      "Choose Review renewal to arm the renewal without writing a new snapshot.",
+      "Choose Confirm renewal to replace the old snapshot with current preferences, named profiles, favorites and order.",
+      "Choose Cancel renewal to preserve the existing snapshot unchanged."
+    ],
+    notes: [
+      "Renewal is recommended for legacy or 30-day-expired snapshots and suggested for stale snapshots.",
+      "Changing current preferences or named-profile state disarms an armed renewal so stale approval cannot be reused."
+    ]
+  },
+  "receipt-history-filtering": {
+    title: "Receipt history filtering",
+    summary: "Build 136 lets operators narrow the bounded import-reconciliation history by outcome and conflict strategy without modifying the stored receipt order.",
+    steps: [
+      "Choose All outcomes, Matched or Deviated.",
+      "Optionally narrow by Skip, Replace or Keep both strategy.",
+      "Review the Showing count to see how many of the stored receipts match.",
+      "Reset filters to All outcomes and All strategies to return to the full history."
+    ],
+    notes: [
+      "Filters are temporary view state and do not delete, reorder or rewrite receipts.",
+      "The latest receipt marker remains tied to the actual latest receipt even if it is hidden by a filter."
+    ]
+  },
   "favorite-view-recovery": {
     title: "Favorite view recovery",
     summary: "Build 135 recovers a saved Favorites-only view to All profiles when no favorite profiles remain, preventing a persistent empty profile view.",
@@ -2134,6 +2176,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 136 favorite view recovery audit, recovery snapshot renewal workflow & receipt history filtering",
+    topics: ["favorite-view-recovery-audit", "recovery-snapshot-renewal", "receipt-history-filtering"]
   },
   {
     title: "Build 135 favorite view recovery, snapshot expiry guidance & import receipt history",
