@@ -6576,3 +6576,91 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     min-width: 0;
   }
 }
+
+/* Build 137 — Recovery Audit Filtering, Snapshot Renewal Receipt & Receipt History Search */
+.interfaceRecoveryAuditFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .45rem;
+}
+
+.interfaceRecoveryAuditFilters label,
+.interfaceReceiptHistorySearch {
+  display: grid;
+  gap: .18rem;
+}
+
+.interfaceRecoveryAuditFilters label > span,
+.interfaceRecoveryAuditFilters > span,
+.interfaceReceiptHistorySearch > span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+}
+
+.interfaceRecoveryAuditFilters select,
+.interfaceReceiptHistorySearch input {
+  border: 1px solid var(--theme-border, rgba(255,255,255,.12));
+  border-radius: .48rem;
+  background: rgba(255,255,255,.03);
+  color: var(--theme-text, #edf6f7);
+  padding: .38rem .5rem;
+  font: inherit;
+}
+
+.interfaceRecoveryRenewalReceipt {
+  display: grid;
+  gap: .38rem;
+  min-width: 15rem;
+  border: 1px solid rgba(125,226,216,.38);
+  border-radius: .58rem;
+  background: rgba(125,226,216,.045);
+  padding: .52rem .6rem;
+}
+
+.interfaceRecoveryRenewalReceipt > div:first-child {
+  display: grid;
+  gap: .12rem;
+}
+
+.interfaceRecoveryRenewalReceipt strong {
+  font-size: .7rem;
+}
+
+.interfaceRecoveryRenewalReceipt span {
+  color: var(--theme-text-muted, #91a5a8);
+  font-size: .63rem;
+  line-height: 1.4;
+}
+
+.interfaceReceiptHistorySearch {
+  min-width: min(18rem, 100%);
+}
+
+.interfaceReceiptHistorySearch input {
+  min-width: 13rem;
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditFilters select,
+  .interfaceReceiptHistorySearch input,
+  .interfaceRecoveryRenewalReceipt {
+    forced-color-adjust: auto;
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (max-width: 720px) {
+  .interfaceRecoveryAuditFilters {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  .interfaceRecoveryRenewalReceipt,
+  .interfaceReceiptHistorySearch,
+  .interfaceReceiptHistorySearch input {
+    min-width: 0;
+    width: 100%;
+  }
+}
