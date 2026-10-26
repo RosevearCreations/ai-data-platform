@@ -3117,6 +3117,36 @@ export const HELP_TOPICS = {
     ],
     notes: ["This is browser-local evidence only and does not change workflow authority."]
   },
+  "recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit": {
+    title: "Newest repair recovery preset recovery audit",
+    summary: "Retain bounded local evidence whenever an unsupported persisted newest repair recovery preset is repaired.",
+    steps: [
+      "Record the requested preset, recovered preset, reason and recovery time.",
+      "Keep at most ten newest recovery events in newest-first order.",
+      "Export or clear this audit independently from the parent repair recovery ledger."
+    ],
+    notes: ["This evidence stays browser-local and does not change workflow authority."]
+  },
+  "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence": {
+    title: "Newest renewal recovery preset persistence",
+    summary: "Persist only the selected known newest renewal recovery search preset in this browser.",
+    steps: [
+      "Selecting a known preset saves its preset ID locally.",
+      "The known preset restores on application load.",
+      "Manual age or search changes clear persisted preset mode."
+    ],
+    notes: ["Arbitrary manual search text is never persisted."]
+  },
+  "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering": {
+    title: "Newest receipt recovery audit filtering",
+    summary: "Filter the newest receipt preset recovery audit by age without changing retained evidence.",
+    steps: [
+      "Choose All search preset recoveries, Last 24 hours, or Last 7 days.",
+      "Filtering preserves event order and complete retained evidence.",
+      "Clearing the ledger resets the age filter."
+    ],
+    notes: ["Export always uses the complete retained recovery ledger."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -3142,6 +3172,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 166 repair recovery audit, renewal preset persistence & receipt recovery audit filtering",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering"]
   },
   {
     title: "Build 165 repair recovery preset recovery, renewal recovery search presets & receipt recovery audit",
