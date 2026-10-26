@@ -3057,6 +3057,36 @@ export const HELP_TOPICS = {
     ],
     notes: ["Arbitrary search text is never persisted."]
   },
+  "recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence": {
+    title: "Newest repair recovery preset persistence",
+    summary: "Persist only the selected known newest repair recovery search preset in this browser.",
+    steps: [
+      "Selecting a known preset saves its preset ID locally.",
+      "The known preset restores on application load.",
+      "Manual age or search changes clear persisted preset mode."
+    ],
+    notes: ["Arbitrary manual search text is never persisted."]
+  },
+  "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search": {
+    title: "Newest renewal recovery audit search",
+    summary: "Search the newest renewal recovery ledger after the selected age filter.",
+    steps: [
+      "Enter text to search audit ID, requested preset ID, recovered preset ID, or recovery reason.",
+      "Search runs after age filtering and preserves newest-first order.",
+      "Clearing the ledger resets the temporary search text."
+    ],
+    notes: ["Search text remains browser-local and is never persisted."]
+  },
+  "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery": {
+    title: "Newest receipt recovery preset recovery",
+    summary: "Safely recover an unsupported persisted newest receipt recovery preset.",
+    steps: [
+      "Validate the saved preset ID on load.",
+      "Recover unsupported IDs to All recoveries and write back the safe ID.",
+      "Show a recovery notice until a known preset or custom view is selected."
+    ],
+    notes: ["Recovery changes only browser-local view state and never changes retained evidence."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -3082,6 +3112,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 164 repair recovery audit search preset persistence, renewal recovery audit search & receipt recovery preset recovery",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery"]
   },
   {
     title: "Build 163 repair recovery audit search presets, renewal recovery audit filtering & receipt recovery preset persistence",

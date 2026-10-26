@@ -7922,3 +7922,33 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 164 — repair persistence, renewal search and receipt recovery */
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters {
+  grid-template-columns: minmax(12rem, 18rem) minmax(14rem, 1fr) auto;
+}
+
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+    border-color: CanvasText;
+  }
+}
