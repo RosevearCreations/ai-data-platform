@@ -3344,3 +3344,12 @@ Formalized the next browser-local recovery cycle already forward-prepared in the
 Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
 
 Next queued: **Build 182 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery.**
+
+
+## Build 182 — Repair Preset Persistence, Renewal Recovery Search & Receipt Preset Recovery
+
+Formalized the next browser-local recovery cycle already forward-prepared in the interface: persistence of the selected newest repair recovery search preset, text search across newest renewal recovery audit evidence, and recovery-aware validation of the persisted newest receipt recovery search preset. Added explicit Build 182 labeling, help registration, documentation and verifier coverage.
+
+Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
+
+Next queued: **Build 183 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit.**
