@@ -7859,3 +7859,32 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 162 — repair search, renewal recovery audit and receipt search presets */
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch,
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditList,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets > div[role="group"] {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets > div[role="group"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets button[aria-pressed="true"] {
+    border-color: CanvasText;
+  }
+}
