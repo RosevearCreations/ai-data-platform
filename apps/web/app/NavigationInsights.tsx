@@ -5866,12 +5866,12 @@ export function NavigationInsights() {
                               <span>Recovery age</span>
                               <select
                                 value={renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter}
-                                onChange={(event) =>
+                                onChange={(event) => {
                                   setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
                                     event.currentTarget.value as InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter
                                   );
                                   setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
-                                }
+                                }}
                               >
                                 <option value="all">All preset recoveries</option>
                                 <option value="24h">Last 24 hours</option>
@@ -5883,12 +5883,12 @@ export function NavigationInsights() {
                               <input
                                 type="search"
                                 value={renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch}
-                                onChange={(event) =>
+                                onChange={(event) => {
                                   setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearch(
                                     event.currentTarget.value
                                   );
                                   setRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(null);
-                                }
+                                }}
                                 placeholder="Audit ID, requested preset, reason…"
                                 aria-label="Search newest renewal recovery audit evidence"
                               />
