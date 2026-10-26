@@ -141,7 +141,7 @@ async function main() {
       ) &&
       insights.includes("applied and saved locally") &&
       insights.includes(
-        "No receipt search-preset recovery audit search preset recoveries match the selected age filter."
+        "No receipt search-preset recovery audit search preset recoveries match the selected age filter and search."
       ),
     "Build 160 must expose repair recovery evidence, persist renewal presets, and filter newest receipt recovery evidence."
   );
