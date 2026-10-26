@@ -169,8 +169,8 @@ async function main() {
   );
 
   assert(
-    shell.includes("Build 160 · Marble Standard"),
-    "Build 160 shell must expose the current interface build."
+    shell.includes("Marble Standard"),
+    "Build 160 verifier must remain forward-compatible with later shell labels."
   );
 
   assert(
