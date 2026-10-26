@@ -3177,6 +3177,36 @@ export const HELP_TOPICS = {
     ],
     notes: ["Search never changes retained evidence or export contents."]
   },
+  "recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search": {
+    title: "Newest repair recovery audit search",
+    summary: "Search the newest repair preset recovery audit after its selected age filter.",
+    steps: [
+      "Search audit IDs, requested preset IDs, recovered preset IDs and recovery reasons.",
+      "Search is applied after the selected age filter.",
+      "Search text stays temporary and is cleared with the recovery ledger."
+    ],
+    notes: ["Search does not change retained evidence or export contents."]
+  },
+  "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit": {
+    title: "Newest renewal preset recovery audit",
+    summary: "Retain bounded browser-local evidence whenever the persisted newest renewal recovery preset is automatically repaired.",
+    steps: [
+      "Record requested preset, recovered preset, reason and recovery time.",
+      "Keep at most ten newest events in newest-first order.",
+      "Export or clear this audit independently from the parent renewal recovery ledger."
+    ],
+    notes: ["This recovery audit remains browser-local and does not change workflow authority."]
+  },
+  "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-presets": {
+    title: "Newest receipt recovery audit search presets",
+    summary: "Apply deterministic age-filter and search-query combinations to newest receipt recovery evidence.",
+    steps: [
+      "Choose All recoveries, Recent 24 hours, Recent 7 days, Recovered to All, or Recovery reasons.",
+      "Selecting a preset updates both the age filter and search query.",
+      "Changing age or search manually leaves preset mode."
+    ],
+    notes: ["Build 168 keeps the newest receipt preset selection temporary and browser-local."]
+  },
   "help-index": {
     title: "Help center",
     summary: "The help center collects the same contextual guidance available from every circled information control across the site.",
@@ -3202,6 +3232,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 168 repair recovery audit search, renewal preset recovery audit & receipt recovery audit search presets",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-presets"]
   },
   {
     title: "Build 167 repair recovery audit filtering, renewal preset recovery & receipt recovery audit search",
