@@ -116,8 +116,8 @@ async function main() {
   assert(
     insights.includes("Repair search-preset recovery audit search preset recovery audit search presets") &&
       insights.includes("the selected preset persists in this browser.") &&
-      insights.includes("Build 169 · Repair recovery presets, renewal recovery filtering & receipt preset persistence"),
-    "Build 169 must expose repair presets, renewal filtering and persisted receipt preset behavior."
+      insights.includes("Repair recovery presets, renewal recovery filtering & receipt preset persistence"),
+    "Build 169 verifier must recognize the repair presets, renewal filtering and persisted receipt preset behavior in later interface labels."
   );
 
   for (const selector of [

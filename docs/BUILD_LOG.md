@@ -3236,3 +3236,12 @@ Formalized the forward-prepared Build 169 interface behavior: deterministic newe
 Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, role/permission change or automatic workflow transition.
 
 Next queued: **Build 170 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery.**
+
+
+## Build 170 — Recovery Audit Recovery Search Preset Persistence, Renewal Recovery Audit Search & Receipt Recovery Preset Recovery
+
+Formalized the next browser-local recovery cycle already forward-prepared in the interface: persisted newest repair recovery search presets, text search across the newest renewal recovery audit, and recovery-aware validation of the persisted newest receipt recovery preset. Added explicit Build 170 labeling, help registration, documentation and verifier coverage while keeping Build 169 verification forward-compatible.
+
+Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
+
+Next queued: **Build 171 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit.**
