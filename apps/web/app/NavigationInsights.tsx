@@ -150,7 +150,6 @@ import {
   interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetById,
   interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById,
   interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById,
-  sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   interfaceRecoveryAuditSearchPresetById,
   interfaceRecoveryRenewalHistorySearchPresetById,
   interfaceRecoveryRenewalSearchPresetRecoveryAuditSearchPresetById,
@@ -166,7 +165,6 @@ import {
   prependInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry,
   parseInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   serializeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
-  sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId,
   filterNamedInterfacePreferenceProfiles,
   importedInterfacePreferenceProvenance,
@@ -1185,17 +1183,6 @@ function writeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAu
     );
   } catch {
     // Newest repair preset recovery audit is optional browser-local evidence.
-  }
-}
-
-function readRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset() {
-  try {
-    const raw = window.localStorage.getItem(
-      INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY
-    );
-    return sanitizeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(raw);
-  } catch {
-    return "all" as InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId;
   }
 }
 
