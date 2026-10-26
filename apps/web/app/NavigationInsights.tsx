@@ -1789,11 +1789,11 @@ export function NavigationInsights() {
     useState<InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[]>([]);
 
   useEffect(() => {
-    const persistedNewestRepairPresetId =
+    const newestRepairRecovery =
       readRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset();
     const persistedNewestRepairPreset =
       interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
-        persistedNewestRepairPresetId
+        newestRepairRecovery.presetId
       );
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter(
       persistedNewestRepairPreset.ageFilter
@@ -1803,6 +1803,20 @@ export function NavigationInsights() {
     );
     setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
       persistedNewestRepairPreset.id
+    );
+    if (newestRepairRecovery.recovered) {
+      writeRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset(
+        newestRepairRecovery.presetId
+      );
+      setRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(
+        newestRepairRecovery.reason
+      );
+    }
+
+    const existingNewestReceiptPresetRecoveryAudit =
+      readReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit();
+    setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+      existingNewestReceiptPresetRecoveryAudit
     );
 
     const newestReceiptRecovery =
@@ -1827,9 +1841,30 @@ export function NavigationInsights() {
       setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryNotice(
         newestReceiptRecovery.reason
       );
+
+      const auditEntry =
+        createInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry({
+          auditId:
+            typeof crypto !== "undefined" && "randomUUID" in crypto
+              ? crypto.randomUUID()
+              : "receipt-newest-recovery-" + Date.now().toString(36),
+          requestedPresetId: newestReceiptRecovery.requestedPresetId,
+          recoveredPresetId: newestReceiptRecovery.presetId,
+          reason: newestReceiptRecovery.reason ?? "Recovered unsupported newest receipt recovery preset."
+        });
+      const nextAudit =
+        prependInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntry(
+          existingNewestReceiptPresetRecoveryAudit,
+          auditEntry
+        );
+      writeReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+        nextAudit
+      );
+      setReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+        nextAudit
+      );
     }
-  }, []);
-  useEffect(() => {
+  }, []);  useEffect(() => {
     const next = recordNavigationVisit(readSnapshot(), pathname);
     setSnapshot(next);
     writeSnapshot(next);
