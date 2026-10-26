@@ -7828,3 +7828,34 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 161 — repair filtering, renewal recovery and receipt search */
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters {
+  display: grid;
+  grid-template-columns: minmax(12rem, 18rem) minmax(14rem, 1fr) auto;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters,
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditFilters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery {
+    border-color: CanvasText;
+  }
+}
