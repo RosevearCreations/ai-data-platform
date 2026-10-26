@@ -3271,7 +3271,7 @@ export function filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearc
   });
 }
 
-export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
       audit: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1;
@@ -4948,7 +4948,7 @@ export function recoverInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSea
   };
 }
 
-export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
+export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
       audit: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1;
@@ -6447,7 +6447,7 @@ export function searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSear
   });
 }
 
-export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
+export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
       audit: InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditV1;
