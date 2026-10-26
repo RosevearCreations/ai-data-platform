@@ -5463,6 +5463,39 @@ export function NavigationInsights() {
                           <HelpInfo topic="renewal-search-preset-recovery" inline />
                         </div>
                       ) : null}
+                      {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
+                        <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit">
+                          <div className="interfacePresetHeading">
+                            <div>
+                              <strong>Renewal search-preset recovery audit search preset recovery audit</strong>
+                              <span>
+                                {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length} of {MAX_INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT} local recovery events retained
+                              </span>
+                            </div>
+                            <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit" inline />
+                          </div>
+                          <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditList">
+                            {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
+                              <article key={entry.auditId}>
+                                <div>
+                                  <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
+                                  <span>{new Date(entry.createdAt).toLocaleString()}</span>
+                                </div>
+                                <small>{entry.reason}</small>
+                              </article>
+                            ))}
+                          </div>
+                          <div className="interfaceImportPreviewActions">
+                            <button type="button" onClick={exportRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
+                              Export search preset recovery audit
+                            </button>
+                            <button type="button" onClick={clearRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
+                              Clear search preset recovery audit
+                            </button>
+                          </div>
+                        </div>
+                      ) : null}
+
                       {renewalHistoryPresetRecoveryAudit.length ? (
                         <div className="interfaceRenewalPresetRecoveryAudit">
                           <div className="interfacePresetHeading">
@@ -5481,39 +5514,6 @@ export function NavigationInsights() {
                               <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery" inline />
                             </div>
                           ) : null}
-                          {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
-                            <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit">
-                              <div className="interfacePresetHeading">
-                                <div>
-                                  <strong>Renewal search-preset recovery audit search preset recovery audit</strong>
-                                  <span>
-                                    {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length} of {MAX_INTERFACE_RECOVERY_RENEWAL_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT} local recovery events retained
-                                  </span>
-                                </div>
-                                <HelpInfo topic="renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit" inline />
-                              </div>
-                              <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditList">
-                                {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.map((entry) => (
-                                  <article key={entry.auditId}>
-                                    <div>
-                                      <strong>{entry.requestedPresetId || "Unknown preset"} → {entry.recoveredPresetId}</strong>
-                                      <span>{new Date(entry.createdAt).toLocaleString()}</span>
-                                    </div>
-                                    <small>{entry.reason}</small>
-                                  </article>
-                                ))}
-                              </div>
-                              <div className="interfaceImportPreviewActions">
-                                <button type="button" onClick={exportRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
-                                  Export search preset recovery audit
-                                </button>
-                                <button type="button" onClick={clearRenewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit}>
-                                  Clear search preset recovery audit
-                                </button>
-                              </div>
-                            </div>
-                          ) : null}
-
                           {renewalRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit.length ? (
                             <div className="interfaceRenewalRecoveryAuditSearchPresetRecoveryAudit">
                               <div className="interfacePresetHeading">
