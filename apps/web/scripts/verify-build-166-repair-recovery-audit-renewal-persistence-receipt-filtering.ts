@@ -158,7 +158,7 @@ async function main() {
     "Help Center must register the Build 166 help group."
   );
 
-  assert(shell.includes("Build 166 · Marble Standard"), "Build 166 shell must expose the current interface build.");
+  assert(shell.includes("Marble Standard"), "Build 166 verifier must remain forward-compatible with later shell labels.");
 
   assert(
     verify165.includes('shell.includes("Marble Standard")') &&
