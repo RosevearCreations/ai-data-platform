@@ -3302,6 +3302,41 @@ export function searchInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearc
   });
 }
 
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId =
+  | "all"
+  | "recent-24h"
+  | "recent-7d"
+  | "recovered-all"
+  | "recovery-reasons";
+
+export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset = {
+  id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId;
+  label: string;
+  description: string;
+  ageFilter: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter;
+  query: string;
+};
+
+export const INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPreset[] = [
+  { id: "all", label: "All search preset recoveries", description: "Clear newest repair recovery search and age filtering.", ageFilter: "all", query: "" },
+  { id: "recent-24h", label: "Recent 24 hours", description: "Show newest repair recovery events from the last 24 hours.", ageFilter: "24h", query: "" },
+  { id: "recent-7d", label: "Recent 7 days", description: "Show newest repair recovery events from the last seven days.", ageFilter: "7d", query: "" },
+  { id: "recovered-all", label: "Recovered to All", description: "Search newest repair recovery evidence for the All fallback.", ageFilter: "all", query: "all" },
+  { id: "recovery-reasons", label: "Recovery reasons", description: "Search newest repair recovery evidence for recovery reason text.", ageFilter: "all", query: "recovered" }
+];
+
+export function interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById(
+  id: InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId
+) {
+  return (
+    INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS.find(
+      (preset) => preset.id === id
+    ) ??
+    INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS[0]
+  );
+}
+
 export type InterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -5086,6 +5121,25 @@ export function serializeInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditS
   );
 }
 
+
+export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter =
+  | "all"
+  | "24h"
+  | "7d";
+
+export function filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(
+  entries: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1[],
+  ageFilter: InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditAgeFilter,
+  now: number = Date.now()
+) {
+  if (ageFilter === "all") return entries;
+  const maxAge = ageFilter === "24h" ? 24 * 60 * 60 * 1000 : 7 * 24 * 60 * 60 * 1000;
+  return entries.filter((entry) => {
+    const age = now - entry.createdAt;
+    return age >= 0 && age <= maxAge;
+  });
+}
+
 export type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
   | {
       ok: true;
@@ -6754,6 +6808,21 @@ export function interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPres
     ) ??
     INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESETS[0]
   );
+}
+
+
+export const INTERFACE_RECEIPT_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY =
+  "ai-data-platform:receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset:v1";
+
+export function sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId(
+  value: unknown
+): InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId {
+  return value === "recent-24h" ||
+    value === "recent-7d" ||
+    value === "recovered-all" ||
+    value === "recovery-reasons"
+    ? value
+    : "all";
 }
 
 export type InterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditParseResult =
