@@ -7952,3 +7952,38 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 165 — repair recovery, renewal presets and receipt recovery audit */
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery,
+.interfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.interfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets > div[role="group"] {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery,
+.interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit {
+  padding: 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .interfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresets > div[role="group"] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (forced-colors: active) {
+  .interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecovery,
+  .interfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit {
+    border-color: CanvasText;
+  }
+}
