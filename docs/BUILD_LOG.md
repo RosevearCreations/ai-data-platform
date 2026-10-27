@@ -3594,3 +3594,12 @@ Formalized the next browser-local recovery cycle already forward-prepared in the
 Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
 
 Next queued: **Build 211 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Filtering & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence.**
+
+
+## Build 211 — Repair Recovery Presets, Renewal Recovery Filtering & Receipt Preset Persistence
+
+Formalized the next browser-local recovery cycle already forward-prepared in the interface: deterministic newest repair recovery search presets, age filtering for newest renewal preset-recovery audit evidence, and dedicated browser-local persistence for the selected newest receipt recovery search preset. Added explicit Build 211 labeling, help registration, documentation and verifier coverage.
+
+Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
+
+Next queued: **Build 212 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery.**
