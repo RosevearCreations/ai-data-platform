@@ -3486,3 +3486,11 @@ Safety boundaries remain unchanged: no database migration, schema/RLS change, AP
 
 Next queued: **Build 198 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets.**
 
+## Build 198 — Repair Recovery Search, Renewal Preset Recovery Audit & Receipt Recovery Search Presets
+
+Formalized the next browser-local recovery cycle already forward-prepared in the interface: text search across newest repair recovery evidence, bounded newest renewal search-preset recovery audit evidence, and deterministic newest receipt recovery search presets. Added explicit Build 198 labeling, help registration, documentation and verifier coverage.
+
+Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
+
+Next queued: **Build 199 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Filtering & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence.**
+
