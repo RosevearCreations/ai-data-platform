@@ -5248,7 +5248,7 @@ export function NavigationInsights() {
           >
             <header className="navigationInsightsHeader">
               <div>
-                <p className="eyebrow">Build 192 · Repair recovery search, renewal recovery audit & receipt recovery presets</p>
+                <p className="eyebrow">Build 193 · Repair recovery presets, renewal recovery filtering & receipt preset persistence</p>
                 <h2 id="navigation-insights-title">Navigation usage insights</h2>
                 <p>
                   Aggregate navigation counts stay in this browser. No timestamps, search terms or business data are collected.
