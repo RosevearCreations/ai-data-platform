@@ -3478,3 +3478,11 @@ Safety boundaries remain unchanged: no database migration, schema/RLS change, AP
 
 Next queued: **Build 197 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Filtering, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search.**
 
+## Build 197 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search
+
+Formalized the next browser-local recovery cycle already forward-prepared in the interface: age filtering for newest repair recovery evidence, recovery-aware validation of the persisted newest renewal recovery search preset, and text search across newest receipt recovery evidence. Added explicit Build 197 labeling, help registration, documentation and verifier coverage.
+
+Safety boundaries remain unchanged: no database migration, schema/RLS change, API endpoint, server-side synchronization, account/workspace synchronization, permission change or automatic workflow transition.
+
+Next queued: **Build 198 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Presets.**
+
