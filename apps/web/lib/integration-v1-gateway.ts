@@ -953,7 +953,7 @@ export async function prepareIntegrationV1Ql245SourceEvidence(input: {
   const negativeTests = Object.fromEntries(
     QL245_NEGATIVE_CODES.map((code) => [
       code,
-      denialEvidence.some((row) => row.reason_code === code)
+      denialEvidence.rows.some((row) => row.reason_code === code)
     ])
   ) as Record<NegativeCode, boolean>;
   if (QL245_NEGATIVE_CODES.some((code) => negativeTests[code] !== true)) {
@@ -1011,7 +1011,7 @@ export async function prepareIntegrationV1Ql245SourceEvidence(input: {
     negativeAuditReceiptIds: Object.fromEntries(
       QL245_NEGATIVE_CODES.map((code) => [
         code,
-        denialEvidence.find((row) => row.reason_code === code)?.audit_receipt_id ?? null
+        denialEvidence.rows.find((row) => row.reason_code === code)?.audit_receipt_id ?? null
       ])
     ),
     warning:
