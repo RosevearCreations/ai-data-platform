@@ -154,8 +154,8 @@ async function main() {
 
   assert(
     "integration-v1-connection-testing" in HELP_TOPICS &&
-    HELP_TOPICS["integration-v1-connection-testing"].summary.includes("HOLD"),
-    "Build 218 Integration v1 contextual help must preserve HOLD semantics."
+    HELP_TOPICS["integration-v1-connection-testing"].summary.includes("DISCONNECTED"),
+    "Build 218 Integration v1 contextual help must remain forward-compatible with the QL-245 DISCONNECTED state."
   );
 
   assert(
