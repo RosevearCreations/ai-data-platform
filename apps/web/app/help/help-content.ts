@@ -1,4 +1,25 @@
 export const HELP_TOPICS = {
+  "integration-v1-ql245-evidence-return": {
+    title: "Integration v1 QL-245 evidence return",
+    summary: "Build 220 narrows the nonproduction candidate scope to health/capabilities, keeps the actual connection DISCONNECTED, and requires seven signed denial categories before a public source envelope can be prepared.",
+    steps: [
+      "Provision a distinct nonproduction HMAC key and Ed25519 signing key through the approved secret manager only after separate authorization to run GET tests.",
+      "Use only GET /api/integration/v1/health and GET /api/integration/v1/capabilities; do not claim product/listing/customer reads.",
+      "Execute and retain signed evidence for nonce replay, stale request, cross-business, cross-tenant, revoked-key, prohibited-write and prohibited-dispatch denials.",
+      "Prepare the gateway audit only after all seven denial categories have verified signed receipts, then prepare the exact QL-245 public source envelope.",
+      "Verify the source public-key pin through a separate trusted channel and independently review source SHA, green CI, deployed nonproduction revision and restart durability.",
+      "Keep owner authorization NOT_GIVEN and connection state DISCONNECTED until a later separately authenticated pilot decision."
+    ],
+    notes: [
+      "A production GREEN deployment, fixture or matching signature is not proof of a live HMAC exchange.",
+      "The public QL-245 envelope deliberately reports INDEPENDENT_RESTART_PROOF_PENDING, NOT_GIVEN and DISCONNECTED.",
+      "The gateway stores no HMAC secret, signing private key, customer payload or product/listing record in public evidence."
+    ],
+    manual: [
+      "Real nonproduction origin/revision, seven original denial traces, restart durability, separate public-key pins, external reviewer observation and rollback witness remain independent evidence tasks.",
+      "If no key has been issued, report NOT PROVISIONED. If original live proof is missing, report UNVERIFIED."
+    ]
+  },
   "integration-v1-connection-testing": {
     title: "Integration v1 nonproduction connection testing",
     summary: "Build 218 adds server-only authenticated nonproduction GET testing through the AI Data Platform gateway. All receipts remain HOLD; no customer records, commands, messages or business writes are enabled.",
@@ -7,11 +28,11 @@ export const HELP_TOPICS = {
       "Run authenticated health first, then capabilities, using the exact registered source, destination, business, tenant, environment, method, path, key ID, timestamp and fresh nonce.",
       "Require durable replay denial and verified negative evidence before preparing the signed gateway audit receipt.",
       "Verify the gateway public SPKI SHA-256 fingerprint through a separate trusted channel and independently inspect stored audit evidence after restart or redeploy.",
-      "Keep connection state HOLD and owner pilot authorization NOT GIVEN until a later separately authenticated decision."
+      "Keep connection state DISCONNECTED and owner pilot authorization NOT GIVEN until a later separately authenticated decision."
     ],
     notes: [
       "Production fails closed: these routes require the nonproduction feature switch and refuse to operate when VERCEL_ENV is production.",
-      "The first registration is Rosevear Comms Hub to Devil n Dove with read_product_reference and read_listing_reference only.",
+      "The QL-245 candidate registration is Rosevear Comms Hub to Devil n Dove with read_health and read_capabilities only; product/listing reference reads remain disabled.",
       "The gateway stores secret environment-variable names, not secret values."
     ],
     manual: [
@@ -3254,8 +3275,8 @@ export const HELP_GROUPS: Array<{
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
   },
   {
-    title: "Build 220 repair recovery audit, renewal preset persistence & receipt recovery audit filtering",
-    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering"]
+    title: "Build 220 repair recovery audit, renewal preset persistence, receipt recovery audit filtering & QL-245 evidence return",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-filtering", "integration-v1-ql245-evidence-return"]
   },
   {
     title: "Build 219 repair recovery preset recovery, renewal recovery search presets & receipt recovery audit",
