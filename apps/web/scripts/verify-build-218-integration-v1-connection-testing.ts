@@ -82,8 +82,8 @@ async function main() {
     "app.integration_v1_receipts",
     "identity_verified boolean not null default false",
     "'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64'",
-    "'read_product_reference'",
-    "'read_listing_reference'",
+    "read_product_reference",
+    "read_listing_reference",
     "'HOLD'"
   ]) {
     assert(migration.includes(token), "Build 218 migration contract missing: " + token);
