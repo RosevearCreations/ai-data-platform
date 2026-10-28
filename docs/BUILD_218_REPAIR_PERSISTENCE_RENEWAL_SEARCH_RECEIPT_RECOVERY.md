@@ -42,7 +42,9 @@ Build 217 persisted the selected newest receipt recovery search preset.
 
 Build 218 validates that stored value on load. Unsupported values recover to **All recoveries**, the safe preset is written back locally, and a visible recovery notice explains the repair. Retained recovery evidence is unchanged.
 
-## Safety boundaries
+## Safety boundaries — recovery-preference sub-scope
+
+The recovery-preference sub-scope remains browser-local: **no database migration** and **no API endpoint** is required for those preference behaviors.
 
 - no database migration;
 - no schema or RLS change;
@@ -56,6 +58,12 @@ Build 218 validates that stored value on load. Unsupported values recover to **A
 - no automatic workflow transition.
 
 All Build 218 changes are browser-local preset persistence, search or safe recovery. Destination workflows retain existing RLS, role checks, confirmations, evidence requirements and business-state controls.
+
+## Companion QL-243 Integration v1 connection-test scope
+
+At the owner's request, Build 218 also implements the AI Data Platform side of the QL-243 **nonproduction** connection-testing handoff. That companion scope intentionally adds migration `0086_integration_v1_nonproduction_connection_testing.sql`, authenticated read-only `/api/integration/v1/health`, `/capabilities` and exact audit-receipt GET routes, durable replay/audit evidence, server-only key rotation/revocation metadata, and Ed25519-signed `HOLD` receipts.
+
+The companion gateway is documented in `BUILD_218_INTEGRATION_V1_CONNECTION_TESTING.md`. It is fail-closed in Vercel production, enables no events or commands, copies no product/customer database, stores no secret values, and does not grant owner pilot authorization.
 
 ## Verification
 
