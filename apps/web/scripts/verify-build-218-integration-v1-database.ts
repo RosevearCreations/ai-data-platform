@@ -1,4 +1,4 @@
-import { createHmac, randomBytes } from "node:crypto";
+import { createHmac, generateKeyPairSync, randomBytes } from "node:crypto";
 
 import { authPool, closeDatabasePools } from "../lib/database";
 import {
@@ -33,15 +33,17 @@ function signedRequest(input: {
   secret: Buffer;
   nonce?: string;
   timestamp?: number;
+  path?: string;
 }) {
   const method = input.method ?? "GET";
+  const path = input.path ?? INTEGRATION_V1_PATHS.health;
   const businessId = input.businessId ?? business;
   const tenantId = input.tenantId ?? null;
   const keyId = input.keyId ?? oldKeyId;
   const nonce = input.nonce ?? "np-" + randomBytes(16).toString("hex");
   const timestamp = input.timestamp ?? Date.now();
   const canonical = integrationV1CanonicalGet({
-    path: INTEGRATION_V1_PATHS.health,
+    path,
     timestamp,
     nonce,
     sourceSystem: source,
@@ -52,7 +54,7 @@ function signedRequest(input: {
     keyId
   });
   const signature = createHmac("sha256", input.secret).update(canonical).digest("base64url");
-  return new Request("https://nonproduction.example.com" + INTEGRATION_V1_PATHS.health, {
+  return new Request("https://nonproduction.example.com" + path, {
     method,
     headers: {
       Accept: "application/json",
@@ -92,6 +94,10 @@ async function cleanup() {
 async function main() {
   process.env.ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED = "true";
   process.env.VERCEL_ENV = "preview";
+  const signing = generateKeyPairSync("ed25519");
+  process.env.ROSEVEAR_INTEGRATION_V1_ED25519_PRIVATE_KEY_PEM =
+    signing.privateKey.export({ format: "pem", type: "pkcs8" }).toString();
+  process.env.ROSEVEAR_INTEGRATION_V1_SIGNER_KEY_ID = "np-ai-data-platform-build220-test";
 
   const oldSecret = randomBytes(32);
   const newSecret = randomBytes(32);
@@ -104,8 +110,8 @@ async function main() {
     const registered = await registerIntegrationV1DevilNDoveConnection();
     assert(
       registered.created &&
-      registered.connectionState === "HOLD" &&
-      registered.capabilities.join(",") === "read_product_reference,read_listing_reference",
+      registered.connectionState === "DISCONNECTED" &&
+      registered.capabilities.join(",") === "read_health,read_capabilities",
       "Build 218 must create the first registration only through the explicit nonproduction server command."
     );
     await authPool.query(
@@ -116,12 +122,13 @@ async function main() {
       `insert into app.integration_v1_connections (
         connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
         environment,key_id,secret_env_var,key_state,connection_state,capabilities,
-        health_receipt_id,capabilities_receipt_id,gateway_audit_id
-      ) values ($1,$2,$3,$4,null,'-','nonproduction',$5,$6,'active','HOLD',
-        '["read_product_reference","read_listing_reference"]'::jsonb,$7,$8,$9)`,
+        health_receipt_id,capabilities_receipt_id,gateway_audit_id,registry_receipt_id
+      ) values ($1,$2,$3,$4,null,'-','nonproduction',$5,$6,'active','DISCONNECTED',
+        '["read_health","read_capabilities"]'::jsonb,$7,$8,$9,$10)`,
       [
         oldConnection, source, destination, business, oldKeyId, oldEnv,
-        "np-build218-test-health", "np-build218-test-caps", "np-build218-test-audit"
+        "np-build218-test-health", "np-build218-test-caps", "np-build218-test-audit",
+        "np-build218-test-registry"
       ]
     );
 
@@ -131,24 +138,24 @@ async function main() {
     assert(first.ok, "Build 218 valid signed GET must authenticate.");
 
     const replay = await authenticateIntegrationV1Get(goodRequest, INTEGRATION_V1_PATHS.health);
-    assert(!replay.ok && replay.error === "replay_denied", "Build 218 must atomically deny nonce replay.");
+    assert(!replay.ok && replay.error === "nonce_replay_denied", "Build 218 must atomically deny nonce replay.");
 
     const wrongBusiness = await authenticateIntegrationV1Get(
       signedRequest({ secret: oldSecret, businessId: "wrongbusiness" }),
       INTEGRATION_V1_PATHS.health
     );
-    assert(!wrongBusiness.ok && wrongBusiness.error === "wrong_business_denied",
+    assert(!wrongBusiness.ok && wrongBusiness.error === "cross_business_denied",
       "Build 218 must deny a signed wrong-business request.");
 
     const wrongTenant = await authenticateIntegrationV1Get(
       signedRequest({ secret: oldSecret, tenantId: "wrong-tenant" }),
       INTEGRATION_V1_PATHS.health
     );
-    assert(!wrongTenant.ok && wrongTenant.error === "wrong_tenant_denied",
+    assert(!wrongTenant.ok && wrongTenant.error === "cross_tenant_denied",
       "Build 218 must deny a signed cross-tenant request.");
 
     await authPool.query(
-      "update app.integration_v1_connections set capabilities='[\"read_product_reference\"]'::jsonb where connection_id=$1",
+      "update app.integration_v1_connections set capabilities='[\"read_health\"]'::jsonb where connection_id=$1",
       [oldConnection]
     );
     const missingScope = await authenticateIntegrationV1Get(
@@ -158,20 +165,30 @@ async function main() {
     assert(!missingScope.ok && missingScope.error === "capability_policy_denied",
       "Build 218 must fail closed when an expected read-only capability is missing.");
     await authPool.query(
-      "update app.integration_v1_connections set capabilities='[\"read_product_reference\",\"read_listing_reference\"]'::jsonb where connection_id=$1",
+      "update app.integration_v1_connections set capabilities='[\"read_health\",\"read_capabilities\"]'::jsonb where connection_id=$1",
       [oldConnection]
     );
 
     await recordIntegrationV1DeniedMethod(
       signedRequest({ secret: oldSecret, method: "POST" }),
-      "write_denied"
+      "write_denied",
+      405
+    );
+    await recordIntegrationV1DeniedMethod(
+      signedRequest({
+        secret: oldSecret,
+        path: "/api/integration/v1/dispatch"
+      }),
+      "dispatch_denied",
+      403
     );
 
     const stale = await authenticateIntegrationV1Get(
       signedRequest({ secret: oldSecret, timestamp: Date.now() - 301_000 }),
       INTEGRATION_V1_PATHS.health
     );
-    assert(!stale.ok, "Build 218 must deny stale signed requests.");
+    assert(!stale.ok && stale.error === "stale_request_denied",
+      "Build 218 must deny stale signed requests with distinct QL-245 evidence.");
 
     const changed = signedRequest({ secret: oldSecret });
     changed.headers.set("X-Rosevear-Signature", "A".repeat(43));
@@ -186,7 +203,8 @@ async function main() {
       newSecretEnvVar: newEnv,
       healthReceiptId: "np-build218-rotated-health",
       capabilitiesReceiptId: "np-build218-rotated-caps",
-      gatewayAuditId: "np-build218-rotated-audit"
+      gatewayAuditId: "np-build218-rotated-audit",
+      registryReceiptId: "np-build218-rotated-registry"
     });
 
     const revoked = await authenticateIntegrationV1Get(
@@ -202,21 +220,29 @@ async function main() {
     );
     assert(rotated.ok, "Build 218 rotated key metadata must authenticate with its separate secret.");
 
-    const evidence = await authPool.query<{ reason_code: string; identity_verified: boolean }>(
-      `select reason_code, identity_verified
+    const evidence = await authPool.query<{
+      reason_code: string;
+      identity_verified: boolean;
+      audit_receipt_id: string | null;
+    }>(
+      `select reason_code, identity_verified, audit_receipt_id
        from app.integration_v1_request_audit
        where connection_id=$1 and reason_code = any($2::text[])`,
       [oldConnection, [
-        "wrong_business_denied", "wrong_tenant_denied", "write_denied",
-        "replay_denied", "revoked_key_denied"
+        "nonce_replay_denied", "stale_request_denied", "cross_business_denied",
+        "cross_tenant_denied", "revoked_key_denied", "write_denied",
+        "dispatch_denied"
       ]]
     );
     const verified = new Set(
-      evidence.rows.filter((row) => row.identity_verified).map((row) => row.reason_code)
+      evidence.rows
+        .filter((row) => row.identity_verified && row.audit_receipt_id)
+        .map((row) => row.reason_code)
     );
     for (const code of [
-      "wrong_business_denied", "wrong_tenant_denied", "write_denied",
-      "replay_denied", "revoked_key_denied"
+      "nonce_replay_denied", "stale_request_denied", "cross_business_denied",
+      "cross_tenant_denied", "revoked_key_denied", "write_denied",
+      "dispatch_denied"
     ]) {
       assert(verified.has(code), "Build 218 missing verified denial evidence: " + code);
     }
@@ -228,6 +254,8 @@ async function main() {
     delete process.env[oldEnv];
     delete process.env[newEnv];
     delete process.env.ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64;
+    delete process.env.ROSEVEAR_INTEGRATION_V1_ED25519_PRIVATE_KEY_PEM;
+    delete process.env.ROSEVEAR_INTEGRATION_V1_SIGNER_KEY_ID;
     await cleanup();
   }
 }
