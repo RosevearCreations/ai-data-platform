@@ -52,6 +52,7 @@ create table if not exists app.integration_v1_request_audit (
   nonce text,
   outcome text not null check (outcome in ('accepted','denied')),
   reason_code text not null,
+  identity_verified boolean not null default false,
   occurred_at timestamptz not null default now()
 );
 
