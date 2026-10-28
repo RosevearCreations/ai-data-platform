@@ -92,9 +92,12 @@ function validTrust(manifest, now) {
     manifest.expiresAt <= now || manifest.expiresAt - manifest.issuedAt > 3_600_000 ||
     !Array.isArray(manifest.sources) || manifest.sources.length !== 6) return false;
   const repos = new Set(), pins = new Set();
+  const requiredRowVersion = manifest.schema === 'rosevear.integration.ql246.trusted-pins.v2' ? 2 : 1;
   return QL246_SYSTEMS.every((system, i) => {
     const row = manifest.sources[i];
+    if (trustedRowVersion(row) !== requiredRowVersion) return false;
     try { ql246RawUrl(row); } catch { return false; }
+    if (requiredRowVersion === 2 && row.sourceRevision === row.proofCommitSha) return false;
     if (row.system !== system || typeof row.businessId !== 'string' ||
       row.businessId !== (system === 'ai-data-platform' ? 'devilndove' : system) ||
       (system === 'yw' || system === 'icamp'
@@ -177,6 +180,7 @@ export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now(
     const reason = proofFor(row, trusted, raw, now);
     rows.push({ system: row.system, sourceRevision: row.sourceRevision,
       proofCommitSha: rowProofCommitSha(row),
+      sourceCiRunUrl: trustedRowVersion(row) === 2 ? row.ciRunUrl : null,
       publicSourceUrl: url, status: reason === null ? 'VERIFIED_SIGNED_SOURCE_ONLY' : reason });
   }
   return held(rows.every(row => row.status === 'VERIFIED_SIGNED_SOURCE_ONLY')
