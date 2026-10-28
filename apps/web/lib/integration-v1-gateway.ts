@@ -16,7 +16,7 @@ import { authPool, withIntegrationDatabase } from "./database";
 export const INTEGRATION_V1_CONTRACT = "rosevear.integration.v1" as const;
 export const INTEGRATION_V1_GATEWAY_ID = "ai-data-platform" as const;
 export const INTEGRATION_V1_ENVIRONMENT = "nonproduction" as const;
-export const INTEGRATION_V1_STATUS = "HOLD" as const;
+export const INTEGRATION_V1_STATUS = "DISCONNECTED" as const;
 export const INTEGRATION_V1_MAX_SKEW_MS = 300_000;
 export const INTEGRATION_V1_EMPTY_BODY_SHA256 =
   "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
@@ -28,11 +28,11 @@ export const INTEGRATION_V1_PATHS = Object.freeze({
 });
 
 export const INTEGRATION_V1_BUSINESS_CAPABILITIES = Object.freeze({
-  devilndove: Object.freeze(["read_product_reference", "read_listing_reference"]),
-  rosiedazzlers: Object.freeze(["read_quote_reference", "read_booking_reference"]),
-  yw: Object.freeze(["read_job_reference", "read_property_reference"]),
-  icamp: Object.freeze(["read_reservation_reference", "read_site_reference"]),
-  "rosevear-ai-hub": Object.freeze(["read_service_health"])
+  devilndove: Object.freeze(["read_health", "read_capabilities"]),
+  rosiedazzlers: Object.freeze(["read_health", "read_capabilities"]),
+  yw: Object.freeze(["read_health", "read_capabilities"]),
+  icamp: Object.freeze(["read_health", "read_capabilities"]),
+  "rosevear-ai-hub": Object.freeze(["read_health", "read_capabilities"])
 });
 
 const RECEIPT_KEYS = Object.freeze([
@@ -48,12 +48,31 @@ const GATEWAY_AUDIT_KEYS = Object.freeze([
   "negative_test_results"
 ] as const);
 
-const NEGATIVE_CODES = Object.freeze([
-  "wrong_business_denied",
-  "wrong_tenant_denied",
+export const QL245_NEGATIVE_CODES = Object.freeze([
+  "nonce_replay_denied",
+  "stale_request_denied",
+  "cross_business_denied",
+  "cross_tenant_denied",
   "revoked_key_denied",
   "write_denied",
-  "replay_denied"
+  "dispatch_denied"
+] as const);
+
+const NEGATIVE_CODES = QL245_NEGATIVE_CODES;
+
+export const QL245_SOURCE_KEYS = Object.freeze([
+  "schema_version", "source_system", "signer_key_id", "business_id", "tenant_id",
+  "environment", "source_revision", "ci_run_url", "key_id", "registry_receipt_id",
+  "health_receipt_id", "capabilities_receipt_id", "gateway_audit_id",
+  "allowed_paths", "scope", "negative_tests", "source_receipt_id",
+  "audit_storage_review", "owner_authorization", "connection_state",
+  "issued_at", "expires_at"
+] as const);
+
+const NEGATIVE_RECEIPT_KEYS = Object.freeze([
+  "schema_version", "issuer", "business_id", "tenant_id", "environment",
+  "kind", "method", "path", "denial_code", "http_status", "audit_id",
+  "audit_receipt_id", "key_id", "nonce", "issued_at"
 ] as const);
 
 type NegativeCode = (typeof NEGATIVE_CODES)[number];
@@ -69,11 +88,12 @@ export interface IntegrationV1Connection extends QueryResultRow {
   keyId: string;
   secretEnvVar: string;
   keyState: "active" | "revoked";
-  connectionState: "HOLD";
+  connectionState: "DISCONNECTED";
   capabilities: string[];
   healthReceiptId: string;
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
+  registryReceiptId: string | null;
 }
 
 export interface IntegrationV1AuthenticatedGet {
@@ -139,6 +159,10 @@ export function integrationV1GatewayPublicKeyFingerprintSha256() {
     .digest("hex");
 }
 
+export function integrationV1GatewayPublicKeyPem() {
+  return createPublicKey(privateSigningKey()).export({ format: "pem", type: "spki" }).toString();
+}
+
 export function isIntegrationV1NonproductionEnabled() {
   return process.env.ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED === "true" &&
     process.env.VERCEL_ENV !== "production";
@@ -197,6 +221,32 @@ export function integrationV1CanonicalGatewayAudit(payload: Record<string, unkno
   );
 }
 
+export function integrationV1CanonicalQl245Source(payload: Record<string, unknown>) {
+  if (!exactObject(payload, QL245_SOURCE_KEYS)) {
+    throw new TypeError("integration_v1_ql245_source_schema_invalid");
+  }
+  return Buffer.from(
+    QL245_SOURCE_KEYS.map((key) => JSON.stringify([key, payload[key]])).join("\n"),
+    "utf8"
+  );
+}
+
+function integrationV1CanonicalNegativeReceipt(payload: Record<string, unknown>) {
+  if (!exactObject(payload, NEGATIVE_RECEIPT_KEYS)) {
+    throw new TypeError("integration_v1_negative_receipt_schema_invalid");
+  }
+  return Buffer.from(
+    NEGATIVE_RECEIPT_KEYS.map((key) => JSON.stringify([key, payload[key]])).join("\n"),
+    "utf8"
+  );
+}
+
+function signerKeyId() {
+  const value = (process.env.ROSEVEAR_INTEGRATION_V1_SIGNER_KEY_ID ?? "").trim();
+  if (!safeKeyId(value)) throw new Error("integration_v1_signer_key_id_unconfigured");
+  return value;
+}
+
 function signEnvelope(payload: Record<string, unknown>, canonical: Buffer) {
   return {
     payload,
@@ -248,17 +298,71 @@ async function appendRequestAudit(
     nonce?: string | null;
     outcome: "accepted" | "denied";
     reasonCode: string;
+    responseStatus?: number | null;
     identityVerified?: boolean;
   }
 ) {
+  const auditId = "np-trace-" + randomUUID().replaceAll("-", "");
+  let auditReceiptId: string | null = null;
+
+  if (
+    input.outcome === "denied" &&
+    input.identityVerified === true &&
+    input.connectionId &&
+    input.businessId &&
+    input.environment === INTEGRATION_V1_ENVIRONMENT &&
+    input.keyId &&
+    QL245_NEGATIVE_CODES.includes(input.reasonCode as NegativeCode) &&
+    Number.isInteger(input.responseStatus)
+  ) {
+    try {
+      auditReceiptId = "np-audit-" + randomUUID().replaceAll("-", "");
+      const payload: Record<string, unknown> = {
+        schema_version: INTEGRATION_V1_CONTRACT,
+        issuer: INTEGRATION_V1_GATEWAY_ID,
+        business_id: input.businessId,
+        tenant_id: input.tenantId ?? null,
+        environment: INTEGRATION_V1_ENVIRONMENT,
+        kind: "negative_denial",
+        method: input.method,
+        path: input.path,
+        denial_code: input.reasonCode,
+        http_status: input.responseStatus,
+        audit_id: auditId,
+        audit_receipt_id: auditReceiptId,
+        key_id: input.keyId,
+        nonce: input.nonce ?? null,
+        issued_at: Date.now()
+      };
+      const envelope = signEnvelope(payload, integrationV1CanonicalNegativeReceipt(payload));
+      await client.query(
+        `insert into app.integration_v1_receipts (
+          receipt_id,connection_id,kind,business_id,tenant_id,environment,key_id,payload,signature
+        ) values ($1,$2,'negative_denial',$3,$4,$5,$6,$7::jsonb,$8)`,
+        [
+          auditReceiptId,
+          input.connectionId,
+          input.businessId,
+          input.tenantId ?? null,
+          INTEGRATION_V1_ENVIRONMENT,
+          input.keyId,
+          JSON.stringify(payload),
+          envelope.signature
+        ]
+      );
+    } catch {
+      auditReceiptId = null;
+    }
+  }
+
   await client.query(
     `insert into app.integration_v1_request_audit (
       audit_id, connection_id, source_system, destination_system, business_id,
       tenant_id, environment, key_id, method, path, nonce, outcome, reason_code,
-      identity_verified
-    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+      identity_verified, response_status, audit_receipt_id
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)`,
     [
-      randomUUID(),
+      auditId,
       input.connectionId ?? null,
       input.sourceSystem?.slice(0, 96) ?? null,
       input.destinationSystem?.slice(0, 96) ?? null,
@@ -271,7 +375,9 @@ async function appendRequestAudit(
       input.nonce?.slice(0, 96) ?? null,
       input.outcome,
       input.reasonCode.slice(0, 96),
-      input.identityVerified === true
+      input.identityVerified === true,
+      Number.isInteger(input.responseStatus) ? input.responseStatus : null,
+      auditReceiptId
     ]
   );
 }
@@ -298,7 +404,8 @@ async function candidateConnections(client: PoolClient, input: {
       capabilities,
       health_receipt_id as "healthReceiptId",
       capabilities_receipt_id as "capabilitiesReceiptId",
-      gateway_audit_id as "gatewayAuditId"
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
     from app.integration_v1_connections
     where source_system=$1
       and destination_system=$2
@@ -363,6 +470,7 @@ export async function authenticateIntegrationV1Get(
         connectionId,
         outcome: "denied",
         reasonCode: error,
+        responseStatus: status,
         identityVerified
       });
       return deny(status, error);
@@ -386,9 +494,8 @@ export async function authenticateIntegrationV1Get(
       !safeKeyId(keyId) ||
       !safeNonce(nonce) ||
       !Number.isSafeInteger(timestamp) ||
-      Math.abs(now - timestamp) > INTEGRATION_V1_MAX_SKEW_MS ||
       !/^[A-Za-z0-9_-]{43}$/.test(signatureRaw)
-    ) return auditDenied(401, "request_identity_or_freshness_denied");
+    ) return auditDenied(401, "request_identity_denied");
 
     const candidates = await candidateConnections(client, {
       sourceSystem, destinationSystem, environment, keyId
@@ -424,22 +531,26 @@ export async function authenticateIntegrationV1Get(
       return auditDenied(401, "signature_denied", signingCandidate.connectionId);
     }
 
+    if (Math.abs(now - timestamp) > INTEGRATION_V1_MAX_SKEW_MS) {
+      return auditDenied(401, "stale_request_denied", signingCandidate.connectionId, true);
+    }
+
     const business = candidates.find((row) => row.businessId === businessId);
     if (!business) {
-      return auditDenied(403, "wrong_business_denied", signingCandidate.connectionId, true);
+      return auditDenied(403, "cross_business_denied", signingCandidate.connectionId, true);
     }
 
     const connection = candidates.find(
       (row) => row.businessId === businessId && row.tenantId === tenantId
     );
     if (!connection) {
-      return auditDenied(403, "wrong_tenant_denied", business.connectionId, true);
+      return auditDenied(403, "cross_tenant_denied", business.connectionId, true);
     }
 
     if (connection.keyState !== "active") {
       return auditDenied(401, "revoked_key_denied", connection.connectionId, true);
     }
-    if (connection.connectionState !== "HOLD" || !capabilityPolicyValid(connection)) {
+    if (connection.connectionState !== "DISCONNECTED" || !capabilityPolicyValid(connection)) {
       return auditDenied(403, "capability_policy_denied", connection.connectionId, true);
     }
 
@@ -452,7 +563,7 @@ export async function authenticateIntegrationV1Get(
       [sourceSystem, businessId, connection.tenantKey, environment, keyId, nonce]
     );
     if (nonceInsert.rowCount !== 1) {
-      return auditDenied(409, "replay_denied", connection.connectionId, true);
+      return auditDenied(409, "nonce_replay_denied", connection.connectionId, true);
     }
 
     await appendRequestAudit(client, {
@@ -472,7 +583,8 @@ export async function authenticateIntegrationV1Get(
 
 export async function recordIntegrationV1DeniedMethod(
   request: Request,
-  reasonCode = "write_denied"
+  reasonCode = "write_denied",
+  responseStatus = 405
 ) {
   if (!isIntegrationV1NonproductionEnabled()) return;
   const parsed = new URL(request.url);
@@ -537,6 +649,7 @@ export async function recordIntegrationV1DeniedMethod(
       nonce,
       outcome: "denied",
       reasonCode,
+      responseStatus,
       identityVerified
     });
   });
@@ -652,12 +765,13 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
       connection_state as "connectionState", capabilities,
       health_receipt_id as "healthReceiptId",
       capabilities_receipt_id as "capabilitiesReceiptId",
-      gateway_audit_id as "gatewayAuditId"
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
      from app.integration_v1_connections where connection_id=$1`,
     [connectionId]
   );
   const connection = connectionResult.rows[0];
-  if (!connection || connection.keyState !== "active" || connection.connectionState !== "HOLD") {
+  if (!connection || connection.keyState !== "active" || connection.connectionState !== "DISCONNECTED") {
     throw new Error("integration_v1_connection_not_ready");
   }
   connection.capabilities = parseCapabilities(connection.capabilities) ?? [];
@@ -673,13 +787,28 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
     throw new Error("integration_v1_read_receipts_missing");
   }
 
-  const evidence = await authPool.query<{ reason_code: string }>(
-    `select distinct reason_code
-     from app.integration_v1_request_audit
-     where connection_id=$1 and outcome='denied'
-       and identity_verified=true
-       and reason_code = any($2::text[])`,
-    [connectionId, [...NEGATIVE_CODES]]
+  const evidence = await authPool.query<{ reason_code: string; audit_receipt_id: string }>(
+    `select distinct on (a.reason_code) a.reason_code, a.audit_receipt_id
+     from app.integration_v1_request_audit a
+     join app.integration_v1_connections c on c.connection_id=a.connection_id
+     where c.source_system=$1
+       and c.destination_system=$2
+       and c.business_id=$3
+       and c.tenant_id is not distinct from $4
+       and c.environment=$5
+       and a.outcome='denied'
+       and a.identity_verified=true
+       and a.audit_receipt_id is not null
+       and a.reason_code = any($6::text[])
+     order by a.reason_code, a.occurred_at desc`,
+    [
+      connection.sourceSystem,
+      connection.destinationSystem,
+      connection.businessId,
+      connection.tenantId,
+      connection.environment,
+      [...NEGATIVE_CODES]
+    ]
   );
   const seen = new Set(evidence.rows.map((row) => row.reason_code));
   const negativeTestResults = Object.fromEntries(
@@ -736,6 +865,160 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
   return persisted.rows[0];
 }
 
+export async function prepareIntegrationV1Ql245SourceEvidence(input: {
+  connectionId: string;
+  ciRunUrl: string;
+}) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
+  if (!/^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.ciRunUrl)) {
+    throw new Error("integration_v1_ql245_ci_run_url_invalid");
+  }
+
+  const connectionResult = await authPool.query<IntegrationV1Connection>(
+    `select
+      connection_id as "connectionId", source_system as "sourceSystem",
+      destination_system as "destinationSystem", business_id as "businessId",
+      tenant_id as "tenantId", tenant_key as "tenantKey", environment,
+      key_id as "keyId", secret_env_var as "secretEnvVar", key_state as "keyState",
+      connection_state as "connectionState", capabilities,
+      health_receipt_id as "healthReceiptId",
+      capabilities_receipt_id as "capabilitiesReceiptId",
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
+     from app.integration_v1_connections
+     where connection_id=$1`,
+    [input.connectionId]
+  );
+  const connection = connectionResult.rows[0];
+  if (
+    !connection ||
+    connection.businessId !== "devilndove" ||
+    connection.tenantId !== null ||
+    connection.environment !== "nonproduction" ||
+    connection.keyState !== "active" ||
+    connection.connectionState !== "DISCONNECTED"
+  ) {
+    throw new Error("integration_v1_ql245_connection_not_ready");
+  }
+  connection.capabilities = parseCapabilities(connection.capabilities) ?? [];
+  if (!capabilityPolicyValid(connection) || !connection.registryReceiptId) {
+    throw new Error("integration_v1_ql245_scope_or_registry_missing");
+  }
+
+  const requiredReceipts = await authPool.query<{ receipt_id: string; kind: string }>(
+    `select receipt_id, kind
+     from app.integration_v1_receipts
+     where connection_id=$1
+       and receipt_id = any($2::text[])
+       and kind in ('health','capabilities','gateway_audit')`,
+    [
+      connection.connectionId,
+      [connection.healthReceiptId, connection.capabilitiesReceiptId, connection.gatewayAuditId]
+    ]
+  );
+  const receiptKinds = new Map(requiredReceipts.rows.map((row) => [row.receipt_id, row.kind]));
+  if (
+    receiptKinds.get(connection.healthReceiptId) !== "health" ||
+    receiptKinds.get(connection.capabilitiesReceiptId) !== "capabilities" ||
+    receiptKinds.get(connection.gatewayAuditId) !== "gateway_audit"
+  ) {
+    throw new Error("integration_v1_ql245_gateway_receipts_missing");
+  }
+
+  const denialEvidence = await authPool.query<{ reason_code: string; audit_receipt_id: string }>(
+    `select distinct on (a.reason_code) a.reason_code, a.audit_receipt_id
+     from app.integration_v1_request_audit a
+     join app.integration_v1_connections c on c.connection_id=a.connection_id
+     where c.source_system=$1
+       and c.destination_system=$2
+       and c.business_id=$3
+       and c.tenant_id is not distinct from $4
+       and c.environment=$5
+       and a.outcome='denied'
+       and a.identity_verified=true
+       and a.audit_receipt_id is not null
+       and a.reason_code = any($6::text[])
+     order by a.reason_code, a.occurred_at desc`,
+    [
+      connection.sourceSystem,
+      connection.destinationSystem,
+      connection.businessId,
+      connection.tenantId,
+      connection.environment,
+      [...QL245_NEGATIVE_CODES]
+    ]
+  );
+  const negativeTests = Object.fromEntries(
+    QL245_NEGATIVE_CODES.map((code) => [
+      code,
+      denialEvidence.some((row) => row.reason_code === code)
+    ])
+  ) as Record<NegativeCode, boolean>;
+  if (QL245_NEGATIVE_CODES.some((code) => negativeTests[code] !== true)) {
+    throw new Error("integration_v1_ql245_negative_evidence_incomplete");
+  }
+
+  const issuedAt = Date.now();
+  const sourceReceiptId = "np-source-" + randomUUID().replaceAll("-", "");
+  const payload: Record<string, unknown> = {
+    schema_version: INTEGRATION_V1_CONTRACT,
+    source_system: "ai-data-platform",
+    signer_key_id: signerKeyId(),
+    business_id: connection.businessId,
+    tenant_id: connection.tenantId,
+    environment: INTEGRATION_V1_ENVIRONMENT,
+    source_revision: sourceRevision(),
+    ci_run_url: input.ciRunUrl,
+    key_id: connection.keyId,
+    registry_receipt_id: connection.registryReceiptId,
+    health_receipt_id: connection.healthReceiptId,
+    capabilities_receipt_id: connection.capabilitiesReceiptId,
+    gateway_audit_id: connection.gatewayAuditId,
+    allowed_paths: [INTEGRATION_V1_PATHS.health, INTEGRATION_V1_PATHS.capabilities],
+    scope: ["read_health", "read_capabilities"],
+    negative_tests: negativeTests,
+    source_receipt_id: sourceReceiptId,
+    audit_storage_review: "INDEPENDENT_RESTART_PROOF_PENDING",
+    owner_authorization: "NOT_GIVEN",
+    connection_state: "DISCONNECTED",
+    issued_at: issuedAt,
+    expires_at: issuedAt + 3_600_000
+  };
+  const envelope = signEnvelope(payload, integrationV1CanonicalQl245Source(payload));
+  await authPool.query(
+    `insert into app.integration_v1_receipts (
+      receipt_id,connection_id,kind,business_id,tenant_id,environment,key_id,
+      payload,signature,source_revision
+    ) values ($1,$2,'ql245_source',$3,$4,$5,$6,$7::jsonb,$8,$9)`,
+    [
+      sourceReceiptId,
+      connection.connectionId,
+      connection.businessId,
+      connection.tenantId,
+      INTEGRATION_V1_ENVIRONMENT,
+      connection.keyId,
+      JSON.stringify(payload),
+      envelope.signature,
+      payload.source_revision
+    ]
+  );
+
+  return {
+    publicKeyPem: integrationV1GatewayPublicKeyPem(),
+    envelope,
+    negativeAuditReceiptIds: Object.fromEntries(
+      QL245_NEGATIVE_CODES.map((code) => [
+        code,
+        denialEvidence.find((row) => row.reason_code === code)?.audit_receipt_id ?? null
+      ])
+    ),
+    warning:
+      "Signed public metadata is not proof of live connectivity, independent restart durability, owner approval or pilot authorization."
+  };
+}
+
 export async function registerIntegrationV1DevilNDoveConnection() {
   if (!isIntegrationV1NonproductionEnabled()) {
     throw new Error("integration_v1_nonproduction_disabled");
@@ -750,14 +1033,14 @@ export async function registerIntegrationV1DevilNDoveConnection() {
     `insert into app.integration_v1_connections (
       connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
       environment,key_id,secret_env_var,key_state,connection_state,capabilities,
-      health_receipt_id,capabilities_receipt_id,gateway_audit_id
+      health_receipt_id,capabilities_receipt_id,gateway_audit_id,registry_receipt_id
     ) values (
       'np-comms-hub-devilndove','rosevear-comms-hub','ai-data-platform','devilndove',
       null,'-','nonproduction','np-devilndove-current',
-      'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64','active','HOLD',
-      '["read_product_reference","read_listing_reference"]'::jsonb,
-      'np-devilndove-health-build218','np-devilndove-caps-build218',
-      'np-devilndove-audit-build218'
+      'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64','active','DISCONNECTED',
+      '["read_health","read_capabilities"]'::jsonb,
+      'np-devilndove-health-build220','np-devilndove-caps-build220',
+      'np-devilndove-audit-build220','np-devilndove-registry-build220'
     )
     on conflict (connection_id) do nothing
     returning connection_id`
@@ -766,8 +1049,9 @@ export async function registerIntegrationV1DevilNDoveConnection() {
     connectionId: "np-comms-hub-devilndove",
     created: result.rowCount === 1,
     keyId: "np-devilndove-current",
-    connectionState: "HOLD" as const,
-    capabilities: ["read_product_reference", "read_listing_reference"] as const
+    registryReceiptId: "np-devilndove-registry-build220",
+    connectionState: "DISCONNECTED" as const,
+    capabilities: ["read_health", "read_capabilities"] as const
   };
 }
 
@@ -779,6 +1063,7 @@ export async function rotateIntegrationV1ConnectionKey(input: {
   healthReceiptId: string;
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
+  registryReceiptId: string;
 }) {
   if (!isIntegrationV1NonproductionEnabled()) {
     throw new Error("integration_v1_nonproduction_disabled");
@@ -789,7 +1074,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
     !/^[A-Z][A-Z0-9_]{2,127}$/.test(input.newSecretEnvVar) ||
     !safeReceiptId(input.healthReceiptId) ||
     !safeReceiptId(input.capabilitiesReceiptId) ||
-    !safeReceiptId(input.gatewayAuditId)
+    !safeReceiptId(input.gatewayAuditId) ||
+    !safeReceiptId(input.registryReceiptId)
   ) {
     throw new Error("integration_v1_rotation_metadata_invalid");
   }
@@ -806,7 +1092,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
         connection_state as "connectionState", capabilities,
         health_receipt_id as "healthReceiptId",
         capabilities_receipt_id as "capabilitiesReceiptId",
-        gateway_audit_id as "gatewayAuditId"
+        gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
        from app.integration_v1_connections
        where connection_id=$1
        for update`,
@@ -827,8 +1114,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
       `insert into app.integration_v1_connections (
         connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
         environment,key_id,secret_env_var,key_state,connection_state,capabilities,
-        health_receipt_id,capabilities_receipt_id,gateway_audit_id
-      ) values ($1,$2,$3,$4,$5,$6,'nonproduction',$7,$8,'active','HOLD',$9::jsonb,$10,$11,$12)`,
+        health_receipt_id,capabilities_receipt_id,gateway_audit_id,registry_receipt_id
+      ) values ($1,$2,$3,$4,$5,$6,'nonproduction',$7,$8,'active','DISCONNECTED',$9::jsonb,$10,$11,$12,$13)`,
       [
         input.newConnectionId,
         row.sourceSystem,
@@ -841,7 +1128,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
         JSON.stringify(parseCapabilities(row.capabilities) ?? []),
         input.healthReceiptId,
         input.capabilitiesReceiptId,
-        input.gatewayAuditId
+        input.gatewayAuditId,
+        input.registryReceiptId
       ]
     );
     await client.query("commit");
