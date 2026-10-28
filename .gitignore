@@ -13,6 +13,8 @@ coverage/
 .env
 .env.*
 !.env.example
+ql246-trusted-pins*.json
+ql246-review-output*.json
 
 # local tooling
 .DS_Store
