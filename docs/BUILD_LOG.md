@@ -3730,3 +3730,19 @@ Next queued: **Build 223 — Recovery Search Presets, Renewal Recovery Filtering
 - application shell advanced to Build 223 and verifier registration was added.
 
 Next queued: **Build 224 — Recovery Preset Persistence, Renewal Recovery Search & Receipt Recovery Repair, plus QL-248 v2 manifest fixture hardening and Phase-A source/CI provenance checks while authenticated testing remains HELD.**
+
+
+## Build 224 — Recovery Preset Persistence, Renewal Recovery Search, Receipt Recovery Repair & QL-248 v2 Provenance Hardening
+
+- persisted the selected newest repair recovery preset in a sanitized browser-local namespace;
+- added newest renewal recovery audit text search after age filtering;
+- retained safe repair of unsupported persisted receipt recovery preset IDs;
+- hardened QL-248 v2 manifests so schema v2 requires v2 rows and schema v1 requires v1 rows;
+- v2 sourceRevision and proofCommitSha must be distinct;
+- signed source_revision and ci_run_url remain tied to the independently supplied earlier source provenance;
+- added a six-source v2 fixture plus same-SHA, mixed-version and wrong-CI fail-closed cases;
+- authenticated Phase-B testing remains HELD;
+- owner pilot approval remains NOT GIVEN and actual connection remains DISCONNECTED / HOLD;
+- application shell advanced to Build 224 and verifier registration was added.
+
+Next queued: **Build 225 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-248 immutable proof-origin attestation scaffolding and Phase-A six-source completeness checks while connection testing remains HELD.**
