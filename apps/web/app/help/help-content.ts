@@ -1,4 +1,24 @@
 export const HELP_TOPICS = {
+  "integration-v1-connection-testing": {
+    title: "Integration v1 nonproduction connection testing",
+    summary: "Build 218 adds server-only authenticated nonproduction GET testing through the AI Data Platform gateway. All receipts remain HOLD; no customer records, commands, messages or business writes are enabled.",
+    steps: [
+      "Provision each HMAC key and the Ed25519 signing key only in an approved server-side secret manager; never place credentials in browser code, GitHub or evidence files.",
+      "Run authenticated health first, then capabilities, using the exact registered source, destination, business, tenant, environment, method, path, key ID, timestamp and fresh nonce.",
+      "Require durable replay denial and verified negative evidence before preparing the signed gateway audit receipt.",
+      "Verify the gateway public SPKI SHA-256 fingerprint through a separate trusted channel and independently inspect stored audit evidence after restart or redeploy.",
+      "Keep connection state HOLD and owner pilot authorization NOT GIVEN until a later separately authenticated decision."
+    ],
+    notes: [
+      "Production fails closed: these routes require the nonproduction feature switch and refuse to operate when VERCEL_ENV is production.",
+      "The first registration is Rosevear Comms Hub to Devil n Dove with read_product_reference and read_listing_reference only.",
+      "The gateway stores secret environment-variable names, not secret values."
+    ],
+    manual: [
+      "The nonproduction server must be provisioned with its distinct HMAC secret and Ed25519 private signing key before a real signed GET can succeed.",
+      "Independent key-pin provenance, restart durability evidence and owner read-only authorization remain external acceptance gates."
+    ]
+  },
   "command-center": {
     title: "Application Command Center & Workspace Home",
     summary: "Build 043 turns the signed-in home page into a read-only operational command center assembled from existing RLS-scoped adoption, remote execution, retention and integration-delivery evidence.",
@@ -3232,6 +3252,10 @@ export const HELP_GROUPS: Array<{
   {
     title: "Build 117 application shell & contextual help",
     topics: ["shell-overview", "workflow-directory", "shell-data", "shell-collection", "shell-corrective", "corrective-operations-console", "corrective-state-machine", "corrective-history", "shell-integrations", "shell-workspace", "help-system-standard"]
+  },
+  {
+    title: "Build 218 repair recovery audit search preset persistence, renewal recovery audit search & receipt recovery preset recovery",
+    topics: ["recovery-audit-recovery-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-persistence", "renewal-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search", "receipt-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery-audit-search-preset-recovery", "integration-v1-connection-testing"]
   },
   {
     title: "Build 217 repair recovery audit search presets, renewal recovery audit filtering & receipt recovery preset persistence",
