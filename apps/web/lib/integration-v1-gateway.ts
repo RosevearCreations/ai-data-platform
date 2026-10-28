@@ -16,7 +16,7 @@ import { authPool, withIntegrationDatabase } from "./database";
 export const INTEGRATION_V1_CONTRACT = "rosevear.integration.v1" as const;
 export const INTEGRATION_V1_GATEWAY_ID = "ai-data-platform" as const;
 export const INTEGRATION_V1_ENVIRONMENT = "nonproduction" as const;
-export const INTEGRATION_V1_STATUS = "HOLD" as const;
+export const INTEGRATION_V1_STATUS = "DISCONNECTED" as const;
 export const INTEGRATION_V1_MAX_SKEW_MS = 300_000;
 export const INTEGRATION_V1_EMPTY_BODY_SHA256 =
   "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
@@ -28,11 +28,11 @@ export const INTEGRATION_V1_PATHS = Object.freeze({
 });
 
 export const INTEGRATION_V1_BUSINESS_CAPABILITIES = Object.freeze({
-  devilndove: Object.freeze(["read_product_reference", "read_listing_reference"]),
-  rosiedazzlers: Object.freeze(["read_quote_reference", "read_booking_reference"]),
-  yw: Object.freeze(["read_job_reference", "read_property_reference"]),
-  icamp: Object.freeze(["read_reservation_reference", "read_site_reference"]),
-  "rosevear-ai-hub": Object.freeze(["read_service_health"])
+  devilndove: Object.freeze(["read_health", "read_capabilities"]),
+  rosiedazzlers: Object.freeze(["read_health", "read_capabilities"]),
+  yw: Object.freeze(["read_health", "read_capabilities"]),
+  icamp: Object.freeze(["read_health", "read_capabilities"]),
+  "rosevear-ai-hub": Object.freeze(["read_health", "read_capabilities"])
 });
 
 const RECEIPT_KEYS = Object.freeze([
@@ -48,12 +48,31 @@ const GATEWAY_AUDIT_KEYS = Object.freeze([
   "negative_test_results"
 ] as const);
 
-const NEGATIVE_CODES = Object.freeze([
-  "wrong_business_denied",
-  "wrong_tenant_denied",
+export const QL245_NEGATIVE_CODES = Object.freeze([
+  "nonce_replay_denied",
+  "stale_request_denied",
+  "cross_business_denied",
+  "cross_tenant_denied",
   "revoked_key_denied",
   "write_denied",
-  "replay_denied"
+  "dispatch_denied"
+] as const);
+
+const NEGATIVE_CODES = QL245_NEGATIVE_CODES;
+
+export const QL245_SOURCE_KEYS = Object.freeze([
+  "schema_version", "source_system", "signer_key_id", "business_id", "tenant_id",
+  "environment", "source_revision", "ci_run_url", "key_id", "registry_receipt_id",
+  "health_receipt_id", "capabilities_receipt_id", "gateway_audit_id",
+  "allowed_paths", "scope", "negative_tests", "source_receipt_id",
+  "audit_storage_review", "owner_authorization", "connection_state",
+  "issued_at", "expires_at"
+] as const);
+
+const NEGATIVE_RECEIPT_KEYS = Object.freeze([
+  "schema_version", "issuer", "business_id", "tenant_id", "environment",
+  "kind", "method", "path", "denial_code", "http_status", "audit_id",
+  "audit_receipt_id", "key_id", "nonce", "issued_at"
 ] as const);
 
 type NegativeCode = (typeof NEGATIVE_CODES)[number];
@@ -69,11 +88,12 @@ export interface IntegrationV1Connection extends QueryResultRow {
   keyId: string;
   secretEnvVar: string;
   keyState: "active" | "revoked";
-  connectionState: "HOLD";
+  connectionState: "DISCONNECTED";
   capabilities: string[];
   healthReceiptId: string;
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
+  registryReceiptId: string | null;
 }
 
 export interface IntegrationV1AuthenticatedGet {
@@ -197,6 +217,32 @@ export function integrationV1CanonicalGatewayAudit(payload: Record<string, unkno
   );
 }
 
+export function integrationV1CanonicalQl245Source(payload: Record<string, unknown>) {
+  if (!exactObject(payload, QL245_SOURCE_KEYS)) {
+    throw new TypeError("integration_v1_ql245_source_schema_invalid");
+  }
+  return Buffer.from(
+    QL245_SOURCE_KEYS.map((key) => JSON.stringify([key, payload[key]])).join("\n"),
+    "utf8"
+  );
+}
+
+function integrationV1CanonicalNegativeReceipt(payload: Record<string, unknown>) {
+  if (!exactObject(payload, NEGATIVE_RECEIPT_KEYS)) {
+    throw new TypeError("integration_v1_negative_receipt_schema_invalid");
+  }
+  return Buffer.from(
+    NEGATIVE_RECEIPT_KEYS.map((key) => JSON.stringify([key, payload[key]])).join("\n"),
+    "utf8"
+  );
+}
+
+function signerKeyId() {
+  const value = (process.env.ROSEVEAR_INTEGRATION_V1_SIGNER_KEY_ID ?? "").trim();
+  if (!safeKeyId(value)) throw new Error("integration_v1_signer_key_id_unconfigured");
+  return value;
+}
+
 function signEnvelope(payload: Record<string, unknown>, canonical: Buffer) {
   return {
     payload,
@@ -248,17 +294,71 @@ async function appendRequestAudit(
     nonce?: string | null;
     outcome: "accepted" | "denied";
     reasonCode: string;
+    responseStatus?: number | null;
     identityVerified?: boolean;
   }
 ) {
+  const auditId = "np-trace-" + randomUUID().replaceAll("-", "");
+  let auditReceiptId: string | null = null;
+
+  if (
+    input.outcome === "denied" &&
+    input.identityVerified === true &&
+    input.connectionId &&
+    input.businessId &&
+    input.environment === INTEGRATION_V1_ENVIRONMENT &&
+    input.keyId &&
+    QL245_NEGATIVE_CODES.includes(input.reasonCode as NegativeCode) &&
+    Number.isInteger(input.responseStatus)
+  ) {
+    try {
+      auditReceiptId = "np-audit-" + randomUUID().replaceAll("-", "");
+      const payload: Record<string, unknown> = {
+        schema_version: INTEGRATION_V1_CONTRACT,
+        issuer: INTEGRATION_V1_GATEWAY_ID,
+        business_id: input.businessId,
+        tenant_id: input.tenantId ?? null,
+        environment: INTEGRATION_V1_ENVIRONMENT,
+        kind: "negative_denial",
+        method: input.method,
+        path: input.path,
+        denial_code: input.reasonCode,
+        http_status: input.responseStatus,
+        audit_id: auditId,
+        audit_receipt_id: auditReceiptId,
+        key_id: input.keyId,
+        nonce: input.nonce ?? null,
+        issued_at: Date.now()
+      };
+      const envelope = signEnvelope(payload, integrationV1CanonicalNegativeReceipt(payload));
+      await client.query(
+        `insert into app.integration_v1_receipts (
+          receipt_id,connection_id,kind,business_id,tenant_id,environment,key_id,payload,signature
+        ) values ($1,$2,'negative_denial',$3,$4,$5,$6,$7::jsonb,$8)`,
+        [
+          auditReceiptId,
+          input.connectionId,
+          input.businessId,
+          input.tenantId ?? null,
+          INTEGRATION_V1_ENVIRONMENT,
+          input.keyId,
+          JSON.stringify(payload),
+          envelope.signature
+        ]
+      );
+    } catch {
+      auditReceiptId = null;
+    }
+  }
+
   await client.query(
     `insert into app.integration_v1_request_audit (
       audit_id, connection_id, source_system, destination_system, business_id,
       tenant_id, environment, key_id, method, path, nonce, outcome, reason_code,
-      identity_verified
-    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+      identity_verified, response_status, audit_receipt_id
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)`,
     [
-      randomUUID(),
+      auditId,
       input.connectionId ?? null,
       input.sourceSystem?.slice(0, 96) ?? null,
       input.destinationSystem?.slice(0, 96) ?? null,
@@ -271,7 +371,9 @@ async function appendRequestAudit(
       input.nonce?.slice(0, 96) ?? null,
       input.outcome,
       input.reasonCode.slice(0, 96),
-      input.identityVerified === true
+      input.identityVerified === true,
+      Number.isInteger(input.responseStatus) ? input.responseStatus : null,
+      auditReceiptId
     ]
   );
 }
