@@ -45,7 +45,7 @@ The nonsecret registration profile uses key ID `np-devilndove-current`; it is cr
 5. Obtain the gateway public SPKI SHA-256 fingerprint from the trusted server and verify it through a separate channel.
 6. The Comms Hub QL-243 harness may then perform its four authenticated nonproduction GETs.
 7. Independently verify the audit record after restart/redeploy before claiming durability.
-8. Keep owner pilot authorization **NOT GIVEN** and connection state `HOLD` until a later explicit decision.
+8. Build 220 supersedes the earlier provisional `HOLD` label with the QL-245 truthful state: owner pilot authorization **NOT GIVEN** and connection state `DISCONNECTED` until a later explicit decision.
 
 ## Trusted operator commands
 
