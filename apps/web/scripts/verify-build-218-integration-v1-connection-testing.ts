@@ -81,17 +81,18 @@ async function main() {
     "app.integration_v1_request_audit",
     "app.integration_v1_receipts",
     "identity_verified boolean not null default false",
-    "'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64'",
-    "read_product_reference",
-    "read_listing_reference",
-    "'HOLD'"
+    "revoke all on app.integration_v1_connections from public",
+    "revoke all on app.integration_v1_nonces from public",
+    "revoke all on app.integration_v1_request_audit from public",
+    "revoke all on app.integration_v1_receipts from public"
   ]) {
     assert(migration.includes(token), "Build 218 migration contract missing: " + token);
   }
   assert(
     !migration.includes("BEGIN PRIVATE KEY") &&
-    !migration.includes("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64="),
-    "Build 218 migration must never contain secret values."
+    !migration.includes("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64=") &&
+    !migration.includes("np-comms-hub-devilndove"),
+    "Build 218 migration must contain no secret values or pre-seeded nonproduction connection."
   );
 
   assert(
@@ -119,8 +120,13 @@ async function main() {
   );
 
   assert(
+    gateway.includes("registerIntegrationV1DevilNDoveConnection") &&
+    gateway.includes("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64") &&
+    gateway.includes("read_product_reference") &&
+    gateway.includes("read_listing_reference") &&
     gateway.includes("rotateIntegrationV1ConnectionKey") &&
     gateway.includes("revokeIntegrationV1ConnectionKey") &&
+    admin.includes('"register-devilndove"') &&
     admin.includes('"prepare-audit"') &&
     admin.includes('"fingerprint"') &&
     admin.includes('"rotate"') &&

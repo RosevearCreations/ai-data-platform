@@ -15,7 +15,7 @@ This Build 218 companion scope implements the AI Data Platform side of the owner
 - Added durable atomic nonce replay suppression.
 - Added immutable sanitized request-audit evidence and immutable signed receipt storage.
 - Added Ed25519 response signing using a server-only private key; the public SPKI SHA-256 fingerprint is produced only by a trusted server-side operator command for separate-channel verification.
-- Added initial nonproduction registration for `rosevear-comms-hub → ai-data-platform / devilndove / tenant null` with only:
+- Added an explicit nonproduction-only registration command for `rosevear-comms-hub → ai-data-platform / devilndove / tenant null` with only:
   - `read_product_reference`
   - `read_listing_reference`
 - Added server-only key rotation/revocation helpers.
@@ -34,11 +34,11 @@ Required only on the trusted nonproduction server/test runner:
 - `ROSEVEAR_INTEGRATION_V1_ED25519_PRIVATE_KEY_PEM` — gateway Ed25519 private signing key.
 - `ROSEVEAR_INTEGRATION_V1_SOURCE_REVISION` only when the runtime does not already expose the exact 40-character Git source SHA.
 
-The seeded nonsecret key ID is `np-devilndove-current`. The HMAC secret and Ed25519 private key are never returned by an endpoint, written to the database, logged, or committed.
+The nonsecret registration profile uses key ID `np-devilndove-current`; it is created only by the trusted nonproduction `register-devilndove` command. The HMAC secret and Ed25519 private key are never returned by an endpoint, written to the database, logged, or committed.
 
 ## Evidence flow
 
-1. Provision the two server-side secrets through the approved secret manager.
+1. Provision the two server-side secrets through the approved secret manager, then run the trusted `register-devilndove` command on the nonproduction server. Production migrations intentionally create no connection registration.
 2. Perform authenticated negative tests. Denial evidence only counts when HMAC possession is verified.
 3. Perform health, then capabilities. Their signed receipts are immutable.
 4. Run the trusted server command to prepare the gateway audit. It refuses to sign the QL-242 audit until all required verified denial evidence exists.
@@ -52,6 +52,7 @@ The seeded nonsecret key ID is `np-devilndove-current`. The HMAC secret and Ed25
 These commands must run only on a trusted server/test runner. Secret values stay in environment variables.
 
 ```sh
+pnpm --filter @rosevear/ai-data-web integration:v1-admin register-devilndove
 pnpm --filter @rosevear/ai-data-web integration:v1-admin fingerprint
 pnpm --filter @rosevear/ai-data-web integration:v1-admin prepare-audit --connection np-comms-hub-devilndove
 pnpm --filter @rosevear/ai-data-web integration:v1-admin revoke --connection np-comms-hub-devilndove

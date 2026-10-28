@@ -3663,7 +3663,7 @@ Next queued: **Build 218 — Recovery Audit Recovery Search Preset Recovery Audi
 
 Completed the queued browser-local recovery cycle: persisted newest repair recovery preset selection, newest renewal recovery audit search and recovery-aware newest receipt preset persistence.
 
-Also implemented the owner-provided QL-243 nonproduction connection-testing foundation with AI Data Platform as the sole gateway: server-only HMAC-authenticated health/capabilities/audit GETs, durable atomic nonce replay denial, sanitized request audits, immutable Ed25519-signed HOLD receipts, initial Comms Hub → Devil n Dove read-only registration, trusted key rotation/revocation helpers, explicit write-route denial, contextual help and verification coverage.
+Also implemented the owner-provided QL-243 nonproduction connection-testing foundation with AI Data Platform as the sole gateway: server-only HMAC-authenticated health/capabilities/audit GETs, durable atomic nonce replay denial, sanitized request audits, immutable Ed25519-signed HOLD receipts, explicit nonproduction Comms Hub → Devil n Dove read-only registration tooling, trusted key rotation/revocation helpers, explicit write-route denial, contextual help and verification coverage.
 
 The Integration v1 surface is disabled in Vercel production even if the nonproduction feature switch is set. No customer records are copied, no external command/write/dispatch is enabled, no credential value is committed, and owner pilot authorization remains NOT GIVEN / HOLD.
 

@@ -640,6 +640,9 @@ export async function loadIntegrationV1GatewayAuditEnvelope(
 }
 
 export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   const connectionResult = await authPool.query<IntegrationV1Connection>(
     `select
       connection_id as "connectionId", source_system as "sourceSystem",
@@ -733,6 +736,41 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
   return persisted.rows[0];
 }
 
+export async function registerIntegrationV1DevilNDoveConnection() {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
+  const registrationSecret = decodeSecret("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64");
+  if (!registrationSecret) {
+    throw new Error("integration_v1_registration_key_unconfigured");
+  }
+  registrationSecret.fill(0);
+
+  const result = await authPool.query(
+    `insert into app.integration_v1_connections (
+      connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
+      environment,key_id,secret_env_var,key_state,connection_state,capabilities,
+      health_receipt_id,capabilities_receipt_id,gateway_audit_id
+    ) values (
+      'np-comms-hub-devilndove','rosevear-comms-hub','ai-data-platform','devilndove',
+      null,'-','nonproduction','np-devilndove-current',
+      'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64','active','HOLD',
+      '["read_product_reference","read_listing_reference"]'::jsonb,
+      'np-devilndove-health-build218','np-devilndove-caps-build218',
+      'np-devilndove-audit-build218'
+    )
+    on conflict (connection_id) do nothing
+    returning connection_id`
+  );
+  return {
+    connectionId: "np-comms-hub-devilndove",
+    created: result.rowCount === 1,
+    keyId: "np-devilndove-current",
+    connectionState: "HOLD" as const,
+    capabilities: ["read_product_reference", "read_listing_reference"] as const
+  };
+}
+
 export async function rotateIntegrationV1ConnectionKey(input: {
   currentConnectionId: string;
   newConnectionId: string;
@@ -742,6 +780,9 @@ export async function rotateIntegrationV1ConnectionKey(input: {
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
 }) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   if (
     !safeToken(input.newConnectionId, 96) ||
     !safeKeyId(input.newKeyId) ||
@@ -813,6 +854,9 @@ export async function rotateIntegrationV1ConnectionKey(input: {
 }
 
 export async function revokeIntegrationV1ConnectionKey(connectionId: string) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   const result = await authPool.query(
     `update app.integration_v1_connections
      set key_state='revoked', updated_at=now()

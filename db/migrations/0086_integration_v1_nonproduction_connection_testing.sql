@@ -82,38 +82,7 @@ grant select, insert on app.integration_v1_nonces to ai_data_runtime;
 grant select, insert on app.integration_v1_request_audit to ai_data_runtime;
 grant select, insert on app.integration_v1_receipts to ai_data_runtime;
 
-insert into app.integration_v1_connections (
-  connection_id,
-  source_system,
-  destination_system,
-  business_id,
-  tenant_id,
-  tenant_key,
-  environment,
-  key_id,
-  secret_env_var,
-  key_state,
-  connection_state,
-  capabilities,
-  health_receipt_id,
-  capabilities_receipt_id,
-  gateway_audit_id
-)
-values (
-  'np-comms-hub-devilndove',
-  'rosevear-comms-hub',
-  'ai-data-platform',
-  'devilndove',
-  null,
-  '-',
-  'nonproduction',
-  'np-devilndove-current',
-  'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64',
-  'active',
-  'HOLD',
-  '["read_product_reference","read_listing_reference"]'::jsonb,
-  'np-devilndove-health-build218',
-  'np-devilndove-caps-build218',
-  'np-devilndove-audit-build218'
-)
-on conflict (connection_id) do nothing;
+revoke all on app.integration_v1_connections from public;
+revoke all on app.integration_v1_nonces from public;
+revoke all on app.integration_v1_request_audit from public;
+revoke all on app.integration_v1_receipts from public;

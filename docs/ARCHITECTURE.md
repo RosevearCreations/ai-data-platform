@@ -477,7 +477,7 @@ Build 218 introduces a separate `rosevear.integration.v1` server boundary for th
 
 The nonproduction surface is limited to authenticated `GET /api/integration/v1/health`, `GET /api/integration/v1/capabilities` and exact-ID `GET /api/integration/v1/audit/receipts/{receipt_id}`. HMAC caller identity is bound to source, destination, business, tenant, environment, method, exact path, key ID, timestamp and nonce. Durable nonce insertion is the replay boundary. Signed health/capability and gateway-audit envelopes are persisted independently of the browser.
 
-The initial registry entry is Rosevear Comms Hub → AI Data Platform for Devil n Dove, tenant null, nonproduction, with only `read_product_reference` and `read_listing_reference`. It remains `HOLD`. The route layer has no events or commands endpoint, and a catch-all rejects unknown or mutating v1 requests.
+The first registration profile is Rosevear Comms Hub → AI Data Platform for Devil n Dove, tenant null, nonproduction, with only `read_product_reference` and `read_listing_reference`. It is created only by an explicit trusted nonproduction server command and remains `HOLD`. The route layer has no events or commands endpoint, and a catch-all rejects unknown or mutating v1 requests.
 
 The QL-243 route surface additionally requires `ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED=true` and refuses to operate when `VERCEL_ENV=production`. This is connection-test infrastructure, not production connector activation.
 

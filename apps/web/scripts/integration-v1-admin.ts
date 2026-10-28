@@ -1,6 +1,7 @@
 import {
   integrationV1GatewayPublicKeyFingerprintSha256,
   prepareIntegrationV1GatewayAudit,
+  registerIntegrationV1DevilNDoveConnection,
   revokeIntegrationV1ConnectionKey,
   rotateIntegrationV1ConnectionKey
 } from "../lib/integration-v1-gateway";
@@ -12,6 +13,11 @@ function arg(name: string) {
 
 async function main() {
   const action = process.argv[2];
+
+  if (action === "register-devilndove") {
+    console.log(JSON.stringify(await registerIntegrationV1DevilNDoveConnection()));
+    return;
+  }
 
   if (action === "fingerprint") {
     console.log(JSON.stringify({
@@ -64,7 +70,7 @@ async function main() {
     return;
   }
 
-  throw new Error("usage: fingerprint | prepare-audit | revoke | rotate");
+  throw new Error("usage: register-devilndove | fingerprint | prepare-audit | revoke | rotate");
 }
 
 void main().catch((error: unknown) => {
