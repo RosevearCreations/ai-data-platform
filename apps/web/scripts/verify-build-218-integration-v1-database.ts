@@ -7,6 +7,7 @@ import {
   INTEGRATION_V1_PATHS,
   integrationV1CanonicalGet,
   recordIntegrationV1DeniedMethod,
+  registerIntegrationV1DevilNDoveConnection,
   rotateIntegrationV1ConnectionKey
 } from "../lib/integration-v1-gateway";
 
@@ -84,7 +85,7 @@ async function cleanup() {
   );
   await authPool.query(
     "delete from app.integration_v1_connections where connection_id = any($1::text[])",
-    [[oldConnection, newConnection]]
+    [[oldConnection, newConnection, "np-comms-hub-devilndove"]]
   );
 }
 
@@ -96,9 +97,21 @@ async function main() {
   const newSecret = randomBytes(32);
   process.env[oldEnv] = oldSecret.toString("base64");
   process.env[newEnv] = newSecret.toString("base64");
+  process.env.ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64 = oldSecret.toString("base64");
 
   await cleanup();
   try {
+    const registered = await registerIntegrationV1DevilNDoveConnection();
+    assert(
+      registered.created &&
+      registered.connectionState === "HOLD" &&
+      registered.capabilities.join(",") === "read_product_reference,read_listing_reference",
+      "Build 218 must create the first registration only through the explicit nonproduction server command."
+    );
+    await authPool.query(
+      "delete from app.integration_v1_connections where connection_id='np-comms-hub-devilndove'"
+    );
+
     await authPool.query(
       `insert into app.integration_v1_connections (
         connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
@@ -214,6 +227,7 @@ async function main() {
     newSecret.fill(0);
     delete process.env[oldEnv];
     delete process.env[newEnv];
+    delete process.env.ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64;
     await cleanup();
   }
 }
