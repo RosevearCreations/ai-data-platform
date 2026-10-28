@@ -134,6 +134,21 @@ async function main() {
     assert(!wrongTenant.ok && wrongTenant.error === "wrong_tenant_denied",
       "Build 218 must deny a signed cross-tenant request.");
 
+    await authPool.query(
+      "update app.integration_v1_connections set capabilities='[\"read_product_reference\"]'::jsonb where connection_id=$1",
+      [oldConnection]
+    );
+    const missingScope = await authenticateIntegrationV1Get(
+      signedRequest({ secret: oldSecret }),
+      INTEGRATION_V1_PATHS.health
+    );
+    assert(!missingScope.ok && missingScope.error === "capability_policy_denied",
+      "Build 218 must fail closed when an expected read-only capability is missing.");
+    await authPool.query(
+      "update app.integration_v1_connections set capabilities='[\"read_product_reference\",\"read_listing_reference\"]'::jsonb where connection_id=$1",
+      [oldConnection]
+    );
+
     await recordIntegrationV1DeniedMethod(
       signedRequest({ secret: oldSecret, method: "POST" }),
       "write_denied"
