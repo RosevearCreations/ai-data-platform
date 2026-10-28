@@ -470,3 +470,14 @@ A new re-closure generation may be created only from the newest matched verifica
 Build 064 reuses the exact accepted Build 062 package only as immutable monitoring truth after Build 063 has closed the recurrent exception. The monitor performs a fresh state-verification handshake/read-back and maps exact match to `stable` and changed/missing governed state to `recurred`.
 
 A recurrent read-back remains evidence only. Explicit owner/admin recurrence creates a new immutable recurrence generation bound to the newest Build 063 re-closure and newest monitoring check, then reopens the case. Database triggers freeze Build 062 activation/delivery and Build 063 reconciliation/re-closure mutation after that recurrence. The case-close trigger also fails closed after the new recurrence so stale Build 063 re-closure evidence cannot authorize a later direct close.
+
+## Build 218 Integration v1 nonproduction gateway
+
+Build 218 introduces a separate `rosevear.integration.v1` server boundary for the QL-243 connection-test phase. AI Data Platform is the sole hub-and-spoke gateway; business applications do not receive each other's database credentials and the gateway does not become source of truth for their records.
+
+The nonproduction surface is limited to authenticated `GET /api/integration/v1/health`, `GET /api/integration/v1/capabilities` and exact-ID `GET /api/integration/v1/audit/receipts/{receipt_id}`. HMAC caller identity is bound to source, destination, business, tenant, environment, method, exact path, key ID, timestamp and nonce. Durable nonce insertion is the replay boundary. Signed health/capability and gateway-audit envelopes are persisted independently of the browser.
+
+The first registration profile is Rosevear Comms Hub → AI Data Platform for Devil n Dove, tenant null, nonproduction, with only `read_product_reference` and `read_listing_reference`. It is created only by an explicit trusted nonproduction server command and remains `HOLD`. The route layer has no events or commands endpoint, and a catch-all rejects unknown or mutating v1 requests.
+
+The QL-243 route surface additionally requires `ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED=true` and refuses to operate when `VERCEL_ENV=production`. This is connection-test infrastructure, not production connector activation.
+
