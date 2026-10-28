@@ -400,7 +400,8 @@ async function candidateConnections(client: PoolClient, input: {
       capabilities,
       health_receipt_id as "healthReceiptId",
       capabilities_receipt_id as "capabilitiesReceiptId",
-      gateway_audit_id as "gatewayAuditId"
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
     from app.integration_v1_connections
     where source_system=$1
       and destination_system=$2
@@ -465,6 +466,7 @@ export async function authenticateIntegrationV1Get(
         connectionId,
         outcome: "denied",
         reasonCode: error,
+        responseStatus: status,
         identityVerified
       });
       return deny(status, error);
@@ -488,9 +490,8 @@ export async function authenticateIntegrationV1Get(
       !safeKeyId(keyId) ||
       !safeNonce(nonce) ||
       !Number.isSafeInteger(timestamp) ||
-      Math.abs(now - timestamp) > INTEGRATION_V1_MAX_SKEW_MS ||
       !/^[A-Za-z0-9_-]{43}$/.test(signatureRaw)
-    ) return auditDenied(401, "request_identity_or_freshness_denied");
+    ) return auditDenied(401, "request_identity_denied");
 
     const candidates = await candidateConnections(client, {
       sourceSystem, destinationSystem, environment, keyId
@@ -526,22 +527,26 @@ export async function authenticateIntegrationV1Get(
       return auditDenied(401, "signature_denied", signingCandidate.connectionId);
     }
 
+    if (Math.abs(now - timestamp) > INTEGRATION_V1_MAX_SKEW_MS) {
+      return auditDenied(401, "stale_request_denied", signingCandidate.connectionId, true);
+    }
+
     const business = candidates.find((row) => row.businessId === businessId);
     if (!business) {
-      return auditDenied(403, "wrong_business_denied", signingCandidate.connectionId, true);
+      return auditDenied(403, "cross_business_denied", signingCandidate.connectionId, true);
     }
 
     const connection = candidates.find(
       (row) => row.businessId === businessId && row.tenantId === tenantId
     );
     if (!connection) {
-      return auditDenied(403, "wrong_tenant_denied", business.connectionId, true);
+      return auditDenied(403, "cross_tenant_denied", business.connectionId, true);
     }
 
     if (connection.keyState !== "active") {
       return auditDenied(401, "revoked_key_denied", connection.connectionId, true);
     }
-    if (connection.connectionState !== "HOLD" || !capabilityPolicyValid(connection)) {
+    if (connection.connectionState !== "DISCONNECTED" || !capabilityPolicyValid(connection)) {
       return auditDenied(403, "capability_policy_denied", connection.connectionId, true);
     }
 
@@ -554,7 +559,7 @@ export async function authenticateIntegrationV1Get(
       [sourceSystem, businessId, connection.tenantKey, environment, keyId, nonce]
     );
     if (nonceInsert.rowCount !== 1) {
-      return auditDenied(409, "replay_denied", connection.connectionId, true);
+      return auditDenied(409, "nonce_replay_denied", connection.connectionId, true);
     }
 
     await appendRequestAudit(client, {
@@ -574,7 +579,8 @@ export async function authenticateIntegrationV1Get(
 
 export async function recordIntegrationV1DeniedMethod(
   request: Request,
-  reasonCode = "write_denied"
+  reasonCode = "write_denied",
+  responseStatus = 405
 ) {
   if (!isIntegrationV1NonproductionEnabled()) return;
   const parsed = new URL(request.url);
@@ -639,6 +645,7 @@ export async function recordIntegrationV1DeniedMethod(
       nonce,
       outcome: "denied",
       reasonCode,
+      responseStatus,
       identityVerified
     });
   });
@@ -754,12 +761,13 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
       connection_state as "connectionState", capabilities,
       health_receipt_id as "healthReceiptId",
       capabilities_receipt_id as "capabilitiesReceiptId",
-      gateway_audit_id as "gatewayAuditId"
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
      from app.integration_v1_connections where connection_id=$1`,
     [connectionId]
   );
   const connection = connectionResult.rows[0];
-  if (!connection || connection.keyState !== "active" || connection.connectionState !== "HOLD") {
+  if (!connection || connection.keyState !== "active" || connection.connectionState !== "DISCONNECTED") {
     throw new Error("integration_v1_connection_not_ready");
   }
   connection.capabilities = parseCapabilities(connection.capabilities) ?? [];
@@ -775,13 +783,28 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
     throw new Error("integration_v1_read_receipts_missing");
   }
 
-  const evidence = await authPool.query<{ reason_code: string }>(
-    `select distinct reason_code
-     from app.integration_v1_request_audit
-     where connection_id=$1 and outcome='denied'
-       and identity_verified=true
-       and reason_code = any($2::text[])`,
-    [connectionId, [...NEGATIVE_CODES]]
+  const evidence = await authPool.query<{ reason_code: string; audit_receipt_id: string }>(
+    `select distinct on (a.reason_code) a.reason_code, a.audit_receipt_id
+     from app.integration_v1_request_audit a
+     join app.integration_v1_connections c on c.connection_id=a.connection_id
+     where c.source_system=$1
+       and c.destination_system=$2
+       and c.business_id=$3
+       and c.tenant_id is not distinct from $4
+       and c.environment=$5
+       and a.outcome='denied'
+       and a.identity_verified=true
+       and a.audit_receipt_id is not null
+       and a.reason_code = any($6::text[])
+     order by a.reason_code, a.occurred_at desc`,
+    [
+      connection.sourceSystem,
+      connection.destinationSystem,
+      connection.businessId,
+      connection.tenantId,
+      connection.environment,
+      [...NEGATIVE_CODES]
+    ]
   );
   const seen = new Set(evidence.rows.map((row) => row.reason_code));
   const negativeTestResults = Object.fromEntries(
@@ -908,7 +931,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
         connection_state as "connectionState", capabilities,
         health_receipt_id as "healthReceiptId",
         capabilities_receipt_id as "capabilitiesReceiptId",
-        gateway_audit_id as "gatewayAuditId"
+        gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
        from app.integration_v1_connections
        where connection_id=$1
        for update`,
