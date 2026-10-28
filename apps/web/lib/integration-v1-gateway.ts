@@ -227,7 +227,9 @@ function capabilityPolicyValid(connection: IntegrationV1Connection) {
     allowed &&
     connection.capabilities.length > 0 &&
     new Set(connection.capabilities).size === connection.capabilities.length &&
-    connection.capabilities.every((capability) => allowed.includes(capability as never))
+    connection.capabilities.every((capability) =>
+      new Set<string>(allowed as readonly string[]).has(capability)
+    )
   );
 }
 
@@ -246,13 +248,15 @@ async function appendRequestAudit(
     nonce?: string | null;
     outcome: "accepted" | "denied";
     reasonCode: string;
+    identityVerified?: boolean;
   }
 ) {
   await client.query(
     `insert into app.integration_v1_request_audit (
       audit_id, connection_id, source_system, destination_system, business_id,
-      tenant_id, environment, key_id, method, path, nonce, outcome, reason_code
-    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
+      tenant_id, environment, key_id, method, path, nonce, outcome, reason_code,
+      identity_verified
+    ) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
     [
       randomUUID(),
       input.connectionId ?? null,
@@ -266,7 +270,8 @@ async function appendRequestAudit(
       input.path.slice(0, 256),
       input.nonce?.slice(0, 96) ?? null,
       input.outcome,
-      input.reasonCode.slice(0, 96)
+      input.reasonCode.slice(0, 96),
+      input.identityVerified === true
     ]
   );
 }
@@ -347,12 +352,18 @@ export async function authenticateIntegrationV1Get(
   };
 
   return withIntegrationDatabase(async (client) => {
-    const auditDenied = async (status: number, error: string, connectionId?: string | null) => {
+    const auditDenied = async (
+      status: number,
+      error: string,
+      connectionId?: string | null,
+      identityVerified = false
+    ) => {
       await appendRequestAudit(client, {
         ...context,
         connectionId,
         outcome: "denied",
-        reasonCode: error
+        reasonCode: error,
+        identityVerified
       });
       return deny(status, error);
     };
@@ -384,23 +395,11 @@ export async function authenticateIntegrationV1Get(
     });
     if (!candidates.length) return auditDenied(401, "unregistered_key_denied");
 
-    const business = candidates.find((row) => row.businessId === businessId);
-    if (!business) return auditDenied(403, "wrong_business_denied", candidates[0]?.connectionId);
-
-    const connection = candidates.find(
-      (row) => row.businessId === businessId && row.tenantId === tenantId
-    );
-    if (!connection) return auditDenied(403, "wrong_tenant_denied", business.connectionId);
-
-    if (connection.keyState !== "active") {
-      return auditDenied(401, "revoked_key_denied", connection.connectionId);
+    const signingCandidate = candidates[0]!;
+    const secret = decodeSecret(signingCandidate.secretEnvVar);
+    if (!secret) {
+      return auditDenied(503, "server_key_unconfigured", signingCandidate.connectionId);
     }
-    if (connection.connectionState !== "HOLD" || !capabilityPolicyValid(connection)) {
-      return auditDenied(403, "capability_policy_denied", connection.connectionId);
-    }
-
-    const secret = decodeSecret(connection.secretEnvVar);
-    if (!secret) return auditDenied(503, "server_key_unconfigured", connection.connectionId);
 
     const canonical = integrationV1CanonicalGet({
       path: expectedPath,
@@ -419,10 +418,29 @@ export async function authenticateIntegrationV1Get(
     try {
       received = Buffer.from(signatureRaw, "base64url");
     } catch {
-      return auditDenied(401, "signature_denied", connection.connectionId);
+      return auditDenied(401, "signature_denied", signingCandidate.connectionId);
     }
     if (received.byteLength !== expected.byteLength || !timingSafeEqual(received, expected)) {
-      return auditDenied(401, "signature_denied", connection.connectionId);
+      return auditDenied(401, "signature_denied", signingCandidate.connectionId);
+    }
+
+    const business = candidates.find((row) => row.businessId === businessId);
+    if (!business) {
+      return auditDenied(403, "wrong_business_denied", signingCandidate.connectionId, true);
+    }
+
+    const connection = candidates.find(
+      (row) => row.businessId === businessId && row.tenantId === tenantId
+    );
+    if (!connection) {
+      return auditDenied(403, "wrong_tenant_denied", business.connectionId, true);
+    }
+
+    if (connection.keyState !== "active") {
+      return auditDenied(401, "revoked_key_denied", connection.connectionId, true);
+    }
+    if (connection.connectionState !== "HOLD" || !capabilityPolicyValid(connection)) {
+      return auditDenied(403, "capability_policy_denied", connection.connectionId, true);
     }
 
     const nonceInsert = await client.query(
@@ -434,14 +452,15 @@ export async function authenticateIntegrationV1Get(
       [sourceSystem, businessId, connection.tenantKey, environment, keyId, nonce]
     );
     if (nonceInsert.rowCount !== 1) {
-      return auditDenied(409, "replay_denied", connection.connectionId);
+      return auditDenied(409, "replay_denied", connection.connectionId, true);
     }
 
     await appendRequestAudit(client, {
       ...context,
       connectionId: connection.connectionId,
       outcome: "accepted",
-      reasonCode: "accepted_get"
+      reasonCode: "accepted_get",
+      identityVerified: true
     });
 
     return {
@@ -474,8 +493,39 @@ export async function recordIntegrationV1DeniedMethod(
     const connection = candidates.find(
       (row) => row.businessId === businessId && row.tenantId === tenantId
     );
+    const timestamp = Number(header(request, "X-Rosevear-Timestamp"));
+    const signatureRaw = header(request, "X-Rosevear-Signature");
+    let identityVerified = false;
+    const signingCandidate = candidates[0];
+    if (
+      signingCandidate &&
+      Number.isSafeInteger(timestamp) &&
+      Math.abs(Date.now() - timestamp) <= INTEGRATION_V1_MAX_SKEW_MS &&
+      safeNonce(nonce) &&
+      /^[A-Za-z0-9_-]{43}$/.test(signatureRaw)
+    ) {
+      const secret = decodeSecret(signingCandidate.secretEnvVar);
+      if (secret) {
+        const expected = createHmac("sha256", secret).update(integrationV1CanonicalGet({
+          path: parsed.pathname,
+          timestamp,
+          nonce,
+          sourceSystem,
+          destinationSystem,
+          businessId,
+          tenantId,
+          environment,
+          keyId
+        })).digest();
+        secret.fill(0);
+        const received = Buffer.from(signatureRaw, "base64url");
+        identityVerified =
+          received.byteLength === expected.byteLength &&
+          timingSafeEqual(received, expected);
+      }
+    }
     await appendRequestAudit(client, {
-      connectionId: connection?.connectionId,
+      connectionId: connection?.connectionId ?? signingCandidate?.connectionId,
       sourceSystem,
       destinationSystem,
       businessId,
@@ -486,7 +536,8 @@ export async function recordIntegrationV1DeniedMethod(
       path: parsed.pathname,
       nonce,
       outcome: "denied",
-      reasonCode
+      reasonCode,
+      identityVerified
     });
   });
 }
@@ -504,6 +555,17 @@ export async function getOrCreateIntegrationV1ReadReceipt(
   if (!safeReceiptId(receiptId)) throw new Error("integration_v1_receipt_id_invalid");
 
   return withIntegrationDatabase(async (client) => {
+    if (kind === "capabilities") {
+      const priorHealth = await client.query(
+        `select 1 from app.integration_v1_receipts
+         where receipt_id=$1 and connection_id=$2 and kind='health'`,
+        [connection.healthReceiptId, connection.connectionId]
+      );
+      if (!priorHealth.rowCount) {
+        throw new Error("integration_v1_health_receipt_required");
+      }
+    }
+
     const existing = await client.query<{ payload: Record<string, unknown>; signature: string }>(
       `select payload, signature
        from app.integration_v1_receipts
@@ -612,6 +674,7 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
     `select distinct reason_code
      from app.integration_v1_request_audit
      where connection_id=$1 and outcome='denied'
+       and identity_verified=true
        and reason_code = any($2::text[])`,
     [connectionId, [...NEGATIVE_CODES]]
   );
