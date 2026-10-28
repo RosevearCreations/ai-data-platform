@@ -569,3 +569,16 @@ Re-closure requires the newest Build 063 verification for the delivery to be `ma
 Only owners/admins may create Build 064 monitoring evidence or govern recurrence. Monitoring insertion requires a closed case, accepted Build 062 delivery, approved Build 061 plan, exact Build 063 re-closure identity, exact Build 060 recurrence identity and no already-governed Build 064 recurrence. Recurrence insertion requires the newest Build 064 check to be `recurred`, the newest Build 063 re-closure and a still-closed case.
 
 Once Build 064 recurrence exists, database triggers block further mutation of the Build 062 activation/delivery and Build 063 reconciliation/re-closure generation. The governed-reopen trigger recognizes the new recurrence in the same transaction. The verified-close trigger fails closed with `reconciliation_triage_second_generation_reclosure_required` so stale Build 063 evidence cannot close the newly reopened case.
+
+## Build 218 Integration v1 connection-test security
+
+The QL-243 gateway uses a distinct 256-bit HMAC secret for each registered source/business/tenant/environment identity. The registry stores only the fixed server environment-variable name; credential values remain in the server secret manager. HMAC input uses the exact twelve-line `rosevear.integration.v1` canonical GET, ±300-second freshness, a fresh nonce and constant-time signature comparison.
+
+Nonce replay suppression is durable and atomic in PostgreSQL. Request audit rows contain only bounded routing metadata and outcome codes; no HMAC key, private signing key, customer record, message body or product payload is stored. Security-negative evidence counts toward the signed gateway audit only after HMAC possession has been verified.
+
+Health, capabilities and gateway-audit evidence are Ed25519-signed with a server-only private key. Public SPKI fingerprints are deliberately obtained through a trusted server command and must be independently pinned through another channel. Signature validity alone does not establish owner identity, witness independence, durable storage across restart or permission to begin a pilot.
+
+The initial Devil n Dove connection stays `HOLD` and grants only `read_product_reference` and `read_listing_reference`. Commands, events, payments, Etsy writes, communications dispatch, reservations, jobs and device actuation are not exposed by this v1 route surface. Production Vercel deployments fail closed because the QL-243 endpoints require both the explicit nonproduction switch and a non-production `VERCEL_ENV`.
+
+Key revocation and rotation are server-only administrative actions. Rotation revokes the old registry row and creates a new key ID/environment-variable reference and new public receipt IDs; no secret value crosses the command arguments or database.
+
