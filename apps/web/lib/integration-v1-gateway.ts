@@ -640,6 +640,9 @@ export async function loadIntegrationV1GatewayAuditEnvelope(
 }
 
 export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   const connectionResult = await authPool.query<IntegrationV1Connection>(
     `select
       connection_id as "connectionId", source_system as "sourceSystem",
@@ -771,6 +774,9 @@ export async function rotateIntegrationV1ConnectionKey(input: {
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
 }) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   if (
     !safeToken(input.newConnectionId, 96) ||
     !safeKeyId(input.newKeyId) ||
@@ -842,6 +848,9 @@ export async function rotateIntegrationV1ConnectionKey(input: {
 }
 
 export async function revokeIntegrationV1ConnectionKey(connectionId: string) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
   const result = await authPool.query(
     `update app.integration_v1_connections
      set key_state='revoked', updated_at=now()
