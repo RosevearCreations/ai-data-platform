@@ -66,5 +66,8 @@ jobs:
       - name: Typecheck, lint, build and test
         run: pnpm verify
 
+      - name: Verify QL-246 six-app independent pin challenge and source scope
+        run: pnpm --filter @rosevear/ai-data-web verify:ql246
+
       - name: Verify auth and workspace isolation
         run: pnpm --filter @rosevear/ai-data-web db:verify
