@@ -740,6 +740,12 @@ export async function registerIntegrationV1DevilNDoveConnection() {
   if (!isIntegrationV1NonproductionEnabled()) {
     throw new Error("integration_v1_nonproduction_disabled");
   }
+  const registrationSecret = decodeSecret("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64");
+  if (!registrationSecret) {
+    throw new Error("integration_v1_registration_key_unconfigured");
+  }
+  registrationSecret.fill(0);
+
   const result = await authPool.query(
     `insert into app.integration_v1_connections (
       connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
