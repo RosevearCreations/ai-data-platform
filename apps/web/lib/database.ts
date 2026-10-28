@@ -1773,6 +1773,25 @@ export async function checkProductionDatabaseReadiness() {
   }
 }
 
+export async function withIntegrationDatabase<T>(
+  operation: (client: PoolClient) => Promise<T>
+): Promise<T> {
+  const client = await appPool.connect();
+
+  try {
+    await client.query("begin");
+    await client.query("set local role ai_data_runtime");
+    const result = await operation(client);
+    await client.query("commit");
+    return result;
+  } catch (error) {
+    await client.query("rollback");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 export async function closeDatabasePools() {
   await Promise.all([appPool.end(), authPool.end()]);
 }
