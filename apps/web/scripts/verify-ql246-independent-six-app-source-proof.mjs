@@ -162,4 +162,63 @@ test('immutable public fetch prohibits SSRF and redirect, wrong HTTP status and 
   assert.equal(result, '{}');
 });
 
+
+test('QL-248 v2 manifest separates source revision from proof commit and pins source CI provenance', async () => {
+  const { manifest, raw } = fixture();
+  manifest.schema = 'rosevear.integration.ql246.trusted-pins.v2';
+  const nextRaw = new Map();
+  manifest.sources = manifest.sources.map((row, i) => {
+    const proofCommitSha = `${(i + 10).toString(16).slice(-1)}`.repeat(40);
+    const envelope = raw.get(ql246RawUrl(row));
+    const parsed = JSON.parse(envelope);
+    const ciRunUrl = parsed.payload.ci_run_url;
+    const v2 = {
+      system: row.system,
+      repository: row.repository,
+      sourceRevision: row.sourceRevision,
+      proofCommitSha,
+      proofSha256: sha(envelope),
+      ciRunUrl,
+      publicKeyFingerprintSha256: row.publicKeyFingerprintSha256,
+      businessId: row.businessId,
+      tenantId: row.tenantId
+    };
+    nextRaw.set(ql246RawUrl(v2), envelope);
+    return v2;
+  });
+
+  let result = await reviewQl246Sources(manifest, {
+    now: clock,
+    fetchPublic: async url => nextRaw.get(url)
+  });
+  assert.equal(result.verifiedCount, 6);
+  assert.equal(result.status, 'SIX_PUBLIC_SOURCES_VERIFIED_EXTERNAL_TESTS_PENDING_HELD');
+  assert.equal(result.systems[0].sourceRevision, manifest.sources[0].sourceRevision);
+  assert.equal(result.systems[0].proofCommitSha, manifest.sources[0].proofCommitSha);
+  assert.equal(result.systems[0].sourceCiRunUrl, manifest.sources[0].ciRunUrl);
+
+  const sameSha = structuredClone(manifest);
+  sameSha.sources[0].proofCommitSha = sameSha.sources[0].sourceRevision;
+  result = await reviewQl246Sources(sameSha, { now: clock, fetchPublic: async () => { throw new Error('must not fetch invalid v2 manifest'); } });
+  assert.equal(result.status, 'DENIED_TRUSTED_MANIFEST');
+
+  const mixed = structuredClone(manifest);
+  const row0 = mixed.sources[0];
+  mixed.sources[0] = {
+    system: row0.system, repository: row0.repository, sourceRevision: row0.sourceRevision,
+    sha256: row0.proofSha256, publicKeyFingerprintSha256: row0.publicKeyFingerprintSha256,
+    businessId: row0.businessId, tenantId: row0.tenantId
+  };
+  result = await reviewQl246Sources(mixed, { now: clock, fetchPublic: async () => { throw new Error('must not fetch mixed-version manifest'); } });
+  assert.equal(result.status, 'DENIED_TRUSTED_MANIFEST');
+
+  const wrongCi = structuredClone(manifest);
+  wrongCi.sources[0].ciRunUrl = 'https://github.com/RosevearCreations/' + wrongCi.sources[0].repository + '/actions/runs/999999';
+  result = await reviewQl246Sources(wrongCi, {
+    now: clock,
+    fetchPublic: async url => nextRaw.get(url)
+  });
+  assert.equal(result.systems[0].status, 'SIGNED_SOURCE_SCOPE_OR_FRESHNESS_INVALID');
+});
+
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
