@@ -159,6 +159,10 @@ export function integrationV1GatewayPublicKeyFingerprintSha256() {
     .digest("hex");
 }
 
+export function integrationV1GatewayPublicKeyPem() {
+  return createPublicKey(privateSigningKey()).export({ format: "pem", type: "spki" }).toString();
+}
+
 export function isIntegrationV1NonproductionEnabled() {
   return process.env.ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED === "true" &&
     process.env.VERCEL_ENV !== "production";
@@ -859,6 +863,160 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
   );
   if (!persisted.rows[0]) throw new Error("integration_v1_gateway_audit_persist_failed");
   return persisted.rows[0];
+}
+
+export async function prepareIntegrationV1Ql245SourceEvidence(input: {
+  connectionId: string;
+  ciRunUrl: string;
+}) {
+  if (!isIntegrationV1NonproductionEnabled()) {
+    throw new Error("integration_v1_nonproduction_disabled");
+  }
+  if (!/^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.ciRunUrl)) {
+    throw new Error("integration_v1_ql245_ci_run_url_invalid");
+  }
+
+  const connectionResult = await authPool.query<IntegrationV1Connection>(
+    `select
+      connection_id as "connectionId", source_system as "sourceSystem",
+      destination_system as "destinationSystem", business_id as "businessId",
+      tenant_id as "tenantId", tenant_key as "tenantKey", environment,
+      key_id as "keyId", secret_env_var as "secretEnvVar", key_state as "keyState",
+      connection_state as "connectionState", capabilities,
+      health_receipt_id as "healthReceiptId",
+      capabilities_receipt_id as "capabilitiesReceiptId",
+      gateway_audit_id as "gatewayAuditId",
+      registry_receipt_id as "registryReceiptId"
+     from app.integration_v1_connections
+     where connection_id=$1`,
+    [input.connectionId]
+  );
+  const connection = connectionResult.rows[0];
+  if (
+    !connection ||
+    connection.businessId !== "devilndove" ||
+    connection.tenantId !== null ||
+    connection.environment !== "nonproduction" ||
+    connection.keyState !== "active" ||
+    connection.connectionState !== "DISCONNECTED"
+  ) {
+    throw new Error("integration_v1_ql245_connection_not_ready");
+  }
+  connection.capabilities = parseCapabilities(connection.capabilities) ?? [];
+  if (!capabilityPolicyValid(connection) || !connection.registryReceiptId) {
+    throw new Error("integration_v1_ql245_scope_or_registry_missing");
+  }
+
+  const requiredReceipts = await authPool.query<{ receipt_id: string; kind: string }>(
+    `select receipt_id, kind
+     from app.integration_v1_receipts
+     where connection_id=$1
+       and receipt_id = any($2::text[])
+       and kind in ('health','capabilities','gateway_audit')`,
+    [
+      connection.connectionId,
+      [connection.healthReceiptId, connection.capabilitiesReceiptId, connection.gatewayAuditId]
+    ]
+  );
+  const receiptKinds = new Map(requiredReceipts.rows.map((row) => [row.receipt_id, row.kind]));
+  if (
+    receiptKinds.get(connection.healthReceiptId) !== "health" ||
+    receiptKinds.get(connection.capabilitiesReceiptId) !== "capabilities" ||
+    receiptKinds.get(connection.gatewayAuditId) !== "gateway_audit"
+  ) {
+    throw new Error("integration_v1_ql245_gateway_receipts_missing");
+  }
+
+  const denialEvidence = await authPool.query<{ reason_code: string; audit_receipt_id: string }>(
+    `select distinct on (a.reason_code) a.reason_code, a.audit_receipt_id
+     from app.integration_v1_request_audit a
+     join app.integration_v1_connections c on c.connection_id=a.connection_id
+     where c.source_system=$1
+       and c.destination_system=$2
+       and c.business_id=$3
+       and c.tenant_id is not distinct from $4
+       and c.environment=$5
+       and a.outcome='denied'
+       and a.identity_verified=true
+       and a.audit_receipt_id is not null
+       and a.reason_code = any($6::text[])
+     order by a.reason_code, a.occurred_at desc`,
+    [
+      connection.sourceSystem,
+      connection.destinationSystem,
+      connection.businessId,
+      connection.tenantId,
+      connection.environment,
+      [...QL245_NEGATIVE_CODES]
+    ]
+  );
+  const negativeTests = Object.fromEntries(
+    QL245_NEGATIVE_CODES.map((code) => [
+      code,
+      denialEvidence.some((row) => row.reason_code === code)
+    ])
+  ) as Record<NegativeCode, boolean>;
+  if (QL245_NEGATIVE_CODES.some((code) => negativeTests[code] !== true)) {
+    throw new Error("integration_v1_ql245_negative_evidence_incomplete");
+  }
+
+  const issuedAt = Date.now();
+  const sourceReceiptId = "np-source-" + randomUUID().replaceAll("-", "");
+  const payload: Record<string, unknown> = {
+    schema_version: INTEGRATION_V1_CONTRACT,
+    source_system: "ai-data-platform",
+    signer_key_id: signerKeyId(),
+    business_id: connection.businessId,
+    tenant_id: connection.tenantId,
+    environment: INTEGRATION_V1_ENVIRONMENT,
+    source_revision: sourceRevision(),
+    ci_run_url: input.ciRunUrl,
+    key_id: connection.keyId,
+    registry_receipt_id: connection.registryReceiptId,
+    health_receipt_id: connection.healthReceiptId,
+    capabilities_receipt_id: connection.capabilitiesReceiptId,
+    gateway_audit_id: connection.gatewayAuditId,
+    allowed_paths: [INTEGRATION_V1_PATHS.health, INTEGRATION_V1_PATHS.capabilities],
+    scope: ["read_health", "read_capabilities"],
+    negative_tests: negativeTests,
+    source_receipt_id: sourceReceiptId,
+    audit_storage_review: "INDEPENDENT_RESTART_PROOF_PENDING",
+    owner_authorization: "NOT_GIVEN",
+    connection_state: "DISCONNECTED",
+    issued_at: issuedAt,
+    expires_at: issuedAt + 3_600_000
+  };
+  const envelope = signEnvelope(payload, integrationV1CanonicalQl245Source(payload));
+  await authPool.query(
+    `insert into app.integration_v1_receipts (
+      receipt_id,connection_id,kind,business_id,tenant_id,environment,key_id,
+      payload,signature,source_revision
+    ) values ($1,$2,'ql245_source',$3,$4,$5,$6,$7::jsonb,$8,$9)`,
+    [
+      sourceReceiptId,
+      connection.connectionId,
+      connection.businessId,
+      connection.tenantId,
+      INTEGRATION_V1_ENVIRONMENT,
+      connection.keyId,
+      JSON.stringify(payload),
+      envelope.signature,
+      payload.source_revision
+    ]
+  );
+
+  return {
+    publicKeyPem: integrationV1GatewayPublicKeyPem(),
+    envelope,
+    negativeAuditReceiptIds: Object.fromEntries(
+      QL245_NEGATIVE_CODES.map((code) => [
+        code,
+        denialEvidence.find((row) => row.reason_code === code)?.audit_receipt_id ?? null
+      ])
+    ),
+    warning:
+      "Signed public metadata is not proof of live connectivity, independent restart durability, owner approval or pilot authorization."
+  };
 }
 
 export async function registerIntegrationV1DevilNDoveConnection() {
