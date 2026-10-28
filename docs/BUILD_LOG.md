@@ -3677,3 +3677,12 @@ Formalized the next browser-local recovery cycle already forward-prepared in the
 The Build 218 Integration v1 connection-test foundation is unchanged: nonproduction-only, owner pilot authorization NOT GIVEN / HOLD, no production pre-seeded connection, and no events, commands, business writes, communications dispatch or customer-record copying.
 
 Next queued: **Build 220 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Persistence & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Filtering.**
+
+
+## Build 220 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Audit Filtering
+
+Completed the queued browser-local recovery cycle: bounded newest repair preset-recovery audit evidence, persisted newest renewal recovery preset selection and age filtering for newest receipt recovery audit evidence.
+
+Reconciled the revised QL-245 evidence-return contract: initial Devil n Dove candidate scope is now health/capabilities only; product/listing reference reads are not advertised or callable; truthful connection state is DISCONNECTED; owner authorization remains NOT_GIVEN; seven signed denial categories are required before source evidence can be prepared; production remains fail-closed. The separately promoted QL-246 six-app public source-proof/trusted-pin gate is preserved unchanged and does not authorize a connection.
+
+Next queued: **Build 221 — Recovery Audit Recovery Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Filtering, Renewal Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery & Receipt Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search Preset Recovery Audit Search.**

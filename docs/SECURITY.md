@@ -578,7 +578,7 @@ Nonce replay suppression is durable and atomic in PostgreSQL. Request audit rows
 
 Health, capabilities and gateway-audit evidence are Ed25519-signed with a server-only private key. Public SPKI fingerprints are deliberately obtained through a trusted server command and must be independently pinned through another channel. Signature validity alone does not establish owner identity, witness independence, durable storage across restart or permission to begin a pilot.
 
-When explicitly registered on the nonproduction server, the first Devil n Dove connection stays `HOLD` and grants only `read_product_reference` and `read_listing_reference`. Commands, events, payments, Etsy writes, communications dispatch, reservations, jobs and device actuation are not exposed by this v1 route surface. Production Vercel deployments fail closed because the QL-243 endpoints require both the explicit nonproduction switch and a non-production `VERCEL_ENV`.
+When explicitly registered on the nonproduction server, the first Devil n Dove connection stays `DISCONNECTED` and grants only `read_health` and `read_capabilities`. Commands, events, payments, Etsy writes, communications dispatch, reservations, jobs and device actuation are not exposed by this v1 route surface. Production Vercel deployments fail closed because the QL-243 endpoints require both the explicit nonproduction switch and a non-production `VERCEL_ENV`.
 
 Key revocation and rotation are server-only administrative actions. Rotation revokes the old registry row and creates a new key ID/environment-variable reference and new public receipt IDs; no secret value crosses the command arguments or database.
 
