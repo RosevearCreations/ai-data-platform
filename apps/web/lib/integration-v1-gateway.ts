@@ -875,14 +875,14 @@ export async function registerIntegrationV1DevilNDoveConnection() {
     `insert into app.integration_v1_connections (
       connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
       environment,key_id,secret_env_var,key_state,connection_state,capabilities,
-      health_receipt_id,capabilities_receipt_id,gateway_audit_id
+      health_receipt_id,capabilities_receipt_id,gateway_audit_id,registry_receipt_id
     ) values (
       'np-comms-hub-devilndove','rosevear-comms-hub','ai-data-platform','devilndove',
       null,'-','nonproduction','np-devilndove-current',
-      'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64','active','HOLD',
-      '["read_product_reference","read_listing_reference"]'::jsonb,
-      'np-devilndove-health-build218','np-devilndove-caps-build218',
-      'np-devilndove-audit-build218'
+      'ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64','active','DISCONNECTED',
+      '["read_health","read_capabilities"]'::jsonb,
+      'np-devilndove-health-build220','np-devilndove-caps-build220',
+      'np-devilndove-audit-build220','np-devilndove-registry-build220'
     )
     on conflict (connection_id) do nothing
     returning connection_id`
@@ -891,8 +891,9 @@ export async function registerIntegrationV1DevilNDoveConnection() {
     connectionId: "np-comms-hub-devilndove",
     created: result.rowCount === 1,
     keyId: "np-devilndove-current",
-    connectionState: "HOLD" as const,
-    capabilities: ["read_product_reference", "read_listing_reference"] as const
+    registryReceiptId: "np-devilndove-registry-build220",
+    connectionState: "DISCONNECTED" as const,
+    capabilities: ["read_health", "read_capabilities"] as const
   };
 }
 
@@ -904,6 +905,7 @@ export async function rotateIntegrationV1ConnectionKey(input: {
   healthReceiptId: string;
   capabilitiesReceiptId: string;
   gatewayAuditId: string;
+  registryReceiptId: string;
 }) {
   if (!isIntegrationV1NonproductionEnabled()) {
     throw new Error("integration_v1_nonproduction_disabled");
@@ -914,7 +916,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
     !/^[A-Z][A-Z0-9_]{2,127}$/.test(input.newSecretEnvVar) ||
     !safeReceiptId(input.healthReceiptId) ||
     !safeReceiptId(input.capabilitiesReceiptId) ||
-    !safeReceiptId(input.gatewayAuditId)
+    !safeReceiptId(input.gatewayAuditId) ||
+    !safeReceiptId(input.registryReceiptId)
   ) {
     throw new Error("integration_v1_rotation_metadata_invalid");
   }
@@ -953,8 +956,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
       `insert into app.integration_v1_connections (
         connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
         environment,key_id,secret_env_var,key_state,connection_state,capabilities,
-        health_receipt_id,capabilities_receipt_id,gateway_audit_id
-      ) values ($1,$2,$3,$4,$5,$6,'nonproduction',$7,$8,'active','HOLD',$9::jsonb,$10,$11,$12)`,
+        health_receipt_id,capabilities_receipt_id,gateway_audit_id,registry_receipt_id
+      ) values ($1,$2,$3,$4,$5,$6,'nonproduction',$7,$8,'active','DISCONNECTED',$9::jsonb,$10,$11,$12,$13)`,
       [
         input.newConnectionId,
         row.sourceSystem,
@@ -967,7 +970,8 @@ export async function rotateIntegrationV1ConnectionKey(input: {
         JSON.stringify(parseCapabilities(row.capabilities) ?? []),
         input.healthReceiptId,
         input.capabilitiesReceiptId,
-        input.gatewayAuditId
+        input.gatewayAuditId,
+        input.registryReceiptId
       ]
     );
     await client.query("commit");
