@@ -70,9 +70,9 @@ async function main() {
   assert(
     gateway.includes('process.env.ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED === "true"') &&
     gateway.includes('process.env.VERCEL_ENV !== "production"') &&
-    gateway.includes('INTEGRATION_V1_STATUS = "HOLD"') &&
+    gateway.includes('INTEGRATION_V1_STATUS = "DISCONNECTED"') &&
     gateway.includes('identity_verified=true'),
-    "Build 218 Integration v1 must be nonproduction-only, HOLD and require verified negative evidence."
+    "Build 218 Integration v1 must remain nonproduction-only and require verified negative evidence after later scope hardening."
   );
 
   for (const token of [
@@ -122,8 +122,9 @@ async function main() {
   assert(
     gateway.includes("registerIntegrationV1DevilNDoveConnection") &&
     gateway.includes("ROSEVEAR_INTEGRATION_V1_COMMS_DND_HMAC_KEY_B64") &&
-    gateway.includes("read_product_reference") &&
-    gateway.includes("read_listing_reference") &&
+    gateway.includes("read_health") &&
+    gateway.includes("read_capabilities") &&
+    !gateway.includes('devilndove: Object.freeze(["read_product_reference", "read_listing_reference"])') &&
     gateway.includes("rotateIntegrationV1ConnectionKey") &&
     gateway.includes("revokeIntegrationV1ConnectionKey") &&
     admin.includes('"register-devilndove"') &&
@@ -131,7 +132,7 @@ async function main() {
     admin.includes('"fingerprint"') &&
     admin.includes('"rotate"') &&
     admin.includes('"revoke"'),
-    "Build 218 must provide trusted server-side audit, fingerprint, rotation and revocation controls."
+    "Build 218 controls must remain available after later QL-245 scope hardening."
   );
 
   for (const variable of [
