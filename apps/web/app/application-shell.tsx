@@ -119,7 +119,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 214 · Marble Standard</span>
+          <span>Build 215 · Marble Standard</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
