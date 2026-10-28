@@ -225,7 +225,7 @@ function capabilityPolicyValid(connection: IntegrationV1Connection) {
   ];
   return Boolean(
     allowed &&
-    connection.capabilities.length > 0 &&
+    connection.capabilities.length === allowed.length &&
     new Set(connection.capabilities).size === connection.capabilities.length &&
     connection.capabilities.every((capability) =>
       new Set<string>(allowed as readonly string[]).has(capability)
