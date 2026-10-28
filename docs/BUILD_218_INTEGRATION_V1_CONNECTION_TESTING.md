@@ -16,12 +16,12 @@ This Build 218 companion scope implements the AI Data Platform side of the owner
 - Added immutable sanitized request-audit evidence and immutable signed receipt storage.
 - Added Ed25519 response signing using a server-only private key; the public SPKI SHA-256 fingerprint is produced only by a trusted server-side operator command for separate-channel verification.
 - Added an explicit nonproduction-only registration command for `rosevear-comms-hub → ai-data-platform / devilndove / tenant null` with only:
-  - `read_product_reference`
-  - `read_listing_reference`
+  - `read_health`
+  - `read_capabilities`
 - Added server-only key rotation/revocation helpers.
 - Added blocked-route handling for write/mutating methods; no events, commands, payments, Etsy writes, communications dispatch, reservation changes, job dispatch or device actuation is enabled.
 - Production deployments fail closed: the QL-243 routes only become available when `ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED=true` **and** `VERCEL_ENV` is not `production`.
-- Connection state remains `HOLD`. Owner pilot authorization **NOT GIVEN**.
+- Connection state remains `DISCONNECTED`. Owner pilot authorization **NOT GIVEN**.
 
 ## Server-side configuration
 
@@ -45,7 +45,7 @@ The nonsecret registration profile uses key ID `np-devilndove-current`; it is cr
 5. Obtain the gateway public SPKI SHA-256 fingerprint from the trusted server and verify it through a separate channel.
 6. The Comms Hub QL-243 harness may then perform its four authenticated nonproduction GETs.
 7. Independently verify the audit record after restart/redeploy before claiming durability.
-8. Keep owner pilot authorization **NOT GIVEN** and connection state `HOLD` until a later explicit decision.
+8. Build 220 supersedes the earlier provisional `HOLD` label with the QL-245 truthful state: owner pilot authorization **NOT GIVEN** and connection state `DISCONNECTED` until a later explicit decision.
 
 ## Trusted operator commands
 
@@ -65,3 +65,8 @@ Rotation requires a new key ID, environment-variable **name**, and new public re
 This build adds a nonproduction server gateway boundary and migration, so the older recovery-cycle statement “no API endpoint / no database migration” applies only to the recovery-preference portion of Build 218. The integration portion intentionally adds migration `0086_integration_v1_nonproduction_connection_testing.sql` and the three read-only authenticated GET endpoints.
 
 No product/customer records are copied into the gateway. No remote write, command, dispatch, live communications, Etsy change, booking change, reservation change, job dispatch or device actuation is authorized.
+
+
+## QL-245 superseding scope correction
+
+Build 220 supersedes the older future-candidate product/listing scope described by the original QL-243 handoff. The current initial candidate advertises only `read_health` and `read_capabilities`, remains `DISCONNECTED`, and requires seven independently executed signed denial categories before a QL-245 source envelope can be prepared. See `BUILD_220_INTEGRATION_V1_QL245_EVIDENCE_RETURN.md`.

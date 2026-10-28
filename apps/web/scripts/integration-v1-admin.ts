@@ -1,6 +1,7 @@
 import {
   integrationV1GatewayPublicKeyFingerprintSha256,
   prepareIntegrationV1GatewayAudit,
+  prepareIntegrationV1Ql245SourceEvidence,
   registerIntegrationV1DevilNDoveConnection,
   revokeIntegrationV1ConnectionKey,
   rotateIntegrationV1ConnectionKey
@@ -30,6 +31,19 @@ async function main() {
   const connectionId = arg("--connection");
   if (!connectionId) throw new Error("connection_required");
 
+  if (action === "prepare-ql245-source") {
+    const ciRunUrl = arg("--ci-run-url");
+    if (!connectionId || !ciRunUrl) {
+      throw new Error("connection_and_ci_run_url_required");
+    }
+    const result = await prepareIntegrationV1Ql245SourceEvidence({
+      connectionId,
+      ciRunUrl
+    });
+    console.log(JSON.stringify(result));
+    return;
+  }
+
   if (action === "prepare-audit") {
     const envelope = await prepareIntegrationV1GatewayAudit(connectionId);
     console.log(JSON.stringify({
@@ -57,7 +71,8 @@ async function main() {
       newSecretEnvVar: arg("--secret-env-var") ?? "",
       healthReceiptId: arg("--health-receipt-id") ?? "",
       capabilitiesReceiptId: arg("--capabilities-receipt-id") ?? "",
-      gatewayAuditId: arg("--gateway-audit-id") ?? ""
+      gatewayAuditId: arg("--gateway-audit-id") ?? "",
+      registryReceiptId: arg("--registry-receipt-id") ?? ""
     };
     await rotateIntegrationV1ConnectionKey(next);
     console.log(JSON.stringify({
@@ -70,7 +85,7 @@ async function main() {
     return;
   }
 
-  throw new Error("usage: register-devilndove | fingerprint | prepare-audit | revoke | rotate");
+  throw new Error("usage: register-devilndove | fingerprint | prepare-audit | prepare-ql245-source --ci-run-url <url> | revoke | rotate");
 }
 
 void main().catch((error: unknown) => {
