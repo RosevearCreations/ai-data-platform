@@ -22,7 +22,7 @@ export const HELP_TOPICS = {
   },
   "integration-v1-connection-testing": {
     title: "Integration v1 nonproduction connection testing",
-    summary: "Build 218 adds server-only authenticated nonproduction GET testing through the AI Data Platform gateway. All receipts remain HOLD; no customer records, commands, messages or business writes are enabled.",
+    summary: "Build 218 introduced server-only authenticated nonproduction GET testing through the AI Data Platform gateway. Build 220 keeps the actual connection DISCONNECTED; no customer records, commands, messages or business writes are enabled.",
     steps: [
       "Provision each HMAC key and the Ed25519 signing key only in an approved server-side secret manager; never place credentials in browser code, GitHub or evidence files.",
       "Run authenticated health first, then capabilities, using the exact registered source, destination, business, tenant, environment, method, path, key ID, timestamp and fresh nonce.",
