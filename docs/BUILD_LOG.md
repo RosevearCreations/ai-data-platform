@@ -3699,3 +3699,17 @@ Next queued: **Build 221 — Recovery Audit Recovery Search Preset Recovery Audi
 - application shell advanced to Build 221 and the verifier is registered in the web test chain.
 
 Next queued: **Build 222 — Recovery Audit Search, Renewal Recovery Audit & Receipt Recovery Presets, with continued QL-246 HOLD reconciliation until independently witnessed authenticated gateway acceptance and explicit owner authorization exist.**
+
+
+## Build 222 — Recovery Audit Search, Renewal Recovery Audit, Receipt Recovery Presets & QL-247 Connection-Test Readiness
+
+- advanced the queued browser-local recovery cycle with repair recovery search, bounded renewal preset-recovery audit evidence and deterministic receipt recovery presets;
+- added the QL-247 six-application connection-test readiness handoff;
+- added an AI Data Platform owner-safe readiness return that reports BLOCKED / NOT PROVISIONED / UNVERIFIED rather than inventing Phase-B evidence;
+- preserved GET-only nonproduction scope for integration health and capabilities;
+- preserved the requirement for seven genuinely observed denial cases, durable post-restart audit verification, pinned signing keys, rotation/revocation and rollback witness;
+- shared GitHub repository ownership is explicitly not treated as service-to-service authentication;
+- owner pilot approval remains NOT GIVEN and actual connection remains DISCONNECTED / HOLD;
+- application shell advanced to Build 222 and verifier registration was added.
+
+Next queued: **Build 223 — Recovery Search Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-247 Phase-A source/trust readiness reconciliation without starting Phase-B authenticated testing.**
