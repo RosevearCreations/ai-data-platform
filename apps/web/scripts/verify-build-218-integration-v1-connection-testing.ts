@@ -63,7 +63,7 @@ async function main() {
     gateway.includes('timingSafeEqual') &&
     gateway.includes('insert into app.integration_v1_nonces') &&
     gateway.includes('on conflict do nothing') &&
-    gateway.includes('"replay_denied"'),
+    gateway.includes('"nonce_replay_denied"'),
     "Build 218 must enforce freshness, constant-time HMAC verification and durable atomic replay denial."
   );
 
