@@ -154,7 +154,7 @@ async function main() {
   }
 
   assert(
-    help.includes("Build 220 repair recovery audit, renewal preset persistence & receipt recovery audit filtering"),
+    help.includes("Build 220 repair recovery audit, renewal preset persistence, receipt recovery audit filtering & QL-245 evidence return"),
     "Help Center must register the Build 220 help group."
   );
 
