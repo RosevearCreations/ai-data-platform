@@ -733,6 +733,85 @@ export async function prepareIntegrationV1GatewayAudit(connectionId: string) {
   return persisted.rows[0];
 }
 
+export async function rotateIntegrationV1ConnectionKey(input: {
+  currentConnectionId: string;
+  newConnectionId: string;
+  newKeyId: string;
+  newSecretEnvVar: string;
+  healthReceiptId: string;
+  capabilitiesReceiptId: string;
+  gatewayAuditId: string;
+}) {
+  if (
+    !safeToken(input.newConnectionId, 96) ||
+    !safeKeyId(input.newKeyId) ||
+    !/^[A-Z][A-Z0-9_]{2,127}$/.test(input.newSecretEnvVar) ||
+    !safeReceiptId(input.healthReceiptId) ||
+    !safeReceiptId(input.capabilitiesReceiptId) ||
+    !safeReceiptId(input.gatewayAuditId)
+  ) {
+    throw new Error("integration_v1_rotation_metadata_invalid");
+  }
+
+  const client = await authPool.connect();
+  try {
+    await client.query("begin");
+    const current = await client.query<IntegrationV1Connection>(
+      `select
+        connection_id as "connectionId", source_system as "sourceSystem",
+        destination_system as "destinationSystem", business_id as "businessId",
+        tenant_id as "tenantId", tenant_key as "tenantKey", environment,
+        key_id as "keyId", secret_env_var as "secretEnvVar", key_state as "keyState",
+        connection_state as "connectionState", capabilities,
+        health_receipt_id as "healthReceiptId",
+        capabilities_receipt_id as "capabilitiesReceiptId",
+        gateway_audit_id as "gatewayAuditId"
+       from app.integration_v1_connections
+       where connection_id=$1
+       for update`,
+      [input.currentConnectionId]
+    );
+    const row = current.rows[0];
+    if (!row || row.environment !== "nonproduction" || row.keyState !== "active") {
+      throw new Error("integration_v1_rotation_source_invalid");
+    }
+
+    await client.query(
+      `update app.integration_v1_connections
+       set key_state='revoked', updated_at=now()
+       where connection_id=$1`,
+      [input.currentConnectionId]
+    );
+    await client.query(
+      `insert into app.integration_v1_connections (
+        connection_id,source_system,destination_system,business_id,tenant_id,tenant_key,
+        environment,key_id,secret_env_var,key_state,connection_state,capabilities,
+        health_receipt_id,capabilities_receipt_id,gateway_audit_id
+      ) values ($1,$2,$3,$4,$5,$6,'nonproduction',$7,$8,'active','HOLD',$9::jsonb,$10,$11,$12)`,
+      [
+        input.newConnectionId,
+        row.sourceSystem,
+        row.destinationSystem,
+        row.businessId,
+        row.tenantId,
+        row.tenantKey,
+        input.newKeyId,
+        input.newSecretEnvVar,
+        JSON.stringify(parseCapabilities(row.capabilities) ?? []),
+        input.healthReceiptId,
+        input.capabilitiesReceiptId,
+        input.gatewayAuditId
+      ]
+    );
+    await client.query("commit");
+  } catch (error) {
+    await client.query("rollback");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 export async function revokeIntegrationV1ConnectionKey(connectionId: string) {
   const result = await authPool.query(
     `update app.integration_v1_connections
