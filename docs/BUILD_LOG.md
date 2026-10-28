@@ -3713,3 +3713,20 @@ Next queued: **Build 222 — Recovery Audit Search, Renewal Recovery Audit & Rec
 - application shell advanced to Build 222 and verifier registration was added.
 
 Next queued: **Build 223 — Recovery Search Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-247 Phase-A source/trust readiness reconciliation without starting Phase-B authenticated testing.**
+
+
+## Build 223 — Recovery Search Presets, Renewal Recovery Filtering, Receipt Preset Persistence & QL-248 Two-SHA Consumer Amendment
+
+- added deterministic newest repair recovery search presets;
+- added newest renewal recovery audit All / 24h / 7d filtering;
+- persisted the selected newest receipt recovery preset in a dedicated sanitized browser-local namespace;
+- adopted QL-248's two-SHA proof transport clarification in the AI Data Platform QL-246 consumer;
+- v2 trusted rows now distinguish earlier audited sourceRevision from later proofCommitSha and proofSha256;
+- source CI identity is independently supplied and compared against the signed payload;
+- original QL-246 v1 trusted rows remain supported for compatibility;
+- Phase-B authenticated testing is not started by this build;
+- seven genuine denial observations, durable audit/revocation/rollback and owner pilot authorization remain pending;
+- owner pilot approval remains NOT GIVEN and connection remains DISCONNECTED / HOLD;
+- application shell advanced to Build 223 and verifier registration was added.
+
+Next queued: **Build 224 — Recovery Preset Persistence, Renewal Recovery Search & Receipt Recovery Repair, plus QL-248 v2 manifest fixture hardening and Phase-A source/CI provenance checks while authenticated testing remains HELD.**

@@ -43,18 +43,48 @@ export function ql246Canonical(payload) {
   return Buffer.from(QL246_PROOF_FIELDS.map(k => JSON.stringify([k, payload[k]])).join('\n'), 'utf8');
 }
 
+const QL246_V1_ROW_FIELDS = Object.freeze([
+  'system', 'repository', 'sourceRevision', 'sha256',
+  'publicKeyFingerprintSha256', 'businessId', 'tenantId'
+]);
+const QL248_ROW_FIELDS = Object.freeze([
+  'system', 'repository', 'sourceRevision', 'proofCommitSha', 'proofSha256',
+  'ciRunUrl', 'publicKeyFingerprintSha256', 'businessId', 'tenantId'
+]);
+
+function trustedRowVersion(row) {
+  if (exact(row, QL246_V1_ROW_FIELDS)) return 1;
+  if (exact(row, QL248_ROW_FIELDS)) return 2;
+  return 0;
+}
+
+function rowProofCommitSha(row) {
+  return trustedRowVersion(row) === 2 ? row.proofCommitSha : row.sourceRevision;
+}
+
+function rowProofSha256(row) {
+  return trustedRowVersion(row) === 2 ? row.proofSha256 : row.sha256;
+}
+
 export function ql246RawUrl(row) {
-  if (!exact(row, ['system', 'repository', 'sourceRevision', 'sha256', 'publicKeyFingerprintSha256', 'businessId', 'tenantId']))
-    throw new TypeError('A trusted source entry must have exactly seven public fields.');
+  const version = trustedRowVersion(row);
+  if (!version) throw new TypeError('A trusted source entry has an unsupported public field set.');
+  const proofCommitSha = rowProofCommitSha(row);
   if (!QL246_SYSTEMS.includes(row.system) || !REPO.test(row.repository) ||
-    !REV.test(row.sourceRevision) || !HEX.test(row.sha256) ||
-    !HEX.test(row.publicKeyFingerprintSha256)) throw new TypeError('Unsafe or incomplete immutable source location.');
-  return `https://raw.githubusercontent.com/RosevearCreations/${row.repository}/${row.sourceRevision}/${QL246_PATH}`;
+    !REV.test(row.sourceRevision) || !REV.test(proofCommitSha) ||
+    !HEX.test(rowProofSha256(row)) || !HEX.test(row.publicKeyFingerprintSha256))
+    throw new TypeError('Unsafe or incomplete immutable source location.');
+  if (version === 2 && (
+    typeof row.ciRunUrl !== 'string' ||
+    row.ciRunUrl !== `https://github.com/RosevearCreations/${row.repository}/actions/runs/${String(row.ciRunUrl).split('/').at(-1)}` ||
+    !/\/actions\/runs\/[1-9][0-9]*$/.test(row.ciRunUrl)
+  )) throw new TypeError('Unsafe or incomplete source CI identity.');
+  return `https://raw.githubusercontent.com/RosevearCreations/${row.repository}/${proofCommitSha}/${QL246_PATH}`;
 }
 
 function validTrust(manifest, now) {
   if (!exact(manifest, ['schema', 'challengeId', 'challengeNonce', 'issuedAt', 'expiresAt', 'sources']) ||
-    manifest.schema !== 'rosevear.integration.ql246.trusted-pins.v1' ||
+    !['rosevear.integration.ql246.trusted-pins.v1', 'rosevear.integration.ql246.trusted-pins.v2'].includes(manifest.schema) ||
     !ID.test(manifest.challengeId) ||
     typeof manifest.challengeNonce !== 'string' || !/^[A-Za-z0-9_-]{32,128}$/.test(manifest.challengeNonce) ||
     !Number.isSafeInteger(manifest.issuedAt) || !Number.isSafeInteger(manifest.expiresAt) ||
@@ -78,7 +108,7 @@ function validTrust(manifest, now) {
 
 function proofFor(row, manifest, raw, now) {
   if (typeof raw !== 'string' || Buffer.byteLength(raw, 'utf8') > 16_384 ||
-    !noSecrets(raw) || !safeHex(hash(raw), row.sha256)) return 'SOURCE_BYTES_OR_DIGEST_INVALID';
+    !noSecrets(raw) || !safeHex(hash(raw), rowProofSha256(row))) return 'SOURCE_BYTES_OR_DIGEST_INVALID';
   let evidence;
   try { evidence = JSON.parse(raw); } catch { return 'SOURCE_JSON_INVALID'; }
   if (!exact(evidence, ['publicKeyPem', 'payload', 'signature']) ||
@@ -101,7 +131,8 @@ function proofFor(row, manifest, raw, now) {
     !safeHex(p.challenge_sha256, hash(manifest.challengeNonce)) ||
     p.business_id !== row.businessId || p.tenant_id !== row.tenantId ||
     p.environment !== 'nonproduction' ||
-    p.ci_run_url !== `https://github.com/RosevearCreations/${row.repository}/actions/runs/${String(p.ci_run_url).split('/').at(-1)}` ||
+    (trustedRowVersion(row) === 2 ? p.ci_run_url !== row.ciRunUrl :
+      p.ci_run_url !== `https://github.com/RosevearCreations/${row.repository}/actions/runs/${String(p.ci_run_url).split('/').at(-1)}`) ||
     !/\/actions\/runs\/[1-9][0-9]*$/.test(p.ci_run_url) ||
     JSON.stringify(p.allowed_methods) !== JSON.stringify(QL246_METHODS) ||
     JSON.stringify(p.allowed_paths) !== JSON.stringify(QL246_PATHS) ||
@@ -145,6 +176,7 @@ export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now(
     try { raw = await fetchPublic(url); } catch { raw = null; }
     const reason = proofFor(row, trusted, raw, now);
     rows.push({ system: row.system, sourceRevision: row.sourceRevision,
+      proofCommitSha: rowProofCommitSha(row),
       publicSourceUrl: url, status: reason === null ? 'VERIFIED_SIGNED_SOURCE_ONLY' : reason });
   }
   return held(rows.every(row => row.status === 'VERIFIED_SIGNED_SOURCE_ONLY')
