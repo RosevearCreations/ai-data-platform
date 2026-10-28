@@ -109,6 +109,10 @@ Migration `0087_integration_v1_ql245_evidence_scope.sql`:
 - does not seed a connection;
 - adds no product/customer record tables or live write capability.
 
+## QL-246 offline source-proof continuity
+
+The separately promoted QL-246 six-app source-proof/trusted-pin tooling remains present on this reconciled Build 220 branch. It is an offline/public-metadata verification gate only. A result that six public signatures match independently supplied pins still does **not** prove a real HMAC exchange, durable gateway storage, owner identity, credential custody, rollback witness or pilot authorization. QL-245 runtime evidence and QL-246 public-source review therefore remain separate gates, both fail-closed.
+
 ## Evidence that remains external
 
 Build 220 does **not** claim any of the following:
