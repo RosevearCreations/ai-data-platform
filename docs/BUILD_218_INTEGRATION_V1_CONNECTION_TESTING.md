@@ -21,7 +21,7 @@ This Build 218 companion scope implements the AI Data Platform side of the owner
 - Added server-only key rotation/revocation helpers.
 - Added blocked-route handling for write/mutating methods; no events, commands, payments, Etsy writes, communications dispatch, reservation changes, job dispatch or device actuation is enabled.
 - Production deployments fail closed: the QL-243 routes only become available when `ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED=true` **and** `VERCEL_ENV` is not `production`.
-- Connection state remains `HOLD`.
+- Connection state remains `HOLD`. Owner pilot authorization **NOT GIVEN**.
 
 ## Server-side configuration
 
