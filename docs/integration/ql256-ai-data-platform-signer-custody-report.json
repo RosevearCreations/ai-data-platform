@@ -1,0 +1,19 @@
+{
+  "app": "AI Data Platform",
+  "current_main_sha": "c658bce8c207dcbfdf6c9afa5f304428dd3e31d3",
+  "signer_provisioning_decision": "SIGNER_EXISTS_CUSTODY_NOT_VERIFIED",
+  "signer_storage": "Vercel Preview sensitive environment variable QL256_SIGNER_PRIVATE_KEY_PEM",
+  "signer_key_id": "ql256-ai-data-platform-d16f21ab82c12760",
+  "signer_public_spki_sha256": "d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6",
+  "source_A_sha": "76f73363a9a29a34ed8bf09b6b4ff58a0dc77482",
+  "matching_green_ci_run": "https://github.com/RosevearCreations/ai-data-platform/actions/runs/40806025614",
+  "ql248_two_sha_consumer_amendment_accepted": "YES",
+  "custodian_distinct_witness_reviewer": "PRIVATE_REVIEW_REQUESTED",
+  "independently_pinned_spki": "NOT_AVAILABLE",
+  "proof_B_sha": "NOT_AVAILABLE",
+  "exact_raw_proof_sha256": "NOT_AVAILABLE",
+  "owner_test_authorization": "NOT_GIVEN",
+  "genuine_gateway_get_denial_receipts": "NOT_RUN",
+  "connection": "DISCONNECTED / HOLD",
+  "next_concrete_blocker": "A separately authenticated custodian must verify the public SPKI SHA-256 d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6, assign a distinct witness and reviewer, complete the fresh <=5 minute custody challenge, and return three distinct opaque non-secret receipt references. Only then may proof commit B be signed/published."
+}
