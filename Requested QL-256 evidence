@@ -1,0 +1,44 @@
+App: AI Data Platform
+
+Current main SHA:
+15ccd72f098b6238d4b1d357a97676d6a2836df2
+
+Signer provisioning decision:
+SIGNER_EXISTS_CUSTODY_NOT_VERIFIED
+
+Source A + matching GREEN CI run:
+A = 15ccd72f098b6238d4b1d357a97676d6a2836df2
+CI = https://github.com/RosevearCreations/ai-data-platform/actions/runs/40915219544
+Result = GREEN / SUCCESS
+CI head_sha = A
+
+QL-248 two-SHA consumer amendment accepted:
+YES
+
+Custodian, distinct witness, reviewer:
+PRIVATE_REVIEW_REQUESTED
+Not yet independently authenticated/verified
+
+Signer key ID:
+ql256-ai-data-platform-d16f21ab82c12760
+
+Signer public SPKI SHA-256:
+d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6
+
+Proof B:
+NOT_AVAILABLE
+
+Exact raw proof SHA-256:
+NOT_AVAILABLE
+
+Independently pinned SPKI:
+NOT_AVAILABLE
+
+Owner TEST authorization:
+NOT_GIVEN
+
+Genuine gateway GET/denial receipts:
+NOT_RUN
+
+Connection:
+DISCONNECTED / HOLD
