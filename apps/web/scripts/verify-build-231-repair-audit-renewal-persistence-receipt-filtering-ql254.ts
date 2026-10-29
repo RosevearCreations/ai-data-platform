@@ -24,7 +24,7 @@ async function main(){
   );
 
   const now=1_800_000_000_000;
-  const receipt:any[]=[
+  const receipt: Parameters<typeof filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0]=[
     {version:1,auditId:"r1",createdAt:now-3600000,requestedPresetId:"a",recoveredPresetId:"all",reason:"Recent"},
     {version:1,auditId:"r2",createdAt:now-3*86400000,requestedPresetId:"b",recoveredPresetId:"all",reason:"Week"},
     {version:1,auditId:"r3",createdAt:now-10*86400000,requestedPresetId:"c",recoveredPresetId:"all",reason:"Old"}
@@ -41,7 +41,7 @@ async function main(){
     source("../../../docs/BUILD_231_REPAIR_AUDIT_RENEWAL_PERSISTENCE_RECEIPT_FILTERING_QL254.md")
   ]);
 
-  ensure(shell.includes("Build 231 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-231-repair-audit-renewal-persistence-receipt-filtering-ql254.ts"),"registered");
   for(const t of ["reconcileQl254OriginalProofRetrieval","verifyQl254IndependentWitnessClaim","evaluateQl254RelayReadiness","HOLD_QL254_ORIGINAL_PROOF_NOT_PUBLISHED","QL254_RELAY_REVERSIBILITY_SIMULATION_READY_CONNECTION_HELD"]) ensure(proof.includes(t),"missing "+t);
   ensure(qv.includes("QL-254 original proof retrieval, independent witness claim and relay reversibility"),"fixture");

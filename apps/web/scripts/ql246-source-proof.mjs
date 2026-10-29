@@ -728,6 +728,127 @@ export function evaluateQl254RelayReadiness(input) {
   });
 }
 
+
+export function evaluateQl255ProofPublicationDisposition(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, disposition: 'HELD', status: 'HOLD_QL255_PROOF_DISPOSITION_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      disposition: 'NOT_PUBLISHED',
+      status: 'QL255_PROOF_PUBLICATION_NOT_AVAILABLE',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const valid =
+    REV.test(input.sourceRevision || '') &&
+    REV.test(input.proofCommitSha || '') &&
+    input.sourceRevision !== input.proofCommitSha &&
+    HEX.test(input.proofSha256 || '') &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.ancestryVerified === true;
+
+  return Object.freeze({
+    ...base,
+    disposition: valid ? 'PUBLICATION_VERIFIED_CUSTODY_PENDING' : 'HELD',
+    status: valid ? 'QL255_PUBLICATION_VERIFIED_PRIVATE_CUSTODY_PENDING' : 'HOLD_QL255_PUBLICATION_METADATA_INCOMPLETE'
+  });
+}
+
+export function closeQl255WitnessCustodyException(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, closed: false, status: 'HOLD_QL255_CUSTODY_EXCEPTION_INPUT_INVALID' });
+
+  const receiptsOk =
+    typeof input.custodyReceiptId === 'string' && input.custodyReceiptId.length >= 6 &&
+    typeof input.witnessReceiptId === 'string' && input.witnessReceiptId.length >= 6 &&
+    typeof input.reviewerReceiptId === 'string' && input.reviewerReceiptId.length >= 6 &&
+    new Set([input.custodyReceiptId, input.witnessReceiptId, input.reviewerReceiptId]).size === 3;
+  const pinsOk = HEX.test(input.publicSignerSpkiSha256 || '') && HEX.test(input.registrySnapshotSha256 || '');
+  const timeOk =
+    Number.isSafeInteger(input.issuedAt) && Number.isSafeInteger(input.expiresAt) &&
+    input.issuedAt <= now && input.expiresAt > now &&
+    input.expiresAt - input.issuedAt <= 5 * 60 * 1000;
+  const rolesOk =
+    input.custodianVerifiedPrivately === true &&
+    input.witnessVerifiedPrivately === true &&
+    input.reviewerVerifiedPrivately === true &&
+    input.rolesAreDistinct === true;
+
+  if (!receiptsOk || !pinsOk || !timeOk || !rolesOk)
+    return Object.freeze({ ...base, closed: false, status: 'HOLD_QL255_PRIVATE_CUSTODY_EXCEPTION_OPEN' });
+
+  return Object.freeze({
+    ...base,
+    closed: true,
+    status: 'QL255_PRIVATE_CUSTODY_EXCEPTION_CLOSED_OWNER_TEST_AUTH_HELD',
+    custodyReceiptId: input.custodyReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
+export function prepareQl255MiniServerTrialApproval(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    relayInstalled: false,
+    relayStarted: false
+  });
+  if (!input) return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL255_TRIAL_PREPARATION_INPUT_INVALID' });
+
+  const safe =
+    input.simulationOnly === true &&
+    input.outboundOnly === true &&
+    input.noPublicInboundPorts === true &&
+    input.noPortForwarding === true &&
+    input.separateServiceAccount === true &&
+    input.separatePerAppCredentials === true &&
+    input.rollbackDefined === true &&
+    input.killSwitchDefined === true &&
+    input.ownerApprovalRecorded === false;
+
+  return Object.freeze({
+    ...base,
+    prepared: safe,
+    status: safe ? 'QL255_MINI_SERVER_TRIAL_APPROVAL_PREPARED_OWNER_DECISION_REQUIRED' : 'HOLD_QL255_TRIAL_PREPARATION_INCOMPLETE'
+  });
+}
+
+export function inspectQl256SignerProvisioning(env = {}) {
+  const privateKeyPresent = typeof env.QL256_SIGNER_PRIVATE_KEY_PEM === 'string' && env.QL256_SIGNER_PRIVATE_KEY_PEM.includes('BEGIN PRIVATE KEY');
+  const publicKeyPresent = typeof env.QL256_SIGNER_PUBLIC_KEY_PEM === 'string' && env.QL256_SIGNER_PUBLIC_KEY_PEM.includes('BEGIN PUBLIC KEY');
+  const spkiPresent = HEX.test(env.QL256_SIGNER_SPKI_SHA256 || '');
+
+  if (!privateKeyPresent && !publicKeyPresent && !spkiPresent)
+    return Object.freeze({ decision: 'SIGNER_NOT_PROVISIONED', privateKeyPresent: false, publicKeyPresent: false, spkiPresent: false });
+
+  if (privateKeyPresent && publicKeyPresent && spkiPresent)
+    return Object.freeze({
+      decision: 'SIGNER_EXISTS_CUSTODY_NOT_VERIFIED',
+      privateKeyPresent: true,
+      publicKeyPresent: true,
+      spkiPresent: true,
+      publicSpkiSha256: env.QL256_SIGNER_SPKI_SHA256
+    });
+
+  return Object.freeze({ decision: 'SIGNER_STATUS_UNKNOWN', privateKeyPresent, publicKeyPresent, spkiPresent });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

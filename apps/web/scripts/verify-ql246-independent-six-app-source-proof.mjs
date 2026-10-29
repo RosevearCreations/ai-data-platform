@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -542,6 +542,40 @@ test('QL-254 original proof retrieval, independent witness claim and relay rever
   assert.equal(relay.relayInstalled,false);
   assert.equal(relay.relayStarted,false);
   assert.equal(relay.actualGatewayTest,'NOT_RUN');
+});
+
+
+test('QL-255 disposition, custody exception, mini-server prep and QL-256 signer inspection are real-state fail-closed', async () => {
+  const notPublished=evaluateQl255ProofPublicationDisposition({observedMainSha:'a'.repeat(40),proofHttpStatus:404});
+  assert.equal(notPublished.disposition,'NOT_PUBLISHED');
+  assert.equal(notPublished.status,'QL255_PROOF_PUBLICATION_NOT_AVAILABLE');
+
+  const custody=closeQl255WitnessCustodyException({
+    custodyReceiptId:'custody-1',witnessReceiptId:'witness-2',reviewerReceiptId:'reviewer-3',
+    publicSignerSpkiSha256:'b'.repeat(64),registrySnapshotSha256:'c'.repeat(64),
+    issuedAt:clock-60_000,expiresAt:clock+120_000,
+    custodianVerifiedPrivately:true,witnessVerifiedPrivately:true,reviewerVerifiedPrivately:false,rolesAreDistinct:true
+  },clock);
+  assert.equal(custody.closed,false);
+  assert.equal(custody.status,'HOLD_QL255_PRIVATE_CUSTODY_EXCEPTION_OPEN');
+
+  const prep=prepareQl255MiniServerTrialApproval({
+    simulationOnly:true,outboundOnly:true,noPublicInboundPorts:true,noPortForwarding:true,
+    separateServiceAccount:true,separatePerAppCredentials:true,rollbackDefined:true,killSwitchDefined:true,
+    ownerApprovalRecorded:false
+  });
+  assert.equal(prep.prepared,true);
+  assert.equal(prep.status,'QL255_MINI_SERVER_TRIAL_APPROVAL_PREPARED_OWNER_DECISION_REQUIRED');
+  assert.equal(prep.relayInstalled,false);
+  assert.equal(prep.relayStarted,false);
+
+  const signer=inspectQl256SignerProvisioning({
+    QL256_SIGNER_PRIVATE_KEY_PEM:'-----BEGIN PRIVATE KEY-----x',
+    QL256_SIGNER_PUBLIC_KEY_PEM:'-----BEGIN PUBLIC KEY-----x',
+    QL256_SIGNER_SPKI_SHA256:'d'.repeat(64)
+  });
+  assert.equal(signer.decision,'SIGNER_EXISTS_CUSTODY_NOT_VERIFIED');
+  assert.equal(signer.publicSpkiSha256,'d'.repeat(64));
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
