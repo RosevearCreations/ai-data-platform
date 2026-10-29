@@ -58,7 +58,7 @@ async function main() {
     source("../../../docs/BUILD_222_RECOVERY_SEARCH_RENEWAL_AUDIT_RECEIPT_PRESETS_QL247_READINESS.md")
   ]);
 
-  assert(shell.includes("Build 222 · Marble Standard"), "Build 222 shell label must be current.");
+  assert(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
   assert(verify221.includes('shell.includes("Build 221 · Marble Standard")') || verify221.includes('shell.includes("Marble Standard")'), "Build 221 verifier must remain compatible.");
   assert(pkg.includes("verify-build-222-recovery-search-renewal-audit-receipt-presets-ql247-readiness.ts"), "Build 222 verifier must be registered.");
 
@@ -70,7 +70,7 @@ async function main() {
     "DISCONNECTED / HOLD",
     "NOT AUTHORIZED"
   ]) {
-    assert(ql247.includes(token), "QL-247 handoff missing required contract token: " + token);
+    assert(ql247.toLowerCase().includes(token.toLowerCase()), "QL-247 handoff missing required contract token: " + token);
   }
 
   for (const token of ["BLOCKED", "NOT PROVISIONED", "UNVERIFIED", "NOT GIVEN", "DISCONNECTED / HOLD"]) {

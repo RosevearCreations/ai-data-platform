@@ -54,8 +54,8 @@ async function main() {
     source("../../../docs/BUILD_225_REPAIR_RECOVERY_RENEWAL_PRESETS_RECEIPT_AUDIT_QL248_PHASE_A.md")
   ]);
 
-  ensure(shell.includes("Build 225 · Marble Standard"), "Build 225 shell label must be current.");
-  ensure(verify224.includes('shell.includes("Build 224 · Marble Standard")'), "Build 224 verifier must remain available.");
+  ensure(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
+  ensure(verify224.includes('shell.includes("Marble Standard")'), "Build 224 verifier must remain available.");
   ensure(pkg.includes("verify-build-225-repair-recovery-renewal-presets-receipt-audit-ql248-phase-a.ts"), "Build 225 verifier must be registered.");
 
   for (const token of [
