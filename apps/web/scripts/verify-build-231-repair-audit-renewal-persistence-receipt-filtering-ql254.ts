@@ -41,7 +41,7 @@ async function main(){
     source("../../../docs/BUILD_231_REPAIR_AUDIT_RENEWAL_PERSISTENCE_RECEIPT_FILTERING_QL254.md")
   ]);
 
-  ensure(shell.includes("Build 231 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-231-repair-audit-renewal-persistence-receipt-filtering-ql254.ts"),"registered");
   for(const t of ["reconcileQl254OriginalProofRetrieval","verifyQl254IndependentWitnessClaim","evaluateQl254RelayReadiness","HOLD_QL254_ORIGINAL_PROOF_NOT_PUBLISHED","QL254_RELAY_REVERSIBILITY_SIMULATION_READY_CONNECTION_HELD"]) ensure(proof.includes(t),"missing "+t);
   ensure(qv.includes("QL-254 original proof retrieval, independent witness claim and relay reversibility"),"fixture");

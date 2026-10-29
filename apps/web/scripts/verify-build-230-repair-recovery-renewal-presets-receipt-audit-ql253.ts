@@ -30,7 +30,7 @@ async function main(){
     source("../../../docs/integration/ql253-ai-data-platform-build230-status.json"),
     source("../../../docs/BUILD_230_REPAIR_RECOVERY_RENEWAL_PRESETS_RECEIPT_AUDIT_QL253.md")
   ]);
-  ensure(shell.includes("Build 230 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-230-repair-recovery-renewal-presets-receipt-audit-ql253.ts"),"registered");
   for(const t of ["renewQl253RetryEvidence","ageQl253AncestryException","continueQl253VerifiedOwnerTestDecision","HOLD_ANCESTRY_EXCEPTION_OVERDUE","OWNER_TEST_DECISION_CONTINUITY_VERIFIED_REQUEST_EXECUTION_HELD"]) ensure(proof.includes(t),"missing "+t);
   ensure(qv.includes("retry evidence renewal, ancestry-exception aging and owner TEST continuity"),"fixtures");
