@@ -3746,3 +3746,20 @@ Next queued: **Build 224 — Recovery Preset Persistence, Renewal Recovery Searc
 - application shell advanced to Build 224 and verifier registration was added.
 
 Next queued: **Build 225 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-248 immutable proof-origin attestation scaffolding and Phase-A six-source completeness checks while connection testing remains HELD.**
+
+
+## Build 225 — Repair Preset Recovery, Renewal Recovery Presets, Receipt Recovery Audit & QL-248 Phase-A Proof-Origin Completeness
+
+- made the persisted newest repair recovery preset recovery-aware;
+- added deterministic newest renewal recovery search presets;
+- retained bounded newest receipt recovery audit evidence;
+- added public-metadata-only QL-248 Phase-A immutable proof-origin scaffolding;
+- Phase-A completeness now requires all six v2 source/proof rows in the required order;
+- complete Phase-A provenance returns SIX_SOURCE_PHASE_A_PROVENANCE_COMPLETE_AUTH_TESTING_HELD;
+- incomplete or invalid provenance returns HOLD_PHASE_A_MANIFEST_INCOMPLETE;
+- no partial six-source set is marked complete;
+- authenticated Phase-B testing remains HELD;
+- owner authorization remains NOT GIVEN and actual connection remains DISCONNECTED;
+- application shell advanced to Build 225 and verifier registration was added.
+
+Next queued: **Build 226 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-248 proof-origin scaffold export/verification fixtures and immutable six-source origin consistency checks while Phase-B remains HELD.**
