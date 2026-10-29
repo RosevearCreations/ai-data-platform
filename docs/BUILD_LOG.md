@@ -3853,3 +3853,16 @@ Next queued: **Build 231 — Repair Recovery Audit, Renewal Preset Persistence &
 - owner TEST decision remains NOT_GIVEN, gateway GETs remain NOT_RUN, seven denial cases remain NOT_VERIFIED, connection remains DISCONNECTED.
 
 Next queued: **Build 232 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-255 verified proof-publication disposition, private witness-custody exception closure and bounded mini-server trial approval preparation while connection remains HELD.**
+
+
+## Build 232 — Recovery Filtering, Renewal Recovery, Receipt Search & QL-255/QL-256
+
+- repaired the Build 231 verifier lint blocker;
+- retained repair filtering, renewal preset recovery and receipt recovery search;
+- added QL-255 publication disposition, custody-exception and mini-server approval-preparation gates;
+- verified source A `76f73363a9a29a34ed8bf09b6b4ff58a0dc77482` with GREEN GitHub Actions run `40806025614`;
+- added real QL-256 signer provisioning metadata and private-custody review handoff;
+- signer state: `SIGNER_EXISTS_CUSTODY_NOT_VERIFIED`;
+- owner TEST authorization remains NOT_GIVEN; gateway execution remains NOT_RUN; connection remains DISCONNECTED.
+
+Next queued: **Build 233 — Repair Recovery Search, Renewal Recovery Audit & Receipt Recovery Presets, plus QL-256 independent signer-custody evidence intake, proof-B publication readiness and authenticated owner TEST-only decision preparation while gateway execution remains HELD.**

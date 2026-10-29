@@ -24,7 +24,7 @@ async function main(){
   );
 
   const now=1_800_000_000_000;
-  const receipt:any[]=[
+  const receipt: Parameters<typeof filterInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0]=[
     {version:1,auditId:"r1",createdAt:now-3600000,requestedPresetId:"a",recoveredPresetId:"all",reason:"Recent"},
     {version:1,auditId:"r2",createdAt:now-3*86400000,requestedPresetId:"b",recoveredPresetId:"all",reason:"Week"},
     {version:1,auditId:"r3",createdAt:now-10*86400000,requestedPresetId:"c",recoveredPresetId:"all",reason:"Old"}
