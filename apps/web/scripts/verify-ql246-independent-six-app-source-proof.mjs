@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, ql248PhaseAProofOriginScaffold, reviewQl246Sources, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -264,6 +264,42 @@ test('QL-248 Phase-A proof-origin scaffold requires six complete v2 source/proof
   assert.equal(held.complete, false);
   assert.equal(held.status, 'HOLD_PHASE_A_MANIFEST_INCOMPLETE');
   assert.equal(held.sourceCount, 0);
+});
+
+
+test('QL-248 proof-origin scaffold export is deterministic and immutable-origin consistent', async () => {
+  const { manifest, raw } = fixture();
+  manifest.schema = 'rosevear.integration.ql246.trusted-pins.v2';
+  manifest.sources = manifest.sources.map((row, i) => {
+    const proofCommitSha = `${(i + 10).toString(16).slice(-1)}`.repeat(40);
+    const envelope = raw.get(ql246RawUrl(row));
+    const parsed = JSON.parse(envelope);
+    return {
+      system: row.system,
+      repository: row.repository,
+      sourceRevision: row.sourceRevision,
+      proofCommitSha,
+      proofSha256: sha(envelope),
+      ciRunUrl: parsed.payload.ci_run_url,
+      publicKeyFingerprintSha256: row.publicKeyFingerprintSha256,
+      businessId: row.businessId,
+      tenantId: row.tenantId
+    };
+  });
+  const scaffold = ql248PhaseAProofOriginScaffold(manifest, clock);
+  const exported = exportQl248PhaseAProofOriginScaffold(scaffold);
+  assert.equal(exported, exportQl248PhaseAProofOriginScaffold(scaffold));
+  const verified = verifyQl248PhaseAProofOriginExport(exported);
+  assert.equal(verified.valid, true);
+  assert.equal(verified.status, 'SIX_SOURCE_IMMUTABLE_ORIGIN_CONSISTENT_AUTH_TESTING_HELD');
+  assert.equal(verified.sourceCount, 6);
+  assert.match(verified.exportSha256, /^[a-f0-9]{64}$/);
+
+  const tampered = JSON.parse(exported);
+  tampered.systems[0].publicProofUrl = tampered.systems[1].publicProofUrl;
+  const bad = verifyQl248PhaseAProofOriginExport(JSON.stringify(tampered));
+  assert.equal(bad.valid, false);
+  assert.equal(bad.reason, 'ORIGIN_CONSISTENCY_MISMATCH');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');

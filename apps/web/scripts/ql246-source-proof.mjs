@@ -203,6 +203,70 @@ export function ql248PhaseAProofOriginScaffold(manifest, now = Date.now()) {
   });
 }
 
+
+export function exportQl248PhaseAProofOriginScaffold(scaffold) {
+  if (!scaffold || scaffold.complete !== true ||
+    scaffold.status !== 'SIX_SOURCE_PHASE_A_PROVENANCE_COMPLETE_AUTH_TESTING_HELD' ||
+    scaffold.sourceCount !== 6 || !Array.isArray(scaffold.systems) ||
+    scaffold.systems.length !== 6) throw new TypeError('QL-248 Phase-A scaffold is not exportable.');
+  const payload = {
+    schema: 'rosevear.integration.ql248.phase-a-proof-origin.v1',
+    status: scaffold.status,
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    systems: scaffold.systems.map(row => ({
+      system: row.system,
+      repository: row.repository,
+      sourceRevision: row.sourceRevision,
+      sourceCiRunUrl: row.sourceCiRunUrl,
+      proofCommitSha: row.proofCommitSha,
+      proofSha256: row.proofSha256,
+      publicKeySpkiSha256: row.publicKeySpkiSha256,
+      businessId: row.businessId,
+      tenantId: row.tenantId,
+      publicProofUrl: row.publicProofUrl
+    }))
+  };
+  return JSON.stringify(payload, null, 2) + '\n';
+}
+
+export function verifyQl248PhaseAProofOriginExport(raw) {
+  let payload;
+  try { payload = JSON.parse(raw); } catch { return Object.freeze({ valid: false, reason: 'INVALID_JSON' }); }
+  if (!exact(payload, ['schema','status','connectionState','ownerAuthorization','systems']) ||
+    payload.schema !== 'rosevear.integration.ql248.phase-a-proof-origin.v1' ||
+    payload.status !== 'SIX_SOURCE_PHASE_A_PROVENANCE_COMPLETE_AUTH_TESTING_HELD' ||
+    payload.connectionState !== 'DISCONNECTED' || payload.ownerAuthorization !== 'NOT_GIVEN' ||
+    !Array.isArray(payload.systems) || payload.systems.length !== 6)
+    return Object.freeze({ valid: false, reason: 'INVALID_EXPORT_SCHEMA' });
+  const repos = new Set(), proofUrls = new Set(), pins = new Set();
+  for (let i = 0; i < QL246_SYSTEMS.length; i++) {
+    const row = payload.systems[i];
+    const fields = ['system','repository','sourceRevision','sourceCiRunUrl','proofCommitSha','proofSha256','publicKeySpkiSha256','businessId','tenantId','publicProofUrl'];
+    if (!exact(row, fields) || row.system !== QL246_SYSTEMS[i] ||
+      typeof row.repository !== 'string' || !row.repository.startsWith('RosevearCreations/') ||
+      !REV.test(row.sourceRevision) || !REV.test(row.proofCommitSha) || row.sourceRevision === row.proofCommitSha ||
+      !HEX.test(row.proofSha256) || !HEX.test(row.publicKeySpkiSha256) ||
+      typeof row.sourceCiRunUrl !== 'string' || typeof row.publicProofUrl !== 'string')
+      return Object.freeze({ valid: false, reason: 'INVALID_ORIGIN_ROW' });
+    const repo = row.repository.slice('RosevearCreations/'.length);
+    const expectedCiPrefix = `https://github.com/RosevearCreations/${repo}/actions/runs/`;
+    const expectedProofUrl = `https://raw.githubusercontent.com/RosevearCreations/${repo}/${row.proofCommitSha}/${QL246_PATH}`;
+    if (!row.sourceCiRunUrl.startsWith(expectedCiPrefix) || row.publicProofUrl !== expectedProofUrl ||
+      repos.has(row.repository) || proofUrls.has(row.publicProofUrl) || pins.has(row.publicKeySpkiSha256))
+      return Object.freeze({ valid: false, reason: 'ORIGIN_CONSISTENCY_MISMATCH' });
+    repos.add(row.repository); proofUrls.add(row.publicProofUrl); pins.add(row.publicKeySpkiSha256);
+  }
+  return Object.freeze({
+    valid: true,
+    status: 'SIX_SOURCE_IMMUTABLE_ORIGIN_CONSISTENT_AUTH_TESTING_HELD',
+    sourceCount: 6,
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    exportSha256: hash(raw)
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
