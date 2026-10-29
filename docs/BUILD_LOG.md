@@ -3882,3 +3882,17 @@ Next queued: **Build 233 — Repair Recovery Search, Renewal Recovery Audit & Re
 - owner TEST authorization remains NOT_GIVEN, gateway GETs remain NOT_RUN and connection remains DISCONNECTED.
 
 Next queued: **Build 234 — Repair Recovery Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-256 custody-challenge reconciliation, proof-B signed publication execution readiness and owner TEST-only authorization evidence intake while authenticated gateway GETs remain HELD.**
+
+
+## Build 234 — Repair Recovery Presets, Renewal Recovery Filtering, Receipt Preset Persistence & QL-256
+
+- advanced deterministic repair recovery presets, renewal recovery filtering and receipt preset persistence;
+- refreshed audited Source A to `a86dce3a71cd6795f5b32b22ddf4320c091dd7a5` with matching GREEN GitHub Actions run `40928884781`;
+- added QL-256 custody-challenge reconciliation requiring authenticated custodian/witness/reviewer roles, approved key host, out-of-band SPKI pin and fresh <=5 minute challenge receipts;
+- added signed proof-B publication execution readiness without executing publication while custody remains unreconciled;
+- added owner TEST-only authorization evidence intake while authenticated gateway GETs remain disabled;
+- added QL-257 owner-safe status words: custodian/witness/reviewer NOT_ASSIGNED, key host NOT_APPROVED, public SPKI pin NOT_VERIFIED;
+- immutable proof remains HTTP 404; proof-B publication not attempted;
+- owner TEST authorization remains NOT_GIVEN; gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD.
+
+Next queued: **Build 235 — Repair Preset Persistence, Renewal Recovery Search & Receipt Preset Recovery, plus QL-257 independent owner-status intake, custody-role approval reconciliation and proof-B publication authorization preparation while authenticated gateway GETs remain HELD.**
