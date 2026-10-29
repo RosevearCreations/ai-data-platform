@@ -267,6 +267,53 @@ export function verifyQl248PhaseAProofOriginExport(raw) {
   });
 }
 
+
+export function reconcileQl248ExportDigest(raw, expectedSha256) {
+  if (typeof raw !== 'string' || !HEX.test(expectedSha256))
+    return Object.freeze({ match: false, status: 'HOLD_EXPORT_DIGEST_INPUT_INVALID' });
+  const actualSha256 = hash(raw);
+  return Object.freeze({
+    match: safeHex(actualSha256, expectedSha256),
+    status: safeHex(actualSha256, expectedSha256)
+      ? 'EXPORT_DIGEST_MATCH_AUTH_TESTING_HELD'
+      : 'HOLD_EXPORT_DIGEST_DRIFT',
+    actualSha256,
+    expectedSha256,
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN'
+  });
+}
+
+export function detectQl248ImmutableOriginDrift(previousRaw, currentRaw) {
+  const previous = verifyQl248PhaseAProofOriginExport(previousRaw);
+  const current = verifyQl248PhaseAProofOriginExport(currentRaw);
+  if (!previous.valid || !current.valid)
+    return Object.freeze({ drift: true, status: 'HOLD_ORIGIN_EXPORT_INVALID', changedSystems: [] });
+  const a = JSON.parse(previousRaw);
+  const b = JSON.parse(currentRaw);
+  const changedSystems = [];
+  for (let i = 0; i < QL246_SYSTEMS.length; i++) {
+    const left = a.systems[i], right = b.systems[i];
+    const immutableFields = [
+      'system','repository','sourceRevision','sourceCiRunUrl','proofCommitSha',
+      'proofSha256','publicKeySpkiSha256','businessId','tenantId','publicProofUrl'
+    ];
+    if (immutableFields.some(field => JSON.stringify(left[field]) !== JSON.stringify(right[field])))
+      changedSystems.push(QL246_SYSTEMS[i]);
+  }
+  return Object.freeze({
+    drift: changedSystems.length > 0,
+    status: changedSystems.length === 0
+      ? 'SIX_SOURCE_IMMUTABLE_ORIGIN_NO_DRIFT_AUTH_TESTING_HELD'
+      : 'HOLD_SIX_SOURCE_IMMUTABLE_ORIGIN_DRIFT',
+    changedSystems: Object.freeze(changedSystems),
+    previousExportSha256: hash(previousRaw),
+    currentExportSha256: hash(currentRaw),
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN'
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
