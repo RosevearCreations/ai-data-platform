@@ -11,7 +11,7 @@ async function main(){
  ensure(sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("recent-24h")==="recent-24h","repair preset");
  ensure(sanitizeInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("retired")==="all","repair recovery");
  ensure(INTERFACE_RECOVERY_AUDIT_REPAIR_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_RECOVERY_AUDIT_SEARCH_PRESET_STORAGE_KEY.includes("recovery-audit-repair"),"repair storage");
- const renewal=[{version:1,auditId:"alpha",createdAt:1,requestedPresetId:"retired-a",recoveredPresetId:"all",reason:"Recovered alpha."},{version:1,auditId:"beta",createdAt:0,requestedPresetId:"retired-b",recoveredPresetId:"recent-7d",reason:"Recovered beta."}] as any;
+ const renewal: Parameters<typeof searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0]=[{version:1,auditId:"alpha",createdAt:1,requestedPresetId:"retired-a",recoveredPresetId:"all",reason:"Recovered alpha."},{version:1,auditId:"beta",createdAt:0,requestedPresetId:"retired-b",recoveredPresetId:"recent-7d",reason:"Recovered beta."}];
  ensure(searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(renewal,"alpha")[0]?.auditId==="alpha","renewal search");
  const repaired=recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("retired");
  ensure(repaired.recovered&&repaired.presetId==="all","receipt recovery");
