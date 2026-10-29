@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -300,6 +300,48 @@ test('QL-248 proof-origin scaffold export is deterministic and immutable-origin 
   const bad = verifyQl248PhaseAProofOriginExport(JSON.stringify(tampered));
   assert.equal(bad.valid, false);
   assert.equal(bad.reason, 'ORIGIN_CONSISTENCY_MISMATCH');
+});
+
+
+test('QL-248 exported-origin digest reconciliation and immutable-origin drift detection stay fail-closed', async () => {
+  const { manifest, raw } = fixture();
+  manifest.schema = 'rosevear.integration.ql246.trusted-pins.v2';
+  manifest.sources = manifest.sources.map((row, i) => {
+    const proofCommitSha = `${(i + 10).toString(16).slice(-1)}`.repeat(40);
+    const envelope = raw.get(ql246RawUrl(row));
+    const parsed = JSON.parse(envelope);
+    return {
+      system: row.system,
+      repository: row.repository,
+      sourceRevision: row.sourceRevision,
+      proofCommitSha,
+      proofSha256: sha(envelope),
+      ciRunUrl: parsed.payload.ci_run_url,
+      publicKeyFingerprintSha256: row.publicKeyFingerprintSha256,
+      businessId: row.businessId,
+      tenantId: row.tenantId
+    };
+  });
+  const exported = exportQl248PhaseAProofOriginScaffold(ql248PhaseAProofOriginScaffold(manifest, clock));
+  const digest = sha(exported);
+  const matched = reconcileQl248ExportDigest(exported, digest);
+  assert.equal(matched.match, true);
+  assert.equal(matched.status, 'EXPORT_DIGEST_MATCH_AUTH_TESTING_HELD');
+
+  const driftDigest = reconcileQl248ExportDigest(exported + ' ', digest);
+  assert.equal(driftDigest.match, false);
+  assert.equal(driftDigest.status, 'HOLD_EXPORT_DIGEST_DRIFT');
+
+  const stable = detectQl248ImmutableOriginDrift(exported, exported);
+  assert.equal(stable.drift, false);
+  assert.equal(stable.status, 'SIX_SOURCE_IMMUTABLE_ORIGIN_NO_DRIFT_AUTH_TESTING_HELD');
+
+  const changed = JSON.parse(exported);
+  changed.systems[0].proofSha256 = 'f'.repeat(64);
+  const drift = detectQl248ImmutableOriginDrift(exported, JSON.stringify(changed));
+  assert.equal(drift.drift, true);
+  assert.equal(drift.status, 'HOLD_SIX_SOURCE_IMMUTABLE_ORIGIN_DRIFT');
+  assert.deepEqual(drift.changedSystems, ['ai-data-platform']);
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
