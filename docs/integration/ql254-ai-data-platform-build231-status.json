@@ -1,0 +1,21 @@
+{
+  "application_name": "AI Data Platform",
+  "repository": "RosevearCreations/ai-data-platform",
+  "observed_main_sha": "9e570d82707fd476b43458fa869776bac9ddc65f",
+  "source_sha_A": "NOT_AVAILABLE",
+  "matching_source_green_ci_run_url": "NOT_AVAILABLE",
+  "proof_commit_sha_B": "NOT_AVAILABLE",
+  "immutable_proof_url": "HTTP 404",
+  "proof_http_status_at_B": "404",
+  "exact_raw_proof_sha256": "NOT_AVAILABLE",
+  "public_signer_spki_sha256": "NOT_AVAILABLE",
+  "private_registry_snapshot_sha256": "NOT_AVAILABLE",
+  "independent_registry_custody_receipt_id": "NOT_AVAILABLE",
+  "separate_witness_receipt_id": "NOT_AVAILABLE",
+  "independent_witness_real_world_identity_verified": "NOT_VERIFIED",
+  "owner_test_decision": "NOT_GIVEN",
+  "actual_nonproduction_gateway_gets": "NOT_RUN",
+  "real_original_seven_denial_cases": "NOT_VERIFIED",
+  "relay_readiness": "SIMULATION_ONLY_HELD",
+  "connection_state": "DISCONNECTED"
+}
