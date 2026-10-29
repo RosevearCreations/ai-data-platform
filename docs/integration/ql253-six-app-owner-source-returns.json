@@ -1,0 +1,54 @@
+[
+  {
+    "system": "ai-data-platform", "repository": "RosevearCreations/ai-data-platform",
+    "sourceShaA": "037b18247e59cb68d1f7ca5d7149595bd7487957",
+    "sourceCiRunUrl": "NOT_AVAILABLE", "proofShaB": "NOT_AVAILABLE",
+    "proofRawSha256": "NOT_AVAILABLE", "publicSpkiSha256": "NOT_AVAILABLE",
+    "custodyReceiptId": "NOT_AVAILABLE", "witnessReceiptId": "NOT_AVAILABLE",
+    "ownerTestDecision": "NOT_GIVEN", "actualGatewayTest": "NOT_RUN",
+    "connectionState": "DISCONNECTED"
+  },
+  {
+    "system": "devilndove", "repository": "RosevearCreations/devilndove-site",
+    "sourceShaA": "340d6da39abed229094527dfc91a7fd423fabd02",
+    "sourceCiRunUrl": "https://github.com/RosevearCreations/devilndove-site/actions/runs/40794862120",
+    "proofShaB": "NOT_AVAILABLE", "proofRawSha256": "NOT_AVAILABLE",
+    "publicSpkiSha256": "NOT_AVAILABLE", "custodyReceiptId": "NOT_AVAILABLE",
+    "witnessReceiptId": "NOT_AVAILABLE", "ownerTestDecision": "NOT_GIVEN",
+    "actualGatewayTest": "NOT_RUN", "connectionState": "DISCONNECTED"
+  },
+  {
+    "system": "rosiedazzlers", "repository": "RosevearCreations/rosiedazzlers",
+    "sourceShaA": "62e4c4cf8faa6e2856e6a3e9e14d54385bb38020",
+    "sourceCiRunUrl": "https://github.com/RosevearCreations/rosiedazzlers/actions/runs/40800885136",
+    "proofShaB": "NOT_AVAILABLE", "proofRawSha256": "NOT_AVAILABLE",
+    "publicSpkiSha256": "NOT_AVAILABLE", "custodyReceiptId": "NOT_AVAILABLE",
+    "witnessReceiptId": "NOT_AVAILABLE", "ownerTestDecision": "NOT_GIVEN",
+    "actualGatewayTest": "NOT_RUN", "connectionState": "DISCONNECTED"
+  },
+  {
+    "system": "yw", "repository": "RosevearCreations/yw",
+    "sourceShaA": "NOT_AVAILABLE", "sourceCiRunUrl": "NOT_AVAILABLE",
+    "proofShaB": "NOT_AVAILABLE", "proofRawSha256": "NOT_AVAILABLE",
+    "publicSpkiSha256": "NOT_AVAILABLE", "custodyReceiptId": "NOT_AVAILABLE",
+    "witnessReceiptId": "NOT_AVAILABLE", "ownerTestDecision": "NOT_GIVEN",
+    "actualGatewayTest": "NOT_RUN", "connectionState": "DISCONNECTED"
+  },
+  {
+    "system": "icamp", "repository": "RosevearCreations/iCamp",
+    "sourceShaA": "5f7caaef37a2f8ec8ba2eb2913564e1a3b3c62c9",
+    "sourceCiRunUrl": "https://github.com/RosevearCreations/iCamp/actions/runs/40794126949",
+    "proofShaB": "NOT_AVAILABLE", "proofRawSha256": "NOT_AVAILABLE",
+    "publicSpkiSha256": "NOT_AVAILABLE", "custodyReceiptId": "NOT_AVAILABLE",
+    "witnessReceiptId": "NOT_AVAILABLE", "ownerTestDecision": "NOT_GIVEN",
+    "actualGatewayTest": "NOT_RUN", "connectionState": "DISCONNECTED"
+  },
+  {
+    "system": "rosevear-ai-hub", "repository": "RosevearCreations/rosevear-ai-hub",
+    "sourceShaA": "NOT_AVAILABLE", "sourceCiRunUrl": "NOT_AVAILABLE",
+    "proofShaB": "NOT_AVAILABLE", "proofRawSha256": "NOT_AVAILABLE",
+    "publicSpkiSha256": "NOT_AVAILABLE", "custodyReceiptId": "NOT_AVAILABLE",
+    "witnessReceiptId": "NOT_AVAILABLE", "ownerTestDecision": "NOT_GIVEN",
+    "actualGatewayTest": "NOT_RUN", "connectionState": "DISCONNECTED"
+  }
+]
