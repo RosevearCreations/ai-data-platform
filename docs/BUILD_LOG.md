@@ -3824,3 +3824,18 @@ Next queued: **Build 229 — Recovery Preset Persistence, Renewal Recovery Searc
 - owner TEST decision remains NOT_GIVEN; authenticated requests remain HELD; actual gateway test remains NOT_RUN; connection remains DISCONNECTED.
 
 Next queued: **Build 230 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-253 retry evidence renewal, ancestry-exception aging and privately verified owner TEST decision continuity while authenticated request execution remains HELD.**
+
+
+## Build 230 — Repair Preset Recovery, Renewal Recovery Presets, Receipt Recovery Audit & QL-253 Continuity
+
+- retained fail-safe repair preset recovery;
+- retained deterministic renewal recovery presets;
+- retained bounded newest-first receipt recovery audit;
+- added QL-253 retry-evidence renewal with <=1h freshness, exact source-CI head SHA, distinct proof commit, HTTP 200 immutable proof, exact digest and verified ancestry requirements;
+- added ancestry-exception aging with 24h overdue HOLD;
+- added privately verified owner TEST-decision continuity requiring unchanged nonproduction GET-only health/capabilities scope and a future <=30-minute window;
+- observed main 76f73363a9a29a34ed8bf09b6b4ff58a0dc77482 still had no exact GitHub Actions source CI and immutable proof remained HTTP 404;
+- registry/custody/witness evidence remains NOT_AVAILABLE;
+- owner TEST decision remains NOT_GIVEN; real GETs remain NOT_RUN; original seven negative denial receipts remain NOT_VERIFIED; connection remains DISCONNECTED.
+
+Next queued: **Build 231 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-254 original signed-proof retrieval follow-up, independent private pin-registry witness evidence and reversible 24/7 relay readiness while connection remains HELD.**
