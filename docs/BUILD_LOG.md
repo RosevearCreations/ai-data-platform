@@ -3763,3 +3763,17 @@ Next queued: **Build 225 — Repair Preset Recovery, Renewal Recovery Presets & 
 - application shell advanced to Build 225 and verifier registration was added.
 
 Next queued: **Build 226 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-248 proof-origin scaffold export/verification fixtures and immutable six-source origin consistency checks while Phase-B remains HELD.**
+
+
+## Build 226 — Repair Recovery Audit, Renewal Preset Persistence, Receipt Recovery Filtering & QL-248 Proof-Origin Export Verification
+
+- retained bounded newest repair preset recovery audit evidence;
+- persisted the newest renewal recovery preset using sanitized browser-local storage;
+- added All / 24h / 7d filtering for the newest receipt recovery audit;
+- added deterministic QL-248 Phase-A proof-origin scaffold export;
+- added immutable six-source origin consistency verification;
+- export verification checks canonical system order, unique repositories/proof URLs/pins, exact repository-bound CI and proof URLs, and distinct source/proof SHAs;
+- successful verification remains SIX_SOURCE_IMMUTABLE_ORIGIN_CONSISTENT_AUTH_TESTING_HELD;
+- Phase-B remains HELD; owner authorization remains NOT GIVEN; connection remains DISCONNECTED.
+
+Next queued: **Build 227 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-248 exported-origin digest reconciliation and six-source immutable-origin drift detection while authenticated testing remains HELD.**
