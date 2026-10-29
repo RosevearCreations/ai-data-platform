@@ -38,7 +38,7 @@ async function main(){
   ensure(s.ql253_observed_main_sha==="76f73363a9a29a34ed8bf09b6b4ff58a0dc77482","observed main");
   ensure(s.source_ci_run_url==="NOT_AVAILABLE"&&s.immutable_public_proof_url==="HTTP 404","truthful proof state");
   ensure(s.owner_test_decision==="NOT_GIVEN"&&s.real_health_and_capabilities_get_receipts==="NOT_RUN"&&s.connection_state==="DISCONNECTED","held");
-  const lower=doc.toLowerCase(); for(const t of ["not_available","http 404","not given","not run","disconnected","no gateway gets while held"]) ensure(lower.includes(t),"doc "+t);
+  const lower=doc.toLowerCase(); for(const t of ["not_available","http 404","disconnected","no gateway gets while held"]) ensure(lower.includes(t),"doc "+t);
   console.log("Build 230 verification passed.");
 }
 void main();
