@@ -10,21 +10,21 @@ async function source(r: string) { return readFile(new URL(r, import.meta.url), 
 
 async function main() {
   const now = 1_800_000_000_000;
-  const repair = [
+  const repair: Parameters<typeof filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0] = [
     { version: 1, auditId: "recent", createdAt: now - 3600000, requestedPresetId: "old-a", recoveredPresetId: "all", reason: "Recent." },
     { version: 1, auditId: "week", createdAt: now - 3 * 86400000, requestedPresetId: "old-b", recoveredPresetId: "recent-7d", reason: "Week." },
     { version: 1, auditId: "old", createdAt: now - 10 * 86400000, requestedPresetId: "old-c", recoveredPresetId: "all", reason: "Old." }
-  ] as any;
+  ];
   ensure(filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(repair, "24h", now).length === 1, "repair 24h filter");
   ensure(filterInterfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(repair, "7d", now).length === 2, "repair 7d filter");
 
   const renewal = recoverInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("retired");
   ensure(renewal.recovered && renewal.presetId === "all", "renewal preset recovery");
 
-  const receipt = [
+  const receipt: Parameters<typeof searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0] = [
     { version: 1, auditId: "receipt-a", createdAt: now, requestedPresetId: "retired-a", recoveredPresetId: "all", reason: "Recovered alpha." },
     { version: 1, auditId: "receipt-b", createdAt: now - 1000, requestedPresetId: "retired-b", recoveredPresetId: "recent-7d", reason: "Recovered beta." }
-  ] as any;
+  ];
   ensure(searchInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(receipt, "alpha")[0]?.auditId === "receipt-a", "receipt search");
 
   const [shell, pkg, proofSource, ql246Verify, blocker, statusRaw, doc] = await Promise.all([
