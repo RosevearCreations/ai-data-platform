@@ -849,6 +849,140 @@ export function inspectQl256SignerProvisioning(env = {}) {
   return Object.freeze({ decision: 'SIGNER_STATUS_UNKNOWN', privateKeyPresent, publicKeyPresent, spkiPresent });
 }
 
+
+export function intakeQl256IndependentSignerCustodyEvidence(input, expectedSpkiSha256, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !HEX.test(expectedSpkiSha256 || '') || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL256_CUSTODY_EVIDENCE_INPUT_INVALID' });
+
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk = receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const pinsOk =
+    HEX.test(input.registrySnapshotSha256 || '') &&
+    HEX.test(input.observedSignerSpkiSha256 || '') &&
+    input.observedSignerSpkiSha256 === expectedSpkiSha256;
+  const challengeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const independenceOk =
+    input.custodianAuthenticatedPrivately === true &&
+    input.witnessAuthenticatedPrivately === true &&
+    input.reviewerAuthenticatedPrivately === true &&
+    input.rolesAreDistinct === true &&
+    input.witnessKeyIsDistinct === true &&
+    input.reviewerIsIndependent === true;
+
+  if (!receiptsOk || !pinsOk || !challengeOk || !independenceOk)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL256_INDEPENDENT_CUSTODY_EVIDENCE_NOT_VERIFIED' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    status: 'QL256_INDEPENDENT_CUSTODY_EVIDENCE_ACCEPTED_PROOF_B_NOT_PUBLISHED',
+    publicSignerSpkiSha256: expectedSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
+export function evaluateQl256ProofBPublicationReadiness(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.sourceRevision || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL256_PROOF_B_READINESS_INPUT_INVALID' });
+
+  if (input.custodyEvidenceAccepted !== true)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL256_PROOF_B_CUSTODY_NOT_VERIFIED' });
+
+  const sourceCiOk =
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.sourceCiRunUrl);
+  const signerOk =
+    typeof input.signerKeyId === 'string' && input.signerKeyId.length >= 8 &&
+    HEX.test(input.publicSignerSpkiSha256 || '');
+  const publicationShapeOk =
+    input.proofPath === 'docs/integration/ql246-source-proof.json' &&
+    input.canonicalPayloadPrepared === true &&
+    input.privateKeyExported === false;
+
+  if (!sourceCiOk || !signerOk || !publicationShapeOk)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL256_PROOF_B_PUBLICATION_PREREQUISITES_INCOMPLETE' });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    status: 'QL256_PROOF_B_PUBLICATION_READY_OWNER_TEST_AUTH_HELD',
+    sourceRevision: input.sourceRevision,
+    sourceCiRunUrl: input.sourceCiRunUrl,
+    signerKeyId: input.signerKeyId,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    proofPath: input.proofPath
+  });
+}
+
+export function prepareQl256AuthenticatedOwnerTestOnlyDecision(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    gatewayExecutionAllowed: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL256_OWNER_TEST_PREPARATION_INPUT_INVALID' });
+
+  if (input.custodyEvidenceAccepted !== true || input.proofPublicationVerified !== true)
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL256_OWNER_TEST_PROOF_OR_CUSTODY_INCOMPLETE' });
+
+  if (input.ownerIdentityAuthenticatedPrivately !== true)
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL256_OWNER_TEST_IDENTITY_NOT_AUTHENTICATED' });
+
+  const exactScope =
+    input.environment === 'nonproduction' &&
+    input.businessId === 'devilndove' &&
+    Array.isArray(input.methods) && input.methods.length === 1 && input.methods[0] === 'GET' &&
+    Array.isArray(input.paths) && input.paths.length === 2 &&
+    input.paths[0] === '/api/integration/v1/health' &&
+    input.paths[1] === '/api/integration/v1/capabilities';
+  const windowOk =
+    Number.isSafeInteger(input.windowStartsAt) &&
+    Number.isSafeInteger(input.windowExpiresAt) &&
+    input.windowStartsAt >= now &&
+    input.windowExpiresAt > input.windowStartsAt &&
+    input.windowExpiresAt - input.windowStartsAt <= 30 * 60 * 1000;
+
+  if (!exactScope || !windowOk)
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL256_OWNER_TEST_SCOPE_OR_WINDOW_INVALID' });
+
+  return Object.freeze({
+    ...base,
+    prepared: true,
+    status: 'QL256_OWNER_TEST_DECISION_READY_FOR_EXPLICIT_APPROVAL_GATEWAY_HELD',
+    environment: input.environment,
+    businessId: input.businessId,
+    methods: [...input.methods],
+    paths: [...input.paths],
+    windowStartsAt: input.windowStartsAt,
+    windowExpiresAt: input.windowExpiresAt
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

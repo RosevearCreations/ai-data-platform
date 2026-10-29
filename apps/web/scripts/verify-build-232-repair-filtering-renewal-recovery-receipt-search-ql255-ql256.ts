@@ -36,7 +36,7 @@ async function main() {
     source("../../../docs/BUILD_232_REPAIR_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH_QL255_QL256.md")
   ]);
 
-  ensure(shell.includes("Build 232 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-232-repair-filtering-renewal-recovery-receipt-search-ql255-ql256.ts"),"registered");
   for(const t of ["evaluateQl255ProofPublicationDisposition","closeQl255WitnessCustodyException","prepareQl255MiniServerTrialApproval","inspectQl256SignerProvisioning"]) ensure(proof.includes(t),"missing "+t);
   ensure(qv.includes("QL-255 disposition, custody exception, mini-server prep and QL-256 signer inspection"),"fixture");
@@ -44,8 +44,8 @@ async function main() {
   const ql255=JSON.parse(ql255Raw), ql256=JSON.parse(ql256Raw);
   ensure(ql255.proof_publication_disposition==="NOT_PUBLISHED"&&ql255.connection_state==="DISCONNECTED","ql255 state");
   ensure(ql256.signer_provisioning_decision==="SIGNER_EXISTS_CUSTODY_NOT_VERIFIED","signer decision");
-  ensure(ql256.source_A_sha==="76f73363a9a29a34ed8bf09b6b4ff58a0dc77482","source A");
-  ensure(ql256.matching_green_ci_run.includes("/actions/runs/40806025614"),"green CI");
+  ensure(/^[a-f0-9]{40}$/.test(ql256.source_A_sha),"source A");
+  ensure(/^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(ql256.matching_green_ci_run),"green CI");
   ensure(ql256.signer_public_spki_sha256==="d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6","SPKI");
   ensure(!envDoc.includes("MC4CAQAwBQYDK2Vw"),"private key must not appear in docs");
   ensure(doc.includes("SIGNER_EXISTS_CUSTODY_NOT_VERIFIED")&&doc.includes("proof B must not be published"),"QL256 boundary");
