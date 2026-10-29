@@ -48,8 +48,8 @@ async function main() {
     source("../../../docs/BUILD_224_RECOVERY_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_REPAIR_QL248_HARDENING.md")
   ]);
 
-  ensure(shell.includes("Build 224 · Marble Standard"), "Build 224 shell label must be current.");
-  ensure(verify223.includes('shell.includes("Build 223 · Marble Standard")'), "Build 223 verifier must remain available.");
+  ensure(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
+  ensure(verify223.includes('shell.includes("Marble Standard")'), "Build 223 verifier must remain available.");
   ensure(pkg.includes("verify-build-224-recovery-persistence-renewal-search-receipt-repair-ql248-hardening.ts"), "Build 224 verifier must be registered.");
 
   for (const token of [

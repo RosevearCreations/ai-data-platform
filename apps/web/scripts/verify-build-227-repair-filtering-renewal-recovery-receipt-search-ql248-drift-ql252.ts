@@ -37,7 +37,7 @@ async function main() {
     source("../../../docs/BUILD_227_REPAIR_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH_QL248_DRIFT_QL252.md")
   ]);
 
-  ensure(shell.includes("Build 227 · Marble Standard"), "Build 227 shell label");
+  ensure(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
   ensure(pkg.includes("verify-build-227-repair-filtering-renewal-recovery-receipt-search-ql248-drift-ql252.ts"), "Build 227 verifier registration");
 
   for (const t of ["reconcileQl248ExportDigest", "detectQl248ImmutableOriginDrift", "HOLD_EXPORT_DIGEST_DRIFT", "HOLD_SIX_SOURCE_IMMUTABLE_ORIGIN_DRIFT"]) ensure(proofSource.includes(t), "missing " + t);

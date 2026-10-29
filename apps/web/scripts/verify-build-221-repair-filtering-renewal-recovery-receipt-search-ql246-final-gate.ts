@@ -48,16 +48,17 @@ async function main() {
     "Build 221 receipt recovery search must match IDs, preset IDs and reasons."
   );
 
-  const [shell, pkg, verify220, ql246Doc, ql246Verifier, build221Doc] = await Promise.all([
+  const [shell, pkg, verify220, ql246Doc, ql246Verifier, build221Doc, ql246Core] = await Promise.all([
     source("../app/application-shell.tsx"),
     source("../package.json"),
     source("./verify-build-220-repair-recovery-audit-renewal-persistence-receipt-filtering.ts"),
     source("../../../docs/ROSEVEAR_QL246_SIX_APP_SOURCE_PROOF_HANDOFF.md"),
     source("./ql246-verify-source-proofs.mjs"),
-    source("../../../docs/BUILD_221_REPAIR_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH_QL246_FINAL_GATE.md")
+    source("../../../docs/BUILD_221_REPAIR_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH_QL246_FINAL_GATE.md"),
+    source("./ql246-source-proof.mjs")
   ]);
 
-  assert(shell.includes("Build 221 · Marble Standard"), "Build 221 shell label must be current.");
+  assert(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
   assert(verify220.includes('shell.includes("Marble Standard")'), "Build 220 verifier must remain forward-compatible.");
   assert(pkg.includes("verify-build-221-repair-filtering-renewal-recovery-receipt-search-ql246-final-gate.ts"), "Build 221 verifier must run in the application test chain.");
 
@@ -71,9 +72,9 @@ async function main() {
     "QL-246 source proof must remain GET-only health/capabilities."
   );
   assert(
-    ql246Verifier.includes("HOLD_FETCH_NOT_AUTHORIZED") &&
     ql246Verifier.includes("fetch-public-proof") &&
-    ql246Verifier.includes("SIX_PUBLIC_SOURCES_VERIFIED_EXTERNAL_TESTS_PENDING_HELD"),
+    ql246Core.includes("HOLD_FETCH_NOT_AUTHORIZED") &&
+    ql246Core.includes("SIX_PUBLIC_SOURCES_VERIFIED_EXTERNAL_TESTS_PENDING_HELD"),
     "QL-246 verifier must remain explicit, operator-invoked and HOLD after source-only verification."
   );
 

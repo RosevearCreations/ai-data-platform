@@ -38,7 +38,7 @@ async function main(){
     source("../../../docs/ROSEVEAR_QL253_AI_DATA_PLATFORM_RETRY_READINESS.md")
   ]);
 
-  ensure(shell.includes("Build 228 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"current shell retains Marble Standard design");
   ensure(pkg.includes("verify-build-228-recovery-presets-renewal-filtering-receipt-persistence-ql253.ts"),"registered");
 
   for(const t of ["reconcileQl253SourceCiProofAncestry","renewQl253CustodyPinException","HOLD_SOURCE_CI_SHA_MISMATCH","HOLD_SOURCE_TO_PROOF_ANCESTRY_UNVERIFIED","HOLD_IMMUTABLE_PROOF_NOT_PUBLISHED","CUSTODY_PIN_EXCEPTION_RENEWED_OWNER_TEST_AUTH_HELD"]) ensure(proof.includes(t),"proof gate "+t);

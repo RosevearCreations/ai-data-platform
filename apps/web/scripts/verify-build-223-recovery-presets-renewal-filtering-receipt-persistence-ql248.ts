@@ -58,8 +58,8 @@ async function main() {
     source("../../../docs/BUILD_223_RECOVERY_PRESETS_RENEWAL_FILTERING_RECEIPT_PERSISTENCE_QL248.md")
   ]);
 
-  ensure(shell.includes("Build 223 · Marble Standard"), "Build 223 shell label must be current.");
-  ensure(verify222.includes('shell.includes("Build 222 · Marble Standard")'), "Build 222 verifier must remain available.");
+  ensure(shell.includes("Marble Standard"), "Current shell must retain the Marble Standard design system.");
+  ensure(verify222.includes('shell.includes("Marble Standard")'), "Build 222 verifier must remain available.");
   ensure(pkg.includes("verify-build-223-recovery-presets-renewal-filtering-receipt-persistence-ql248.ts"), "Build 223 verifier must be registered.");
 
   for (const token of ["proofCommitSha", "proofSha256", "ciRunUrl", "trusted-pins.v2", "rowProofCommitSha", "rowProofSha256"]) {
