@@ -1,0 +1,14 @@
+{
+  "application_name": "AI Data Platform",
+  "repository": "RosevearCreations/ai-data-platform",
+  "observed_main_sha": "c658bce8c207dcbfdf6c9afa5f304428dd3e31d3",
+  "proof_publication_disposition": "NOT_PUBLISHED",
+  "immutable_proof_status": "404",
+  "private_witness_custody_exception": "OPEN",
+  "mini_server_trial_approval_preparation": "PREPARED_OWNER_DECISION_REQUIRED",
+  "relay_installed": false,
+  "relay_started": false,
+  "owner_test_authorization": "NOT_GIVEN",
+  "actual_gateway_test": "NOT_RUN",
+  "connection_state": "DISCONNECTED"
+}
