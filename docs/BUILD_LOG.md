@@ -3777,3 +3777,20 @@ Next queued: **Build 226 — Repair Recovery Audit, Renewal Preset Persistence &
 - Phase-B remains HELD; owner authorization remains NOT GIVEN; connection remains DISCONNECTED.
 
 Next queued: **Build 227 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-248 exported-origin digest reconciliation and six-source immutable-origin drift detection while authenticated testing remains HELD.**
+
+
+## Build 227 — Repair Recovery Filtering, Renewal Preset Recovery, Receipt Recovery Search, QL-248 Drift Reconciliation & QL-252 Blocker Intake
+
+- added All / 24h / 7d repair recovery filtering continuity;
+- retained fail-safe persisted renewal preset recovery;
+- retained receipt recovery audit search;
+- added QL-248 export digest reconciliation;
+- added immutable six-source origin drift detection;
+- incorporated the QL-252 AI Data Platform publication blocker truthfully;
+- confirmed source SHA A 037b18247e59cb68d1f7ca5d7149595bd7487957 has no published docs/integration/ql246-source-proof.json at that immutable revision;
+- no exact GitHub Actions source-CI run was available for A through the commit-run lookup; Vercel success is not substituted for the required source CI;
+- proof commit B, proof digest, public SPKI pin, custody receipt, witness receipt and owner TEST receipt remain NOT_AVAILABLE;
+- actual gateway test remains NOT_RUN; owner test decision remains NOT_GIVEN; connection remains DISCONNECTED;
+- no sample, mocked or fictitious proof/signature/receipt was published.
+
+Next queued: **Build 228 — Recovery Search Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-253 immutable-proof retry readiness, source-CI/proof ancestry reconciliation and custody-pin exception renewal while owner TEST-only authorization remains HELD.**
