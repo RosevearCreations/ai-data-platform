@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -445,6 +445,65 @@ test('QL-253 retry reconciliation, ancestry drift and owner TEST-only intake rem
   },clock);
   assert.equal(invalid.accepted,false);
   assert.equal(invalid.status,'HOLD_OWNER_TEST_PRIVATE_VERIFICATION_INCOMPLETE');
+});
+
+
+test('QL-253 retry evidence renewal, ancestry-exception aging and owner TEST continuity remain fail-closed', async () => {
+  const sourceRevision='1'.repeat(40), proofCommitSha='2'.repeat(40), proofSha256='3'.repeat(64);
+  const renewed=renewQl253RetryEvidence({
+    sourceRevision,
+    proofCommitSha,
+    proofSha256,
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/123456789',
+    sourceCiHeadSha:sourceRevision,
+    ancestryVerified:true,
+    proofHttpStatus:200,
+    verifiedAt:clock-60000
+  },clock);
+  assert.equal(renewed.renewed,true);
+  assert.equal(renewed.status,'QL253_RETRY_EVIDENCE_RENEWED_OWNER_TEST_AUTH_HELD');
+
+  const stale=renewQl253RetryEvidence({
+    sourceRevision,
+    proofCommitSha,
+    proofSha256,
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/123456789',
+    sourceCiHeadSha:sourceRevision,
+    ancestryVerified:true,
+    proofHttpStatus:200,
+    verifiedAt:clock-2*60*60*1000
+  },clock);
+  assert.equal(stale.renewed,false);
+
+  const active=ageQl253AncestryException({detectedAt:clock-60*60*1000,resolved:false},clock);
+  assert.equal(active.status,'HOLD_ANCESTRY_EXCEPTION_ACTIVE');
+  const overdue=ageQl253AncestryException({detectedAt:clock-25*60*60*1000,resolved:false},clock);
+  assert.equal(overdue.status,'HOLD_ANCESTRY_EXCEPTION_OVERDUE');
+
+  const previous={
+    ownerAuthorization:'INDEPENDENTLY_VERIFIED_BY_OWNER',
+    identityVerifiedPrivately:true,
+    businessId:'devilndove',
+    tenantId:null,
+    environment:'nonproduction',
+    allowedMethods:['GET'],
+    allowedPaths:['/api/integration/v1/health','/api/integration/v1/capabilities'],
+    ownerReceiptId:'owner-prev'
+  };
+  const current={
+    ...previous,
+    ownerReceiptId:'owner-current',
+    windowStart:clock+60000,
+    windowEnd:clock+20*60*1000
+  };
+  const continuity=continueQl253VerifiedOwnerTestDecision(previous,current,clock);
+  assert.equal(continuity.continuous,true);
+  assert.equal(continuity.status,'OWNER_TEST_DECISION_CONTINUITY_VERIFIED_REQUEST_EXECUTION_HELD');
+  assert.equal(continuity.actualGatewayTest,'NOT_RUN');
+
+  const changedScope=continueQl253VerifiedOwnerTestDecision(previous,{...current,businessId:'other'},clock);
+  assert.equal(changedScope.continuous,false);
+  assert.equal(changedScope.ownerAuthorization,'NOT_GIVEN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
