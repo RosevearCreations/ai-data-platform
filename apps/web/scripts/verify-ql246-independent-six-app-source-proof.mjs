@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, reviewQl246Sources, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, ql248PhaseAProofOriginScaffold, reviewQl246Sources, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -219,6 +219,51 @@ test('QL-248 v2 manifest separates source revision from proof commit and pins so
     fetchPublic: async url => nextRaw.get(url)
   });
   assert.equal(result.systems[0].status, 'SIGNED_SOURCE_SCOPE_OR_FRESHNESS_INVALID');
+});
+
+
+test('QL-248 Phase-A proof-origin scaffold requires six complete v2 source/proof rows and remains HELD', async () => {
+  const { manifest, raw } = fixture();
+  manifest.schema = 'rosevear.integration.ql246.trusted-pins.v2';
+  manifest.sources = manifest.sources.map((row, i) => {
+    const proofCommitSha = `${(i + 10).toString(16).slice(-1)}`.repeat(40);
+    const envelope = raw.get(ql246RawUrl(row));
+    const parsed = JSON.parse(envelope);
+    return {
+      system: row.system,
+      repository: row.repository,
+      sourceRevision: row.sourceRevision,
+      proofCommitSha,
+      proofSha256: sha(envelope),
+      ciRunUrl: parsed.payload.ci_run_url,
+      publicKeyFingerprintSha256: row.publicKeyFingerprintSha256,
+      businessId: row.businessId,
+      tenantId: row.tenantId
+    };
+  });
+
+  const phaseA = ql248PhaseAProofOriginScaffold(manifest, clock);
+  assert.equal(phaseA.complete, true);
+  assert.equal(phaseA.sourceCount, 6);
+  assert.equal(phaseA.status, 'SIX_SOURCE_PHASE_A_PROVENANCE_COMPLETE_AUTH_TESTING_HELD');
+  assert.equal(phaseA.connectionState, 'DISCONNECTED');
+  assert.equal(phaseA.ownerAuthorization, 'NOT_GIVEN');
+  assert.deepEqual(phaseA.systems.map(row => row.system), QL246_SYSTEMS);
+  assert.ok(phaseA.systems.every(row =>
+    /^[a-f0-9]{40}$/.test(row.sourceRevision) &&
+    /^[a-f0-9]{40}$/.test(row.proofCommitSha) &&
+    row.sourceRevision !== row.proofCommitSha &&
+    /^[a-f0-9]{64}$/.test(row.proofSha256) &&
+    /^[a-f0-9]{64}$/.test(row.publicKeySpkiSha256) &&
+    row.publicProofUrl.includes('/docs/integration/ql246-source-proof.json')
+  ));
+
+  const incomplete = structuredClone(manifest);
+  incomplete.sources.pop();
+  const held = ql248PhaseAProofOriginScaffold(incomplete, clock);
+  assert.equal(held.complete, false);
+  assert.equal(held.status, 'HOLD_PHASE_A_MANIFEST_INCOMPLETE');
+  assert.equal(held.sourceCount, 0);
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
