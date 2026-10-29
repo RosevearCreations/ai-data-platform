@@ -165,6 +165,44 @@ function held(status, rows, reason) {
   });
 }
 
+
+export function ql248PhaseAProofOriginScaffold(manifest, now = Date.now()) {
+  if (!Number.isSafeInteger(now) || !validTrust(manifest, now) ||
+    manifest.schema !== 'rosevear.integration.ql246.trusted-pins.v2') {
+    return Object.freeze({
+      status: 'HOLD_PHASE_A_MANIFEST_INCOMPLETE',
+      complete: false,
+      sourceCount: 0,
+      systems: [],
+      connectionState: 'DISCONNECTED',
+      ownerAuthorization: 'NOT_GIVEN'
+    });
+  }
+
+  const systems = manifest.sources.map((row) => Object.freeze({
+    system: row.system,
+    repository: `RosevearCreations/${row.repository}`,
+    sourceRevision: row.sourceRevision,
+    sourceCiRunUrl: row.ciRunUrl,
+    proofCommitSha: row.proofCommitSha,
+    proofSha256: row.proofSha256,
+    publicKeySpkiSha256: row.publicKeyFingerprintSha256,
+    businessId: row.businessId,
+    tenantId: row.tenantId,
+    publicProofUrl: ql246RawUrl(row),
+    phaseAComplete: true
+  }));
+
+  return Object.freeze({
+    status: 'SIX_SOURCE_PHASE_A_PROVENANCE_COMPLETE_AUTH_TESTING_HELD',
+    complete: true,
+    sourceCount: systems.length,
+    systems,
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN'
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
