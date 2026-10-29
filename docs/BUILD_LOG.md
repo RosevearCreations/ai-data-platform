@@ -3810,3 +3810,17 @@ Next queued: **Build 228 — Recovery Search Presets, Renewal Recovery Filtering
 - owner TEST-only decision remains NOT_GIVEN; actual gateway test remains NOT_RUN; connection remains DISCONNECTED.
 
 Next queued: **Build 229 — Recovery Preset Persistence, Renewal Recovery Search & Receipt Preset Recovery, plus QL-253 public-proof retry result reconciliation, ancestry-drift exception handling and owner TEST-only decision intake while authenticated requests remain HELD.**
+
+
+## Build 229 — Recovery Preset Persistence, Renewal Recovery Search, Receipt Preset Recovery & QL-253 Reconciliation
+
+- retained sanitized repair recovery preset persistence;
+- retained renewal recovery search across IDs and reasons;
+- retained fail-safe receipt preset recovery;
+- added QL-253 public-proof retry result reconciliation;
+- added source/proof/CI/digest/ancestry drift exception handling;
+- added owner TEST-only decision intake with strict private-verification, GET-only path, nonproduction-scope and <=30-minute future-window requirements;
+- current source SHA 9f4f790dab0c52fc4c4fe42bfa85a8a3b5eeea2e still has no exact GitHub Actions source-CI run and immutable proof path remains 404;
+- owner TEST decision remains NOT_GIVEN; authenticated requests remain HELD; actual gateway test remains NOT_RUN; connection remains DISCONNECTED.
+
+Next queued: **Build 230 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-253 retry evidence renewal, ancestry-exception aging and privately verified owner TEST decision continuity while authenticated request execution remains HELD.**

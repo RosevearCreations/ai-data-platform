@@ -16,11 +16,11 @@ async function main(){
   ensure(interfaceRecoveryAuditRepairSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetById("recent-24h").ageFilter==="24h","repair preset mapping");
 
   const now=1_800_000_000_000;
-  const renewal=[
+  const renewal: Parameters<typeof filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit>[0]=[
     {version:1,auditId:"new",createdAt:now-3600000,requestedPresetId:"a",recoveredPresetId:"all",reason:"Recent"},
     {version:1,auditId:"week",createdAt:now-3*86400000,requestedPresetId:"b",recoveredPresetId:"recent-7d",reason:"Week"},
     {version:1,auditId:"old",createdAt:now-9*86400000,requestedPresetId:"c",recoveredPresetId:"all",reason:"Old"}
-  ] as any;
+  ];
   ensure(filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(renewal,"24h",now).length===1,"renewal 24h");
   ensure(filterInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit(renewal,"7d",now).length===2,"renewal 7d");
 

@@ -390,6 +390,109 @@ export function renewQl253CustodyPinException(input, now = Date.now()) {
   });
 }
 
+
+export function reconcileQl253PublicProofRetryResult(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || typeof input.proofHttpStatus !== 'number')
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL253_RETRY_RESULT_INCOMPLETE' });
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_IMMUTABLE_PROOF_NOT_PUBLISHED' });
+  if (!REV.test(input.sourceRevision || '') || !REV.test(input.proofCommitSha || '') ||
+    input.sourceRevision === input.proofCommitSha ||
+    !HEX.test(input.proofSha256 || '') ||
+    input.sourceCiHeadSha !== input.sourceRevision ||
+    input.ancestryVerified !== true)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL253_RETRY_RESULT_MISMATCH' });
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    status: 'QL253_PUBLIC_PROOF_RETRY_RECONCILED_OWNER_TEST_AUTH_HELD',
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256
+  });
+}
+
+export function handleQl253AncestryDrift(previous, current) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!previous || !current ||
+    !REV.test(previous.sourceRevision || '') || !REV.test(previous.proofCommitSha || '') ||
+    !REV.test(current.sourceRevision || '') || !REV.test(current.proofCommitSha || ''))
+    return Object.freeze({ ...base, drift: true, status: 'HOLD_ANCESTRY_DRIFT_INPUT_INVALID' });
+
+  const changed = [];
+  if (previous.sourceRevision !== current.sourceRevision) changed.push('sourceRevision');
+  if (previous.proofCommitSha !== current.proofCommitSha) changed.push('proofCommitSha');
+  if (previous.sourceCiRunUrl !== current.sourceCiRunUrl) changed.push('sourceCiRunUrl');
+  if (previous.proofSha256 !== current.proofSha256) changed.push('proofSha256');
+  if (previous.ancestryVerified !== current.ancestryVerified) changed.push('ancestryVerified');
+
+  return Object.freeze({
+    ...base,
+    drift: changed.length > 0,
+    status: changed.length > 0
+      ? 'HOLD_QL253_ANCESTRY_DRIFT_EXCEPTION'
+      : 'QL253_ANCESTRY_STABLE_OWNER_TEST_AUTH_HELD',
+    changedFields: Object.freeze(changed)
+  });
+}
+
+export function intakeQl253OwnerTestDecision(input, now = Date.now()) {
+  const base = {
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN'
+  };
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, accepted: false, ownerAuthorization: 'NOT_GIVEN', status: 'HOLD_OWNER_TEST_DECISION_INPUT_INVALID' });
+
+  const validDecision = ['NOT_GIVEN','REQUESTED_PRIVATE_REVIEW','INDEPENDENTLY_VERIFIED_BY_OWNER'].includes(input.decision);
+  if (!validDecision)
+    return Object.freeze({ ...base, accepted: false, ownerAuthorization: 'NOT_GIVEN', status: 'HOLD_OWNER_TEST_DECISION_INVALID' });
+
+  if (input.decision !== 'INDEPENDENTLY_VERIFIED_BY_OWNER') {
+    return Object.freeze({
+      ...base,
+      accepted: true,
+      ownerAuthorization: input.decision,
+      status: input.decision === 'REQUESTED_PRIVATE_REVIEW'
+        ? 'OWNER_TEST_PRIVATE_REVIEW_REQUESTED_AUTH_REQUESTS_HELD'
+        : 'OWNER_TEST_NOT_GIVEN_AUTH_REQUESTS_HELD'
+    });
+  }
+
+  const pathsOk = Array.isArray(input.allowedPaths) &&
+    JSON.stringify(input.allowedPaths) === JSON.stringify(QL246_PATHS);
+  const methodsOk = Array.isArray(input.allowedMethods) &&
+    JSON.stringify(input.allowedMethods) === JSON.stringify(QL246_METHODS);
+  const timeOk = Number.isSafeInteger(input.windowStart) && Number.isSafeInteger(input.windowEnd) &&
+    input.windowStart > now && input.windowEnd > input.windowStart &&
+    input.windowEnd - input.windowStart <= 30 * 60 * 1000;
+  const receiptOk = typeof input.ownerReceiptId === 'string' && input.ownerReceiptId.length >= 6;
+  const scopeOk = input.environment === 'nonproduction' &&
+    typeof input.businessId === 'string' && input.businessId.length > 0;
+
+  if (!pathsOk || !methodsOk || !timeOk || !receiptOk || !scopeOk || input.identityVerifiedPrivately !== true)
+    return Object.freeze({ ...base, accepted: false, ownerAuthorization: 'NOT_GIVEN', status: 'HOLD_OWNER_TEST_PRIVATE_VERIFICATION_INCOMPLETE' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    ownerAuthorization: 'INDEPENDENTLY_VERIFIED_BY_OWNER',
+    status: 'OWNER_TEST_DECISION_VERIFIED_REQUESTS_STILL_HELD_FOR_SEPARATE_EXECUTION',
+    ownerReceiptId: input.ownerReceiptId,
+    windowStart: input.windowStart,
+    windowEnd: input.windowEnd
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
