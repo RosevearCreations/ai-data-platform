@@ -3866,3 +3866,19 @@ Next queued: **Build 232 — Repair Recovery Filtering, Renewal Preset Recovery 
 - owner TEST authorization remains NOT_GIVEN; gateway execution remains NOT_RUN; connection remains DISCONNECTED.
 
 Next queued: **Build 233 — Repair Recovery Search, Renewal Recovery Audit & Receipt Recovery Presets, plus QL-256 independent signer-custody evidence intake, proof-B publication readiness and authenticated owner TEST-only decision preparation while gateway execution remains HELD.**
+
+
+## Build 233 — Repair Recovery Search, Renewal Recovery Audit, Receipt Recovery Presets & QL-256
+
+- advanced repair recovery search, renewal recovery audit and receipt recovery preset verification;
+- refreshed QL-256 source A to released main `15ccd72f098b6238d4b1d357a97676d6a2836df2`;
+- recorded matching GREEN GitHub Actions run `40915219544`;
+- retained the real nonproduction Ed25519 signer and public SPKI fingerprint;
+- added fail-closed independent custodian / distinct witness / reviewer evidence intake;
+- added proof-B publication-readiness validation without publishing while custody remains unverified;
+- added authenticated owner TEST-only decision preparation while gateway execution stays disabled;
+- current custody evidence remains NOT_AVAILABLE;
+- current immutable proof remains HTTP 404;
+- owner TEST authorization remains NOT_GIVEN, gateway GETs remain NOT_RUN and connection remains DISCONNECTED.
+
+Next queued: **Build 234 — Repair Recovery Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-256 custody-challenge reconciliation, proof-B signed publication execution readiness and owner TEST-only authorization evidence intake while authenticated gateway GETs remain HELD.**
