@@ -41,7 +41,7 @@ async function main() {
     source("../../../docs/BUILD_234_REPAIR_PRESETS_RENEWAL_FILTERING_RECEIPT_PERSISTENCE_QL256.md")
   ]);
 
-  ensure(shell.includes("Build 234 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-234-repair-presets-renewal-filtering-receipt-persistence-ql256.ts"),"registered");
 
   for(const t of [

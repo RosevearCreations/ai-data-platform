@@ -3896,3 +3896,17 @@ Next queued: **Build 234 — Repair Recovery Presets, Renewal Recovery Filtering
 - owner TEST authorization remains NOT_GIVEN; gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD.
 
 Next queued: **Build 235 — Repair Preset Persistence, Renewal Recovery Search & Receipt Preset Recovery, plus QL-257 independent owner-status intake, custody-role approval reconciliation and proof-B publication authorization preparation while authenticated gateway GETs remain HELD.**
+
+
+## Build 235 — Repair Preset Persistence, Renewal Recovery Search, Receipt Preset Recovery & QL-257
+
+- advanced sanitized repair-preset persistence, renewal recovery search and receipt preset recovery;
+- refreshed audited Source A to `24c54b189f41c2473dad58af9847a5c28dff0483` with matching GREEN GitHub Actions run `40939115385`;
+- added strict fixed-enum QL-257 owner-status intake that rejects unknown fields and preserves NOT_GIVEN owner authorization, DISCONNECTED state and 12 pilot holds;
+- added custody-role approval reconciliation that requires separate external independent authentication, approved key host, verified public pin, fresh <=5 minute challenge and three distinct opaque receipts;
+- added proof-B publication authorization preparation without publishing proof B or executing gateway GETs;
+- recorded QL-258 sanitized owner-action packet as NOT_RECEIVED because the attached handoff is instructions, not a completed authenticated packet;
+- immutable proof remains HTTP 404; proof-B publication not attempted;
+- owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD.
+
+Next queued: **Build 236 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-258 sanitized owner-action packet validation, immutable proof refresh and custody-source activation readiness while authenticated gateway GETs remain HELD.**
