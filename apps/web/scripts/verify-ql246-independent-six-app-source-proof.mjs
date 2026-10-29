@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -420,6 +420,31 @@ test('QL-253 custody-pin exception renewal requires separate out-of-band custody
   assert.equal(renewed.status, 'CUSTODY_PIN_EXCEPTION_RENEWED_OWNER_TEST_AUTH_HELD');
   assert.equal(renewed.ownerAuthorization, 'NOT_GIVEN');
   assert.equal(renewed.actualGatewayTest, 'NOT_RUN');
+});
+
+
+test('QL-253 retry reconciliation, ancestry drift and owner TEST-only intake remain separately gated', async () => {
+  const sourceRevision='1'.repeat(40), proofCommitSha='2'.repeat(40), proofSha256='3'.repeat(64);
+  const ok=reconcileQl253PublicProofRetryResult({proofHttpStatus:200,sourceRevision,proofCommitSha,proofSha256,sourceCiHeadSha:sourceRevision,ancestryVerified:true});
+  assert.equal(ok.reconciled,true);
+  assert.equal(ok.status,'QL253_PUBLIC_PROOF_RETRY_RECONCILED_OWNER_TEST_AUTH_HELD');
+  const drift=handleQl253AncestryDrift(
+    {sourceRevision,proofCommitSha,sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/1',proofSha256,ancestryVerified:true},
+    {sourceRevision,proofCommitSha:'4'.repeat(40),sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/1',proofSha256,ancestryVerified:true}
+  );
+  assert.equal(drift.drift,true);
+  assert.equal(drift.status,'HOLD_QL253_ANCESTRY_DRIFT_EXCEPTION');
+  const requested=intakeQl253OwnerTestDecision({decision:'REQUESTED_PRIVATE_REVIEW'},clock);
+  assert.equal(requested.ownerAuthorization,'REQUESTED_PRIVATE_REVIEW');
+  assert.equal(requested.actualGatewayTest,'NOT_RUN');
+  const invalid=intakeQl253OwnerTestDecision({
+    decision:'INDEPENDENTLY_VERIFIED_BY_OWNER',identityVerifiedPrivately:false,
+    environment:'nonproduction',businessId:'devilndove',ownerReceiptId:'owner-1',
+    allowedMethods:['GET'],allowedPaths:['/api/integration/v1/health','/api/integration/v1/capabilities'],
+    windowStart:clock+60000,windowEnd:clock+120000
+  },clock);
+  assert.equal(invalid.accepted,false);
+  assert.equal(invalid.status,'HOLD_OWNER_TEST_PRIVATE_VERIFICATION_INCOMPLETE');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
