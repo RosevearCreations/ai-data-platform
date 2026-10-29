@@ -3839,3 +3839,17 @@ Next queued: **Build 230 — Repair Preset Recovery, Renewal Recovery Presets & 
 - owner TEST decision remains NOT_GIVEN; real GETs remain NOT_RUN; original seven negative denial receipts remain NOT_VERIFIED; connection remains DISCONNECTED.
 
 Next queued: **Build 231 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-254 original signed-proof retrieval follow-up, independent private pin-registry witness evidence and reversible 24/7 relay readiness while connection remains HELD.**
+
+
+## Build 231 — Repair Recovery Audit, Renewal Preset Persistence, Receipt Recovery Filtering & QL-254
+
+- retained repair recovery audit evidence;
+- retained renewal preset persistence and receipt recovery filtering;
+- added original signed-proof retrieval reconciliation requiring immutable HTTP 200, exact source CI head SHA, distinct A/B SHAs, proof digest, signer SPKI and verified ancestry;
+- added independent private witness claim verification requiring distinct custody/witness receipts, five-minute challenge, separate witness key and out-of-band identity/custody verification;
+- added reversible 24/7 relay-readiness simulation with outbound-only/no-public-inbound/no-port-forwarding/no-home-DNS constraints, per-app credentials, OS secret store, household-service isolation, kill switch, revocation and rollback;
+- current observed main 9e570d82707fd476b43458fa869776bac9ddc65f still returned HTTP 404 for the proof path and had no matching GitHub Actions source CI;
+- no relay installation or home-PC configuration occurred;
+- owner TEST decision remains NOT_GIVEN, gateway GETs remain NOT_RUN, seven denial cases remain NOT_VERIFIED, connection remains DISCONNECTED.
+
+Next queued: **Build 232 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-255 verified proof-publication disposition, private witness-custody exception closure and bounded mini-server trial approval preparation while connection remains HELD.**
