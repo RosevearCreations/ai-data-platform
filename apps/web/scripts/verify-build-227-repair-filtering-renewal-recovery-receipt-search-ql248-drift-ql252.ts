@@ -52,7 +52,7 @@ async function main() {
   ensure(status.actual_gateway_test === "NOT_RUN" && status.connection_state === "DISCONNECTED" && status.owner_test_decision === "NOT_GIVEN", "status safety state");
 
   const lower = (blocker + doc).toLowerCase();
-  for (const t of ["does not fabricate", "not_available", "404", "phase-b", "not_run", "disconnected"]) ensure(lower.includes(t), "QL-252 boundary " + t);
+  for (const t of ["does **not** fabricate", "not_available", "404", "phase-b", "not_run", "disconnected"]) ensure(lower.includes(t), "QL-252 boundary " + t);
 
   console.log("Build 227 recovery, QL-248 drift reconciliation and QL-252 blocker verification passed.");
 }
