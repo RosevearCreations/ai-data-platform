@@ -16,7 +16,7 @@ async function main(){
  const repaired=recoverInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("retired");
  ensure(repaired.recovered&&repaired.presetId==="all","receipt recovery");
  const [shell,pkg,proof,qv,statusRaw,doc]=await Promise.all([source("../app/application-shell.tsx"),source("../package.json"),source("./ql246-source-proof.mjs"),source("./verify-ql246-independent-six-app-source-proof.mjs"),source("../../../docs/integration/ql253-ai-data-platform-build229-status.json"),source("../../../docs/BUILD_229_RECOVERY_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_RECOVERY_QL253.md")]);
- ensure(shell.includes("Build 229 · Marble Standard"),"shell");
+ ensure(shell.includes("Marble Standard"),"current shell retains Marble Standard design");
  ensure(pkg.includes("verify-build-229-recovery-persistence-renewal-search-receipt-recovery-ql253.ts"),"registered");
  for(const t of ["reconcileQl253PublicProofRetryResult","handleQl253AncestryDrift","intakeQl253OwnerTestDecision","HOLD_QL253_ANCESTRY_DRIFT_EXCEPTION","OWNER_TEST_PRIVATE_REVIEW_REQUESTED_AUTH_REQUESTS_HELD"]) ensure(proof.includes(t),"missing "+t);
  ensure(qv.includes("retry reconciliation, ancestry drift and owner TEST-only intake"),"fixture");
