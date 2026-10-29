@@ -314,6 +314,82 @@ export function detectQl248ImmutableOriginDrift(previousRaw, currentRaw) {
   });
 }
 
+
+export function reconcileQl253SourceCiProofAncestry(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || input.system !== 'ai-data-platform' ||
+    !REV.test(input.sourceRevision || '') ||
+    typeof input.sourceCiRunUrl !== 'string' ||
+    typeof input.sourceCiHeadSha !== 'string' ||
+    !REV.test(input.sourceCiHeadSha) ||
+    typeof input.proofCommitSha !== 'string' ||
+    !REV.test(input.proofCommitSha) ||
+    typeof input.proofHttpStatus !== 'number' ||
+    typeof input.ancestryVerified !== 'boolean') {
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL253_RETRY_INPUT_INCOMPLETE' });
+  }
+  if (input.sourceCiHeadSha !== input.sourceRevision)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_SOURCE_CI_SHA_MISMATCH' });
+  if (!/^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[1-9][0-9]*$/.test(input.sourceCiRunUrl))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_SOURCE_CI_URL_INVALID' });
+  if (input.proofCommitSha === input.sourceRevision)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_PROOF_COMMIT_NOT_DISTINCT' });
+  if (!input.ancestryVerified)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_SOURCE_TO_PROOF_ANCESTRY_UNVERIFIED' });
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_IMMUTABLE_PROOF_NOT_PUBLISHED' });
+  if (!HEX.test(input.proofSha256 || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_PROOF_DIGEST_NOT_AVAILABLE' });
+  return Object.freeze({
+    ...base,
+    ready: true,
+    status: 'QL253_PUBLIC_PROOF_RETRY_READY_OWNER_TEST_AUTH_HELD',
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256
+  });
+}
+
+export function renewQl253CustodyPinException(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!Number.isSafeInteger(now) || !input)
+    return Object.freeze({ ...base, renewed: false, status: 'HOLD_CUSTODY_RENEWAL_INPUT_INVALID' });
+
+  const receiptOk = typeof input.custodyReceiptId === 'string' && input.custodyReceiptId.length >= 6;
+  const witnessOk = typeof input.witnessReceiptId === 'string' && input.witnessReceiptId.length >= 6 &&
+    input.witnessReceiptId !== input.custodyReceiptId;
+  const pinOk = HEX.test(input.publicKeySpkiSha256 || '');
+  const timesOk = Number.isSafeInteger(input.issuedAt) && Number.isSafeInteger(input.expiresAt) &&
+    input.issuedAt <= now && input.expiresAt > now &&
+    input.expiresAt - input.issuedAt <= 5 * 60 * 1000;
+  const independentOk = input.custodyVerifiedOutOfBand === true && input.witnessVerifiedOutOfBand === true;
+
+  if (!receiptOk || !witnessOk || !pinOk || !timesOk || !independentOk)
+    return Object.freeze({
+      ...base,
+      renewed: false,
+      status: 'HOLD_CUSTODY_PIN_EXCEPTION_RENEWAL_PENDING_INDEPENDENT_VERIFICATION'
+    });
+
+  return Object.freeze({
+    ...base,
+    renewed: true,
+    status: 'CUSTODY_PIN_EXCEPTION_RENEWED_OWNER_TEST_AUTH_HELD',
+    custodyReceiptId: input.custodyReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    publicKeySpkiSha256: input.publicKeySpkiSha256,
+    expiresAt: input.expiresAt
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

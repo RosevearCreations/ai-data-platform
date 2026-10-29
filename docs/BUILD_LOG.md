@@ -3794,3 +3794,19 @@ Next queued: **Build 227 — Repair Recovery Filtering, Renewal Preset Recovery 
 - no sample, mocked or fictitious proof/signature/receipt was published.
 
 Next queued: **Build 228 — Recovery Search Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-253 immutable-proof retry readiness, source-CI/proof ancestry reconciliation and custody-pin exception renewal while owner TEST-only authorization remains HELD.**
+
+
+## Build 228 — Recovery Search Presets, Renewal Recovery Filtering, Receipt Preset Persistence & QL-253 Retry Readiness
+
+- retained deterministic repair recovery search presets;
+- retained newest renewal recovery All / 24h / 7d filtering;
+- retained sanitized browser-local receipt preset persistence;
+- added QL-253 exact source-CI/source-SHA reconciliation;
+- added proof-A/B distinctness and independently verified ancestry gate;
+- added immutable proof HTTP 200 and exact digest requirements;
+- added five-minute custody-pin exception renewal requiring distinct out-of-band custody and witness verification;
+- current retry source SHA 691017754d7e2bfa91ee880079e41f3d89c5a105 still has no exact GitHub Actions source-CI run and immutable proof path remains 404;
+- proof B, ancestry, proof digest, public SPKI pin and custody/witness receipts remain NOT_AVAILABLE;
+- owner TEST-only decision remains NOT_GIVEN; actual gateway test remains NOT_RUN; connection remains DISCONNECTED.
+
+Next queued: **Build 229 — Recovery Preset Persistence, Renewal Recovery Search & Receipt Preset Recovery, plus QL-253 public-proof retry result reconciliation, ancestry-drift exception handling and owner TEST-only decision intake while authenticated requests remain HELD.**
