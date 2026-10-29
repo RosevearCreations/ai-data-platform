@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -342,6 +342,84 @@ test('QL-248 exported-origin digest reconciliation and immutable-origin drift de
   assert.equal(drift.drift, true);
   assert.equal(drift.status, 'HOLD_SIX_SOURCE_IMMUTABLE_ORIGIN_DRIFT');
   assert.deepEqual(drift.changedSystems, ['ai-data-platform']);
+});
+
+
+test('QL-253 immutable-proof retry readiness reconciles exact source CI, ancestry and publication without authorizing TEST', async () => {
+  const sourceRevision = '1'.repeat(40);
+  const proofCommitSha = '2'.repeat(40);
+  const proofSha256 = '3'.repeat(64);
+  const ci = 'https://github.com/RosevearCreations/ai-data-platform/actions/runs/123456789';
+
+  const ready = reconcileQl253SourceCiProofAncestry({
+    system: 'ai-data-platform',
+    sourceRevision,
+    sourceCiRunUrl: ci,
+    sourceCiHeadSha: sourceRevision,
+    proofCommitSha,
+    proofHttpStatus: 200,
+    proofSha256,
+    ancestryVerified: true
+  });
+  assert.equal(ready.ready, true);
+  assert.equal(ready.status, 'QL253_PUBLIC_PROOF_RETRY_READY_OWNER_TEST_AUTH_HELD');
+  assert.equal(ready.ownerAuthorization, 'NOT_GIVEN');
+  assert.equal(ready.actualGatewayTest, 'NOT_RUN');
+
+  const wrongCi = reconcileQl253SourceCiProofAncestry({
+    system: 'ai-data-platform',
+    sourceRevision,
+    sourceCiRunUrl: ci,
+    sourceCiHeadSha: '4'.repeat(40),
+    proofCommitSha,
+    proofHttpStatus: 200,
+    proofSha256,
+    ancestryVerified: true
+  });
+  assert.equal(wrongCi.status, 'HOLD_SOURCE_CI_SHA_MISMATCH');
+
+  const missingProof = reconcileQl253SourceCiProofAncestry({
+    system: 'ai-data-platform',
+    sourceRevision,
+    sourceCiRunUrl: ci,
+    sourceCiHeadSha: sourceRevision,
+    proofCommitSha,
+    proofHttpStatus: 404,
+    proofSha256,
+    ancestryVerified: true
+  });
+  assert.equal(missingProof.status, 'HOLD_IMMUTABLE_PROOF_NOT_PUBLISHED');
+});
+
+test('QL-253 custody-pin exception renewal requires separate out-of-band custody and witness verification', async () => {
+  const issuedAt = clock - 60_000;
+  const expiresAt = clock + 4 * 60_000;
+  const pin = 'a'.repeat(64);
+  const held = renewQl253CustodyPinException({
+    custodyReceiptId: 'custody-123',
+    witnessReceiptId: 'witness-456',
+    publicKeySpkiSha256: pin,
+    issuedAt,
+    expiresAt,
+    custodyVerifiedOutOfBand: false,
+    witnessVerifiedOutOfBand: true
+  }, clock);
+  assert.equal(held.renewed, false);
+  assert.equal(held.status, 'HOLD_CUSTODY_PIN_EXCEPTION_RENEWAL_PENDING_INDEPENDENT_VERIFICATION');
+
+  const renewed = renewQl253CustodyPinException({
+    custodyReceiptId: 'custody-123',
+    witnessReceiptId: 'witness-456',
+    publicKeySpkiSha256: pin,
+    issuedAt,
+    expiresAt,
+    custodyVerifiedOutOfBand: true,
+    witnessVerifiedOutOfBand: true
+  }, clock);
+  assert.equal(renewed.renewed, true);
+  assert.equal(renewed.status, 'CUSTODY_PIN_EXCEPTION_RENEWED_OWNER_TEST_AUTH_HELD');
+  assert.equal(renewed.ownerAuthorization, 'NOT_GIVEN');
+  assert.equal(renewed.actualGatewayTest, 'NOT_RUN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
