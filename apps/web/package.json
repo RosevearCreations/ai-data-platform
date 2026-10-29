@@ -14,7 +14,9 @@
     "integration:v1-admin": "tsx scripts/integration-v1-admin.ts",
     "integration:ql246-verify": "node scripts/ql246-verify-source-proofs.mjs",
     "integration:ql246-challenge": "node scripts/ql246-create-trusted-challenge.mjs",
-    "verify:ql246": "node scripts/verify-ql246-independent-six-app-source-proof.mjs"
+    "verify:ql246": "node scripts/verify-ql246-independent-six-app-source-proof.mjs",
+    "verify:ql253": "node scripts/verify-ql253-six-app-origin-pin-test-review.mjs",
+    "integration:ql253-public-proof": "node scripts/ql253-public-github-proof-recheck.mjs"
   },
   "dependencies": {
     "better-auth": "1.7.7",

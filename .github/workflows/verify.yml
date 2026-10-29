@@ -69,5 +69,8 @@ jobs:
       - name: Verify QL-246 six-app independent pin challenge and source scope
         run: pnpm --filter @rosevear/ai-data-web verify:ql246
 
+      - name: Verify QL-253 six-app owner-return evidence and public-only proof gate
+        run: pnpm --filter @rosevear/ai-data-web verify:ql253
+
       - name: Verify auth and workspace isolation
         run: pnpm --filter @rosevear/ai-data-web db:verify
