@@ -605,6 +605,129 @@ export function continueQl253VerifiedOwnerTestDecision(previous, current, now = 
   });
 }
 
+
+export function reconcileQl254OriginalProofRetrieval(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, status: 'HOLD_QL254_ORIGINAL_PROOF_INPUT_INVALID', retrievable: false });
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      status: 'HOLD_QL254_ORIGINAL_PROOF_NOT_PUBLISHED',
+      retrievable: false,
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+  const complete =
+    REV.test(input.sourceRevision || '') &&
+    REV.test(input.proofCommitSha || '') &&
+    input.sourceRevision !== input.proofCommitSha &&
+    HEX.test(input.proofSha256 || '') &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.ancestryVerified === true &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[1-9][0-9]*$/.test(input.sourceCiRunUrl);
+  return Object.freeze({
+    ...base,
+    status: complete ? 'QL254_ORIGINAL_PROOF_RETRIEVED_OWNER_TEST_AUTH_HELD' : 'HOLD_QL254_ORIGINAL_PROOF_METADATA_INCOMPLETE',
+    retrievable: complete,
+    observedMainSha: input.observedMainSha,
+    sourceRevision: complete ? input.sourceRevision : undefined,
+    proofCommitSha: complete ? input.proofCommitSha : undefined
+  });
+}
+
+export function verifyQl254IndependentWitnessClaim(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL254_WITNESS_INPUT_INVALID' });
+
+  const digestOk = HEX.test(input.registrySnapshotSha256 || '') &&
+    HEX.test(input.custodyFingerprintSha256 || '') &&
+    HEX.test(input.witnessPublicKeySpkiSha256 || '');
+  const receiptsOk =
+    typeof input.registryCustodyReceiptId === 'string' && input.registryCustodyReceiptId.length >= 6 &&
+    typeof input.witnessReceiptId === 'string' && input.witnessReceiptId.length >= 6 &&
+    input.registryCustodyReceiptId !== input.witnessReceiptId;
+  const scopeOk =
+    REV.test(input.sourceRevision || '') &&
+    REV.test(input.proofCommitSha || '') &&
+    input.sourceRevision !== input.proofCommitSha &&
+    input.system === 'ai-data-platform' &&
+    typeof input.businessId === 'string' && input.businessId.length > 0;
+  const timeOk =
+    Number.isSafeInteger(input.issuedAt) &&
+    Number.isSafeInteger(input.expiresAt) &&
+    input.issuedAt <= now &&
+    input.expiresAt > now &&
+    input.expiresAt - input.issuedAt <= 5 * 60 * 1000;
+  const independentOk =
+    input.custodyVerifiedOutOfBand === true &&
+    input.witnessIdentityVerifiedOutOfBand === true &&
+    input.witnessKeyIsDistinct === true;
+
+  if (!digestOk || !receiptsOk || !scopeOk || !timeOk || !independentOk)
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL254_INDEPENDENT_WITNESS_NOT_VERIFIED' });
+
+  return Object.freeze({
+    ...base,
+    verified: true,
+    status: 'QL254_INDEPENDENT_WITNESS_VERIFIED_OWNER_TEST_AUTH_HELD',
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    registryCustodyReceiptId: input.registryCustodyReceiptId,
+    witnessReceiptId: input.witnessReceiptId
+  });
+}
+
+export function evaluateQl254RelayReadiness(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    relayInstalled: false,
+    relayStarted: false
+  });
+  if (!input) return Object.freeze({ ...base, ready: false, status: 'HOLD_QL254_RELAY_INPUT_INVALID' });
+
+  const reversible =
+    input.simulationOnly === true &&
+    input.outboundOnly === true &&
+    input.noPublicInboundPorts === true &&
+    input.noPortForwarding === true &&
+    input.noHomeDeviceDnsExposure === true &&
+    input.separateLeastPrivilegeServiceAccount === true &&
+    input.separatePerAppCredentials === true &&
+    input.secretStoreOnly === true &&
+    input.vaultIsolated === true &&
+    input.camerasIsolated === true &&
+    input.homeAssistantIsolated === true &&
+    input.mqttIsolated === true &&
+    input.killSwitchDefined === true &&
+    input.keyRevocationDefined === true &&
+    input.rollbackProcedureDefined === true &&
+    Number.isInteger(input.healthCheckSeconds) &&
+    input.healthCheckSeconds >= 30 &&
+    input.healthCheckSeconds <= 300;
+
+  if (!reversible)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL254_RELAY_READINESS_INCOMPLETE' });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    status: 'QL254_RELAY_REVERSIBILITY_SIMULATION_READY_CONNECTION_HELD'
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
