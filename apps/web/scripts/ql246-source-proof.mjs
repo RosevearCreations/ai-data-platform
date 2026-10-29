@@ -1130,6 +1130,167 @@ export function intakeQl256OwnerTestAuthorizationEvidence(input, now = Date.now(
   });
 }
 
+
+export function intakeQl257IndependentOwnerStatus(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    rolesIndependentlyAuthenticated: false
+  });
+  if (!input || typeof input !== 'object')
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL257_OWNER_STATUS_INPUT_INVALID' });
+
+  const allowedKeys = new Set([
+    'schema','application','private_key_custodian_role','distinct_independent_witness',
+    'separate_reviewer','approved_restricted_private_key_host_store','true_signer_status',
+    'public_spki_pin_independently_checked','owner_test_only_authorization','connection',
+    'private_names_included','passwords_included','raw_tokens_included',
+    'secret_manager_addresses_included','home_ip_addresses_included',
+    'custody_receipt_certified_by_ql257'
+  ]);
+  const keysOk = Object.keys(input).every(key => allowedKeys.has(key));
+  const role = value => value === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' || value === 'NOT_ASSIGNED';
+  const signer = value => [
+    'SIGNER_NOT_PROVISIONED','SIGNER_EXISTS_CUSTODY_NOT_VERIFIED','SIGNER_STATUS_UNKNOWN'
+  ].includes(value);
+  const valuesOk =
+    input.schema === 'rosevear.integration.ql257.owner-status-words.v1' &&
+    input.application === 'AI Data Platform' &&
+    role(input.private_key_custodian_role) &&
+    role(input.distinct_independent_witness) &&
+    role(input.separate_reviewer) &&
+    ['APPROVED','NOT_APPROVED'].includes(input.approved_restricted_private_key_host_store) &&
+    signer(input.true_signer_status) &&
+    ['VERIFIED_OUT_OF_BAND','NOT_VERIFIED'].includes(input.public_spki_pin_independently_checked) &&
+    input.owner_test_only_authorization === 'NOT_GIVEN' &&
+    input.connection === 'DISCONNECTED / HOLD' &&
+    input.private_names_included === false &&
+    input.passwords_included === false &&
+    input.raw_tokens_included === false &&
+    input.secret_manager_addresses_included === false &&
+    input.home_ip_addresses_included === false &&
+    input.custody_receipt_certified_by_ql257 === false;
+
+  if (!keysOk || !valuesOk)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL257_OWNER_STATUS_REJECTED' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    status: 'OWNER_REPORTS_DONE_NOT_VERIFIED',
+    reportedCustodianRole: input.private_key_custodian_role,
+    reportedWitnessRole: input.distinct_independent_witness,
+    reportedReviewerRole: input.separate_reviewer,
+    reportedKeyHostStatus: input.approved_restricted_private_key_host_store,
+    reportedSignerStatus: input.true_signer_status,
+    reportedPinStatus: input.public_spki_pin_independently_checked
+  });
+}
+
+export function reconcileQl257CustodyRoleApproval(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL257_CUSTODY_ROLE_RECONCILIATION_INPUT_INVALID' });
+
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk = receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const challengeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const evidenceOk =
+    input.ownerStatusIntakeAccepted === true &&
+    input.externalIndependentRoleAuthentication === true &&
+    input.privateKeyCustodianRole === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.distinctIndependentWitness === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.separateReviewer === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.approvedRestrictedPrivateKeyHostStore === 'APPROVED' &&
+    input.publicSpkiPinIndependentlyChecked === 'VERIFIED_OUT_OF_BAND' &&
+    input.signerStatus === 'SIGNER_EXISTS_CUSTODY_NOT_VERIFIED' &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    HEX.test(input.registrySnapshotSha256 || '') &&
+    input.rolesAreDistinct === true &&
+    receiptsOk &&
+    challengeOk;
+
+  if (!evidenceOk)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL257_CUSTODY_ROLE_APPROVAL_NOT_RECONCILED' });
+
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    signerStatus: 'SIGNER_EXISTS_CUSTODY_VERIFIED',
+    status: 'QL257_CUSTODY_ROLE_APPROVAL_RECONCILED_PROOF_B_AUTHORIZATION_HELD',
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
+export function prepareQl257ProofBPublicationAuthorization(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    publicationAuthorized: false,
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.sourceRevision || ''))
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL257_PROOF_B_AUTHORIZATION_INPUT_INVALID' });
+
+  if (input.custodyRoleApprovalReconciled !== true)
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL257_PROOF_B_CUSTODY_APPROVAL_MISSING' });
+
+  const sourceOk =
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.sourceCiRunUrl);
+  const signerOk =
+    input.signerStatus === 'SIGNER_EXISTS_CUSTODY_VERIFIED' &&
+    typeof input.signerKeyId === 'string' && input.signerKeyId.length >= 8 &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.publicSpkiPinStatus === 'VERIFIED_OUT_OF_BAND' &&
+    input.privateKeyAvailableInApprovedStore === true &&
+    input.privateKeyExported === false;
+  const proofOk =
+    input.proofPath === 'docs/integration/ql246-source-proof.json' &&
+    input.canonicalPayloadPrepared === true &&
+    input.signedEnvelopePrepared === true &&
+    input.twoShaRuleAccepted === true &&
+    typeof input.publicationReviewerReceiptId === 'string' &&
+    input.publicationReviewerReceiptId.length >= 6 &&
+    input.publicationAuthorizationStatus === 'AUTHORIZED_FOR_PUBLIC_PROOF_ONLY';
+
+  if (!sourceOk || !signerOk || !proofOk)
+    return Object.freeze({ ...base, prepared: false, status: 'HOLD_QL257_PROOF_B_PUBLICATION_AUTHORIZATION_INCOMPLETE' });
+
+  return Object.freeze({
+    ...base,
+    prepared: true,
+    publicationAuthorized: true,
+    status: 'QL257_PROOF_B_PUBLICATION_AUTHORIZED_EXECUTION_NOT_RUN',
+    sourceRevision: input.sourceRevision,
+    sourceCiRunUrl: input.sourceCiRunUrl,
+    signerKeyId: input.signerKeyId,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    proofPath: input.proofPath,
+    publicationReviewerReceiptId: input.publicationReviewerReceiptId
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

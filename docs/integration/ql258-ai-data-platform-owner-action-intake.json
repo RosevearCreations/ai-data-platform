@@ -1,0 +1,21 @@
+{
+  "schema": "rosevear.integration.ql258.ai-data-platform.owner-action-intake-status.v1",
+  "application": "AI Data Platform",
+  "expected_source": "Rosevear Comms Hub QL-258 sanitized AI Data Platform handoff",
+  "sanitized_packet_received": false,
+  "owner_report_state": "NOT_RECEIVED",
+  "fixed_enum_validation_enabled": true,
+  "unknown_fields_rejected": true,
+  "private_names_allowed": false,
+  "key_material_allowed": false,
+  "tokens_allowed": false,
+  "passwords_allowed": false,
+  "private_addresses_allowed": false,
+  "credential_store_paths_allowed": false,
+  "customer_records_allowed": false,
+  "owner_authorization": "NOT_GIVEN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12,
+  "network_test_authorized": false,
+  "proof_publication_authorized": false
+}
