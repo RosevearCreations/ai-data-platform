@@ -1,0 +1,18 @@
+{
+  "schema": "rosevear.integration.ql257.owner-status-words.v1",
+  "application": "AI Data Platform",
+  "private_key_custodian_role": "NOT_ASSIGNED",
+  "distinct_independent_witness": "NOT_ASSIGNED",
+  "separate_reviewer": "NOT_ASSIGNED",
+  "approved_restricted_private_key_host_store": "NOT_APPROVED",
+  "true_signer_status": "SIGNER_EXISTS_CUSTODY_NOT_VERIFIED",
+  "public_spki_pin_independently_checked": "NOT_VERIFIED",
+  "owner_test_only_authorization": "NOT_GIVEN",
+  "connection": "DISCONNECTED / HOLD",
+  "private_names_included": false,
+  "passwords_included": false,
+  "raw_tokens_included": false,
+  "secret_manager_addresses_included": false,
+  "home_ip_addresses_included": false,
+  "custody_receipt_certified_by_ql257": false
+}

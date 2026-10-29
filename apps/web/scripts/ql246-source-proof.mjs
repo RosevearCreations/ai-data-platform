@@ -983,6 +983,153 @@ export function prepareQl256AuthenticatedOwnerTestOnlyDecision(input, now = Date
   });
 }
 
+
+export function reconcileQl256CustodyChallenge(input, expectedSpkiSha256, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !HEX.test(expectedSpkiSha256 || '') || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL256_CUSTODY_CHALLENGE_INPUT_INVALID' });
+
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk = receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const pinOk =
+    HEX.test(input.registrySnapshotSha256 || '') &&
+    HEX.test(input.observedSignerSpkiSha256 || '') &&
+    input.observedSignerSpkiSha256 === expectedSpkiSha256;
+  const timeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const rolesOk =
+    input.custodianStatus === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.witnessStatus === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.reviewerStatus === 'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED' &&
+    input.privateKeyHostStatus === 'APPROVED' &&
+    input.publicSpkiPinStatus === 'VERIFIED_OUT_OF_BAND' &&
+    input.rolesAreDistinct === true;
+
+  if (!receiptsOk || !pinOk || !timeOk || !rolesOk)
+    return Object.freeze({
+      ...base,
+      reconciled: false,
+      status: 'HOLD_QL256_CUSTODY_CHALLENGE_NOT_RECONCILED'
+    });
+
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    status: 'QL256_CUSTODY_CHALLENGE_RECONCILED_PROOF_B_EXECUTION_HELD',
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId,
+    publicSignerSpkiSha256: expectedSpkiSha256
+  });
+}
+
+export function evaluateQl256SignedProofBExecutionReadiness(input) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.sourceRevision || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL256_SIGNED_PROOF_B_INPUT_INVALID' });
+
+  if (input.custodyChallengeReconciled !== true)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL256_SIGNED_PROOF_B_CUSTODY_NOT_RECONCILED' });
+
+  const sourceOk =
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.sourceCiRunUrl);
+  const signerOk =
+    input.signerStatus === 'SIGNER_EXISTS_CUSTODY_VERIFIED' &&
+    typeof input.signerKeyId === 'string' &&
+    input.signerKeyId.length >= 8 &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.privateKeyAvailableInApprovedStore === true &&
+    input.privateKeyExported === false;
+  const proofOk =
+    input.proofPath === 'docs/integration/ql246-source-proof.json' &&
+    input.canonicalPayloadPrepared === true &&
+    input.signedEnvelopePrepared === true &&
+    input.twoShaRuleAccepted === true;
+
+  if (!sourceOk || !signerOk || !proofOk)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'HOLD_QL256_SIGNED_PROOF_B_EXECUTION_PREREQUISITES_INCOMPLETE'
+    });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    status: 'QL256_SIGNED_PROOF_B_EXECUTION_READY_PUBLICATION_NOT_RUN',
+    sourceRevision: input.sourceRevision,
+    sourceCiRunUrl: input.sourceCiRunUrl,
+    signerKeyId: input.signerKeyId,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    proofPath: input.proofPath
+  });
+}
+
+export function intakeQl256OwnerTestAuthorizationEvidence(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN',
+    gatewayExecutionAllowed: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL256_OWNER_TEST_AUTH_EVIDENCE_INPUT_INVALID' });
+
+  if (input.custodyChallengeReconciled !== true || input.proofPublicationVerified !== true)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL256_OWNER_TEST_AUTH_PROOF_OR_CUSTODY_INCOMPLETE' });
+
+  const ownerOk =
+    input.ownerIdentityAuthenticatedPrivately === true &&
+    typeof input.ownerAuthorizationReceiptId === 'string' &&
+    input.ownerAuthorizationReceiptId.length >= 6 &&
+    input.ownerAuthorizationStatus === 'EXPLICIT_NONPRODUCTION_TEST_ONLY_APPROVAL';
+  const scopeOk =
+    input.environment === 'nonproduction' &&
+    input.businessId === 'devilndove' &&
+    Array.isArray(input.methods) && input.methods.length === 1 && input.methods[0] === 'GET' &&
+    Array.isArray(input.paths) && input.paths.length === 2 &&
+    input.paths[0] === '/api/integration/v1/health' &&
+    input.paths[1] === '/api/integration/v1/capabilities';
+  const windowOk =
+    Number.isSafeInteger(input.windowStartsAt) &&
+    Number.isSafeInteger(input.windowExpiresAt) &&
+    input.windowStartsAt >= now &&
+    input.windowExpiresAt > input.windowStartsAt &&
+    input.windowExpiresAt - input.windowStartsAt <= 30 * 60 * 1000;
+
+  if (!ownerOk || !scopeOk || !windowOk)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL256_OWNER_TEST_AUTH_EVIDENCE_NOT_VERIFIED' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    ownerAuthorization: 'EXPLICIT_NONPRODUCTION_TEST_ONLY_APPROVAL',
+    status: 'QL256_OWNER_TEST_AUTH_EVIDENCE_ACCEPTED_GATEWAY_EXECUTION_HELD',
+    ownerAuthorizationReceiptId: input.ownerAuthorizationReceiptId,
+    windowStartsAt: input.windowStartsAt,
+    windowExpiresAt: input.windowExpiresAt
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

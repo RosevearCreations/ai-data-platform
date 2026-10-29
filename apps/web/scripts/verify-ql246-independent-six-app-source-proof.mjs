@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -636,6 +636,89 @@ test('QL-256 custody intake, proof-B readiness and owner TEST-only preparation s
   assert.equal(ownerPrep.ownerAuthorization,'NOT_GIVEN');
   assert.equal(ownerPrep.gatewayExecutionAllowed,false);
   assert.equal(ownerPrep.actualGatewayTest,'NOT_RUN');
+});
+
+
+
+test('QL-256 custody challenge, signed proof-B execution and owner authorization evidence remain separately gated', async () => {
+  const spki='d'.repeat(64);
+
+  const heldChallenge=reconcileQl256CustodyChallenge({
+    registrySnapshotSha256:'e'.repeat(64),observedSignerSpkiSha256:spki,
+    custodianReceiptId:'custody-1',witnessReceiptId:'witness-2',reviewerReceiptId:'reviewer-3',
+    challengeIssuedAt:clock-60_000,challengeExpiresAt:clock+120_000,
+    custodianStatus:'NOT_ASSIGNED',
+    witnessStatus:'NOT_ASSIGNED',
+    reviewerStatus:'NOT_ASSIGNED',
+    privateKeyHostStatus:'APPROVED',
+    publicSpkiPinStatus:'NOT_VERIFIED',
+    rolesAreDistinct:false
+  },spki,clock);
+  assert.equal(heldChallenge.reconciled,false);
+  assert.equal(heldChallenge.status,'HOLD_QL256_CUSTODY_CHALLENGE_NOT_RECONCILED');
+
+  const reconciled=reconcileQl256CustodyChallenge({
+    registrySnapshotSha256:'e'.repeat(64),observedSignerSpkiSha256:spki,
+    custodianReceiptId:'custody-1',witnessReceiptId:'witness-2',reviewerReceiptId:'reviewer-3',
+    challengeIssuedAt:clock-60_000,challengeExpiresAt:clock+120_000,
+    custodianStatus:'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED',
+    witnessStatus:'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED',
+    reviewerStatus:'ASSIGNED_AND_INDEPENDENTLY_AUTHENTICATED',
+    privateKeyHostStatus:'APPROVED',
+    publicSpkiPinStatus:'VERIFIED_OUT_OF_BAND',
+    rolesAreDistinct:true
+  },spki,clock);
+  assert.equal(reconciled.reconciled,true);
+  assert.equal(reconciled.proofBPublished,false);
+
+  const proofHeld=evaluateQl256SignedProofBExecutionReadiness({
+    sourceRevision:'a'.repeat(40),custodyChallengeReconciled:false,
+    sourceCiHeadSha:'a'.repeat(40),sourceCiConclusion:'success',
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/40928884781',
+    signerStatus:'SIGNER_EXISTS_CUSTODY_NOT_VERIFIED',
+    signerKeyId:'ql256-ai-data-platform-test',publicSignerSpkiSha256:spki,
+    privateKeyAvailableInApprovedStore:true,privateKeyExported:false,
+    proofPath:'docs/integration/ql246-source-proof.json',
+    canonicalPayloadPrepared:true,signedEnvelopePrepared:true,twoShaRuleAccepted:true
+  });
+  assert.equal(proofHeld.ready,false);
+  assert.equal(proofHeld.status,'HOLD_QL256_SIGNED_PROOF_B_CUSTODY_NOT_RECONCILED');
+
+  const proofReady=evaluateQl256SignedProofBExecutionReadiness({
+    sourceRevision:'a'.repeat(40),custodyChallengeReconciled:true,
+    sourceCiHeadSha:'a'.repeat(40),sourceCiConclusion:'success',
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/40928884781',
+    signerStatus:'SIGNER_EXISTS_CUSTODY_VERIFIED',
+    signerKeyId:'ql256-ai-data-platform-test',publicSignerSpkiSha256:spki,
+    privateKeyAvailableInApprovedStore:true,privateKeyExported:false,
+    proofPath:'docs/integration/ql246-source-proof.json',
+    canonicalPayloadPrepared:true,signedEnvelopePrepared:true,twoShaRuleAccepted:true
+  });
+  assert.equal(proofReady.ready,true);
+  assert.equal(proofReady.proofBPublished,false);
+
+  const authHeld=intakeQl256OwnerTestAuthorizationEvidence({
+    custodyChallengeReconciled:true,proofPublicationVerified:false,
+    ownerIdentityAuthenticatedPrivately:true,ownerAuthorizationReceiptId:'owner-1',
+    ownerAuthorizationStatus:'EXPLICIT_NONPRODUCTION_TEST_ONLY_APPROVAL',
+    environment:'nonproduction',businessId:'devilndove',methods:['GET'],
+    paths:['/api/integration/v1/health','/api/integration/v1/capabilities'],
+    windowStartsAt:clock+60_000,windowExpiresAt:clock+20*60_000
+  },clock);
+  assert.equal(authHeld.accepted,false);
+  assert.equal(authHeld.ownerAuthorization,'NOT_GIVEN');
+
+  const authAccepted=intakeQl256OwnerTestAuthorizationEvidence({
+    custodyChallengeReconciled:true,proofPublicationVerified:true,
+    ownerIdentityAuthenticatedPrivately:true,ownerAuthorizationReceiptId:'owner-1',
+    ownerAuthorizationStatus:'EXPLICIT_NONPRODUCTION_TEST_ONLY_APPROVAL',
+    environment:'nonproduction',businessId:'devilndove',methods:['GET'],
+    paths:['/api/integration/v1/health','/api/integration/v1/capabilities'],
+    windowStartsAt:clock+60_000,windowExpiresAt:clock+20*60_000
+  },clock);
+  assert.equal(authAccepted.accepted,true);
+  assert.equal(authAccepted.gatewayExecutionAllowed,false);
+  assert.equal(authAccepted.actualGatewayTest,'NOT_RUN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
