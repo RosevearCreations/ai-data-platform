@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -504,6 +504,44 @@ test('QL-253 retry evidence renewal, ancestry-exception aging and owner TEST con
   const changedScope=continueQl253VerifiedOwnerTestDecision(previous,{...current,businessId:'other'},clock);
   assert.equal(changedScope.continuous,false);
   assert.equal(changedScope.ownerAuthorization,'NOT_GIVEN');
+});
+
+
+test('QL-254 original proof retrieval, independent witness claim and relay reversibility stay fail-closed', async () => {
+  const sourceRevision='1'.repeat(40), proofCommitSha='2'.repeat(40), proofSha256='3'.repeat(64), spki='4'.repeat(64);
+  const missing=reconcileQl254OriginalProofRetrieval({observedMainSha:'9'.repeat(40),proofHttpStatus:404});
+  assert.equal(missing.retrievable,false);
+  assert.equal(missing.status,'HOLD_QL254_ORIGINAL_PROOF_NOT_PUBLISHED');
+
+  const retrieved=reconcileQl254OriginalProofRetrieval({
+    observedMainSha:'9'.repeat(40),proofHttpStatus:200,sourceRevision,proofCommitSha,proofSha256,
+    publicSignerSpkiSha256:spki,sourceCiHeadSha:sourceRevision,ancestryVerified:true,
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/123456789'
+  });
+  assert.equal(retrieved.retrievable,true);
+  assert.equal(retrieved.status,'QL254_ORIGINAL_PROOF_RETRIEVED_OWNER_TEST_AUTH_HELD');
+
+  const witnessHeld=verifyQl254IndependentWitnessClaim({
+    registrySnapshotSha256:'5'.repeat(64),custodyFingerprintSha256:'6'.repeat(64),
+    witnessPublicKeySpkiSha256:'7'.repeat(64),registryCustodyReceiptId:'custody-1',witnessReceiptId:'witness-2',
+    sourceRevision,proofCommitSha,system:'ai-data-platform',businessId:'devilndove',
+    issuedAt:clock-60_000,expiresAt:clock+120_000,custodyVerifiedOutOfBand:true,
+    witnessIdentityVerifiedOutOfBand:false,witnessKeyIsDistinct:true
+  },clock);
+  assert.equal(witnessHeld.verified,false);
+  assert.equal(witnessHeld.status,'HOLD_QL254_INDEPENDENT_WITNESS_NOT_VERIFIED');
+
+  const relay=evaluateQl254RelayReadiness({
+    simulationOnly:true,outboundOnly:true,noPublicInboundPorts:true,noPortForwarding:true,noHomeDeviceDnsExposure:true,
+    separateLeastPrivilegeServiceAccount:true,separatePerAppCredentials:true,secretStoreOnly:true,
+    vaultIsolated:true,camerasIsolated:true,homeAssistantIsolated:true,mqttIsolated:true,
+    killSwitchDefined:true,keyRevocationDefined:true,rollbackProcedureDefined:true,healthCheckSeconds:60
+  });
+  assert.equal(relay.ready,true);
+  assert.equal(relay.status,'QL254_RELAY_REVERSIBILITY_SIMULATION_READY_CONNECTION_HELD');
+  assert.equal(relay.relayInstalled,false);
+  assert.equal(relay.relayStarted,false);
+  assert.equal(relay.actualGatewayTest,'NOT_RUN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
