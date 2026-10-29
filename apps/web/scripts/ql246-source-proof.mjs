@@ -493,6 +493,118 @@ export function intakeQl253OwnerTestDecision(input, now = Date.now()) {
   });
 }
 
+
+export function renewQl253RetryEvidence(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, renewed: false, status: 'HOLD_RETRY_EVIDENCE_RENEWAL_INPUT_INVALID' });
+
+  const sourceOk = REV.test(input.sourceRevision || '');
+  const proofOk = REV.test(input.proofCommitSha || '') && input.proofCommitSha !== input.sourceRevision;
+  const digestOk = HEX.test(input.proofSha256 || '');
+  const ciOk = typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[1-9][0-9]*$/.test(input.sourceCiRunUrl) &&
+    input.sourceCiHeadSha === input.sourceRevision;
+  const ancestryOk = input.ancestryVerified === true;
+  const publicationOk = input.proofHttpStatus === 200;
+  const freshnessOk = Number.isSafeInteger(input.verifiedAt) &&
+    input.verifiedAt <= now && input.verifiedAt >= now - 60 * 60 * 1000;
+
+  if (!sourceOk || !proofOk || !digestOk || !ciOk || !ancestryOk || !publicationOk || !freshnessOk)
+    return Object.freeze({
+      ...base,
+      renewed: false,
+      status: 'HOLD_RETRY_EVIDENCE_RENEWAL_INCOMPLETE'
+    });
+
+  return Object.freeze({
+    ...base,
+    renewed: true,
+    status: 'QL253_RETRY_EVIDENCE_RENEWED_OWNER_TEST_AUTH_HELD',
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    verifiedAt: input.verifiedAt
+  });
+}
+
+export function ageQl253AncestryException(input, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    ownerAuthorization: 'NOT_GIVEN',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !Number.isSafeInteger(now) || !Number.isSafeInteger(input.detectedAt))
+    return Object.freeze({ ...base, active: true, status: 'HOLD_ANCESTRY_EXCEPTION_AGE_INVALID' });
+
+  const ageMs = Math.max(0, now - input.detectedAt);
+  if (input.resolved === true) {
+    return Object.freeze({
+      ...base,
+      active: false,
+      status: 'ANCESTRY_EXCEPTION_RESOLVED_OWNER_TEST_AUTH_HELD',
+      ageMs
+    });
+  }
+
+  return Object.freeze({
+    ...base,
+    active: true,
+    status: ageMs >= 24 * 60 * 60 * 1000
+      ? 'HOLD_ANCESTRY_EXCEPTION_OVERDUE'
+      : 'HOLD_ANCESTRY_EXCEPTION_ACTIVE',
+    ageMs
+  });
+}
+
+export function continueQl253VerifiedOwnerTestDecision(previous, current, now = Date.now()) {
+  const base = Object.freeze({
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!previous || !current || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, continuous: false, ownerAuthorization: 'NOT_GIVEN', status: 'HOLD_OWNER_TEST_CONTINUITY_INPUT_INVALID' });
+
+  const prevVerified = previous.ownerAuthorization === 'INDEPENDENTLY_VERIFIED_BY_OWNER' &&
+    previous.identityVerifiedPrivately === true;
+  const currentVerified = current.ownerAuthorization === 'INDEPENDENTLY_VERIFIED_BY_OWNER' &&
+    current.identityVerifiedPrivately === true;
+  const sameScope = previous.businessId === current.businessId &&
+    previous.tenantId === current.tenantId &&
+    previous.environment === 'nonproduction' && current.environment === 'nonproduction' &&
+    JSON.stringify(previous.allowedMethods) === JSON.stringify(QL246_METHODS) &&
+    JSON.stringify(current.allowedMethods) === JSON.stringify(QL246_METHODS) &&
+    JSON.stringify(previous.allowedPaths) === JSON.stringify(QL246_PATHS) &&
+    JSON.stringify(current.allowedPaths) === JSON.stringify(QL246_PATHS);
+  const windowOk = Number.isSafeInteger(current.windowStart) && Number.isSafeInteger(current.windowEnd) &&
+    current.windowStart > now && current.windowEnd > current.windowStart &&
+    current.windowEnd - current.windowStart <= 30 * 60 * 1000;
+  const receiptOk = typeof previous.ownerReceiptId === 'string' && previous.ownerReceiptId.length >= 6 &&
+    typeof current.ownerReceiptId === 'string' && current.ownerReceiptId.length >= 6;
+
+  if (!prevVerified || !currentVerified || !sameScope || !windowOk || !receiptOk)
+    return Object.freeze({
+      ...base,
+      continuous: false,
+      ownerAuthorization: 'NOT_GIVEN',
+      status: 'HOLD_OWNER_TEST_CONTINUITY_REVERIFICATION_REQUIRED'
+    });
+
+  return Object.freeze({
+    ...base,
+    continuous: true,
+    ownerAuthorization: 'INDEPENDENTLY_VERIFIED_BY_OWNER',
+    status: 'OWNER_TEST_DECISION_CONTINUITY_VERIFIED_REQUEST_EXECUTION_HELD',
+    ownerReceiptId: current.ownerReceiptId,
+    windowStart: current.windowStart,
+    windowEnd: current.windowEnd
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
