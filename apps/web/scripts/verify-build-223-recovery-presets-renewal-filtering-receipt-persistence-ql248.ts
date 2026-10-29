@@ -1,6 +1,3 @@
-import { test } from "node:test";
-import assert from "node:assert/strict";
-import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
 import {
