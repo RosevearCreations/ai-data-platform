@@ -1560,6 +1560,164 @@ export function ageQl258CustodySourceActivationEvidence(input, now = Date.now())
   });
 }
 
+
+export function refreshQl259OwnerStatus(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    authenticatedIdentity: false,
+    custodyVerified: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, refreshed: false, status: 'HOLD_QL259_OWNER_STATUS_REFRESH_INPUT_INVALID' });
+
+  if (input.ownerStatusAvailable !== true)
+    return Object.freeze({
+      ...base,
+      refreshed: false,
+      status: 'QL259_OWNER_STATUS_NOT_AVAILABLE'
+    });
+
+  const statusOk =
+    input.ownerReportState === 'OWNER_REPORTS_DONE_NOT_VERIFIED' &&
+    input.ownerAuthorization === 'NOT_GIVEN' &&
+    input.connection === 'DISCONNECTED' &&
+    input.livePilotHolds === 12 &&
+    input.authenticatedIdentity === false &&
+    Number.isSafeInteger(input.reportedAt) &&
+    input.reportedAt <= now;
+
+  if (!statusOk)
+    return Object.freeze({
+      ...base,
+      refreshed: false,
+      status: 'HOLD_QL259_OWNER_STATUS_REFRESH_REJECTED'
+    });
+
+  return Object.freeze({
+    ...base,
+    refreshed: true,
+    status: 'QL259_OWNER_STATUS_REFRESHED_SELF_REPORT_ONLY',
+    reportedAt: input.reportedAt,
+    ageMs: now - input.reportedAt
+  });
+}
+
+export function renewQl259CustodySourceEvidence(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, renewed: false, status: 'HOLD_QL259_CUSTODY_RENEWAL_INPUT_INVALID' });
+
+  if (input.evidenceAvailable !== true)
+    return Object.freeze({ ...base, renewed: false, status: 'QL259_CUSTODY_SOURCE_EVIDENCE_NOT_AVAILABLE' });
+
+  const priorOk =
+    HEX.test(input.priorRegistrySnapshotSha256 || '') &&
+    HEX.test(input.priorPublicSignerSpkiSha256 || '') &&
+    Number.isSafeInteger(input.priorVerifiedAt) &&
+    input.priorVerifiedAt <= now;
+  const currentOk =
+    HEX.test(input.registrySnapshotSha256 || '') &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.publicSignerSpkiSha256 === input.priorPublicSignerSpkiSha256 &&
+    input.custodianAuthenticatedPrivately === true &&
+    input.witnessAuthenticatedPrivately === true &&
+    input.reviewerAuthenticatedPrivately === true &&
+    input.rolesAreDistinct === true &&
+    input.approvedRestrictedPrivateKeyHostStore === true &&
+    input.publicSpkiPinVerifiedOutOfBand === true;
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk =
+    receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const challengeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const renewalOk =
+    Number.isSafeInteger(input.renewedAt) &&
+    input.renewedAt <= now &&
+    input.renewedAt >= input.challengeIssuedAt &&
+    input.renewedAt > input.priorVerifiedAt;
+
+  if (!priorOk || !currentOk || !receiptsOk || !challengeOk || !renewalOk)
+    return Object.freeze({
+      ...base,
+      renewed: false,
+      status: 'HOLD_QL259_CUSTODY_SOURCE_EVIDENCE_RENEWAL_NOT_VERIFIED'
+    });
+
+  return Object.freeze({
+    ...base,
+    renewed: true,
+    status: 'QL259_CUSTODY_SOURCE_EVIDENCE_RENEWED_ACTIVATION_HELD',
+    renewedAt: input.renewedAt,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
+export function reviewQl259ImmutableProofPublicationException(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    exceptionWaiverAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, reviewed: false, status: 'HOLD_QL259_PROOF_EXCEPTION_REVIEW_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200) {
+    const expectedMissing =
+      input.exceptionType === 'IMMUTABLE_PROOF_NOT_PUBLISHED' &&
+      input.proofPath === 'docs/integration/ql246-source-proof.json';
+    return Object.freeze({
+      ...base,
+      reviewed: expectedMissing,
+      status: expectedMissing
+        ? 'QL259_PROOF_PUBLICATION_EXCEPTION_OPEN_PUBLICATION_REQUIRED'
+        : 'HOLD_QL259_PROOF_PUBLICATION_EXCEPTION_UNCLASSIFIED',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+  }
+
+  const refreshed = refreshQl258ImmutableProofStatus(input);
+  if (refreshed.verified !== true)
+    return Object.freeze({
+      ...base,
+      reviewed: true,
+      status: 'HOLD_QL259_PROOF_PUBLICATION_EXCEPTION_PROOF_INVALID',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    reviewed: true,
+    proofBPublished: true,
+    status: 'QL259_PROOF_PUBLICATION_EXCEPTION_RESOLVED_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

@@ -3941,3 +3941,18 @@ Next queued: **Build 237 — Repair Recovery Audit, Renewal Preset Persistence &
 - QL-265 source connection/interface work remains preserved.
 
 Next queued: **Build 238 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-259 owner-status refresh, custody-source evidence renewal and immutable proof publication exception review while authenticated gateway GETs remain HELD.**
+
+
+## Build 238 — Repair Recovery Filtering, Renewal Preset Recovery, Receipt Recovery Search & QL-259
+
+- advanced repair recovery filtering, renewal preset recovery and receipt recovery search;
+- refreshed Source A to released Build 237 main `5b03307cb366e74af01fb54d2385096996772b5c` with matching GREEN GitHub Actions run `41070310506`;
+- rechecked `docs/integration/ql246-source-proof.json` at exact Source A: HTTP 404;
+- added QL-259 owner-status refresh that can refresh only a sanitized self-report and never upgrades it to authenticated identity or custody;
+- added custody-source evidence renewal requiring continuity of signer SPKI, authenticated custodian/witness/reviewer, approved key host, out-of-band pin, distinct receipts and a fresh <=5 minute challenge;
+- added immutable proof publication exception review with no waiver path: missing proof remains an open publication-required exception;
+- current owner status remains NOT_AVAILABLE; custody-source evidence remains NOT_AVAILABLE;
+- proof B remains unpublished; owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD;
+- QL-265 source connection/interface work remains preserved.
+
+Next queued: **Build 239 — Repair Recovery Search, Renewal Recovery Audit & Receipt Recovery Presets, plus QL-260 authenticated owner-status receipt intake, custody-source evidence renewal verification and immutable proof publication exception disposition while authenticated gateway GETs remain HELD.**
