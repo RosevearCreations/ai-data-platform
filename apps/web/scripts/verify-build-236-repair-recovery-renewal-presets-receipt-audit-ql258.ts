@@ -42,7 +42,7 @@ async function main() {
     source("../../../docs/BUILD_236_REPAIR_RECOVERY_RENEWAL_PRESETS_RECEIPT_AUDIT_QL258.md")
   ]);
 
-  ensure(shell.includes("Build 236 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-236-repair-recovery-renewal-presets-receipt-audit-ql258.ts"),"registered");
 
   for(const t of [

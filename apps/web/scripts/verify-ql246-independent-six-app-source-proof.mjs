@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -899,6 +899,95 @@ test('QL-258 sanitized owner packet, immutable proof refresh and custody-source 
   assert.equal(ready.activationAllowed,false);
   assert.equal(ready.proofBPublished,false);
   assert.equal(ready.actualGatewayTest,'NOT_RUN');
+});
+
+
+
+test('QL-258 owner return reconciliation, proof publication follow-up and custody evidence aging stay fail-closed', async () => {
+  const incomplete=reconcileQl258SanitizedOwnerActionReturn({
+    schema:'rosevear.integration.ql258.sanitized-owner-action.v1',
+    application:'AI Data Platform',
+    progress:Array(7).fill('NOT_ATTEMPTED'),
+    owner_report_state:'NOT_RECEIVED',
+    owner_authorization:'NOT_GIVEN',
+    connection:'DISCONNECTED',
+    live_pilot_holds:12
+  });
+  assert.equal(incomplete.reconciled,false);
+  assert.equal(incomplete.status,'QL258_OWNER_RETURN_NOT_RECEIVED_OR_INCOMPLETE');
+  assert.equal(incomplete.ownerAuthorization,'NOT_GIVEN');
+
+  const selfReport=reconcileQl258SanitizedOwnerActionReturn({
+    schema:'rosevear.integration.ql258.sanitized-owner-action.v1',
+    application:'AI Data Platform',
+    progress:Array(7).fill('OWNER_REPORTS_DONE_NOT_VERIFIED'),
+    owner_report_state:'OWNER_REPORTS_DONE_NOT_VERIFIED',
+    owner_authorization:'NOT_GIVEN',
+    connection:'DISCONNECTED',
+    live_pilot_holds:12
+  });
+  assert.equal(selfReport.reconciled,true);
+  assert.equal(selfReport.status,'QL258_OWNER_RETURN_RECONCILED_SELF_REPORT_ONLY');
+  assert.equal(selfReport.authenticatedIdentity,false);
+  assert.equal(selfReport.proofPublicationAuthorized,false);
+
+  const missing=followUpQl258ImmutableProofPublication({
+    observedMainSha:'a'.repeat(40),
+    proofHttpStatus:404
+  });
+  assert.equal(missing.verified,false);
+  assert.equal(missing.status,'QL258_PROOF_PUBLICATION_FOLLOWUP_NOT_PUBLISHED');
+
+  const verified=followUpQl258ImmutableProofPublication({
+    observedMainSha:'b'.repeat(40),
+    proofHttpStatus:200,
+    sourceRevision:'a'.repeat(40),
+    proofCommitSha:'b'.repeat(40),
+    proofSha256:'c'.repeat(64),
+    publicSignerSpkiSha256:'d'.repeat(64),
+    ancestryVerified:true,
+    sourceCiHeadSha:'a'.repeat(40),
+    sourceCiConclusion:'success',
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/41063977694'
+  });
+  assert.equal(verified.verified,true);
+  assert.equal(verified.proofBPublished,true);
+  assert.equal(verified.ownerAuthorization,'NOT_GIVEN');
+
+  const unavailable=ageQl258CustodySourceActivationEvidence({evidenceAvailable:false},clock);
+  assert.equal(unavailable.fresh,false);
+  assert.equal(unavailable.status,'QL258_CUSTODY_EVIDENCE_NOT_AVAILABLE');
+
+  const stale=ageQl258CustodySourceActivationEvidence({
+    evidenceAvailable:true,
+    publicSignerSpkiSha256:'d'.repeat(64),
+    registrySnapshotSha256:'e'.repeat(64),
+    custodianReceiptId:'custody-1',
+    witnessReceiptId:'witness-2',
+    reviewerReceiptId:'reviewer-3',
+    challengeIssuedAt:clock-10*60_000,
+    challengeExpiresAt:clock-5*60_000,
+    lastVerifiedAt:clock-2*60*60_000,
+    maxEvidenceAgeMs:30*60_000
+  },clock);
+  assert.equal(stale.fresh,false);
+  assert.equal(stale.status,'HOLD_QL258_CUSTODY_EVIDENCE_STALE_OR_EXPIRED');
+
+  const fresh=ageQl258CustodySourceActivationEvidence({
+    evidenceAvailable:true,
+    publicSignerSpkiSha256:'d'.repeat(64),
+    registrySnapshotSha256:'e'.repeat(64),
+    custodianReceiptId:'custody-1',
+    witnessReceiptId:'witness-2',
+    reviewerReceiptId:'reviewer-3',
+    challengeIssuedAt:clock-60_000,
+    challengeExpiresAt:clock+120_000,
+    lastVerifiedAt:clock-60_000,
+    maxEvidenceAgeMs:30*60_000
+  },clock);
+  assert.equal(fresh.fresh,true);
+  assert.equal(fresh.activationAllowed,false);
+  assert.equal(fresh.actualGatewayTest,'NOT_RUN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
