@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, refreshQl259OwnerStatus, renewQl259CustodySourceEvidence, reviewQl259ImmutableProofPublicationException, intakeQl260AuthenticatedOwnerStatusReceipt, verifyQl260CustodySourceEvidenceRenewal, disposeQl260ImmutableProofPublicationException, reconcileQl260AuthenticatedOwnerStatusReceipt, enforceQl260CustodySourceRenewalFreshness, prepareQl260ImmutableProofExceptionClosureReadiness, reconcileQl261ActualOwnerPacketReceipt, evaluateQl261IndependentSignerCustodyEvidenceGate, prepareQl261SourceProofPublicationReadiness, enforceQl262OwnerPacketFreshness, auditQl262IndependentSignerCustodyEvidenceReceipts, preflightQl262SourceProofPublication, renewQl263OwnerPacketEvidence, enforceQl263SignerCustodyAuditFreshness, reviewQl263SourceProofPublicationException, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, refreshQl259OwnerStatus, renewQl259CustodySourceEvidence, reviewQl259ImmutableProofPublicationException, intakeQl260AuthenticatedOwnerStatusReceipt, verifyQl260CustodySourceEvidenceRenewal, disposeQl260ImmutableProofPublicationException, reconcileQl260AuthenticatedOwnerStatusReceipt, enforceQl260CustodySourceRenewalFreshness, prepareQl260ImmutableProofExceptionClosureReadiness, reconcileQl261ActualOwnerPacketReceipt, evaluateQl261IndependentSignerCustodyEvidenceGate, prepareQl261SourceProofPublicationReadiness, enforceQl262OwnerPacketFreshness, auditQl262IndependentSignerCustodyEvidenceReceipts, preflightQl262SourceProofPublication, renewQl263OwnerPacketEvidence, enforceQl263SignerCustodyAuditFreshness, reviewQl263SourceProofPublicationException, reconcileQl264OwnerPacketRenewal, renewQl264SignerCustodyFreshnessReceipt, disposeQl264SourceProofPublicationException, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -1423,4 +1423,29 @@ test('QL-263 owner renewal, custody audit freshness and proof exception review r
   assert.equal(open.disposition,'KEEP_OPEN_PUBLICATION_REQUIRED');
   assert.equal(open.exceptionWaiverAllowed,false);
   assert.equal(open.actualGatewayTest,'NOT_RUN');
+});
+
+
+test('QL-264 owner renewal reconciliation, custody freshness receipt renewal and proof exception disposition remain fail-closed', () => {
+  const missingOwner=reconcileQl264OwnerPacketRenewal({renewalAvailable:false},clock);
+  assert.equal(missingOwner.reconciled,false);
+  assert.equal(missingOwner.status,'QL264_OWNER_PACKET_RENEWAL_RECONCILIATION_NOT_AVAILABLE');
+  assert.equal(missingOwner.actualGatewayTest,'NOT_RUN');
+
+  const missingCustody=renewQl264SignerCustodyFreshnessReceipt({evidenceAvailable:false},clock);
+  assert.equal(missingCustody.renewed,false);
+  assert.equal(missingCustody.status,'QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_RENEWAL_NOT_AVAILABLE');
+  assert.equal(missingCustody.activationAllowed,false);
+
+  const disposition=disposeQl264SourceProofPublicationException({
+    observedMainSha:'c6178ed786cba9cfeb33769e61d41a0559e6451e',
+    proofHttpStatus:404,
+    exceptionType:'IMMUTABLE_PROOF_NOT_PUBLISHED',
+    proofPath:'docs/integration/ql246-source-proof.json'
+  });
+  assert.equal(disposition.disposed,true);
+  assert.equal(disposition.disposition,'KEEP_OPEN_PUBLICATION_REQUIRED');
+  assert.equal(disposition.status,'QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_OPEN_PUBLICATION_REQUIRED');
+  assert.equal(disposition.exceptionWaiverAllowed,false);
+  assert.equal(disposition.actualGatewayTest,'NOT_RUN');
 });
