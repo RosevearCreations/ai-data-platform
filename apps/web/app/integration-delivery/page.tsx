@@ -6,6 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsActionDrawer, OperationsEvidenceTimeline, OperationsExceptionQueue, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,35 @@ export default async function IntegrationDeliveryPage() {
           <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
         </nav>
       </section>
+
+      <OperationsActionDrawer title="System status actions" description="Open source-side connection checks, remote execution status and production-learning evidence without authorizing downstream mutation.">
+        <OpsDrawerLink href="/integration-delivery/comms-hub">Comms Hub Connection</OpsDrawerLink>
+        <OpsDrawerLink href="/remote-execution">Remote Execution</OpsDrawerLink>
+        <OpsDrawerLink href="/production-learning">Production Learning</OpsDrawerLink>
+      </OperationsActionDrawer>
+
+      <div className="opsTemplateGrid">
+        <OperationsExceptionQueue
+          title="Consumer readiness exceptions"
+          items={consumers.filter((consumer) => !consumer.configured).map((consumer) => ({
+            id: consumer.target,
+            label: consumer.target + " not configured",
+            detail: "No endpoint/credential pair is configured for authenticated dry-run delivery.",
+            tone: "attention" as const
+          }))}
+          emptyLabel="All configured consumers currently have endpoint/credential pairs."
+        />
+        <OperationsEvidenceTimeline
+          title="Delivery acknowledgements"
+          entries={overview.flatMap((entry) => entry.recent.slice(0, 5).map((event) => ({
+            id: entry.workspace.id + ":" + event.eventId,
+            title: event.eventType,
+            detail: entry.workspace.name + " · " + event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
+            timestamp: event.occurredAt.toLocaleString(),
+            tone: event.httpStatus && event.httpStatus >= 400 ? "critical" as const : "info" as const
+          }))).slice(0, 12)}
+        />
+      </div>
 
       <section>
         <div className="sectionHeading">
