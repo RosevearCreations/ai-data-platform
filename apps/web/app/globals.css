@@ -8422,3 +8422,125 @@ td, th {
     color: CanvasText;
   }
 }
+
+
+/* Build 242 — individual Operations Command screens */
+.opsTopLink {
+  position: relative;
+  font-weight: 650;
+}
+.opsTopLink.active {
+  color: #fff !important;
+  border-color: rgba(142, 79, 255, 0.62) !important;
+  background: linear-gradient(180deg, rgba(121, 50, 235, 0.32), rgba(30, 68, 118, 0.22)) !important;
+  box-shadow: 0 0 20px rgba(111, 47, 224, 0.16);
+}
+.opsTopLink.active::after {
+  content: "";
+  position: absolute;
+  left: 0.65rem;
+  right: 0.65rem;
+  bottom: 0.2rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ops-violet), var(--ops-cyan));
+}
+
+.opsCommandScreen {
+  --ops-area-accent: var(--ops-violet);
+}
+.opsCommandScreen--frontEnd { --ops-area-accent: #2fb6ff; }
+.opsCommandScreen--it { --ops-area-accent: #8b3dff; }
+.opsCommandScreen--management { --ops-area-accent: #f2b640; }
+.opsCommandScreen--statistical { --ops-area-accent: #27d8ff; }
+.opsCommandScreen--status { --ops-area-accent: #22e58b; }
+
+.opsScreenBand {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem 2rem;
+  align-items: center;
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--ops-area-accent) 42%, transparent);
+  border-left: 4px solid var(--ops-area-accent);
+  border-radius: 0.95rem;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ops-area-accent) 12%, transparent), rgba(6, 20, 34, 0.9) 32%),
+    rgba(5, 16, 28, 0.9);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.025), 0 12px 28px rgba(0,0,0,0.2);
+}
+.opsScreenBand > div {
+  display: grid;
+  gap: 0.2rem;
+}
+.opsScreenBandLabel {
+  color: var(--ops-area-accent);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.opsScreenBand strong {
+  color: #fff;
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+}
+.opsScreenBand p {
+  margin: 0;
+  color: var(--ops-muted);
+  max-width: 62rem;
+}
+.opsScreenBandLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+.opsScreenBandLinks a {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(105, 153, 197, 0.28);
+  border-radius: 0.7rem;
+  background: rgba(7, 22, 37, 0.88);
+  color: #dce8f6;
+  text-decoration: none;
+}
+.opsScreenBandLinks a:hover,
+.opsScreenBandLinks a:focus-visible {
+  border-color: var(--ops-area-accent);
+  color: #fff;
+  background: color-mix(in srgb, var(--ops-area-accent) 14%, rgba(7, 22, 37, 0.92));
+}
+
+.opsCommandScreen--frontEnd .libraryRecord,
+.opsCommandScreen--it .card,
+.opsCommandScreen--management .uiSurfaceCard,
+.opsCommandScreen--statistical .card,
+.opsCommandScreen--status .card {
+  border-top-color: color-mix(in srgb, var(--ops-area-accent) 42%, var(--ops-border));
+}
+.opsCommandScreen--frontEnd .sectionHeading h2,
+.opsCommandScreen--it .sectionHeading h2,
+.opsCommandScreen--management .sectionHeading h2,
+.opsCommandScreen--statistical .sectionHeading h2,
+.opsCommandScreen--status .sectionHeading h2 {
+  text-shadow: 0 0 22px color-mix(in srgb, var(--ops-area-accent) 12%, transparent);
+}
+
+@media (max-width: 900px) {
+  .opsScreenBand {
+    grid-template-columns: 1fr;
+  }
+  .opsScreenBandLinks {
+    justify-content: flex-start;
+  }
+}
+@media (forced-colors: active) {
+  .opsScreenBand,
+  .opsScreenBandLinks a,
+  .opsTopLink.active {
+    background: Canvas !important;
+    color: CanvasText !important;
+    border-color: CanvasText !important;
+  }
+  .opsTopLink.active::after { display: none; }
+}

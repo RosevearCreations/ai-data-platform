@@ -42,7 +42,7 @@ export default async function ProductionLearningPage() {
   const { totals } = review;
 
   return (
-    <main className="shell">
+    <main className="shell opsCommandScreen opsCommandScreen--statistical">
       <section className="hero">
         <HelpInfo topic="learning-overview" />
         <p className="eyebrow">Build 042</p>
@@ -64,6 +64,13 @@ export default async function ProductionLearningPage() {
             Evidence JSON
           </a>
         </div>
+      </section>
+
+      <section className="opsScreenBand" aria-label="Operations Command Statistical">
+        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Statistical</strong><p>Measured evidence, operational baselines, cost proxies, outcome reconciliation and production-learning trends.</p></div>
+        <nav className="opsScreenBandLinks" aria-label="Statistical command links">
+          <Link href="/intelligence">Intelligence</Link><Link href="/collection-runs">Collection Runs</Link><Link href="/data-library">Data Library</Link>
+        </nav>
       </section>
 
       <section>

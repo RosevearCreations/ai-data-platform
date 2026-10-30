@@ -66,7 +66,7 @@ export default async function HomePage() {
     : null;
 
   return (
-    <main className="shell shellWide commandV2Shell">
+    <main className="shell shellWide commandV2Shell opsCommandScreen opsCommandScreen--management">
       <section className="hero commandHero compactHero">
         <HelpInfo topic="command-center-v2" />
         <p className="eyebrow">Build 119</p>
@@ -91,6 +91,13 @@ export default async function HomePage() {
             <span>Authentication and workspace isolation are enabled.</span>
           </div>
         )}
+      </section>
+
+      <section className="opsScreenBand" aria-label="Operations Command Management">
+        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Management</strong><p>Current priorities, operational health, workspace standing and governed follow-through from live platform evidence.</p></div>
+        <nav className="opsScreenBandLinks" aria-label="Management command links">
+          <Link href="/workspace-profiles">Workspaces</Link><Link href="/adoption">Adoption</Link><Link href="/retention">Retention</Link>
+        </nav>
       </section>
 
       {commandCenter ? (
