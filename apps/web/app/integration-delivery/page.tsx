@@ -43,7 +43,7 @@ export default async function IntegrationDeliveryPage() {
   });
 
   return (
-    <main className="shell">
+    <main className="shell opsCommandScreen opsCommandScreen--status">
       <section className="hero">
         <HelpInfo topic="integration-delivery" />
         <p className="eyebrow">Build 033</p>
@@ -58,6 +58,13 @@ export default async function IntegrationDeliveryPage() {
           <Link className="secondaryButton" href="/intelligence">Integration evidence</Link>
           <Link className="secondaryButton" href="/production-learning">Production learning</Link>
         </div>
+      </section>
+
+      <section className="opsScreenBand" aria-label="Operations Command System Status">
+        <div><span className="opsScreenBandLabel">Operations Command</span><strong>System Status</strong><p>Receiver readiness, connection state, delivery observability and append-only integration acknowledgements.</p></div>
+        <nav className="opsScreenBandLinks" aria-label="System Status command links">
+          <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
+        </nav>
       </section>
 
       <section>
