@@ -1,0 +1,26 @@
+{
+  "schema": "rosevear.integration.ql258.sanitized-owner-action.v1",
+  "application": "AI Data Platform",
+  "note": "App-side validation template only. This is not an authenticated owner packet and does not certify custody.",
+  "progress": [
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED",
+    "NOT_ATTEMPTED"
+  ],
+  "allowed_progress_values": [
+    "NOT_ATTEMPTED",
+    "ATTEMPTED_NOT_VERIFIED",
+    "OWNER_REPORTS_DONE_NOT_VERIFIED"
+  ],
+  "owner_report_state": "NOT_RECEIVED",
+  "owner_authorization": "NOT_GIVEN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12,
+  "private_identity_fields_allowed": false,
+  "secret_fields_allowed": false,
+  "unknown_fields_allowed": false
+}
