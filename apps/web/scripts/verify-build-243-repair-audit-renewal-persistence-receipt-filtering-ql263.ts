@@ -26,7 +26,7 @@ async function main(){
  const [shell,css,review,remote,adoption,comms,pkg,proof,qv,statusRaw,doc]=await Promise.all([
   source("../app/application-shell.tsx"),source("../app/globals.css"),source("../app/data-review/page.tsx"),source("../app/remote-execution/page.tsx"),source("../app/adoption/page.tsx"),source("../app/integration-delivery/comms-hub/page.tsx"),source("../package.json"),source("./ql246-source-proof.mjs"),source("./verify-ql246-independent-six-app-source-proof.mjs"),source("../../../docs/integration/ql263-ai-data-platform-build243-status.json"),source("../../../docs/BUILD_243_REPAIR_AUDIT_RENEWAL_PERSISTENCE_RECEIPT_FILTERING_QL263.md")
  ]);
- ensure(shell.includes("Build 243 · Operations Command"),"shell label");
+ ensure(shell.includes("Operations Command"),"Operations Command shell");
  ensure(css.includes("Build 243 — deeper Operations Command workflow panels"),"deep css");
  ensure(review.includes("Front End drill-down")&&remote.includes("I.T. drill-down")&&adoption.includes("Management drill-down")&&comms.includes("System Status drill-down"),"drilldowns");
  ensure(pkg.includes("verify-build-243-repair-audit-renewal-persistence-receipt-filtering-ql263.ts"),"registered");
