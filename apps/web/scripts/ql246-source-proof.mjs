@@ -2350,6 +2350,50 @@ export function preflightQl262SourceProofPublication(input) {
   });
 }
 
+
+
+export function renewQl263OwnerPacketEvidence(input, now = Date.now()) {
+  const base = Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',livePilotHolds:12,custodyVerified:false,networkTestAuthorized:false});
+  if(!input || !Number.isSafeInteger(now)) return Object.freeze({...base,renewed:false,status:'HOLD_QL263_OWNER_PACKET_RENEWAL_INPUT_INVALID'});
+  if(input.renewalAvailable!==true) return Object.freeze({...base,renewed:false,status:'QL263_OWNER_PACKET_RENEWAL_NOT_AVAILABLE'});
+  const priorFresh=enforceQl262OwnerPacketFreshness({...input,packetAvailable:true},now);
+  const ok=priorFresh.fresh===true &&
+    typeof input.renewalReceiptId==='string' && input.renewalReceiptId.length>=8 &&
+    input.renewalReceiptId!==input.ownerPacketReceiptId &&
+    HEX.test(input.renewedOwnerPacketSha256||'') &&
+    Number.isSafeInteger(input.renewedAt) && input.renewedAt<=now &&
+    Number.isSafeInteger(input.renewalExpiresAt) && input.renewalExpiresAt>now &&
+    input.renewalExpiresAt-input.renewedAt<=30*60*1000;
+  if(!ok) return Object.freeze({...base,renewed:false,status:'HOLD_QL263_OWNER_PACKET_RENEWAL_REJECTED'});
+  return Object.freeze({...base,renewed:true,status:'QL263_OWNER_PACKET_RENEWED_STATUS_ONLY_GATEWAY_HELD',renewalReceiptId:input.renewalReceiptId,renewedOwnerPacketSha256:input.renewedOwnerPacketSha256,renewedAt:input.renewedAt,renewalExpiresAt:input.renewalExpiresAt});
+}
+
+export function enforceQl263SignerCustodyAuditFreshness(input, now = Date.now()) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',activationAllowed:false,proofBPublished:false});
+  if(!input||!Number.isSafeInteger(now)) return Object.freeze({...base,fresh:false,status:'HOLD_QL263_SIGNER_CUSTODY_AUDIT_FRESHNESS_INPUT_INVALID'});
+  if(input.evidenceAvailable!==true) return Object.freeze({...base,fresh:false,status:'QL263_SIGNER_CUSTODY_AUDIT_FRESHNESS_NOT_AVAILABLE'});
+  const audit=auditQl262IndependentSignerCustodyEvidenceReceipts(input,now);
+  if(audit.auditPassed!==true) return Object.freeze({...base,fresh:false,status:'HOLD_QL263_SIGNER_CUSTODY_AUDIT_NOT_VERIFIED'});
+  const maxAge=Number.isSafeInteger(input.maxAuditAgeMs)&&input.maxAuditAgeMs>=60000&&input.maxAuditAgeMs<=86400000?input.maxAuditAgeMs:30*60*1000;
+  const age=now-input.auditedAt;
+  if(age<0||age>maxAge) return Object.freeze({...base,fresh:false,status:'HOLD_QL263_SIGNER_CUSTODY_AUDIT_STALE',ageMs:age,maxAuditAgeMs:maxAge});
+  return Object.freeze({...base,fresh:true,status:'QL263_SIGNER_CUSTODY_AUDIT_FRESH_ACTIVATION_HELD',auditReceiptId:input.auditReceiptId,receiptSetSha256:input.receiptSetSha256,ageMs:age,maxAuditAgeMs:maxAge});
+}
+
+export function reviewQl263SourceProofPublicationException(input) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',exceptionWaiverAllowed:false,publicationAllowed:false,proofBPublished:false});
+  if(!input||!REV.test(input.observedMainSha||'')) return Object.freeze({...base,reviewed:false,status:'HOLD_QL263_PROOF_EXCEPTION_REVIEW_INPUT_INVALID'});
+  if(input.proofHttpStatus!==200) {
+    const known=input.exceptionType==='IMMUTABLE_PROOF_NOT_PUBLISHED'&&input.proofPath==='docs/integration/ql246-source-proof.json';
+    return Object.freeze({...base,reviewed:known,disposition:known?'KEEP_OPEN_PUBLICATION_REQUIRED':'UNCLASSIFIED',status:known?'QL263_PROOF_PUBLICATION_EXCEPTION_OPEN_PUBLICATION_REQUIRED':'HOLD_QL263_PROOF_PUBLICATION_EXCEPTION_UNCLASSIFIED',observedMainSha:input.observedMainSha,proofHttpStatus:input.proofHttpStatus});
+  }
+  const verified=refreshQl258ImmutableProofStatus(input);
+  if(verified.verified!==true) return Object.freeze({...base,reviewed:false,status:'HOLD_QL263_PROOF_PUBLICATION_EXCEPTION_PROOF_INVALID',observedMainSha:input.observedMainSha});
+  const prereq=input.ownerPacketRenewed===true&&input.signerCustodyAuditFresh===true&&input.sourceCiConclusion==='success'&&typeof input.sourceCiRun==='string'&&input.sourceCiRun.startsWith('https://github.com/RosevearCreations/ai-data-platform/actions/runs/');
+  if(!prereq) return Object.freeze({...base,reviewed:true,disposition:'KEEP_OPEN_PREREQUISITES_INCOMPLETE',status:'HOLD_QL263_PROOF_PUBLICATION_EXCEPTION_PREREQUISITES_INCOMPLETE',observedMainSha:input.observedMainSha});
+  return Object.freeze({...base,reviewed:true,disposition:'RESOLVED_BY_VERIFIED_PUBLICATION',publicationAllowed:true,proofBPublished:true,status:'QL263_PROOF_PUBLICATION_EXCEPTION_RESOLVED_OWNER_TEST_HELD',observedMainSha:input.observedMainSha,proofCommitSha:input.proofCommitSha,proofSha256:input.proofSha256});
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
