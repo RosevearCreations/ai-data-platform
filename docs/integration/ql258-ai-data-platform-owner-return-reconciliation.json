@@ -1,0 +1,19 @@
+{
+  "schema": "rosevear.integration.ql258.ai-data-platform.owner-return-reconciliation.v1",
+  "application": "AI Data Platform",
+  "expected_packet_schema": "rosevear.integration.ql258.sanitized-owner-action.v1",
+  "return_received": false,
+  "reconciliation_status": "QL258_OWNER_RETURN_NOT_RECEIVED_OR_INCOMPLETE",
+  "expected_progress_count": 7,
+  "allowed_progress_values": [
+    "NOT_ATTEMPTED",
+    "ATTEMPTED_NOT_VERIFIED",
+    "OWNER_REPORTS_DONE_NOT_VERIFIED"
+  ],
+  "authenticated_identity": false,
+  "proof_publication_authorized": false,
+  "owner_authorization": "NOT_GIVEN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12,
+  "network_test_authorized": false
+}
