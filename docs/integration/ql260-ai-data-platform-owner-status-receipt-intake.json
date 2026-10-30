@@ -1,0 +1,18 @@
+{
+  "schema": "rosevear.integration.ql260.ai-data-platform.authenticated-owner-status-receipt.v1",
+  "application": "AI Data Platform",
+  "receipt_available": false,
+  "intake_status": "QL260_AUTHENTICATED_OWNER_STATUS_RECEIPT_NOT_AVAILABLE",
+  "required_receipt_scope": "OWNER_STATUS_ONLY",
+  "expected_owner_report_state": "OWNER_REPORTS_DONE_NOT_VERIFIED",
+  "owner_identity_authenticated": false,
+  "owner_status_receipt_id": "NOT_AVAILABLE",
+  "receipt_issued_at": "NOT_AVAILABLE",
+  "receipt_expires_at": "NOT_AVAILABLE",
+  "max_receipt_window_minutes": 30,
+  "custody_verified": false,
+  "owner_authorization": "NOT_GIVEN",
+  "network_test_authorized": false,
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12
+}
