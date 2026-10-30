@@ -1877,6 +1877,150 @@ export function disposeQl260ImmutableProofPublicationException(input) {
   });
 }
 
+
+export function reconcileQl260AuthenticatedOwnerStatusReceipt(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    custodyVerified: false,
+    networkTestAuthorized: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL260_OWNER_RECEIPT_RECONCILIATION_INPUT_INVALID' });
+
+  if (input.receiptAvailable !== true)
+    return Object.freeze({ ...base, reconciled: false, status: 'QL260_OWNER_RECEIPT_RECONCILIATION_NOT_AVAILABLE' });
+
+  const intake = intakeQl260AuthenticatedOwnerStatusReceipt(input, now);
+  if (intake.accepted !== true)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL260_OWNER_RECEIPT_RECONCILIATION_REJECTED' });
+
+  const statusOk =
+    input.statusReturnReceiptId === input.ownerStatusReceiptId &&
+    input.statusReturnState === 'OWNER_REPORTS_DONE_NOT_VERIFIED' &&
+    input.statusReturnScope === 'OWNER_STATUS_ONLY' &&
+    Number.isSafeInteger(input.statusReturnedAt) &&
+    input.statusReturnedAt >= input.receiptIssuedAt &&
+    input.statusReturnedAt <= now &&
+    input.statusReturnedAt < input.receiptExpiresAt;
+
+  if (!statusOk)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL260_OWNER_RECEIPT_STATUS_MISMATCH' });
+
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    authenticatedIdentity: true,
+    status: 'QL260_OWNER_RECEIPT_RECONCILED_STATUS_ONLY',
+    ownerStatusReceiptId: input.ownerStatusReceiptId,
+    statusReturnedAt: input.statusReturnedAt,
+    receiptExpiresAt: input.receiptExpiresAt
+  });
+}
+
+export function enforceQl260CustodySourceRenewalFreshness(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, fresh: false, status: 'HOLD_QL260_CUSTODY_RENEWAL_FRESHNESS_INPUT_INVALID' });
+
+  if (input.renewalAvailable !== true)
+    return Object.freeze({ ...base, fresh: false, status: 'QL260_CUSTODY_RENEWAL_FRESHNESS_NOT_AVAILABLE' });
+
+  const verified = verifyQl260CustodySourceEvidenceRenewal(input, now);
+  if (verified.verified !== true)
+    return Object.freeze({ ...base, fresh: false, status: 'HOLD_QL260_CUSTODY_RENEWAL_FRESHNESS_NOT_VERIFIED' });
+
+  const maxAgeMs = Number.isSafeInteger(input.maxRenewalAgeMs) &&
+    input.maxRenewalAgeMs >= 60_000 &&
+    input.maxRenewalAgeMs <= 24 * 60 * 60 * 1000
+      ? input.maxRenewalAgeMs
+      : 30 * 60 * 1000;
+  const ageMs = now - input.renewedAt;
+  const fresh = ageMs >= 0 && ageMs <= maxAgeMs && input.challengeExpiresAt > now;
+
+  if (!fresh)
+    return Object.freeze({
+      ...base,
+      fresh: false,
+      status: 'HOLD_QL260_CUSTODY_RENEWAL_STALE_OR_EXPIRED',
+      ageMs,
+      maxRenewalAgeMs
+    });
+
+  return Object.freeze({
+    ...base,
+    fresh: true,
+    status: 'QL260_CUSTODY_RENEWAL_FRESH_ACTIVATION_HELD',
+    ageMs,
+    maxRenewalAgeMs,
+    currentPublicSignerSpkiSha256: input.currentPublicSignerSpkiSha256,
+    currentRegistrySnapshotSha256: input.currentRegistrySnapshotSha256,
+    renewalReceiptId: input.renewalReceiptId
+  });
+}
+
+export function prepareQl260ImmutableProofExceptionClosureReadiness(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    exceptionWaiverAllowed: false,
+    proofBPublished: false,
+    closureAllowed: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL260_PROOF_EXCEPTION_CLOSURE_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'QL260_PROOF_EXCEPTION_CLOSURE_NOT_READY_PUBLICATION_MISSING',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const refreshed = refreshQl258ImmutableProofStatus(input);
+  const prerequisiteOk =
+    refreshed.verified === true &&
+    input.priorDisposition === 'KEEP_OPEN_PUBLICATION_REQUIRED' &&
+    input.ownerReceiptReconciled === true &&
+    input.custodyRenewalFresh === true &&
+    typeof input.closureReviewerReceiptId === 'string' &&
+    input.closureReviewerReceiptId.length >= 8 &&
+    input.closureReviewStatus === 'APPROVED_TO_CLOSE_EXCEPTION_ONLY';
+
+  if (!prerequisiteOk)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'HOLD_QL260_PROOF_EXCEPTION_CLOSURE_PREREQUISITES_INCOMPLETE',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    closureAllowed: true,
+    proofBPublished: true,
+    status: 'QL260_PROOF_EXCEPTION_CLOSURE_READY_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    closureReviewerReceiptId: input.closureReviewerReceiptId
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
