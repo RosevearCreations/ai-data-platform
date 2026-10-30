@@ -43,7 +43,7 @@ export default async function AdoptionPage() {
   const { totals } = review;
 
   return (
-    <main className="shell">
+    <main className="shell opsDeepScreen opsDeepScreen--management">
       <section className="hero">
         <HelpInfo topic="adoption-overview" />
         <p className="eyebrow">Build 035</p>
@@ -69,6 +69,8 @@ export default async function AdoptionPage() {
           </Link>
         </div>
       </section>
+
+      <section className="opsDrilldownPanel"><span>Operations Command · Management drill-down</span><strong>Adoption & Permission Outcomes</strong><p>Compare measured capability use, connector grants and least-privilege recommendations without automatic role changes.</p><div><Link href="/">Command Center</Link><Link href="/workspace-profiles">Workspaces</Link></div></section>
 
       <section>
         <div className="sectionHeading">
