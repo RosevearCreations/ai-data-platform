@@ -17,7 +17,7 @@ export default async function DataReviewPage() {
   const model = await listDataReviewWorkbenchForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell">
+    <main className="shell reviewShell opsDeepScreen opsDeepScreen--frontEnd">
       <section className="hero reviewHero">
         <HelpInfo topic="data-review-overview" />
         <p className="eyebrow">Build 048</p>
@@ -33,6 +33,8 @@ export default async function DataReviewPage() {
           <Link className="secondaryButton" href="/collection-runs">Collection run console</Link>
         </div>
       </section>
+
+      <section className="opsDrilldownPanel"><span>Operations Command · Front End drill-down</span><strong>Review & Approval</strong><p>Work from durable source evidence through cleanup, row-level decisions and governed approval without overwriting original records.</p><div><Link href="/data-library">Library</Link><Link href="/approved-data">Approved Data</Link></div></section>
 
       <DataReviewWorkbench initialModel={model} />
     </main>
