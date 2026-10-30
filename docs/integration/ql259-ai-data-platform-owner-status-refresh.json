@@ -1,0 +1,14 @@
+{
+  "schema": "rosevear.integration.ql259.ai-data-platform.owner-status-refresh.v1",
+  "application": "AI Data Platform",
+  "owner_status_available": false,
+  "refresh_status": "QL259_OWNER_STATUS_NOT_AVAILABLE",
+  "expected_owner_report_state": "OWNER_REPORTS_DONE_NOT_VERIFIED",
+  "authenticated_identity": false,
+  "custody_verified": false,
+  "owner_authorization": "NOT_GIVEN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12,
+  "network_test_authorized": false,
+  "proof_publication_authorized": false
+}

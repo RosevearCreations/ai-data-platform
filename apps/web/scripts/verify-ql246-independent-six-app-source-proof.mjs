@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, refreshQl259OwnerStatus, renewQl259CustodySourceEvidence, reviewQl259ImmutableProofPublicationException, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -988,6 +988,83 @@ test('QL-258 owner return reconciliation, proof publication follow-up and custod
   assert.equal(fresh.fresh,true);
   assert.equal(fresh.activationAllowed,false);
   assert.equal(fresh.actualGatewayTest,'NOT_RUN');
+});
+
+
+
+test('QL-259 owner refresh, custody renewal and proof exception review remain fail-closed', async () => {
+  const ownerMissing=refreshQl259OwnerStatus({ownerStatusAvailable:false},clock);
+  assert.equal(ownerMissing.refreshed,false);
+  assert.equal(ownerMissing.status,'QL259_OWNER_STATUS_NOT_AVAILABLE');
+
+  const ownerRefreshed=refreshQl259OwnerStatus({
+    ownerStatusAvailable:true,
+    ownerReportState:'OWNER_REPORTS_DONE_NOT_VERIFIED',
+    ownerAuthorization:'NOT_GIVEN',
+    connection:'DISCONNECTED',
+    livePilotHolds:12,
+    authenticatedIdentity:false,
+    reportedAt:clock-60_000
+  },clock);
+  assert.equal(ownerRefreshed.refreshed,true);
+  assert.equal(ownerRefreshed.authenticatedIdentity,false);
+  assert.equal(ownerRefreshed.ownerAuthorization,'NOT_GIVEN');
+
+  const custodyMissing=renewQl259CustodySourceEvidence({evidenceAvailable:false},clock);
+  assert.equal(custodyMissing.renewed,false);
+  assert.equal(custodyMissing.status,'QL259_CUSTODY_SOURCE_EVIDENCE_NOT_AVAILABLE');
+
+  const custodyRenewed=renewQl259CustodySourceEvidence({
+    evidenceAvailable:true,
+    priorRegistrySnapshotSha256:'a'.repeat(64),
+    priorPublicSignerSpkiSha256:'d'.repeat(64),
+    priorVerifiedAt:clock-10*60_000,
+    registrySnapshotSha256:'b'.repeat(64),
+    publicSignerSpkiSha256:'d'.repeat(64),
+    custodianAuthenticatedPrivately:true,
+    witnessAuthenticatedPrivately:true,
+    reviewerAuthenticatedPrivately:true,
+    rolesAreDistinct:true,
+    approvedRestrictedPrivateKeyHostStore:true,
+    publicSpkiPinVerifiedOutOfBand:true,
+    custodianReceiptId:'custody-1',
+    witnessReceiptId:'witness-2',
+    reviewerReceiptId:'reviewer-3',
+    challengeIssuedAt:clock-60_000,
+    challengeExpiresAt:clock+120_000,
+    renewedAt:clock-30_000
+  },clock);
+  assert.equal(custodyRenewed.renewed,true);
+  assert.equal(custodyRenewed.activationAllowed,false);
+  assert.equal(custodyRenewed.actualGatewayTest,'NOT_RUN');
+
+  const exceptionOpen=reviewQl259ImmutableProofPublicationException({
+    observedMainSha:'a'.repeat(40),
+    proofHttpStatus:404,
+    exceptionType:'IMMUTABLE_PROOF_NOT_PUBLISHED',
+    proofPath:'docs/integration/ql246-source-proof.json'
+  });
+  assert.equal(exceptionOpen.reviewed,true);
+  assert.equal(exceptionOpen.status,'QL259_PROOF_PUBLICATION_EXCEPTION_OPEN_PUBLICATION_REQUIRED');
+  assert.equal(exceptionOpen.exceptionWaiverAllowed,false);
+  assert.equal(exceptionOpen.ownerAuthorization,'NOT_GIVEN');
+
+  const exceptionResolved=reviewQl259ImmutableProofPublicationException({
+    observedMainSha:'b'.repeat(40),
+    proofHttpStatus:200,
+    sourceRevision:'a'.repeat(40),
+    proofCommitSha:'b'.repeat(40),
+    proofSha256:'c'.repeat(64),
+    publicSignerSpkiSha256:'d'.repeat(64),
+    ancestryVerified:true,
+    sourceCiHeadSha:'a'.repeat(40),
+    sourceCiConclusion:'success',
+    sourceCiRunUrl:'https://github.com/RosevearCreations/ai-data-platform/actions/runs/41070310506'
+  });
+  assert.equal(exceptionResolved.reviewed,true);
+  assert.equal(exceptionResolved.proofBPublished,true);
+  assert.equal(exceptionResolved.exceptionWaiverAllowed,false);
+  assert.equal(exceptionResolved.actualGatewayTest,'NOT_RUN');
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
