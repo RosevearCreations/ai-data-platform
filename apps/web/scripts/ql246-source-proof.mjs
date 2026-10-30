@@ -1718,6 +1718,165 @@ export function reviewQl259ImmutableProofPublicationException(input) {
   });
 }
 
+
+export function intakeQl260AuthenticatedOwnerStatusReceipt(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    custodyVerified: false,
+    networkTestAuthorized: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL260_OWNER_RECEIPT_INPUT_INVALID' });
+
+  if (input.receiptAvailable !== true)
+    return Object.freeze({ ...base, accepted: false, status: 'QL260_AUTHENTICATED_OWNER_STATUS_RECEIPT_NOT_AVAILABLE' });
+
+  const receiptOk =
+    typeof input.ownerStatusReceiptId === 'string' &&
+    input.ownerStatusReceiptId.length >= 8 &&
+    input.ownerIdentityAuthenticatedPrivately === true &&
+    input.receiptScope === 'OWNER_STATUS_ONLY' &&
+    input.ownerReportState === 'OWNER_REPORTS_DONE_NOT_VERIFIED' &&
+    input.ownerAuthorization === 'NOT_GIVEN' &&
+    input.connection === 'DISCONNECTED' &&
+    input.livePilotHolds === 12;
+  const timeOk =
+    Number.isSafeInteger(input.receiptIssuedAt) &&
+    Number.isSafeInteger(input.receiptExpiresAt) &&
+    input.receiptIssuedAt <= now &&
+    input.receiptExpiresAt > now &&
+    input.receiptExpiresAt - input.receiptIssuedAt <= 30 * 60 * 1000;
+
+  if (!receiptOk || !timeOk)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL260_AUTHENTICATED_OWNER_STATUS_RECEIPT_REJECTED' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    status: 'QL260_AUTHENTICATED_OWNER_STATUS_RECEIPT_ACCEPTED_STATUS_ONLY',
+    ownerStatusReceiptId: input.ownerStatusReceiptId,
+    receiptIssuedAt: input.receiptIssuedAt,
+    receiptExpiresAt: input.receiptExpiresAt,
+    authenticatedIdentity: true
+  });
+}
+
+export function verifyQl260CustodySourceEvidenceRenewal(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL260_CUSTODY_RENEWAL_VERIFICATION_INPUT_INVALID' });
+
+  if (input.renewalAvailable !== true)
+    return Object.freeze({ ...base, verified: false, status: 'QL260_CUSTODY_SOURCE_RENEWAL_NOT_AVAILABLE' });
+
+  const continuityOk =
+    HEX.test(input.priorPublicSignerSpkiSha256 || '') &&
+    HEX.test(input.currentPublicSignerSpkiSha256 || '') &&
+    input.currentPublicSignerSpkiSha256 === input.priorPublicSignerSpkiSha256 &&
+    HEX.test(input.priorRegistrySnapshotSha256 || '') &&
+    HEX.test(input.currentRegistrySnapshotSha256 || '');
+  const authOk =
+    input.custodianAuthenticatedPrivately === true &&
+    input.witnessAuthenticatedPrivately === true &&
+    input.reviewerAuthenticatedPrivately === true &&
+    input.rolesAreDistinct === true &&
+    input.approvedRestrictedPrivateKeyHostStore === true &&
+    input.publicSpkiPinVerifiedOutOfBand === true;
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId, input.renewalReceiptId];
+  const receiptsOk =
+    receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 4;
+  const challengeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const timingOk =
+    Number.isSafeInteger(input.priorVerifiedAt) &&
+    Number.isSafeInteger(input.renewedAt) &&
+    input.priorVerifiedAt < input.renewedAt &&
+    input.renewedAt >= input.challengeIssuedAt &&
+    input.renewedAt <= now;
+
+  if (!continuityOk || !authOk || !receiptsOk || !challengeOk || !timingOk)
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL260_CUSTODY_SOURCE_RENEWAL_NOT_VERIFIED' });
+
+  return Object.freeze({
+    ...base,
+    verified: true,
+    status: 'QL260_CUSTODY_SOURCE_RENEWAL_VERIFIED_ACTIVATION_HELD',
+    currentPublicSignerSpkiSha256: input.currentPublicSignerSpkiSha256,
+    currentRegistrySnapshotSha256: input.currentRegistrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId,
+    renewalReceiptId: input.renewalReceiptId,
+    renewedAt: input.renewedAt
+  });
+}
+
+export function disposeQl260ImmutableProofPublicationException(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    exceptionWaiverAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, disposed: false, status: 'HOLD_QL260_PROOF_EXCEPTION_DISPOSITION_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200) {
+    const knownOpen =
+      input.priorExceptionStatus === 'QL259_PROOF_PUBLICATION_EXCEPTION_OPEN_PUBLICATION_REQUIRED' &&
+      input.exceptionType === 'IMMUTABLE_PROOF_NOT_PUBLISHED' &&
+      input.proofPath === 'docs/integration/ql246-source-proof.json';
+    return Object.freeze({
+      ...base,
+      disposed: knownOpen,
+      disposition: knownOpen ? 'KEEP_OPEN_PUBLICATION_REQUIRED' : 'UNCLASSIFIED',
+      status: knownOpen
+        ? 'QL260_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_OPEN_PUBLICATION_REQUIRED'
+        : 'HOLD_QL260_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_UNCLASSIFIED',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+  }
+
+  const refreshed = refreshQl258ImmutableProofStatus(input);
+  if (refreshed.verified !== true)
+    return Object.freeze({
+      ...base,
+      disposed: false,
+      disposition: 'KEEP_OPEN_INVALID_PROOF',
+      status: 'HOLD_QL260_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_PROOF_INVALID',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    disposed: true,
+    disposition: 'RESOLVED_BY_VERIFIED_PUBLICATION',
+    proofBPublished: true,
+    status: 'QL260_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_RESOLVED_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
