@@ -1,0 +1,15 @@
+{
+  "schema": "rosevear.integration.ql262.ai-data-platform.signer-custody-receipt-audit.v1",
+  "application": "AI Data Platform",
+  "evidence_available": false,
+  "audit_passed": false,
+  "audit_status": "QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_NOT_AVAILABLE",
+  "audit_receipt_id": "NOT_AVAILABLE",
+  "receipt_set_sha256": "NOT_AVAILABLE",
+  "public_signer_spki_sha256": "NOT_AVAILABLE",
+  "registry_snapshot_sha256": "NOT_AVAILABLE",
+  "activation_allowed": false,
+  "owner_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED"
+}
