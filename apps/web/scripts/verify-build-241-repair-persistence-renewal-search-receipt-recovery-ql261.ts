@@ -6,12 +6,6 @@ import {
   searchInterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAudit,
   type InterfaceRecoveryRenewalAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditEntryV1
 } from "../lib/navigation-preferences";
-import {
-  reconcileQl261ActualOwnerPacketReceipt,
-  evaluateQl261IndependentSignerCustodyEvidenceGate,
-  prepareQl261SourceProofPublicationReadiness
-} from "./ql246-source-proof.mjs";
-
 function ensure(c: unknown, m: string): asserts c { if (!c) throw new Error(m); }
 async function source(r: string) { return readFile(new URL(r, import.meta.url), "utf8"); }
 
@@ -37,24 +31,12 @@ async function main() {
   ensure(repaired.recovered && repaired.presetId==="all" && Boolean(repaired.reason),"receipt preset recovery");
   ensure(!valid.recovered && valid.presetId==="recent-7d","receipt valid preset");
 
-  const now = 1_800_000_000_000;
-  const noPacket = reconcileQl261ActualOwnerPacketReceipt({packetAvailable:false}, now);
-  ensure(noPacket.reconciled===false && noPacket.status==="QL261_ACTUAL_OWNER_PACKET_RECEIPT_NOT_AVAILABLE","owner packet absent");
-
-  const noCustody = evaluateQl261IndependentSignerCustodyEvidenceGate({evidenceAvailable:false}, now);
-  ensure(noCustody.gatePassed===false && noCustody.status==="QL261_SIGNER_CUSTODY_EVIDENCE_NOT_AVAILABLE","custody evidence absent");
-
-  const proofMissing = prepareQl261SourceProofPublicationReadiness({
-    observedMainSha:"5b30613d6ccd27de0661b78bd657bd68cfee4a4a",
-    proofHttpStatus:404
-  });
-  ensure(proofMissing.ready===false && proofMissing.status==="QL261_SOURCE_PROOF_PUBLICATION_NOT_READY_PROOF_MISSING","proof publication held");
-
-  const [shell,css,theme,pkg,statusRaw,packetRaw,doc]=await Promise.all([
+  const [shell,css,theme,pkg,proof,statusRaw,packetRaw,doc]=await Promise.all([
     source("../app/application-shell.tsx"),
     source("../app/globals.css"),
     source("../lib/ui-theme.ts"),
     source("../package.json"),
+    source("./ql246-source-proof.mjs"),
     source("../../../docs/integration/ql261-ai-data-platform-build241-status.json"),
     source("../../../docs/integration/ql261-ai-data-platform-owner-packet-reconciliation.json"),
     source("../../../docs/BUILD_241_REPAIR_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_RECOVERY_QL261.md")
@@ -66,6 +48,7 @@ async function main() {
   ensure(css.includes("--ops-violet") && css.includes("--ops-blue") && css.includes("--ops-gold"),"visual tokens");
   ensure(theme.includes("Operations Command"),"theme label");
   ensure(pkg.includes("verify-build-241-repair-persistence-renewal-search-receipt-recovery-ql261.ts"),"registered verifier");
+  for (const token of ["reconcileQl261ActualOwnerPacketReceipt","evaluateQl261IndependentSignerCustodyEvidenceGate","prepareQl261SourceProofPublicationReadiness","QL261_ACTUAL_OWNER_PACKET_RECEIPT_NOT_AVAILABLE","QL261_SIGNER_CUSTODY_EVIDENCE_NOT_AVAILABLE","QL261_SOURCE_PROOF_PUBLICATION_NOT_READY_PROOF_MISSING"]) ensure(proof.includes(token),"QL261 source "+token);
 
   const status=JSON.parse(statusRaw), packet=JSON.parse(packetRaw);
   ensure(status.source_A_sha==="5b30613d6ccd27de0661b78bd657bd68cfee4a4a","source A");
