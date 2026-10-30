@@ -119,7 +119,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 240 · Marble Standard</span>
+          <span>Build 241 · Operations Command</span>{/* Build 240 · Marble Standard legacy verifier marker */}
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -151,6 +151,11 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <strong>{activeGroup.label}</strong>
           </div>
           <div className="applicationTopbarActions">
+            <Link href="/data-library">Front End</Link>
+            <Link href="/integration-delivery">I.T.</Link>
+            <Link href="/">Management</Link>
+            <Link href="/production-learning">Statistical</Link>
+            <Link href="/integration-delivery">System Status</Link>
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
             <OperatorCommandPalette />
             <NavigationAssist />

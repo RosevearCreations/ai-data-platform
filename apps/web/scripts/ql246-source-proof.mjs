@@ -2021,6 +2021,177 @@ export function prepareQl260ImmutableProofExceptionClosureReadiness(input) {
   });
 }
 
+
+
+export function reconcileQl261ActualOwnerPacketReceipt(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    custodyVerified: false,
+    networkTestAuthorized: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL261_OWNER_PACKET_RECEIPT_INPUT_INVALID' });
+
+  if (input.packetAvailable !== true)
+    return Object.freeze({ ...base, reconciled: false, status: 'QL261_ACTUAL_OWNER_PACKET_RECEIPT_NOT_AVAILABLE' });
+
+  const identityOk =
+    input.ownerIdentityAuthenticatedPrivately === true &&
+    typeof input.ownerPacketReceiptId === 'string' &&
+    input.ownerPacketReceiptId.length >= 8;
+  const packetOk =
+    HEX.test(input.ownerPacketSha256 || '') &&
+    input.packetScope === 'ACTUAL_OWNER_PACKET_ONLY' &&
+    input.ownerReportState === 'OWNER_REPORTS_DONE_NOT_VERIFIED' &&
+    input.ownerAuthorization === 'NOT_GIVEN' &&
+    input.connection === 'DISCONNECTED' &&
+    input.livePilotHolds === 12;
+  const timingOk =
+    Number.isSafeInteger(input.receiptIssuedAt) &&
+    Number.isSafeInteger(input.receiptExpiresAt) &&
+    Number.isSafeInteger(input.packetReceivedAt) &&
+    input.receiptIssuedAt <= input.packetReceivedAt &&
+    input.packetReceivedAt <= now &&
+    input.packetReceivedAt < input.receiptExpiresAt &&
+    input.receiptExpiresAt > now &&
+    input.receiptExpiresAt - input.receiptIssuedAt <= 30 * 60 * 1000;
+
+  if (!identityOk || !packetOk || !timingOk)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL261_ACTUAL_OWNER_PACKET_RECEIPT_REJECTED' });
+
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    authenticatedIdentity: true,
+    status: 'QL261_ACTUAL_OWNER_PACKET_RECEIPT_RECONCILED_STATUS_ONLY',
+    ownerPacketReceiptId: input.ownerPacketReceiptId,
+    ownerPacketSha256: input.ownerPacketSha256,
+    packetReceivedAt: input.packetReceivedAt,
+    receiptExpiresAt: input.receiptExpiresAt
+  });
+}
+
+export function evaluateQl261IndependentSignerCustodyEvidenceGate(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, gatePassed: false, status: 'HOLD_QL261_SIGNER_CUSTODY_GATE_INPUT_INVALID' });
+
+  if (input.evidenceAvailable !== true)
+    return Object.freeze({ ...base, gatePassed: false, status: 'QL261_SIGNER_CUSTODY_EVIDENCE_NOT_AVAILABLE' });
+
+  const roleOk =
+    input.custodianAuthenticatedPrivately === true &&
+    input.witnessAuthenticatedPrivately === true &&
+    input.reviewerAuthenticatedPrivately === true &&
+    input.rolesAreDistinct === true &&
+    input.approvedRestrictedPrivateKeyHostStore === true &&
+    input.publicSpkiPinVerifiedOutOfBand === true;
+  const digestOk =
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    HEX.test(input.registrySnapshotSha256 || '');
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk =
+    receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const maxAgeMs =
+    Number.isSafeInteger(input.maxEvidenceAgeMs) &&
+    input.maxEvidenceAgeMs >= 60_000 &&
+    input.maxEvidenceAgeMs <= 24 * 60 * 60 * 1000
+      ? input.maxEvidenceAgeMs
+      : 30 * 60 * 1000;
+  const timingOk =
+    Number.isSafeInteger(input.evidenceVerifiedAt) &&
+    input.evidenceVerifiedAt <= now &&
+    now - input.evidenceVerifiedAt <= maxAgeMs &&
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= input.evidenceVerifiedAt &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+
+  if (!roleOk || !digestOk || !receiptsOk || !timingOk)
+    return Object.freeze({
+      ...base,
+      gatePassed: false,
+      status: 'HOLD_QL261_SIGNER_CUSTODY_EVIDENCE_GATE_NOT_VERIFIED'
+    });
+
+  return Object.freeze({
+    ...base,
+    gatePassed: true,
+    status: 'QL261_SIGNER_CUSTODY_EVIDENCE_GATE_PASSED_ACTIVATION_HELD',
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId,
+    evidenceVerifiedAt: input.evidenceVerifiedAt,
+    maxEvidenceAgeMs: maxAgeMs
+  });
+}
+
+export function prepareQl261SourceProofPublicationReadiness(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    publicationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL261_SOURCE_PROOF_READINESS_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'QL261_SOURCE_PROOF_PUBLICATION_NOT_READY_PROOF_MISSING',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const verified = refreshQl258ImmutableProofStatus(input);
+  const prerequisitesOk =
+    verified.verified === true &&
+    input.ownerPacketReconciled === true &&
+    input.signerCustodyGatePassed === true &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRun === 'string' &&
+    input.sourceCiRun.startsWith('https://github.com/RosevearCreations/ai-data-platform/actions/runs/') &&
+    input.ownerAuthorization === 'NOT_GIVEN';
+
+  if (!prerequisitesOk)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'HOLD_QL261_SOURCE_PROOF_PUBLICATION_PREREQUISITES_INCOMPLETE',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    publicationAllowed: true,
+    proofBPublished: true,
+    status: 'QL261_SOURCE_PROOF_A_TO_B_PUBLICATION_READY_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    sourceCiRun: input.sourceCiRun
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
