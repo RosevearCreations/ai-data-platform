@@ -113,7 +113,7 @@ export default async function RemoteExecutionPage() {
   });
 
   return (
-    <main className="shell">
+    <main className="shell opsDeepScreen opsDeepScreen--it">
       <section className="hero">
         <HelpInfo topic="remote-overview" />
         <p className="eyebrow">Build 032</p>
@@ -130,6 +130,8 @@ export default async function RemoteExecutionPage() {
           </Link>
         </div>
       </section>
+
+      <section className="opsDrilldownPanel"><span>Operations Command · I.T. drill-down</span><strong>Remote Execution & Provider Status</strong><p>Inspect live-pilot readiness, fail-closed controls, provider cost evidence and recent execution events.</p><div><Link href="/connectors">Connectors</Link><Link href="/integration-delivery">System Status</Link></div></section>
 
       <section>
         <div className="sectionHeading">
