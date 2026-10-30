@@ -1,0 +1,17 @@
+{
+  "schema": "rosevear.integration.ql261.ai-data-platform.owner-packet-reconciliation.v1",
+  "application": "AI Data Platform",
+  "packet_available": false,
+  "reconciled": false,
+  "reconciliation_status": "QL261_ACTUAL_OWNER_PACKET_RECEIPT_NOT_AVAILABLE",
+  "required_scope": "ACTUAL_OWNER_PACKET_ONLY",
+  "owner_identity_authenticated": false,
+  "owner_packet_receipt_id": "NOT_AVAILABLE",
+  "owner_packet_sha256": "NOT_AVAILABLE",
+  "custody_verified": false,
+  "owner_authorization": "NOT_GIVEN",
+  "network_test_authorized": false,
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12
+}

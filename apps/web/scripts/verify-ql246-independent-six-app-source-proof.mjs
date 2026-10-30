@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, generateKeyPairSync, sign } from 'node:crypto';
 import {
   QL246_SYSTEMS, QL246_NEGATIVES, QL246_METHODS, QL246_PATHS,
-  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, refreshQl259OwnerStatus, renewQl259CustodySourceEvidence, reviewQl259ImmutableProofPublicationException, intakeQl260AuthenticatedOwnerStatusReceipt, verifyQl260CustodySourceEvidenceRenewal, disposeQl260ImmutableProofPublicationException, reconcileQl260AuthenticatedOwnerStatusReceipt, enforceQl260CustodySourceRenewalFreshness, prepareQl260ImmutableProofExceptionClosureReadiness, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
+  ql246Canonical, ql246RawUrl, detectQl248ImmutableOriginDrift, exportQl248PhaseAProofOriginScaffold, ql248PhaseAProofOriginScaffold, reconcileQl248ExportDigest, ageQl253AncestryException, continueQl253VerifiedOwnerTestDecision, evaluateQl254RelayReadiness, evaluateQl255ProofPublicationDisposition, handleQl253AncestryDrift, intakeQl253OwnerTestDecision, reconcileQl253PublicProofRetryResult, reconcileQl253SourceCiProofAncestry, inspectQl256SignerProvisioning, intakeQl256IndependentSignerCustodyEvidence, evaluateQl256ProofBPublicationReadiness, prepareQl256AuthenticatedOwnerTestOnlyDecision, reconcileQl256CustodyChallenge, evaluateQl256SignedProofBExecutionReadiness, intakeQl256OwnerTestAuthorizationEvidence, intakeQl257IndependentOwnerStatus, reconcileQl257CustodyRoleApproval, prepareQl257ProofBPublicationAuthorization, validateQl258SanitizedOwnerActionPacket, refreshQl258ImmutableProofStatus, evaluateQl258CustodySourceActivationReadiness, reconcileQl258SanitizedOwnerActionReturn, followUpQl258ImmutableProofPublication, ageQl258CustodySourceActivationEvidence, refreshQl259OwnerStatus, renewQl259CustodySourceEvidence, reviewQl259ImmutableProofPublicationException, intakeQl260AuthenticatedOwnerStatusReceipt, verifyQl260CustodySourceEvidenceRenewal, disposeQl260ImmutableProofPublicationException, reconcileQl260AuthenticatedOwnerStatusReceipt, enforceQl260CustodySourceRenewalFreshness, prepareQl260ImmutableProofExceptionClosureReadiness, reconcileQl261ActualOwnerPacketReceipt, evaluateQl261IndependentSignerCustodyEvidenceGate, prepareQl261SourceProofPublicationReadiness, prepareQl255MiniServerTrialApproval, reconcileQl254OriginalProofRetrieval, renewQl253CustodyPinException, renewQl253RetryEvidence, reviewQl246Sources, verifyQl254IndependentWitnessClaim, closeQl255WitnessCustodyException, verifyQl248PhaseAProofOriginExport, retrieveQl246PublicSource
 } from './ql246-source-proof.mjs';
 
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -1275,3 +1275,64 @@ test('QL-260 receipt reconciliation, custody renewal freshness and proof excepti
 });
 
 console.log('QL-246 independent public six-app source proof and trusted pin challenge: tests complete.');
+
+
+test('QL-261 actual owner packet, independent custody gate and source-proof readiness stay fail-closed', () => {
+  const missingPacket = reconcileQl261ActualOwnerPacketReceipt({ packetAvailable: false }, clock);
+  assert.equal(missingPacket.reconciled, false);
+  assert.equal(missingPacket.status, 'QL261_ACTUAL_OWNER_PACKET_RECEIPT_NOT_AVAILABLE');
+  assert.equal(missingPacket.actualGatewayTest, 'NOT_RUN');
+
+  const packet = reconcileQl261ActualOwnerPacketReceipt({
+    packetAvailable: true,
+    ownerIdentityAuthenticatedPrivately: true,
+    ownerPacketReceiptId: 'owner-packet-261',
+    ownerPacketSha256: 'a'.repeat(64),
+    packetScope: 'ACTUAL_OWNER_PACKET_ONLY',
+    ownerReportState: 'OWNER_REPORTS_DONE_NOT_VERIFIED',
+    ownerAuthorization: 'NOT_GIVEN',
+    connection: 'DISCONNECTED',
+    livePilotHolds: 12,
+    receiptIssuedAt: clock - 60_000,
+    packetReceivedAt: clock - 30_000,
+    receiptExpiresAt: clock + 120_000
+  }, clock);
+  assert.equal(packet.reconciled, true);
+  assert.equal(packet.status, 'QL261_ACTUAL_OWNER_PACKET_RECEIPT_RECONCILED_STATUS_ONLY');
+  assert.equal(packet.custodyVerified, false);
+  assert.equal(packet.networkTestAuthorized, false);
+
+  const missingCustody = evaluateQl261IndependentSignerCustodyEvidenceGate({ evidenceAvailable: false }, clock);
+  assert.equal(missingCustody.gatePassed, false);
+  assert.equal(missingCustody.status, 'QL261_SIGNER_CUSTODY_EVIDENCE_NOT_AVAILABLE');
+
+  const custody = evaluateQl261IndependentSignerCustodyEvidenceGate({
+    evidenceAvailable: true,
+    custodianAuthenticatedPrivately: true,
+    witnessAuthenticatedPrivately: true,
+    reviewerAuthenticatedPrivately: true,
+    rolesAreDistinct: true,
+    approvedRestrictedPrivateKeyHostStore: true,
+    publicSpkiPinVerifiedOutOfBand: true,
+    publicSignerSpkiSha256: 'b'.repeat(64),
+    registrySnapshotSha256: 'c'.repeat(64),
+    custodianReceiptId: 'custodian-261',
+    witnessReceiptId: 'witness-261',
+    reviewerReceiptId: 'reviewer-261',
+    challengeIssuedAt: clock - 60_000,
+    challengeExpiresAt: clock + 60_000,
+    evidenceVerifiedAt: clock - 30_000
+  }, clock);
+  assert.equal(custody.gatePassed, true);
+  assert.equal(custody.status, 'QL261_SIGNER_CUSTODY_EVIDENCE_GATE_PASSED_ACTIVATION_HELD');
+  assert.equal(custody.activationAllowed, false);
+  assert.equal(custody.actualGatewayTest, 'NOT_RUN');
+
+  const proofMissing = prepareQl261SourceProofPublicationReadiness({
+    observedMainSha: '5b30613d6ccd27de0661b78bd657bd68cfee4a4a',
+    proofHttpStatus: 404
+  });
+  assert.equal(proofMissing.ready, false);
+  assert.equal(proofMissing.status, 'QL261_SOURCE_PROOF_PUBLICATION_NOT_READY_PROOF_MISSING');
+  assert.equal(proofMissing.actualGatewayTest, 'NOT_RUN');
+});
