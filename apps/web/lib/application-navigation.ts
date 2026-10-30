@@ -176,12 +176,6 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "remote-overview"
       },
       {
-        href: "/integration-delivery/comms-hub",
-        label: "Comms Hub Connection",
-        description: "Nonproduction source identity, security gate and local-only check.",
-        helpTopic: "integration-delivery"
-      },
-      {
         href: "/integration-delivery",
         label: "Integration Delivery",
         description: "Review delivery readiness and integration evidence.",
