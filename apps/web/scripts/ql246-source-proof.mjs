@@ -2192,6 +2192,164 @@ export function prepareQl261SourceProofPublicationReadiness(input) {
   });
 }
 
+
+
+export function enforceQl262OwnerPacketFreshness(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    custodyVerified: false,
+    networkTestAuthorized: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, fresh: false, status: 'HOLD_QL262_OWNER_PACKET_FRESHNESS_INPUT_INVALID' });
+
+  if (input.packetAvailable !== true)
+    return Object.freeze({ ...base, fresh: false, status: 'QL262_OWNER_PACKET_FRESHNESS_NOT_AVAILABLE' });
+
+  const reconciled = reconcileQl261ActualOwnerPacketReceipt(input, now);
+  if (reconciled.reconciled !== true)
+    return Object.freeze({ ...base, fresh: false, status: 'HOLD_QL262_OWNER_PACKET_FRESHNESS_NOT_RECONCILED' });
+
+  const maxPacketAgeMs =
+    Number.isSafeInteger(input.maxPacketAgeMs) &&
+    input.maxPacketAgeMs >= 60_000 &&
+    input.maxPacketAgeMs <= 24 * 60 * 60 * 1000
+      ? input.maxPacketAgeMs
+      : 30 * 60 * 1000;
+  const ageMs = now - input.packetReceivedAt;
+  const fresh =
+    ageMs >= 0 &&
+    ageMs <= maxPacketAgeMs &&
+    input.receiptExpiresAt > now;
+
+  if (!fresh)
+    return Object.freeze({
+      ...base,
+      fresh: false,
+      authenticatedIdentity: true,
+      status: 'HOLD_QL262_OWNER_PACKET_STALE_OR_EXPIRED',
+      ageMs,
+      maxPacketAgeMs
+    });
+
+  return Object.freeze({
+    ...base,
+    fresh: true,
+    authenticatedIdentity: true,
+    status: 'QL262_OWNER_PACKET_FRESH_STATUS_ONLY_GATEWAY_HELD',
+    ownerPacketReceiptId: input.ownerPacketReceiptId,
+    ownerPacketSha256: input.ownerPacketSha256,
+    packetReceivedAt: input.packetReceivedAt,
+    receiptExpiresAt: input.receiptExpiresAt,
+    ageMs,
+    maxPacketAgeMs
+  });
+}
+
+export function auditQl262IndependentSignerCustodyEvidenceReceipts(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, auditPassed: false, status: 'HOLD_QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_INPUT_INVALID' });
+
+  if (input.evidenceAvailable !== true)
+    return Object.freeze({ ...base, auditPassed: false, status: 'QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_NOT_AVAILABLE' });
+
+  const gate = evaluateQl261IndependentSignerCustodyEvidenceGate(input, now);
+  if (gate.gatePassed !== true)
+    return Object.freeze({ ...base, auditPassed: false, status: 'HOLD_QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_GATE_NOT_VERIFIED' });
+
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const auditOk =
+    typeof input.auditReceiptId === 'string' &&
+    input.auditReceiptId.length >= 8 &&
+    !receipts.includes(input.auditReceiptId) &&
+    Number.isSafeInteger(input.auditedAt) &&
+    input.auditedAt >= input.evidenceVerifiedAt &&
+    input.auditedAt <= now &&
+    HEX.test(input.receiptSetSha256 || '');
+
+  if (!auditOk)
+    return Object.freeze({ ...base, auditPassed: false, status: 'HOLD_QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_REJECTED' });
+
+  return Object.freeze({
+    ...base,
+    auditPassed: true,
+    status: 'QL262_SIGNER_CUSTODY_RECEIPT_AUDIT_PASSED_ACTIVATION_HELD',
+    auditReceiptId: input.auditReceiptId,
+    receiptSetSha256: input.receiptSetSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    auditedAt: input.auditedAt
+  });
+}
+
+export function preflightQl262SourceProofPublication(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    publicationAllowed: false,
+    proofBPublished: false,
+    preflightPassed: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL262_SOURCE_PROOF_PREFLIGHT_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'QL262_SOURCE_PROOF_PUBLICATION_PREFLIGHT_NOT_READY_PROOF_MISSING',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const verified = refreshQl258ImmutableProofStatus(input);
+  const ready =
+    verified.verified === true &&
+    input.ownerPacketFresh === true &&
+    input.signerCustodyReceiptAuditPassed === true &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRun === 'string' &&
+    input.sourceCiRun.startsWith('https://github.com/RosevearCreations/ai-data-platform/actions/runs/') &&
+    typeof input.preflightReviewerReceiptId === 'string' &&
+    input.preflightReviewerReceiptId.length >= 8 &&
+    input.ownerAuthorization === 'NOT_GIVEN';
+
+  if (!ready)
+    return Object.freeze({
+      ...base,
+      ready: false,
+      status: 'HOLD_QL262_SOURCE_PROOF_PUBLICATION_PREFLIGHT_PREREQUISITES_INCOMPLETE',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    preflightPassed: true,
+    publicationAllowed: true,
+    proofBPublished: true,
+    status: 'QL262_SOURCE_PROOF_PUBLICATION_PREFLIGHT_READY_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    sourceCiRun: input.sourceCiRun,
+    preflightReviewerReceiptId: input.preflightReviewerReceiptId
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

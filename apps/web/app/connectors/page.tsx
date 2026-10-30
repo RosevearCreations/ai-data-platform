@@ -31,7 +31,7 @@ export default async function ConnectorsPage() {
 
   const overview = await listConnectorOverviewForUser(session.user.id);
   return (
-    <main className="shell">
+    <main className="shell opsCommandScreen opsCommandScreen--it">
       <section className="hero">
         <HelpInfo topic="connectors-overview" />
         <p className="eyebrow">Build 029</p>
@@ -44,6 +44,13 @@ export default async function ConnectorsPage() {
           <Link className="secondaryButton" href="/">Back to platform</Link>
         </div>
       </section>
+      <section className="opsScreenBand" aria-label="Operations Command I.T.">
+        <div><span className="opsScreenBandLabel">Operations Command</span><strong>I.T.</strong><p>Connector grants, execution controls, remote-provider workflows and append-only technical evidence.</p></div>
+        <nav className="opsScreenBandLinks" aria-label="I.T. command links">
+          <Link href="/remote-execution">Remote Execution</Link><Link href="/integration-delivery">Delivery</Link><Link href="/retention">Retention</Link>
+        </nav>
+      </section>
+
       <ConnectorManager
         manifests={overview.manifests}
         workspaces={overview.workspaces.map((entry) => ({

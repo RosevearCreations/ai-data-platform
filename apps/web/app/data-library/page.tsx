@@ -57,7 +57,7 @@ export default async function DataLibraryPage({
   currentQuery.set("pageSize", String(library.query.pageSize));
 
   return (
-    <main className="shell libraryShell">
+    <main className="shell libraryShell opsCommandScreen opsCommandScreen--frontEnd">
       <section className="hero libraryHero">
         <HelpInfo topic="data-library-overview" />
         <p className="eyebrow">Build 044</p>
@@ -71,6 +71,13 @@ export default async function DataLibraryPage({
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/intelligence">Intelligence</Link>
         </div>
+      </section>
+
+      <section className="opsScreenBand" aria-label="Operations Command Front End">
+        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Front End</strong><p>Governed records, review surfaces and evidence exploration using the live authorized data library.</p></div>
+        <nav className="opsScreenBandLinks" aria-label="Front End command links">
+          <Link href="/data-review">Data Review</Link><Link href="/approved-data">Approved Data</Link><Link href="/intelligence">Intelligence</Link>
+        </nav>
       </section>
 
       <section className="libraryFilters" aria-labelledby="library-filter-heading">
