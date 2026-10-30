@@ -54,6 +54,7 @@ export default async function IntegrationDeliveryPage() {
           downstream business-system mutation.
         </p>
         <div className="heroActions">
+          <Link className="secondaryButton" href="/integration-delivery/comms-hub">Comms Hub Connection · local I.T. test</Link>
           <Link className="secondaryButton" href="/intelligence">Integration evidence</Link>
           <Link className="secondaryButton" href="/production-learning">Production learning</Link>
         </div>
