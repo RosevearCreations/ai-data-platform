@@ -2,7 +2,7 @@
 export const UI_THEMES = [
   {
     id: "marble-standard",
-    name: "Operations Command",
+    name: "Marble Standard",
     description:
       "Midnight data-grid surfaces, violet and electric-blue command accents, gold evidence highlights and dense operational information.",
     status: "active" as const
@@ -18,3 +18,4 @@ export function uiThemeById(id: string) {
 }
 
 // Build 241 visual-system compatibility marker: Marble Standard remains the persisted theme id.
+// Build 241 Operations Command visual layer is implemented in the shared shell/CSS while preserving the persisted Marble Standard theme contract.
