@@ -8091,3 +8091,334 @@ html[data-reduced-motion="true"] .navigationInsightsDialog {
     border-color: CanvasText;
   }
 }
+
+
+/* Build 241 — Operations Command visual system
+   Applies the requested information-dense dark command-centre feel across the
+   full application without replacing real operator data or workflow content. */
+:root[data-theme="marble-standard"] {
+  --ops-bg: #050b14;
+  --ops-panel: rgba(7, 20, 34, 0.88);
+  --ops-panel-raised: rgba(10, 27, 45, 0.94);
+  --ops-border: rgba(111, 168, 219, 0.22);
+  --ops-border-strong: rgba(132, 74, 255, 0.58);
+  --ops-violet: #8b3dff;
+  --ops-blue: #1b9cff;
+  --ops-cyan: #27d8ff;
+  --ops-gold: #f2b640;
+  --ops-green: #22e58b;
+  --ops-red: #ff5470;
+  --ops-text: #f5f7fb;
+  --ops-muted: #aebbd0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 72% 0%, rgba(78, 39, 185, 0.22), transparent 32rem),
+    radial-gradient(circle at 24% 18%, rgba(19, 130, 208, 0.12), transparent 28rem),
+    linear-gradient(135deg, rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(45deg, rgba(255,255,255,0.012) 1px, transparent 1px),
+    var(--ops-bg);
+  background-size: auto, auto, 32px 32px, 32px 32px, auto;
+  color: var(--ops-text);
+}
+
+.applicationFrame {
+  position: relative;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(3, 10, 19, 0.38), rgba(3, 9, 17, 0.86)),
+    radial-gradient(circle at 78% 12%, rgba(67, 45, 189, 0.16), transparent 30rem);
+}
+
+.applicationFrame::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(38, 149, 220, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 61, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.applicationSidebar,
+.applicationTopbar {
+  background: rgba(3, 11, 20, 0.94);
+  border-color: var(--ops-border);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 34px rgba(0,0,0,0.32);
+}
+
+.applicationBrandMark {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(39, 216, 255, 0.85), transparent 35%),
+    linear-gradient(145deg, #5e2bd6, #121c39);
+  border: 1px solid rgba(117, 213, 255, 0.48);
+  box-shadow: 0 0 24px rgba(73, 89, 255, 0.32);
+  color: white;
+}
+
+.applicationNavGroup,
+.applicationNavLink,
+.applicationNavHubLink,
+.applicationTopbarActions a,
+.applicationTopbarActions button {
+  border-radius: 0.8rem;
+}
+
+.applicationNavGroup[open] > summary,
+.applicationNavLink.active,
+.applicationNavHubLink.active {
+  background: linear-gradient(90deg, rgba(113, 45, 229, 0.35), rgba(20, 101, 179, 0.16));
+  border-color: var(--ops-border-strong);
+  box-shadow: inset 3px 0 0 var(--ops-violet), 0 0 18px rgba(92, 48, 192, 0.16);
+}
+
+.applicationTopbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.applicationTopbarActions > a {
+  padding: 0.48rem 0.68rem;
+  color: var(--ops-muted);
+  border: 1px solid transparent;
+}
+
+.applicationTopbarActions > a:hover,
+.applicationTopbarActions > a:focus-visible {
+  color: white;
+  border-color: var(--ops-border-strong);
+  background: rgba(112, 42, 220, 0.16);
+}
+
+.applicationPage {
+  position: relative;
+  isolation: isolate;
+}
+
+.applicationPage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 19rem;
+  border-radius: 0 0 1.5rem 1.5rem;
+  background:
+    linear-gradient(90deg, rgba(5, 15, 27, 0.97) 0%, rgba(7, 18, 31, 0.84) 44%, rgba(13, 11, 35, 0.45) 68%, rgba(5, 10, 18, 0.82) 100%),
+    radial-gradient(circle at 70% 42%, rgba(130, 49, 255, 0.38), transparent 21%),
+    radial-gradient(circle at 82% 38%, rgba(19, 158, 255, 0.28), transparent 18%),
+    repeating-linear-gradient(90deg, rgba(77, 171, 224, 0.06) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(147, 83, 255, 0.045) 0 1px, transparent 1px 42px);
+  border-bottom: 1px solid rgba(100, 116, 195, 0.22);
+  box-shadow: inset 0 -40px 80px rgba(0,0,0,0.42);
+}
+
+.hero,
+.compactHero {
+  position: relative;
+  overflow: hidden;
+  min-height: 13rem;
+  padding: 1.8rem 2rem;
+  border: 1px solid var(--ops-border);
+  border-radius: 1rem;
+  background:
+    linear-gradient(90deg, rgba(6, 18, 31, 0.96) 0%, rgba(6, 19, 32, 0.82) 52%, rgba(29, 14, 62, 0.55) 100%),
+    repeating-linear-gradient(90deg, rgba(35, 159, 229, 0.07) 0 1px, transparent 1px 34px);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+}
+
+.hero::after,
+.compactHero::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 55%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(153, 61, 255, 0.42), transparent 22%),
+    radial-gradient(circle at 63% 35%, rgba(32, 171, 255, 0.31), transparent 16%),
+    linear-gradient(125deg, transparent 20%, rgba(255,255,255,0.04) 21%, transparent 22% 45%, rgba(255,255,255,0.025) 46%, transparent 47%);
+  opacity: 0.9;
+}
+
+.hero h1,
+.compactHero h1 {
+  max-width: 52rem;
+  font-size: clamp(2.2rem, 4vw, 4.1rem);
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  color: #fff;
+  text-shadow: 0 2px 22px rgba(107, 66, 255, 0.18);
+}
+
+.hero .lead,
+.compactHero .lead {
+  max-width: 52rem;
+  color: #c7d3e4;
+}
+
+.eyebrow {
+  color: #c26cff;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.uiSurfaceCard,
+.card,
+.commandAttentionCard,
+.commandQuickAction,
+.commandHealthCard,
+.commandWorkspaceCard,
+.commandModuleCard,
+.principles {
+  background: linear-gradient(180deg, rgba(11, 29, 48, 0.95), rgba(6, 20, 34, 0.96));
+  border-color: var(--ops-border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.025), 0 10px 26px rgba(0,0,0,0.18);
+}
+
+.uiSurfaceCard:hover,
+.commandQuickAction:hover,
+.commandModuleCard:hover {
+  border-color: rgba(119, 75, 255, 0.48);
+}
+
+.uiSurfaceCard--healthy {
+  box-shadow: inset 3px 0 0 rgba(34,229,139,0.72), 0 10px 26px rgba(0,0,0,0.18);
+}
+.uiSurfaceCard--attention {
+  box-shadow: inset 3px 0 0 rgba(242,182,64,0.75), 0 10px 26px rgba(0,0,0,0.18);
+}
+.uiSurfaceCard--critical {
+  box-shadow: inset 3px 0 0 rgba(255,84,112,0.78), 0 10px 26px rgba(0,0,0,0.18);
+}
+.uiSurfaceCard--info {
+  box-shadow: inset 3px 0 0 rgba(27,156,255,0.74), 0 10px 26px rgba(0,0,0,0.18);
+}
+
+.commandMetrics {
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.commandMetricCard strong {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: #fff;
+}
+
+.commandMetricCard span,
+.uiSurfaceCard p,
+.uiSurfaceCard small,
+.card p,
+.card small {
+  color: var(--ops-muted);
+}
+
+.primaryLink,
+.primaryButton,
+button[type="submit"] {
+  background: linear-gradient(180deg, #7d35f1, #4b17c6);
+  border-color: #a463ff;
+  box-shadow: 0 0 0 1px rgba(139,61,255,0.18), 0 8px 20px rgba(77, 23, 190, 0.22);
+}
+
+.secondaryButton {
+  border-color: rgba(92, 159, 219, 0.32);
+  background: rgba(11, 30, 49, 0.74);
+}
+
+input,
+select,
+textarea {
+  color: var(--ops-text);
+  background: rgba(3, 14, 25, 0.86);
+  border-color: rgba(83, 143, 199, 0.34);
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--ops-border);
+  border-radius: 0.85rem;
+  background: rgba(4, 16, 28, 0.78);
+}
+
+th {
+  background: rgba(13, 35, 57, 0.92);
+  color: #d9e6f5;
+}
+
+td, th {
+  border-color: rgba(92, 139, 181, 0.16);
+}
+
+.uiStatusPill--healthy,
+.commandHealthy {
+  color: var(--ops-green);
+}
+.uiStatusPill--attention {
+  color: var(--ops-gold);
+}
+.uiStatusPill--critical {
+  color: var(--ops-red);
+}
+.uiStatusPill--info {
+  color: var(--ops-blue);
+}
+
+.sectionHeading {
+  margin-top: 0.6rem;
+}
+
+.sectionHeading h2 {
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.applicationSidebarFooter {
+  color: #8da0b9;
+  border-top-color: var(--ops-border);
+}
+
+@media (max-width: 1180px) {
+  .applicationTopbarActions > a:nth-of-type(-n+5) {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero,
+  .compactHero {
+    padding: 1.2rem;
+    min-height: 0;
+  }
+  .hero::after,
+  .compactHero::after {
+    opacity: 0.38;
+    inset-left: 35%;
+  }
+}
+
+@media (forced-colors: active) {
+  .applicationFrame::before,
+  .applicationPage::before,
+  .hero::after,
+  .compactHero::after {
+    display: none;
+  }
+  .applicationSidebar,
+  .applicationTopbar,
+  .uiSurfaceCard,
+  .card,
+  table {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+}
