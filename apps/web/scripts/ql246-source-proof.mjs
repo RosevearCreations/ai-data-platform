@@ -1952,7 +1952,7 @@ export function enforceQl260CustodySourceRenewalFreshness(input, now = Date.now(
       fresh: false,
       status: 'HOLD_QL260_CUSTODY_RENEWAL_STALE_OR_EXPIRED',
       ageMs,
-      maxRenewalAgeMs
+      maxRenewalAgeMs: maxAgeMs
     });
 
   return Object.freeze({
@@ -1960,7 +1960,7 @@ export function enforceQl260CustodySourceRenewalFreshness(input, now = Date.now(
     fresh: true,
     status: 'QL260_CUSTODY_RENEWAL_FRESH_ACTIVATION_HELD',
     ageMs,
-    maxRenewalAgeMs,
+    maxRenewalAgeMs: maxAgeMs,
     currentPublicSignerSpkiSha256: input.currentPublicSignerSpkiSha256,
     currentRegistrySnapshotSha256: input.currentRegistrySnapshotSha256,
     renewalReceiptId: input.renewalReceiptId
