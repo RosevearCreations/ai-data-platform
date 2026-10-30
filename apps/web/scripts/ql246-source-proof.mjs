@@ -1291,6 +1291,142 @@ export function prepareQl257ProofBPublicationAuthorization(input) {
   });
 }
 
+
+export function validateQl258SanitizedOwnerActionPacket(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    authenticatedIdentity: false,
+    proofPublicationAuthorized: false
+  });
+  if (!input || typeof input !== 'object')
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL258_OWNER_PACKET_INPUT_INVALID' });
+
+  const allowedKeys = new Set(['schema','application','progress','owner_report_state','owner_authorization','connection','live_pilot_holds']);
+  const allowedProgress = new Set(['NOT_ATTEMPTED','ATTEMPTED_NOT_VERIFIED','OWNER_REPORTS_DONE_NOT_VERIFIED']);
+  const keysOk = Object.keys(input).every(key => allowedKeys.has(key));
+  const progressOk =
+    Array.isArray(input.progress) &&
+    input.progress.length === 7 &&
+    input.progress.every(value => allowedProgress.has(value));
+  const stateOk =
+    input.schema === 'rosevear.integration.ql258.sanitized-owner-action.v1' &&
+    input.application === 'AI Data Platform' &&
+    ['NOT_RECEIVED','OWNER_REPORTS_DONE_NOT_VERIFIED'].includes(input.owner_report_state) &&
+    input.owner_authorization === 'NOT_GIVEN' &&
+    input.connection === 'DISCONNECTED' &&
+    input.live_pilot_holds === 12;
+
+  if (!keysOk || !progressOk || !stateOk)
+    return Object.freeze({ ...base, accepted: false, status: 'HOLD_QL258_OWNER_PACKET_REJECTED' });
+
+  return Object.freeze({
+    ...base,
+    accepted: true,
+    status: input.owner_report_state === 'OWNER_REPORTS_DONE_NOT_VERIFIED'
+      ? 'OWNER_REPORTS_DONE_NOT_VERIFIED'
+      : 'QL258_OWNER_PACKET_VALID_NOT_RECEIVED',
+    progress: [...input.progress]
+  });
+}
+
+export function refreshQl258ImmutableProofStatus(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN'
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL258_IMMUTABLE_PROOF_REFRESH_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      verified: false,
+      status: 'QL258_IMMUTABLE_PROOF_NOT_PUBLISHED',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const proofOk =
+    REV.test(input.sourceRevision || '') &&
+    REV.test(input.proofCommitSha || '') &&
+    input.sourceRevision !== input.proofCommitSha &&
+    HEX.test(input.proofSha256 || '') &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    input.ancestryVerified === true &&
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.sourceCiRunUrl);
+
+  return Object.freeze({
+    ...base,
+    verified: proofOk,
+    status: proofOk ? 'QL258_IMMUTABLE_PROOF_REFRESH_VERIFIED_OWNER_TEST_HELD' : 'HOLD_QL258_IMMUTABLE_PROOF_METADATA_INCOMPLETE',
+    observedMainSha: input.observedMainSha
+  });
+}
+
+export function evaluateQl258CustodySourceActivationReadiness(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false,
+    proofBPublished: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL258_CUSTODY_SOURCE_ACTIVATION_INPUT_INVALID' });
+
+  const sourceOk =
+    REV.test(input.sourceRevision || '') &&
+    input.sourceCiHeadSha === input.sourceRevision &&
+    input.sourceCiConclusion === 'success' &&
+    typeof input.sourceCiRunUrl === 'string' &&
+    /^https:\/\/github\.com\/RosevearCreations\/ai-data-platform\/actions\/runs\/[0-9]+$/.test(input.sourceCiRunUrl);
+  const ownerPacketOk =
+    input.sanitizedOwnerPacketAccepted === true &&
+    input.ownerReportState === 'OWNER_REPORTS_DONE_NOT_VERIFIED';
+  const custodyOk =
+    input.custodianAuthenticatedPrivately === true &&
+    input.witnessAuthenticatedPrivately === true &&
+    input.reviewerAuthenticatedPrivately === true &&
+    input.rolesAreDistinct === true &&
+    input.approvedRestrictedPrivateKeyHostStore === true &&
+    input.publicSpkiPinVerifiedOutOfBand === true &&
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    HEX.test(input.registrySnapshotSha256 || '') &&
+    typeof input.custodianReceiptId === 'string' && input.custodianReceiptId.length >= 6 &&
+    typeof input.witnessReceiptId === 'string' && input.witnessReceiptId.length >= 6 &&
+    typeof input.reviewerReceiptId === 'string' && input.reviewerReceiptId.length >= 6 &&
+    new Set([input.custodianReceiptId,input.witnessReceiptId,input.reviewerReceiptId]).size === 3;
+  const challengeOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeIssuedAt <= now &&
+    input.challengeExpiresAt > now &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+
+  if (!sourceOk || !ownerPacketOk || !custodyOk || !challengeOk)
+    return Object.freeze({ ...base, ready: false, status: 'HOLD_QL258_CUSTODY_SOURCE_ACTIVATION_NOT_READY' });
+
+  return Object.freeze({
+    ...base,
+    ready: true,
+    status: 'QL258_CUSTODY_SOURCE_ACTIVATION_READY_PROOF_PUBLICATION_AND_GATEWAY_HELD',
+    sourceRevision: input.sourceRevision,
+    sourceCiRunUrl: input.sourceCiRunUrl,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
