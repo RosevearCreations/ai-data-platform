@@ -25,5 +25,6 @@
   "authenticated_gateway_gets": "NOT_RUN",
   "network_test_authorized": false,
   "connection_state": "DISCONNECTED / HOLD",
-  "live_pilot_holds": 12
+  "live_pilot_holds": 12,
+  "verification_retry_note": "Initial dev workflow attempt ended before runner allocation; retry triggered by evidence-only commit."
 }
