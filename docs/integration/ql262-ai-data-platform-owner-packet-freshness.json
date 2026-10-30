@@ -1,0 +1,16 @@
+{
+  "schema": "rosevear.integration.ql262.ai-data-platform.owner-packet-freshness.v1",
+  "application": "AI Data Platform",
+  "packet_available": false,
+  "fresh": false,
+  "freshness_status": "QL262_OWNER_PACKET_FRESHNESS_NOT_AVAILABLE",
+  "owner_identity_authenticated": false,
+  "owner_packet_receipt_id": "NOT_AVAILABLE",
+  "owner_packet_sha256": "NOT_AVAILABLE",
+  "owner_authorization": "NOT_GIVEN",
+  "custody_verified": false,
+  "network_test_authorized": false,
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12
+}
