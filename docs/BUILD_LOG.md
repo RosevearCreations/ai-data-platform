@@ -3926,3 +3926,18 @@ Next queued: **Build 236 — Repair Preset Recovery, Renewal Recovery Presets & 
 - no new environment variables or bindings were added.
 
 Next queued: **Build 237 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-258 sanitized owner-action return reconciliation, immutable proof publication follow-up and custody-source activation evidence aging while authenticated gateway GETs remain HELD.**
+
+
+## Build 237 — Repair Recovery Audit, Renewal Preset Persistence, Receipt Recovery Filtering & QL-258
+
+- advanced newest-first repair recovery audit evidence, renewal preset persistence and receipt recovery filtering;
+- refreshed Source A to released Build 236 main `467ca1fad5822ce61c53689bb5826b35e26b5dc0` with matching GREEN GitHub Actions run `41063977694`;
+- rechecked `docs/integration/ql246-source-proof.json` at exact Source A: HTTP 404;
+- added fail-closed sanitized owner-action return reconciliation that never treats a self-report as authenticated identity or network authorization;
+- added immutable proof publication follow-up that verifies future HTTP 200 proof metadata before accepting proof B;
+- added custody-source activation evidence aging with challenge expiry and bounded evidence-age enforcement;
+- current sanitized owner return remains NOT_RECEIVED; custody evidence remains NOT_AVAILABLE;
+- proof B remains unpublished; owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD;
+- QL-265 source connection/interface work remains preserved.
+
+Next queued: **Build 238 — Repair Recovery Filtering, Renewal Preset Recovery & Receipt Recovery Search, plus QL-259 owner-status refresh, custody-source evidence renewal and immutable proof publication exception review while authenticated gateway GETs remain HELD.**

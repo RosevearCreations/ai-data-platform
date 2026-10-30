@@ -1427,6 +1427,139 @@ export function evaluateQl258CustodySourceActivationReadiness(input, now = Date.
   });
 }
 
+
+export function reconcileQl258SanitizedOwnerActionReturn(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    livePilotHolds: 12,
+    authenticatedIdentity: false,
+    proofPublicationAuthorized: false
+  });
+  if (!input || typeof input !== 'object')
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL258_OWNER_RETURN_INPUT_INVALID' });
+
+  const validated = validateQl258SanitizedOwnerActionPacket(input);
+  if (validated.accepted !== true)
+    return Object.freeze({ ...base, reconciled: false, status: 'HOLD_QL258_OWNER_RETURN_REJECTED' });
+
+  if (validated.status !== 'OWNER_REPORTS_DONE_NOT_VERIFIED')
+    return Object.freeze({
+      ...base,
+      reconciled: false,
+      status: 'QL258_OWNER_RETURN_NOT_RECEIVED_OR_INCOMPLETE',
+      progress: validated.progress || []
+    });
+
+  return Object.freeze({
+    ...base,
+    reconciled: true,
+    status: 'QL258_OWNER_RETURN_RECONCILED_SELF_REPORT_ONLY',
+    progress: validated.progress
+  });
+}
+
+export function followUpQl258ImmutableProofPublication(input) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    proofBPublished: false
+  });
+  if (!input || !REV.test(input.observedMainSha || ''))
+    return Object.freeze({ ...base, verified: false, status: 'HOLD_QL258_PROOF_PUBLICATION_FOLLOWUP_INPUT_INVALID' });
+
+  if (input.proofHttpStatus !== 200)
+    return Object.freeze({
+      ...base,
+      verified: false,
+      status: 'QL258_PROOF_PUBLICATION_FOLLOWUP_NOT_PUBLISHED',
+      observedMainSha: input.observedMainSha,
+      proofHttpStatus: input.proofHttpStatus
+    });
+
+  const refreshed = refreshQl258ImmutableProofStatus(input);
+  if (refreshed.verified !== true)
+    return Object.freeze({
+      ...base,
+      verified: false,
+      status: 'HOLD_QL258_PROOF_PUBLICATION_FOLLOWUP_METADATA_INVALID',
+      observedMainSha: input.observedMainSha
+    });
+
+  return Object.freeze({
+    ...base,
+    verified: true,
+    proofBPublished: true,
+    status: 'QL258_PROOF_PUBLICATION_FOLLOWUP_VERIFIED_OWNER_TEST_HELD',
+    observedMainSha: input.observedMainSha,
+    sourceRevision: input.sourceRevision,
+    proofCommitSha: input.proofCommitSha,
+    proofSha256: input.proofSha256,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256
+  });
+}
+
+export function ageQl258CustodySourceActivationEvidence(input, now = Date.now()) {
+  const base = Object.freeze({
+    ownerAuthorization: 'NOT_GIVEN',
+    connectionState: 'DISCONNECTED',
+    actualGatewayTest: 'NOT_RUN',
+    activationAllowed: false
+  });
+  if (!input || !Number.isSafeInteger(now))
+    return Object.freeze({ ...base, fresh: false, status: 'HOLD_QL258_CUSTODY_EVIDENCE_AGING_INPUT_INVALID' });
+
+  if (input.evidenceAvailable !== true)
+    return Object.freeze({ ...base, fresh: false, status: 'QL258_CUSTODY_EVIDENCE_NOT_AVAILABLE' });
+
+  const receipts = [input.custodianReceiptId, input.witnessReceiptId, input.reviewerReceiptId];
+  const receiptsOk = receipts.every(value => typeof value === 'string' && value.length >= 6) &&
+    new Set(receipts).size === 3;
+  const digestsOk =
+    HEX.test(input.publicSignerSpkiSha256 || '') &&
+    HEX.test(input.registrySnapshotSha256 || '');
+  const issuedOk =
+    Number.isSafeInteger(input.challengeIssuedAt) &&
+    Number.isSafeInteger(input.challengeExpiresAt) &&
+    input.challengeExpiresAt > input.challengeIssuedAt &&
+    input.challengeExpiresAt - input.challengeIssuedAt <= 5 * 60 * 1000;
+  const observedOk =
+    Number.isSafeInteger(input.lastVerifiedAt) &&
+    input.lastVerifiedAt <= now;
+  const ageMs = observedOk ? now - input.lastVerifiedAt : Number.POSITIVE_INFINITY;
+  const maxEvidenceAgeMs = Number.isSafeInteger(input.maxEvidenceAgeMs) &&
+    input.maxEvidenceAgeMs >= 60_000 &&
+    input.maxEvidenceAgeMs <= 24 * 60 * 60 * 1000
+      ? input.maxEvidenceAgeMs
+      : 30 * 60 * 1000;
+  const challengeCurrent = issuedOk && input.challengeExpiresAt > now;
+  const evidenceCurrent = receiptsOk && digestsOk && observedOk && ageMs <= maxEvidenceAgeMs;
+
+  if (!challengeCurrent || !evidenceCurrent)
+    return Object.freeze({
+      ...base,
+      fresh: false,
+      status: 'HOLD_QL258_CUSTODY_EVIDENCE_STALE_OR_EXPIRED',
+      ageMs: Number.isFinite(ageMs) ? ageMs : null,
+      maxEvidenceAgeMs
+    });
+
+  return Object.freeze({
+    ...base,
+    fresh: true,
+    status: 'QL258_CUSTODY_EVIDENCE_FRESH_ACTIVATION_AND_GATEWAY_HELD',
+    ageMs,
+    maxEvidenceAgeMs,
+    publicSignerSpkiSha256: input.publicSignerSpkiSha256,
+    registrySnapshotSha256: input.registrySnapshotSha256,
+    custodianReceiptId: input.custodianReceiptId,
+    witnessReceiptId: input.witnessReceiptId,
+    reviewerReceiptId: input.reviewerReceiptId
+  });
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))
