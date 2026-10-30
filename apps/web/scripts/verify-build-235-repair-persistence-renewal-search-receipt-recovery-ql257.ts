@@ -43,7 +43,7 @@ async function main() {
     source("../../../docs/BUILD_235_REPAIR_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_RECOVERY_QL257.md")
   ]);
 
-  ensure(shell.includes("Build 235 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-235-repair-persistence-renewal-search-receipt-recovery-ql257.ts"),"registered");
 
   for(const t of [

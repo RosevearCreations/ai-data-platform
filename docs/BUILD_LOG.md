@@ -3910,3 +3910,19 @@ Next queued: **Build 235 — Repair Preset Persistence, Renewal Recovery Search 
 - owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD.
 
 Next queued: **Build 236 — Repair Preset Recovery, Renewal Recovery Presets & Receipt Recovery Audit, plus QL-258 sanitized owner-action packet validation, immutable proof refresh and custody-source activation readiness while authenticated gateway GETs remain HELD.**
+
+
+## Build 236 — Repair Preset Recovery, Renewal Recovery Presets, Receipt Recovery Audit & QL-258
+
+- based Build 236 on the actual concurrent `main` commit `fefb13e63487e6685555ed52fcdb4573838513e7`, preserving QL-265 source connection/local-check work;
+- advanced repair preset recovery, deterministic renewal recovery presets and newest-first receipt recovery audit evidence;
+- refreshed nonproduction Source A to `fefb13e63487e6685555ed52fcdb4573838513e7` with matching GREEN GitHub Actions run `40996394692`;
+- rechecked `docs/integration/ql246-source-proof.json` at exact Source A: HTTP 404;
+- added fail-closed QL-258 seven-progress-answer sanitized owner-action validation with fixed enums and unknown/private-field rejection;
+- added immutable proof refresh verification for future HTTP 200 A→B proof evidence;
+- added custody-source activation readiness requiring independently authenticated custodian/witness/reviewer, approved key host, out-of-band SPKI pin, three distinct receipts and a fresh <=5 minute challenge;
+- current sanitized owner packet remains NOT_RECEIVED; custody-source activation remains HELD_NOT_READY;
+- proof-B publication remains not attempted; owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD;
+- no new environment variables or bindings were added.
+
+Next queued: **Build 237 — Repair Recovery Audit, Renewal Preset Persistence & Receipt Recovery Filtering, plus QL-258 sanitized owner-action return reconciliation, immutable proof publication follow-up and custody-source activation evidence aging while authenticated gateway GETs remain HELD.**
