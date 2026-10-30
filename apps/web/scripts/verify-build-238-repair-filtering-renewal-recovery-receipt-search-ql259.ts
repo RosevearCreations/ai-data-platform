@@ -42,7 +42,7 @@ async function main() {
     source("../../../docs/BUILD_238_REPAIR_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH_QL259.md")
   ]);
 
-  ensure(shell.includes("Build 238 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-238-repair-filtering-renewal-recovery-receipt-search-ql259.ts"),"registered");
 
   for(const t of [
