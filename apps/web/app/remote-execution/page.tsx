@@ -8,6 +8,7 @@ import { listRemotePilotOverviewForUser } from "@/lib/remote-pilot-database";
 
 import { RemotePilotAdminPanel } from "./RemotePilotAdminPanel";
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsActionDrawer, OperationsEvidenceTimeline, OperationsExceptionQueue, OpsDrawerLink } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -132,6 +133,35 @@ export default async function RemoteExecutionPage() {
       </section>
 
       <section className="opsDrilldownPanel"><span>Operations Command · I.T. drill-down</span><strong>Remote Execution & Provider Status</strong><p>Inspect live-pilot readiness, fail-closed controls, provider cost evidence and recent execution events.</p><div><Link href="/connectors">Connectors</Link><Link href="/integration-delivery">System Status</Link></div></section>
+
+      <OperationsActionDrawer title="I.T. execution actions" description="Use the existing governed workflows to inspect policy, connector state and delivery status. No drawer action bypasses live-pilot gates.">
+        <OpsDrawerLink href="/connectors">Connector Controls</OpsDrawerLink>
+        <OpsDrawerLink href="/intelligence">Source Policy Evidence</OpsDrawerLink>
+        <OpsDrawerLink href="/integration-delivery">Delivery Status</OpsDrawerLink>
+      </OperationsActionDrawer>
+
+      <div className="opsTemplateGrid">
+        <OperationsExceptionQueue
+          title="Live-pilot readiness"
+          items={[
+            ...(!readiness.tokenConfigured ? [{ id: "token", label: "Provider token not configured", detail: "Browserless execution remains fail-closed until the provider credential is configured server-side.", tone: "critical" as const }] : []),
+            ...(!readiness.executionEnabled ? [{ id: "flag", label: "Execution flag is off", detail: "Remote execution is disabled by the current environment gate.", tone: "attention" as const }] : []),
+            ...(readiness.globalKillSwitchActive ? [{ id: "kill", label: "Global kill switch is active", detail: "No live pilot can run while the global kill switch remains active.", tone: "critical" as const }] : []),
+            ...(readiness.readyForLivePilot ? [] : [{ id: "ready", label: "Pilot not ready", detail: "At least one required readiness condition is not satisfied.", tone: "attention" as const }])
+          ]}
+          emptyLabel="All current Browserless readiness checks are satisfied."
+        />
+        <OperationsEvidenceTimeline
+          title="Recent provider evidence"
+          entries={pilot.flatMap((entry) => entry.events.slice(0, 4).map((event) => ({
+            id: entry.workspace.id + ":" + event.eventType + ":" + event.createdAt.toISOString(),
+            title: event.eventType,
+            detail: entry.workspace.name + " provider event",
+            timestamp: event.createdAt.toLocaleString(),
+            tone: "info" as const
+          }))).slice(0, 10)}
+        />
+      </div>
 
       <section>
         <div className="sectionHeading">
