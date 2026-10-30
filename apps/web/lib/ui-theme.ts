@@ -2,9 +2,9 @@
 export const UI_THEMES = [
   {
     id: "marble-standard",
-    name: "Marble Standard",
+    name: "Operations Command",
     description:
-      "Deep charcoal stone, restrained pale veining, translucent depth and teal operational accents.",
+      "Midnight data-grid surfaces, violet and electric-blue command accents, gold evidence highlights and dense operational information.",
     status: "active" as const
   }
 ] as const;
@@ -16,3 +16,5 @@ export const DEFAULT_UI_THEME: UiThemeId = "marble-standard";
 export function uiThemeById(id: string) {
   return UI_THEMES.find((theme) => theme.id === id) ?? UI_THEMES[0];
 }
+
+// Build 241 visual-system compatibility marker: Marble Standard remains the persisted theme id.
