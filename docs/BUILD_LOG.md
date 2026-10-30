@@ -3956,3 +3956,18 @@ Next queued: **Build 238 — Repair Recovery Filtering, Renewal Preset Recovery 
 - QL-265 source connection/interface work remains preserved.
 
 Next queued: **Build 239 — Repair Recovery Search, Renewal Recovery Audit & Receipt Recovery Presets, plus QL-260 authenticated owner-status receipt intake, custody-source evidence renewal verification and immutable proof publication exception disposition while authenticated gateway GETs remain HELD.**
+
+
+## Build 239 — Repair Recovery Search, Renewal Recovery Audit, Receipt Recovery Presets & QL-260
+
+- advanced repair recovery search, newest-first renewal recovery audit evidence and deterministic receipt recovery presets;
+- refreshed Source A to released Build 238 main `ad958eee57fc02a1cd6753126e29e7e9a650fda2` with matching GREEN GitHub Actions run `41072292854`;
+- rechecked `docs/integration/ql246-source-proof.json` at exact Source A: HTTP 404;
+- added authenticated owner-status receipt intake with private owner authentication, OWNER_STATUS_ONLY scope and <=30 minute receipt lifetime;
+- added custody-source renewal verification requiring signer continuity, registry digests, authenticated custodian/witness/reviewer, approved key host, out-of-band pin, four distinct receipts and a fresh <=5 minute challenge;
+- added immutable proof publication exception disposition: current 404 remains KEEP_OPEN_PUBLICATION_REQUIRED and cannot be waived;
+- current authenticated owner-status receipt remains NOT_AVAILABLE; custody renewal remains NOT_AVAILABLE;
+- proof B remains unpublished; owner TEST-only authorization remains NOT_GIVEN; authenticated gateway GETs remain NOT_RUN; connection remains DISCONNECTED / HOLD;
+- QL-265 source connection/interface work remains preserved.
+
+Next queued: **Build 240 — Repair Recovery Presets, Renewal Recovery Filtering & Receipt Preset Persistence, plus QL-260 authenticated owner-status receipt reconciliation, custody-source renewal freshness enforcement and immutable proof publication exception closure readiness while authenticated gateway GETs remain HELD.**
