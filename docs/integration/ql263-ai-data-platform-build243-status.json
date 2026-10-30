@@ -1,0 +1,16 @@
+{
+  "schema": "rosevear.integration.ql263.ai-data-platform.build243-status.v1",
+  "application": "AI Data Platform",
+  "build": 243,
+  "source_A_sha": "13b14183807d5c08c9dcb3defe426349619a393e",
+  "owner_packet_renewal": "QL263_OWNER_PACKET_RENEWAL_NOT_AVAILABLE",
+  "signer_custody_audit_freshness": "QL263_SIGNER_CUSTODY_AUDIT_FRESHNESS_NOT_AVAILABLE",
+  "immutable_proof_path": "docs/integration/ql246-source-proof.json",
+  "immutable_proof_http_status": 404,
+  "source_proof_publication_exception_review": "QL263_PROOF_PUBLICATION_EXCEPTION_OPEN_PUBLICATION_REQUIRED",
+  "proof_B_publication_attempted": false,
+  "owner_test_only_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection_state": "DISCONNECTED / HOLD",
+  "live_pilot_holds": 12
+}
