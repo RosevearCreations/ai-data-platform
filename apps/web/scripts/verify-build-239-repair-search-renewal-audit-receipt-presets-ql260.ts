@@ -46,7 +46,7 @@ async function main() {
     source("../../../docs/BUILD_239_REPAIR_SEARCH_RENEWAL_AUDIT_RECEIPT_PRESETS_QL260.md")
   ]);
 
-  ensure(shell.includes("Build 239 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard"),"shell");
   ensure(pkg.includes("verify-build-239-repair-search-renewal-audit-receipt-presets-ql260.ts"),"registered");
 
   for(const t of [

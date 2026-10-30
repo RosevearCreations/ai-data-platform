@@ -1,0 +1,15 @@
+{
+  "schema": "rosevear.integration.ql260.ai-data-platform.owner-status-receipt-reconciliation.v1",
+  "application": "AI Data Platform",
+  "receipt_available": false,
+  "reconciliation_status": "QL260_OWNER_RECEIPT_RECONCILIATION_NOT_AVAILABLE",
+  "required_receipt_scope": "OWNER_STATUS_ONLY",
+  "owner_identity_authenticated": false,
+  "status_return_receipt_match": false,
+  "receipt_freshness_verified": false,
+  "custody_verified": false,
+  "owner_authorization": "NOT_GIVEN",
+  "network_test_authorized": false,
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12
+}
