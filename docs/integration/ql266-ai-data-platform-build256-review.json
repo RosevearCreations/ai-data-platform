@@ -1,0 +1,33 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build256-review.v1",
+  "application": "AI Data Platform",
+  "build": 256,
+  "source_A_sha": "417f1e305405cab245ead9b31ea5b0c2e3350efe",
+  "source_ci_run": "https://github.com/RosevearCreations/ai-data-platform/actions/runs/41245345473",
+  "source_ci_conclusion": "success",
+  "search_scope": {
+    "unified_results_explorer": true,
+    "navigation": true,
+    "data_library": true,
+    "approved_data": true,
+    "collection_projects_runs_recipes": true,
+    "intelligence_and_evidence": true,
+    "integration_evidence": true,
+    "authorized_workspaces": true,
+    "help_topics": true,
+    "separate_search_database": false,
+    "command_palette_remains_navigation_only": true
+  },
+  "authorization": {
+    "existing_user_scoped_read_models": true,
+    "rls_preserved": true,
+    "mutation_from_search": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 257
+}
