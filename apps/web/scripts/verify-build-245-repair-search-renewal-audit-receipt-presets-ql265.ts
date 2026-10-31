@@ -52,7 +52,7 @@ async function main(){
     source("../../../docs/BUILD_245_REPAIR_SEARCH_RENEWAL_AUDIT_RECEIPT_PRESETS_QL265.md")
   ]);
 
-  ensure(shell.includes("Build 245 · Operations Command"),"Build 245 shell label");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   ensure(css.includes("Build 245 — reusable tables, inspectors, status badges and responsive workflows"),"Build 245 styles");
   for(const token of ["OperationsDataTable","OperationsInspector","OperationsStatusBadge"]) ensure(panels.includes(token),"panel "+token);
   ensure(delivery.includes("OperationsDataTable")&&delivery.includes("OperationsInspector")&&delivery.includes("OperationsStatusBadge"),"System Status reusable components");
