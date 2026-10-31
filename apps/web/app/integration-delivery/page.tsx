@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -192,6 +192,95 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             tone: "critical" as const
           }))}
           emptyLabel="No HTTP exception events are available in the current history."
+        />
+      </div>
+
+      <div className="opsScorecardGrid" id="build251-scorecards">
+        <OperationsScorecard
+          label="Consumer readiness"
+          value={configuredCount + "/" + consumers.length}
+          detail="Configured delivery consumers"
+          meta={needsConfigCount + " configuration review(s) remaining"}
+          tone={needsConfigCount ? "attention" : "healthy"}
+        />
+        <OperationsScorecard
+          label="Delivery acceptance"
+          value={recentEvents.length ? Math.round((acceptedEventRows.length / recentEvents.length) * 100) + "%" : "—"}
+          detail={acceptedEventRows.length + " accepted/non-error acknowledgement(s)"}
+          meta={recentEvents.length + " recent delivery event(s)"}
+          tone={rejectedEvents ? "attention" : "healthy"}
+        />
+        <OperationsScorecard
+          label="Exception load"
+          value={rejectedEvents}
+          detail="HTTP exception acknowledgements"
+          meta={eventView === "errors" ? "Exception layer active" : "All event layers available"}
+          tone={rejectedEvents ? "critical" : "healthy"}
+        />
+        <OperationsScorecard
+          label="QL-266"
+          value="UNDER REVIEW"
+          detail="Owner-deferred integration gate"
+          meta="No Build 251 reactivation"
+          tone="info"
+        />
+      </div>
+
+      <div className="opsBuild251Layout">
+        <OperationsLayeredFilters
+          title="System Status review layers"
+          layers={[
+            {
+              label: "Consumer layer",
+              options: [
+                { label: "All", href: savedViewHref("all"), active: view === "all", count: consumers.length },
+                { label: "Configured", href: savedViewHref("configured"), active: view === "configured", count: configuredCount },
+                { label: "Needs review", href: savedViewHref("needs-config"), active: view === "needs-config", count: needsConfigCount }
+              ]
+            },
+            {
+              label: "Delivery layer",
+              options: [
+                { label: "All events", href: eventViewHref("all"), active: eventView === "all", count: recentEvents.length },
+                { label: "Accepted", href: eventViewHref("accepted"), active: eventView === "accepted", count: acceptedEventRows.length },
+                { label: "Exceptions", href: eventViewHref("errors"), active: eventView === "errors", count: rejectedEvents }
+              ]
+            }
+          ]}
+        />
+        <OperationsInspectorCheckpoints
+          title="Build 251 review checkpoints"
+          checkpoints={[
+            { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "complete" },
+            { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "complete" },
+            { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "complete" },
+            { label: "QL-266 boundary", detail: "UNDER REVIEW; external testing stays deferred and disconnected.", state: "review" }
+          ]}
+        />
+      </div>
+
+      <div className="opsActivityLaneLayout" id="build251-activity-lanes">
+        <OperationsActivityLane
+          title="Accepted delivery activity"
+          entries={acceptedEventRows.slice(0, 6).map((event) => ({
+            id: event.eventId,
+            label: event.eventType,
+            detail: event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
+            timestamp: event.occurredAt.toLocaleString(),
+            state: "complete" as const
+          }))}
+          emptyLabel="No accepted delivery activity is available."
+        />
+        <OperationsActivityLane
+          title="Exception delivery activity"
+          entries={rejectedEventRows.slice(0, 6).map((event) => ({
+            id: event.eventId,
+            label: event.eventType,
+            detail: event.target + " · " + event.validationCode + " · HTTP " + event.httpStatus,
+            timestamp: event.occurredAt.toLocaleString(),
+            state: "attention" as const
+          }))}
+          emptyLabel="No HTTP exception activity is available."
         />
       </div>
 
