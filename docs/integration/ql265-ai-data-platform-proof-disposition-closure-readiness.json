@@ -1,0 +1,14 @@
+{
+  "schema": "rosevear.integration.ql265.ai-data-platform.proof-disposition-closure-readiness.v1",
+  "application": "AI Data Platform",
+  "source_A_sha": "79a90aa17c2f04b77b27bd3eca54dbdc50d87fe5",
+  "proof_http_status": 404,
+  "ready": false,
+  "status": "QL265_PROOF_DISPOSITION_CLOSURE_NOT_READY_PUBLICATION_MISSING",
+  "prior_disposition": "KEEP_OPEN_PUBLICATION_REQUIRED",
+  "closure_review_receipt_id": "NOT_AVAILABLE",
+  "exception_waiver_allowed": false,
+  "proof_B_published": false,
+  "owner_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN"
+}

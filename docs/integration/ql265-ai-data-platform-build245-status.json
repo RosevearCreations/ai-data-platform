@@ -1,0 +1,26 @@
+{
+  "schema": "rosevear.integration.ql265.ai-data-platform.build245-status.v1",
+  "application": "AI Data Platform",
+  "build": 245,
+  "source_A_sha": "79a90aa17c2f04b77b27bd3eca54dbdc50d87fe5",
+  "source_ci_run": "https://github.com/RosevearCreations/ai-data-platform/actions/runs/41148633285",
+  "source_ci_conclusion": "success",
+  "owner_renewal_freshness_reconciliation": "QL265_OWNER_RENEWAL_FRESHNESS_RECONCILIATION_NOT_AVAILABLE",
+  "signer_custody_renewal_receipt_audit": "QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_NOT_AVAILABLE",
+  "immutable_proof_path": "docs/integration/ql246-source-proof.json",
+  "immutable_proof_http_status": 404,
+  "source_proof_disposition_closure_readiness": "QL265_PROOF_DISPOSITION_CLOSURE_NOT_READY_PUBLICATION_MISSING",
+  "exception_waiver_allowed": false,
+  "proof_B_publication_attempted": false,
+  "owner_test_only_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN",
+  "network_test_authorized": false,
+  "connection_state": "DISCONNECTED / HOLD",
+  "live_pilot_holds": 12,
+  "operations_command": {
+    "reusable_tables": true,
+    "inspectors": true,
+    "status_badges": true,
+    "responsive_workflow_layouts": true
+  }
+}
