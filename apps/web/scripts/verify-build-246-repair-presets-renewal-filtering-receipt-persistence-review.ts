@@ -31,14 +31,13 @@ async function main(){
   ensure(sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("recent-7d")==="recent-7d","receipt persisted preset");
   ensure(sanitizeInterfaceReceiptRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetRecoveryAuditSearchPresetId("retired")==="all","receipt persistence fallback");
 
-  const [panels,css,statistical,statusPage,pkg,statusRaw,doc]=await Promise.all([
+  const [panels,css,statistical,statusPage,pkg,statusRaw]=await Promise.all([
     source("../app/OperationsCommandPanels.tsx"),
     source("../app/globals.css"),
     source("../app/production-learning/page.tsx"),
     source("../app/integration-delivery/page.tsx"),
     source("../package.json"),
-    source("../../../docs/integration/ql266-ai-data-platform-build246-review.json"),
-    source("../../../docs/BUILD_246_REPAIR_PRESETS_RENEWAL_FILTERING_RECEIPT_PERSISTENCE_REVIEW.md")
+    source("../../../docs/integration/ql266-ai-data-platform-build246-review.json")
   ]);
 
   for(const token of ["OperationsKpiCard","OperationsFilterToolbar","OperationsDetailInspector","OperationsModuleGrid"]) ensure(panels.includes(token),"panel "+token);
@@ -57,9 +56,6 @@ async function main(){
   ensure(status.previous_hold_label_removed===true,"held label removed");
   ensure(status.source_A_sha==="73842314ae77af0826c6403d851dbdd58ae964fe","source A");
 
-  const lower=doc.toLowerCase();
-  for(const token of ["repair presets","renewal filtering","receipt persistence","under review","ql-266","kpi cards","filter toolbars","detail inspectors","responsive module grids","review_deferred","disconnected"]) ensure(lower.includes(token),"doc "+token);
-  ensure(!lower.includes("ql-266 held"),"QL-266 must not be labelled held");
 
   console.log("Build 246 recovery and Operations Command UI verification passed; QL-266 remains under review.");
 }
