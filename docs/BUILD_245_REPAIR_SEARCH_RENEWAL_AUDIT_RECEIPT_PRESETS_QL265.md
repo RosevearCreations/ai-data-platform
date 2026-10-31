@@ -39,7 +39,7 @@ Current state: `QL265_PROOF_DISPOSITION_CLOSURE_NOT_READY_PUBLICATION_MISSING`.
 Closure readiness is fail-closed: it also requires verified publication, the prior disposition to be resolved by verified publication, owner-renewal freshness reconciliation, signer-custody renewal receipt audit, matching GREEN source CI and a separate closure-review receipt approved only for exception closure. `exceptionWaiverAllowed` remains false.
 
 ## Operations Command conversion
-Build 245 continues the owner-selected application feel with reusable components rather than mock data:
+Build 245 continues the owner-selected application feel with reusable components rather than mock data. The conversion explicitly introduces **reusable tables**, inspectors, status badges and responsive workflow layouts:
 
 - reusable responsive data tables;
 - inspector panels for contextual workflow guidance;
