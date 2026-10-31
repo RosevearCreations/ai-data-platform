@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { buildAdoptionReview } from "@/lib/adoption-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsExceptionQueue, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsExceptionQueue, OperationsInspector, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +89,22 @@ export default async function AdoptionPage() {
         }))}
         emptyLabel="No current adoption or least-privilege recommendations."
       />
+
+      <div className="opsWorkflowLayout">
+        <section className="card">
+          <div className="opsPanelHeading"><span>Management status</span><strong>Current adoption signals</strong></div>
+          <div className="opsActionDrawerActions">
+            <OperationsStatusBadge tone={totals.noActivityWorkspaces ? "attention" : "healthy"}>{totals.noActivityWorkspaces} inactive workspace(s)</OperationsStatusBadge>
+            <OperationsStatusBadge tone={totals.highRiskUnusedCapabilities ? "critical" : "healthy"}>{totals.highRiskUnusedCapabilities} high-risk unused capability slot(s)</OperationsStatusBadge>
+            <OperationsStatusBadge tone={totals.connectorStaleGrants ? "attention" : "healthy"}>{totals.connectorStaleGrants} stale connector grant(s)</OperationsStatusBadge>
+          </div>
+        </section>
+        <OperationsInspector title="Least-privilege review" eyebrow="Management">
+          <p>Recommendations are generated from durable workspace, capability and connector-use evidence.</p>
+          <p>No role or permission is changed automatically from this screen.</p>
+          <OpsDrawerLink href="/workspace-profiles">Inspect workspace profiles</OpsDrawerLink>
+        </OperationsInspector>
+      </div>
 
       <section>
         <div className="sectionHeading">
