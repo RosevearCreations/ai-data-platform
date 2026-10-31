@@ -285,8 +285,8 @@ export async function buildUnifiedCrossModuleSearch(
 
   const intelligenceResults: Array<UnifiedSearchResult | null> = [];
   for (const overview of intelligence) {
-    for (const module of overview.modules) {
-      const record = module as unknown as Record<string, unknown>;
+    for (const intelligenceModule of overview.modules) {
+      const record = intelligenceModule as unknown as Record<string, unknown>;
       intelligenceResults.push(
         result(query, {
           id: "intelligence:" + overview.workspace.id + ":" + text(record.moduleKey),
