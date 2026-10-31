@@ -1520,6 +1520,22 @@ export const HELP_TOPICS = {
       "No shortcut performs a mutation from the module hub."
     ]
   },
+  "unified-search": {
+    title: "Unified Search & Results Explorer",
+    summary: "Build 256 searches authorized records, approved data, collection work, recipes, intelligence, integration evidence, workspaces, navigation and help from one read-only surface.",
+    steps: [
+      "Open Search from the application top bar, navigation or command palette.",
+      "Enter a bounded search term and review the result counts across available scopes.",
+      "Use a scope such as Data, Collection, Intelligence or Integrations to narrow the visible result set without changing authorization.",
+      "Open a result in its source context and continue work only through that destination's existing governed controls.",
+      "Use Ctrl+K when the task is only to find an application destination; use Unified Search when the task is to find records or evidence."
+    ],
+    notes: [
+      "Build 256 composes existing user-scoped read models and PostgreSQL RLS transactions; it does not create a separate search database or copy governed records.",
+      "Search does not broaden workspace membership, roles, connector grants, workflow eligibility or QL-266 state.",
+      "Result links are navigation only and do not perform mutations."
+    ]
+  },
   "command-palette": {
     title: "Cross-module operator command palette",
     summary: "Build 122 adds a global keyboard-first navigation palette that searches registered module hubs and operator screens without becoming an execution surface.",
