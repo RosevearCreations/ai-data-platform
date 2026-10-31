@@ -42,7 +42,7 @@ async function main(){
     source("../../../docs/BUILD_247_RECOVERY_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_RECOVERY.md")
   ]);
 
-  ensure(shell.includes("Build 247 · Operations Command"),"Build 247 shell");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   for(const token of ["OperationsSearchPanel","OperationsActivitySummary","OperationsStatusGroup","OperationsInspectorWorkflow"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 247 — search panels, activity summaries, responsive status groups and inspector workflows"),"Build 247 styles");
   for(const token of ["Search consumer configuration","Delivery activity","Review state","Consumer review workflow"]) ensure(delivery.includes(token),"System Status "+token);

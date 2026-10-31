@@ -6,12 +6,12 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivitySummary, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivitySummary, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
 
-export default async function IntegrationDeliveryPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+export default async function IntegrationDeliveryPage({ searchParams }: { searchParams: Promise<{ q?: string; view?: string }> }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     return (
@@ -33,6 +33,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
 
   const params = await searchParams;
   const query = (params.q ?? "").trim().toLowerCase();
+  const view = ["all","configured","needs-config","exceptions"].includes(params.view ?? "") ? (params.view ?? "all") : "all";
   const overview = await listIntegrationDeliveryOverviewForUser(session.user.id);
   const consumers = (["rosie-dazzlers", "devil-n-dove"] as const).map((target) => {
     const config = integrationConsumerConfiguration(target);
@@ -44,14 +45,27 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
       tokenName: config.tokenName
     };
   });
+  const viewConsumers =
+    view === "configured" ? consumers.filter((consumer) => consumer.configured) :
+    view === "needs-config" ? consumers.filter((consumer) => !consumer.configured) :
+    consumers;
   const filteredConsumers = query
-    ? consumers.filter((consumer) =>
+    ? viewConsumers.filter((consumer) =>
         [consumer.target, consumer.endpointOrigin ?? "", consumer.urlName, consumer.tokenName]
           .some((value) => value.toLowerCase().includes(query))
       )
-    : consumers;
+    : viewConsumers;
   const recentEvents = overview.flatMap((entry) => entry.recent);
   const rejectedEvents = recentEvents.filter((event) => Boolean(event.httpStatus && event.httpStatus >= 400)).length;
+  const configuredCount = consumers.filter((consumer) => consumer.configured).length;
+  const needsConfigCount = consumers.length - configuredCount;
+  const savedViewHref = (nextView: string) => {
+    const paramsOut = new URLSearchParams();
+    if (query) paramsOut.set("q", query);
+    if (nextView !== "all") paramsOut.set("view", nextView);
+    const suffix = paramsOut.toString();
+    return suffix ? "/integration-delivery?" + suffix : "/integration-delivery";
+  };
 
   return (
     <main className="shell opsCommandScreen opsCommandScreen--status">
@@ -78,10 +92,59 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </nav>
       </section>
 
+      <div className="opsSavedLayout">
+        <OperationsSavedViews
+          title="Consumer views"
+          views={[
+            { label: "All", href: savedViewHref("all"), active: view === "all", count: consumers.length },
+            { label: "Configured", href: savedViewHref("configured"), active: view === "configured", count: configuredCount },
+            { label: "Needs configuration", href: savedViewHref("needs-config"), active: view === "needs-config", count: needsConfigCount },
+            { label: "Exceptions", href: savedViewHref("exceptions"), active: view === "exceptions", count: rejectedEvents }
+          ]}
+        />
+        <OperationsContextInspector
+          title="Review actions"
+          description="Use the current saved view to focus the existing governed System Status workflow. QL-266 remains outside the active workflow while under review."
+          actions={[
+            { label: "Comms Hub checks", href: "/integration-delivery/comms-hub" },
+            { label: "Remote execution", href: "/remote-execution" },
+            { label: "Production learning", href: "/production-learning" }
+          ]}
+        />
+      </div>
+
+      <OperationsQueueSummary
+        title="Current review queues"
+        items={[
+          { label: "Needs configuration", count: needsConfigCount, detail: "Consumers without endpoint/credential pairs.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+          { label: "HTTP exceptions", count: rejectedEvents, detail: "Recent delivery acknowledgements with HTTP 4xx/5xx.", tone: rejectedEvents ? "critical" as const : "healthy" as const },
+          { label: "Configured", count: configuredCount, detail: "Consumers with current endpoint/credential configuration.", tone: configuredCount === consumers.length ? "healthy" as const : "info" as const }
+        ]}
+      />
+
+      <OperationsEvidenceGroup title="Current evidence groups">
+        <article className="card">
+          <h3>Consumer configuration</h3>
+          <p>{configuredCount}/{consumers.length} configured · {needsConfigCount} need review.</p>
+          <OperationsStatusBadge tone={needsConfigCount ? "attention" : "healthy"}>{needsConfigCount ? "Configuration review needed" : "Configuration complete"}</OperationsStatusBadge>
+        </article>
+        <article className="card">
+          <h3>Delivery acknowledgements</h3>
+          <p>{recentEvents.length} recent event(s) · {rejectedEvents} HTTP exception(s).</p>
+          <OperationsStatusBadge tone={rejectedEvents ? "attention" : "healthy"}>{rejectedEvents ? "Exceptions present" : "No HTTP exceptions"}</OperationsStatusBadge>
+        </article>
+        <article className="card">
+          <h3>QL-266</h3>
+          <p>Deferred by owner direction and not reactivated in Build 248.</p>
+          <OperationsStatusBadge tone="info">UNDER REVIEW</OperationsStatusBadge>
+        </article>
+      </OperationsEvidenceGroup>
+
       <div className="opsSearchLayout">
         <OperationsSearchPanel title="Search consumer configuration" description="Filter the current consumer configuration without changing delivery state.">
           <form method="get" action="/integration-delivery" className="opsSearchPanelBody">
             <input name="q" defaultValue={params.q ?? ""} placeholder="Consumer, endpoint or credential binding" aria-label="Search consumer configuration" />
+            {view !== "all" ? <input type="hidden" name="view" value={view} /> : null}
             <button type="submit">Search</button>
             {query ? <Link href="/integration-delivery">Clear</Link> : null}
           </form>
