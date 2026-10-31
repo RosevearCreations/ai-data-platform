@@ -536,6 +536,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </div>
 
+      <details className="opsCommandDisclosure" id="build255-detailed-review-tools">
+        <summary><span>Detailed review tools<small>Comparison, filters, saved views, queues and historical workflow evidence</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <div className="opsComparisonLayout">
         <OperationsComparisonCard
           title="Consumer configuration"
@@ -697,6 +700,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         />
       </div>
 
+        </div>
+      </details>
+
       <div className="opsWorkflowLayout" id="build250-consumer-table">
         <OperationsDataTable
           caption="Consumer configuration"
@@ -717,6 +723,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </OperationsInspector>
       </div>
 
+      <details className="opsCommandDisclosure" id="build255-secondary-status-tools">
+        <summary><span>Secondary status tools<small>Additional module notes and legacy readiness cards</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <OperationsModuleGrid>
         <OperationsDetailInspector title="Consumer review" status="Current">
           <p>Review consumer configuration and delivery evidence from the current system-status workspace.</p>
@@ -751,6 +760,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </section>
 
+        </div>
+      </details>
+
       <IntegrationDeliveryPanel
         consumers={consumers}
         workspaces={overview.map((entry) => ({
@@ -761,6 +773,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         }))}
       />
 
+      <details className="opsCommandDisclosure" id="build255-raw-acknowledgements">
+        <summary><span>Raw acknowledgement cards<small>Expanded append-only delivery evidence for deeper review</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <section>
         <div className="sectionHeading">
           <div>
@@ -787,6 +802,8 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           )}
         </div>
       </section>
+        </div>
+      </details>
     </main>
   );
 }
