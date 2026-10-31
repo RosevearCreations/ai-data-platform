@@ -337,7 +337,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             title="QL-266 owner boundary"
             status="UNDER REVIEW"
             detail="Owner-deferred QL-266 remains disconnected and is not resumed by Build 252."
-            href="#build252-ql266"
+            href="#build250-ql266"
             actionLabel="Review QL-266 evidence"
             tone="info"
           />
