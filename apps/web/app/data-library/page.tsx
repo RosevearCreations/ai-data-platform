@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import {
+  DATA_LIBRARY_COLUMNS,
   DATA_LIBRARY_SORTS,
   DATA_LIBRARY_TYPES,
   listUnifiedDataLibrary,
@@ -45,6 +46,9 @@ export default async function DataLibraryPage({
     type: stringParam(params.type),
     search: stringParam(params.q),
     sort: stringParam(params.sort),
+    from: stringParam(params.from),
+    to: stringParam(params.to),
+    columns: params.columns,
     page: stringParam(params.page),
     pageSize: stringParam(params.pageSize)
   });
@@ -55,6 +59,9 @@ export default async function DataLibraryPage({
   if (library.query.type) currentQuery.set("type", library.query.type);
   if (library.query.search) currentQuery.set("q", library.query.search);
   currentQuery.set("sort", library.query.sort);
+  if (library.query.from) currentQuery.set("from", library.query.from);
+  if (library.query.to) currentQuery.set("to", library.query.to);
+  library.query.columns.forEach((column) => currentQuery.append("columns", column));
   currentQuery.set("pageSize", String(library.query.pageSize));
 
   return (
@@ -123,6 +130,20 @@ export default async function DataLibraryPage({
             </select>
           </label>
           <label>
+            Updated from
+            <input type="date" name="from" defaultValue={library.query.from} />
+          </label>
+          <label>
+            Updated to
+            <input type="date" name="to" defaultValue={library.query.to} />
+          </label>
+          <label>
+            Visible metadata
+            <select name="columns" multiple defaultValue={library.query.columns}>
+              {DATA_LIBRARY_COLUMNS.map((column) => <option value={column} key={column}>{column}</option>)}
+            </select>
+          </label>
+          <label>
             Rows
             <select name="pageSize" defaultValue={String(library.query.pageSize)}>
               {[10,20,50].map((size) => <option value={size} key={size}>{size}</option>)}
@@ -130,7 +151,15 @@ export default async function DataLibraryPage({
           </label>
           <button className="primary" type="submit">Apply</button>
         </form>
-        <DataLibrarySavedViews currentQuery={currentQuery.toString()} />
+        <DataLibrarySavedViews
+          currentQuery={currentQuery.toString()}
+          workspaceId={library.query.workspaceId}
+          search={library.query.search}
+          sort={library.query.sort}
+          visibleColumns={library.query.columns}
+          dateFrom={library.query.from}
+          dateTo={library.query.to}
+        />
       </section>
 
       <section className="libraryResults" aria-labelledby="library-results-heading">
@@ -164,16 +193,19 @@ export default async function DataLibraryPage({
 
                 <dl className="libraryProvenanceSummary">
                   <div><dt>Record ID</dt><dd>{record.recordId}</dd></div>
-                  <div><dt>Observed</dt><dd>{record.observedAt.toLocaleString()}</dd></div>
-                  <div><dt>Updated</dt><dd>{record.updatedAt.toLocaleString()}</dd></div>
-                  <div><dt>Source</dt><dd>{record.sourceLabel || "workspace record"}</dd></div>
+                  {library.query.columns.includes("workspace") ? <div><dt>Workspace</dt><dd>{record.workspaceName}</dd></div> : null}
+                  {library.query.columns.includes("type") ? <div><dt>Type</dt><dd>{record.recordType}</dd></div> : null}
+                  {library.query.columns.includes("status") ? <div><dt>Status</dt><dd>{record.status}</dd></div> : null}
+                  {library.query.columns.includes("observed") ? <div><dt>Observed</dt><dd>{record.observedAt.toLocaleString()}</dd></div> : null}
+                  {library.query.columns.includes("updated") ? <div><dt>Updated</dt><dd>{record.updatedAt.toLocaleString()}</dd></div> : null}
+                  {library.query.columns.includes("source") ? <div><dt>Source</dt><dd>{record.sourceLabel || "workspace record"}</dd></div> : null}
                 </dl>
 
-                {safeSourceHref(record.sourceUrl) ? (
+                {library.query.columns.includes("source") && safeSourceHref(record.sourceUrl) ? (
                   <p className="librarySource">
                     Source: <a className="textLink" href={safeSourceHref(record.sourceUrl)} rel="noreferrer" target="_blank">{record.sourceUrl}</a>
                   </p>
-                ) : record.sourceUrl ? (
+                ) : library.query.columns.includes("source") && record.sourceUrl ? (
                   <p className="librarySource">Source reference: {record.sourceUrl}</p>
                 ) : null}
 
