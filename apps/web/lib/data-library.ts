@@ -16,14 +16,27 @@ export const DATA_LIBRARY_SORTS = [
   "type-asc"
 ] as const;
 
+export const DATA_LIBRARY_COLUMNS = [
+  "workspace",
+  "type",
+  "status",
+  "observed",
+  "updated",
+  "source"
+] as const;
+
 export type DataLibraryType = (typeof DATA_LIBRARY_TYPES)[number];
 export type DataLibrarySort = (typeof DATA_LIBRARY_SORTS)[number];
+export type DataLibraryColumn = (typeof DATA_LIBRARY_COLUMNS)[number];
 
 export interface DataLibraryQuery {
   workspaceId: string;
   type: DataLibraryType | "";
   search: string;
   sort: DataLibrarySort;
+  from: string;
+  to: string;
+  columns: DataLibraryColumn[];
   page: number;
   pageSize: number;
 }
@@ -54,6 +67,24 @@ function stringValue(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function dateFilter(value: unknown) {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  return /^\d{4}-\d{2}-\d{2}$/.test(trimmed) ? trimmed : "";
+}
+
+function columnFilters(value: unknown): DataLibraryColumn[] {
+  const raw = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+      ? value.split(",")
+      : [];
+  const selected = raw.filter((item): item is DataLibraryColumn =>
+    DATA_LIBRARY_COLUMNS.includes(item as DataLibraryColumn)
+  );
+  return selected.length ? [...new Set(selected)] : [...DATA_LIBRARY_COLUMNS];
+}
+
 function positiveInteger(value: unknown, fallback: number) {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
@@ -64,6 +95,9 @@ export function normalizeDataLibraryQuery(input: {
   type?: unknown;
   search?: unknown;
   sort?: unknown;
+  from?: unknown;
+  to?: unknown;
+  columns?: unknown;
   page?: unknown;
   pageSize?: unknown;
 }): DataLibraryQuery {
@@ -78,6 +112,9 @@ export function normalizeDataLibraryQuery(input: {
     sort: DATA_LIBRARY_SORTS.includes(rawSort as DataLibrarySort)
       ? (rawSort as DataLibrarySort)
       : "updated-desc",
+    from: dateFilter(input.from),
+    to: dateFilter(input.to),
+    columns: columnFilters(input.columns),
     page: Math.min(10_000, positiveInteger(input.page, 1)),
     pageSize: Math.min(50, positiveInteger(input.pageSize, 20))
   };
@@ -298,6 +335,14 @@ export async function listUnifiedDataLibrary(
       conditions.push(
         "lower(concat_ws(' ',workspace_name,title,subtitle,source_url,source_label,normalized::text,raw::text)) like " + sqlParam(values.length)
       );
+    }
+    if (query.from) {
+      values.push(query.from);
+      conditions.push("updated_at >= " + sqlParam(values.length) + "::date");
+    }
+    if (query.to) {
+      values.push(query.to);
+      conditions.push("updated_at < (" + sqlParam(values.length) + "::date + interval '1 day')");
     }
 
     const where = conditions.length ? " where " + conditions.join(" and ") : "";
