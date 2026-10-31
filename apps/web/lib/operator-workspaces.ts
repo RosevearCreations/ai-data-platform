@@ -11,9 +11,9 @@ export type OperatorWorkspaceDateRange = {
 export type OperatorWorkspaceProfile = {
   version: 1;
   id: string;
-  name: unknown;
-  destination: unknown;
-  destinationLabel: unknown;
+  name: string;
+  destination: string;
+  destinationLabel: string;
   queryParams: Record<string, string>;
   workspaceId: string;
   search: string;
@@ -96,9 +96,9 @@ function structuredFilters(queryParams: Record<string, string>) {
 
 export function createOperatorWorkspaceProfile(input: {
   id: string;
-  name: string;
-  destination: string;
-  destinationLabel: string;
+  name: unknown;
+  destination: unknown;
+  destinationLabel: unknown;
   query?: unknown;
   workspaceId?: unknown;
   search?: unknown;
