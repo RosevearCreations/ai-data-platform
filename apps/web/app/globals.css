@@ -8762,3 +8762,19 @@ td, th {
 .opsInspectorHandoffGrid{display:grid;gap:.65rem}.opsInspectorHandoffCard{display:grid;gap:.45rem}.opsInspectorHandoffStatus{font-size:.82rem;font-weight:900;letter-spacing:.05em;color:#fff}.opsInspectorHandoffCard>p{margin:0;color:var(--ops-muted)}.opsInspectorHandoffCard>a{justify-self:start;margin-top:.2rem;color:#dce8f6;font-weight:800;text-decoration:none}.opsInspectorHandoffCard>a:hover{text-decoration:underline}
 @media(max-width:900px){.opsBuild252HealthLayout,.opsBuild252WorkflowLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsHealthSummaryItems{grid-template-columns:1fr}.opsSegmentedViewItems a{align-items:flex-start}}
+
+
+/* Build 253 — status matrices, comparison bands, responsive review queues and inspector escalation cards */
+.opsStatusMatrix,.opsComparisonBand,.opsReviewQueue,.opsInspectorEscalationCard{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsBuild253MatrixLayout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(20rem,.65fr);gap:1rem;margin:0 0 1rem}
+.opsStatusMatrixTable{display:grid;gap:.45rem;overflow-x:auto}.opsStatusMatrixHeader,.opsStatusMatrixRow{display:grid;grid-template-columns:minmax(11rem,1.2fr) repeat(3,minmax(9rem,1fr));gap:.45rem;min-width:42rem}
+.opsStatusMatrixHeader{padding:0 .65rem;color:var(--ops-muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}.opsStatusMatrixRow{padding:.55rem .65rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsStatusMatrixRow>strong{color:#fff}.opsStatusMatrixCell{padding:.35rem .45rem;border-radius:.55rem;background:rgba(255,255,255,.025);color:#dce8f6}
+.opsComparisonBandItems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}.opsComparisonBandItem{display:grid;gap:.15rem;padding:.7rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsComparisonBandItem>span{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ops-muted)}.opsComparisonBandItem>strong{font-size:1.45rem;color:#fff}.opsComparisonBandItem>p{margin:0;color:var(--ops-muted);font-size:.78rem}
+.opsBuild253QueueLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(20rem,.8fr);gap:1rem;margin:0 0 1.25rem}.opsReviewQueueItems,.opsInspectorEscalationGrid{display:grid;gap:.65rem}
+.opsReviewQueueItem{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:.8rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}.opsReviewQueueItem--ready{border-left:4px solid var(--ops-green)}.opsReviewQueueItem--review{border-left:4px solid var(--ops-blue)}.opsReviewQueueItem--blocked{border-left:4px solid var(--ops-red)}
+.opsReviewQueueItem p{margin:.15rem 0 0;color:var(--ops-muted)}.opsReviewQueueItem small{display:block;margin-top:.25rem;color:#8193aa}.opsReviewQueueItem>a,.opsInspectorEscalationCard>a{color:#dce8f6;font-weight:800;text-decoration:none;white-space:nowrap}.opsReviewQueueItem>a:hover,.opsInspectorEscalationCard>a:hover{text-decoration:underline}
+.opsInspectorEscalationCard{display:grid;gap:.45rem}.opsInspectorEscalationState{font-size:.82rem;font-weight:900;letter-spacing:.05em;color:#fff}.opsInspectorEscalationCard>p{margin:0;color:var(--ops-muted)}
+@media(max-width:900px){.opsBuild253MatrixLayout,.opsBuild253QueueLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsComparisonBandItems{grid-template-columns:1fr}.opsReviewQueueItem{grid-template-columns:1fr;align-items:start}.opsReviewQueueItem>a{white-space:normal}}

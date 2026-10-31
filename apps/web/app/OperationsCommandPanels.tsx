@@ -757,3 +757,126 @@ export function OperationsInspectorHandoffCard({
     </article>
   );
 }
+
+
+export function OperationsStatusMatrix({
+  title,
+  columns,
+  rows
+}: {
+  title: string;
+  columns: string[];
+  rows: Array<{
+    label: string;
+    cells: Array<{ value: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" }>;
+  }>;
+}) {
+  return (
+    <section className="opsStatusMatrix" aria-label={title}>
+      <div className="opsPanelHeading"><span>Status matrix</span><strong>{title}</strong></div>
+      <div className="opsStatusMatrixTable" role="table" aria-label={title}>
+        <div className="opsStatusMatrixHeader" role="row">
+          <span role="columnheader">Scope</span>
+          {columns.map((column) => <strong role="columnheader" key={column}>{column}</strong>)}
+        </div>
+        {rows.map((row) => (
+          <div className="opsStatusMatrixRow" role="row" key={row.label}>
+            <strong role="rowheader">{row.label}</strong>
+            {row.cells.map((cell, index) => (
+              <span className={"opsStatusMatrixCell opsTone--" + (cell.tone ?? "info")} role="cell" key={row.label + "-" + index}>
+                {cell.value}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsComparisonBand({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{
+    label: string;
+    value: ReactNode;
+    detail?: ReactNode;
+    tone?: "info" | "healthy" | "attention" | "critical";
+  }>;
+}) {
+  return (
+    <section className="opsComparisonBand" aria-label={title}>
+      <div className="opsPanelHeading"><span>Comparison band</span><strong>{title}</strong></div>
+      <div className="opsComparisonBandItems">
+        {items.map((item) => (
+          <article className={"opsComparisonBandItem opsTone--" + (item.tone ?? "info")} key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            {item.detail ? <p>{item.detail}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsReviewQueue({
+  title,
+  items,
+  emptyLabel = "No review items are waiting."
+}: {
+  title: string;
+  items: Array<{
+    id: string;
+    label: string;
+    detail: ReactNode;
+    meta?: ReactNode;
+    href?: string;
+    actionLabel?: string;
+    state?: "ready" | "review" | "blocked";
+  }>;
+  emptyLabel?: string;
+}) {
+  return (
+    <section className="opsReviewQueue" aria-label={title}>
+      <div className="opsPanelHeading"><span>Review queue</span><strong>{title}</strong></div>
+      {items.length ? (
+        <div className="opsReviewQueueItems">
+          {items.map((item) => (
+            <article className={"opsReviewQueueItem opsReviewQueueItem--" + (item.state ?? "review")} key={item.id}>
+              <div><strong>{item.label}</strong><p>{item.detail}</p>{item.meta ? <small>{item.meta}</small> : null}</div>
+              {item.href ? <Link href={item.href}>{item.actionLabel ?? "Review"}</Link> : <span className="opsStatusText">{item.actionLabel ?? "Review"}</span>}
+            </article>
+          ))}
+        </div>
+      ) : <p className="opsEmptyState">{emptyLabel}</p>}
+    </section>
+  );
+}
+
+export function OperationsInspectorEscalationCard({
+  title,
+  state,
+  detail,
+  href,
+  actionLabel = "Open escalation",
+  tone = "info"
+}: {
+  title: string;
+  state: ReactNode;
+  detail: ReactNode;
+  href?: string;
+  actionLabel?: string;
+  tone?: "info" | "healthy" | "attention" | "critical";
+}) {
+  return (
+    <article className={"opsInspectorEscalationCard opsTone--" + tone}>
+      <div className="opsPanelHeading"><span>Inspector escalation</span><strong>{title}</strong></div>
+      <div className="opsInspectorEscalationState">{state}</div>
+      <p>{detail}</p>
+      {href ? <Link href={href}>{actionLabel}</Link> : <span className="opsStatusText">{actionLabel}</span>}
+    </article>
+  );
+}
