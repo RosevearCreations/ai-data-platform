@@ -8823,3 +8823,26 @@ td, th {
 .opsCommandDisclosureBody>.opsModuleGrid{margin-bottom:0}
 .opsCommandPrimaryFlow{display:grid;gap:1rem}
 @media(max-width:640px){.opsCommandDisclosure>summary{align-items:flex-start}.opsCommandDisclosure>summary::after{margin-top:.1rem}}
+
+
+/* Build 256 — Unified Cross-Module Search, Results Explorer & Context Navigation */
+.unifiedSearchShell{display:grid;gap:1rem}
+.unifiedSearchControls,.unifiedSearchWelcome,.unifiedSearchSummary,.unifiedSearchEmpty{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.unifiedSearchForm{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:.65rem;align-items:end}
+.unifiedSearchForm label{display:grid;gap:.3rem;color:var(--ops-muted);font-weight:800}
+.unifiedSearchForm input{width:100%;min-height:2.8rem;border:1px solid rgba(100,145,188,.36);border-radius:.72rem;background:rgba(2,13,24,.75);color:#fff;padding:.68rem .8rem}
+.unifiedSearchForm button,.unifiedSearchForm>a{min-height:2.8rem;display:inline-flex;align-items:center;justify-content:center;border-radius:.72rem;padding:.65rem .9rem;font-weight:800;text-decoration:none}
+.unifiedSearchScopes{display:flex;flex-wrap:wrap;gap:.45rem}
+.unifiedSearchScopes a{display:flex;align-items:center;gap:.45rem;border:1px solid rgba(100,145,188,.28);border-radius:999px;background:rgba(5,18,31,.82);color:#dce8f6;padding:.42rem .68rem;text-decoration:none}
+.unifiedSearchScopes a.active{border-color:#2fb6ff;box-shadow:0 0 0 1px rgba(47,182,255,.18)}
+.unifiedSearchScopes b{min-width:1.5rem;border-radius:999px;background:rgba(255,255,255,.08);padding:.08rem .35rem;text-align:center;font-size:.75rem}
+.unifiedSearchSummary{display:flex;justify-content:space-between;gap:1rem;align-items:center}.unifiedSearchSummary span{color:var(--ops-muted)}
+.unifiedSearchResults{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.unifiedSearchResult{display:grid;gap:.45rem;border:1px solid var(--ops-border);border-radius:1rem;background:rgba(5,18,31,.88);padding:1rem}
+.unifiedSearchResultHeader{display:flex;justify-content:space-between;gap:.7rem;color:var(--ops-muted);font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.unifiedSearchResult h2{margin:0;font-size:1.04rem;color:#fff}.unifiedSearchResult p{margin:0;color:var(--ops-muted)}
+.unifiedSearchWorkspace{justify-self:start;border-radius:999px;background:rgba(47,182,255,.1);color:#bfe8ff;padding:.25rem .55rem;font-size:.76rem;font-weight:800}
+.unifiedSearchWelcome{display:grid;grid-template-columns:minmax(0,1fr) minmax(18rem,.8fr);gap:1rem}.unifiedSearchWelcome h2{margin-top:0}.unifiedSearchWelcome p{color:var(--ops-muted)}
+.unifiedSearchSourceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.unifiedSearchSourceGrid span{border:1px solid rgba(100,145,188,.22);border-radius:.65rem;background:rgba(3,15,27,.5);padding:.55rem;color:#dce8f6}
+@media(max-width:800px){.unifiedSearchResults,.unifiedSearchWelcome{grid-template-columns:1fr}.unifiedSearchForm{grid-template-columns:1fr}.unifiedSearchForm button,.unifiedSearchForm>a{width:100%}}
+@media(max-width:520px){.unifiedSearchSourceGrid{grid-template-columns:1fr}.unifiedSearchSummary{align-items:flex-start;flex-direction:column}}

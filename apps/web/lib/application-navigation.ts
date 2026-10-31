@@ -36,6 +36,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Workflow Directory",
         description: "Task-oriented directory for every current operator workflow.",
         helpTopic: "workflow-directory"
+      },
+      {
+        href: "/search",
+        label: "Unified Search",
+        description: "Search authorized records, evidence, workspaces and guidance.",
+        helpTopic: "unified-search"
       }
     ]
   },
