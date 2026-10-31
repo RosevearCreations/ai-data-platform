@@ -6,12 +6,12 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsModuleGrid, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivitySummary, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
 
-export default async function IntegrationDeliveryPage() {
+export default async function IntegrationDeliveryPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     return (
@@ -31,6 +31,8 @@ export default async function IntegrationDeliveryPage() {
     );
   }
 
+  const params = await searchParams;
+  const query = (params.q ?? "").trim().toLowerCase();
   const overview = await listIntegrationDeliveryOverviewForUser(session.user.id);
   const consumers = (["rosie-dazzlers", "devil-n-dove"] as const).map((target) => {
     const config = integrationConsumerConfiguration(target);
@@ -42,6 +44,14 @@ export default async function IntegrationDeliveryPage() {
       tokenName: config.tokenName
     };
   });
+  const filteredConsumers = query
+    ? consumers.filter((consumer) =>
+        [consumer.target, consumer.endpointOrigin ?? "", consumer.urlName, consumer.tokenName]
+          .some((value) => value.toLowerCase().includes(query))
+      )
+    : consumers;
+  const recentEvents = overview.flatMap((entry) => entry.recent);
+  const rejectedEvents = recentEvents.filter((event) => Boolean(event.httpStatus && event.httpStatus >= 400)).length;
 
   return (
     <main className="shell opsCommandScreen opsCommandScreen--status">
@@ -67,6 +77,43 @@ export default async function IntegrationDeliveryPage() {
           <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
         </nav>
       </section>
+
+      <div className="opsSearchLayout">
+        <OperationsSearchPanel title="Search consumer configuration" description="Filter the current consumer configuration without changing delivery state.">
+          <form method="get" action="/integration-delivery" className="opsSearchPanelBody">
+            <input name="q" defaultValue={params.q ?? ""} placeholder="Consumer, endpoint or credential binding" aria-label="Search consumer configuration" />
+            <button type="submit">Search</button>
+            {query ? <Link href="/integration-delivery">Clear</Link> : null}
+          </form>
+        </OperationsSearchPanel>
+        <OperationsStatusGroup
+          title="Review state"
+          items={[
+            { label: "QL-266", value: "UNDER REVIEW", tone: "info" as const },
+            { label: "Configured consumers", value: consumers.filter((consumer) => consumer.configured).length + "/" + consumers.length, tone: consumers.every((consumer) => consumer.configured) ? "healthy" as const : "attention" as const },
+            { label: "Connection", value: "DISCONNECTED", tone: "info" as const }
+          ]}
+        />
+      </div>
+
+      <OperationsActivitySummary
+        title="Delivery activity"
+        items={[
+          { label: "Visible consumers", value: filteredConsumers.length, detail: query ? "Filtered from " + consumers.length : "Current configuration", tone: "info" as const },
+          { label: "Recent acknowledgements", value: recentEvents.length, detail: "Durable delivery events", tone: recentEvents.length ? "healthy" as const : "info" as const },
+          { label: "HTTP exceptions", value: rejectedEvents, detail: "Recent events with HTTP 4xx/5xx", tone: rejectedEvents ? "attention" as const : "healthy" as const },
+          { label: "Workspaces", value: overview.length, detail: "Authorized delivery workspaces", tone: "info" as const }
+        ]}
+      />
+
+      <OperationsInspectorWorkflow
+        title="Consumer review workflow"
+        steps={[
+          { label: "Filter", detail: "Find the consumer or credential binding that needs review.", state: query ? "complete" : "current" },
+          { label: "Inspect", detail: "Compare configuration, readiness exceptions and acknowledgement evidence.", state: query ? "current" : "pending" },
+          { label: "Decide", detail: "Use the existing governed delivery controls; QL-266 remains outside this workflow while under review.", state: "pending" }
+        ]}
+      />
 
       <OperationsActionDrawer title="System status actions" description="Open source-side connection checks, remote execution status and production-learning evidence without authorizing downstream mutation.">
         <OpsDrawerLink href="/integration-delivery/comms-hub">Comms Hub Connection</OpsDrawerLink>
@@ -100,7 +147,7 @@ export default async function IntegrationDeliveryPage() {
       <div className="opsWorkflowLayout">
         <OperationsDataTable
           caption="Consumer configuration"
-          rows={consumers}
+          rows={filteredConsumers}
           rowKey={(consumer) => consumer.target}
           columns={[
             { key: "target", label: "Consumer", render: (consumer) => <strong>{consumer.target}</strong> },
