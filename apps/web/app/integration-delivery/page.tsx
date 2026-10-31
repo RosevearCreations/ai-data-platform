@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorHandoffCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -282,6 +282,66 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           }))}
           emptyLabel="No HTTP exception activity is available."
         />
+      </div>
+
+      <div className="opsBuild252HealthLayout" id="build252-health-summary">
+        <OperationsHealthSummary
+          title="Delivery health"
+          items={[
+            { label: "Consumer readiness", value: configuredCount + "/" + consumers.length, detail: needsConfigCount + " consumer(s) need review.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+            { label: "Accepted delivery", value: recentEvents.length ? Math.round((acceptedEventRows.length / recentEvents.length) * 100) + "%" : "—", detail: acceptedEventRows.length + " accepted/non-error event(s).", tone: rejectedEvents ? "attention" as const : "healthy" as const },
+            { label: "Exception pressure", value: rejectedEvents, detail: "HTTP exception acknowledgement(s).", tone: rejectedEvents ? "critical" as const : "healthy" as const },
+            { label: "QL-266", value: "UNDER REVIEW", detail: "Review deferred; connection remains disconnected.", tone: "info" as const }
+          ]}
+        />
+        <OperationsSegmentedView
+          title="System Status segments"
+          segments={[
+            { label: "All consumers", href: savedViewHref("all"), active: view === "all", count: consumers.length, detail: "Entire configured scope" },
+            { label: "Configured", href: savedViewHref("configured"), active: view === "configured", count: configuredCount, detail: "Ready configuration" },
+            { label: "Needs review", href: savedViewHref("needs-config"), active: view === "needs-config", count: needsConfigCount, detail: "Configuration gaps" },
+            { label: "Accepted", href: eventViewHref("accepted"), active: eventView === "accepted", count: acceptedEventRows.length, detail: "Non-error receipts" },
+            { label: "Exceptions", href: eventViewHref("errors"), active: eventView === "errors", count: rejectedEvents, detail: "HTTP 4xx/5xx" }
+          ]}
+        />
+      </div>
+
+      <div className="opsBuild252WorkflowLayout" id="build252-workflow-timeline">
+        <OperationsWorkflowTimeline
+          title="Delivery review workflow"
+          entries={[
+            { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "complete", meta: last24hEvents.length + " event(s) in the last 24 hours" },
+            { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "complete", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
+            { id: "inspect", label: "Inspect configuration gaps", detail: needsConfigCount + " consumer configuration gap(s) remain.", state: needsConfigCount ? "current" : "complete", meta: configuredCount + "/" + consumers.length + " consumers configured" },
+            { id: "handoff", label: "Preserve QL-266 review boundary", detail: "No Build 252 step activates external testing or connection gates.", state: "review", meta: "UNDER REVIEW · REVIEW_DEFERRED · DISCONNECTED" }
+          ]}
+        />
+        <div className="opsInspectorHandoffGrid" id="build252-inspector-handoffs">
+          <OperationsInspectorHandoffCard
+            title="Configuration review"
+            status={needsConfigCount ? "REVIEW REQUIRED" : "READY"}
+            detail={needsConfigCount + " consumer(s) require configuration review before broader delivery work."}
+            href={savedViewHref("needs-config")}
+            actionLabel="Open configuration segment"
+            tone={needsConfigCount ? "attention" : "healthy"}
+          />
+          <OperationsInspectorHandoffCard
+            title="Exception review"
+            status={rejectedEvents ? "ATTENTION" : "CLEAR"}
+            detail={rejectedEvents + " HTTP exception acknowledgement(s) are visible in current history."}
+            href={eventViewHref("errors")}
+            actionLabel="Open exception segment"
+            tone={rejectedEvents ? "critical" : "healthy"}
+          />
+          <OperationsInspectorHandoffCard
+            title="QL-266 owner boundary"
+            status="UNDER REVIEW"
+            detail="Owner-deferred QL-266 remains disconnected and is not resumed by Build 252."
+            href="#build252-ql266"
+            actionLabel="Review QL-266 evidence"
+            tone="info"
+          />
+        </div>
       </div>
 
       <div className="opsComparisonLayout">
