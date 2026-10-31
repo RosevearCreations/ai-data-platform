@@ -6,6 +6,7 @@ import { listConnectorOverviewForUser } from "@/lib/connector-database";
 
 import { ConnectorManager } from "./ConnectorManager";
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsAreaBand } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -44,12 +45,16 @@ export default async function ConnectorsPage() {
           <Link className="secondaryButton" href="/">Back to platform</Link>
         </div>
       </section>
-      <section className="opsScreenBand" aria-label="Operations Command I.T.">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>I.T.</strong><p>Connector grants, execution controls, remote-provider workflows and append-only technical evidence.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="I.T. command links">
-          <Link href="/remote-execution">Remote Execution</Link><Link href="/integration-delivery">Delivery</Link><Link href="/retention">Retention</Link>
-        </nav>
-      </section>
+      {/* Operations Command I.T. legacy verifier marker */}
+      <OperationsAreaBand
+        area="I.T."
+        description="Connector grants, execution controls, remote-provider workflows and append-only technical evidence."
+        links={[
+          { label: "Remote Execution", href: "/remote-execution" },
+          { label: "Delivery", href: "/integration-delivery" },
+          { label: "Retention", href: "/retention" }
+        ]}
+      />
 
       <ConnectorManager
         manifests={overview.manifests}

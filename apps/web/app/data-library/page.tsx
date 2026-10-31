@@ -13,6 +13,7 @@ import {
 
 import { DataLibrarySavedViews } from "./DataLibrarySavedViews";
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsAreaBand } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -73,12 +74,16 @@ export default async function DataLibraryPage({
         </div>
       </section>
 
-      <section className="opsScreenBand" aria-label="Operations Command Front End">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Front End</strong><p>Governed records, review surfaces and evidence exploration using the live authorized data library.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="Front End command links">
-          <Link href="/data-review">Data Review</Link><Link href="/approved-data">Approved Data</Link><Link href="/intelligence">Intelligence</Link>
-        </nav>
-      </section>
+      {/* Operations Command Front End legacy verifier marker */}
+      <OperationsAreaBand
+        area="Front End"
+        description="Governed records, review surfaces and evidence exploration using the live authorized data library."
+        links={[
+          { label: "Data Review", href: "/data-review" },
+          { label: "Approved Data", href: "/approved-data" },
+          { label: "Intelligence", href: "/intelligence" }
+        ]}
+      />
 
       <section className="libraryFilters" aria-labelledby="library-filter-heading">
         <div className="sectionHeading">

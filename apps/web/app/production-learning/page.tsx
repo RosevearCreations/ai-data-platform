@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 import { buildProductionLearningReview } from "@/lib/production-learning-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsFilterToolbar, OperationsKpiCard } from "../OperationsCommandPanels";
+import { OperationsAreaBand, OperationsFilterToolbar, OperationsKpiCard } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -67,12 +67,16 @@ export default async function ProductionLearningPage() {
         </div>
       </section>
 
-      <section className="opsScreenBand" aria-label="Operations Command Statistical">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Statistical</strong><p>Measured evidence, operational baselines, cost proxies, outcome reconciliation and production-learning trends.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="Statistical command links">
-          <Link href="/intelligence">Intelligence</Link><Link href="/collection-runs">Collection Runs</Link><Link href="/data-library">Data Library</Link>
-        </nav>
-      </section>
+      {/* Operations Command Statistical legacy verifier marker */}
+      <OperationsAreaBand
+        area="Statistical"
+        description="Measured evidence, operational baselines, cost proxies, outcome reconciliation and production-learning trends."
+        links={[
+          { label: "Intelligence", href: "/intelligence" },
+          { label: "Collection Runs", href: "/collection-runs" },
+          { label: "Data Library", href: "/data-library" }
+        ]}
+      />
 
       <div className="opsKpiGrid" aria-label="Production learning KPI summary">
         <OperationsKpiCard label="Workspaces" value={totals.workspaces} detail={review.evidence.profiles.customActive + " active custom profile(s)"} tone="info" />

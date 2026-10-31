@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsAreaBand, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -112,12 +112,16 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </section>
 
-      <section className="opsScreenBand" aria-label="Operations Command System Status">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>System Status</strong><p>Receiver readiness, connection state, delivery observability and append-only integration acknowledgements.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="System Status command links">
-          <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
-        </nav>
-      </section>
+      {/* Operations Command System Status legacy verifier marker */}
+      <OperationsAreaBand
+        area="System Status"
+        description="Receiver readiness, connection state, delivery observability and append-only integration acknowledgements."
+        links={[
+          { label: "Comms Hub", href: "/integration-delivery/comms-hub" },
+          { label: "Remote Execution", href: "/remote-execution" },
+          { label: "Production Learning", href: "/production-learning" }
+        ]}
+      />
 
       <div className="opsTrendGrid">
         <OperationsTrendCard
@@ -533,6 +537,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </div>
 
+      <details className="opsCommandDisclosure" id="build255-detailed-review-tools">
+        <summary><span>Detailed review tools<small>Comparison, filters, saved views, queues and historical workflow evidence</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <div className="opsComparisonLayout">
         <OperationsComparisonCard
           title="Consumer configuration"
@@ -694,6 +701,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         />
       </div>
 
+        </div>
+      </details>
+
       <div className="opsWorkflowLayout" id="build250-consumer-table">
         <OperationsDataTable
           caption="Consumer configuration"
@@ -714,6 +724,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </OperationsInspector>
       </div>
 
+      <details className="opsCommandDisclosure" id="build255-secondary-status-tools">
+        <summary><span>Secondary status tools<small>Additional module notes and legacy readiness cards</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <OperationsModuleGrid>
         <OperationsDetailInspector title="Consumer review" status="Current">
           <p>Review consumer configuration and delivery evidence from the current system-status workspace.</p>
@@ -748,6 +761,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </section>
 
+        </div>
+      </details>
+
       <IntegrationDeliveryPanel
         consumers={consumers}
         workspaces={overview.map((entry) => ({
@@ -758,6 +774,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         }))}
       />
 
+      <details className="opsCommandDisclosure" id="build255-raw-acknowledgements">
+        <summary><span>Raw acknowledgement cards<small>Expanded append-only delivery evidence for deeper review</small></span></summary>
+        <div className="opsCommandDisclosureBody">
       <section>
         <div className="sectionHeading">
           <div>
@@ -784,6 +803,8 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           )}
         </div>
       </section>
+        </div>
+      </details>
     </main>
   );
 }

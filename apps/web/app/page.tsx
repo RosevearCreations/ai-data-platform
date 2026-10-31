@@ -13,6 +13,7 @@ import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { HelpInfo } from "./help/HelpInfo";
 import type { HelpTopicKey } from "./help/help-content";
 import { SignOutButton } from "./sign-out-button";
+import { OperationsAreaBand } from "./OperationsCommandPanels";
 
 const foundations = [
   "PostgreSQL row-level workspace isolation",
@@ -93,12 +94,16 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className="opsScreenBand" aria-label="Operations Command Management">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>Management</strong><p>Current priorities, operational health, workspace standing and governed follow-through from live platform evidence.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="Management command links">
-          <Link href="/workspace-profiles">Workspaces</Link><Link href="/adoption">Adoption</Link><Link href="/retention">Retention</Link>
-        </nav>
-      </section>
+      {/* Operations Command Management legacy verifier marker */}
+      <OperationsAreaBand
+        area="Management"
+        description="Current priorities, operational health, workspace standing and governed follow-through from live platform evidence."
+        links={[
+          { label: "Workspaces", href: "/workspace-profiles" },
+          { label: "Adoption", href: "/adoption" },
+          { label: "Retention", href: "/retention" }
+        ]}
+      />
 
       {commandCenter ? (
         <>
