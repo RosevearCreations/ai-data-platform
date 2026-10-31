@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsEvidenceTimeline, OperationsExceptionQueue, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsDataTable, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -95,6 +95,26 @@ export default async function IntegrationDeliveryPage() {
             tone: event.httpStatus && event.httpStatus >= 400 ? "critical" as const : "info" as const
           }))).slice(0, 12)}
         />
+      </div>
+
+      <div className="opsWorkflowLayout">
+        <OperationsDataTable
+          caption="Consumer configuration"
+          rows={consumers}
+          rowKey={(consumer) => consumer.target}
+          columns={[
+            { key: "target", label: "Consumer", render: (consumer) => <strong>{consumer.target}</strong> },
+            { key: "state", label: "Status", render: (consumer) => <OperationsStatusBadge tone={consumer.configured ? "healthy" : "attention"}>{consumer.configured ? "Configured" : "Not configured"}</OperationsStatusBadge> },
+            { key: "origin", label: "Endpoint", render: (consumer) => consumer.endpointOrigin ?? "External consumer gated" },
+            { key: "credential", label: "Credential binding", render: (consumer) => consumer.tokenName }
+          ]}
+        />
+        <OperationsInspector title="Connection boundary" eyebrow="System Status">
+          <OperationsStatusBadge tone="attention">Authenticated gateway GETs held</OperationsStatusBadge>
+          <p>Consumer configuration is visible here, but live external testing remains governed by the separate owner authorization and proof gates.</p>
+          <p>Use Comms Hub Connection for source-side checks without authorizing downstream business-system mutation.</p>
+          <OpsDrawerLink href="/integration-delivery/comms-hub">Open Comms Hub gate</OpsDrawerLink>
+        </OperationsInspector>
       </div>
 
       <section>
