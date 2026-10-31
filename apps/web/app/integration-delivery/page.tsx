@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -442,6 +442,92 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             detail="No escalation may activate QL-266 external testing while owner deferral remains in force."
             href="#build250-ql266"
             actionLabel="Review QL-266 state"
+            tone="info"
+          />
+        </div>
+      </div>
+
+      <div className="opsBuild254RiskLayout" id="build254-risk-summary">
+        <OperationsRiskSummary
+          title="Delivery risk summary"
+          items={[
+            { label: "Configuration risk", value: needsConfigCount, detail: needsConfigCount + " consumer(s) require configuration review.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+            { label: "Delivery exception risk", value: rejectedEvents, detail: "HTTP 4xx/5xx acknowledgement(s) in visible history.", tone: rejectedEvents ? "critical" as const : "healthy" as const },
+            { label: "Recent activity", value: last24hEvents.length, detail: (eventDelta >= 0 ? "+" : "") + eventDelta + " versus the prior 24-hour window.", tone: eventDelta > 0 ? "info" as const : "healthy" as const },
+            { label: "QL-266 boundary", value: "UNDER REVIEW", detail: "REVIEW_DEFERRED · DISCONNECTED · no Build 254 restart.", tone: "info" as const }
+          ]}
+        />
+        <OperationsDrillThroughBand
+          title="Risk drill-through"
+          items={[
+            { label: "All consumers", href: savedViewHref("all"), count: consumers.length, active: view === "all", detail: "Full configured scope", tone: "info" as const },
+            { label: "Needs configuration", href: savedViewHref("needs-config"), count: needsConfigCount, active: view === "needs-config", detail: "Configuration risk", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+            { label: "Accepted events", href: eventViewHref("accepted"), count: acceptedEventRows.length, active: eventView === "accepted", detail: "Non-error acknowledgements", tone: "healthy" as const },
+            { label: "HTTP exceptions", href: eventViewHref("errors"), count: rejectedEvents, active: eventView === "errors", detail: "Delivery exception risk", tone: rejectedEvents ? "critical" as const : "healthy" as const }
+          ]}
+        />
+      </div>
+
+      <div className="opsBuild254EvidenceLayout" id="build254-evidence-lanes">
+        <OperationsEvidenceLane
+          title="Delivery evidence lane"
+          entries={[
+            {
+              id: "current-activity",
+              label: "Current delivery activity",
+              detail: last24hEvents.length + " event(s) occurred in the last 24 hours.",
+              meta: previous24hEvents.length + " event(s) occurred in the preceding 24-hour window.",
+              state: "complete" as const
+            },
+            {
+              id: "accepted-evidence",
+              label: "Accepted acknowledgement evidence",
+              detail: acceptedEventRows.length + " accepted/non-error acknowledgement(s) are retained.",
+              meta: recentEvents.length + " total recent durable event(s).",
+              state: "complete" as const
+            },
+            {
+              id: "exception-evidence",
+              label: "Exception evidence",
+              detail: rejectedEvents + " HTTP exception acknowledgement(s) are available for review.",
+              meta: rejectedEvents ? "Resolution review required." : "No exception resolution currently required.",
+              state: rejectedEvents ? "attention" as const : "complete" as const
+            },
+            {
+              id: "ql266-evidence",
+              label: "QL-266 owner boundary evidence",
+              detail: "Build 254 preserves UNDER_REVIEW and does not start external testing or a connection gate.",
+              meta: "REVIEW_DEFERRED · DISCONNECTED",
+              state: "review" as const
+            }
+          ]}
+        />
+        <div className="opsInspectorResolutionGrid" id="build254-inspector-resolutions">
+          <OperationsInspectorResolutionCard
+            title="Configuration resolution"
+            state={needsConfigCount ? "REVIEW REQUIRED" : "CLEAR"}
+            detail={needsConfigCount ? needsConfigCount + " consumer(s) still have incomplete endpoint/credential configuration." : "All visible consumers have current configuration."}
+            resolution={needsConfigCount ? "Review configuration gaps" : "Continue monitoring"}
+            href={savedViewHref("needs-config")}
+            actionLabel="Open configuration scope"
+            tone={needsConfigCount ? "attention" : "healthy"}
+          />
+          <OperationsInspectorResolutionCard
+            title="Delivery exception resolution"
+            state={rejectedEvents ? "ATTENTION" : "CLEAR"}
+            detail={rejectedEvents ? rejectedEvents + " HTTP exception acknowledgement(s) remain visible." : "No HTTP exception acknowledgement requires resolution."}
+            resolution={rejectedEvents ? "Inspect exception evidence" : "No corrective action"}
+            href={eventViewHref("errors")}
+            actionLabel="Open exception scope"
+            tone={rejectedEvents ? "critical" : "healthy"}
+          />
+          <OperationsInspectorResolutionCard
+            title="QL-266 resolution boundary"
+            state="UNDER REVIEW"
+            detail="Owner deferral remains authoritative. Build 254 does not alter connection or test status."
+            resolution="Do not resume until explicitly authorized"
+            href="#build250-ql266"
+            actionLabel="Review QL-266 evidence"
             tone="info"
           />
         </div>

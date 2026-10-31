@@ -8778,3 +8778,25 @@ td, th {
 .opsInspectorEscalationCard{display:grid;gap:.45rem}.opsInspectorEscalationState{font-size:.82rem;font-weight:900;letter-spacing:.05em;color:#fff}.opsInspectorEscalationCard>p{margin:0;color:var(--ops-muted)}
 @media(max-width:900px){.opsBuild253MatrixLayout,.opsBuild253QueueLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsComparisonBandItems{grid-template-columns:1fr}.opsReviewQueueItem{grid-template-columns:1fr;align-items:start}.opsReviewQueueItem>a{white-space:normal}}
+
+
+/* Build 254 — risk summaries, drill-through bands, responsive evidence lanes and inspector resolution cards */
+.opsRiskSummary,.opsDrillThroughBand,.opsEvidenceLane,.opsInspectorResolutionCard{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsBuild254RiskLayout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(20rem,.65fr);gap:1rem;margin:0 0 1rem}
+.opsRiskSummaryItems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.opsRiskSummaryItem{display:grid;gap:.18rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsRiskSummaryItem>span{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ops-muted)}
+.opsRiskSummaryItem>strong{font-size:1.45rem;color:#fff}.opsRiskSummaryItem>p{margin:0;color:var(--ops-muted);font-size:.8rem}
+.opsDrillThroughBandItems{display:grid;gap:.5rem}.opsDrillThroughBandItems a{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.62rem .72rem;border:1px solid rgba(100,145,188,.28);border-radius:.7rem;background:rgba(5,18,31,.82);color:#dce8f6;text-decoration:none}
+.opsDrillThroughBandItems a.active{border-color:#2fb6ff;box-shadow:0 0 0 1px rgba(47,182,255,.18),0 0 16px rgba(47,182,255,.14)}
+.opsDrillThroughBandItems a>span{display:grid;gap:.05rem}.opsDrillThroughBandItems small{font-size:.74rem;color:var(--ops-muted)}.opsDrillThroughBandItems b{font-size:.82rem;color:#fff}
+.opsBuild254EvidenceLayout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(20rem,.85fr);gap:1rem;margin:0 0 1.25rem}
+.opsEvidenceLane ol{display:grid;gap:.6rem;margin:0;padding:0;list-style:none}.opsEvidenceLaneItem{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.7rem;padding:.72rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsEvidenceLaneMarker{width:.72rem;height:.72rem;margin-top:.32rem;border-radius:50%;border:2px solid var(--ops-blue);background:rgba(47,182,255,.15)}.opsEvidenceLaneItem--complete .opsEvidenceLaneMarker{border-color:var(--ops-green);background:var(--ops-green)}.opsEvidenceLaneItem--attention .opsEvidenceLaneMarker{border-color:var(--ops-red);background:var(--ops-red)}
+.opsEvidenceLaneItem p{margin:.15rem 0 0;color:var(--ops-muted)}.opsEvidenceLaneItem small{display:block;margin-top:.25rem;color:#8193aa}
+.opsInspectorResolutionGrid{display:grid;gap:.65rem}.opsInspectorResolutionCard{display:grid;gap:.45rem}.opsInspectorResolutionState{font-size:.82rem;font-weight:900;letter-spacing:.05em;color:#fff}
+.opsInspectorResolutionCard>p{margin:0;color:var(--ops-muted)}.opsInspectorResolutionNext{display:grid;gap:.1rem;padding:.55rem .65rem;border:1px solid rgba(91,139,181,.18);border-radius:.65rem;background:rgba(3,15,27,.48)}
+.opsInspectorResolutionNext>span{font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ops-muted)}.opsInspectorResolutionNext>strong{color:#fff}
+.opsInspectorResolutionCard>a{justify-self:start;color:#dce8f6;font-weight:800;text-decoration:none}.opsInspectorResolutionCard>a:hover{text-decoration:underline}
+@media(max-width:900px){.opsBuild254RiskLayout,.opsBuild254EvidenceLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsRiskSummaryItems{grid-template-columns:1fr}.opsDrillThroughBandItems a{align-items:flex-start}}

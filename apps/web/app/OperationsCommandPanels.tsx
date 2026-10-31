@@ -880,3 +880,121 @@ export function OperationsInspectorEscalationCard({
     </article>
   );
 }
+
+
+export function OperationsRiskSummary({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{
+    label: string;
+    value: ReactNode;
+    detail?: ReactNode;
+    tone?: "info" | "healthy" | "attention" | "critical";
+  }>;
+}) {
+  return (
+    <section className="opsRiskSummary" aria-label={title}>
+      <div className="opsPanelHeading"><span>Risk summary</span><strong>{title}</strong></div>
+      <div className="opsRiskSummaryItems">
+        {items.map((item) => (
+          <article className={"opsRiskSummaryItem opsTone--" + (item.tone ?? "info")} key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            {item.detail ? <p>{item.detail}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsDrillThroughBand({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{
+    label: string;
+    href: string;
+    detail?: string;
+    count?: number;
+    active?: boolean;
+    tone?: "info" | "healthy" | "attention" | "critical";
+  }>;
+}) {
+  return (
+    <nav className="opsDrillThroughBand" aria-label={title}>
+      <div className="opsPanelHeading"><span>Drill-through band</span><strong>{title}</strong></div>
+      <div className="opsDrillThroughBandItems">
+        {items.map((item) => (
+          <Link className={(item.active ? "active " : "") + "opsTone--" + (item.tone ?? "info")} href={item.href} key={item.href + item.label}>
+            <span><strong>{item.label}</strong>{item.detail ? <small>{item.detail}</small> : null}</span>
+            {typeof item.count === "number" ? <b>{item.count}</b> : null}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function OperationsEvidenceLane({
+  title,
+  entries,
+  emptyLabel = "No evidence is available."
+}: {
+  title: string;
+  entries: Array<{
+    id: string;
+    label: string;
+    detail: ReactNode;
+    meta?: ReactNode;
+    state?: "complete" | "review" | "attention";
+  }>;
+  emptyLabel?: string;
+}) {
+  return (
+    <section className="opsEvidenceLane" aria-label={title}>
+      <div className="opsPanelHeading"><span>Evidence lane</span><strong>{title}</strong></div>
+      {entries.length ? (
+        <ol>
+          {entries.map((entry) => (
+            <li className={"opsEvidenceLaneItem opsEvidenceLaneItem--" + (entry.state ?? "review")} key={entry.id}>
+              <span className="opsEvidenceLaneMarker" aria-hidden="true" />
+              <div><strong>{entry.label}</strong><p>{entry.detail}</p>{entry.meta ? <small>{entry.meta}</small> : null}</div>
+            </li>
+          ))}
+        </ol>
+      ) : <p className="opsEmptyState">{emptyLabel}</p>}
+    </section>
+  );
+}
+
+export function OperationsInspectorResolutionCard({
+  title,
+  state,
+  detail,
+  resolution,
+  href,
+  actionLabel = "Open resolution",
+  tone = "info"
+}: {
+  title: string;
+  state: ReactNode;
+  detail: ReactNode;
+  resolution: ReactNode;
+  href?: string;
+  actionLabel?: string;
+  tone?: "info" | "healthy" | "attention" | "critical";
+}) {
+  return (
+    <article className={"opsInspectorResolutionCard opsTone--" + tone}>
+      <div className="opsPanelHeading"><span>Inspector resolution</span><strong>{title}</strong></div>
+      <div className="opsInspectorResolutionState">{state}</div>
+      <p>{detail}</p>
+      <div className="opsInspectorResolutionNext"><span>Resolution</span><strong>{resolution}</strong></div>
+      {href ? <Link href={href}>{actionLabel}</Link> : <span className="opsStatusText">{actionLabel}</span>}
+    </article>
+  );
+}
