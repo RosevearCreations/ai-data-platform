@@ -256,6 +256,7 @@ export function OperatorWorkspaceManager() {
             <div><dt>Workspace context</dt><dd>{profile.workspaceId || "All authorized workspaces"}</dd></div>
             <div><dt>Search</dt><dd>{profile.search || "None"}</dd></div>
             <div><dt>Sort</dt><dd>{profile.sort || "Source default"}</dd></div>
+            <div><dt>Filters</dt><dd>{Object.keys(profile.filters).length ? Object.entries(profile.filters).map(([key,value]) => key + "=" + value).join(", ") : "Source default"}</dd></div>
             <div><dt>Visible columns</dt><dd>{profile.visibleColumns.length ? profile.visibleColumns.join(", ") : "Source default"}</dd></div>
             <div><dt>Date range</dt><dd>{profile.dateRange.from || profile.dateRange.to ? (profile.dateRange.from || "Any") + " → " + (profile.dateRange.to || "Any") : "Any date"}</dd></div>
           </dl>
