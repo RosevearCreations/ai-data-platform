@@ -200,3 +200,81 @@ export function OperationsModuleGrid({children}:{children:ReactNode}) {
 export function OperationsDetailInspector({title,status="Under review",children}:{title:string;status?:string;children:ReactNode}) {
   return <aside className="opsDetailInspector"><div className="opsPanelHeading"><span>Detail inspector</span><strong>{title}</strong></div><OperationsStatusBadge tone="info">{status}</OperationsStatusBadge><div className="opsInspectorBody">{children}</div></aside>;
 }
+
+
+export function OperationsSearchPanel({
+  title,
+  description,
+  children
+}: {
+  title: string;
+  description?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="opsSearchPanel" aria-label={title}>
+      <div className="opsPanelHeading"><span>Search panel</span><strong>{title}</strong></div>
+      {description ? <p>{description}</p> : null}
+      <div className="opsSearchPanelBody">{children}</div>
+    </section>
+  );
+}
+
+export function OperationsActivitySummary({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{ label: string; value: ReactNode; detail?: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" }>;
+}) {
+  return (
+    <section className="opsActivitySummary" aria-label={title}>
+      <div className="opsPanelHeading"><span>Activity summary</span><strong>{title}</strong></div>
+      <div className="opsActivitySummaryGrid">
+        {items.map((item) => (
+          <article className={"opsActivitySummaryItem opsTone--" + (item.tone ?? "info")} key={item.label}>
+            <span>{item.label}</span><strong>{item.value}</strong>{item.detail ? <p>{item.detail}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsStatusGroup({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{ label: string; value: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" }>;
+}) {
+  return (
+    <section className="opsStatusGroup" aria-label={title}>
+      <div className="opsPanelHeading"><span>Status group</span><strong>{title}</strong></div>
+      <div className="opsStatusGroupItems">
+        {items.map((item) => <OperationsStatusBadge tone={item.tone ?? "info"} key={item.label}>{item.label}: {item.value}</OperationsStatusBadge>)}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsInspectorWorkflow({
+  title,
+  steps
+}: {
+  title: string;
+  steps: Array<{ label: string; detail: string; state?: "current" | "complete" | "pending" }>;
+}) {
+  return (
+    <aside className="opsInspectorWorkflow">
+      <div className="opsPanelHeading"><span>Inspector workflow</span><strong>{title}</strong></div>
+      <ol>
+        {steps.map((step) => (
+          <li className={"opsWorkflowStep opsWorkflowStep--" + (step.state ?? "pending")} key={step.label}>
+            <strong>{step.label}</strong><p>{step.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  );
+}
