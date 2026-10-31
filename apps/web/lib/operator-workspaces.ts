@@ -11,9 +11,9 @@ export type OperatorWorkspaceDateRange = {
 export type OperatorWorkspaceProfile = {
   version: 1;
   id: string;
-  name: string;
-  destination: string;
-  destinationLabel: string;
+  name: unknown;
+  destination: unknown;
+  destinationLabel: unknown;
   queryParams: Record<string, string>;
   workspaceId: string;
   search: string;
