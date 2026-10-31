@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorHandoffCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -339,6 +339,109 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             detail="Owner-deferred QL-266 remains disconnected and is not resumed by Build 252."
             href="#build250-ql266"
             actionLabel="Review QL-266 evidence"
+            tone="info"
+          />
+        </div>
+      </div>
+
+      <div className="opsBuild253MatrixLayout" id="build253-status-matrix">
+        <OperationsStatusMatrix
+          title="Delivery status matrix"
+          columns={["Current", "Review state", "Action"]}
+          rows={[
+            {
+              label: "Consumer configuration",
+              cells: [
+                { value: configuredCount + "/" + consumers.length + " configured", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+                { value: needsConfigCount ? "Needs review" : "Ready", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+                { value: needsConfigCount ? "Inspect gaps" : "No action", tone: needsConfigCount ? "info" as const : "healthy" as const }
+              ]
+            },
+            {
+              label: "Delivery acknowledgements",
+              cells: [
+                { value: acceptedEventRows.length + " accepted", tone: rejectedEvents ? "attention" as const : "healthy" as const },
+                { value: rejectedEvents + " exception(s)", tone: rejectedEvents ? "critical" as const : "healthy" as const },
+                { value: rejectedEvents ? "Review exceptions" : "Monitor", tone: rejectedEvents ? "attention" as const : "healthy" as const }
+              ]
+            },
+            {
+              label: "QL-266",
+              cells: [
+                { value: "UNDER REVIEW", tone: "info" as const },
+                { value: "REVIEW_DEFERRED", tone: "info" as const },
+                { value: "Do not resume", tone: "info" as const }
+              ]
+            }
+          ]}
+        />
+        <OperationsComparisonBand
+          title="Current operating comparison"
+          items={[
+            { label: "Configured consumers", value: configuredCount, detail: consumers.length + " total consumer target(s).", tone: needsConfigCount ? "info" as const : "healthy" as const },
+            { label: "Needs review", value: needsConfigCount, detail: "Configuration gaps awaiting review.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+            { label: "Accepted events", value: acceptedEventRows.length, detail: "Non-error durable acknowledgements.", tone: "healthy" as const },
+            { label: "HTTP exceptions", value: rejectedEvents, detail: "4xx/5xx acknowledgement outcomes.", tone: rejectedEvents ? "critical" as const : "healthy" as const }
+          ]}
+        />
+      </div>
+
+      <div className="opsBuild253QueueLayout" id="build253-review-queues">
+        <OperationsReviewQueue
+          title="System Status review queue"
+          items={[
+            ...(needsConfigCount ? [{
+              id: "configuration-gap",
+              label: "Consumer configuration review",
+              detail: needsConfigCount + " consumer(s) require configuration review.",
+              meta: configuredCount + "/" + consumers.length + " currently configured",
+              href: savedViewHref("needs-config"),
+              actionLabel: "Review configuration",
+              state: "review" as const
+            }] : []),
+            ...(rejectedEvents ? [{
+              id: "delivery-exceptions",
+              label: "Delivery exception review",
+              detail: rejectedEvents + " HTTP exception acknowledgement(s) require inspection.",
+              meta: acceptedEventRows.length + " accepted/non-error acknowledgement(s)",
+              href: eventViewHref("errors"),
+              actionLabel: "Review exceptions",
+              state: "blocked" as const
+            }] : []),
+            {
+              id: "ql266-boundary",
+              label: "QL-266 owner review boundary",
+              detail: "QL-266 remains UNDER REVIEW and disconnected; Build 253 does not resume it.",
+              meta: "REVIEW_DEFERRED · DISCONNECTED",
+              href: "#build250-ql266",
+              actionLabel: "Review boundary",
+              state: "review" as const
+            }
+          ]}
+        />
+        <div className="opsInspectorEscalationGrid" id="build253-inspector-escalations">
+          <OperationsInspectorEscalationCard
+            title="Configuration escalation"
+            state={needsConfigCount ? "REVIEW" : "CLEAR"}
+            detail={needsConfigCount ? needsConfigCount + " consumer configuration gap(s) remain." : "All visible consumers are configured."}
+            href={savedViewHref("needs-config")}
+            actionLabel="Open configuration review"
+            tone={needsConfigCount ? "attention" : "healthy"}
+          />
+          <OperationsInspectorEscalationCard
+            title="Delivery escalation"
+            state={rejectedEvents ? "ATTENTION" : "CLEAR"}
+            detail={rejectedEvents ? rejectedEvents + " exception acknowledgement(s) are present." : "No HTTP exception acknowledgements are present."}
+            href={eventViewHref("errors")}
+            actionLabel="Open delivery review"
+            tone={rejectedEvents ? "critical" : "healthy"}
+          />
+          <OperationsInspectorEscalationCard
+            title="QL-266 escalation boundary"
+            state="UNDER REVIEW"
+            detail="No escalation may activate QL-266 external testing while owner deferral remains in force."
+            href="#build250-ql266"
+            actionLabel="Review QL-266 state"
             tone="info"
           />
         </div>
