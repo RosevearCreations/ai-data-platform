@@ -998,3 +998,27 @@ export function OperationsInspectorResolutionCard({
     </article>
   );
 }
+
+
+export function OperationsAreaBand({
+  area,
+  description,
+  links
+}: {
+  area: "Front End" | "I.T." | "Management" | "Statistical" | "System Status";
+  description: string;
+  links: Array<{ label: string; href: string }>;
+}) {
+  return (
+    <section className="opsScreenBand opsAreaBand" aria-label={"Operations Command " + area}>
+      <div>
+        <span className="opsScreenBandLabel">Operations Command</span>
+        <strong>{area}</strong>
+        <p>{description}</p>
+      </div>
+      <nav className="opsScreenBandLinks" aria-label={area + " command links"}>
+        {links.map((link) => <Link href={link.href} key={link.href}>{link.label}</Link>)}
+      </nav>
+    </section>
+  );
+}
