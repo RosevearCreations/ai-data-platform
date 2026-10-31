@@ -24,6 +24,8 @@ Current state: `QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_RENEWAL_NOT_AVAILABLE`.
 Activation remains held.
 
 ## Source-proof publication exception disposition
+
+This is the Build 244 **source-proof exception disposition** gate.
 Verified source A is Build 243 main:
 
 `c6178ed786cba9cfeb33769e61d41a0559e6451e`
