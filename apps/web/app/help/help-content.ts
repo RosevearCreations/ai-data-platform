@@ -3284,7 +3284,7 @@ export const HELP_GROUPS: Array<{
 }> = [
   {
     title: "Platform & access",
-    topics: ["command-center", "platform-overview", "workspaces", "sign-in", "guardrails", "ai-fields"]
+    topics: ["command-center", "platform-overview", "unified-search", "workspaces", "sign-in", "guardrails", "ai-fields"]
   },
   {
     title: "Build 117 application shell & contextual help",
