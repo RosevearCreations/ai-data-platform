@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { buildProductionLearningReview } from "@/lib/production-learning-database";
 
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsFilterToolbar, OperationsKpiCard } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -72,6 +73,19 @@ export default async function ProductionLearningPage() {
           <Link href="/intelligence">Intelligence</Link><Link href="/collection-runs">Collection Runs</Link><Link href="/data-library">Data Library</Link>
         </nav>
       </section>
+
+      <div className="opsKpiGrid" aria-label="Production learning KPI summary">
+        <OperationsKpiCard label="Workspaces" value={totals.workspaces} detail={review.evidence.profiles.customActive + " active custom profile(s)"} tone="info" />
+        <OperationsKpiCard label="Provider runs" value={totals.providerRuns} detail={totals.providerUnits + " estimated provider units"} tone={totals.providerRuns > 0 ? "healthy" : "attention"} />
+        <OperationsKpiCard label="Sync outcomes" value={totals.syncEvents} detail={totals.syncConflicts + " conflict(s) · " + totals.syncErrors + " error(s)"} tone={totals.syncErrors > 0 ? "critical" : totals.syncConflicts > 0 ? "attention" : "healthy"} />
+        <OperationsKpiCard label="Live acknowledgements" value={totals.integrationLiveAccepted} detail={totals.integrationDeliveryRejected + " rejected · " + totals.integrationTransportErrors + " transport error(s)"} tone={totals.integrationDeliveryRejected > 0 || totals.integrationTransportErrors > 0 ? "attention" : "healthy"} />
+      </div>
+
+      <OperationsFilterToolbar>
+        <a href="#operational-baseline">Operational baseline</a>
+        <a href="#browserless-readiness">Browserless readiness</a>
+        <a href="#outcome-reconciliation">Outcome reconciliation</a>
+      </OperationsFilterToolbar>
 
       <section>
         <div className="sectionHeading">

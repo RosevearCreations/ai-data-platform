@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsDataTable, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsModuleGrid, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -110,12 +110,21 @@ export default async function IntegrationDeliveryPage() {
           ]}
         />
         <OperationsInspector title="Connection boundary" eyebrow="System Status">
-          <OperationsStatusBadge tone="attention">Authenticated gateway GETs held</OperationsStatusBadge>
-          <p>Consumer configuration is visible here, but live external testing remains governed by the separate owner authorization and proof gates.</p>
-          <p>Use Comms Hub Connection for source-side checks without authorizing downstream business-system mutation.</p>
+          <OperationsStatusBadge tone="info">QL-266 under review</OperationsStatusBadge>
+          <p>QL-266 has been set aside for later review. Consumer configuration remains visible, but this screen does not start or authorize a new QL-266 gateway test.</p>
+          <p>Existing source-side checks remain available. QL-266 will be resumed only when we deliberately return to that review.</p>
           <OpsDrawerLink href="/integration-delivery/comms-hub">Open Comms Hub gate</OpsDrawerLink>
         </OperationsInspector>
       </div>
+
+      <OperationsModuleGrid>
+        <OperationsDetailInspector title="Consumer review" status="Current">
+          <p>Review consumer configuration and delivery evidence from the current system-status workspace.</p>
+        </OperationsDetailInspector>
+        <OperationsDetailInspector title="Responsive module layout" status="Active">
+          <p>This workspace uses the shared responsive module-grid pattern for desktop and smaller screens.</p>
+        </OperationsDetailInspector>
+      </OperationsModuleGrid>
 
       <section>
         <div className="sectionHeading">
