@@ -8632,3 +8632,25 @@ td, th {
 .opsDetailInspector>.opsStatusBadge{margin-bottom:.7rem}
 @media(max-width:760px){.opsFilterToolbar{align-items:stretch}.opsFilterToolbar>*{flex:1 1 10rem}.opsModuleGrid{grid-template-columns:1fr}.opsKpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.opsKpiGrid{grid-template-columns:1fr}}
+
+
+/* Build 247 — search panels, activity summaries, responsive status groups and inspector workflows */
+.opsSearchPanel,.opsActivitySummary,.opsStatusGroup,.opsInspectorWorkflow{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsSearchPanel>p{margin:-.2rem 0 .8rem;color:var(--ops-muted)}
+.opsSearchPanelBody{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center}
+.opsSearchPanelBody input,.opsSearchPanelBody select{min-width:12rem;flex:1 1 14rem}
+.opsActivitySummaryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.65rem}
+.opsActivitySummaryItem{display:grid;gap:.18rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsActivitySummaryItem>span{color:var(--ops-muted);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.opsActivitySummaryItem>strong{color:#fff;font-size:1.35rem}
+.opsActivitySummaryItem>p{margin:0;color:var(--ops-muted);font-size:.8rem}
+.opsStatusGroupItems{display:flex;flex-wrap:wrap;gap:.5rem}
+.opsInspectorWorkflow ol{display:grid;gap:.55rem;margin:0;padding:0;list-style:none}
+.opsWorkflowStep{position:relative;padding:.7rem .75rem .7rem 1.4rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsWorkflowStep::before{content:"";position:absolute;left:.55rem;top:.9rem;width:.45rem;height:.45rem;border-radius:50%;background:#71859c}
+.opsWorkflowStep--complete::before{background:var(--ops-green)}
+.opsWorkflowStep--current::before{background:var(--ops-blue);box-shadow:0 0 12px var(--ops-blue)}
+.opsWorkflowStep strong{color:#fff}.opsWorkflowStep p{margin:.18rem 0 0;color:var(--ops-muted)}
+.opsSearchLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
+@media(max-width:900px){.opsSearchLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsSearchPanelBody{display:grid}.opsSearchPanelBody input,.opsSearchPanelBody select{min-width:0;width:100%}.opsStatusGroupItems{display:grid}.opsStatusGroupItems .opsStatusBadge{width:100%}}
