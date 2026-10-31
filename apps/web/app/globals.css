@@ -8654,3 +8654,22 @@ td, th {
 .opsSearchLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
 @media(max-width:900px){.opsSearchLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsSearchPanelBody{display:grid}.opsSearchPanelBody input,.opsSearchPanelBody select{min-width:0;width:100%}.opsStatusGroupItems{display:grid}.opsStatusGroupItems .opsStatusBadge{width:100%}}
+
+
+/* Build 248 — saved views, queue summaries, responsive evidence groups and contextual inspector actions */
+.opsSavedViews,.opsQueueSummary,.opsEvidenceGroup,.opsContextInspector{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsSavedViewItems{display:flex;flex-wrap:wrap;gap:.5rem}
+.opsSavedViewItems a{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.65rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsSavedViewItems a.active{border-color:#8b3dff;box-shadow:0 0 0 1px rgba(139,61,255,.2),0 0 18px rgba(139,61,255,.18)}
+.opsSavedViewItems a strong{font-size:.75rem;color:#fff}
+.opsQueueSummaryGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:.65rem}
+.opsQueueSummaryItem{display:grid;gap:.18rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsQueueSummaryItem>strong{font-size:1.5rem;color:#fff}.opsQueueSummaryItem>span{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--ops-muted)}.opsQueueSummaryItem>p{margin:0;color:var(--ops-muted);font-size:.8rem}
+.opsEvidenceGroupBody{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.65rem}
+.opsEvidenceGroupBody>.card{margin:0}
+.opsContextInspector>p{margin:-.2rem 0 .8rem;color:var(--ops-muted)}
+.opsContextInspectorActions{display:flex;flex-wrap:wrap;gap:.5rem}
+.opsContextInspectorActions a{padding:.45rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.65rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsSavedLayout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(18rem,.85fr);gap:1rem;margin:0 0 1.25rem}
+@media(max-width:900px){.opsSavedLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsSavedViewItems,.opsContextInspectorActions{display:grid}.opsSavedViewItems a,.opsContextInspectorActions a{width:100%}.opsEvidenceGroupBody{grid-template-columns:1fr}}
