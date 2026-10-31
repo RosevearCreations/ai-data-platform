@@ -52,9 +52,9 @@ async function main(){
   ensure(status.build===246,"build");
   ensure(status.ql266_status==="UNDER_REVIEW","QL-266 review state");
   ensure(status.ql266_active_gate===false,"QL-266 deferred");
-  ensure(status.authenticated_gateway_gets==="REVIEW_DEFERRED","gateway review state");
+  ensure(status.external_test_status==="REVIEW_DEFERRED","gateway review state");
   ensure(status.connection_state==="DISCONNECTED","connection truth");
-  ensure(status.held_status_removed===true,"held label removed");
+  ensure(status.previous_hold_label_removed===true,"held label removed");
   ensure(status.source_A_sha==="73842314ae77af0826c6403d851dbdd58ae964fe","source A");
 
   const lower=doc.toLowerCase();
