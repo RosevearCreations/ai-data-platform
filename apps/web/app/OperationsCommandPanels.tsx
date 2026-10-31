@@ -183,3 +183,20 @@ export function OperationsInspector({
     </aside>
   );
 }
+
+
+export function OperationsKpiCard({label,value,detail,tone="info"}:{label:string;value:ReactNode;detail?:ReactNode;tone?:"info"|"healthy"|"attention"|"critical"}) {
+  return <article className={"opsKpiCard opsTone--"+tone}><span>{label}</span><strong>{value}</strong>{detail?<p>{detail}</p>:null}</article>;
+}
+
+export function OperationsFilterToolbar({children}:{children:ReactNode}) {
+  return <div className="opsFilterToolbar" role="group" aria-label="Workflow filters">{children}</div>;
+}
+
+export function OperationsModuleGrid({children}:{children:ReactNode}) {
+  return <div className="opsModuleGrid">{children}</div>;
+}
+
+export function OperationsDetailInspector({title,status="Under review",children}:{title:string;status?:string;children:ReactNode}) {
+  return <aside className="opsDetailInspector"><div className="opsPanelHeading"><span>Detail inspector</span><strong>{title}</strong></div><OperationsStatusBadge tone="info">{status}</OperationsStatusBadge><div className="opsInspectorBody">{children}</div></aside>;
+}
