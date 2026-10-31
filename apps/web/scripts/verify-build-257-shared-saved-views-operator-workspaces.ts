@@ -27,7 +27,7 @@ async function main(){
     name:"Supplier review",
     destination:"/data-library",
     destinationLabel:"Unified Data Library",
-    query:"workspace=workspace-1&q=supplier&sort=updated-desc&columns=workspace&columns=source&from=2026-10-01&to=2026-10-31",
+    query:"workspace=workspace-1&type=reviewed-dataset&q=supplier&sort=updated-desc&columns=workspace&columns=source&from=2026-10-01&to=2026-10-31",
     workspaceId:"workspace-1",
     search:"supplier",
     sort:"updated-desc",
@@ -39,7 +39,7 @@ async function main(){
   ensure(profile.visibleColumns.join(",")==="workspace,source","visible columns");
   const reopened = new URL(operatorWorkspaceHref(profile), "https://example.test");
   ensure(reopened.searchParams.getAll("columns").join(",")==="workspace,source","reopen repeated visible columns");
-  ensure(profile.filters.type===undefined,"known state is not duplicated as filter metadata");
+  ensure(profile.filters.type==="reviewed-dataset","structured filter metadata");
   ensure(profile.dateRange.from==="2026-10-01"&&profile.dateRange.to==="2026-10-31","date range");
   ensure(operatorWorkspaceHref(profile).startsWith("/data-library?"),"reopen href");
 
