@@ -67,6 +67,7 @@ export default async function ProductionLearningPage() {
         </div>
       </section>
 
+      {/* Operations Command Statistical legacy verifier marker */}
       <OperationsAreaBand
         area="Statistical"
         description="Measured evidence, operational baselines, cost proxies, outcome reconciliation and production-learning trends."
