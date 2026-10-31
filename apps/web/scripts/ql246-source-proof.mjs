@@ -2444,6 +2444,55 @@ export function disposeQl264SourceProofPublicationException(input) {
   return Object.freeze({...base,disposed:true,disposition:'RESOLVED_BY_VERIFIED_PUBLICATION',publicationAllowed:true,proofBPublished:true,status:'QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_RESOLVED_OWNER_TEST_HELD',observedMainSha:input.observedMainSha,proofCommitSha:input.proofCommitSha,proofSha256:input.proofSha256});
 }
 
+
+
+export function reconcileQl265OwnerRenewalFreshness(input, now = Date.now()) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',livePilotHolds:12,custodyVerified:false,networkTestAuthorized:false});
+  if(!input||!Number.isSafeInteger(now)) return Object.freeze({...base,freshnessReconciled:false,status:'HOLD_QL265_OWNER_RENEWAL_FRESHNESS_RECONCILIATION_INPUT_INVALID'});
+  if(input.renewalAvailable!==true) return Object.freeze({...base,freshnessReconciled:false,status:'QL265_OWNER_RENEWAL_FRESHNESS_RECONCILIATION_NOT_AVAILABLE'});
+  const reconciled=reconcileQl264OwnerPacketRenewal(input,now);
+  if(reconciled.reconciled!==true) return Object.freeze({...base,freshnessReconciled:false,status:'HOLD_QL265_OWNER_RENEWAL_NOT_RECONCILED'});
+  const maxAgeMs=Number.isSafeInteger(input.maxRenewalFreshnessAgeMs)&&input.maxRenewalFreshnessAgeMs>=60000&&input.maxRenewalFreshnessAgeMs<=86400000?input.maxRenewalFreshnessAgeMs:30*60*1000;
+  const ageMs=now-input.statusReturnedAt;
+  const fresh=ageMs>=0&&ageMs<=maxAgeMs&&input.renewalExpiresAt>now;
+  if(!fresh) return Object.freeze({...base,freshnessReconciled:false,status:'HOLD_QL265_OWNER_RENEWAL_STALE_OR_EXPIRED',ageMs,maxRenewalFreshnessAgeMs:maxAgeMs});
+  return Object.freeze({...base,freshnessReconciled:true,status:'QL265_OWNER_RENEWAL_FRESHNESS_RECONCILED_STATUS_ONLY_GATEWAY_HELD',renewalReceiptId:input.renewalReceiptId,reconciliationReceiptId:input.reconciliationReceiptId,renewedOwnerPacketSha256:input.renewedOwnerPacketSha256,statusReturnedAt:input.statusReturnedAt,renewalExpiresAt:input.renewalExpiresAt,ageMs,maxRenewalFreshnessAgeMs:maxAgeMs});
+}
+
+export function auditQl265SignerCustodyRenewalReceipt(input, now = Date.now()) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',activationAllowed:false,proofBPublished:false});
+  if(!input||!Number.isSafeInteger(now)) return Object.freeze({...base,auditPassed:false,status:'HOLD_QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_INPUT_INVALID'});
+  if(input.evidenceAvailable!==true) return Object.freeze({...base,auditPassed:false,status:'QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_NOT_AVAILABLE'});
+  const renewed=renewQl264SignerCustodyFreshnessReceipt(input,now);
+  if(renewed.renewed!==true) return Object.freeze({...base,auditPassed:false,status:'HOLD_QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_NOT_VERIFIED'});
+  const ok=
+    typeof input.renewalAuditReceiptId==='string'&&input.renewalAuditReceiptId.length>=8&&
+    input.renewalAuditReceiptId!==input.freshnessRenewalReceiptId&&
+    HEX.test(input.renewalAuditSetSha256||'')&&
+    Number.isSafeInteger(input.renewalAuditedAt)&&input.renewalAuditedAt>=input.freshnessRenewedAt&&input.renewalAuditedAt<=now&&
+    input.freshnessExpiresAt>now;
+  if(!ok) return Object.freeze({...base,auditPassed:false,status:'HOLD_QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_REJECTED'});
+  return Object.freeze({...base,auditPassed:true,status:'QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_PASSED_ACTIVATION_HELD',renewalAuditReceiptId:input.renewalAuditReceiptId,renewalAuditSetSha256:input.renewalAuditSetSha256,freshnessRenewalReceiptId:input.freshnessRenewalReceiptId,renewalAuditedAt:input.renewalAuditedAt,freshnessExpiresAt:input.freshnessExpiresAt});
+}
+
+export function prepareQl265SourceProofDispositionClosureReadiness(input) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',exceptionWaiverAllowed:false,publicationAllowed:false,proofBPublished:false,closureAllowed:false});
+  if(!input||!REV.test(input.observedMainSha||'')) return Object.freeze({...base,ready:false,status:'HOLD_QL265_PROOF_DISPOSITION_CLOSURE_INPUT_INVALID'});
+  if(input.proofHttpStatus!==200) return Object.freeze({...base,ready:false,status:'QL265_PROOF_DISPOSITION_CLOSURE_NOT_READY_PUBLICATION_MISSING',observedMainSha:input.observedMainSha,proofHttpStatus:input.proofHttpStatus});
+  const verified=refreshQl258ImmutableProofStatus(input);
+  if(verified.verified!==true) return Object.freeze({...base,ready:false,status:'HOLD_QL265_PROOF_DISPOSITION_CLOSURE_PROOF_INVALID',observedMainSha:input.observedMainSha});
+  const ready=
+    input.priorDisposition==='RESOLVED_BY_VERIFIED_PUBLICATION'&&
+    input.ownerRenewalFreshnessReconciled===true&&
+    input.signerCustodyRenewalReceiptAuditPassed===true&&
+    input.sourceCiConclusion==='success'&&
+    typeof input.sourceCiRun==='string'&&input.sourceCiRun.startsWith('https://github.com/RosevearCreations/ai-data-platform/actions/runs/')&&
+    typeof input.closureReviewReceiptId==='string'&&input.closureReviewReceiptId.length>=8&&
+    input.closureReviewStatus==='APPROVED_TO_CLOSE_EXCEPTION_ONLY';
+  if(!ready) return Object.freeze({...base,ready:false,status:'HOLD_QL265_PROOF_DISPOSITION_CLOSURE_PREREQUISITES_INCOMPLETE',observedMainSha:input.observedMainSha});
+  return Object.freeze({...base,ready:true,closureAllowed:true,publicationAllowed:true,proofBPublished:true,status:'QL265_PROOF_DISPOSITION_CLOSURE_READY_OWNER_TEST_HELD',observedMainSha:input.observedMainSha,proofCommitSha:input.proofCommitSha,proofSha256:input.proofSha256,closureReviewReceiptId:input.closureReviewReceiptId});
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

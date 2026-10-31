@@ -8600,3 +8600,20 @@ td, th {
  .opsActionDrawer[open] summary{position:sticky;top:0;background:#081522;z-index:1}
 }
 @media(forced-colors:active){.opsActionDrawer,.opsExceptionQueue,.opsEvidenceTimeline,.opsExceptionItem{background:Canvas;color:CanvasText;border-color:CanvasText}}
+
+
+/* Build 245 — reusable tables, inspectors, status badges and responsive workflows */
+.opsDataTableWrap{overflow:auto;border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96))}
+.opsDataTable{width:100%;min-width:640px;border:0;border-radius:0;background:transparent}
+.opsDataTable caption{text-align:left;padding:1rem 1rem .7rem;color:#fff;font-weight:800}
+.opsDataTable th{position:sticky;top:0;z-index:1;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
+.opsDataTable td,.opsDataTable th{padding:.75rem .85rem;vertical-align:top}
+.opsDataTable tbody tr:hover{background:rgba(90,52,160,.12)}
+.opsInspector{border:1px solid var(--ops-border);border-left:4px solid var(--ops-area-accent,var(--ops-violet));border-radius:1rem;padding:1rem;background:linear-gradient(180deg,rgba(10,27,45,.98),rgba(5,18,31,.98));box-shadow:0 14px 32px rgba(0,0,0,.22)}
+.opsInspectorBody{display:grid;gap:.65rem;color:var(--ops-muted)}
+.opsInspectorBody p{margin:0}
+.opsStatusBadge{display:inline-flex;align-items:center;gap:.35rem;width:max-content;max-width:100%;padding:.24rem .5rem;border:1px solid currentColor;border-radius:999px;font-size:.76rem;font-weight:800;line-height:1.2;background:rgba(4,16,28,.72)}
+.opsWorkflowLayout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(18rem,.5fr);gap:1rem;align-items:start;margin:0 0 1.25rem}
+@media(max-width:980px){.opsWorkflowLayout{grid-template-columns:1fr}.opsInspector{order:-1}}
+@media(max-width:700px){.opsDataTableWrap{border-radius:.8rem}.opsDataTable{min-width:0;border-collapse:separate}.opsDataTable thead{display:none}.opsDataTable tbody,.opsDataTable tr,.opsDataTable td{display:block;width:100%}.opsDataTable tr{padding:.65rem;border-bottom:1px solid rgba(91,139,181,.18)}.opsDataTable td{display:grid;grid-template-columns:8rem minmax(0,1fr);gap:.5rem;padding:.35rem .5rem}.opsDataTable td::before{content:attr(data-label);color:#8ea4bc;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em}}
+@media(forced-colors:active){.opsDataTableWrap,.opsInspector,.opsStatusBadge{background:Canvas;color:CanvasText;border-color:CanvasText}}

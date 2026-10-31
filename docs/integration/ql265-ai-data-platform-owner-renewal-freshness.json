@@ -1,0 +1,14 @@
+{
+  "schema": "rosevear.integration.ql265.ai-data-platform.owner-renewal-freshness.v1",
+  "application": "AI Data Platform",
+  "renewal_available": false,
+  "freshness_reconciled": false,
+  "status": "QL265_OWNER_RENEWAL_FRESHNESS_RECONCILIATION_NOT_AVAILABLE",
+  "renewal_receipt_id": "NOT_AVAILABLE",
+  "reconciliation_receipt_id": "NOT_AVAILABLE",
+  "renewed_owner_packet_sha256": "NOT_AVAILABLE",
+  "owner_authorization": "NOT_GIVEN",
+  "network_test_authorized": false,
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED"
+}

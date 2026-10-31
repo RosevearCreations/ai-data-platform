@@ -115,3 +115,71 @@ export function OperationsEvidenceTimeline({
 export function OpsDrawerLink({ href, children }: { href: string; children: ReactNode }) {
   return <Link className="secondaryButton" href={href}>{children}</Link>;
 }
+
+
+export function OperationsStatusBadge({
+  tone = "info",
+  children
+}: {
+  tone?: "info" | "healthy" | "attention" | "critical";
+  children: ReactNode;
+}) {
+  return <span className={"opsStatusBadge opsTone--" + tone}>{children}</span>;
+}
+
+export type OpsTableColumn<Row> = {
+  key: string;
+  label: string;
+  render: (row: Row) => ReactNode;
+};
+
+export function OperationsDataTable<Row>({
+  caption,
+  rows,
+  columns,
+  rowKey,
+  emptyLabel = "No records available."
+}: {
+  caption: string;
+  rows: Row[];
+  columns: OpsTableColumn<Row>[];
+  rowKey: (row: Row) => string;
+  emptyLabel?: string;
+}) {
+  return (
+    <div className="opsDataTableWrap">
+      <table className="opsDataTable">
+        <caption>{caption}</caption>
+        <thead>
+          <tr>{columns.map((column) => <th key={column.key} scope="col">{column.label}</th>)}</tr>
+        </thead>
+        <tbody>
+          {rows.length ? rows.map((row) => (
+            <tr key={rowKey(row)}>
+              {columns.map((column) => <td key={column.key}>{column.render(row)}</td>)}
+            </tr>
+          )) : (
+            <tr><td colSpan={columns.length}><span className="opsEmptyState">{emptyLabel}</span></td></tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export function OperationsInspector({
+  title,
+  eyebrow = "Inspector",
+  children
+}: {
+  title: string;
+  eyebrow?: string;
+  children: ReactNode;
+}) {
+  return (
+    <aside className="opsInspector">
+      <div className="opsPanelHeading"><span>{eyebrow}</span><strong>{title}</strong></div>
+      <div className="opsInspectorBody">{children}</div>
+    </aside>
+  );
+}
