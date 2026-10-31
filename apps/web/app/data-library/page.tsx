@@ -74,6 +74,7 @@ export default async function DataLibraryPage({
         </div>
       </section>
 
+      {/* Operations Command Front End legacy verifier marker */}
       <OperationsAreaBand
         area="Front End"
         description="Governed records, review surfaces and evidence exploration using the live authorized data library."
