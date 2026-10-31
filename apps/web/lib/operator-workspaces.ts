@@ -18,6 +18,7 @@ export type OperatorWorkspaceProfile = {
   workspaceId: string;
   search: string;
   sort: string;
+  filters: Record<string, string>;
   visibleColumns: string[];
   dateRange: OperatorWorkspaceDateRange;
 };
@@ -84,6 +85,15 @@ export function sanitizeOperatorWorkspaceQuery(
   return result;
 }
 
+function structuredFilters(queryParams: Record<string, string>) {
+  const excluded = new Set([
+    "workspace","workspaceId","q","search","sort","columns","visibleColumns","from","to","page"
+  ]);
+  return Object.fromEntries(
+    Object.entries(queryParams).filter(([key]) => !excluded.has(key)).slice(0, 12)
+  );
+}
+
 export function createOperatorWorkspaceProfile(input: {
   id: string;
   name: string;
@@ -132,6 +142,7 @@ export function createOperatorWorkspaceProfile(input: {
     workspaceId,
     search,
     sort,
+    filters: structuredFilters(queryParams),
     visibleColumns,
     dateRange
   };
@@ -198,6 +209,16 @@ export function removeOperatorWorkspaceProfile(
 
 export function operatorWorkspaceHref(profile: OperatorWorkspaceProfile) {
   const params = new URLSearchParams(profile.queryParams);
+  if (profile.workspaceId && !params.has("workspace") && !params.has("workspaceId")) {
+    params.set("workspace", profile.workspaceId);
+  }
+  if (profile.search && !params.has("q") && !params.has("search")) params.set("q", profile.search);
+  if (profile.sort && !params.has("sort")) params.set("sort", profile.sort);
+  params.delete("columns");
+  params.delete("visibleColumns");
+  profile.visibleColumns.forEach((column) => params.append("columns", column));
+  if (profile.dateRange.from && !params.has("from")) params.set("from", profile.dateRange.from);
+  if (profile.dateRange.to && !params.has("to")) params.set("to", profile.dateRange.to);
   const query = params.toString();
   return profile.destination + (query ? "?" + query : "");
 }
