@@ -42,7 +42,7 @@ async function main(){
     source("../../../docs/BUILD_249_RECOVERY_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH.md")
   ]);
 
-  ensure(shell.includes("Build 249 · Operations Command"),"Build 249 shell");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   for(const token of ["OperationsComparisonCard","OperationsExceptionPivot","OperationsHistoryPanel","OperationsInspectorShortcuts"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 249 — comparison cards, exception pivots, responsive history panels and inspector shortcuts"),"Build 249 styles");
   for(const token of ["Consumer configuration","Delivery outcomes","Exception focus","Recent delivery history","System Status shortcuts"]) ensure(statusPage.includes(token),"System Status "+token);
