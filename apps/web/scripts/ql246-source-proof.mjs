@@ -2394,6 +2394,56 @@ export function reviewQl263SourceProofPublicationException(input) {
   return Object.freeze({...base,reviewed:true,disposition:'RESOLVED_BY_VERIFIED_PUBLICATION',publicationAllowed:true,proofBPublished:true,status:'QL263_PROOF_PUBLICATION_EXCEPTION_RESOLVED_OWNER_TEST_HELD',observedMainSha:input.observedMainSha,proofCommitSha:input.proofCommitSha,proofSha256:input.proofSha256});
 }
 
+
+
+export function reconcileQl264OwnerPacketRenewal(input, now = Date.now()) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',livePilotHolds:12,custodyVerified:false,networkTestAuthorized:false});
+  if(!input||!Number.isSafeInteger(now)) return Object.freeze({...base,reconciled:false,status:'HOLD_QL264_OWNER_PACKET_RENEWAL_RECONCILIATION_INPUT_INVALID'});
+  if(input.renewalAvailable!==true) return Object.freeze({...base,reconciled:false,status:'QL264_OWNER_PACKET_RENEWAL_RECONCILIATION_NOT_AVAILABLE'});
+  const renewed=renewQl263OwnerPacketEvidence(input,now);
+  if(renewed.renewed!==true) return Object.freeze({...base,reconciled:false,status:'HOLD_QL264_OWNER_PACKET_RENEWAL_NOT_VERIFIED'});
+  const statusOk=
+    typeof input.reconciliationReceiptId==='string'&&input.reconciliationReceiptId.length>=8&&
+    input.reconciliationReceiptId!==input.renewalReceiptId&&
+    input.statusReturnRenewalReceiptId===input.renewalReceiptId&&
+    input.statusReturnPacketSha256===input.renewedOwnerPacketSha256&&
+    Number.isSafeInteger(input.statusReturnedAt)&&input.statusReturnedAt>=input.renewedAt&&
+    input.statusReturnedAt<=now&&input.statusReturnedAt<input.renewalExpiresAt;
+  if(!statusOk) return Object.freeze({...base,reconciled:false,status:'HOLD_QL264_OWNER_PACKET_RENEWAL_RECONCILIATION_MISMATCH'});
+  return Object.freeze({...base,reconciled:true,status:'QL264_OWNER_PACKET_RENEWAL_RECONCILED_STATUS_ONLY_GATEWAY_HELD',renewalReceiptId:input.renewalReceiptId,reconciliationReceiptId:input.reconciliationReceiptId,renewedOwnerPacketSha256:input.renewedOwnerPacketSha256,statusReturnedAt:input.statusReturnedAt,renewalExpiresAt:input.renewalExpiresAt});
+}
+
+export function renewQl264SignerCustodyFreshnessReceipt(input, now = Date.now()) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',activationAllowed:false,proofBPublished:false});
+  if(!input||!Number.isSafeInteger(now)) return Object.freeze({...base,renewed:false,status:'HOLD_QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_INPUT_INVALID'});
+  if(input.evidenceAvailable!==true) return Object.freeze({...base,renewed:false,status:'QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_RENEWAL_NOT_AVAILABLE'});
+  const fresh=enforceQl263SignerCustodyAuditFreshness(input,now);
+  if(fresh.fresh!==true) return Object.freeze({...base,renewed:false,status:'HOLD_QL264_SIGNER_CUSTODY_AUDIT_NOT_FRESH'});
+  const ok=
+    typeof input.freshnessRenewalReceiptId==='string'&&input.freshnessRenewalReceiptId.length>=8&&
+    input.freshnessRenewalReceiptId!==input.auditReceiptId&&
+    HEX.test(input.freshnessReceiptSetSha256||'')&&
+    Number.isSafeInteger(input.freshnessRenewedAt)&&input.freshnessRenewedAt<=now&&
+    Number.isSafeInteger(input.freshnessExpiresAt)&&input.freshnessExpiresAt>now&&
+    input.freshnessExpiresAt-input.freshnessRenewedAt<=30*60*1000;
+  if(!ok) return Object.freeze({...base,renewed:false,status:'HOLD_QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_REJECTED'});
+  return Object.freeze({...base,renewed:true,status:'QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_RENEWED_ACTIVATION_HELD',freshnessRenewalReceiptId:input.freshnessRenewalReceiptId,freshnessReceiptSetSha256:input.freshnessReceiptSetSha256,freshnessRenewedAt:input.freshnessRenewedAt,freshnessExpiresAt:input.freshnessExpiresAt});
+}
+
+export function disposeQl264SourceProofPublicationException(input) {
+  const base=Object.freeze({ownerAuthorization:'NOT_GIVEN',connectionState:'DISCONNECTED',actualGatewayTest:'NOT_RUN',exceptionWaiverAllowed:false,publicationAllowed:false,proofBPublished:false});
+  if(!input||!REV.test(input.observedMainSha||'')) return Object.freeze({...base,disposed:false,status:'HOLD_QL264_PROOF_EXCEPTION_DISPOSITION_INPUT_INVALID'});
+  if(input.proofHttpStatus!==200){
+    const known=input.exceptionType==='IMMUTABLE_PROOF_NOT_PUBLISHED'&&input.proofPath==='docs/integration/ql246-source-proof.json';
+    return Object.freeze({...base,disposed:known,disposition:known?'KEEP_OPEN_PUBLICATION_REQUIRED':'UNCLASSIFIED',status:known?'QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_OPEN_PUBLICATION_REQUIRED':'HOLD_QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_UNCLASSIFIED',observedMainSha:input.observedMainSha,proofHttpStatus:input.proofHttpStatus});
+  }
+  const verified=refreshQl258ImmutableProofStatus(input);
+  if(verified.verified!==true) return Object.freeze({...base,disposed:false,disposition:'KEEP_OPEN_INVALID_PROOF',status:'HOLD_QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_PROOF_INVALID',observedMainSha:input.observedMainSha});
+  const ready=input.ownerPacketRenewalReconciled===true&&input.signerCustodyFreshnessReceiptRenewed===true&&input.sourceCiConclusion==='success'&&typeof input.sourceCiRun==='string'&&input.sourceCiRun.startsWith('https://github.com/RosevearCreations/ai-data-platform/actions/runs/');
+  if(!ready) return Object.freeze({...base,disposed:true,disposition:'KEEP_OPEN_PREREQUISITES_INCOMPLETE',status:'HOLD_QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_PREREQUISITES_INCOMPLETE',observedMainSha:input.observedMainSha});
+  return Object.freeze({...base,disposed:true,disposition:'RESOLVED_BY_VERIFIED_PUBLICATION',publicationAllowed:true,proofBPublished:true,status:'QL264_PROOF_PUBLICATION_EXCEPTION_DISPOSITION_RESOLVED_OWNER_TEST_HELD',observedMainSha:input.observedMainSha,proofCommitSha:input.proofCommitSha,proofSha256:input.proofSha256});
+}
+
 /** No network calls unless an explicit caller-provided public fetch implementation is supplied. */
 export async function reviewQl246Sources(trusted, { fetchPublic, now = Date.now() } = {}) {
   if (!Number.isSafeInteger(now) || !validTrust(trusted, now))

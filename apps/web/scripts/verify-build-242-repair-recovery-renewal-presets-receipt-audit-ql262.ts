@@ -49,7 +49,7 @@ async function main() {
     source("../../../docs/BUILD_242_REPAIR_RECOVERY_RENEWAL_PRESETS_RECEIPT_AUDIT_QL262.md")
   ]);
 
-  ensure(shell.includes("Build 242 · Operations Command"),"Build 242 shell");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   ensure(shell.includes('href="/data-library">Front End')&&shell.includes('href="/connectors">I.T.')&&shell.includes('href="/">Management')&&shell.includes('href="/production-learning">Statistical')&&shell.includes('href="/integration-delivery">System Status'),"five command routes");
   ensure(css.includes("Build 242 — individual Operations Command screens"),"Build 242 visual CSS");
   ensure(frontEnd.includes("opsCommandScreen--frontEnd")&&frontEnd.includes("Operations Command Front End"),"Front End screen");

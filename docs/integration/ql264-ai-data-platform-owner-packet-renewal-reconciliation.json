@@ -1,0 +1,15 @@
+{
+  "schema": "rosevear.integration.ql264.ai-data-platform.owner-packet-renewal-reconciliation.v1",
+  "application": "AI Data Platform",
+  "renewal_available": false,
+  "reconciled": false,
+  "reconciliation_status": "QL264_OWNER_PACKET_RENEWAL_RECONCILIATION_NOT_AVAILABLE",
+  "renewal_receipt_id": "NOT_AVAILABLE",
+  "reconciliation_receipt_id": "NOT_AVAILABLE",
+  "renewed_owner_packet_sha256": "NOT_AVAILABLE",
+  "owner_authorization": "NOT_GIVEN",
+  "network_test_authorized": false,
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED",
+  "live_pilot_holds": 12
+}
