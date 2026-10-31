@@ -8723,3 +8723,24 @@ td, th {
 .opsTrendLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
 @media(max-width:900px){.opsEventGroupLayout,.opsTrendLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsDrilldownFilterItems{display:grid}.opsDrilldownFilterItems a{width:100%}.opsEventGroupItem{grid-template-columns:1fr}.opsEventGroupItem time{white-space:normal}}
+
+
+/* Build 251 — scorecards, layered filters, responsive activity lanes and inspector checkpoints */
+.opsScorecardGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:.85rem;margin:0 0 1rem}
+.opsScorecard{display:grid;gap:.25rem;padding:1rem;border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96))}
+.opsScorecard>span{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ops-muted)}
+.opsScorecard>strong{font-size:clamp(1.45rem,3vw,2rem);color:#fff}
+.opsScorecard>p{margin:0;color:#c7d7e9}.opsScorecard>small{color:var(--ops-muted)}
+.opsBuild251Layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(18rem,.75fr);gap:1rem;margin:0 0 1rem}
+.opsLayeredFilters,.opsInspectorCheckpoints,.opsActivityLane{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsLayeredFilterRows{display:grid;gap:.8rem}.opsLayeredFilterRow{display:grid;gap:.45rem}.opsLayeredFilterRow>strong{font-size:.78rem;color:#c7d7e9}
+.opsLayeredFilterRow>div{display:flex;flex-wrap:wrap;gap:.45rem}.opsLayeredFilterRow a{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .68rem;border:1px solid rgba(100,145,188,.28);border-radius:.65rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsLayeredFilterRow a.active{border-color:#2fb6ff;box-shadow:0 0 0 1px rgba(47,182,255,.18),0 0 16px rgba(47,182,255,.14)}.opsLayeredFilterRow a b{font-size:.74rem;color:#fff}
+.opsActivityLaneLayout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0 0 1.25rem}.opsActivityLane ol,.opsInspectorCheckpoints ol{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+.opsActivityLaneItem{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.7rem;padding:.7rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsActivityLaneDot{width:.65rem;height:.65rem;border-radius:50%;margin-top:.35rem;background:var(--ops-blue)}.opsActivityLaneItem--complete .opsActivityLaneDot{background:var(--ops-green)}.opsActivityLaneItem--attention .opsActivityLaneDot{background:var(--ops-red)}
+.opsActivityLaneItem p,.opsInspectorCheckpoint p{margin:.15rem 0 0;color:var(--ops-muted)}.opsActivityLaneItem time{display:block;margin-top:.25rem;color:#8193aa;font-size:.76rem}
+.opsInspectorCheckpoint{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.65rem;padding:.65rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsInspectorCheckpoint>span{display:grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;border:1px solid rgba(100,145,188,.4);color:#fff}.opsInspectorCheckpoint--complete>span{border-color:var(--ops-green);color:var(--ops-green)}.opsInspectorCheckpoint--current>span{border-color:var(--ops-blue);color:var(--ops-blue)}
+@media(max-width:900px){.opsBuild251Layout,.opsActivityLaneLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsLayeredFilterRow>div{display:grid}.opsLayeredFilterRow a{width:100%}}
