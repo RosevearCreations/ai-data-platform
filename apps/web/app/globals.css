@@ -8673,3 +8673,26 @@ td, th {
 .opsSavedLayout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(18rem,.85fr);gap:1rem;margin:0 0 1.25rem}
 @media(max-width:900px){.opsSavedLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsSavedViewItems,.opsContextInspectorActions{display:grid}.opsSavedViewItems a,.opsContextInspectorActions a{width:100%}.opsEvidenceGroupBody{grid-template-columns:1fr}}
+
+
+/* Build 249 — comparison cards, exception pivots, responsive history panels and inspector shortcuts */
+.opsComparisonCard,.opsExceptionPivot,.opsHistoryPanel,.opsInspectorShortcuts{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsComparisonValues{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.opsComparisonValue{display:grid;gap:.2rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsComparisonValue>span{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ops-muted)}
+.opsComparisonValue>strong{font-size:1.55rem;color:#fff}
+.opsComparisonCard>p{margin:.75rem 0 0;color:var(--ops-muted)}
+.opsExceptionPivotItems{display:flex;flex-wrap:wrap;gap:.55rem}
+.opsExceptionPivotItems a{display:inline-flex;align-items:center;justify-content:space-between;gap:.65rem;min-width:10rem;padding:.5rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.7rem;background:rgba(5,18,31,.82);text-decoration:none;color:#dce8f6}
+.opsExceptionPivotItems a.active{border-color:#8b3dff;box-shadow:0 0 0 1px rgba(139,61,255,.2),0 0 18px rgba(139,61,255,.16)}
+.opsExceptionPivotItems a strong{font-size:.82rem;color:#fff}
+.opsHistoryPanel ol{display:grid;gap:.55rem;margin:0;padding:0;list-style:none}
+.opsHistoryEntry{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.8rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsHistoryEntry p{margin:.18rem 0 0;color:var(--ops-muted)}.opsHistoryEntry time{color:#8193aa;font-size:.78rem;white-space:nowrap}
+.opsInspectorShortcutItems{display:grid;gap:.55rem}
+.opsInspectorShortcutItems a{display:grid;gap:.1rem;padding:.65rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.7rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsInspectorShortcutItems a>span{color:var(--ops-muted);font-size:.78rem}
+.opsComparisonLayout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0 0 1.25rem}
+.opsHistoryLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
+@media(max-width:900px){.opsComparisonLayout,.opsHistoryLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsComparisonValues{grid-template-columns:1fr}.opsExceptionPivotItems{display:grid}.opsExceptionPivotItems a{width:100%;min-width:0}.opsHistoryEntry{grid-template-columns:1fr}.opsHistoryEntry time{white-space:normal}}

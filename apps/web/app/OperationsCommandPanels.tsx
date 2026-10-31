@@ -356,3 +356,91 @@ export function OperationsContextInspector({
     </aside>
   );
 }
+
+
+export function OperationsComparisonCard({
+  title,
+  left,
+  right,
+  detail
+}: {
+  title: string;
+  left: { label: string; value: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" };
+  right: { label: string; value: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" };
+  detail?: ReactNode;
+}) {
+  return (
+    <article className="opsComparisonCard">
+      <div className="opsPanelHeading"><span>Comparison</span><strong>{title}</strong></div>
+      <div className="opsComparisonValues">
+        <div className={"opsComparisonValue opsTone--" + (left.tone ?? "info")}><span>{left.label}</span><strong>{left.value}</strong></div>
+        <div className={"opsComparisonValue opsTone--" + (right.tone ?? "info")}><span>{right.label}</span><strong>{right.value}</strong></div>
+      </div>
+      {detail ? <p>{detail}</p> : null}
+    </article>
+  );
+}
+
+export function OperationsExceptionPivot({
+  title,
+  pivots
+}: {
+  title: string;
+  pivots: Array<{ label: string; href: string; count: number; active?: boolean; tone?: "info" | "healthy" | "attention" | "critical" }>;
+}) {
+  return (
+    <nav className="opsExceptionPivot" aria-label={title}>
+      <div className="opsPanelHeading"><span>Exception pivot</span><strong>{title}</strong></div>
+      <div className="opsExceptionPivotItems">
+        {pivots.map((pivot) => (
+          <Link className={(pivot.active ? "active " : "") + "opsTone--" + (pivot.tone ?? "info")} href={pivot.href} key={pivot.href}>
+            <span>{pivot.label}</span><strong>{pivot.count}</strong>
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function OperationsHistoryPanel({
+  title,
+  entries,
+  emptyLabel = "No history available."
+}: {
+  title: string;
+  entries: Array<{ id: string; label: string; detail: ReactNode; timestamp?: string; tone?: "info" | "healthy" | "attention" | "critical" }>;
+  emptyLabel?: string;
+}) {
+  return (
+    <section className="opsHistoryPanel" aria-label={title}>
+      <div className="opsPanelHeading"><span>History panel</span><strong>{title}</strong></div>
+      {entries.length ? <ol>{entries.map((entry) => (
+        <li className={"opsHistoryEntry opsTone--" + (entry.tone ?? "info")} key={entry.id}>
+          <div><strong>{entry.label}</strong><p>{entry.detail}</p></div>
+          {entry.timestamp ? <time>{entry.timestamp}</time> : null}
+        </li>
+      ))}</ol> : <p className="opsEmptyState">{emptyLabel}</p>}
+    </section>
+  );
+}
+
+export function OperationsInspectorShortcuts({
+  title,
+  shortcuts
+}: {
+  title: string;
+  shortcuts: Array<{ label: string; href: string; detail?: string }>;
+}) {
+  return (
+    <aside className="opsInspectorShortcuts">
+      <div className="opsPanelHeading"><span>Inspector shortcuts</span><strong>{title}</strong></div>
+      <div className="opsInspectorShortcutItems">
+        {shortcuts.map((shortcut) => (
+          <Link href={shortcut.href} key={shortcut.href}>
+            <strong>{shortcut.label}</strong>{shortcut.detail ? <span>{shortcut.detail}</span> : null}
+          </Link>
+        ))}
+      </div>
+    </aside>
+  );
+}

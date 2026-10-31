@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivitySummary, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorShortcuts, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -56,6 +56,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
       )
     : viewConsumers;
   const recentEvents = overview.flatMap((entry) => entry.recent);
+  const successfulEvents = recentEvents.filter((event) => !event.httpStatus || event.httpStatus < 400);
   const rejectedEvents = recentEvents.filter((event) => Boolean(event.httpStatus && event.httpStatus >= 400)).length;
   const configuredCount = consumers.filter((consumer) => consumer.configured).length;
   const needsConfigCount = consumers.length - configuredCount;
@@ -91,6 +92,52 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
         </nav>
       </section>
+
+      <div className="opsComparisonLayout">
+        <OperationsComparisonCard
+          title="Consumer configuration"
+          left={{ label: "Configured", value: configuredCount, tone: configuredCount === consumers.length ? "healthy" as const : "info" as const }}
+          right={{ label: "Needs review", value: needsConfigCount, tone: needsConfigCount ? "attention" as const : "healthy" as const }}
+          detail={consumers.length + " configured consumer target(s) are currently visible in this workspace."}
+        />
+        <OperationsComparisonCard
+          title="Delivery outcomes"
+          left={{ label: "Accepted / non-error", value: successfulEvents.length, tone: "healthy" as const }}
+          right={{ label: "HTTP exceptions", value: rejectedEvents, tone: rejectedEvents ? "critical" as const : "healthy" as const }}
+          detail={recentEvents.length + " durable acknowledgement event(s) are available for comparison."}
+        />
+      </div>
+
+      <OperationsExceptionPivot
+        title="Exception focus"
+        pivots={[
+          { label: "All consumers", href: savedViewHref("all"), count: consumers.length, active: view === "all", tone: "info" as const },
+          { label: "Configuration gaps", href: savedViewHref("needs-config"), count: needsConfigCount, active: view === "needs-config", tone: needsConfigCount ? "attention" as const : "healthy" as const },
+          { label: "HTTP exceptions", href: savedViewHref("exceptions"), count: rejectedEvents, active: view === "exceptions", tone: rejectedEvents ? "critical" as const : "healthy" as const }
+        ]}
+      />
+
+      <div className="opsHistoryLayout">
+        <OperationsHistoryPanel
+          title="Recent delivery history"
+          entries={recentEvents.slice(0, 10).map((event) => ({
+            id: event.eventId,
+            label: event.eventType,
+            detail: event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
+            timestamp: event.occurredAt.toLocaleString(),
+            tone: event.httpStatus && event.httpStatus >= 400 ? "critical" as const : "info" as const
+          }))}
+        />
+        <OperationsInspectorShortcuts
+          title="System Status shortcuts"
+          shortcuts={[
+            { label: "Comms Hub checks", href: "/integration-delivery/comms-hub", detail: "Review source-side connection checks." },
+            { label: "Remote execution", href: "/remote-execution", detail: "Review governed execution readiness." },
+            { label: "Production learning", href: "/production-learning", detail: "Review statistical and operational evidence." },
+            { label: "Integration evidence", href: "/intelligence", detail: "Inspect broader integration evidence." }
+          ]}
+        />
+      </div>
 
       <div className="opsSavedLayout">
         <OperationsSavedViews
