@@ -12,7 +12,8 @@ import {
 } from "@/lib/data-library";
 
 import { DataLibrarySavedViews } from "./DataLibrarySavedViews";
-import { HelpInfo } from "../help/HelpInfo";\nimport { OperationsAreaBand } from "../OperationsCommandPanels";
+import { HelpInfo } from "../help/HelpInfo";
+import { OperationsAreaBand } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
