@@ -84,7 +84,7 @@ async function main(){
   ensure(custody.evidence_available===false&&custody.renewed===false&&custody.activation_allowed===false,"custody evidence truth");
 
   const lower=doc.toLowerCase();
-  for(const token of ["repair filtering","renewal recovery","receipt search","owner-packet renewal reconciliation","signer-custody freshness receipt renewal","source-proof exception disposition","action drawers","exception queues","evidence timelines","http 404","not_given","not_run","disconnected / hold"]) ensure(lower.includes(token),"doc "+token);
+  for(const token of ["repair filtering","renewal recovery","receipt search","owner-packet renewal reconciliation","signer-custody freshness receipt renewal","source-proof publication exception disposition","action drawers","exception queues","evidence timelines","http 404","not_given","not_run","disconnected / hold"]) ensure(lower.includes(token),"doc "+token);
 
   console.log("Build 244 recovery cycle, QL-264 gates and template-driven Operations Command panels verification passed.");
 }
