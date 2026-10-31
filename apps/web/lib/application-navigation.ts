@@ -42,6 +42,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
         helpTopic: "unified-search"
+      },
+      {
+        href: "/operator-workspaces",
+        label: "Operator Workspaces",
+        description: "Reopen saved filter profiles and browser-local working views.",
+        helpTopic: "operator-workspaces"
       }
     ]
   },

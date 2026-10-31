@@ -1520,6 +1520,23 @@ export const HELP_TOPICS = {
       "No shortcut performs a mutation from the module hub."
     ]
   },
+  "operator-workspaces": {
+    title: "Operator Workspaces & Filter Profiles",
+    summary: "Build 257 saves browser-local combinations of filters, search, sort, visible columns, date range and workspace context so an operator can reopen a working view from Operations Command.",
+    steps: [
+      "Configure a supported screen such as Unified Search or the Data Library.",
+      "Choose Save current view and give the working view a clear name.",
+      "Open Workspaces from the Operations Command top bar to reopen a saved profile from anywhere in the application.",
+      "Use the Operator Workspaces screen to review the saved destination, workspace context, search, sort, visible columns and date range.",
+      "Remove a local workspace when it is no longer useful; this removes only browser-local view state."
+    ],
+    notes: [
+      "Operator Workspaces use browser localStorage only and do not create account, workspace or PostgreSQL preference rows.",
+      "Saved workspace context never grants access. Reopening a profile still passes through the destination screen's authentication, membership, RLS, role and workflow controls.",
+      "Build 044 Data Library saved views migrate into the shared Build 257 store on first use.",
+      "QL-266 remains under review and is not changed by saved operator workspaces."
+    ]
+  },
   "unified-search": {
     title: "Unified Search & Results Explorer",
     summary: "Build 256 searches authorized records, approved data, collection work, recipes, intelligence, integration evidence, workspaces, navigation and help from one read-only surface.",
@@ -3284,7 +3301,7 @@ export const HELP_GROUPS: Array<{
 }> = [
   {
     title: "Platform & access",
-    topics: ["command-center", "platform-overview", "unified-search", "workspaces", "sign-in", "guardrails", "ai-fields"]
+    topics: ["command-center", "platform-overview", "unified-search", "operator-workspaces", "workspaces", "sign-in", "guardrails", "ai-fields"]
   },
   {
     title: "Build 117 application shell & contextual help",

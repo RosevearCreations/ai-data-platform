@@ -8,6 +8,7 @@ import { InterfacePreferenceController } from "@/app/InterfacePreferenceControll
 import { NavigationAssist } from "@/app/NavigationAssist";
 import { NavigationInsights } from "@/app/NavigationInsights";
 import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
+import { OperatorWorkspaceMenu } from "@/app/OperatorWorkspaceControls";
 import {
   APPLICATION_NAVIGATION,
   MODULE_CARDS,
@@ -119,7 +120,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 256 · Operations Command</span>{/* Build 255 · Operations Command legacy verifier marker · Build 254 · Operations Command legacy verifier marker · Build 253 · Operations Command legacy verifier marker · Build 252 · Operations Command legacy verifier marker · Build 251 · Operations Command legacy verifier marker · Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
+          <span>Build 257 · Operations Command</span>{/* Build 256 · Operations Command legacy verifier marker · Build 255 · Operations Command legacy verifier marker · Build 254 · Operations Command legacy verifier marker · Build 253 · Operations Command legacy verifier marker · Build 252 · Operations Command legacy verifier marker · Build 251 · Operations Command legacy verifier marker · Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -157,7 +158,8 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <Link className={pathname.startsWith("/production-learning") ? "opsTopLink active" : "opsTopLink"} href="/production-learning">Statistical</Link>
             <Link className={pathname.startsWith("/integration-delivery") ? "opsTopLink active" : "opsTopLink"} href="/integration-delivery">System Status</Link>
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
-            <Link className={pathname.startsWith("/search") ? "opsTopLink active" : "opsTopLink"} href="/search">Search</Link>\n            <OperatorCommandPalette />
+            <Link className={pathname.startsWith("/search") ? "opsTopLink active" : "opsTopLink"} href="/search">Search</Link>\n            <OperatorWorkspaceMenu />
+            <OperatorCommandPalette />
             <NavigationAssist />
             <NavigationInsights />
             <Link href="/workflows">Workflow directory</Link>
