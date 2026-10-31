@@ -37,6 +37,9 @@ async function main(){
   });
   ensure(profile.workspaceId==="workspace-1","workspace context");
   ensure(profile.visibleColumns.join(",")==="workspace,source","visible columns");
+  const reopened = new URL(operatorWorkspaceHref(profile), "https://example.test");
+  ensure(reopened.searchParams.getAll("columns").join(",")==="workspace,source","reopen repeated visible columns");
+  ensure(profile.filters.type===undefined,"known state is not duplicated as filter metadata");
   ensure(profile.dateRange.from==="2026-10-01"&&profile.dateRange.to==="2026-10-31","date range");
   ensure(operatorWorkspaceHref(profile).startsWith("/data-library?"),"reopen href");
 
