@@ -12,6 +12,7 @@ import {
 
 import { HelpInfo } from "../help/HelpInfo";
 import { OperationsAreaBand } from "../OperationsCommandPanels";
+import { OperatorWorkspaceSavePanel } from "../OperatorWorkspaceControls";
 
 export const dynamic = "force-dynamic";
 
@@ -51,6 +52,9 @@ export default async function UnifiedSearchPage({
   const query = stringParam(params.q).slice(0, 120);
   const scope = normalizeUnifiedSearchScope(stringParam(params.scope));
   const model = await buildUnifiedCrossModuleSearch(session.user.id, { query, scope });
+  const currentQuery = new URLSearchParams();
+  if (model.query) currentQuery.set("q", model.query);
+  if (scope !== "all") currentQuery.set("scope", scope);
 
   return (
     <main className="shell opsCommandScreen opsCommandScreen--management unifiedSearchShell">
@@ -73,6 +77,15 @@ export default async function UnifiedSearchPage({
           { label: "Collection Runs", href: "/collection-runs" },
           { label: "System Status", href: "/integration-delivery" }
         ]}
+      />
+
+      <OperatorWorkspaceSavePanel
+        destination="/search"
+        destinationLabel="Unified Search"
+        currentQuery={currentQuery.toString()}
+        search={model.query}
+        sort={scope}
+        compact
       />
 
       <section className="unifiedSearchControls" aria-labelledby="unified-search-heading">
