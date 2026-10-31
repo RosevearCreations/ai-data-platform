@@ -112,6 +112,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </section>
 
+      {/* Operations Command System Status legacy verifier marker */}
       <OperationsAreaBand
         area="System Status"
         description="Receiver readiness, connection state, delivery observability and append-only integration acknowledgements."
