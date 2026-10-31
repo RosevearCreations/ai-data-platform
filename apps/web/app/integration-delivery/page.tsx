@@ -110,9 +110,9 @@ export default async function IntegrationDeliveryPage() {
           ]}
         />
         <OperationsInspector title="Connection boundary" eyebrow="System Status">
-          <OperationsStatusBadge tone="attention">Authenticated gateway GETs held</OperationsStatusBadge>
-          <p>Consumer configuration is visible here, but live external testing remains governed by the separate owner authorization and proof gates.</p>
-          <p>Use Comms Hub Connection for source-side checks without authorizing downstream business-system mutation.</p>
+          <OperationsStatusBadge tone="info">QL-266 under review</OperationsStatusBadge>
+          <p>QL-266 has been set aside for later review. Consumer configuration remains visible, but this screen does not start or authorize a new QL-266 gateway test.</p>
+          <p>Existing source-side checks remain available. QL-266 will be resumed only when we deliberately return to that review.</p>
           <OpsDrawerLink href="/integration-delivery/comms-hub">Open Comms Hub gate</OpsDrawerLink>
         </OperationsInspector>
       </div>
