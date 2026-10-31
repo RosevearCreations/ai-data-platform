@@ -1,0 +1,13 @@
+{
+  "schema": "rosevear.integration.ql264.ai-data-platform.signer-custody-freshness-renewal.v1",
+  "application": "AI Data Platform",
+  "evidence_available": false,
+  "renewed": false,
+  "renewal_status": "QL264_SIGNER_CUSTODY_FRESHNESS_RECEIPT_RENEWAL_NOT_AVAILABLE",
+  "freshness_renewal_receipt_id": "NOT_AVAILABLE",
+  "freshness_receipt_set_sha256": "NOT_AVAILABLE",
+  "activation_allowed": false,
+  "owner_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED"
+}
