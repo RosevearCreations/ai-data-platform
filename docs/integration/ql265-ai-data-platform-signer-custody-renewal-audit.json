@@ -1,0 +1,14 @@
+{
+  "schema": "rosevear.integration.ql265.ai-data-platform.signer-custody-renewal-audit.v1",
+  "application": "AI Data Platform",
+  "evidence_available": false,
+  "audit_passed": false,
+  "status": "QL265_SIGNER_CUSTODY_RENEWAL_RECEIPT_AUDIT_NOT_AVAILABLE",
+  "freshness_renewal_receipt_id": "NOT_AVAILABLE",
+  "renewal_audit_receipt_id": "NOT_AVAILABLE",
+  "renewal_audit_set_sha256": "NOT_AVAILABLE",
+  "activation_allowed": false,
+  "owner_authorization": "NOT_GIVEN",
+  "authenticated_gateway_gets": "NOT_RUN",
+  "connection": "DISCONNECTED"
+}
