@@ -22,7 +22,7 @@ async function main(){
   const now=1_800_000_000_000;
   const renewal:InterfaceRecoveryRenewalSearchPresetRecoveryAuditEntryV1[]=[
     {version:1,auditId:"renewal-recent",createdAt:now-3_600_000,requestedPresetId:"retired-a",recoveredPresetId:"all",reason:"Recovered recent renewal preset."},
-    {version:1,auditId:"renewal-week",createdAt:now-(2*86_400_000),requestedPresetId:"retired-b",recoveredPresetId:"recent-7d",reason:"Recovered weekly renewal preset."},
+    {version:1,auditId:"renewal-week",createdAt:now-(2*86_400_000),requestedPresetId:"retired-b",recoveredPresetId:"stale",reason:"Recovered weekly renewal preset."},
     {version:1,auditId:"renewal-old",createdAt:now-(8*86_400_000),requestedPresetId:"retired-c",recoveredPresetId:"all",reason:"Recovered old renewal preset."}
   ];
   ensure(filterInterfaceRecoveryRenewalSearchPresetRecoveryAudit(renewal,"24h",now).length===1,"renewal 24h filtering");
