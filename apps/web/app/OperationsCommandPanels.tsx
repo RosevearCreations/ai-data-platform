@@ -278,3 +278,81 @@ export function OperationsInspectorWorkflow({
     </aside>
   );
 }
+
+
+export function OperationsSavedViews({
+  title,
+  views
+}: {
+  title: string;
+  views: Array<{ label: string; href: string; active?: boolean; count?: number }>;
+}) {
+  return (
+    <nav className="opsSavedViews" aria-label={title}>
+      <div className="opsPanelHeading"><span>Saved views</span><strong>{title}</strong></div>
+      <div className="opsSavedViewItems">
+        {views.map((view) => (
+          <Link className={view.active ? "active" : ""} href={view.href} key={view.href}>
+            <span>{view.label}</span>{typeof view.count === "number" ? <strong>{view.count}</strong> : null}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function OperationsQueueSummary({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{ label: string; count: number; detail?: ReactNode; tone?: "info" | "healthy" | "attention" | "critical" }>;
+}) {
+  return (
+    <section className="opsQueueSummary" aria-label={title}>
+      <div className="opsPanelHeading"><span>Queue summary</span><strong>{title}</strong></div>
+      <div className="opsQueueSummaryGrid">
+        {items.map((item) => (
+          <article className={"opsQueueSummaryItem opsTone--" + (item.tone ?? "info")} key={item.label}>
+            <strong>{item.count}</strong><span>{item.label}</span>{item.detail ? <p>{item.detail}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsEvidenceGroup({
+  title,
+  children
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="opsEvidenceGroup" aria-label={title}>
+      <div className="opsPanelHeading"><span>Evidence group</span><strong>{title}</strong></div>
+      <div className="opsEvidenceGroupBody">{children}</div>
+    </section>
+  );
+}
+
+export function OperationsContextInspector({
+  title,
+  description,
+  actions
+}: {
+  title: string;
+  description: string;
+  actions: Array<{ label: string; href: string }>;
+}) {
+  return (
+    <aside className="opsContextInspector">
+      <div className="opsPanelHeading"><span>Contextual inspector</span><strong>{title}</strong></div>
+      <p>{description}</p>
+      <div className="opsContextInspectorActions">
+        {actions.map((action) => <Link href={action.href} key={action.href}>{action.label}</Link>)}
+      </div>
+    </aside>
+  );
+}
