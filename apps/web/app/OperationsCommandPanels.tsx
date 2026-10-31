@@ -444,3 +444,92 @@ export function OperationsInspectorShortcuts({
     </aside>
   );
 }
+
+
+export function OperationsTrendCard({
+  label,
+  value,
+  trend,
+  detail,
+  tone = "info"
+}: {
+  label: string;
+  value: ReactNode;
+  trend: ReactNode;
+  detail?: ReactNode;
+  tone?: "info" | "healthy" | "attention" | "critical";
+}) {
+  return (
+    <article className={"opsTrendCard opsTone--" + tone}>
+      <span>{label}</span>
+      <strong>{value}</strong>
+      <div className="opsTrendCardTrend">{trend}</div>
+      {detail ? <p>{detail}</p> : null}
+    </article>
+  );
+}
+
+export function OperationsDrilldownFilters({
+  title,
+  filters
+}: {
+  title: string;
+  filters: Array<{ label: string; href: string; active?: boolean; count?: number }>;
+}) {
+  return (
+    <nav className="opsDrilldownFilters" aria-label={title}>
+      <div className="opsPanelHeading"><span>Drilldown filters</span><strong>{title}</strong></div>
+      <div className="opsDrilldownFilterItems">
+        {filters.map((filter) => (
+          <Link className={filter.active ? "active" : ""} href={filter.href} key={filter.href}>
+            <span>{filter.label}</span>{typeof filter.count === "number" ? <strong>{filter.count}</strong> : null}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function OperationsEventGroup({
+  title,
+  entries,
+  emptyLabel = "No events available."
+}: {
+  title: string;
+  entries: Array<{ id: string; label: string; detail: ReactNode; timestamp?: string; tone?: "info" | "healthy" | "attention" | "critical" }>;
+  emptyLabel?: string;
+}) {
+  return (
+    <section className="opsEventGroup" aria-label={title}>
+      <div className="opsPanelHeading"><span>Event group</span><strong>{title}</strong></div>
+      {entries.length ? <div className="opsEventGroupItems">{entries.map((entry) => (
+        <article className={"opsEventGroupItem opsTone--" + (entry.tone ?? "info")} key={entry.id}>
+          <div><strong>{entry.label}</strong><p>{entry.detail}</p></div>
+          {entry.timestamp ? <time>{entry.timestamp}</time> : null}
+        </article>
+      ))}</div> : <p className="opsEmptyState">{emptyLabel}</p>}
+    </section>
+  );
+}
+
+export function OperationsInspectorTaskLinks({
+  title,
+  tasks
+}: {
+  title: string;
+  tasks: Array<{ label: string; href: string; detail?: string; state?: "ready" | "review" | "blocked" }>;
+}) {
+  return (
+    <aside className="opsInspectorTaskLinks">
+      <div className="opsPanelHeading"><span>Inspector tasks</span><strong>{title}</strong></div>
+      <div className="opsInspectorTaskLinkItems">
+        {tasks.map((task) => (
+          <Link className={"opsInspectorTaskLink opsInspectorTaskLink--" + (task.state ?? "review")} href={task.href} key={task.href}>
+            <strong>{task.label}</strong>
+            {task.detail ? <span>{task.detail}</span> : null}
+          </Link>
+        ))}
+      </div>
+    </aside>
+  );
+}
