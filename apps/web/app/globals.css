@@ -8696,3 +8696,30 @@ td, th {
 .opsHistoryLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
 @media(max-width:900px){.opsComparisonLayout,.opsHistoryLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsComparisonValues{grid-template-columns:1fr}.opsExceptionPivotItems{display:grid}.opsExceptionPivotItems a{width:100%;min-width:0}.opsHistoryEntry{grid-template-columns:1fr}.opsHistoryEntry time{white-space:normal}}
+
+
+/* Build 250 — trend cards, drilldown filters, responsive event groups and inspector task links */
+.opsTrendGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.85rem;margin:0 0 1rem}
+.opsTrendCard{display:grid;gap:.25rem;padding:1rem;border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96))}
+.opsTrendCard>span{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ops-muted)}
+.opsTrendCard>strong{font-size:clamp(1.6rem,3vw,2.2rem);color:#fff}
+.opsTrendCardTrend{font-size:.82rem;font-weight:800;color:#c7d7e9}
+.opsTrendCard>p{margin:0;color:var(--ops-muted);font-size:.82rem}
+.opsDrilldownFilters,.opsEventGroup,.opsInspectorTaskLinks{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsDrilldownFilterItems{display:flex;flex-wrap:wrap;gap:.5rem}
+.opsDrilldownFilterItems a{display:inline-flex;align-items:center;gap:.5rem;padding:.45rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.65rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsDrilldownFilterItems a.active{border-color:#2fb6ff;box-shadow:0 0 0 1px rgba(47,182,255,.18),0 0 16px rgba(47,182,255,.14)}
+.opsDrilldownFilterItems a strong{font-size:.75rem;color:#fff}
+.opsEventGroupItems{display:grid;gap:.55rem}
+.opsEventGroupItem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.8rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsEventGroupItem p{margin:.18rem 0 0;color:var(--ops-muted)}.opsEventGroupItem time{color:#8193aa;font-size:.78rem;white-space:nowrap}
+.opsEventGroupLayout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:0 0 1.25rem}
+.opsInspectorTaskLinkItems{display:grid;gap:.55rem}
+.opsInspectorTaskLink{display:grid;gap:.1rem;padding:.65rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.7rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsInspectorTaskLink>span{color:var(--ops-muted);font-size:.78rem}
+.opsInspectorTaskLink--ready{border-left:4px solid var(--ops-green)}
+.opsInspectorTaskLink--review{border-left:4px solid var(--ops-blue)}
+.opsInspectorTaskLink--blocked{border-left:4px solid var(--ops-red)}
+.opsTrendLayout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;margin:0 0 1.25rem}
+@media(max-width:900px){.opsEventGroupLayout,.opsTrendLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsDrilldownFilterItems{display:grid}.opsDrilldownFilterItems a{width:100%}.opsEventGroupItem{grid-template-columns:1fr}.opsEventGroupItem time{white-space:normal}}
