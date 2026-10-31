@@ -12,7 +12,8 @@ import {
 import { AiFieldSuggestions } from "./ai-field-suggestions";
 import { HelpInfo } from "./help/HelpInfo";
 import type { HelpTopicKey } from "./help/help-content";
-import { SignOutButton } from "./sign-out-button";\nimport { OperationsAreaBand } from "./OperationsCommandPanels";
+import { SignOutButton } from "./sign-out-button";
+import { OperationsAreaBand } from "./OperationsCommandPanels";
 
 const foundations = [
   "PostgreSQL row-level workspace isolation",
