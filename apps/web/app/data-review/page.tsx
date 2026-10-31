@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { listDataReviewWorkbenchForUser } from "@/lib/data-review-workbench";
 
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsActionDrawer, OpsDrawerLink } from "../OperationsCommandPanels";
 import { DataReviewWorkbench } from "./DataReviewWorkbench";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,12 @@ export default async function DataReviewPage() {
       </section>
 
       <section className="opsDrilldownPanel"><span>Operations Command · Front End drill-down</span><strong>Review & Approval</strong><p>Work from durable source evidence through cleanup, row-level decisions and governed approval without overwriting original records.</p><div><Link href="/data-library">Library</Link><Link href="/approved-data">Approved Data</Link></div></section>
+
+      <OperationsActionDrawer title="Review actions" description="Open the governed destinations used before and after row-level review. Mutations remain inside their existing permission-checked workflows.">
+        <OpsDrawerLink href="/data-library">Unified Data Library</OpsDrawerLink>
+        <OpsDrawerLink href="/approved-data">Approved Data</OpsDrawerLink>
+        <OpsDrawerLink href="/collection-runs">Collection Runs</OpsDrawerLink>
+      </OperationsActionDrawer>
 
       <DataReviewWorkbench initialModel={model} />
     </main>

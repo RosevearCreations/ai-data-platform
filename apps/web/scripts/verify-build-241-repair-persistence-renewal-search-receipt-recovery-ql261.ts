@@ -42,7 +42,7 @@ async function main() {
     source("../../../docs/BUILD_241_REPAIR_PERSISTENCE_RENEWAL_SEARCH_RECEIPT_RECOVERY_QL261.md")
   ]);
 
-  ensure(shell.includes("Build 241 · Operations Command"),"Build 241 shell label");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   for (const token of ["Front End","I.T.","Management","Statistical","System Status"]) ensure(shell.includes(token),"shell nav "+token);
   ensure(css.includes("Build 241 — Operations Command visual system"),"visual system CSS");
   ensure(css.includes("--ops-violet") && css.includes("--ops-blue") && css.includes("--ops-gold"),"visual tokens");

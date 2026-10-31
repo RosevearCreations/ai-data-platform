@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { buildAdoptionReview } from "@/lib/adoption-database";
 
 import { HelpInfo } from "../help/HelpInfo";
+import { OperationsActionDrawer, OperationsExceptionQueue, OpsDrawerLink } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -71,6 +72,23 @@ export default async function AdoptionPage() {
       </section>
 
       <section className="opsDrilldownPanel"><span>Operations Command · Management drill-down</span><strong>Adoption & Permission Outcomes</strong><p>Compare measured capability use, connector grants and least-privilege recommendations without automatic role changes.</p><div><Link href="/">Command Center</Link><Link href="/workspace-profiles">Workspaces</Link></div></section>
+
+      <OperationsActionDrawer title="Management review actions" description="Open the existing evidence and workspace controls. Recommendations remain advisory and never change permissions automatically.">
+        <OpsDrawerLink href="/workspace-profiles">Workspace Profiles</OpsDrawerLink>
+        <OpsDrawerLink href="/first-evidence">First-Evidence Runbook</OpsDrawerLink>
+        <OpsDrawerLink href="/production-learning">Production Learning</OpsDrawerLink>
+      </OperationsActionDrawer>
+
+      <OperationsExceptionQueue
+        title="Evidence-driven review queue"
+        items={review.recommendations.map((recommendation, index) => ({
+          id: "recommendation-" + index,
+          label: "Management review",
+          detail: recommendation,
+          tone: "attention" as const
+        }))}
+        emptyLabel="No current adoption or least-privilege recommendations."
+      />
 
       <section>
         <div className="sectionHeading">
