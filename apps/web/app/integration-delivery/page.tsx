@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsAreaBand, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
@@ -112,12 +112,15 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </div>
       </section>
 
-      <section className="opsScreenBand" aria-label="Operations Command System Status">
-        <div><span className="opsScreenBandLabel">Operations Command</span><strong>System Status</strong><p>Receiver readiness, connection state, delivery observability and append-only integration acknowledgements.</p></div>
-        <nav className="opsScreenBandLinks" aria-label="System Status command links">
-          <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
-        </nav>
-      </section>
+      <OperationsAreaBand
+        area="System Status"
+        description="Receiver readiness, connection state, delivery observability and append-only integration acknowledgements."
+        links={[
+          { label: "Comms Hub", href: "/integration-delivery/comms-hub" },
+          { label: "Remote Execution", href: "/remote-execution" },
+          { label: "Production Learning", href: "/production-learning" }
+        ]}
+      />
 
       <div className="opsTrendGrid">
         <OperationsTrendCard
