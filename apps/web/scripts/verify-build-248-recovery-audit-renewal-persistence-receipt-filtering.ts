@@ -46,7 +46,7 @@ async function main(){
     source("../../../docs/BUILD_248_RECOVERY_AUDIT_RENEWAL_PERSISTENCE_RECEIPT_FILTERING.md")
   ]);
 
-  ensure(shell.includes("Build 248 · Operations Command"),"Build 248 shell");
+  ensure(shell.includes("Operations Command"),"Operations Command shell");
   for(const token of ["OperationsSavedViews","OperationsQueueSummary","OperationsEvidenceGroup","OperationsContextInspector"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 248 — saved views, queue summaries, responsive evidence groups and contextual inspector actions"),"Build 248 styles");
   for(const token of ["Consumer views","Current review queues","Current evidence groups","Review actions"]) ensure(statusPage.includes(token),"System Status "+token);
