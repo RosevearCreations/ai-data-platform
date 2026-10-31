@@ -8744,3 +8744,21 @@ td, th {
 .opsInspectorCheckpoint>span{display:grid;place-items:center;width:1.4rem;height:1.4rem;border-radius:50%;border:1px solid rgba(100,145,188,.4);color:#fff}.opsInspectorCheckpoint--complete>span{border-color:var(--ops-green);color:var(--ops-green)}.opsInspectorCheckpoint--current>span{border-color:var(--ops-blue);color:var(--ops-blue)}
 @media(max-width:900px){.opsBuild251Layout,.opsActivityLaneLayout{grid-template-columns:1fr}}
 @media(max-width:640px){.opsLayeredFilterRow>div{display:grid}.opsLayeredFilterRow a{width:100%}}
+
+
+/* Build 252 — health summaries, segmented views, responsive workflow timelines and inspector handoff cards */
+.opsHealthSummary,.opsSegmentedView,.opsWorkflowTimeline,.opsInspectorHandoffCard{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.opsBuild252HealthLayout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(18rem,.65fr);gap:1rem;margin:0 0 1rem}
+.opsHealthSummaryItems{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.opsHealthSummaryItem{display:grid;gap:.18rem;padding:.75rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsHealthSummaryItem>span{font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ops-muted)}
+.opsHealthSummaryItem>strong{font-size:1.45rem;color:#fff}.opsHealthSummaryItem>p{margin:0;color:var(--ops-muted);font-size:.8rem}
+.opsSegmentedViewItems{display:grid;gap:.5rem}.opsSegmentedViewItems a{display:flex;align-items:center;justify-content:space-between;gap:.65rem;padding:.6rem .7rem;border:1px solid rgba(100,145,188,.28);border-radius:.7rem;color:#dce8f6;text-decoration:none;background:rgba(5,18,31,.82)}
+.opsSegmentedViewItems a.active{border-color:#2fb6ff;box-shadow:0 0 0 1px rgba(47,182,255,.18),0 0 16px rgba(47,182,255,.14)}.opsSegmentedViewItems a>span{display:grid;gap:.05rem}.opsSegmentedViewItems small{color:var(--ops-muted);font-size:.74rem}.opsSegmentedViewItems b{color:#fff;font-size:.82rem}
+.opsBuild252WorkflowLayout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(20rem,.9fr);gap:1rem;margin:0 0 1.25rem}
+.opsWorkflowTimeline ol{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}.opsWorkflowTimelineItem{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.7rem;padding:.72rem;border:1px solid rgba(91,139,181,.18);border-radius:.75rem;background:rgba(3,15,27,.58)}
+.opsWorkflowTimelineMarker{width:.75rem;height:.75rem;border-radius:50%;margin-top:.3rem;border:2px solid var(--ops-blue);background:rgba(47,182,255,.15)}.opsWorkflowTimelineItem--complete .opsWorkflowTimelineMarker{border-color:var(--ops-green);background:var(--ops-green)}.opsWorkflowTimelineItem--current .opsWorkflowTimelineMarker{box-shadow:0 0 0 4px rgba(47,182,255,.12)}.opsWorkflowTimelineItem--review .opsWorkflowTimelineMarker{border-color:#9a7dff;background:rgba(154,125,255,.18)}
+.opsWorkflowTimelineItem p{margin:.15rem 0 0;color:var(--ops-muted)}.opsWorkflowTimelineItem small{display:block;margin-top:.25rem;color:#8193aa}
+.opsInspectorHandoffGrid{display:grid;gap:.65rem}.opsInspectorHandoffCard{display:grid;gap:.45rem}.opsInspectorHandoffStatus{font-size:.82rem;font-weight:900;letter-spacing:.05em;color:#fff}.opsInspectorHandoffCard>p{margin:0;color:var(--ops-muted)}.opsInspectorHandoffCard>a{justify-self:start;margin-top:.2rem;color:#dce8f6;font-weight:800;text-decoration:none}.opsInspectorHandoffCard>a:hover{text-decoration:underline}
+@media(max-width:900px){.opsBuild252HealthLayout,.opsBuild252WorkflowLayout{grid-template-columns:1fr}}
+@media(max-width:640px){.opsHealthSummaryItems{grid-template-columns:1fr}.opsSegmentedViewItems a{align-items:flex-start}}

@@ -119,7 +119,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 251 · Operations Command</span>{/* Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
+          <span>Build 252 · Operations Command</span>{/* Build 251 · Operations Command legacy verifier marker · Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>

@@ -647,3 +647,113 @@ export function OperationsInspectorCheckpoints({
     </aside>
   );
 }
+
+
+export function OperationsHealthSummary({
+  title,
+  items
+}: {
+  title: string;
+  items: Array<{
+    label: string;
+    value: ReactNode;
+    detail?: ReactNode;
+    tone?: "info" | "healthy" | "attention" | "critical";
+  }>;
+}) {
+  return (
+    <section className="opsHealthSummary" aria-label={title}>
+      <div className="opsPanelHeading"><span>Health summary</span><strong>{title}</strong></div>
+      <div className="opsHealthSummaryItems">
+        {items.map((item) => (
+          <article className={"opsHealthSummaryItem opsTone--" + (item.tone ?? "info")} key={item.label}>
+            <span>{item.label}</span>
+            <strong>{item.value}</strong>
+            {item.detail ? <p>{item.detail}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsSegmentedView({
+  title,
+  segments
+}: {
+  title: string;
+  segments: Array<{
+    label: string;
+    href: string;
+    active?: boolean;
+    count?: number;
+    detail?: string;
+  }>;
+}) {
+  return (
+    <nav className="opsSegmentedView" aria-label={title}>
+      <div className="opsPanelHeading"><span>Segmented view</span><strong>{title}</strong></div>
+      <div className="opsSegmentedViewItems">
+        {segments.map((segment) => (
+          <Link className={segment.active ? "active" : ""} href={segment.href} key={segment.href}>
+            <span><strong>{segment.label}</strong>{segment.detail ? <small>{segment.detail}</small> : null}</span>
+            {typeof segment.count === "number" ? <b>{segment.count}</b> : null}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  );
+}
+
+export function OperationsWorkflowTimeline({
+  title,
+  entries
+}: {
+  title: string;
+  entries: Array<{
+    id: string;
+    label: string;
+    detail: ReactNode;
+    state?: "complete" | "current" | "review";
+    meta?: ReactNode;
+  }>;
+}) {
+  return (
+    <section className="opsWorkflowTimeline" aria-label={title}>
+      <div className="opsPanelHeading"><span>Workflow timeline</span><strong>{title}</strong></div>
+      <ol>
+        {entries.map((entry) => (
+          <li className={"opsWorkflowTimelineItem opsWorkflowTimelineItem--" + (entry.state ?? "review")} key={entry.id}>
+            <span className="opsWorkflowTimelineMarker" aria-hidden="true" />
+            <div><strong>{entry.label}</strong><p>{entry.detail}</p>{entry.meta ? <small>{entry.meta}</small> : null}</div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+export function OperationsInspectorHandoffCard({
+  title,
+  status,
+  detail,
+  href,
+  actionLabel = "Open handoff",
+  tone = "info"
+}: {
+  title: string;
+  status: ReactNode;
+  detail: ReactNode;
+  href?: string;
+  actionLabel?: string;
+  tone?: "info" | "healthy" | "attention" | "critical";
+}) {
+  return (
+    <article className={"opsInspectorHandoffCard opsTone--" + tone}>
+      <div className="opsPanelHeading"><span>Inspector handoff</span><strong>{title}</strong></div>
+      <div className="opsInspectorHandoffStatus">{status}</div>
+      <p>{detail}</p>
+      {href ? <Link href={href}>{actionLabel}</Link> : <span className="opsStatusText">{actionLabel}</span>}
+    </article>
+  );
+}
