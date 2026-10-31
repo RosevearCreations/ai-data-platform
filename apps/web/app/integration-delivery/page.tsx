@@ -6,7 +6,7 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsDataTable, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceTimeline, OperationsExceptionQueue, OperationsInspector, OperationsModuleGrid, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
