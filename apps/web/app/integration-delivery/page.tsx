@@ -6,12 +6,12 @@ import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
 
 import { HelpInfo } from "../help/HelpInfo";
-import { OperationsActionDrawer, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorShortcuts, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OpsDrawerLink } from "../OperationsCommandPanels";
+import { OperationsActionDrawer, OperationsActivitySummary, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHistoryPanel, OperationsInspector, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsModuleGrid, OperationsQueueSummary, OperationsSavedViews, OperationsSearchPanel, OperationsStatusBadge, OperationsStatusGroup, OperationsTrendCard, OpsDrawerLink } from "../OperationsCommandPanels";
 import { IntegrationDeliveryPanel } from "./IntegrationDeliveryPanel";
 
 export const dynamic = "force-dynamic";
 
-export default async function IntegrationDeliveryPage({ searchParams }: { searchParams: Promise<{ q?: string; view?: string }> }) {
+export default async function IntegrationDeliveryPage({ searchParams }: { searchParams: Promise<{ q?: string; view?: string; event?: string }> }) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) {
     return (
@@ -34,6 +34,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
   const params = await searchParams;
   const query = (params.q ?? "").trim().toLowerCase();
   const view = ["all","configured","needs-config","exceptions"].includes(params.view ?? "") ? (params.view ?? "all") : "all";
+  const eventView = ["all","accepted","errors"].includes(params.event ?? "") ? (params.event ?? "all") : "all";
   const overview = await listIntegrationDeliveryOverviewForUser(session.user.id);
   const consumers = (["rosie-dazzlers", "devil-n-dove"] as const).map((target) => {
     const config = integrationConsumerConfiguration(target);
@@ -57,13 +58,38 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
     : viewConsumers;
   const recentEvents = overview.flatMap((entry) => entry.recent);
   const successfulEvents = recentEvents.filter((event) => !event.httpStatus || event.httpStatus < 400);
-  const rejectedEvents = recentEvents.filter((event) => Boolean(event.httpStatus && event.httpStatus >= 400)).length;
+  const rejectedEventRows = recentEvents.filter((event) => Boolean(event.httpStatus && event.httpStatus >= 400));
+  const rejectedEvents = rejectedEventRows.length;
+  const acceptedEventRows = recentEvents.filter((event) => !event.httpStatus || event.httpStatus < 400);
+  const eventRows =
+    eventView === "accepted" ? acceptedEventRows :
+    eventView === "errors" ? rejectedEventRows :
+    recentEvents;
+  const nowMs = Date.now();
+  const last24hEvents = recentEvents.filter((event) => {
+    const age = nowMs - event.occurredAt.getTime();
+    return age >= 0 && age <= 86_400_000;
+  });
+  const previous24hEvents = recentEvents.filter((event) => {
+    const age = nowMs - event.occurredAt.getTime();
+    return age > 86_400_000 && age <= 172_800_000;
+  });
+  const eventDelta = last24hEvents.length - previous24hEvents.length;
   const configuredCount = consumers.filter((consumer) => consumer.configured).length;
   const needsConfigCount = consumers.length - configuredCount;
+  const eventViewHref = (nextEventView: string) => {
+    const paramsOut = new URLSearchParams();
+    if (query) paramsOut.set("q", query);
+    if (view !== "all") paramsOut.set("view", view);
+    if (nextEventView !== "all") paramsOut.set("event", nextEventView);
+    const suffix = paramsOut.toString();
+    return suffix ? "/integration-delivery?" + suffix : "/integration-delivery";
+  };
   const savedViewHref = (nextView: string) => {
     const paramsOut = new URLSearchParams();
     if (query) paramsOut.set("q", query);
     if (nextView !== "all") paramsOut.set("view", nextView);
+    if (eventView !== "all") paramsOut.set("event", eventView);
     const suffix = paramsOut.toString();
     return suffix ? "/integration-delivery?" + suffix : "/integration-delivery";
   };
@@ -92,6 +118,82 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           <Link href="/integration-delivery/comms-hub">Comms Hub</Link><Link href="/remote-execution">Remote Execution</Link><Link href="/production-learning">Production Learning</Link>
         </nav>
       </section>
+
+      <div className="opsTrendGrid">
+        <OperationsTrendCard
+          label="Delivery events · last 24h"
+          value={last24hEvents.length}
+          trend={(eventDelta >= 0 ? "+" : "") + eventDelta + " vs prior 24h"}
+          detail={previous24hEvents.length + " event(s) in the preceding 24-hour window."}
+          tone={eventDelta > 0 ? "info" : "healthy"}
+        />
+        <OperationsTrendCard
+          label="Accepted / non-error"
+          value={acceptedEventRows.length}
+          trend={recentEvents.length ? Math.round((acceptedEventRows.length / recentEvents.length) * 100) + "% of recent events" : "No recent events"}
+          detail="Current durable acknowledgement history."
+          tone={rejectedEvents ? "attention" : "healthy"}
+        />
+        <OperationsTrendCard
+          label="HTTP exceptions"
+          value={rejectedEvents}
+          trend={recentEvents.length ? Math.round((rejectedEvents / recentEvents.length) * 100) + "% of recent events" : "No recent events"}
+          detail="HTTP 4xx/5xx acknowledgements in visible history."
+          tone={rejectedEvents ? "critical" : "healthy"}
+        />
+        <OperationsTrendCard
+          label="Configured consumers"
+          value={configuredCount + "/" + consumers.length}
+          trend={consumers.length ? Math.round((configuredCount / consumers.length) * 100) + "% configured" : "No consumers"}
+          detail={needsConfigCount + " consumer(s) still require configuration review."}
+          tone={needsConfigCount ? "attention" : "healthy"}
+        />
+      </div>
+
+      <div className="opsTrendLayout">
+        <OperationsDrilldownFilters
+          title="Delivery event drilldown"
+          filters={[
+            { label: "All events", href: eventViewHref("all"), active: eventView === "all", count: recentEvents.length },
+            { label: "Accepted / non-error", href: eventViewHref("accepted"), active: eventView === "accepted", count: acceptedEventRows.length },
+            { label: "HTTP exceptions", href: eventViewHref("errors"), active: eventView === "errors", count: rejectedEvents }
+          ]}
+        />
+        <OperationsInspectorTaskLinks
+          title="Review tasks"
+          tasks={[
+            { label: "Review visible event history", href: "#build250-event-groups", detail: eventRows.length + " event(s) in the current drilldown.", state: "ready" },
+            { label: "Inspect consumer configuration", href: "#build250-consumer-table", detail: needsConfigCount + " consumer(s) need configuration review.", state: needsConfigCount ? "review" : "ready" },
+            { label: "Review Comms Hub checks", href: "/integration-delivery/comms-hub", detail: "Source-side connection checks remain available.", state: "review" },
+            { label: "QL-266 review", href: "#build250-ql266", detail: "Still UNDER REVIEW; not reactivated by Build 250.", state: "review" }
+          ]}
+        />
+      </div>
+
+      <div className="opsEventGroupLayout" id="build250-event-groups">
+        <OperationsEventGroup
+          title="Accepted / non-error events"
+          entries={acceptedEventRows.slice(0, 8).map((event) => ({
+            id: event.eventId,
+            label: event.eventType,
+            detail: event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
+            timestamp: event.occurredAt.toLocaleString(),
+            tone: "healthy" as const
+          }))}
+          emptyLabel="No accepted/non-error events are available in the current history."
+        />
+        <OperationsEventGroup
+          title="HTTP exception events"
+          entries={rejectedEventRows.slice(0, 8).map((event) => ({
+            id: event.eventId,
+            label: event.eventType,
+            detail: event.target + " · " + event.validationCode + " · HTTP " + event.httpStatus,
+            timestamp: event.occurredAt.toLocaleString(),
+            tone: "critical" as const
+          }))}
+          emptyLabel="No HTTP exception events are available in the current history."
+        />
+      </div>
 
       <div className="opsComparisonLayout">
         <OperationsComparisonCard
@@ -180,9 +282,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           <p>{recentEvents.length} recent event(s) · {rejectedEvents} HTTP exception(s).</p>
           <OperationsStatusBadge tone={rejectedEvents ? "attention" : "healthy"}>{rejectedEvents ? "Exceptions present" : "No HTTP exceptions"}</OperationsStatusBadge>
         </article>
-        <article className="card">
+        <article className="card" id="build250-ql266">
           <h3>QL-266</h3>
-          <p>Deferred by owner direction and not reactivated in Build 248.</p>
+          <p>Deferred by owner direction and not reactivated in Build 250.</p>
           <OperationsStatusBadge tone="info">UNDER REVIEW</OperationsStatusBadge>
         </article>
       </OperationsEvidenceGroup>
@@ -254,7 +356,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         />
       </div>
 
-      <div className="opsWorkflowLayout">
+      <div className="opsWorkflowLayout" id="build250-consumer-table">
         <OperationsDataTable
           caption="Consumer configuration"
           rows={filteredConsumers}
