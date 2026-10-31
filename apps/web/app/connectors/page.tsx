@@ -5,7 +5,8 @@ import { auth } from "@/lib/auth";
 import { listConnectorOverviewForUser } from "@/lib/connector-database";
 
 import { ConnectorManager } from "./ConnectorManager";
-import { HelpInfo } from "../help/HelpInfo";\nimport { OperationsAreaBand } from "../OperationsCommandPanels";
+import { HelpInfo } from "../help/HelpInfo";
+import { OperationsAreaBand } from "../OperationsCommandPanels";
 
 export const dynamic = "force-dynamic";
 
