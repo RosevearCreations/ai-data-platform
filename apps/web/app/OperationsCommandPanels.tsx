@@ -533,3 +533,117 @@ export function OperationsInspectorTaskLinks({
     </aside>
   );
 }
+
+
+export function OperationsScorecard({
+  label,
+  value,
+  detail,
+  meta,
+  tone = "info"
+}: {
+  label: string;
+  value: ReactNode;
+  detail?: ReactNode;
+  meta?: ReactNode;
+  tone?: "info" | "healthy" | "attention" | "critical";
+}) {
+  return (
+    <article className={"opsScorecard opsTone--" + tone}>
+      <span>{label}</span>
+      <strong>{value}</strong>
+      {detail ? <p>{detail}</p> : null}
+      {meta ? <small>{meta}</small> : null}
+    </article>
+  );
+}
+
+export function OperationsLayeredFilters({
+  title,
+  layers
+}: {
+  title: string;
+  layers: Array<{
+    label: string;
+    options: Array<{ label: string; href: string; active?: boolean; count?: number }>;
+  }>;
+}) {
+  return (
+    <section className="opsLayeredFilters" aria-label={title}>
+      <div className="opsPanelHeading"><span>Layered filters</span><strong>{title}</strong></div>
+      <div className="opsLayeredFilterRows">
+        {layers.map((layer) => (
+          <div className="opsLayeredFilterRow" key={layer.label}>
+            <strong>{layer.label}</strong>
+            <div>
+              {layer.options.map((option) => (
+                <Link className={option.active ? "active" : ""} href={option.href} key={option.href}>
+                  <span>{option.label}</span>
+                  {typeof option.count === "number" ? <b>{option.count}</b> : null}
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function OperationsActivityLane({
+  title,
+  entries,
+  emptyLabel = "No activity is available."
+}: {
+  title: string;
+  entries: Array<{
+    id: string;
+    label: string;
+    detail: ReactNode;
+    timestamp?: string;
+    state?: "complete" | "current" | "attention";
+  }>;
+  emptyLabel?: string;
+}) {
+  return (
+    <section className="opsActivityLane" aria-label={title}>
+      <div className="opsPanelHeading"><span>Activity lane</span><strong>{title}</strong></div>
+      {entries.length ? (
+        <ol>
+          {entries.map((entry) => (
+            <li className={"opsActivityLaneItem opsActivityLaneItem--" + (entry.state ?? "current")} key={entry.id}>
+              <span className="opsActivityLaneDot" aria-hidden="true" />
+              <div><strong>{entry.label}</strong><p>{entry.detail}</p>{entry.timestamp ? <time>{entry.timestamp}</time> : null}</div>
+            </li>
+          ))}
+        </ol>
+      ) : <p className="opsEmptyState">{emptyLabel}</p>}
+    </section>
+  );
+}
+
+export function OperationsInspectorCheckpoints({
+  title,
+  checkpoints
+}: {
+  title: string;
+  checkpoints: Array<{
+    label: string;
+    detail: string;
+    state?: "complete" | "current" | "review";
+  }>;
+}) {
+  return (
+    <aside className="opsInspectorCheckpoints">
+      <div className="opsPanelHeading"><span>Inspector checkpoints</span><strong>{title}</strong></div>
+      <ol>
+        {checkpoints.map((checkpoint) => (
+          <li className={"opsInspectorCheckpoint opsInspectorCheckpoint--" + (checkpoint.state ?? "review")} key={checkpoint.label}>
+            <span aria-hidden="true">{checkpoint.state === "complete" ? "✓" : checkpoint.state === "current" ? "•" : "○"}</span>
+            <div><strong>{checkpoint.label}</strong><p>{checkpoint.detail}</p></div>
+          </li>
+        ))}
+      </ol>
+    </aside>
+  );
+}
