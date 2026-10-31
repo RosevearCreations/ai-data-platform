@@ -117,6 +117,15 @@ export default async function IntegrationDeliveryPage() {
         </OperationsInspector>
       </div>
 
+      <OperationsModuleGrid>
+        <OperationsDetailInspector title="Consumer review" status="Current">
+          <p>Review consumer configuration and delivery evidence from the current system-status workspace.</p>
+        </OperationsDetailInspector>
+        <OperationsDetailInspector title="Responsive module layout" status="Active">
+          <p>This workspace uses the shared responsive module-grid pattern for desktop and smaller screens.</p>
+        </OperationsDetailInspector>
+      </OperationsModuleGrid>
+
       <section>
         <div className="sectionHeading">
           <div>
