@@ -94,6 +94,7 @@ export default async function HomePage() {
         )}
       </section>
 
+      {/* Operations Command Management legacy verifier marker */}
       <OperationsAreaBand
         area="Management"
         description="Current priorities, operational health, workspace standing and governed follow-through from live platform evidence."
