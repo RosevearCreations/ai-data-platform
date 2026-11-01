@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { BULK_REVIEW_REASON_CODES, type BulkReviewDecision, type BulkReviewModel } from "@/lib/bulk-data-review";
+import { BULK_REVIEW_REASON_CODES, type BulkReviewDecision, type BulkReviewModel } from "@/lib/bulk-data-review-contract";
 type BulkPreviewItem={reviewId:string;title:string;includedCount:number;rowCount:number;};
 type BulkPreview={workspaceId:string;reviewIds:string[];decision:BulkReviewDecision;reasonCode:string;note:string;previewToken:string;items:BulkPreviewItem[];};
 async function post(body:Record<string,unknown>){const response=await fetch("/api/data-review/bulk",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(typeof payload.error==="string"?payload.error:"Bulk review request failed.");return payload;}
