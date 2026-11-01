@@ -1,18 +1,6 @@
 import type { QueryResultRow } from "pg";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
-
-export type AuditEvidenceItem={
-  id:string; workspaceId:string; workspaceName:string; module:string; operation:string; result:string;
-  actorUserId:string; occurredAt:string; source:string; consumer:string; collectionRunId:string; recordId:string;
-  summary:string; details:Record<string,unknown>;
-};
-export type AuditEvidenceModel={
-  generatedAt:string;
-  workspaces:Array<{id:string;name:string;role:"owner"|"admin"|"member"}>;
-  items:AuditEvidenceItem[];
-  filters:{modules:string[];operations:string[];results:string[];actors:string[];sources:string[];consumers:string[]};
-  totals:{events:number;modules:number;workspaces:number};
-};
+import type { AuditEvidenceItem, AuditEvidenceModel } from "./unified-audit-evidence-contract";
 type EvidenceRow=QueryResultRow&{
  id:string;workspace_id:string;workspace_name:string;module:string;operation:string;result:string;actor_user_id:string|null;
  occurred_at:Date;source:string|null;consumer:string|null;collection_run_id:string|null;record_id:string|null;summary:string;details:Record<string,unknown>|null;
