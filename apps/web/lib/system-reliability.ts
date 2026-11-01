@@ -4,7 +4,7 @@ import { listCollectionRunConsoleForUser } from "./collection-runs";
 import { listIntegrationDeliveryOverviewForUser } from "./integration-delivery-database";
 import { buildOperatorAttentionCenter } from "./operator-attention";
 import { listBulkReviewWorkbenchForUser } from "./bulk-data-review";
-import { listWorkspacesForUser, withUserDatabase } from "./database";
+import { withUserDatabase } from "./database";
 import type { ReliabilityDashboardModel, ReliabilityException, ReliabilitySignal, ReliabilityState } from "./system-reliability-contract";
 
 function signal(id:string,label:string,state:ReliabilityState,value:string,detail:string,href:string):ReliabilitySignal{
@@ -23,8 +23,7 @@ export async function buildSystemReliabilityDashboard(userId:string):Promise<Rel
   return {reachable:true,latencyMs:0,authorizedWorkspaces:Number(count.rows[0]?.count??0)};
  });
  database.latencyMs=Math.max(0,Math.round(performance.now()-dbStarted));
- const [workspaces,collection,connectors,delivery,attention,bulk]=await Promise.all([
-  listWorkspacesForUser(userId),
+ const [collection,connectors,delivery,attention,bulk]=await Promise.all([
   listCollectionRunConsoleForUser(userId),
   listConnectorOverviewForUser(userId),
   listIntegrationDeliveryOverviewForUser(userId),
