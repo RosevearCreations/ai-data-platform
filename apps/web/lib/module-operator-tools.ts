@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/connectors", "/remote-execution"]
+        itemHrefs: ["/connectors", "/connector-diagnostics", "/remote-execution"]
       },
       {
         id: "deliver",
@@ -184,6 +184,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/connectors",
         label: "Connectors",
         description: "Review connector capabilities and grants."
+      },
+      {
+        href: "/connector-diagnostics",
+        label: "Connector diagnostics",
+        description: "Validate connector readiness and follow guided recovery."
       },
       {
         href: "/remote-execution",
