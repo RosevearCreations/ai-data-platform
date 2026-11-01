@@ -77,6 +77,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "data-library-records"
       },
       {
+        href: "/data-review/bulk",
+        label: "Bulk Review",
+        description: "Preview and commit governed multi-batch decisions or route exceptions.",
+        helpTopic: "data-library-records"
+      },
+      {
         href: "/data-quality",
         label: "Data Quality",
         description: "Score validation findings, duplicates, staleness and source changes before approval.",
