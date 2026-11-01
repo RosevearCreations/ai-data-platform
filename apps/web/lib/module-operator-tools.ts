@@ -30,8 +30,8 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         id: "review-approve",
         label: "Review & approve",
-        description: "Review normalized data, then inspect the governed approved-data surface.",
-        itemHrefs: ["/data-review", "/approved-data"]
+        description: "Review normalized data, inspect deterministic quality findings, then inspect the governed approved-data surface.",
+        itemHrefs: ["/data-review", "/data-quality", "/approved-data"]
       }
     ],
     shortcuts: [
@@ -44,6 +44,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/data-review",
         label: "Review queue",
         description: "Open the governed review surface."
+      },
+      {
+        href: "/data-quality",
+        label: "Quality workbench",
+        description: "Inspect deterministic validation and duplicate findings."
       }
     ]
   },
