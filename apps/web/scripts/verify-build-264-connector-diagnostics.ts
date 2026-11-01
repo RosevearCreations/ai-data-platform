@@ -17,6 +17,7 @@ async function main(){
  ]);
  for(const token of ["normalizeConnectorConfig","validateConnectorSecretReferences","Permission diagnostics","Endpoint validation","Credential reference age","Latest connector evidence"])ensure(lib.includes(token),"diagnostic "+token);
  ensure(lib.includes("executeWorkspaceConnector")&&lib.includes('capability==="export"'),"controlled non-export connection test");
+ ensure(contract.includes("ConnectorDiagnosticsModel")&&contract.includes("ConnectorDiagnosticCheck"),"diagnostics contract");
  ensure(api.includes("runConnectorConnectionTest")&&api.includes("buildConnectorDiagnostics"),"diagnostics API");
  ensure(page.includes("Build 264")&&page.includes("Provider-safe diagnostics"),"page safety boundary");
  ensure(client.includes("Run controlled connection test")&&client.includes("Secret values are never displayed"),"operator UI");
