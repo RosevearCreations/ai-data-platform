@@ -214,7 +214,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "configure",
         label: "Configure workspace",
         description: "Review workspace profiles, permissions and adoption standing.",
-        itemHrefs: ["/workspace-profiles", "/adoption"]
+        itemHrefs: ["/workspace-profiles", "/adoption", "/security-access-review"]
       },
       {
         id: "operate-maintain",
@@ -234,6 +234,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/workspace-profiles",
         label: "Workspace profiles",
         description: "Review capabilities and operating profiles."
+      },
+      {
+        href: "/security-access-review",
+        label: "Security & access review",
+        description: "Review workspace authority and least-privilege recommendations."
       },
       {
         href: "/first-evidence",
