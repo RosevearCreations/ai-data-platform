@@ -87,7 +87,7 @@ export async function buildSecurityAccessReview(userId:string):Promise<SecurityA
     }
     const connectorEntry=connectorByWorkspace.get(workspace.id);
     const connectors:AccessReviewConnector[]=(connectorEntry?.installations??[]).map(installation=>{
-      const used=new Set((connectorEntry?.audit??[]).filter(a=>a.connectorKey===installation.connectorKey&&a.status==="succeeded").map(a=>a.capability));
+      const used=new Set<string>((connectorEntry?.audit??[]).filter(a=>a.connectorKey===installation.connectorKey&&a.status==="succeeded").map(a=>String(a.capability)));
       const unused=installation.grantedCapabilities.filter(grant=>!used.has(grant));
       return {
         connectorKey:installation.connectorKey,
