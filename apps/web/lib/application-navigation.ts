@@ -77,6 +77,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "data-library-records"
       },
       {
+        href: "/data-quality",
+        label: "Data Quality",
+        description: "Score validation findings, duplicates, staleness and source changes before approval.",
+        helpTopic: "data-quality-workbench"
+      },
+      {
         href: "/approved-data",
         label: "Approved Data",
         description: "Review data that is eligible for governed publishing.",
