@@ -48,6 +48,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Operator Workspaces",
         description: "Reopen saved filter profiles and browser-local working views.",
         helpTopic: "operator-workspaces"
+      },
+      {
+        href: "/attention",
+        label: "Attention Center",
+        description: "Review failures, exceptions, pending decisions and follow-up work.",
+        helpTopic: "operator-attention-center"
       }
     ]
   },
