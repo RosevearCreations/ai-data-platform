@@ -13,9 +13,9 @@ async function main() {
     source("app/provenance-lineage/page.tsx"),
     source("lib/application-navigation.ts"),
     source("lib/module-operator-tools.ts"),
-    source("../../../docs/BUILD_260_PROVENANCE_DATA_LINEAGE.md"),
-    source("../../../docs/integration/ql266-ai-data-platform-build260-review.json"),
-    source("../../../docs/NEXT_BUILDS_254_272.md")
+    source("../../docs/BUILD_260_PROVENANCE_DATA_LINEAGE.md"),
+    source("../../docs/integration/ql266-ai-data-platform-build260-review.json"),
+    source("../../docs/NEXT_BUILDS_254_272.md")
   ]);
   for (const token of [
     "listDataReviewWorkbenchForUser",
