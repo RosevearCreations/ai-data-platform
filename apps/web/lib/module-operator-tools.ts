@@ -174,6 +174,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         description: "Review integration readiness, publication mapping and controlled live delivery.",
         itemHrefs: [
           "/integration-delivery",
+          "/integration-simulator",
           "/approved-data/delivery",
           "/approved-data/live-delivery"
         ]
@@ -199,6 +200,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/integration-delivery",
         label: "Delivery readiness",
         description: "Review integration-delivery evidence."
+      },
+      {
+        href: "/integration-simulator",
+        label: "Delivery simulator",
+        description: "Preview package compatibility without sending anything."
       }
     ]
   },
