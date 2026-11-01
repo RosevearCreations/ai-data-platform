@@ -10,11 +10,6 @@ import type { ReliabilityDashboardModel, ReliabilityException, ReliabilitySignal
 function signal(id:string,label:string,state:ReliabilityState,value:string,detail:string,href:string):ReliabilitySignal{
  return {id,label,state,value,detail,href};
 }
-function latestFailureAt(values:Array<{createdAt?:Date;occurredAt?:Date}>){
- const dates=values.flatMap((value)=>[value.createdAt,value.occurredAt].filter((item):item is Date=>item instanceof Date));
- if(!dates.length)return null;
- return new Date(Math.max(...dates.map((item)=>item.getTime()))).toISOString();
-}
 export async function buildSystemReliabilityDashboard(userId:string):Promise<ReliabilityDashboardModel>{
  const dbStarted=performance.now();
  const database=await withUserDatabase(userId,async(client)=>{
