@@ -8861,3 +8861,29 @@ td, th {
 .operatorWorkspaceShell{display:grid;gap:1rem}.operatorWorkspaceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.operatorWorkspaceCard{display:grid;gap:.8rem}.operatorWorkspaceCard h2{margin:.15rem 0 0}.operatorWorkspaceCardTop button{border:1px solid rgba(100,145,188,.25);border-radius:.55rem;background:rgba(2,13,24,.66);color:var(--ops-muted);padding:.38rem .55rem;cursor:pointer}.operatorWorkspaceCard dl{display:grid;gap:.4rem;margin:0}.operatorWorkspaceCard dl>div{display:grid;grid-template-columns:minmax(8rem,.7fr) minmax(0,1.3fr);gap:.6rem;padding:.4rem 0;border-bottom:1px solid rgba(100,145,188,.12)}.operatorWorkspaceCard dt{color:var(--ops-muted)}.operatorWorkspaceCard dd{margin:0;color:#fff;overflow-wrap:anywhere}
 .libraryFilterGrid select[multiple]{min-height:8.4rem}
 @media(max-width:800px){.operatorWorkspaceGrid{grid-template-columns:1fr}.operatorWorkspaceSaveRow{grid-template-columns:1fr}.operatorWorkspaceMenuPanel{position:fixed;left:1rem;right:1rem;top:5rem;width:auto}.operatorWorkspaceCard dl>div{grid-template-columns:1fr}}
+
+
+/* Build 258 — Operator Attention Center, Exception Inbox & Follow-Up Queue */
+.attentionCenterShell{display:grid;gap:1rem}
+.attentionKpiGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem}
+.attentionFilterPanel,.attentionQueueSection,.attentionPolicyNote{border:1px solid var(--ops-border);border-radius:1rem;background:linear-gradient(180deg,rgba(10,27,45,.96),rgba(5,18,31,.96));padding:1rem}
+.attentionFilterGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto auto;gap:.6rem;align-items:end}
+.attentionFilterGrid label{display:grid;gap:.3rem;color:var(--ops-muted);font-weight:800}
+.attentionFilterGrid input,.attentionFilterGrid select{min-height:2.75rem;width:100%;border:1px solid rgba(100,145,188,.34);border-radius:.7rem;background:rgba(2,13,24,.74);color:#fff;padding:.62rem .7rem}
+.attentionFilterGrid button,.attentionFilterGrid>a{min-height:2.75rem;display:inline-flex;align-items:center;justify-content:center}
+.attentionQueueSection{display:grid;gap:.75rem}
+.attentionGenerated{align-self:center;color:var(--ops-muted);font-size:.8rem}
+.attentionQueueList{display:grid;gap:.65rem}
+.attentionQueueCard{display:grid;gap:.55rem;border:1px solid var(--ops-border);border-radius:.9rem;background:rgba(3,15,27,.72);padding:.9rem}
+.attentionQueueCard.opsTone--critical{border-color:rgba(255,91,91,.38)}
+.attentionQueueCard.opsTone--attention{border-color:rgba(255,190,74,.34)}
+.attentionQueueCard.opsTone--info{border-color:rgba(73,174,255,.28)}
+.attentionQueueHeader,.attentionQueueFooter{display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.attentionQueueHeader small,.attentionQueueFooter>span{color:var(--ops-muted)}
+.attentionQueueBadges{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.attentionQueueCard h3,.attentionQueueCard p{margin:0}
+.attentionQueueCard p{color:var(--ops-muted)}
+.attentionPolicyNote{display:grid;gap:.3rem}.attentionPolicyNote p{margin:0;color:var(--ops-muted)}
+.attentionEmpty{display:grid;gap:.45rem}.attentionEmpty h3,.attentionEmpty p{margin:0}
+@media(max-width:1050px){.attentionKpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.attentionFilterGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.attentionKpiGrid,.attentionFilterGrid{grid-template-columns:1fr}.attentionQueueHeader,.attentionQueueFooter{align-items:flex-start;flex-direction:column}.attentionQueueFooter .primaryLink{width:100%;text-align:center}}

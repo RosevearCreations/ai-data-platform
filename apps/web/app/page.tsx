@@ -111,7 +111,7 @@ export default async function HomePage() {
             <div className="commandV2PriorityColumn">
               <div className="sectionHeading">
                 <p className="eyebrow">Priority queue</p>
-                <h2>Needs Attention</h2>
+                <h2>Needs Attention</h2>\n                <Link className="textLink" href="/attention">Open full Attention Center</Link>
                 <HelpInfo topic="dashboard-attention" />
               </div>
 
