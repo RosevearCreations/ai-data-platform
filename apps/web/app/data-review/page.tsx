@@ -31,6 +31,7 @@ export default async function DataReviewPage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/data-library">Unified data library</Link>
+          <Link className="secondaryButton" href="/data-quality">Data Quality</Link>
           <Link className="secondaryButton" href="/collection-runs">Collection run console</Link>
         </div>
       </section>
@@ -39,6 +40,7 @@ export default async function DataReviewPage() {
 
       <OperationsActionDrawer title="Review actions" description="Open the governed destinations used before and after row-level review. Mutations remain inside their existing permission-checked workflows.">
         <OpsDrawerLink href="/data-library">Unified Data Library</OpsDrawerLink>
+        <OpsDrawerLink href="/data-quality">Data Quality Workbench</OpsDrawerLink>
         <OpsDrawerLink href="/approved-data">Approved Data</OpsDrawerLink>
         <OpsDrawerLink href="/collection-runs">Collection Runs</OpsDrawerLink>
       </OperationsActionDrawer>

@@ -465,6 +465,41 @@ export const HELP_TOPICS = {
       "Exporting does not upload the dataset to a third-party service."
     ]
   },
+  "data-quality-workbench": {
+    title: "Data Quality Workbench",
+    summary: "Build 259 scores current reviewed-dataset snapshots and durable review batches against deterministic quality rules before Approved Data, without changing the source evidence or making approval decisions automatically.",
+    steps: [
+      "Open Data Quality before approving or publishing a dataset.",
+      "Start with Poor scores, then Review scores, and inspect the rule findings shown on each dataset or review snapshot.",
+      "Use duplicate-group details, malformed/missing-field findings, format inconsistencies, staleness and source-change indicators to decide what needs operator review.",
+      "Open Data Review from the quality card to exclude duplicates, correct the working cleaned copy or record a governed decision.",
+      "Return to Data Quality after saving the review to confirm the deterministic findings reflect the current reviewed snapshot."
+    ],
+    notes: [
+      "Quality scores are advisory deterministic evidence, not an automatic approval gate.",
+      "Build 259 does not overwrite workspace_reviewed_datasets, auto-exclude rows, auto-fix source facts, approve data or write Approved Data.",
+      "Current source snapshots older than 30 days and open review batches unchanged for 14 days receive stale-record findings.",
+      "A newer server version or changed source fingerprint after a reviewed snapshot receives an unexpected-change finding.",
+      "All source reads remain user-scoped and PostgreSQL RLS-protected."
+    ]
+  },
+  "data-quality-rules": {
+    title: "Data quality validation rules & scoring",
+    summary: "Build 259 uses bounded deterministic checks for missing fields, malformed keyed values, exact duplicate rows, inconsistent field formats, stale records, unexpected source changes and normalization differences.",
+    steps: [
+      "Treat a finding as a review prompt, not proof that a source fact is wrong.",
+      "Missing-field checks count null, undefined and blank-string values.",
+      "Malformed-value checks apply only to conservative key patterns such as email, URL, phone, date/year and numeric-looking fields.",
+      "Duplicate detection compares canonical cleaned-row content and shows exact duplicate groups.",
+      "Inconsistent-format checks look for mixed primitive types and keyed date/phone representation differences within the same field.",
+      "Use the score to prioritize review; inspect the individual findings before changing any row."
+    ],
+    notes: [
+      "Scores are 0–100: Healthy is 90–100, Review is 70–89, Poor is below 70.",
+      "The score weights missing/malformed values, duplicates, normalization, inconsistent fields, staleness and source-change evidence; it does not use AI inference.",
+      "No quality rule performs a mutation or changes an existing approval/rejection decision."
+    ]
+  },
   "data-review-overview": {
     title: "Data Review, Cleanup & Approval Workbench",
     summary: "Build 048 creates a durable workspace-scoped review snapshot from an existing reviewed-dataset version. Original evidence is preserved, cleanup happens on a working copy, and owner/admin approval or rejection is recorded as a separate auditable decision.",
