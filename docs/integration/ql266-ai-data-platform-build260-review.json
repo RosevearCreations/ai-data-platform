@@ -1,0 +1,28 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build260-review.v1",
+  "application": "AI Data Platform",
+  "build": 260,
+  "source_A_sha": "5fc2c36164761a0afb8d1bb34315f24a7d2c06be",
+  "provenance_lineage": {
+    "dedicated_explorer": true,
+    "route": "/provenance-lineage",
+    "source_snapshot": true,
+    "recipe_identity": true,
+    "collection_run_correlation": true,
+    "review_evidence": true,
+    "approval_evidence": true,
+    "immutable_publication": true,
+    "delivery_mapping": true,
+    "accepted_delivery_receipts": true,
+    "missing_links_remain_visible": true,
+    "second_lineage_database": false,
+    "mutations": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 261
+}
