@@ -32,6 +32,7 @@ export default async function DataReviewPage() {
           <Link className="secondaryButton" href="/">Command Center</Link>
           <Link className="secondaryButton" href="/data-library">Unified data library</Link>
           <Link className="secondaryButton" href="/data-quality">Data Quality</Link>
+          <Link className="secondaryButton" href="/data-review/bulk">Bulk Review</Link>
           <Link className="secondaryButton" href="/collection-runs">Collection run console</Link>
         </div>
       </section>
