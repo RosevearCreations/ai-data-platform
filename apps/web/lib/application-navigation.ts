@@ -95,6 +95,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "data-library-overview"
       },
       {
+        href: "/audit-evidence",
+        label: "Audit & Evidence",
+        description: "Search append-only evidence across review, delivery and operational modules.",
+        helpTopic: "data-library-overview"
+      },
+      {
         href: "/approved-data",
         label: "Approved Data",
         description: "Review data that is eligible for governed publishing.",
