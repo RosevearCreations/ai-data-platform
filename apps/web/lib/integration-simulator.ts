@@ -2,8 +2,7 @@ import {
   INTEGRATION_CONTRACTS,
   buildIntegrationPackageFromPersistedBatch,
   integrationConsumerConfiguration,
-  validateIntegrationPackage,
-  type IntegrationTarget
+  validateIntegrationPackage 
 } from "./integration-delivery";
 import { listIntegrationDeliveryOverviewForUser, loadIntegrationModulePayload } from "./integration-delivery-database";
 import type { IntegrationCompatibilityModel, IntegrationSimulatorResult } from "./integration-simulator-contract";
