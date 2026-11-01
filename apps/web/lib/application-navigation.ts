@@ -54,6 +54,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Attention Center",
         description: "Review failures, exceptions, pending decisions and follow-up work.",
         helpTopic: "operator-attention-center"
+      },
+      {
+        href: "/system-reliability",
+        label: "System Reliability",
+        description: "Review measured application, database and operational health.",
+        helpTopic: "command-center"
       }
     ]
   },
