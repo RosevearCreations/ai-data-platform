@@ -120,7 +120,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Build 257 · Operations Command</span>{/* Build 256 · Operations Command legacy verifier marker · Build 255 · Operations Command legacy verifier marker · Build 254 · Operations Command legacy verifier marker · Build 253 · Operations Command legacy verifier marker · Build 252 · Operations Command legacy verifier marker · Build 251 · Operations Command legacy verifier marker · Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
+          <span>Build 258 · Operations Command</span>{/* Build 257 · Operations Command legacy verifier marker · Build 256 · Operations Command legacy verifier marker · Build 255 · Operations Command legacy verifier marker · Build 254 · Operations Command legacy verifier marker · Build 253 · Operations Command legacy verifier marker · Build 252 · Operations Command legacy verifier marker · Build 251 · Operations Command legacy verifier marker · Build 250 · Operations Command legacy verifier marker · Build 240 · Marble Standard legacy verifier marker */}
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -154,7 +154,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
           <div className="applicationTopbarActions">
             <Link className={pathname.startsWith("/data-library") ? "opsTopLink active" : "opsTopLink"} href="/data-library">Front End</Link>
             <Link className={pathname.startsWith("/connectors") ? "opsTopLink active" : "opsTopLink"} href="/connectors">I.T.</Link>
-            <Link className={pathname === "/" ? "opsTopLink active" : "opsTopLink"} href="/">Management</Link>
+            <Link className={pathname === "/" ? "opsTopLink active" : "opsTopLink"} href="/">Management</Link>\n            <Link className={pathname.startsWith("/attention") ? "opsTopLink active" : "opsTopLink"} href="/attention">Attention</Link>
             <Link className={pathname.startsWith("/production-learning") ? "opsTopLink active" : "opsTopLink"} href="/production-learning">Statistical</Link>
             <Link className={pathname.startsWith("/integration-delivery") ? "opsTopLink active" : "opsTopLink"} href="/integration-delivery">System Status</Link>
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
