@@ -31,7 +31,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "review-approve",
         label: "Review & approve",
         description: "Review normalized data, inspect deterministic quality findings, then inspect the governed approved-data surface.",
-        itemHrefs: ["/data-review", "/data-quality", "/approved-data"]
+        itemHrefs: ["/data-review", "/data-quality", "/provenance-lineage", "/approved-data"]
       }
     ],
     shortcuts: [
@@ -49,6 +49,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/data-quality",
         label: "Quality workbench",
         description: "Inspect deterministic validation and duplicate findings."
+      },
+      {
+        href: "/provenance-lineage",
+        label: "Trace provenance",
+        description: "Follow source-to-delivery evidence and missing lineage links."
       }
     ]
   },
