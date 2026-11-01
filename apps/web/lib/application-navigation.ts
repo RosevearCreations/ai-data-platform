@@ -236,6 +236,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/integration-simulator",
+        label: "Integration Simulator",
+        description: "Preview package compatibility and dry-run validation before delivery.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/approved-data/delivery",
         label: "Publication Delivery",
         description: "Map approved publications to supported consumers.",
