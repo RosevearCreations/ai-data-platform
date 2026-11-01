@@ -186,7 +186,7 @@ function keyKind(key: string) {
     value === "date" ||
     value.endsWith("date") ||
     value.includes("timestamp") ||
-    value.endsWith("at")
+    /^(created|updated|retrieved|observed|published|approved|rejected|started|finished)at$/.test(value)
   ) return "date";
   if (value === "year" || value.endsWith("year")) return "year";
   if (
