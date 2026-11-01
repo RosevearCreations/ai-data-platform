@@ -83,6 +83,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "data-quality-workbench"
       },
       {
+        href: "/provenance-lineage",
+        label: "Provenance & Lineage",
+        description: "Trace source, review, approval, publication and delivery evidence.",
+        helpTopic: "data-library-overview"
+      },
+      {
         href: "/approved-data",
         label: "Approved Data",
         description: "Review data that is eligible for governed publishing.",
