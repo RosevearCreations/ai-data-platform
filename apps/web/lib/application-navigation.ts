@@ -275,6 +275,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "adoption-overview"
       },
       {
+        href: "/security-access-review",
+        label: "Security & Access Review",
+        description: "Review workspace access, capabilities, connector grants and least-privilege recommendations.",
+        helpTopic: "adoption-overview"
+      },
+      {
         href: "/first-evidence",
         label: "First-Evidence Runbook",
         description: "Guide genuine operational evidence creation safely.",
