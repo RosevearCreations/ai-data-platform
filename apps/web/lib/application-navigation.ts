@@ -218,6 +218,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/connector-diagnostics",
+        label: "Connector Diagnostics",
+        description: "Validate connector configuration, permissions, endpoints and recovery guidance.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/remote-execution",
         label: "Remote Execution",
         description: "Operate controlled remote-provider workflows.",
