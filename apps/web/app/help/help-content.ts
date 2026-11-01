@@ -1520,6 +1520,24 @@ export const HELP_TOPICS = {
       "No shortcut performs a mutation from the module hub."
     ]
   },
+  "operator-attention-center": {
+    title: "Operator Attention Center, Exception Inbox & Follow-Up Queue",
+    summary: "Build 258 assembles measured failures, blockers, pending decisions and exceptions from existing authorized workflows into one prioritized read-only follow-up queue.",
+    steps: [
+      "Open Attention from the Operations Command top bar or Operator Home.",
+      "Start with Critical items, then review Needs review and Follow-up items.",
+      "Filter by category, priority, represented workspace or text when the queue is large.",
+      "Open the source workflow from the item card and resolve or review the underlying condition there.",
+      "Return to the Attention Center to confirm the measured condition has cleared; the inbox never marks source evidence complete by itself."
+    ],
+    notes: [
+      "The Attention Center reads existing user-scoped and RLS-protected application models; it does not create a second exception database.",
+      "A card disappears only when the source condition changes. There is no cosmetic acknowledge or dismiss action that hides unresolved evidence.",
+      "Approved-but-unpublished datasets are classified as stale after 14 days so long-running publication decisions are visible.",
+      "Saved Attention filters may use Build 257 browser-local Operator Workspaces, but saved views never grant access or change workflow state.",
+      "QL-266 remains under review, review-deferred and disconnected."
+    ]
+  },
   "operator-workspaces": {
     title: "Operator Workspaces & Filter Profiles",
     summary: "Build 257 saves browser-local combinations of filters, search, sort, visible columns, date range and workspace context so an operator can reopen a working view from Operations Command.",
@@ -3301,7 +3319,7 @@ export const HELP_GROUPS: Array<{
 }> = [
   {
     title: "Platform & access",
-    topics: ["command-center", "platform-overview", "unified-search", "operator-workspaces", "workspaces", "sign-in", "guardrails", "ai-fields"]
+    topics: ["command-center", "platform-overview", "operator-attention-center", "unified-search", "operator-workspaces", "workspaces", "sign-in", "guardrails", "ai-fields"]
   },
   {
     title: "Build 117 application shell & contextual help",
