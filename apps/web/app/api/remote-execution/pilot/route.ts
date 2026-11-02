@@ -6,6 +6,7 @@ import {
   assertBrowserlessPilotRuntimeEnabled,
   BrowserlessControlledPilotProvider,
   BROWSERLESS_CONFIG_REF,
+  browserlessPilotFailureEvidence,
   isGlobalRemoteKillSwitchActive
 } from "@/lib/browserless-provider";
 import {
@@ -257,6 +258,7 @@ export async function POST(request: Request) {
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "remote_pilot_failed";
+    const providerFailure = browserlessPilotFailureEvidence(error);
     if (jobCreated) {
       await finishRemotePilotJob(current.user.id, {
         workspaceId,
@@ -275,6 +277,9 @@ export async function POST(request: Request) {
       jobId,
       eventType: "run-failed",
       region: authorization.control.region,
+      unitsEstimated: providerFailure?.unitsEstimated ?? 0,
+      durationMs: providerFailure?.durationMs ?? null,
+      responseCode: providerFailure?.responseCode ?? null,
       details: { failureCode: message }
     }).catch(() => undefined);
 
