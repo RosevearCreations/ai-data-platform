@@ -1,0 +1,26 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build270-review.v1",
+  "application": "AI Data Platform",
+  "build": 270,
+  "capacity_cost_usage_planning": {
+    "route": "/capacity-planning",
+    "production_learning_source": true,
+    "storage_forecast": true,
+    "record_volume_forecast": true,
+    "provider_unit_forecast": true,
+    "collection_frequency_forecast": true,
+    "integration_volume_forecast": true,
+    "retention_forecast": true,
+    "scenario_multipliers": [1, 1.5, 2],
+    "actual_billing_imported": false,
+    "currency_pricing_applied": false,
+    "separate_billing_truth_store": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 271
+}
