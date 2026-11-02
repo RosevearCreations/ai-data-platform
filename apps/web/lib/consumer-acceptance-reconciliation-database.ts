@@ -13,13 +13,6 @@ export async function buildConsumerAcceptanceReconciliationForUser(
     listControlledLiveDeliveryForUser(userId)
   ]);
 
-  const roleByWorkspace = new Map(
-    controlled.bridge.workspaces.map((workspace) => [
-      workspace.id,
-      { name: workspace.name, role: workspace.role }
-    ])
-  );
-
   const events = overview.flatMap((entry) =>
     entry.recent.map((event) => ({
       workspaceId: entry.workspace.id,
@@ -32,15 +25,6 @@ export async function buildConsumerAcceptanceReconciliationForUser(
       details: event.details
     }))
   );
-
-  for (const workspace of controlled.bridge.workspaces) {
-    if (!roleByWorkspace.has(workspace.id)) {
-      roleByWorkspace.set(workspace.id, {
-        name: workspace.name,
-        role: workspace.role
-      });
-    }
-  }
 
   return buildConsumerAcceptanceReconciliation({
     events,
