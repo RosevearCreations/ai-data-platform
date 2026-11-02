@@ -68,6 +68,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "learning-overview"
       },
       {
+        href: "/evidence-baseline",
+        label: "Evidence Baseline",
+        description: "Triage current evidence into active, validated and historical findings for Builds 274–279.",
+        helpTopic: "learning-overview"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
