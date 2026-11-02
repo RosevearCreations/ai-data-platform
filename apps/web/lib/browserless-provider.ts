@@ -37,16 +37,15 @@ export function browserlessPilotFailureEvidence(error: unknown) {
   const value = (error as { providerEvidence?: unknown }).providerEvidence;
   if (!value || typeof value !== "object") return null;
   const evidence = value as Partial<BrowserlessPilotFailureEvidence>;
-  return
-    typeof evidence.unitsEstimated === "number" &&
+  return typeof evidence.unitsEstimated === "number" &&
     typeof evidence.durationMs === "number" &&
     typeof evidence.responseCode === "number"
-      ? {
-          unitsEstimated: evidence.unitsEstimated,
-          durationMs: evidence.durationMs,
-          responseCode: evidence.responseCode
-        }
-      : null;
+    ? {
+        unitsEstimated: evidence.unitsEstimated,
+        durationMs: evidence.durationMs,
+        responseCode: evidence.responseCode
+      }
+    : null;
 }
 
 function browserlessMeasuredError(
