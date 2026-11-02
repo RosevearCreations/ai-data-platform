@@ -20,7 +20,10 @@
   "roadmap": {
     "renewal_checkpoint": true,
     "automatic_next_batch": false,
-    "next_build_number": null
+    "next_build_number": 273,
+    "owner_authorized_next_batch": true,
+    "next_batch_document": "docs/NEXT_BUILDS_273_280.md",
+    "next_batch_range": "273-280"
   },
   "ql266_status": "UNDER_REVIEW",
   "ql266_active_gate": false,
