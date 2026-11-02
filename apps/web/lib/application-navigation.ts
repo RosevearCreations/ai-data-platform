@@ -44,6 +44,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "workflow-directory"
       },
       {
+        href: "/reporting",
+        label: "Reporting Studio",
+        description: "Configure KPI dashboards and export evidence-based reports.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
