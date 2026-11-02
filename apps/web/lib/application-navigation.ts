@@ -50,6 +50,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/capacity-planning",
+        label: "Capacity Planning",
+        description: "Forecast storage, records, provider usage, collection, integrations and retention.",
+        helpTopic: "learning-overview"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
