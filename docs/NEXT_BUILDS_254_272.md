@@ -74,3 +74,10 @@ Close the roadmap cycle by removing obsolete build-era UI, duplicate components,
 ## Roadmap rule
 
 Build 272 is the renewal checkpoint. No long speculative Build 273+ queue should be created automatically; the next batch should be based on real operational evidence, owner acceptance findings and measured gaps.
+
+
+## Renewal outcome after Build 272
+
+Owner accepted creation of the next finite evidence-driven batch after Build 272 reached production GREEN.
+
+The active next queue is now documented in `docs/NEXT_BUILDS_273_280.md`. Builds 273–280 focus on closing measured operational evidence gaps rather than automatically extending the previous feature roadmap.
