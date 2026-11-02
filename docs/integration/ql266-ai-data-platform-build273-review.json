@@ -1,0 +1,30 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build273-review.v1",
+  "application": "AI Data Platform",
+  "build": 273,
+  "baseline": {
+    "route": "/evidence-baseline",
+    "production_learning_iv": true,
+    "renewal_gaps": true,
+    "hardening_audit": true,
+    "system_reliability": true,
+    "attention_center": true,
+    "dispositions": ["active", "validated", "historical"],
+    "target_builds": [274, 275, 276, 277, 278, 279],
+    "second_evidence_store": false,
+    "synthetic_production_activity": false
+  },
+  "authorization": {
+    "existing_user_scoped_reads": true,
+    "rls_preserved": true,
+    "deployment_success_is_acceptance": false,
+    "external_gate_bypass": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 274
+}
