@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { integrationConsumerConfiguration } from "@/lib/integration-delivery";
 import { listIntegrationDeliveryOverviewForUser } from "@/lib/integration-delivery-database";
+import { buildConsumerAcceptanceReconciliationForUser } from "@/lib/consumer-acceptance-reconciliation-database";
 
 import { HelpInfo } from "../help/HelpInfo";
 import { OperationsActionDrawer, OperationsAreaBand, OperationsActivityLane, OperationsActivitySummary, OperationsComparisonBand, OperationsComparisonCard, OperationsContextInspector, OperationsDataTable, OperationsDetailInspector, OperationsDrillThroughBand, OperationsDrilldownFilters, OperationsEventGroup, OperationsEvidenceGroup, OperationsEvidenceLane, OperationsEvidenceTimeline, OperationsExceptionPivot, OperationsExceptionQueue, OperationsHealthSummary, OperationsHistoryPanel, OperationsInspector, OperationsInspectorCheckpoints, OperationsInspectorEscalationCard, OperationsInspectorHandoffCard, OperationsInspectorResolutionCard, OperationsInspectorShortcuts, OperationsInspectorTaskLinks, OperationsInspectorWorkflow, OperationsLayeredFilters, OperationsModuleGrid, OperationsQueueSummary, OperationsReviewQueue, OperationsRiskSummary, OperationsSavedViews, OperationsScorecard, OperationsSearchPanel, OperationsSegmentedView, OperationsStatusBadge, OperationsStatusGroup, OperationsStatusMatrix, OperationsTrendCard, OperationsWorkflowTimeline, OpsDrawerLink } from "../OperationsCommandPanels";
@@ -18,10 +19,10 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="integration-delivery" />
-          <p className="eyebrow">Build 033</p>
-          <h1>Integration consumer delivery</h1>
+          <p className="eyebrow">Build 276</p>
+          <h1>Consumer Acceptance, Replay &amp; Delivery Receipt Reconciliation</h1>
           <p className="lead">
-            Sign in to review consumer conformance, handshake readiness and durable delivery acknowledgements.
+            Sign in to reconcile conformance, live dry-run, controlled-live acknowledgements, replay behavior and durable delivery receipts.
           </p>
           <Link className="primaryLink" href="/sign-in?callbackUrl=/integration-delivery">
             Sign in
@@ -35,7 +36,10 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
   const query = (params.q ?? "").trim().toLowerCase();
   const view = ["all","configured","needs-config","exceptions"].includes(params.view ?? "") ? (params.view ?? "all") : "all";
   const eventView = ["all","accepted","errors"].includes(params.event ?? "") ? (params.event ?? "all") : "all";
-  const overview = await listIntegrationDeliveryOverviewForUser(session.user.id);
+  const [overview, reconciliation] = await Promise.all([
+    listIntegrationDeliveryOverviewForUser(session.user.id),
+    buildConsumerAcceptanceReconciliationForUser(session.user.id)
+  ]);
   const consumers = (["rosie-dazzlers", "devil-n-dove"] as const).map((target) => {
     const config = integrationConsumerConfiguration(target);
     return {
@@ -98,17 +102,77 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
     <main className="shell opsCommandScreen opsCommandScreen--status">
       <section className="hero">
         <HelpInfo topic="integration-delivery" />
-        <p className="eyebrow">Build 033</p>
-        <h1>Integration Consumer Acceptance & Delivery Observability</h1>
+        <p className="eyebrow">Build 276 · Build 033 controls retained</p>
+        <h1>Consumer Acceptance, Replay &amp; Delivery Receipt Reconciliation</h1>
         <p className="lead">
-          Prove the receiver contract first, then test an authenticated external
-          handshake and one dry-run package. No Build 033 action authorizes
-          downstream business-system mutation.
+          Reconcile local conformance, authenticated live dry-run acknowledgements,
+          controlled-live acceptance, replay behavior, rejection reasons and durable
+          receipts without treating conformance success as live external authorization.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/integration-delivery/comms-hub">Comms Hub Connection · local I.T. test</Link>
           <Link className="secondaryButton" href="/intelligence">Integration evidence</Link>
           <Link className="secondaryButton" href="/production-learning">Production learning</Link>
+          <a className="secondaryButton" href="/api/integrations/reconciliation">Reconciliation JSON</a>
+        </div>
+      </section>
+
+      <section className="dataQualityPolicyNote" id="build276-reconciliation">
+        <strong>Build 276 exit criterion: {reconciliation.exitCriterion.met ? "MET" : "OPEN"}</strong>
+        <p>{reconciliation.exitCriterion.label}</p>
+        <p><strong>Current evidence:</strong> {reconciliation.exitCriterion.evidence}</p>
+        <p>
+          Conformance acceptance is contract evidence only. Live dry-run acceptance proves an authenticated
+          consumer acknowledgement with dryRun=true. Only the controlled-live ledger counts as live acceptance.
+        </p>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Acceptance &amp; replay reconciliation</p>
+            <h2>Consumer evidence classes stay separate</h2>
+          </div>
+        </div>
+        <div className="commandMetrics">
+          <article><strong>{reconciliation.totals.conformanceAccepts}</strong><span>conformance accepts</span></article>
+          <article><strong>{reconciliation.totals.liveDryRunAccepts}</strong><span>live dry-run accepts</span></article>
+          <article><strong>{reconciliation.totals.controlledLiveAccepts}</strong><span>controlled-live accepts</span></article>
+          <article><strong>{reconciliation.totals.replaySignals}</strong><span>replay signals</span></article>
+          <article><strong>{reconciliation.totals.acceptedDurableReceipts}</strong><span>accepted durable receipts</span></article>
+          <article><strong>{reconciliation.totals.rejections}/{reconciliation.totals.transportErrors}</strong><span>rejections / transport errors</span></article>
+        </div>
+      </section>
+
+      <section className="reviewQueue" aria-labelledby="build276-workspaces">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Workspace reconciliation</p>
+            <h2 id="build276-workspaces">Acknowledgement, receipt &amp; replay evidence</h2>
+          </div>
+        </div>
+        <div className="reviewBatchList">
+          {reconciliation.workspaces.map((workspace) => (
+            <article className="reviewBatchSummary" key={workspace.workspaceId}>
+              <div>
+                <span className="reviewStatus">{workspace.status}</span>
+                <h3>{workspace.workspaceName}</h3>
+                <p>
+                  Conformance {workspace.conformanceAccepts} · live dry-run {workspace.liveDryRunAccepts} ·
+                  controlled live {workspace.controlledLiveAccepts} · durable receipts {workspace.durableReceipts}
+                </p>
+                <p>
+                  Rejections {workspace.rejections} · transport errors {workspace.transportErrors} ·
+                  replay signals {workspace.replaySignals} · repeated live attempts {workspace.controlledLiveRetryAttempts}
+                </p>
+                <p>
+                  <strong>Controlled-live acknowledgement coverage:</strong>{" "}
+                  {workspace.receiptCoverage.controlledLiveAcceptedWithAcknowledgement}/
+                  {workspace.controlledLiveAccepts} accepted row(s) retain acknowledgement payload evidence.
+                </p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
       <OperationsAreaBand
