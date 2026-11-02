@@ -1,0 +1,30 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build269-review.v1",
+  "application": "AI Data Platform",
+  "build": 269,
+  "reporting_studio": {
+    "route": "/reporting",
+    "api_route": "/api/reporting",
+    "configurable_presets": true,
+    "workspace_scoping": true,
+    "collection_success": true,
+    "approval_throughput": true,
+    "exception_rates": true,
+    "integration_outcomes": true,
+    "data_quality": true,
+    "workspace_activity": true,
+    "adoption": true,
+    "retention": true,
+    "provider_usage": true,
+    "csv_export": true,
+    "json_export": true,
+    "separate_analytics_truth_store": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 270
+}
