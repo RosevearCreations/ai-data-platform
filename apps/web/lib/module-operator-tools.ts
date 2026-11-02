@@ -247,8 +247,8 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       },
       {
         href: "/retention",
-        label: "Retention",
-        description: "Inspect evidence footprint and cleanup controls."
+        label: "Retention governance",
+        description: "Review archive candidates, protected evidence and bounded cleanup impact."
       }
     ]
   }
