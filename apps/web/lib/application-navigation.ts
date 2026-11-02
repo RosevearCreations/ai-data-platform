@@ -62,6 +62,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "shell-overview"
       },
       {
+        href: "/owner-acceptance",
+        label: "Owner Acceptance",
+        description: "Review the Build 272 renewal checkpoint and current production evidence.",
+        helpTopic: "learning-overview"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
