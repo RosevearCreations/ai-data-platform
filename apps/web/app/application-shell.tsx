@@ -128,7 +128,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Operations Command · Owner acceptance</span>
+          <span>Operations Command · Marble Standard · Owner acceptance</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
