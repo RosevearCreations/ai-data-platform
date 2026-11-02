@@ -34,6 +34,7 @@ export type RetentionGovernanceWorkspace = {
   projectedRowsAfterFullEligibleDelete: number;
   projectedBytesAfterFullEligibleDelete: number;
   boundedDeleteRowsThisRun: number;
+  recentRuns: Array<{runId:string;status:"completed"|"failed";beforeRows:number;afterRows:number;beforeStorageBytes:number;afterStorageBytes:number;deletedBarcodeRows:number;deletedRemoteJobs:number;errorCode:string|null;createdAt:string}>;
   classes: RetentionGovernanceClass[];
 };
 
