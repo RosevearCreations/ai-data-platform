@@ -261,8 +261,8 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       },
       {
         href: "/remote-execution",
-        label: "Remote Execution",
-        description: "Operate controlled remote-provider workflows.",
+        label: "Provider Pilot Baseline",
+        description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
         helpTopic: "remote-overview"
       },
       {

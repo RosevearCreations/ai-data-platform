@@ -26,6 +26,35 @@ const regionBaseUrls: Record<BrowserlessRegion, string> = {
 
 type RuntimeEnv = Readonly<Record<string, string | undefined>>;
 
+export interface BrowserlessPilotFailureEvidence {
+  unitsEstimated: number;
+  durationMs: number;
+  responseCode: number;
+}
+
+export function browserlessPilotFailureEvidence(error: unknown) {
+  if (!error || typeof error !== "object") return null;
+  const value = (error as { providerEvidence?: unknown }).providerEvidence;
+  if (!value || typeof value !== "object") return null;
+  const evidence = value as Partial<BrowserlessPilotFailureEvidence>;
+  return typeof evidence.unitsEstimated === "number" &&
+    typeof evidence.durationMs === "number" &&
+    typeof evidence.responseCode === "number"
+    ? {
+        unitsEstimated: evidence.unitsEstimated,
+        durationMs: evidence.durationMs,
+        responseCode: evidence.responseCode
+      }
+    : null;
+}
+
+function browserlessMeasuredError(
+  code: string,
+  evidence: BrowserlessPilotFailureEvidence
+) {
+  return Object.assign(new Error(code), { providerEvidence: evidence });
+}
+
 export interface BrowserlessPilotResult {
   pagesProcessed: 1;
   recordsCollected: 0;
@@ -229,24 +258,50 @@ export class BrowserlessControlledPilotProvider {
     const durationMs = Math.max(0, this.nowMs() - startedAt);
     const unitsEstimated = Math.max(1, Math.ceil(durationMs / 30_000));
 
+    const failureEvidence = {
+      unitsEstimated,
+      durationMs,
+      responseCode: response.status
+    };
+
     if (unitsEstimated > input.maxProviderUnits) {
-      throw new Error("remote_pilot_unit_budget_exceeded");
+      throw browserlessMeasuredError(
+        "remote_pilot_unit_budget_exceeded",
+        failureEvidence
+      );
     }
     if (!response.ok) {
-      throw new Error("browserless_provider_request_failed_" + response.status);
+      throw browserlessMeasuredError(
+        "browserless_provider_request_failed_" + response.status,
+        failureEvidence
+      );
     }
 
     const html = await response.text();
     const contentBytes = Buffer.byteLength(html, "utf8");
     if (contentBytes > 1_000_000) {
-      throw new Error("remote_pilot_content_too_large");
+      throw browserlessMeasuredError(
+        "remote_pilot_content_too_large",
+        {
+          unitsEstimated,
+          durationMs,
+          responseCode: response.status
+        }
+      );
     }
 
     const finalUrl =
       response.headers.get("x-response-url")?.trim() || job.sourceUrl;
     const finalOrigin = new URL(finalUrl).origin;
     if (finalOrigin !== job.sourceOrigin) {
-      throw new Error("remote_pilot_cross_origin_redirect_blocked");
+      throw browserlessMeasuredError(
+        "remote_pilot_cross_origin_redirect_blocked",
+        {
+          unitsEstimated,
+          durationMs,
+          responseCode: response.status
+        }
+      );
     }
 
     const targetResponseCode = Number(
