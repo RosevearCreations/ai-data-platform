@@ -318,8 +318,8 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       },
       {
         href: "/first-evidence",
-        label: "First-Evidence Runbook",
-        description: "Guide genuine operational evidence creation safely.",
+        label: "First-Evidence Completion",
+        description: "Guide real adoption through bounded Collect, Review, Approve, Publish and Deliver evidence.",
         helpTopic: "first-evidence-overview"
       },
       {
