@@ -319,7 +319,7 @@ async function main() {
 
   ensure(
     doc.includes("A later successful cleanup run resolves the historical failure") &&
-      doc.includes("Deployment approval") &&
+      doc.includes("Cleanup approval is not inferred from deployment approval") &&
       doc.includes("Build 278 — Least-Privilege Adoption, Stale Grants & Capability Cleanup Review"),
     "documentation"
   );
