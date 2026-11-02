@@ -47,7 +47,7 @@ async function main(){
     source("../../../docs/BUILD_250_RECOVERY_SEARCH_RENEWAL_AUDIT_RECEIPT_PRESETS.md")
   ]);
 
-  ensure(shell.includes("Build 250 · Operations Command"),"Build 250 shell");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsTrendCard","OperationsDrilldownFilters","OperationsEventGroup","OperationsInspectorTaskLinks"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 250 — trend cards, drilldown filters, responsive event groups and inspector task links"),"Build 250 styles");
   for(const token of ["Delivery events · last 24h","Delivery event drilldown","Accepted / non-error events","HTTP exception events","Review tasks"]) ensure(statusPage.includes(token),"System Status "+token);

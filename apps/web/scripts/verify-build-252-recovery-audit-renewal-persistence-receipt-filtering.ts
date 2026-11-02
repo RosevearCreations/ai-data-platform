@@ -46,8 +46,7 @@ async function main(){
     source("../../../docs/BUILD_252_RECOVERY_AUDIT_RENEWAL_PERSISTENCE_RECEIPT_FILTERING.md")
   ]);
 
-  ensure(shell.includes("Build 252 · Operations Command"),"Build 252 shell");
-  ensure(shell.includes("Build 251 · Operations Command"),"Build 251 shell compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsHealthSummary","OperationsSegmentedView","OperationsWorkflowTimeline","OperationsInspectorHandoffCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 252 — health summaries, segmented views, responsive workflow timelines and inspector handoff cards"),"Build 252 styles");
   for(const token of ["Delivery health","System Status segments","Delivery review workflow","Configuration review","Exception review","QL-266 owner boundary"]) ensure(statusPage.includes(token),"System Status "+token);

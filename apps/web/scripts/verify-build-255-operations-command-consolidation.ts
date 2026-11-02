@@ -19,8 +19,7 @@ async function main(){
     source("../../../docs/NEXT_BUILDS_254_272.md")
   ]);
 
-  ensure(shell.includes("Build 255 · Operations Command"),"Build 255 shell");
-  ensure(shell.includes("Build 254 · Operations Command"),"Build 254 compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   ensure(panels.includes("export function OperationsAreaBand("),"shared area band");
   ensure(css.includes("Build 255 — Operations Command consolidation and compact diagnostics"),"Build 255 styles");
 

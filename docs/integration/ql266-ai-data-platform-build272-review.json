@@ -1,0 +1,31 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build272-review.v1",
+  "application": "AI Data Platform",
+  "build": 272,
+  "owner_acceptance": {
+    "route": "/owner-acceptance",
+    "production_learning_iv": true,
+    "uses_existing_rls_evidence": true,
+    "second_evidence_store": false,
+    "hardening_review_included": true,
+    "speculative_build_273_plus_queue": false
+  },
+  "legacy_cleanup": {
+    "shell_build_number_markers_removed": true,
+    "page_legacy_marker_comments_removed": true,
+    "historical_verifiers_preserved": true,
+    "historical_verifiers_use_canonical_shell_assertion": true,
+    "database_migration": false
+  },
+  "roadmap": {
+    "renewal_checkpoint": true,
+    "automatic_next_batch": false,
+    "next_build_number": null
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false
+}

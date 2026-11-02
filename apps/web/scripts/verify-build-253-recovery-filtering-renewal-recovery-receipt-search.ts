@@ -42,8 +42,7 @@ async function main(){
     source("../../../docs/BUILD_253_RECOVERY_FILTERING_RENEWAL_RECOVERY_RECEIPT_SEARCH.md")
   ]);
 
-  ensure(shell.includes("Build 253 · Operations Command"),"Build 253 shell");
-  ensure(shell.includes("Build 252 · Operations Command"),"Build 252 shell compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsStatusMatrix","OperationsComparisonBand","OperationsReviewQueue","OperationsInspectorEscalationCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 253 — status matrices, comparison bands, responsive review queues and inspector escalation cards"),"Build 253 styles");
   for(const token of ["Delivery status matrix","Current operating comparison","System Status review queue","Configuration escalation","Delivery escalation","QL-266 escalation boundary"]) ensure(statusPage.includes(token),"System Status "+token);

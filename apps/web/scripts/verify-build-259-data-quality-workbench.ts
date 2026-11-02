@@ -121,8 +121,7 @@ async function main(){
   ensure(page.includes("does not silently fix")||page.includes("does not silently"),"advisory boundary");
   ensure(reviewPage.includes('href="/data-quality"'),"Data Review quality handoff");
   ensure(approvedPage.includes('href="/data-quality"'),"Approved Data quality handoff");
-  ensure(shell.includes("Build 259 · Operations Command"),"Build 259 shell");
-  ensure(shell.includes("Build 258 · Operations Command"),"Build 258 compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   ensure(nav.includes('href: "/data-quality"')&&nav.includes('label: "Data Quality"'),"Data Quality navigation");
   ensure(help.includes('"data-quality-workbench": {')&&help.includes('"data-quality-rules": {'),"Data Quality help");
   ensure(css.includes("Build 259 — Data Quality Workbench, Validation Rules & Duplicate Detection"),"Build 259 styles");

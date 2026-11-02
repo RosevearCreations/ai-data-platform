@@ -48,7 +48,7 @@ async function main(){
     source("../../../docs/BUILD_251_RECOVERY_PRESETS_RENEWAL_FILTERING_RECEIPT_PERSISTENCE.md")
   ]);
 
-  ensure(shell.includes("Build 251 · Operations Command"),"Build 251 shell");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsScorecard","OperationsLayeredFilters","OperationsActivityLane","OperationsInspectorCheckpoints"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 251 — scorecards, layered filters, responsive activity lanes and inspector checkpoints"),"Build 251 styles");
   for(const token of ["Consumer readiness","System Status review layers","Accepted delivery activity","Exception delivery activity","Build 251 review checkpoints"]) ensure(statusPage.includes(token),"System Status "+token);

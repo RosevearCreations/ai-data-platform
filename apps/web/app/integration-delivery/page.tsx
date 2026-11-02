@@ -111,8 +111,6 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           <Link className="secondaryButton" href="/production-learning">Production learning</Link>
         </div>
       </section>
-
-      {/* Operations Command System Status legacy verifier marker */}
       <OperationsAreaBand
         area="System Status"
         description="Receiver readiness, connection state, delivery observability and append-only integration acknowledgements."
