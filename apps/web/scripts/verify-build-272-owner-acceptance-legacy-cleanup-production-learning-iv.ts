@@ -30,7 +30,7 @@ async function main() {
   ensure(owner.includes("No speculative Build 273+ queue"), "roadmap renewal rule");
   ensure(learning.includes("Production Learning IV"), "Production Learning IV label");
   ensure(learning.includes("No speculative Build 273+ queue"), "Production Learning renewal rule");
-  ensure(shell.includes("Operations Command · Owner acceptance"), "canonical shell footer");
+  ensure(shell.includes("Operations Command") && shell.includes("Marble Standard") && shell.includes("Owner acceptance"), "canonical shell footer");
   ensure(!shell.includes("legacy verifier marker"), "shell legacy marker cleanup");
   ensure(!shell.includes("Build 259 · Operations Command"), "stale shell build branding removed");
 
