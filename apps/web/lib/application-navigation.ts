@@ -288,8 +288,8 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       },
       {
         href: "/retention",
-        label: "Retention & Cleanup",
-        description: "Inspect evidence footprint and retention controls.",
+        label: "Retention & Archive Governance",
+        description: "Review data age, archive candidates, protected evidence and cleanup impact.",
         helpTopic: "retention-overview"
       },
       {
