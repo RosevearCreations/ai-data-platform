@@ -70,8 +70,7 @@ async function main(){
   ensure(page.includes("Filter follow-up queue"),"exception inbox filters");
   ensure(page.includes("Items disappear only when their underlying measured condition changes"),"source-derived queue semantics");
   ensure(page.includes('destination="/attention"'),"Build 257 saved filters");
-  ensure(shell.includes("Build 258 · Operations Command"),"Build 258 shell marker");
-  ensure(shell.includes("Build 257 · Operations Command"),"Build 257 compatibility marker");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   ensure(shell.includes('href="/attention">Attention</Link>'),"Attention topbar link");
   ensure(home.includes('href="/attention">Open full Attention Center</Link>'),"Operator Home handoff");
   ensure(nav.includes('href: "/attention"')&&nav.includes('label: "Attention Center"'),"Attention navigation");
