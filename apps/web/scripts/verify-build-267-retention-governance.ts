@@ -18,7 +18,7 @@ async function main(){
  ensure(contract.includes("RetentionGovernanceModel")&&contract.includes("RetentionGovernanceClass"),"client-safe governance contract");
  ensure(page.includes("Build 267")&&page.includes("Impact preview")&&page.includes("Archive candidates")&&page.includes("Protected evidence"),"retention governance page");
  ensure(controls.includes("APPROVE CLEANUP")&&controls.includes("RUN CLEANUP"),"existing explicit cleanup gates preserved");
- ensure(nav.includes("Retention & Archive Governance"),"navigation label");
+ ensure(nav.includes('href: "/retention"')&&nav.includes('helpTopic: "retention-overview"'),"retention navigation contract");
  ensure(tools.includes("Retention governance"),"operator shortcut");
  ensure(doc.includes("Archive candidates remain preview-only")&&doc.includes("protected remain excluded")&&doc.includes("Build 268"),"documentation");
  const parsed=JSON.parse(status);
