@@ -27,7 +27,7 @@ async function main() {
 
   ensure(owner.includes("Owner Acceptance, Legacy Cleanup &amp; Production Learning IV"), "owner acceptance page");
   ensure(owner.includes("buildProductionLearningReview") && owner.includes("buildHardeningAudit"), "evidence-backed owner acceptance");
-  ensure(owner.includes("No speculative Build 273+ queue"), "roadmap renewal rule");
+  ensure(owner.includes('href="/evidence-baseline"') && owner.includes("owner-authorized Builds 273–280 batch"), "owner-authorized roadmap handoff");
   ensure(learning.includes("Production Learning IV"), "Production Learning IV label");
   ensure(learning.includes("No speculative Build 273+ queue"), "Production Learning renewal rule");
   ensure(shell.includes("Operations Command") && shell.includes("Marble Standard") && shell.includes("Owner acceptance"), "canonical shell footer");
@@ -47,7 +47,8 @@ async function main() {
   ensure(parsed.owner_acceptance.speculative_build_273_plus_queue === false, "no speculative next queue");
   ensure(parsed.legacy_cleanup.shell_build_number_markers_removed === true, "legacy cleanup status");
   ensure(parsed.roadmap.renewal_checkpoint === true && parsed.roadmap.automatic_next_batch === false, "renewal checkpoint");
-  ensure(parsed.roadmap.next_build_number === null, "no automatic next build");
+  ensure(parsed.roadmap.owner_authorized_next_batch === true && parsed.roadmap.next_build_number === 273, "owner-authorized next build");
+  ensure(parsed.roadmap.next_batch_range === "273-280", "owner-authorized next batch range");
   ensure(parsed.ql266_status === "UNDER_REVIEW" && parsed.connection_state === "DISCONNECTED", "QL-266 boundary");
   ensure(parsed.new_ql266_test_started === false, "no QL-266 restart");
 
