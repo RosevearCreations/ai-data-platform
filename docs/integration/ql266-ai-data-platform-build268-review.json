@@ -1,0 +1,22 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build268-review.v1",
+  "application": "AI Data Platform",
+  "build": 268,
+  "workflow_orchestration": {
+    "route": "/runbooks",
+    "reusable_templates": true,
+    "guided_operations": true,
+    "measured_step_readiness": true,
+    "automatic_approval": false,
+    "automatic_publication": false,
+    "automatic_delivery": false,
+    "existing_safety_gates_preserved": true
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 269
+}
