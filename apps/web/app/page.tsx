@@ -93,8 +93,6 @@ export default async function HomePage() {
           </div>
         )}
       </section>
-
-      {/* Operations Command Management legacy verifier marker */}
       <OperationsAreaBand
         area="Management"
         description="Current priorities, operational health, workspace standing and governed follow-through from live platform evidence."
@@ -111,7 +109,8 @@ export default async function HomePage() {
             <div className="commandV2PriorityColumn">
               <div className="sectionHeading">
                 <p className="eyebrow">Priority queue</p>
-                <h2>Needs Attention</h2>\n                <Link className="textLink" href="/attention">Open full Attention Center</Link>
+                <h2>Needs Attention</h2>
+                <Link className="textLink" href="/attention">Open full Attention Center</Link>
                 <HelpInfo topic="dashboard-attention" />
               </div>
 
