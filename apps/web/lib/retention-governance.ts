@@ -95,6 +95,8 @@ export async function buildRetentionGovernanceModel(userId:string):Promise<Reten
        protectedEvidence:retentionClass.protectedEvidence,
        rows:retentionClass.rows,
        measuredBytes:retentionClass.measuredBytes,
+       budgetBytes:retentionClass.budgetBytes,
+       budgetOverageBytes:Math.max(0,retentionClass.measuredBytes-retentionClass.budgetBytes),
        archiveEligibleRows:retentionClass.archiveEligibleRows,
        deleteEligibleRows:retentionClass.deleteEligibleRows,
        deleteEligibleBytes:retentionClass.deleteEligibleBytes,
