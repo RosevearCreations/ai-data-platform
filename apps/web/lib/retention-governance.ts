@@ -91,7 +91,7 @@ export async function buildRetentionGovernanceModel(userId:string):Promise<Reten
        newestAt:age?.newest_at?.toISOString()??null,
        oldestAgeDays:ageDays(age?.oldest_at??null),
        retentionDays:retentionClass.retentionDays,
-       disposition:retentionClass.disposition,
+       disposition:retentionClass.disposition as RetentionGovernanceClass["disposition"],
        protectedEvidence:retentionClass.protectedEvidence,
        rows:retentionClass.rows,
        measuredBytes:retentionClass.measuredBytes,
