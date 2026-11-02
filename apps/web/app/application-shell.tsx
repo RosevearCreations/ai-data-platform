@@ -56,6 +56,14 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
     <div className="applicationFrame">
       <InterfacePreferenceController />
       <a className="skipToContent" href="#application-main-content">Skip to main content</a>
+      <div
+        className="applicationRouteStatus srOnly"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        Current section: {activeItem?.label ?? activeGroup.label}
+      </div>
       <aside className="applicationSidebar" aria-label="Primary application navigation">
         <div className="applicationBrand">
           <Link href="/">
