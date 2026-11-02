@@ -38,6 +38,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "workflow-directory"
       },
       {
+        href: "/runbooks",
+        label: "Guided Runbooks",
+        description: "Follow governed multi-step workflows without bypassing existing gates.",
+        helpTopic: "workflow-directory"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
