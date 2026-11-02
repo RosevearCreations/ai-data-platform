@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { browserlessPilotReadiness } from "@/lib/browserless-provider";
 import { listIntelligenceOverviewForUser } from "@/lib/database";
 import { listRemotePilotOverviewForUser } from "@/lib/remote-pilot-database";
+import { buildProviderPilotBaselineForUser } from "@/lib/provider-pilot-baseline-database";
 
 import { RemotePilotAdminPanel } from "./RemotePilotAdminPanel";
 import { HelpInfo } from "../help/HelpInfo";
@@ -64,9 +65,9 @@ export default async function RemoteExecutionPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="remote-overview" />
-          <p className="eyebrow">Build 032</p>
-          <h1>Browserless live pilot & provider cost baseline</h1>
-          <p className="lead">Sign in to review the Browserless pilot controls.</p>
+          <p className="eyebrow">Build 275</p>
+          <h1>Provider Pilot Baseline, Cost, Latency &amp; Failure Evidence</h1>
+          <p className="lead">Sign in to review the bounded provider baseline and its live-pilot authorization blockers.</p>
           <Link className="primaryLink" href="/sign-in?callbackUrl=/remote-execution">
             Sign in
           </Link>
@@ -75,9 +76,10 @@ export default async function RemoteExecutionPage() {
     );
   }
 
-  const [pilot, intelligence] = await Promise.all([
+  const [pilot, intelligence, baseline] = await Promise.all([
     listRemotePilotOverviewForUser(session.user.id),
-    listIntelligenceOverviewForUser(session.user.id)
+    listIntelligenceOverviewForUser(session.user.id),
+    buildProviderPilotBaselineForUser(session.user.id)
   ]);
   const readiness = browserlessPilotReadiness();
 
@@ -117,19 +119,104 @@ export default async function RemoteExecutionPage() {
     <main className="shell opsDeepScreen opsDeepScreen--it">
       <section className="hero">
         <HelpInfo topic="remote-overview" />
-        <p className="eyebrow">Build 032</p>
-        <h1>Browserless live pilot & provider cost baseline</h1>
+        <p className="eyebrow">Build 275 · Build 032 controls retained</p>
+        <h1>Provider Pilot Baseline, Cost, Latency &amp; Failure Evidence</h1>
         <p className="lead">
-          Build 032 uses the existing one-page Browserless boundary to establish
-          a real production reliability and provider-unit baseline. The global
-          kill switch remains fail-closed outside an explicitly approved run window.
+          Read the existing controlled Browserless terminal-run evidence as a measured production baseline.
+          Real units, duration, response status, content hashes and failure reasons are preserved; when live
+          execution is not authorized, the baseline records the blocker instead of simulating a successful run.
         </p>
         <div className="heroActions">
           <Link className="primaryLink" href="/">Back to workspaces</Link>
           <Link className="secondaryButton" href="/intelligence">
             Source-policy evidence
           </Link>
+          <Link className="secondaryButton" href="/evidence-baseline">
+            Build 273 baseline
+          </Link>
+          <a className="secondaryButton" href="/api/remote-execution/baseline">
+            Baseline JSON
+          </a>
         </div>
+      </section>
+
+      <section className="dataQualityPolicyNote">
+        <strong>Build 275 exit criterion: {baseline.exitCriterion.met ? "MET" : "OPEN"} · {baseline.state.toUpperCase()}</strong>
+        <p>{baseline.exitCriterion.label}</p>
+        <p><strong>Current evidence:</strong> {baseline.exitCriterion.evidence}</p>
+        <p>A blocked baseline is evidence of the real authorization state; it is not a successful live-provider result.</p>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Measured provider baseline</p>
+            <h2>Cost, latency, outcomes &amp; authorization</h2>
+          </div>
+        </div>
+        <div className="commandMetrics">
+          <article><strong>{baseline.totals.terminalRuns}</strong><span>terminal provider runs</span></article>
+          <article><strong>{baseline.totals.successes}/{baseline.totals.failures}</strong><span>successes / failures</span></article>
+          <article><strong>{baseline.totals.providerUnits}</strong><span>estimated provider units</span></article>
+          <article><strong>{baseline.totals.averageDurationMs ?? "—"}</strong><span>average duration ms</span></article>
+          <article><strong>{baseline.totals.approvedPublicSources}</strong><span>approved public sources</span></article>
+        </div>
+      </section>
+
+      <section className="reviewQueue" aria-labelledby="provider-baseline-workspaces">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Workspace evidence</p>
+            <h2 id="provider-baseline-workspaces">Terminal-run baseline and blockers</h2>
+          </div>
+        </div>
+        <div className="reviewBatchList">
+          {baseline.workspaces.map((workspace) => (
+            <article className="reviewBatchSummary" key={workspace.workspaceId}>
+              <div>
+                <span className="reviewStatus">{workspace.state}</span>
+                <h3>{workspace.workspaceName}</h3>
+                <p>
+                  Runs {workspace.terminalRuns} · success {workspace.successes} · failures {workspace.failures} ·
+                  units {workspace.providerUnits} · average duration {workspace.averageDurationMs ?? "—"} ms
+                </p>
+                <p>
+                  Approved public sources {workspace.approvedPublicSources} · enabled allowlist sources {workspace.enabledAllowlistSources} ·
+                  workspace kill switch {workspace.workspaceKillSwitch ? "ON" : "off"}
+                </p>
+                {workspace.latestTerminalEvidence ? (
+                  <p>
+                    <strong>Latest terminal evidence:</strong> {workspace.latestTerminalEvidence.eventType} ·
+                    response {workspace.latestTerminalEvidence.responseCode ?? "—"} ·
+                    content SHA-256 {workspace.latestTerminalEvidence.contentSha256 ?? "not available"} ·
+                    failure {workspace.latestTerminalEvidence.failureReason ?? "none"}
+                  </p>
+                ) : (
+                  <p><strong>Latest terminal evidence:</strong> none recorded.</p>
+                )}
+                {workspace.blockers.length ? (
+                  <ul>
+                    {workspace.blockers.map((blocker) => (
+                      <li key={blocker.scope + ":" + blocker.code}>{blocker.label}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No current provider/source-policy blocker is recorded; a real approved pilot may be run only when genuinely needed.</p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="principles">
+        <div>
+          <p className="eyebrow">Fail-closed stop conditions</p>
+          <h2>Stop rather than manufacture evidence</h2>
+        </div>
+        <ul>
+          {baseline.stopConditions.map((condition) => <li key={condition}>{condition}</li>)}
+        </ul>
       </section>
 
       <section className="opsDrilldownPanel"><span>Operations Command · I.T. drill-down</span><strong>Remote Execution & Provider Status</strong><p>Inspect live-pilot readiness, fail-closed controls, provider cost evidence and recent execution events.</p><div><Link href="/connectors">Connectors</Link><Link href="/integration-delivery">System Status</Link></div></section>
