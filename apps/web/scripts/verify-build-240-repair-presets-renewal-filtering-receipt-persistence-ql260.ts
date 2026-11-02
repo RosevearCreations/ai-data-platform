@@ -41,7 +41,7 @@ async function main() {
     source("../../../docs/BUILD_240_REPAIR_PRESETS_RENEWAL_FILTERING_RECEIPT_PERSISTENCE_QL260.md")
   ]);
 
-  ensure(shell.includes("Build 240 · Marble Standard"),"shell");
+  ensure(shell.includes("Marble Standard")&&shell.includes("Operations Command"),"canonical Marble Standard Operations Command shell");
   ensure(pkg.includes("verify-build-240-repair-presets-renewal-filtering-receipt-persistence-ql260.ts"),"registered");
 
   for(const t of [
