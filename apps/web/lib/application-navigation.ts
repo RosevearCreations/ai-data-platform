@@ -324,8 +324,8 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       },
       {
         href: "/retention",
-        label: "Retention & Archive Governance",
-        description: "Review data age, archive candidates, protected evidence and cleanup impact.",
+        label: "Retention Cleanup Readiness",
+        description: "Reconcile storage budgets, cleanup failures, archive/delete eligibility, protected evidence and approval state.",
         helpTopic: "retention-overview"
       },
       {

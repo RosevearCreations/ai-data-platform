@@ -11,6 +11,8 @@ export type RetentionGovernanceClass = {
   protectedEvidence: boolean;
   rows: number;
   measuredBytes: number;
+  budgetBytes: number;
+  budgetOverageBytes: number;
   archiveEligibleRows: number;
   deleteEligibleRows: number;
   deleteEligibleBytes: number;

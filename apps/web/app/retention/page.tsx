@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { buildRetentionGovernanceModel } from "@/lib/retention-governance";
+import { buildRetentionCleanupReconciliationForUser } from "@/lib/retention-cleanup-reconciliation-database";
 
 import { HelpInfo } from "../help/HelpInfo";
 import { RetentionControls } from "./RetentionControls";
@@ -24,25 +25,58 @@ export default async function RetentionPage(){
   if(!session){
     return <main className="shell"><section className="hero">
       <HelpInfo topic="retention-overview"/>
-      <p className="eyebrow">Build 267</p>
-      <h1>Retention, Archive & Storage Governance Center</h1>
-      <p className="lead">Sign in to review retention rules, data age, archive candidates, protected evidence and cleanup impact.</p>
+      <p className="eyebrow">Build 277</p>
+      <h1>Retention Cleanup Readiness &amp; Storage Budget Reconciliation</h1>
+      <p className="lead">Sign in to review storage budgets, cleanup readiness, protected evidence and approval-gated impact.</p>
       <Link className="primaryLink" href="/sign-in?callbackUrl=/retention">Sign in</Link>
     </section></main>;
   }
 
-  const model=await buildRetentionGovernanceModel(session.user.id);
+  const [model,reconciliation]=await Promise.all([
+    buildRetentionGovernanceModel(session.user.id),
+    buildRetentionCleanupReconciliationForUser(session.user.id)
+  ]);
 
   return <main className="shell reviewShell opsDeepScreen opsDeepScreen--management">
     <section className="hero reviewHero">
       <HelpInfo topic="retention-overview"/>
-      <p className="eyebrow">Build 267</p>
-      <h1>Retention, Archive & Storage Governance Center</h1>
-      <p className="lead">Review measured data age, retention rules, archive candidates, protected evidence, bounded delete eligibility and impact before any destructive cleanup occurs.</p>
+      <p className="eyebrow">Build 277 · Build 267 controls retained</p>
+      <h1>Retention Cleanup Readiness &amp; Storage Budget Reconciliation</h1>
+      <p className="lead">Reconcile measured class budgets, archive/delete eligibility, protected evidence, cleanup failures and approval state before any destructive cleanup occurs.</p>
       <div className="heroActions">
         <Link className="secondaryButton" href="/production-learning">Production learning</Link>
         <Link className="secondaryButton" href="/audit-evidence">Audit & evidence</Link>
         <Link className="secondaryButton" href="/">Operations Command</Link>
+        <a className="secondaryButton" href="/api/retention/reconciliation">Readiness JSON</a>
+      </div>
+    </section>
+
+    <section className="dataQualityPolicyNote" id="build277-readiness">
+      <strong>Build 277 exit criterion: {reconciliation.exitCriterion.met?"MET":"OPEN"}</strong>
+      <p>{reconciliation.exitCriterion.label}</p>
+      <p><strong>Current evidence:</strong> {reconciliation.exitCriterion.evidence}</p>
+      <p>Deployment approval is not cleanup approval. Build 277 never runs cleanup; existing approval and the separate RUN CLEANUP confirmation remain authoritative.</p>
+    </section>
+
+    <section>
+      <div className="sectionHeading"><div>
+        <p className="eyebrow">Safe cleanup-readiness queue</p>
+        <h2>Budget, failure, archive, delete and protection decisions</h2>
+      </div></div>
+      <div className="commandMetrics">
+        <article><strong>{reconciliation.totals.budgetBreaches}</strong><span>storage budget breaches</span></article>
+        <article><strong>{reconciliation.totals.unresolvedFailedCleanups}</strong><span>unresolved failed cleanups</span></article>
+        <article><strong>{reconciliation.totals.archiveEligibleRows}</strong><span>manual archive candidates</span></article>
+        <article><strong>{reconciliation.totals.deleteEligibleRows}</strong><span>{formatBytes(reconciliation.totals.deleteEligibleBytes)} delete-eligible</span></article>
+        <article><strong>{reconciliation.totals.protectedRows}</strong><span>protected evidence rows</span></article>
+      </div>
+      <div className="reviewBatchList">
+        {reconciliation.queue.map((item,index)=><article className="reviewBatchSummary" key={item.workspaceId+":"+(item.classKey??"workspace")+":"+index}><div>
+          <span className="reviewStatus">{item.state}</span>
+          <h3>{item.workspaceName} · {item.title}</h3>
+          <p>{item.detail}</p>
+          {item.rows||item.bytes?<p><strong>Scope:</strong> {item.rows} row(s) · {formatBytes(item.bytes)}</p>:null}
+        </div></article>)}
       </div>
     </section>
 
@@ -92,7 +126,7 @@ export default async function RetentionPage(){
               {retentionClass.protectedEvidence?"protected":retentionClass.overBudget?"over budget":retentionClass.disposition}
             </span>
             <h3>{retentionClass.label}</h3>
-            <p><strong>Rows:</strong> {retentionClass.rows} · <strong>Storage:</strong> {formatBytes(retentionClass.measuredBytes)}</p>
+            <p><strong>Rows:</strong> {retentionClass.rows} · <strong>Storage:</strong> {formatBytes(retentionClass.measuredBytes)} / {formatBytes(retentionClass.budgetBytes)} budget{retentionClass.budgetOverageBytes?" · "+formatBytes(retentionClass.budgetOverageBytes)+" over":""}</p>
             <p><strong>Oldest:</strong> {formatDate(retentionClass.oldestAt)}{retentionClass.oldestAgeDays!==null?" · "+retentionClass.oldestAgeDays+" day(s) old":""}</p>
             <p><strong>Newest:</strong> {formatDate(retentionClass.newestAt)}</p>
             <p><strong>Retention threshold:</strong> {retentionClass.retentionDays===null?"No Build 267 destructive threshold":retentionClass.retentionDays+" days"}</p>
