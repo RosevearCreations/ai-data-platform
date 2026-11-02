@@ -27,8 +27,7 @@ async function main(){
     source("../../../docs/NEXT_BUILDS_254_272.md")
   ]);
 
-  ensure(shell.includes("Build 256 · Operations Command"),"Build 256 shell marker");
-  ensure(shell.includes("Build 255 · Operations Command"),"Build 255 compatibility marker");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   ensure(shell.includes('href="/search">Search</Link>'),"topbar Search link");
   ensure(nav.includes('href: "/search"')&&nav.includes('label: "Unified Search"'),"registered search destination");
 

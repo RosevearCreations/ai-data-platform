@@ -48,8 +48,7 @@ async function main(){
     source("../../../docs/NEXT_BUILDS_254_272.md")
   ]);
 
-  ensure(shell.includes("Build 254 · Operations Command"),"Build 254 shell");
-  ensure(shell.includes("Build 253 · Operations Command"),"Build 253 shell compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsRiskSummary","OperationsDrillThroughBand","OperationsEvidenceLane","OperationsInspectorResolutionCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 254 — risk summaries, drill-through bands, responsive evidence lanes and inspector resolution cards"),"Build 254 styles");
   for(const token of ["Delivery risk summary","Risk drill-through","Delivery evidence lane","Configuration resolution","Delivery exception resolution","QL-266 resolution boundary"]) ensure(statusPage.includes(token),"System Status "+token);

@@ -66,8 +66,17 @@ export default async function ProductionLearningPage() {
           </a>
         </div>
       </section>
-
-      {/* Operations Command Statistical legacy verifier marker */}
+      <section className="dataQualityPolicyNote">
+        <strong>Build 272 · Production Learning IV renewal checkpoint</strong>
+        <p>
+          This live RLS-scoped review is the evidence source for owner acceptance. Missing evidence remains missing,
+          successful deployment is not treated as operational acceptance, and No speculative Build 273+ queue is
+          created automatically.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/owner-acceptance">Open Owner Acceptance</Link>
+        </div>
+      </section>
       <OperationsAreaBand
         area="Statistical"
         description="Measured evidence, operational baselines, cost proxies, outcome reconciliation and production-learning trends."
@@ -505,8 +514,8 @@ export default async function ProductionLearningPage() {
 
       <section>
         <div className="sectionHeading">
-          <p className="eyebrow">Post-Build 040 roadmap</p>
-          <h2>Only unresolved evidence gates remain</h2>
+          <p className="eyebrow">Build 272 · Roadmap renewal checkpoint</p>
+          <h2>Measured evidence only — no automatic Builds 273+</h2>
           <HelpInfo topic="learning-roadmap" />
         </div>
         <div className="grid">

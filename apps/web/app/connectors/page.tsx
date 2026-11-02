@@ -45,7 +45,6 @@ export default async function ConnectorsPage() {
           <Link className="secondaryButton" href="/">Back to platform</Link>
         </div>
       </section>
-      {/* Operations Command I.T. legacy verifier marker */}
       <OperationsAreaBand
         area="I.T."
         description="Connector grants, execution controls, remote-provider workflows and append-only technical evidence."

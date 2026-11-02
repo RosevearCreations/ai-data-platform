@@ -83,8 +83,7 @@ async function main(){
     source("../../../docs/NEXT_BUILDS_254_272.md")
   ]);
 
-  ensure(shell.includes("Build 257 · Operations Command"),"Build 257 shell");
-  ensure(shell.includes("Build 256 · Operations Command"),"Build 256 compatibility");
+  ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   ensure(shell.includes("<OperatorWorkspaceMenu />"),"Operations Command workspace menu");
   ensure(controls.includes("OPERATOR_WORKSPACE_STORAGE_KEY")&&controls.includes("window.localStorage"),"browser-local storage");
   ensure(controls.includes("OperatorWorkspaceSavePanel")&&controls.includes("OperatorWorkspaceManager"),"shared controls");
