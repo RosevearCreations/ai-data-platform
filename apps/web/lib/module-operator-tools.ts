@@ -246,11 +246,6 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         description: "Open the genuine-evidence runbook."
       },
       {
-        href: "/runbooks",
-        label: "Guided runbooks",
-        description: "Follow reusable governed workflows across collection, review, approval and delivery."
-      },
-      {
         href: "/retention",
         label: "Retention governance",
         description: "Review archive candidates, protected evidence and bounded cleanup impact."
