@@ -122,6 +122,12 @@ export async function buildRetentionGovernanceModel(userId:string):Promise<Reten
      projectedRowsAfterFullEligibleDelete:Math.max(0,item.managedRows-item.deleteEligibleRows),
      projectedBytesAfterFullEligibleDelete:Math.max(0,item.measuredBytes-item.deleteEligibleBytes),
      boundedDeleteRowsThisRun,
+     recentRuns:item.recentRuns.map(run=>({
+       runId:run.runId,status:run.status,beforeRows:run.beforeRows,afterRows:run.afterRows,
+       beforeStorageBytes:run.beforeStorageBytes,afterStorageBytes:run.afterStorageBytes,
+       deletedBarcodeRows:run.deletedBarcodeRows,deletedRemoteJobs:run.deletedRemoteJobs,
+       errorCode:run.errorCode,createdAt:run.createdAt.toISOString()
+     })),
      classes
    });
  }
