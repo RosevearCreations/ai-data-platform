@@ -43,6 +43,7 @@ export default async function OwnerAcceptancePage() {
           invent Builds 273+; the next batch must come from owner findings and current operational evidence.
         </p>
         <div className="heroActions">
+          <Link className="secondaryButton" href="/evidence-baseline">Build 273 Evidence Baseline</Link>
           <Link className="secondaryButton" href="/production-learning">Production Learning IV</Link>
           <Link className="secondaryButton" href="/hardening">Hardening Audit</Link>
           <Link className="secondaryButton" href="/system-reliability">System Reliability</Link>
@@ -112,8 +113,8 @@ export default async function OwnerAcceptancePage() {
       <section className="dataQualityPolicyNote">
         <strong>Roadmap state: renewal checkpoint</strong>
         <p>
-          No speculative Build 273+ queue is created by Build 272. The next batch should be defined only after owner
-          acceptance findings, live usage, reliability evidence and measured operational gaps are reviewed.
+          The owner-authorized Builds 273–280 batch is now active. Build 273 carries these findings into the
+          evidence-baseline triage surface; later builds close only against measured exit criteria.
         </p>
       </section>
     </main>
