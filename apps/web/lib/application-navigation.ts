@@ -267,8 +267,8 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       },
       {
         href: "/integration-delivery",
-        label: "Integration Delivery",
-        description: "Review delivery readiness and integration evidence.",
+        label: "Consumer Acceptance",
+        description: "Reconcile conformance, live dry-run, controlled-live acknowledgement, replay and durable receipt evidence.",
         helpTopic: "integration-delivery"
       },
       {
