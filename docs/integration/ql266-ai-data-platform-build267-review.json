@@ -1,0 +1,24 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build267-review.v1",
+  "application": "AI Data Platform",
+  "build": 267,
+  "retention_governance": {
+    "route": "/retention",
+    "data_age": true,
+    "retention_rules": true,
+    "archive_candidates": true,
+    "protected_evidence": true,
+    "delete_eligibility": true,
+    "impact_preview": true,
+    "archive_preview_only": true,
+    "protected_evidence_destructive_cleanup": false,
+    "existing_cleanup_approval_gate_preserved": true
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 268
+}
