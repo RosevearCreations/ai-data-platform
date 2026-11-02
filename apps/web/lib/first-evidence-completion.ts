@@ -128,7 +128,7 @@ export function buildFirstEvidenceCompletion(
           }
         : {
             id,
-            label: id[0].toUpperCase() + id.slice(1),
+            label: id.charAt(0).toUpperCase() + id.slice(1),
             status: "blocked",
             evidence: ["No current workflow-orchestration evidence is available for this stage."],
             gate: "The stage stays blocked until current RLS-scoped workflow evidence is available.",
