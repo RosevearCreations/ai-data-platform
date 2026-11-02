@@ -56,6 +56,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "learning-overview"
       },
       {
+        href: "/hardening",
+        label: "Hardening Audit",
+        description: "Review accessibility, mobile, performance and failure-recovery readiness.",
+        helpTopic: "shell-overview"
+      },
+      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
