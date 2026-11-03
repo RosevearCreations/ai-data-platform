@@ -273,6 +273,21 @@ export async function listCredentialVaultForUser(userId: string) {
     schema: "ai-data-platform.credential-reference-vault.v1" as const,
     build: 284 as const,
     generatedAt: new Date().toISOString(),
+    applications: [
+      "devilndove",
+      "rosiedazzlers",
+      "yard-workers",
+      "icamp",
+      "rosevear-comms-hub",
+      "rosevear-ai-hub"
+    ].map((applicationId) => {
+      const application = getPeerApplication(applicationId as PeerApplicationId);
+      if (!application) throw new Error("credential_vault_application_registry_mismatch");
+      return {
+        applicationId: application.id,
+        displayName: application.displayName
+      };
+    }),
     workspaces: workspaces.map((item) => ({
       id: item.id,
       name: item.name,
