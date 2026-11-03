@@ -27,7 +27,7 @@ Build 281 starts the owner-authorized Unified Connectivity & Autonomous Operatio
 
 The historical QL-246 six-application proof set contains AI Data Platform itself and does not contain Rosevear Comms Hub.
 
-Build 281 does not rewrite that historical evidence.
+Build 281 does not rewrite the older QL-246 six-application proof set or its historical evidence.
 
 The new Build 281 registry is a **peer-application catalog**: it describes the six other applications the AI Data Platform needs to connect with and coordinate going forward.
 
