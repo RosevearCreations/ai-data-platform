@@ -94,7 +94,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/system-reliability",
         label: "System Reliability",
-        description: "Review measured application, database and operational health.",
+        description: "Review measured health, durable trend comparison, recurring failure patterns and recovery readiness.",
         helpTopic: "command-center"
       }
     ]
