@@ -93,9 +93,9 @@ async function main() {
     "vault library never reads or models secret values"
   );
   ensure(
-    lib.includes('"secretValuesStored: false as const"') &&
-      lib.includes('"automaticRotation: false as const"') &&
-      lib.includes('"ql266Resumed: false as const"'),
+    lib.includes("secretValuesStored: false as const") &&
+      lib.includes("automaticRotation: false as const") &&
+      lib.includes("ql266Resumed: false as const"),
     "vault safety policy"
   );
 
