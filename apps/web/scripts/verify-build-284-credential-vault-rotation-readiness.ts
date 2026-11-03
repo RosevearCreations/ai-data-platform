@@ -124,15 +124,13 @@ async function main() {
     client.includes("Register reference metadata") &&
       client.includes("Mark replacement prepared") &&
       client.includes("Record rotation completed") &&
-      client.includes("Revoke reference") &&
-      client.includes("Never") === false,
+      client.includes("Revoke reference"),
     "operator rotation controls"
   );
   ensure(
-    client.includes("Never") === false &&
-      client.includes("never") &&
+    client.includes("Never") &&
       !client.includes('type="password"'),
-    "no password input"
+    "no password input and explicit warning"
   );
   ensure(
     client.includes("password, token, HMAC key, API secret or credential value"),
