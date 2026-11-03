@@ -1,0 +1,45 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build280-review.v1",
+  "application": "AI Data Platform",
+  "build": 280,
+  "production_learning_v": {
+    "route": "/owner-acceptance",
+    "api_route": "/api/owner-acceptance/production-learning-v",
+    "build_273_279_criteria_reconciled": true,
+    "production_learning_findings_reconciled": true,
+    "historical_findings_removed_from_active_queue": true,
+    "dependency_blockers_preserved": true,
+    "reliability_trend_build279_dedicated_exit_used": true,
+    "synthetic_evidence_created": false,
+    "database_migration": false
+  },
+  "owner_acceptance": {
+    "explicit_owner_decision_required": true,
+    "production_accepted_automatically": false,
+    "deployment_is_not_acceptance": true,
+    "external_authorization_inferred": false
+  },
+  "roadmap_renewal": {
+    "renewal_candidates_from_measured_evidence_only": true,
+    "automatic_numbered_next_batch": false,
+    "numbered_next_batch_authorized": false,
+    "next_build_number": null,
+    "owner_authorization_required": true
+  },
+  "authorization": {
+    "rls_preserved": true,
+    "source_policy_gates_preserved": true,
+    "connector_gates_preserved": true,
+    "integration_delivery_gates_preserved": true,
+    "remote_kill_switch_preserved": true,
+    "retention_approval_gates_preserved": true,
+    "automatic_permission_changes": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": null
+}
