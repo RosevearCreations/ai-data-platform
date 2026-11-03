@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/connectors", "/connector-diagnostics", "/remote-execution"]
+        itemHrefs: ["/app-connections", "/connectors", "/connector-diagnostics", "/remote-execution"]
       },
       {
         id: "deliver",
@@ -181,6 +181,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       }
     ],
     shortcuts: [
+      {
+        href: "/app-connections",
+        label: "App registry",
+        description: "Review peer applications and safe capability discovery."
+      },
       {
         href: "/connectors",
         label: "Connectors",
