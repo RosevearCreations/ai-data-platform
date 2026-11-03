@@ -1,0 +1,38 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build282-review.v1",
+  "application": "AI Data Platform",
+  "build": 282,
+  "shared_identity_mapping": {
+    "peer_application_count": 6,
+    "stable_application_identity": true,
+    "stable_logical_tenant_keys": true,
+    "environment_aliases_normalized": true,
+    "mapped_workspace_count": 2,
+    "unmapped_workspace_count": 4,
+    "automatic_workspace_creation": false,
+    "automatic_tenant_provisioning": false,
+    "production_integration_v1_eligible_count": 0,
+    "database_migration": false
+  },
+  "workspace_bindings": {
+    "rosiedazzlers": "mapped",
+    "devilndove": "mapped",
+    "yard-workers": "unmapped",
+    "icamp": "unmapped",
+    "rosevear-comms-hub": "unmapped",
+    "rosevear-ai-hub": "unmapped"
+  },
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "credentials_issued": false,
+    "external_tenant_created": false,
+    "external_mutation_started": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 283
+}
