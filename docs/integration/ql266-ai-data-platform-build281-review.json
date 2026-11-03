@@ -1,0 +1,36 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build281-review.v1",
+  "application": "AI Data Platform",
+  "build": 281,
+  "app_connection_registry": {
+    "authoritative_peer_registry": true,
+    "peer_application_count": 6,
+    "repository_identity_catalogued": true,
+    "integration_v1_capabilities_reused": true,
+    "read_only_discovery": true,
+    "mutating_capabilities_enabled": false,
+    "automatic_activation": false,
+    "database_migration": false
+  },
+  "peer_applications": [
+    "devilndove",
+    "rosiedazzlers",
+    "yard-workers",
+    "icamp",
+    "rosevear-comms-hub",
+    "rosevear-ai-hub"
+  ],
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "credentials_issued": false,
+    "secret_exchange_started": false,
+    "external_mutation_started": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 282
+}
