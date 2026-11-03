@@ -64,7 +64,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/owner-acceptance",
         label: "Owner Acceptance",
-        description: "Review the Build 272 renewal checkpoint and current production evidence.",
+        description: "Review Build 280 Production Learning V, owner acceptance and evidence-backed next-batch renewal.",
         helpTopic: "learning-overview"
       },
       {
@@ -331,7 +331,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/production-learning",
         label: "Production Learning",
-        description: "Review measured production outcomes and evidence gaps.",
+        description: "Review measured production outcomes, Production Learning V evidence gaps and next-batch renewal candidates.",
         helpTopic: "learning-overview"
       },
       {
