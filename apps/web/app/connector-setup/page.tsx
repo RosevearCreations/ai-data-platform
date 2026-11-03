@@ -29,6 +29,9 @@ export default async function ConnectorSetupPage() {
           <Link className="secondaryButton" href="/app-connections">
             App Connection Registry
           </Link>
+          <Link className="secondaryButton" href="/credential-vault">
+            Credential Vault
+          </Link>
           <Link className="secondaryButton" href="/connectors">
             Connector Manager
           </Link>
