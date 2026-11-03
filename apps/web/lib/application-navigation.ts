@@ -254,6 +254,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/connector-setup",
+        label: "Connector Setup Wizard",
+        description: "Prepare peer-app connection drafts with guided environment, tenant/workspace and safe-test readiness checks.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/connectors",
         label: "Connectors",
         description: "Review connector capabilities, grants and workspace use.",

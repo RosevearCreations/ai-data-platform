@@ -42,6 +42,7 @@ export default async function ConnectorsPage() {
           explicit workspace grants, bounded server execution and append-only audit.
         </p>
         <div className="heroActions">
+          <Link className="secondaryButton" href="/connector-setup">Setup Wizard</Link>
           <Link className="secondaryButton" href="/">Back to platform</Link>
         </div>
       </section>
