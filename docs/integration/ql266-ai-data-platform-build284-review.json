@@ -1,0 +1,38 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build284-review.v1",
+  "application": "AI Data Platform",
+  "build": 284,
+  "credential_reference_vault": {
+    "durable_reference_metadata": true,
+    "workspace_scoped_rls": true,
+    "owner_admin_mutation_only": true,
+    "member_read_visibility": true,
+    "append_only_rotation_events": true,
+    "secret_values_stored": false,
+    "secret_values_read": false,
+    "automatic_rotation": false,
+    "database_migration": "0089_connection_credential_vault_rotation_readiness.sql"
+  },
+  "rotation_workflow": {
+    "schedule_supported": true,
+    "replacement_prepared_gate": true,
+    "completion_requires_prepared_state": true,
+    "revoke_supported": true,
+    "automatic_date_fabrication": false
+  },
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "credential_values_issued": false,
+    "external_tenant_created": false,
+    "connector_enabled": false,
+    "external_test_started": false,
+    "external_mutation_started": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 285
+}

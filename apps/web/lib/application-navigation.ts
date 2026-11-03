@@ -260,6 +260,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/credential-vault",
+        label: "Credential Vault",
+        description: "Track reference-only credential metadata, rotation dates, expiry and owner-controlled replacement evidence.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/connectors",
         label: "Connectors",
         description: "Review connector capabilities, grants and workspace use.",
