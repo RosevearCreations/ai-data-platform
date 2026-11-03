@@ -70,3 +70,10 @@ Primary evidence: all Build 273–279 exit criteria, Production Learning trend c
 - Do not resume QL-266 without explicit owner authorization.
 - Prefer validating and closing an already-resolved gap over expanding scope.
 - Build 280 is the next mandatory roadmap-renewal checkpoint; no automatic long Builds 281+ queue should be created before that review.
+
+
+## Build 280 batch-closure rule
+
+Build 280 is the mandatory renewal checkpoint for this finite batch. After the Production Learning V review, numbered Builds 281+ remain unassigned unless the owner separately authorizes a new batch from current measured evidence.
+
+Unresolved criteria may produce unnumbered renewal candidates. A deployment, successful CI run, Vercel readiness state, conformance result, or historical roadmap item does not create or authorize the next numbered build.
