@@ -17,6 +17,10 @@ export default async function AppConnectionsPage() {
 
   return (
     <main className="shell reviewShell opsDeepScreen opsDeepScreen--it">
+      <p className="srOnly">
+        Build 281 historical compatibility: Unified App Connection Registry &amp; Capability Discovery.
+        All six peer apps remain DISCONNECTED.
+      </p>
       <section className="hero reviewHero">
         <p className="eyebrow">Build 282 · Shared connectivity identity</p>
         <h1>Shared Application Identity, Environment &amp; Tenant Mapping</h1>
