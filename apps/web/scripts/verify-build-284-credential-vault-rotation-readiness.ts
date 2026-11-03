@@ -88,9 +88,11 @@ async function main() {
   );
   ensure(
     !lib.includes("process.env[") &&
-      !lib.includes("secretValue") &&
-      !lib.includes("credentialValue"),
-    "vault library never reads or models secret values"
+      !lib.includes("secretValue:") &&
+      !lib.includes("credentialValue:") &&
+      !lib.includes("secret_value") &&
+      !lib.includes("credential_value"),
+    "vault library never reads or models secret-value fields"
   );
   ensure(
     lib.includes("secretValuesStored: false as const") &&
