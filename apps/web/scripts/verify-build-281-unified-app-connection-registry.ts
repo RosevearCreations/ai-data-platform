@@ -78,12 +78,13 @@ async function main() {
     );
   }
 
-  const [model, page, api, nav, pkg, doc, statusRaw, queue, ql246] =
+  const [model, page, api, nav, moduleTools, pkg, doc, statusRaw, queue, ql246] =
     await Promise.all([
       source("lib/app-connection-registry.ts"),
       source("app/app-connections/page.tsx"),
       source("app/api/app-connections/route.ts"),
       source("lib/application-navigation.ts"),
+      source("lib/module-operator-tools.ts"),
       source("package.json"),
       source("../../docs/BUILD_281_UNIFIED_APP_CONNECTION_REGISTRY_CAPABILITY_DISCOVERY.md"),
       source("../../docs/integration/ql266-ai-data-platform-build281-review.json"),
@@ -111,6 +112,11 @@ async function main() {
     nav.includes('href: "/app-connections"') &&
       nav.includes('label: "App Connection Registry"'),
     "navigation"
+  );
+  ensure(
+    moduleTools.includes('"/app-connections"') &&
+      moduleTools.includes('label: "App registry"'),
+    "integration module operator coverage"
   );
   ensure(
     pkg.includes("verify-build-281-unified-app-connection-registry.ts"),
