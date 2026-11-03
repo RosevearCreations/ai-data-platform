@@ -2103,8 +2103,10 @@ Promotion evidence:
 Next queued: **Build 082 — Next-Cycle Corrective Delivery Activation & Idempotent Execution.**
 
 
-## Current official build batch — Builds 254–272
+## Current official build batch — Builds 281–305
 
-After Build 253 production GREEN, the owner adopted `docs/NEXT_BUILDS_254_272.md` as the current finite improvement queue. Build 254 starts the batch and Build 272 is the next evidence-driven roadmap renewal checkpoint.
+After Build 280 production GREEN and the Production Learning V renewal checkpoint, the owner authorized `docs/NEXT_BUILDS_281_305.md` as the Unified Connectivity & Autonomous Operations batch.
+
+Build 281 establishes the authoritative peer-app connection registry and Build 305 is the next evidence-driven roadmap renewal checkpoint.
 
 Repository branch policy for this batch: only `dev` and `main` are intended as long-lived branches. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED until explicitly resumed.
