@@ -1084,7 +1084,9 @@ export const HELP_TOPICS = {
       "Review unused connector grants, including grants unused for 30 days or longer, before adding credentials or broader capabilities.",
       "Compare owner/admin/member counts and keep elevated privileges proportionate to measured operational need.",
       "Use the profile cards to prioritize future investment where durable activity exists; do not manufacture usage to close a metric.",
-      "Build 035 recommendations are advisory only and never edit roles, profiles, connector grants or capability flags."
+      "Build 035 recommendations are advisory only and never edit roles, profiles, connector grants or capability flags.",
+      "Build 278 combines this adoption evidence with Build 266 access review so ownerless workspaces, stale grants, capability drift and privileged-member inactivity can be reviewed in one advisory queue.",
+      "Treat every Build 278 cleanup recommendation as owner/admin review only; use the existing workspace, profile and connector controls for any approved change."
     ],
     notes: [
       "Adoption snapshots are fingerprint-deduplicated, RLS-scoped and bounded to 365 days / 60 snapshots per workspace.",
