@@ -307,7 +307,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/adoption",
         label: "Adoption & Permissions",
-        description: "Review operational adoption without changing permissions automatically.",
+        description: "Review least-privilege adoption, stale grants, capability drift and owner disposition without automatic access changes.",
         helpTopic: "adoption-overview"
       },
       {

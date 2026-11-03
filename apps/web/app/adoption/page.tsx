@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { buildAdoptionReview } from "@/lib/adoption-database";
+import { buildLeastPrivilegeAdoptionReview } from "@/lib/least-privilege-adoption-review";
+import { buildSecurityAccessReview } from "@/lib/security-access-review";
 
 import { HelpInfo } from "../help/HelpInfo";
 import { OperationsActionDrawer, OperationsExceptionQueue, OperationsInspector, OperationsStatusBadge, OpsDrawerLink } from "../OperationsCommandPanels";
@@ -26,8 +28,8 @@ export default async function AdoptionPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="adoption-overview" />
-          <p className="eyebrow">Build 035</p>
-          <h1>Adoption & permissions</h1>
+          <p className="eyebrow">Build 278</p>
+          <h1>Least-Privilege Adoption, Stale Grants &amp; Capability Cleanup Review</h1>
           <p className="lead">
             Sign in to review durable workspace/profile adoption, connector grants
             and least-privilege recommendations.
@@ -40,20 +42,23 @@ export default async function AdoptionPage() {
     );
   }
 
-  const review = await buildAdoptionReview(session.user.id);
+  const [review, security] = await Promise.all([
+    buildAdoptionReview(session.user.id),
+    buildSecurityAccessReview(session.user.id)
+  ]);
+  const leastPrivilege = buildLeastPrivilegeAdoptionReview({ adoption: review, security });
   const { totals } = review;
 
   return (
     <main className="shell opsDeepScreen opsDeepScreen--management">
       <section className="hero">
         <HelpInfo topic="adoption-overview" />
-        <p className="eyebrow">Build 035</p>
-        <h1>Workspace, Profile & Connector Adoption / Permission Outcomes</h1>
+        <p className="eyebrow">Build 278 · Build 035/266 evidence retained</p>
+        <h1>Least-Privilege Adoption, Stale Grants &amp; Capability Cleanup Review</h1>
         <p className="lead">
-          Durable evidence compares enabled capabilities with actual use,
-          connector grants with executions, feature adoption across workspaces and
-          owner/admin/member distribution. Recommendations never change permissions
-          automatically.
+          Reconcile real adoption with workspace access evidence to surface ownerless
+          workspaces, capability drift, stale or unused connector grants and privileged
+          access that needs explicit owner review. Recommendations remain advisory.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/first-evidence">
@@ -63,11 +68,51 @@ export default async function AdoptionPage() {
             Production learning
           </Link>
           <a className="secondaryButton" href="/api/adoption">
-            Evidence JSON
+            Adoption JSON
+          </a>
+          <a className="secondaryButton" href="/api/adoption/least-privilege">
+            Least-privilege JSON
           </a>
           <Link className="secondaryButton" href="/">
             Back to platform
           </Link>
+        </div>
+      </section>
+
+      <section className="dataQualityPolicyNote" id="build278-least-privilege">
+        <strong>Build 278 exit criterion: {leastPrivilege.exitCriterion.met ? "MET" : "OPEN"}</strong>
+        <p>{leastPrivilege.exitCriterion.label}</p>
+        <p><strong>Current evidence:</strong> {leastPrivilege.exitCriterion.evidence}</p>
+        <p>Build 278 never removes members, changes roles, changes profile capabilities or revokes connector grants automatically.</p>
+      </section>
+
+      <section>
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Least-privilege cleanup queue</p>
+            <h2>Owner disposition required before access changes</h2>
+          </div>
+        </div>
+        <div className="commandMetrics">
+          <article><strong>{leastPrivilege.totals.ownerlessWorkspaces}</strong><span>ownerless workspaces</span></article>
+          <article><strong>{leastPrivilege.totals.disabledUsedCapabilities}</strong><span>disabled-used capability slots</span></article>
+          <article><strong>{leastPrivilege.totals.highRiskUnusedCapabilities}</strong><span>high-risk unused capabilities</span></article>
+          <article><strong>{leastPrivilege.totals.connectorStaleGrants}</strong><span>stale connector grants</span></article>
+          <article><strong>{leastPrivilege.totals.permissionReviewWorkspaces}</strong><span>permission-review workspaces</span></article>
+          <article><strong>{leastPrivilege.totals.privilegedMembersUnderReview}</strong><span>privileged members under review</span></article>
+        </div>
+        <div className="reviewBatchList">
+          {leastPrivilege.issues.length ? leastPrivilege.issues.map((issue,index) => (
+            <article className="reviewBatchSummary" key={issue.workspaceId+":"+issue.type+":"+index}>
+              <div>
+                <span className="reviewStatus">{issue.severity}</span>
+                <h3>{issue.workspaceName} · {issue.subject}</h3>
+                <p>{issue.detail}</p>
+                <p><strong>Recommendation:</strong> {issue.recommendation}</p>
+                <span className="badge">owner disposition required</span>
+              </div>
+            </article>
+          )) : <div className="emptyState"><p>No current Build 278 least-privilege exception requires owner disposition.</p></div>}
         </div>
       </section>
 
