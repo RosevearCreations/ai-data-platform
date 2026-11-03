@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth";
 import { buildAppConnectionRegistry } from "@/lib/app-connection-registry";
+import { buildSharedApplicationIdentityMap } from "@/lib/application-identity-mapping";
 
 export const dynamic = "force-dynamic";
 
@@ -12,16 +13,18 @@ export default async function AppConnectionsPage() {
   if (!session) redirect("/sign-in?callbackUrl=%2Fapp-connections");
 
   const registry = buildAppConnectionRegistry();
+  const mapping = buildSharedApplicationIdentityMap();
 
   return (
     <main className="shell reviewShell opsDeepScreen opsDeepScreen--it">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 281 · Unified connectivity foundation</p>
-        <h1>Unified App Connection Registry &amp; Capability Discovery</h1>
+        <p className="eyebrow">Build 282 · Shared connectivity identity</p>
+        <h1>Shared Application Identity, Environment &amp; Tenant Mapping</h1>
         <p className="lead">
-          One authoritative catalog for the six peer applications, their repositories,
-          safe discovery surfaces and currently declared Integration v1 capabilities.
-          Discovery is read-only and does not activate a live connection.
+          Stable peer-application identities, controlled aliases, normalized
+          environments and evidence-backed tenant/workspace bindings now sit on top
+          of the Build 281 connection registry. Mapping remains read-only and does
+          not activate a connection.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/connectors">
@@ -30,92 +33,115 @@ export default async function AppConnectionsPage() {
           <Link className="secondaryButton" href="/connector-diagnostics">
             Connector Diagnostics
           </Link>
-          <Link className="secondaryButton" href="/integration-delivery">
-            Integration Delivery
-          </Link>
           <a className="secondaryButton" href="/api/app-connections">
             Registry JSON
+          </a>
+          <a className="secondaryButton" href="/api/app-connections/mappings">
+            Mapping JSON
           </a>
         </div>
       </section>
 
-      <section className="reviewSummary" aria-label="Application connection registry summary">
+      <section className="reviewSummary" aria-label="Shared application identity summary">
         <div className="commandMetrics">
           <article>
-            <strong>{registry.summary.applications}</strong>
-            <span>peer applications catalogued</span>
+            <strong>{mapping.summary.applications}</strong>
+            <span>stable peer identities</span>
           </article>
           <article>
-            <strong>{registry.summary.gatewayReadOnlyReady}</strong>
-            <span>gateway read-only discovery ready</span>
+            <strong>{mapping.summary.mappedWorkspaces}</strong>
+            <span>evidence-backed workspace bindings</span>
           </article>
           <article>
-            <strong>{registry.summary.catalogOnly}</strong>
-            <span>catalog-only applications</span>
+            <strong>{mapping.summary.unmappedWorkspaces}</strong>
+            <span>intentionally unmapped workspaces</span>
           </article>
           <article>
-            <strong>{registry.summary.disconnected}</strong>
-            <span>connections still disconnected</span>
+            <strong>{mapping.summary.productionIntegrationV1Eligible}</strong>
+            <span>production Integration v1 mappings</span>
           </article>
           <article>
-            <strong>{registry.summary.mutatingCapabilitiesDiscovered}</strong>
-            <span>mutating capabilities enabled</span>
+            <strong>{mapping.summary.automaticTenantProvisioning}</strong>
+            <span>automatically provisioned tenants</span>
           </article>
         </div>
       </section>
 
       <section className="dataQualityPolicyNote">
-        <strong>Build 281 safety boundary</strong>
+        <strong>Build 282 identity boundary</strong>
         <p>
-          Repository and capability discovery does not equal connection authorization.
-          All six peer apps remain DISCONNECTED, automatic activation is disabled,
-          and QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED.
+          Logical tenant keys and environment aliases are routing metadata only.
+          Build 282 creates no tenant, no workspace, no credential and no live
+          authorization. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED /
+          DISCONNECTED.
         </p>
       </section>
 
-      <section className="reviewQueue" aria-labelledby="peer-app-registry">
+      <section className="reviewQueue" aria-labelledby="shared-app-mapping">
         <div className="sectionHeading">
           <div>
-            <p className="eyebrow">Authoritative peer-app registry</p>
-            <h2 id="peer-app-registry">Applications &amp; discovery surfaces</h2>
+            <p className="eyebrow">Authoritative shared mapping</p>
+            <h2 id="shared-app-mapping">Application identity &amp; workspace binding</h2>
           </div>
         </div>
         <div className="reviewBatchList">
-          {registry.peerApplications.map((app) => (
-            <article className="reviewBatchSummary" key={app.id}>
-              <div>
-                <span className="reviewStatus">{app.discoveryState}</span>
-                <h3>{app.displayName}</h3>
-                <p>{app.description}</p>
-                <p>
-                  <strong>Repository:</strong> {app.repository}
-                </p>
-                <p>
-                  <strong>Connection:</strong> {app.connectionState} · owner authorization {app.ownerAuthorization}
-                </p>
-                <p>
-                  <strong>Discovery capabilities:</strong>{" "}
-                  {app.discoveryCapabilities.join(", ")}
-                </p>
-                <p>
-                  <strong>Surfaces:</strong>{" "}
-                  {app.discoverySurfaces
-                    .filter((surface) => surface.enabled)
-                    .map((surface) => surface.label)
-                    .join(" · ")}
-                </p>
-              </div>
-            </article>
-          ))}
+          {mapping.applications.map((app) => {
+            const registryApp = registry.peerApplications.find(
+              (item) => item.id === app.applicationId
+            );
+
+            return (
+              <article className="reviewBatchSummary" key={app.applicationId}>
+                <div>
+                  <span className="reviewStatus">{app.workspace.state}</span>
+                  <h3>{app.displayName}</h3>
+                  <p>
+                    <strong>Identity:</strong> {app.identityKey}
+                  </p>
+                  <p>
+                    <strong>Logical tenant:</strong> {app.canonicalTenantKey} ·{" "}
+                    {app.tenantBindingState}
+                  </p>
+                  <p>
+                    <strong>Workspace:</strong>{" "}
+                    {app.workspace.state === "mapped"
+                      ? app.workspace.workspaceSlug + " · " + app.workspace.workspaceId
+                      : "No durable AI Data Platform workspace binding"}
+                  </p>
+                  <p>
+                    <strong>Aliases:</strong> {app.aliases.join(", ")}
+                  </p>
+                  <p>
+                    <strong>Environments:</strong>{" "}
+                    {app.environments
+                      .map(
+                        (environment) =>
+                          environment.canonical +
+                          " → " +
+                          (environment.integrationEnvironment ?? "no Integration v1 transport")
+                      )
+                      .join(" · ")}
+                  </p>
+                  <p>
+                    <strong>Connection:</strong>{" "}
+                    {registryApp?.connectionState ?? "DISCONNECTED"} · gateway business{" "}
+                    {app.gatewayBusinessId ?? "not declared"}
+                  </p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
 
       <section className="dataQualityPolicyNote">
-        <strong>Historical integration evidence remains separate.</strong>
+        <strong>Existing workspaces are authoritative.</strong>
         <p>
-          Build 281 does not rewrite the older QL-246 six-application proof set.
-          This registry is the new reusable peer-application catalog for future
-          connection setup, field mapping, event routing and health dashboards.
+          Rosie Dazzlers and Devil n Dove map to their durable platform workspaces.
+          Yard Workers, iCamp, Rosevear Comms Hub and Rosevear AI Hub remain
+          explicitly unmapped rather than receiving invented workspace rows.
+          Production also remains ineligible for the current nonproduction-only
+          Integration v1 gateway.
         </p>
       </section>
     </main>
