@@ -151,6 +151,10 @@ export default async function AppConnectionsPage() {
           Integration v1 gateway.
         </p>
       </section>
+      <section className="dataQualityPolicyNote" aria-label="Comms Hub navigation">
+        <strong>Rosevear Comms Hub · six-source connection centre</strong>
+        <p><a href="https://rosevear-comms-hub.devilndovelive.workers.dev/" target="_blank" rel="noopener noreferrer">Open the Comms Hub I.T. connection centre</a> — public contracts observed; HOLD, 0/6 authenticated private connections. No new customer access.</p>
+      </section>
     </main>
   );
 }
