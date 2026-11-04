@@ -174,6 +174,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         description: "Review integration readiness, publication mapping and controlled live delivery.",
         itemHrefs: [
           "/data-contracts",
+          "/field-mappings",
           "/integration-delivery",
           "/integration-simulator",
           "/approved-data/delivery",
@@ -221,6 +222,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/data-contracts",
         label: "Data contracts",
         description: "Review canonical shared schemas and structural compatibility."
+      },
+      {
+        href: "/field-mappings",
+        label: "Field mapping studio",
+        description: "Create and review persisted application-to-canonical mapping profiles."
       },
       {
         href: "/integration-delivery",
