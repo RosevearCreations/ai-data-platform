@@ -32,6 +32,9 @@ export default async function ConnectorSetupPage() {
           <Link className="secondaryButton" href="/credential-vault">
             Credential Vault
           </Link>
+          <Link className="secondaryButton" href="/connection-validation">
+            Automatic Validation
+          </Link>
           <Link className="secondaryButton" href="/connectors">
             Connector Manager
           </Link>

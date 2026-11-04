@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connectors", "/connector-diagnostics", "/remote-execution"]
+        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/remote-execution"]
       },
       {
         id: "deliver",
@@ -195,6 +195,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/credential-vault",
         label: "Credential vault",
         description: "Review reference-only credential metadata and rotation readiness."
+      },
+      {
+        href: "/connection-validation",
+        label: "Automatic validation",
+        description: "Validate connector readiness and run bounded safe non-export tests."
       },
       {
         href: "/connectors",
