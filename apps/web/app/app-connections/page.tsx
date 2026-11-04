@@ -31,6 +31,9 @@ export default async function AppConnectionsPage() {
           not activate a connection.
         </p>
         <div className="heroActions">
+          <Link className="secondaryButton" href="/data-contracts">
+            Cross-App Data Contracts
+          </Link>
           <Link className="secondaryButton" href="/connector-setup">
             Connector Setup Wizard
           </Link>
