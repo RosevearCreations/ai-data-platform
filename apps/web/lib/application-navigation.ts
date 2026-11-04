@@ -254,6 +254,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/data-contracts",
+        label: "Cross-App Data Contracts",
+        description: "Review reusable versioned customer, product, service, booking, job, staff, equipment, invoice, media, inventory and notification schemas.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/connector-setup",
         label: "Connector Setup Wizard",
         description: "Prepare peer-app connection drafts with guided environment, tenant/workspace and safe-test readiness checks.",
