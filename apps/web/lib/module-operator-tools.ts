@@ -173,6 +173,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         label: "Prepare & deliver",
         description: "Review integration readiness, publication mapping and controlled live delivery.",
         itemHrefs: [
+          "/data-contracts",
           "/integration-delivery",
           "/integration-simulator",
           "/approved-data/delivery",
@@ -215,6 +216,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/remote-execution",
         label: "Remote execution",
         description: "Open controlled remote-provider workflows."
+      },
+      {
+        href: "/data-contracts",
+        label: "Data contracts",
+        description: "Review canonical shared schemas and structural compatibility."
       },
       {
         href: "/integration-delivery",
