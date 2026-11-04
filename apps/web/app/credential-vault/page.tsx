@@ -29,6 +29,9 @@ export default async function CredentialVaultPage() {
           <Link className="secondaryButton" href="/connector-setup">
             Connector Setup Wizard
           </Link>
+          <Link className="secondaryButton" href="/connection-validation">
+            Automatic Validation
+          </Link>
           <Link className="secondaryButton" href="/connector-diagnostics">
             Connector Diagnostics
           </Link>
