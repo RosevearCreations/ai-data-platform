@@ -29,6 +29,9 @@ export default async function DataContractsPage() {
           <Link className="secondaryButton" href="/app-connections">
             App Connection Registry
           </Link>
+          <Link className="secondaryButton" href="/field-mappings">
+            Visual Field Mapping Studio
+          </Link>
           <Link className="secondaryButton" href="/connection-validation">
             Automatic Connection Validation
           </Link>
@@ -68,8 +71,10 @@ export default async function DataContractsPage() {
           All six peer apps may reference these shared schemas, but Build 286 does
           not claim that an app has implemented a contract, does not map fields,
           does not activate a connection and does not authorize live exchange.
-          Unknown contracts and unknown fields fail closed. QL-266 remains
-          UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED.
+          Unknown contracts and unknown fields fail closed. Build 287 can persist
+          reviewed mapping profiles against these fingerprints, but no mapping
+          activates a connection. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED /
+          DISCONNECTED.
         </p>
       </section>
 
