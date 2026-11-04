@@ -272,6 +272,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/connection-validation",
+        label: "Automatic Connection Validation",
+        description: "Automatically validate configuration, credential-reference readiness, destinations, grants and bounded non-export test eligibility.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/connector-diagnostics",
         label: "Connector Diagnostics",
         description: "Validate connector configuration, permissions, endpoints and recovery guidance.",
