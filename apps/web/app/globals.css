@@ -9106,3 +9106,121 @@ td, th {
     outline-offset: 2px;
   }
 }
+
+
+/* Build 287 — Visual Field Mapping Studio */
+.mappingStudioHeader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid rgba(224, 247, 250, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.mappingStudioHeader > div:not(.mappingStudioArrow) {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.mappingStudioHeader small {
+  color: #adbdc0;
+}
+
+.mappingStudioArrow {
+  font-size: 1.8rem;
+  font-weight: 800;
+  opacity: 0.7;
+}
+
+.mappingStudioRows {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.mappingStudioRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: stretch;
+  padding: 0.9rem;
+  border: 1px solid rgba(224, 247, 250, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.mappingStudioRow--required {
+  box-shadow: inset 4px 0 0 rgba(125, 226, 216, 0.75);
+}
+
+.mappingStudioSource {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(9rem, 0.45fr);
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.mappingStudioSource label,
+.mappingStudioTarget {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.mappingStudioConnector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-weight: 800;
+}
+
+.mappingStudioConnector span {
+  width: 1.8rem;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+.mappingStudioTarget {
+  align-content: start;
+}
+
+.mappingStudioTarget strong {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.mappingStudioTarget em {
+  font-style: normal;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(224, 247, 250, 0.12);
+}
+
+.mappingStudioTarget p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .mappingStudioHeader,
+  .mappingStudioRow {
+    grid-template-columns: 1fr;
+  }
+
+  .mappingStudioArrow,
+  .mappingStudioConnector {
+    transform: rotate(90deg);
+    justify-self: center;
+  }
+
+  .mappingStudioSource {
+    grid-template-columns: 1fr;
+  }
+}

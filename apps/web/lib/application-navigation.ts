@@ -260,6 +260,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/field-mappings",
+        label: "Visual Field Mapping Studio",
+        description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/connector-setup",
         label: "Connector Setup Wizard",
         description: "Prepare peer-app connection drafts with guided environment, tenant/workspace and safe-test readiness checks.",
