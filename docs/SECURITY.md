@@ -582,3 +582,16 @@ When explicitly registered on the nonproduction server, the first Devil n Dove c
 
 Key revocation and rotation are server-only administrative actions. Rotation revokes the old registry row and creates a new key ID/environment-variable reference and new public receipt IDs; no secret value crosses the command arguments or database.
 
+
+
+## Build 289 Connector SDK v2 security
+
+SDK v2 authentication uses only manifest-declared server secret references. Bearer/API-key values are injected inside the bounded execution runtime and are never written to connector audit events, request summaries or durable transport evidence.
+
+HTTP destinations are restricted to exact manifest-declared HTTPS origins. Inline URL credentials, redirects, cookies, host overrides, forwarding headers and proxy authorization are rejected. The SDK uses `credentials: "omit"` and fails closed when a request leaves the allowlist.
+
+Retries are limited by manifest policy to at most five attempts. Non-idempotent POST/PATCH requests do not retry unless an explicit idempotency key is supplied. Pagination has a manifest hard page cap and repeated cursors are rejected.
+
+The runtime records only sanitized method/origin/path/status/attempt/timing/page/error metadata. Request bodies, response bodies and raw authentication headers are not persisted. Failed executions preserve the same sanitized evidence so operational diagnosis does not require exposing credentials.
+
+SDK v2 does not itself grant capabilities, enable an installation, create external accounts, authorize live writes or resume QL-266.
