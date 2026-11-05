@@ -139,8 +139,7 @@ async function main() {
     "webhook_receipts",
     "webhook_request_audit",
     "enable row level security",
-    "app.webhook_endpoint_key",
-    "on conflict do nothing"
+    "app.webhook_endpoint_key"
   ]) ensure(migration.includes(token), "migration token " + token);
   ensure(!migration.includes("grant delete"), "no delete grants");
   ensure(!migration.includes("grant update on app.webhook_receipts"), "receipts immutable");
@@ -156,6 +155,7 @@ async function main() {
   for (const token of [
     "enabled,allowed_event_types",
     "credentialChanged",
+    "on conflict do nothing",
     "webhook_replay_denied",
     "webhook_event_accepted",
     "receiptSignature",
