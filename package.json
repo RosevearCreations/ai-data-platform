@@ -11,6 +11,8 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "pnpm -r --if-present lint",
     "test": "pnpm -r --if-present test",
-    "verify": "pnpm typecheck && pnpm lint && pnpm build && pnpm test"
+    "verify": "pnpm ci:promotion",
+    "ci:promotion": "node apps/web/scripts/ci-suite-runner.mjs promotion",
+    "ci:legacy": "node apps/web/scripts/ci-suite-runner.mjs legacy"
   }
 }

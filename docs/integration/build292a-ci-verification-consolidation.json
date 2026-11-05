@@ -1,0 +1,42 @@
+{
+  "schema": "rosevear.ai-data-platform.build292a-ci-consolidation.v1",
+  "application": "AI Data Platform",
+  "build": "292A",
+  "historical_baseline": {
+    "application_verifier_invocations": 268,
+    "database_verifier_invocations": 75,
+    "historical_verifier_invocations": 343,
+    "github_workflow_runs_per_standard_promotion": 3
+  },
+  "consolidated_model": {
+    "authoritative_github_trigger": "pull_request_to_main",
+    "github_workflow_runs_per_standard_promotion": 1,
+    "workflow_run_reduction_percent": 67,
+    "compact_grouped_commands": 6,
+    "integration_spine": "builds-281-through-292-plus-production-migration-ql246-ql253",
+    "database_gate": "workspace-isolation-plus-current-integration-schema-rls-grants",
+    "production_build_fail_closed": true,
+    "production_verifiers": [
+      "verify-build-292-event-replay-dlq.ts",
+      "verify-build-292a-ci-verification-consolidation.ts"
+    ],
+    "production_migrations_required": true
+  },
+  "legacy_audit": {
+    "preserved": true,
+    "command": "pnpm ci:legacy",
+    "weekly_schedule": "17 7 * * 0",
+    "manual_dispatch": true,
+    "historical_surface_impact_detection": true,
+    "impact_detection_failure_mode": "legacy-audit-required"
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "external_requests": 0,
+  "live_exchanges": 0,
+  "automatic_connection_activation": false,
+  "owner_authorization_inferred": false,
+  "next_build": 293,
+  "next_build_title": "Idempotency, Duplicate Prevention & Delivery Guarantees"
+}
