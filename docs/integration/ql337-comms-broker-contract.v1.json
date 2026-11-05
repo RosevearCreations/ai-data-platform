@@ -1,0 +1,51 @@
+{
+  "schema": "rosevear.broker.comms.event.v1",
+  "version": 1,
+  "producer": "ai-data-platform",
+  "consumer": "rosevear-comms-hub",
+  "environment": "TEST",
+  "audience": "rosevear-comms-hub:nonproduction",
+  "eventTypes": [
+    "case.handoff.requested",
+    "task.followup.requested"
+  ],
+  "sourceShellBindings": {
+    "yw": "yard-workers",
+    "icamp": "icamp",
+    "rosiedazzlers": "rosiedazzlers",
+    "devilndove": "devilndove"
+  },
+  "requiredEnvelopeFields": [
+    "schemaVersion",
+    "eventId",
+    "eventType",
+    "traceId",
+    "sourceApplicationId",
+    "originApplicationId",
+    "destinationApplicationId",
+    "sourceShell",
+    "tenantId",
+    "childId",
+    "audience",
+    "environment",
+    "sourceReceiptSha256",
+    "consentSha256",
+    "payloadRef",
+    "nonce",
+    "issuedAt",
+    "expiresAt"
+  ],
+  "signature": "Detached Ed25519 over recursively sorted JSON; public key must be independently pinned",
+  "expirySecondsMax": 300,
+  "canonicalSampleSha256": "af38fb0956b2905f5c89a655959d64760af375f677354d18b86910200e3b6599",
+  "effectKinds": [
+    "CASE_REVIEW_HELD",
+    "TASK_REVIEW_HELD"
+  ],
+  "realSourceApproved": false,
+  "realBrokerWorkloadVerified": false,
+  "outboundDeliveryEnabled": false,
+  "productionCommunicationEnabled": false,
+  "customerPayloadIncluded": false,
+  "activation": "SEPARATE_ORIGINAL_SOURCE_OWNER_AND_MASTER_OWNER_NONPRODUCTION_AUTHORIZATION_REQUIRED"
+}
