@@ -11,6 +11,7 @@ import {
   applyDeterministicRepairSuggestions,
   canonicalSchemaSnapshot,
   normalizeSourceSchemaFields,
+  type AffectedMapping,
   type RepairSuggestion,
   type SchemaDriftChange,
   type SchemaFieldSnapshot,
@@ -73,14 +74,16 @@ function scanFromRow(row: Record<string, unknown>) {
     sourceSchemaFingerprint: String(row.source_schema_fingerprint),
     sourceSchemaFields: normalizeSourceSchemaFields(row.source_schema_fields),
     canonicalSchemaFingerprint: String(row.canonical_schema_fingerprint),
-    canonicalSchemaFields: jsonArray(row.canonical_schema_fields),
+    canonicalSchemaFields: jsonArray<SchemaFieldSnapshot>(
+      row.canonical_schema_fields
+    ),
     driftState: String(row.drift_state) as
       | "baseline-required"
       | "clean"
       | "drift-detected",
     sourceChanges: jsonArray<SchemaDriftChange>(row.source_changes),
     canonicalChanges: jsonArray<SchemaDriftChange>(row.canonical_changes),
-    affectedMappings: jsonArray(row.affected_mappings),
+    affectedMappings: jsonArray<AffectedMapping>(row.affected_mappings),
     repairSuggestions: jsonArray<RepairSuggestion>(row.repair_suggestions),
     scannedBy: String(row.scanned_by),
     scannedAt: new Date(String(row.scanned_at)).toISOString()
