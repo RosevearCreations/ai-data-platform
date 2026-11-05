@@ -58,6 +58,9 @@ export default async function EventBusPage() {
           <Link className="secondaryButton" href="/event-recovery">
             Recovery console
           </Link>
+          <Link className="secondaryButton" href="/delivery-guarantees">
+            Delivery guarantees
+          </Link>
           <Link className="secondaryButton" href="/app-connections">
             App registry
           </Link>
