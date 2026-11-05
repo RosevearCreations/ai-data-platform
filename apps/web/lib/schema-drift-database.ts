@@ -14,8 +14,7 @@ import {
   type AffectedMapping,
   type RepairSuggestion,
   type SchemaDriftChange,
-  type SchemaFieldSnapshot,
-  type SourceSchemaField
+  type SchemaFieldSnapshot
 } from "./schema-drift-assistant";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
 
