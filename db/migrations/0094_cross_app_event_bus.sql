@@ -77,8 +77,10 @@ create table if not exists app.event_bus_routes (
   destination_application_id text not null,
   delivery_mode text not null default 'internal-queue'
     check (delivery_mode='internal-queue'),
-  state text not null default 'pending'
+  state text not null default 'held'
     check (state in ('pending','held')),
+  hold_reason text not null default 'delivery-not-authorized'
+    check (char_length(hold_reason) between 1 and 160),
   created_at timestamptz not null default now(),
   unique (publication_id,subscription_id)
 );
