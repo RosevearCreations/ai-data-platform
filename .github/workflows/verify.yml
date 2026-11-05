@@ -81,9 +81,24 @@ jobs:
         if: github.event_name != 'schedule'
         run: pnpm ci:promotion
 
+      # Both suites seed fixed synthetic identities. Run the exhaustive suite in
+      # its own fresh CI-local database so a passing compact suite cannot
+      # collide with it. Neither suite nor its required checks are skipped.
+      - name: Prepare isolated historical audit database
+        if: steps.impact.outputs.legacy_required == 'true'
+        run: pnpm --filter @rosevear/ai-data-web exec node scripts/ci-create-legacy-audit-db.mjs
+
+      - name: Apply migrations to isolated historical audit database
+        if: steps.impact.outputs.legacy_required == 'true'
+        run: pnpm --filter @rosevear/ai-data-web db:migrate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test
+
       - name: Run exhaustive historical audit when required
         if: steps.impact.outputs.legacy_required == 'true'
         run: pnpm ci:legacy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test
 
       - name: Record consolidation result
         if: always()
