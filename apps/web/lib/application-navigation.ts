@@ -302,6 +302,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/webhook-gateway",
+        label: "Webhook Gateway & Event Intake",
+        description: "Configure signed, replay-safe inbound event endpoints and inspect durable receipts.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
