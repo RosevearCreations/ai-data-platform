@@ -59,6 +59,9 @@ export default async function WebhookGatewayPage() {
           <Link className="secondaryButton" href="/app-connections">
             App Connection Registry
           </Link>
+          <Link className="secondaryButton" href="/event-bus">
+            Event Bus
+          </Link>
           <Link className="secondaryButton" href="/integration-delivery">
             Delivery evidence
           </Link>

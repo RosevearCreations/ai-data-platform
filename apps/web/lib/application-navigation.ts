@@ -308,6 +308,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/event-bus",
+        label: "Cross-App Event Bus",
+        description: "Publish reviewed webhook receipts into governed subscriptions and inspect durable held routes.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
