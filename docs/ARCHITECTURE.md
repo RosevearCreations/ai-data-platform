@@ -492,3 +492,12 @@ The application execution boundary creates the HTTP client after configuration a
 The runtime rejects redirects, inline URL credentials, caller-supplied authentication/cookie/forwarding headers and destinations outside the exact manifest origin allowlist. POST/PATCH retry is only available with an explicit idempotency key. Transport events contain no request/response bodies or secret values.
 
 Migration 0092 extends the existing append-only connector audit with SDK/manifest generation, transport type, request/retry/page/health counters and bounded sanitized SDK events. Build 289 does not activate connectors or resume QL-266.
+
+
+## Build 290 webhook gateway boundary
+
+Build 290 adds a separate inbound `rosevear.webhook.v1` POST boundary at `/api/webhooks/{endpointKey}`. Endpoints are workspace scoped, created disabled, explicitly enabled by an owner/admin, bound to one source application/environment/tenant and restricted to an exact event-type allowlist.
+
+The route streams a bounded request body, hashes the exact bytes, verifies HMAC-SHA256 over contract/method/endpoint/key/event/timestamp/body hash, requires a five-minute freshness window, validates an exact `rosevear.webhook.event.v1` envelope and atomically reserves `(endpoint_id,event_id)` before persisting the event and receipt.
+
+Accepted event envelopes and HMAC-signed `rosevear.webhook.receipt.v1` evidence are durable. Replay reservations, receipts and request-audit rows are immutable to the runtime role. Build 290 stops at intake: no event bus publication or downstream dispatch occurs until Build 291.
