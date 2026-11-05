@@ -595,3 +595,14 @@ Retries are limited by manifest policy to at most five attempts. Non-idempotent 
 The runtime records only sanitized method/origin/path/status/attempt/timing/page/error metadata. Request bodies, response bodies and raw authentication headers are not persisted. Failed executions preserve the same sanitized evidence so operational diagnosis does not require exposing credentials.
 
 SDK v2 does not itself grant capabilities, enable an installation, create external accounts, authorize live writes or resume QL-266.
+
+
+## Build 290 webhook intake security
+
+Webhook endpoints store only a fixed environment-variable reference for a 32-byte HMAC key; raw secret values are never stored in PostgreSQL or browser models. Key-ID or secret-reference changes automatically disable the endpoint until an owner/admin explicitly enables it again.
+
+The signed canonical request binds endpoint key, key ID, event ID, millisecond timestamp and SHA-256 body hash. Signature comparison is constant-time. Requests outside the five-minute freshness window are rejected after cryptographic identity verification.
+
+The event envelope must exactly match the configured source application and tenant, and its event type must be present in the endpoint allowlist. Event IDs are atomically unique per endpoint; duplicate event IDs return 409 and create immutable replay-denial evidence.
+
+RLS isolates endpoint configuration and receipt/audit reads by workspace membership. The unauthenticated intake transaction receives only the endpoint selected by the opaque endpoint key through a transaction-local database setting. No downstream event dispatch, connector activation or QL-266 authorization is introduced.
