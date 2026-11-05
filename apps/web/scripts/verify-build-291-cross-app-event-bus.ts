@@ -240,15 +240,15 @@ async function main() {
 
   const pkg = JSON.parse(packageRaw);
   ensure(
-    String(pkg.scripts.build).startsWith(
+    String(pkg.scripts["ci:spine"]).includes(
       "tsx scripts/verify-build-291-cross-app-event-bus.ts"
     ),
-    "Build 291 verifier gates web build"
+    "Build 291 verifier remains in the authoritative current integration spine"
   );
   ensure(
-    workflow.includes("pnpm verify") &&
-      workflow.includes("db:verify"),
-    "current CI surface captured"
+    workflow.includes("pnpm ci:promotion") &&
+      workflow.includes("pnpm ci:legacy"),
+    "consolidated CI preserves compact promotion and exhaustive legacy audit"
   );
 
   console.log(
