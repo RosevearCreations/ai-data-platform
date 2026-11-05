@@ -227,8 +227,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/delivery-guarantees",
         label: "Delivery guarantees",
-        description: "Inspect deterministic delivery identities, attempt reservations and duplicate suppression.",
-        group: "integrations"
+        description: "Inspect deterministic delivery identities, attempt reservations and duplicate suppression."
       },
       {
         href: "/event-recovery",
