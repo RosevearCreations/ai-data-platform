@@ -413,7 +413,9 @@ export async function listDeliveryGuaranteesForUser(userId: string) {
         workspaceId: String(row.workspace_id),
         intentId: String(row.intent_id),
         sourceKind:
-          row.source_kind === "replay" ? "replay" : "original",
+          (row.source_kind === "replay" ? "replay" : "original") as
+            | "original"
+            | "replay",
         duplicateScope: "attempt-reservation" as const,
         duplicateKeySha256: String(row.duplicate_key_sha256),
         reason: "existing-attempt-reservation" as const,
