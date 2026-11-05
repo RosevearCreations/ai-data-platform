@@ -1,13 +1,18 @@
 name: Verify
 
 on:
-  push:
-    branches:
-      - dev
-      - main
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      legacy_audit:
+        description: Run the exhaustive historical verifier audit after the compact promotion gate
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: "17 7 * * 0"
 
 permissions:
   contents: read
@@ -45,6 +50,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -63,14 +71,29 @@ jobs:
       - name: Apply database migrations
         run: pnpm --filter @rosevear/ai-data-web db:migrate
 
-      - name: Typecheck, lint, build and test
-        run: pnpm verify
+      - name: Determine whether legacy audit is required
+        id: impact
+        run: node apps/web/scripts/ci-detect-legacy-impact.mjs
+        env:
+          MANUAL_LEGACY: ${{ inputs.legacy_audit }}
 
-      - name: Verify QL-246 six-app independent pin challenge and source scope
-        run: pnpm --filter @rosevear/ai-data-web verify:ql246
+      - name: Run authoritative compact promotion gate
+        if: github.event_name != 'schedule'
+        run: pnpm ci:promotion
 
-      - name: Verify QL-253 six-app owner-return evidence and public-only proof gate
-        run: pnpm --filter @rosevear/ai-data-web verify:ql253
+      - name: Run exhaustive historical audit when required
+        if: steps.impact.outputs.legacy_required == 'true'
+        run: pnpm ci:legacy
 
-      - name: Verify auth and workspace isolation
-        run: pnpm --filter @rosevear/ai-data-web db:verify
+      - name: Record consolidation result
+        if: always()
+        run: |
+          {
+            echo "## Build 292A CI consolidation"
+            echo
+            echo "- Authoritative GitHub promotion trigger: pull request into main"
+            echo "- Push-triggered duplicate verification: removed"
+            echo "- Historical audit required: ${{ steps.impact.outputs.legacy_required }}"
+            echo "- Historical audit reason: ${{ steps.impact.outputs.legacy_reason }}"
+            echo "- Scheduled legacy audit: Sundays at 07:17 UTC"
+          } >> "$GITHUB_STEP_SUMMARY"

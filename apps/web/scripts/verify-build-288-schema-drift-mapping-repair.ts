@@ -292,7 +292,8 @@ async function main() {
     "authenticated drift/repair API"
   );
   ensure(
-    page.includes("Schema Drift Detection & Mapping Repair Assistant") &&
+    (page.includes("Schema Drift Detection & Mapping Repair Assistant") ||
+      page.includes("Schema Drift Detection &amp; Mapping Repair Assistant")) &&
       page.includes("Drift repair never auto-approves a mapping.") &&
       page.includes("UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED"),
     "operator page safety boundary"
