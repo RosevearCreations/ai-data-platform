@@ -9,6 +9,7 @@ import {
   safeRecoveryReason,
   type EventBusFailureCategory
 } from "./event-recovery-core";
+import { ensureDeliveryGuaranteeForSource } from "./event-delivery-guarantees-database";
 import {
   listWorkspacesForUser,
   withUserDatabase
@@ -733,6 +734,22 @@ export async function requestEventBusReplay(
       ]
     );
 
+    const guarantee = await ensureDeliveryGuaranteeForSource(
+      client,
+      userId,
+      {
+        workspaceId,
+        publicationId: String(row.publication_id),
+        subscriptionId: String(row.subscription_id),
+        destinationApplicationId: String(
+          row.destination_application_id
+        ),
+        sourceKind: "replay",
+        replayRouteId,
+        replayNumber
+      }
+    );
+
     await appendRecoveryAudit(client, {
       workspaceId,
       userId,
@@ -747,6 +764,11 @@ export async function requestEventBusReplay(
         state: "held",
         holdReason:
           "recovery-replay-not-authorized",
+        idempotencyKeySha256:
+          guarantee.intent.idempotencyKeySha256,
+        attemptReservationId:
+          guarantee.reservation.reservationId,
+        exactlyOnceInternalIntent: true,
         outboundNetworkDelivery: false
       }
     });
