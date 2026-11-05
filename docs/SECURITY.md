@@ -624,3 +624,12 @@ Failure, dead-letter, replay-request, replay-route and recovery-audit records ar
 Replay eligibility is fail-closed: only `transient` and `unknown` categories are replayable by default, the subscription must still be active, a reviewed reason is mandatory, and each dead-letter case is capped at five replay requests.
 
 Replay routes remain internal and held. Build 292 does not release routes, make external network requests, infer live authorization or resume QL-266.
+
+
+## Build 293 idempotency security
+
+Delivery intent, attempt-reservation, duplicate-decision and guarantee-audit records are workspace scoped under RLS and append-only to the runtime role.
+
+Idempotency keys are SHA-256 digests of bounded identifiers, not secrets. The logical key excludes retry route IDs so retries converge on one intent; each source route has a separate deterministic attempt key protected by uniqueness constraints.
+
+Duplicate reservation requests are suppressed and recorded immutably. All intents and attempts remain held. Build 293 performs no external network delivery, does not release routes, does not infer owner authorization and does not resume QL-266.

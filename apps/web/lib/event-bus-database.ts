@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 
 import { eventBusSubscriptionMatches } from "./event-bus-core";
+import { ensureDeliveryGuaranteeForSource } from "./event-delivery-guarantees-database";
 import {
   safeWebhookEventType,
   safeWebhookTenantId,
@@ -640,6 +641,18 @@ export async function publishWebhookReceiptToEventBus(
       );
       if (routeResult.rows[0]) {
         const route = routeRow(routeResult.rows[0]);
+        const guarantee = await ensureDeliveryGuaranteeForSource(
+          client,
+          userId,
+          {
+            workspaceId: route.workspaceId,
+            publicationId: route.publicationId,
+            subscriptionId: route.subscriptionId,
+            destinationApplicationId: route.destinationApplicationId,
+            sourceKind: "original",
+            routeId: route.routeId
+          }
+        );
         routes.push(route);
         await appendAudit(client, {
           workspaceId: receipt.workspaceId,
@@ -651,7 +664,13 @@ export async function publishWebhookReceiptToEventBus(
             destinationApplicationId:
               subscription.destinationApplicationId,
             state: "held",
-            holdReason: "delivery-not-authorized"
+            holdReason: "delivery-not-authorized",
+            idempotencyKeySha256:
+              guarantee.intent.idempotencyKeySha256,
+            attemptReservationId:
+              guarantee.reservation.reservationId,
+            exactlyOnceInternalIntent: true,
+            outboundNetworkDelivery: false
           }
         });
       }

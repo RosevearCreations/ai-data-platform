@@ -519,3 +519,12 @@ Build 292 adds an append-only recovery layer over Build 291 internal event-bus r
 Replay does not mutate or resend the original Build 291 route. It creates a new durable internal replay-route record whose state remains `held` with `recovery-replay-not-authorized`. Permanent/policy failures require explicit disposition evidence rather than replay.
 
 No automatic retry loop or outbound transport is introduced. QL-266 remains deferred and disconnected.
+
+
+## Build 293 idempotency and delivery-guarantee boundary
+
+Build 293 adds a deterministic logical-delivery identity across original and replay routes. The identity is derived from workspace, publication, subscription and destination application, so reviewed retries reuse the same internal delivery intent rather than creating a second logical write.
+
+Each original or replay route receives one immutable attempt reservation. Database uniqueness provides exactly-once internal intent and at-most-once source-route reservation. Existing held routes can be reconciled through the delivery-guarantees console.
+
+This is an internal durability boundary only. All reservations remain held, no outbound worker is introduced and no exactly-once external side-effect claim is made. QL-266 remains deferred and disconnected.

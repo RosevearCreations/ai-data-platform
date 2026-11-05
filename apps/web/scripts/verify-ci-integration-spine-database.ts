@@ -31,7 +31,11 @@ const requiredTables = [
   "event_bus_dead_letters",
   "event_bus_replay_requests",
   "event_bus_replay_routes",
-  "event_bus_recovery_audit"
+  "event_bus_recovery_audit",
+  "event_bus_delivery_intents",
+  "event_bus_delivery_attempt_reservations",
+  "event_bus_duplicate_decisions",
+  "event_bus_delivery_guarantee_audit"
 ];
 
 const appendOnlyTables = [
@@ -49,7 +53,11 @@ const appendOnlyTables = [
   "event_bus_dead_letters",
   "event_bus_replay_requests",
   "event_bus_replay_routes",
-  "event_bus_recovery_audit"
+  "event_bus_recovery_audit",
+  "event_bus_delivery_intents",
+  "event_bus_delivery_attempt_reservations",
+  "event_bus_duplicate_decisions",
+  "event_bus_delivery_guarantee_audit"
 ];
 
 
@@ -119,10 +127,10 @@ async function main() {
       `select exists(
          select 1
          from app.schema_migrations
-         where name='0095_event_replay_dead_letter_recovery.sql'
+         where name='0096_event_idempotency_delivery_guarantees.sql'
        ) as exists`
     );
-    assert(latestMigration.rows[0]?.exists === true, "migration 0095 is not recorded");
+    assert(latestMigration.rows[0]?.exists === true, "migration 0096 is not recorded");
 
     console.log(
       "CI integration spine database verification passed for " +

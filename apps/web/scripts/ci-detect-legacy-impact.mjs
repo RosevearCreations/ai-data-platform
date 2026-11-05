@@ -31,7 +31,7 @@ if (eventName === "schedule") {
 
     const legacyVerifier = /^apps\/web\/scripts\/verify-build-(\d+)-/;
     const genericVerifier = /^apps\/web\/scripts\/verify-/;
-    const currentVerifier = /^apps\/web\/scripts\/verify-build-(28[1-9]|29[0-2])-|^apps\/web\/scripts\/verify-build-292a-|^apps\/web\/scripts\/verify-production-build-migrations\.ts$|^apps\/web\/scripts\/verify-ql(246|253)-/;
+    const currentVerifier = /^apps\/web\/scripts\/verify-build-(28[1-9]|29[0-9]|30[0-5])-|^apps\/web\/scripts\/verify-build-292a-|^apps\/web\/scripts\/verify-production-build-migrations\.ts$|^apps\/web\/scripts\/verify-ql(246|253)-/;
     const committedMigration = /^db\/migrations\/(\d{4})_/;
 
     for (const file of changed) {

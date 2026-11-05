@@ -203,10 +203,13 @@ async function main() {
 
   const pkg = JSON.parse(packageRaw);
   ensure(
-    String(pkg.scripts.build).startsWith(
+    String(pkg.scripts["ci:spine"]).includes(
       "tsx scripts/verify-build-292-event-replay-dlq.ts"
-    ),
-    "Build 292 verifier gates web build"
+    ) &&
+      String(pkg.scripts.build).includes(
+        "tsx scripts/verify-build-292-event-replay-dlq.ts"
+      ),
+    "Build 292 remains in compact CI and the production safety chain"
   );
 
   console.log(

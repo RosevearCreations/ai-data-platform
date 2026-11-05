@@ -320,6 +320,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/delivery-guarantees",
+        label: "Delivery Guarantees",
+        description: "Review deterministic idempotency keys, exactly-once internal intents and duplicate suppression evidence.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",

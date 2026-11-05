@@ -54,7 +54,7 @@ async function main() {
     "legacy audit groups the preserved exhaustive chains"
   );
 
-  ensure(commandCount(scripts["ci:spine"]) === 15, "compact integration spine has 15 explicit gates");
+  ensure(commandCount(scripts["ci:spine"]) >= 15, "compact integration spine retains the original 15 gates and may grow with current builds");
   for (let build = 281; build <= 292; build += 1) {
     ensure(
       scripts["ci:spine"].includes("verify-build-" + build + "-"),
@@ -74,10 +74,11 @@ async function main() {
   );
 
   ensure(
-    scripts.build.startsWith(
-      "tsx scripts/verify-build-292-event-replay-dlq.ts && tsx scripts/verify-build-292a-ci-verification-consolidation.ts && tsx scripts/run-production-migrations.ts"
-    ),
-    "production web build is fail-closed on Build 292, Build 292A and migrations"
+    scripts.build.includes("tsx scripts/verify-build-292-event-replay-dlq.ts") &&
+      scripts.build.includes("tsx scripts/verify-build-292a-ci-verification-consolidation.ts") &&
+      scripts.build.includes("tsx scripts/run-production-migrations.ts") &&
+      scripts.build.endsWith("next build"),
+    "production web build remains fail-closed on Build 292, Build 292A and migrations as newer gates are prepended"
   );
   ensure(
     rootPackage.scripts.verify === "pnpm ci:promotion" &&
@@ -136,7 +137,7 @@ async function main() {
     "relrowsecurity",
     "ai_data_runtime",
     "UPDATE','DELETE",
-    "0095_event_replay_dead_letter_recovery.sql"
+    "0096_event_idempotency_delivery_guarantees.sql"
   ]) {
     ensure(dbGate.includes(token), "database gate token " + token);
   }
