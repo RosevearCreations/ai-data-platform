@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import type { PoolClient } from "pg";
 
+import { eventBusSubscriptionMatches } from "./event-bus-core";
 import {
   safeWebhookEventType,
   safeWebhookTenantId,
@@ -604,29 +605,22 @@ export async function publishWebhookReceiptToEventBus(
       }
     });
 
-    const matches = await client.query(
+    const candidateSubscriptions = await client.query(
       `select *
        from app.event_bus_subscriptions
        where workspace_id=$1
          and state='active'
-         and environment=$2
-         and (source_application_id is null or source_application_id=$3)
-         and (tenant_id is null or tenant_id is not distinct from $4)
-         and event_types ? $5
-         and destination_application_id <> $3
        order by created_at,subscription_id`,
-      [
-        receipt.workspaceId,
-        receipt.environment,
-        receipt.sourceApplicationId,
-        receipt.tenantId,
-        receipt.eventType
-      ]
+      [receipt.workspaceId]
     );
+    const matches = candidateSubscriptions.rows
+      .map(subscriptionRow)
+      .filter((subscription) =>
+        eventBusSubscriptionMatches(subscription, receipt)
+      );
 
     const routes: EventBusRouteRecord[] = [];
-    for (const row of matches.rows) {
-      const subscription = subscriptionRow(row);
+    for (const subscription of matches) {
       const routeResult = await client.query(
         `insert into app.event_bus_routes (
           route_id,workspace_id,publication_id,subscription_id,
