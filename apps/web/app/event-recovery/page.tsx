@@ -58,6 +58,9 @@ export default async function EventRecoveryPage() {
           <Link className="secondaryButton" href="/webhook-gateway">
             Webhook intake
           </Link>
+          <Link className="secondaryButton" href="/delivery-guarantees">
+            Delivery guarantees
+          </Link>
           <Link className="secondaryButton" href="/integration-delivery">
             Delivery evidence
           </Link>

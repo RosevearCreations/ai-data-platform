@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/remote-execution"]
+        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/remote-execution"]
       },
       {
         id: "deliver",
@@ -223,6 +223,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/event-bus",
         label: "Event bus",
         description: "Review governed subscriptions, publications and held internal routes."
+      },
+      {
+        href: "/delivery-guarantees",
+        label: "Delivery guarantees",
+        description: "Inspect deterministic delivery identities, attempt reservations and duplicate suppression."
       },
       {
         href: "/event-recovery",
