@@ -55,6 +55,9 @@ export default async function EventBusPage() {
           <Link className="secondaryButton" href="/webhook-gateway">
             Webhook intake
           </Link>
+          <Link className="secondaryButton" href="/event-recovery">
+            Recovery console
+          </Link>
           <Link className="secondaryButton" href="/app-connections">
             App registry
           </Link>

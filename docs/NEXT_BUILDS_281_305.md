@@ -52,6 +52,11 @@ Publish and subscribe to governed domain events without direct point-to-point wi
 ### Build 292 — Event Replay, Dead-Letter Queue & Recovery Console
 Persist failed events and provide reviewed recovery/replay controls.
 
+### Build 292A — CI Verification Consolidation & Promotion Run Reduction
+Consolidate the accumulated historical verifier chains into reusable suites and a compact fail-closed promotion matrix, reducing repeated workflow runs while preserving security, migration, integration-boundary and production release checks.
+
+Tracking issue: #587.
+
 ### Build 293 — Idempotency, Duplicate Prevention & Delivery Guarantees
 Prevent duplicate cross-app writes and preserve exactly-once intent across retries.
 

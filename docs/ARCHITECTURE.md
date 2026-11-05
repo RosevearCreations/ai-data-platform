@@ -510,3 +510,12 @@ Build 291 adds a workspace-scoped internal publish/subscribe layer over reviewed
 Matching is deterministic across source application, environment, optional tenant and exact event type. A matched subscription creates one durable `app.event_bus_routes` row per publication/subscription pair.
 
 Build 291 deliberately stops before delivery. Every matched route is written as `held` with `delivery-not-authorized`; there is no direct application-to-application network request, no automatic connection activation and no QL-266 resumption.
+
+
+## Build 292 event recovery boundary
+
+Build 292 adds an append-only recovery layer over Build 291 internal event-bus routes. Reviewed failures create immutable failure and dead-letter evidence. Reviewed transient/unknown failures may create bounded replay requests, capped at five per dead-letter case, only while the original subscription remains active.
+
+Replay does not mutate or resend the original Build 291 route. It creates a new durable internal replay-route record whose state remains `held` with `recovery-replay-not-authorized`. Permanent/policy failures require explicit disposition evidence rather than replay.
+
+No automatic retry loop or outbound transport is introduced. QL-266 remains deferred and disconnected.
