@@ -606,3 +606,12 @@ The signed canonical request binds endpoint key, key ID, event ID, millisecond t
 The event envelope must exactly match the configured source application and tenant, and its event type must be present in the endpoint allowlist. Event IDs are atomically unique per endpoint; duplicate event IDs return 409 and create immutable replay-denial evidence.
 
 RLS isolates endpoint configuration and receipt/audit reads by workspace membership. The unauthenticated intake transaction receives only the endpoint selected by the opaque endpoint key through a transaction-local database setting. No downstream event dispatch, connector activation or QL-266 authorization is introduced.
+
+
+## Build 291 event bus security
+
+The event bus accepts no arbitrary browser event body. Publications reference durable Build 290 webhook receipts that already passed signed intake validation.
+
+Subscription creation, activation, pausing and receipt publication require workspace owner/admin membership under RLS. Subscription matching requires workspace/environment alignment, optional source and tenant matches, exact event-type allowlisting and rejects self-routing to the source application.
+
+Publications, routes and bus audit evidence are append-only to the runtime role. Matched routes remain held with `delivery-not-authorized`; Build 291 has no outbound delivery worker and does not infer live integration authorization.

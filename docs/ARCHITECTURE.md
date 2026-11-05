@@ -501,3 +501,12 @@ Build 290 adds a separate inbound `rosevear.webhook.v1` POST boundary at `/api/w
 The route streams a bounded request body, hashes the exact bytes, verifies HMAC-SHA256 over contract/method/endpoint/key/event/timestamp/body hash, requires a five-minute freshness window, validates an exact `rosevear.webhook.event.v1` envelope and atomically reserves `(endpoint_id,event_id)` before persisting the event and receipt.
 
 Accepted event envelopes and HMAC-signed `rosevear.webhook.receipt.v1` evidence are durable. Replay reservations, receipts and request-audit rows are immutable to the runtime role. Build 290 stops at intake: no event bus publication or downstream dispatch occurs until Build 291.
+
+
+## Build 291 cross-app event bus boundary
+
+Build 291 adds a workspace-scoped internal publish/subscribe layer over reviewed Build 290 webhook receipts. Owners/admins create subscriptions as drafts and explicitly activate them. Publication is also explicit: the only publishable source is a durable `app.webhook_receipts` row.
+
+Matching is deterministic across source application, environment, optional tenant and exact event type. A matched subscription creates one durable `app.event_bus_routes` row per publication/subscription pair.
+
+Build 291 deliberately stops before delivery. Every matched route is written as `held` with `delivery-not-authorized`; there is no direct application-to-application network request, no automatic connection activation and no QL-266 resumption.
