@@ -520,6 +520,7 @@ async function appendKnownWebhookDenial(
 
 export async function acceptInboundWebhook(input: {
   endpoint: WebhookEndpointRecord;
+  contract: string;
   keyId: string;
   eventId: string;
   timestampMs: number;
@@ -539,6 +540,12 @@ export async function acceptInboundWebhook(input: {
       throw new WebhookGatewayError(
         "webhook_endpoint_disabled",
         404
+      );
+    }
+    if (input.contract !== WEBHOOK_CONTRACT) {
+      throw new WebhookGatewayError(
+        "webhook_contract_invalid",
+        401
       );
     }
     if (!input.contentType.toLowerCase().startsWith("application/json")) {
