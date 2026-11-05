@@ -14,6 +14,7 @@ import {
   signWebhookReceipt,
   validateWebhookEventAgainstEndpoint,
   validateWebhookTimestamp,
+  verifyWebhookHmacSignature,
   WEBHOOK_CONTRACT,
   WEBHOOK_EVENT_SCHEMA,
   WEBHOOK_MAX_BODY_BYTES,
@@ -585,9 +586,6 @@ export async function acceptInboundWebhook(input: {
     });
     const valid = (() => {
       try {
-        const {
-          verifyWebhookHmacSignature
-        } = requireWebhookVerification();
         return verifyWebhookHmacSignature({
           secret,
           signature: input.signature,
@@ -841,14 +839,3 @@ export async function acceptInboundWebhook(input: {
   }
 }
 
-function requireWebhookVerification() {
-  return {
-    verifyWebhookHmacSignature:
-      // Keep the import explicit at module scope while isolating the call site
-      // so secret buffers can always be zeroed in one place.
-      requireVerifyWebhookHmacSignature
-  };
-}
-
-// Assigned below to keep the secret-zeroing call path compact.
-import { verifyWebhookHmacSignature as requireVerifyWebhookHmacSignature } from "./webhook-gateway-core";
