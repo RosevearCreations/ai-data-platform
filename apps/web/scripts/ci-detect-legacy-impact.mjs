@@ -10,6 +10,11 @@ let reason = "current promotion surfaces only";
 if (eventName === "schedule") {
   legacyRequired = true;
   reason = "scheduled weekly legacy audit";
+} else if (eventName === "workflow_dispatch") {
+  legacyRequired = process.env.MANUAL_LEGACY === "true";
+  reason = legacyRequired
+    ? "manual legacy audit requested"
+    : "manual compact promotion gate requested";
 } else if (!baseRef) {
   legacyRequired = true;
   reason = "no pull-request base available; fail-safe legacy audit";
