@@ -1,0 +1,49 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build289-review.v1",
+  "application": "AI Data Platform",
+  "build": 289,
+  "shared_connector_sdk_v2": {
+    "package": "@rosevear/ai-data-connector-sdk",
+    "package_version": "2.0.0",
+    "sdk_version": 2,
+    "manifest_version": 2,
+    "legacy_v1_exports_preserved": true,
+    "authentication_modes": [
+      "none",
+      "bearer",
+      "api-key-header"
+    ],
+    "exact_https_origin_allowlist": true,
+    "bounded_request_timeouts": true,
+    "bounded_retries": true,
+    "retry_after_support": true,
+    "idempotency_aware_write_retries": true,
+    "cursor_pagination": true,
+    "page_number_pagination": true,
+    "normalized_errors": true,
+    "health_checks": true,
+    "sanitized_transport_audit_events": true,
+    "failed_execution_evidence_preserved": true,
+    "durable_transport_audit": true,
+    "raw_secret_values_stored": false,
+    "request_or_response_bodies_in_audit": false,
+    "automatic_connection_activation": false,
+    "database_migration": "0092_shared_connector_sdk_v2.sql",
+    "external_requests": 0,
+    "live_exchanges": 0
+  },
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "connection_activated": false,
+    "connector_enabled_automatically": false,
+    "capability_granted_automatically": false,
+    "live_data_mutation": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "ql266_active_gate": false,
+  "ql266_deferred_by_owner": true,
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "next_build": 290
+}

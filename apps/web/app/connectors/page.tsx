@@ -17,10 +17,10 @@ export default async function ConnectorsPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="connectors-overview" />
-          <p className="eyebrow">Build 029</p>
-          <h1>Plugin & connector SDK</h1>
+          <p className="eyebrow">Build 289 · Shared transport standard</p>
+          <h1>Rosevear Shared Connector SDK 2.0</h1>
           <p className="lead">
-            Sign in to configure workspace-scoped connector grants and execution evidence.
+            Sign in to review SDK v2 connector grants, transport policy and execution evidence.
           </p>
           <Link className="primaryLink" href="/sign-in?callbackUrl=/connectors">
             Sign in
@@ -35,11 +35,12 @@ export default async function ConnectorsPage() {
     <main className="shell opsCommandScreen opsCommandScreen--it">
       <section className="hero">
         <HelpInfo topic="connectors-overview" />
-        <p className="eyebrow">Build 029</p>
-        <h1>Plugin & connector SDK</h1>
+        <p className="eyebrow">Build 289 · Shared transport standard</p>
+        <h1>Rosevear Shared Connector SDK 2.0</h1>
         <p className="lead">
-          Versioned import, enrichment and approved-export connectors run behind
-          explicit workspace grants, bounded server execution and append-only audit.
+          Standardized authentication, HTTPS requests, bounded retry, pagination,
+          health checks and normalized errors run behind explicit workspace grants,
+          bounded server execution and append-only audit evidence.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/connector-setup">Setup Wizard</Link>
@@ -50,6 +51,7 @@ export default async function ConnectorsPage() {
         area="I.T."
         description="Connector grants, execution controls, remote-provider workflows and append-only technical evidence."
         links={[
+          { label: "Schema Drift", href: "/schema-drift" },
           { label: "Remote Execution", href: "/remote-execution" },
           { label: "Delivery", href: "/integration-delivery" },
           { label: "Retention", href: "/retention" }
@@ -68,7 +70,9 @@ export default async function ConnectorsPage() {
             config: item.config,
             grantedCapabilities: item.grantedCapabilities,
             secretRefs: item.secretRefs,
-            connectorVersion: item.connectorVersion
+            connectorVersion: item.connectorVersion,
+            manifestVersion: item.manifestVersion,
+            sdkVersion: item.sdkVersion
           })),
           audit: entry.audit.map((item) => ({
             auditId: item.auditId,
@@ -77,6 +81,13 @@ export default async function ConnectorsPage() {
             status: item.status,
             durationMs: item.durationMs,
             errorCode: item.errorCode,
+            sdkVersion: item.sdkVersion,
+            manifestVersion: item.manifestVersion,
+            transportKind: item.transportKind,
+            requestCount: item.requestCount,
+            retryCount: item.retryCount,
+            pageCount: item.pageCount,
+            healthCheckCount: item.healthCheckCount,
             createdAt: item.createdAt.toISOString()
           }))
         }))}

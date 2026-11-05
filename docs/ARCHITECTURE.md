@@ -481,3 +481,14 @@ The first registration profile is Rosevear Comms Hub → AI Data Platform for De
 
 The QL-243 route surface additionally requires `ROSEVEAR_INTEGRATION_V1_NONPROD_ENABLED=true` and refuses to operate when `VERCEL_ENV=production`. This is connection-test infrastructure, not production connector activation.
 
+
+
+## Build 289 shared Connector SDK v2 boundary
+
+Build 289 upgrades `packages/connector-sdk` to the shared Rosevear Connector SDK 2.0 transport contract. SDK v2 keeps statically registered server connectors and workspace capability grants, then centralizes HTTP authentication, exact HTTPS origin policy, bounded request timeouts, retry, pagination, health checks, normalized errors and sanitized transport audit evidence.
+
+The application execution boundary creates the HTTP client after configuration and secret-reference validation. Connector code does not receive direct `process.env`, a cookie jar, a database handle or an authenticated user session. HTTP connectors must declare the required base-URL config key, authentication mode, exact permitted origins and methods, retry limits, pagination policy and health path in manifest version 2.
+
+The runtime rejects redirects, inline URL credentials, caller-supplied authentication/cookie/forwarding headers and destinations outside the exact manifest origin allowlist. POST/PATCH retry is only available with an explicit idempotency key. Transport events contain no request/response bodies or secret values.
+
+Migration 0092 extends the existing append-only connector audit with SDK/manifest generation, transport type, request/retry/page/health counters and bounded sanitized SDK events. Build 289 does not activate connectors or resume QL-266.

@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import { HelpInfo } from "../help/HelpInfo";
 
 type Manifest = {
+  manifestVersion: 1 | 2;
+  sdkVersion: 1 | 2;
   key: string;
   version: string;
   displayName: string;
@@ -25,6 +27,9 @@ type Manifest = {
     environmentVariable: string;
     required: boolean;
   }>;
+  transport?: {
+    kind: "local" | "http";
+  };
 };
 
 type Installation = {
@@ -34,6 +39,8 @@ type Installation = {
   grantedCapabilities: string[];
   secretRefs: Record<string, unknown>;
   connectorVersion: string;
+  manifestVersion: number;
+  sdkVersion: number;
 };
 
 type Audit = {
@@ -43,6 +50,13 @@ type Audit = {
   status: string;
   durationMs: number;
   errorCode: string | null;
+  sdkVersion: number;
+  manifestVersion: number;
+  transportKind: "legacy" | "local" | "http";
+  requestCount: number;
+  retryCount: number;
+  pageCount: number;
+  healthCheckCount: number;
   createdAt: string;
 };
 
@@ -116,7 +130,7 @@ export function ConnectorManager({
               <p>{manifest.description}</p>
               <p>Capabilities: {manifest.capabilities.join(" · ")}</p>
               <span className="badge">
-                {manifest.key} · v{manifest.version} · SDK v1
+                {manifest.key} · v{manifest.version} · SDK v{manifest.sdkVersion} · manifest v{manifest.manifestVersion} · {manifest.transport?.kind ?? "legacy"}
               </span>
             </article>
           ))}
@@ -138,6 +152,8 @@ export function ConnectorManager({
               const admin = workspace.role === "owner" || workspace.role === "admin";
               const stateText = installed
                 ? (installed.enabled ? "enabled" : "disabled") +
+                  " · SDK v" + installed.sdkVersion +
+                  " · manifest v" + installed.manifestVersion +
                   " · grants " + installed.grantedCapabilities.join(", ")
                 : "Not configured for this workspace.";
               return (
@@ -233,6 +249,12 @@ export function ConnectorManager({
                   <h3>{event.connectorKey}</h3>
                   <p>
                     {event.capability} · {event.status} · {event.durationMs} ms
+                  </p>
+                  <p>
+                    SDK v{event.sdkVersion} · manifest v{event.manifestVersion} · {event.transportKind}
+                  </p>
+                  <p>
+                    requests {event.requestCount} · retries {event.retryCount} · pages {event.pageCount} · health {event.healthCheckCount}
                   </p>
                   {event.errorCode ? <p>{event.errorCode}</p> : null}
                   <span className="badge">{new Date(event.createdAt).toLocaleString()}</span>

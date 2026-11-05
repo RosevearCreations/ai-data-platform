@@ -2,8 +2,10 @@ import {
   assertConnectorCapability,
   assertConnectorInputBound,
   assertConnectorOutputBound,
+  createExecutionHttpClient,
   normalizeConnectorConfig,
   validateConnectorSecretReferences,
+  type ConnectorAuditEvent,
   type ConnectorCapability,
   type ConnectorDefinition,
   type ConnectorSecretReferences
@@ -39,6 +41,7 @@ export async function executeConnectorBoundary(input: {
   const frozenConfig = freeze(clone(config)) as Record<string, string | number | boolean>;
   const controller = new AbortController();
   const startedAt = Date.now();
+  const sdkAuditEvents: ConnectorAuditEvent[] = [];
   let timer: ReturnType<typeof setTimeout> | null = null;
 
   const resolveSecret = async (key: string) => {
@@ -57,6 +60,18 @@ export async function executeConnectorBoundary(input: {
     return value;
   };
 
+  const http = createExecutionHttpClient({
+    manifest,
+    config: frozenConfig,
+    secret: resolveSecret,
+    signal: controller.signal,
+    audit: {
+      record(event) {
+        if (sdkAuditEvents.length < 100) sdkAuditEvents.push(clone(event));
+      }
+    }
+  });
+
   try {
     const timeout = new Promise<never>((_, reject) => {
       timer = setTimeout(() => {
@@ -71,7 +86,8 @@ export async function executeConnectorBoundary(input: {
         config: frozenConfig,
         input: payload,
         signal: controller.signal,
-        secret: resolveSecret
+        secret: resolveSecret,
+        http
       }),
       timeout
     ]);
@@ -79,8 +95,30 @@ export async function executeConnectorBoundary(input: {
     return {
       output: clone(result.output),
       summary: clone(result.summary),
-      durationMs: Date.now() - startedAt
+      durationMs: Date.now() - startedAt,
+      sdkVersion: manifest.sdkVersion,
+      manifestVersion: manifest.manifestVersion,
+      transportKind:
+        manifest.manifestVersion === 2 ? manifest.transport.kind : "legacy",
+      transportEvidence: http?.evidence() ?? null,
+      sdkAuditEvents: clone(sdkAuditEvents)
     };
+  } catch (error) {
+    const wrapped =
+      error instanceof Error
+        ? new Error(error.message, { cause: error })
+        : new Error("connector_execution_failed", { cause: error });
+    Object.assign(wrapped, {
+      connectorSdkEvidence: {
+        sdkVersion: manifest.sdkVersion,
+        manifestVersion: manifest.manifestVersion,
+        transportKind:
+          manifest.manifestVersion === 2 ? manifest.transport.kind : "legacy",
+        transportEvidence: http?.evidence() ?? null,
+        sdkAuditEvents: clone(sdkAuditEvents)
+      }
+    });
+    throw wrapped;
   } finally {
     if (timer) clearTimeout(timer);
     controller.abort();
