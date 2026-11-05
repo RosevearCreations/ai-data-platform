@@ -4,7 +4,9 @@ import {
   assertConnectorCapability,
   normalizeConnectorConfig,
   validateConnectorSecretReferences,
-  type ConnectorCapability
+  type ConnectorAuditEvent,
+  type ConnectorCapability,
+  type ConnectorHttpEvidence
 } from "@rosevear/ai-data-connector-sdk";
 
 import { listWorkspacesForUser, withUserDatabase } from "./database";
@@ -31,6 +33,7 @@ export interface ConnectorInstallationRecord {
   workspaceId: string;
   connectorKey: string;
   manifestVersion: number;
+  sdkVersion: number;
   connectorVersion: string;
   enabled: boolean;
   config: Record<string, unknown>;
@@ -50,14 +53,32 @@ export interface ConnectorAuditRecord {
   inputSummary: Record<string, unknown>;
   outputSummary: Record<string, unknown>;
   errorCode: string | null;
+  sdkVersion: number;
+  manifestVersion: number;
+  transportKind: "legacy" | "local" | "http";
+  requestCount: number;
+  retryCount: number;
+  pageCount: number;
+  healthCheckCount: number;
+  transportEvidence: Record<string, unknown>;
+  sdkAuditEvents: ConnectorAuditEvent[];
   createdAt: Date;
 }
+
+type BoundaryFailureEvidence = {
+  sdkVersion: number;
+  manifestVersion: number;
+  transportKind: "legacy" | "local" | "http";
+  transportEvidence: ConnectorHttpEvidence | null;
+  sdkAuditEvents: ConnectorAuditEvent[];
+};
 
 function installationRow(row: Record<string, unknown>): ConnectorInstallationRecord {
   return {
     workspaceId: String(row.workspace_id),
     connectorKey: String(row.connector_key),
     manifestVersion: Number(row.manifest_version),
+    sdkVersion: Number(row.sdk_version ?? 1),
     connectorVersion: String(row.connector_version),
     enabled: Boolean(row.enabled),
     config: row.config && typeof row.config === "object"
@@ -84,6 +105,23 @@ function auditRow(row: Record<string, unknown>): ConnectorAuditRecord {
     outputSummary: row.output_summary && typeof row.output_summary === "object"
       ? (row.output_summary as Record<string, unknown>) : {},
     errorCode: row.error_code ? String(row.error_code) : null,
+    sdkVersion: Number(row.sdk_version ?? 1),
+    manifestVersion: Number(row.manifest_version ?? 1),
+    transportKind:
+      row.transport_kind === "local" || row.transport_kind === "http"
+        ? row.transport_kind
+        : "legacy",
+    requestCount: Number(row.request_count ?? 0),
+    retryCount: Number(row.retry_count ?? 0),
+    pageCount: Number(row.page_count ?? 0),
+    healthCheckCount: Number(row.health_check_count ?? 0),
+    transportEvidence:
+      row.transport_evidence && typeof row.transport_evidence === "object"
+        ? (row.transport_evidence as Record<string, unknown>)
+        : {},
+    sdkAuditEvents: Array.isArray(row.sdk_audit_events)
+      ? (row.sdk_audit_events as ConnectorAuditEvent[])
+      : [],
     createdAt: new Date(String(row.created_at))
   };
 }
@@ -94,8 +132,14 @@ export async function listConnectorOverviewForUser(userId: string) {
   for (const workspace of workspaces) {
     const state = await withUserDatabase(userId, async (client) => {
       const [installations, audit] = await Promise.all([
-        client.query("select * from app.workspace_connector_installations where workspace_id=$1 order by connector_key", [workspace.id]),
-        client.query("select * from app.workspace_connector_audit where workspace_id=$1 order by created_at desc limit 100", [workspace.id])
+        client.query(
+          "select * from app.workspace_connector_installations where workspace_id=$1 order by connector_key",
+          [workspace.id]
+        ),
+        client.query(
+          "select * from app.workspace_connector_audit where workspace_id=$1 order by created_at desc limit 100",
+          [workspace.id]
+        )
       ]);
       return {
         installations: installations.rows.map(installationRow),
@@ -120,7 +164,10 @@ export async function configureWorkspaceConnector(
   const definition = getRegisteredConnector(input.connectorKey);
   if (!definition) throw new Error("connector_not_registered");
   const config = normalizeConnectorConfig(definition.manifest, input.config);
-  const secretRefs = validateConnectorSecretReferences(definition.manifest, input.secretRefs);
+  const secretRefs = validateConnectorSecretReferences(
+    definition.manifest,
+    input.secretRefs
+  );
   const grants = [...new Set(input.grantedCapabilities)];
   for (const capability of grants) {
     if (!definition.manifest.capabilities.includes(capability as ConnectorCapability)) {
@@ -134,12 +181,13 @@ export async function configureWorkspaceConnector(
     const result = await client.query(
       `
         insert into app.workspace_connector_installations (
-          workspace_id,connector_key,manifest_version,connector_version,
+          workspace_id,connector_key,manifest_version,sdk_version,connector_version,
           enabled,config,granted_capabilities,secret_refs,installed_by
         )
-        values ($1,$2,$3,$4,false,$5::jsonb,$6::jsonb,$7::jsonb,$8)
+        values ($1,$2,$3,$4,$5,false,$6::jsonb,$7::jsonb,$8::jsonb,$9)
         on conflict (workspace_id,connector_key) do update set
           manifest_version=excluded.manifest_version,
+          sdk_version=excluded.sdk_version,
           connector_version=excluded.connector_version,
           enabled=false,
           config=excluded.config,
@@ -152,6 +200,7 @@ export async function configureWorkspaceConnector(
         input.workspaceId,
         definition.manifest.key,
         definition.manifest.manifestVersion,
+        definition.manifest.sdkVersion,
         definition.manifest.version,
         JSON.stringify(config),
         JSON.stringify(grants),
@@ -161,6 +210,19 @@ export async function configureWorkspaceConnector(
     );
     return installationRow(result.rows[0]);
   });
+}
+
+function assertInstallationCompatible(
+  installation: ConnectorInstallationRecord,
+  definition: NonNullable<ReturnType<typeof getRegisteredConnector>>
+) {
+  if (
+    installation.manifestVersion !== definition.manifest.manifestVersion ||
+    installation.sdkVersion !== definition.manifest.sdkVersion ||
+    installation.connectorVersion !== definition.manifest.version
+  ) {
+    throw new Error("connector_installation_incompatible");
+  }
 }
 
 export async function setWorkspaceConnectorEnabled(
@@ -177,14 +239,12 @@ export async function setWorkspaceConnectorEnabled(
     );
     if (!current.rows[0]) throw new Error("connector_not_configured");
     const installation = installationRow(current.rows[0]);
-    if (
-      installation.manifestVersion !== definition.manifest.manifestVersion ||
-      installation.connectorVersion !== definition.manifest.version
-    ) {
-      throw new Error("connector_installation_incompatible");
-    }
+    assertInstallationCompatible(installation, definition);
     normalizeConnectorConfig(definition.manifest, installation.config);
-    validateConnectorSecretReferences(definition.manifest, installation.secretRefs);
+    validateConnectorSecretReferences(
+      definition.manifest,
+      installation.secretRefs
+    );
     const updated = await client.query(
       "update app.workspace_connector_installations set enabled=$3,updated_at=now() where workspace_id=$1 and connector_key=$2 returning *",
       [input.workspaceId, input.connectorKey, input.enabled]
@@ -206,6 +266,32 @@ function boundedSummary(value: unknown): Record<string, unknown> {
   return { kind: typeof value };
 }
 
+function boundaryFailureEvidence(error: unknown): BoundaryFailureEvidence | null {
+  if (!error || typeof error !== "object") return null;
+  const candidate = (error as Record<string, unknown>).connectorSdkEvidence;
+  if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) {
+    return null;
+  }
+  const value = candidate as Record<string, unknown>;
+  return {
+    sdkVersion: Number(value.sdkVersion ?? 1),
+    manifestVersion: Number(value.manifestVersion ?? 1),
+    transportKind:
+      value.transportKind === "local" || value.transportKind === "http"
+        ? value.transportKind
+        : "legacy",
+    transportEvidence:
+      value.transportEvidence &&
+      typeof value.transportEvidence === "object" &&
+      !Array.isArray(value.transportEvidence)
+        ? (value.transportEvidence as ConnectorHttpEvidence)
+        : null,
+    sdkAuditEvents: Array.isArray(value.sdkAuditEvents)
+      ? (value.sdkAuditEvents as ConnectorAuditEvent[]).slice(0, 100)
+      : []
+  };
+}
+
 async function appendAudit(
   userId: string,
   input: {
@@ -218,17 +304,33 @@ async function appendAudit(
     inputSummary: Record<string, unknown>;
     outputSummary: Record<string, unknown>;
     errorCode: string | null;
+    sdkVersion: number;
+    manifestVersion: number;
+    transportKind: "legacy" | "local" | "http";
+    transportEvidence: ConnectorHttpEvidence | null;
+    sdkAuditEvents: ConnectorAuditEvent[];
   }
 ) {
+  const transportEvidence = input.transportEvidence ?? {};
+  const requestCount = input.transportEvidence?.requests ?? 0;
+  const retryCount = input.transportEvidence?.retries ?? 0;
+  const pageCount = input.transportEvidence?.pages ?? 0;
+  const healthCheckCount = input.transportEvidence?.healthChecks ?? 0;
+
   return withUserDatabase(userId, async (client) => {
     await requireWorkspaceAdmin(client, input.workspaceId);
     await client.query(
       `
         insert into app.workspace_connector_audit (
           workspace_id,audit_id,connector_key,capability,status,actor_user_id,
-          started_at,completed_at,duration_ms,input_summary,output_summary,error_code
+          started_at,completed_at,duration_ms,input_summary,output_summary,error_code,
+          sdk_version,manifest_version,transport_kind,request_count,retry_count,
+          page_count,health_check_count,transport_evidence,sdk_audit_events
         )
-        values ($1,$2,$3,$4,$5,$6,$7,now(),$8,$9::jsonb,$10::jsonb,$11)
+        values (
+          $1,$2,$3,$4,$5,$6,$7,now(),$8,$9::jsonb,$10::jsonb,$11,
+          $12,$13,$14,$15,$16,$17,$18,$19::jsonb,$20::jsonb
+        )
       `,
       [
         input.workspaceId,
@@ -241,7 +343,16 @@ async function appendAudit(
         input.durationMs,
         JSON.stringify(input.inputSummary),
         JSON.stringify(input.outputSummary),
-        input.errorCode
+        input.errorCode,
+        input.sdkVersion,
+        input.manifestVersion,
+        input.transportKind,
+        requestCount,
+        retryCount,
+        pageCount,
+        healthCheckCount,
+        JSON.stringify(transportEvidence),
+        JSON.stringify(input.sdkAuditEvents.slice(0, 100))
       ]
     );
   });
@@ -272,12 +383,7 @@ export async function executeWorkspaceConnector(
     });
     if (!installation) throw new Error("connector_not_configured");
     if (!installation.enabled) throw new Error("connector_disabled");
-    if (
-      installation.manifestVersion !== definition.manifest.manifestVersion ||
-      installation.connectorVersion !== definition.manifest.version
-    ) {
-      throw new Error("connector_installation_incompatible");
-    }
+    assertInstallationCompatible(installation, definition);
     assertConnectorCapability(
       definition.manifest,
       installation.grantedCapabilities,
@@ -302,12 +408,23 @@ export async function executeWorkspaceConnector(
       durationMs: result.durationMs,
       inputSummary: boundedSummary(input.payload),
       outputSummary: result.summary,
-      errorCode: null
+      errorCode: null,
+      sdkVersion: result.sdkVersion,
+      manifestVersion: result.manifestVersion,
+      transportKind: result.transportKind,
+      transportEvidence: result.transportEvidence,
+      sdkAuditEvents: result.sdkAuditEvents
     });
     return result;
   } catch (error) {
-    const message = error instanceof Error ? error.message : "connector_execution_failed";
+    const message =
+      error instanceof Error ? error.message : "connector_execution_failed";
     if (installation) {
+      const failureEvidence = boundaryFailureEvidence(error);
+      const transportKind =
+        definition.manifest.manifestVersion === 2
+          ? definition.manifest.transport.kind
+          : "legacy";
       await appendAudit(userId, {
         workspaceId: input.workspaceId,
         connectorKey: input.connectorKey,
@@ -315,12 +432,19 @@ export async function executeWorkspaceConnector(
         status:
           message === "connector_capability_not_granted" ||
           message === "connector_disabled"
-            ? "blocked" : "failed",
+            ? "blocked"
+            : "failed",
         startedAt,
         durationMs: Math.max(0, Date.now() - startedAt.getTime()),
         inputSummary: boundedSummary(input.payload),
         outputSummary: {},
-        errorCode: message.slice(0, 160)
+        errorCode: message.slice(0, 160),
+        sdkVersion: failureEvidence?.sdkVersion ?? definition.manifest.sdkVersion,
+        manifestVersion:
+          failureEvidence?.manifestVersion ?? definition.manifest.manifestVersion,
+        transportKind: failureEvidence?.transportKind ?? transportKind,
+        transportEvidence: failureEvidence?.transportEvidence ?? null,
+        sdkAuditEvents: failureEvidence?.sdkAuditEvents ?? []
       });
     }
     throw error;
