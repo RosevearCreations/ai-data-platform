@@ -315,6 +315,20 @@ export class ConnectorSdkError extends Error {
   }
 }
 
+type ConnectorManifestCandidate = {
+  manifestVersion?: unknown;
+  sdkVersion?: unknown;
+  key?: unknown;
+  version?: unknown;
+  displayName?: unknown;
+  description?: unknown;
+  capabilities?: unknown;
+  configSchema?: unknown;
+  secrets?: unknown;
+  limits?: unknown;
+  transport?: unknown;
+};
+
 const KEY_PATTERN = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
 const VERSION_PATTERN = /^\d+\.\d+\.\d+$/;
 const ENV_PATTERN = /^[A-Z][A-Z0-9_]{2,127}$/;
@@ -349,7 +363,7 @@ function uniqueStrings(values: unknown[]) {
 }
 
 function validateCommonManifest(
-  manifest: Partial<ConnectorManifestV1 & ConnectorManifestV2>,
+  manifest: ConnectorManifestCandidate,
   errors: string[]
 ) {
   if (typeof manifest.key !== "string" || !KEY_PATTERN.test(manifest.key)) {
@@ -657,7 +671,7 @@ function validateHttpTransport(
 
 export function validateConnectorManifest(value: unknown): ConnectorValidationResult {
   const errors: string[] = [];
-  const manifest = object(value) as Partial<ConnectorManifestV1 & ConnectorManifestV2> | null;
+  const manifest = object(value) as ConnectorManifestCandidate | null;
   if (!manifest) return { valid: false, errors: ["Manifest must be an object."] };
 
   if (
@@ -671,7 +685,7 @@ export function validateConnectorManifest(value: unknown): ConnectorValidationRe
 
   const { configSchema, secretKeys } = validateCommonManifest(manifest, errors);
   if (manifest.manifestVersion === 2 && manifest.sdkVersion === 2) {
-    validateHttpTransport(manifest, errors, configSchema, secretKeys);
+    validateHttpTransport(manifest as Partial<ConnectorManifestV2>, errors, configSchema, secretKeys);
   }
 
   return { valid: errors.length === 0, errors };
