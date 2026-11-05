@@ -103,6 +103,22 @@ export async function executeConnectorBoundary(input: {
       transportEvidence: http?.evidence() ?? null,
       sdkAuditEvents: clone(sdkAuditEvents)
     };
+  } catch (error) {
+    const wrapped =
+      error instanceof Error
+        ? new Error(error.message, { cause: error })
+        : new Error("connector_execution_failed", { cause: error });
+    Object.assign(wrapped, {
+      connectorSdkEvidence: {
+        sdkVersion: manifest.sdkVersion,
+        manifestVersion: manifest.manifestVersion,
+        transportKind:
+          manifest.manifestVersion === 2 ? manifest.transport.kind : "legacy",
+        transportEvidence: http?.evidence() ?? null,
+        sdkAuditEvents: clone(sdkAuditEvents)
+      }
+    });
+    throw wrapped;
   } finally {
     if (timer) clearTimeout(timer);
     controller.abort();
