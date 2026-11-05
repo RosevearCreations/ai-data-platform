@@ -74,7 +74,7 @@ async function main() {
     "createConnectorHttpClient",
     "createExecutionHttpClient",
     "ConnectorSdkError",
-    "Retry-After",
+    "retry-after",
     "api-key-header",
     "cursor",
     "page-number",
