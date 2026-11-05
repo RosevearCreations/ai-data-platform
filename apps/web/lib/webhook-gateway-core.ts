@@ -99,6 +99,14 @@ export function safeWebhookEventId(value: string) {
   return EVENT_ID_PATTERN.test(value);
 }
 
+export function safeWebhookEventType(value: string) {
+  return value.length <= 160 && EVENT_TYPE_PATTERN.test(value);
+}
+
+export function safeWebhookTenantId(value: string | null) {
+  return value === null || TENANT_PATTERN.test(value);
+}
+
 export function safeWebhookSignature(value: string) {
   return SIGNATURE_PATTERN.test(value);
 }
@@ -141,8 +149,7 @@ export function parseWebhookEventEnvelope(
   }
   if (
     typeof input.eventType !== "string" ||
-    input.eventType.length > 160 ||
-    !EVENT_TYPE_PATTERN.test(input.eventType)
+    !safeWebhookEventType(input.eventType)
   ) {
     throw new WebhookGatewayError("webhook_event_type_invalid", 400);
   }
@@ -160,7 +167,7 @@ export function parseWebhookEventEnvelope(
   if (
     input.tenantId !== null &&
     (typeof input.tenantId !== "string" ||
-      !TENANT_PATTERN.test(input.tenantId))
+      !safeWebhookTenantId(input.tenantId))
   ) {
     throw new WebhookGatewayError("webhook_tenant_invalid", 400);
   }
