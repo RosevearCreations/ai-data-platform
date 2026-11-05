@@ -14,6 +14,7 @@ const suites = {
     ["pnpm", ["lint"], "workspace lint"],
     ["pnpm", ["--filter", "@rosevear/ai-data-connector-sdk", "build"], "connector SDK build + tests"],
     ["pnpm", ["--filter", "@rosevear/ai-data-web", "ci:spine"], "current integration spine"],
+    ["pnpm", ["--filter", "@rosevear/ai-data-web", "exec", "node", "--import", "tsx", "scripts/verify-ql337-comms-broker.ts"], "QL-337 Comms broker contract and no-delivery gate"],
     ["pnpm", ["--filter", "@rosevear/ai-data-web", "ci:db-core"], "core database + integration schema"],
     ["pnpm", ["--filter", "@rosevear/ai-data-web", "build"], "production-equivalent web build"]
   ],
