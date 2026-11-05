@@ -1,7 +1,7 @@
 import {
   defineConnector,
   type ConnectorDefinition,
-  type ConnectorManifestV1
+  type ConnectorManifest
 } from "@rosevear/ai-data-connector-sdk";
 
 function transformText(value: string, mode: string, trim: boolean) {
@@ -13,13 +13,13 @@ function transformText(value: string, mode: string, trim: boolean) {
 
 const exampleNormalizer = defineConnector(
   {
-    manifestVersion: 1,
-    sdkVersion: 1,
+    manifestVersion: 2,
+    sdkVersion: 2,
     key: "example.no-secret-normalizer",
-    version: "1.0.0",
+    version: "2.0.0",
     displayName: "Example no-secret normalizer",
     description:
-      "Build 029 sample connector. It normalizes string fields in bounded records without credentials or network access.",
+      "Build 289 SDK v2 sample connector. It normalizes bounded records locally without credentials or network access.",
     capabilities: ["import", "enrichment"],
     configSchema: [
       {
@@ -41,7 +41,8 @@ const exampleNormalizer = defineConnector(
       }
     ],
     secrets: [],
-    limits: { maxExecutionMs: 2000, maxInputBytes: 50000, maxOutputBytes: 50000 }
+    limits: { maxExecutionMs: 2000, maxInputBytes: 50000, maxOutputBytes: 50000 },
+    transport: { kind: "local" }
   },
   async ({ input, config, signal }) => {
     if (signal.aborted) throw new Error("connector_execution_aborted");
@@ -63,7 +64,7 @@ const exampleNormalizer = defineConnector(
     });
     return {
       output: { records: normalized },
-      summary: { records: normalized.length, case: mode, trimmed: trim }
+      summary: { records: normalized.length, case: mode, trimmed: trim, sdk: 2 }
     };
   }
 );
@@ -73,7 +74,7 @@ const registry = new Map<string, ConnectorDefinition>(
   definitions.map((definition) => [definition.manifest.key, definition])
 );
 
-export function listRegisteredConnectorManifests(): ConnectorManifestV1[] {
+export function listRegisteredConnectorManifests(): ConnectorManifest[] {
   return definitions.map((definition) => definition.manifest);
 }
 
