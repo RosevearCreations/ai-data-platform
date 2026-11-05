@@ -615,3 +615,12 @@ The event bus accepts no arbitrary browser event body. Publications reference du
 Subscription creation, activation, pausing and receipt publication require workspace owner/admin membership under RLS. Subscription matching requires workspace/environment alignment, optional source and tenant matches, exact event-type allowlisting and rejects self-routing to the source application.
 
 Publications, routes and bus audit evidence are append-only to the runtime role. Matched routes remain held with `delivery-not-authorized`; Build 291 has no outbound delivery worker and does not infer live integration authorization.
+
+
+## Build 292 recovery security
+
+Failure, dead-letter, replay-request, replay-route and recovery-audit records are workspace scoped under RLS and append-only to the runtime role. Owner/admin authority is required for failure intake, replay and disposition.
+
+Replay eligibility is fail-closed: only `transient` and `unknown` categories are replayable by default, the subscription must still be active, a reviewed reason is mandatory, and each dead-letter case is capped at five replay requests.
+
+Replay routes remain internal and held. Build 292 does not release routes, make external network requests, infer live authorization or resume QL-266.

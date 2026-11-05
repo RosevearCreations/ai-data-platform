@@ -1,0 +1,44 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build292-review.v1",
+  "application": "AI Data Platform",
+  "build": 292,
+  "recovery": {
+    "source": "build291-internal-event-bus-routes",
+    "append_only_failure_evidence": true,
+    "durable_dead_letter_queue": true,
+    "reviewed_replay_only": true,
+    "replayable_categories": [
+      "transient",
+      "unknown"
+    ],
+    "disposition_categories": [
+      "permanent",
+      "policy"
+    ],
+    "replay_limit_per_dead_letter": 5,
+    "subscription_must_remain_active": true,
+    "replay_delivery_mode": "internal-queue",
+    "replay_route_state": "held",
+    "replay_hold_reason": "recovery-replay-not-authorized",
+    "automatic_retry": false,
+    "outbound_network_delivery": false,
+    "external_requests": 0,
+    "live_exchanges": 0,
+    "database_migration": "0095_event_replay_dead_letter_recovery.sql"
+  },
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "replay_started_automatically": false,
+    "dead_letter_dismissed_automatically": false,
+    "replay_route_released_automatically": false,
+    "downstream_network_delivery": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "ql266_active_gate": false,
+  "new_ql266_test_started": false,
+  "next_build": "292A",
+  "next_build_title": "CI Verification Consolidation & Promotion Run Reduction",
+  "next_roadmap_build": 293
+}
