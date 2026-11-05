@@ -11,9 +11,9 @@ import {
   applyDeterministicRepairSuggestions,
   canonicalSchemaSnapshot,
   normalizeSourceSchemaFields,
-  sourceSchemaFingerprint,
   type RepairSuggestion,
   type SchemaDriftChange,
+  type SchemaFieldSnapshot,
   type SourceSchemaField
 } from "./schema-drift-assistant";
 import { listWorkspacesForUser, withUserDatabase } from "./database";
@@ -371,7 +371,9 @@ export async function recordSchemaDriftScan(
       currentSourceSchemaFields: currentSourceFields,
       currentContract: contract,
       previousCanonicalFields: priorScan.rows[0]
-        ? jsonArray(priorScan.rows[0].canonical_schema_fields)
+        ? jsonArray<SchemaFieldSnapshot>(
+            priorScan.rows[0].canonical_schema_fields
+          )
         : null
     });
 
