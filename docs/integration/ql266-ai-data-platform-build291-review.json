@@ -1,0 +1,42 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build291-review.v1",
+  "application": "AI Data Platform",
+  "build": 291,
+  "event_bus": {
+    "reviewed_build290_receipts_only": true,
+    "explicit_publication_required": true,
+    "subscriptions_default_draft": true,
+    "explicit_subscription_activation": true,
+    "exact_event_type_matching": true,
+    "workspace_isolation": true,
+    "environment_isolation": true,
+    "tenant_filtering": true,
+    "direct_point_to_point_wiring": false,
+    "delivery_mode": "internal-queue",
+    "matched_routes_state": "held",
+    "hold_reason": "delivery-not-authorized",
+    "outbound_network_delivery": false,
+    "automatic_connection_activation": false,
+    "external_requests": 0,
+    "live_exchanges": 0,
+    "database_migration": "0094_cross_app_event_bus.sql"
+  },
+  "authorization": {
+    "owner_authorization_inferred": false,
+    "subscription_activated_automatically": false,
+    "receipt_published_automatically": false,
+    "route_released_automatically": false,
+    "downstream_network_delivery": false
+  },
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "ql266_active_gate": false,
+  "new_ql266_test_started": false,
+  "ci_consolidation": {
+    "workflow_files": 1,
+    "finding": "Historical verifier accumulation causes broad repeated verification per promotion.",
+    "recommended_build": "292A — CI Verification Consolidation & Promotion Run Reduction"
+  },
+  "next_build": 292
+}
