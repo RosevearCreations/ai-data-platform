@@ -32,6 +32,9 @@ export default async function FieldMappingsPage() {
           <Link className="secondaryButton" href="/app-connections">
             App Connection Registry
           </Link>
+          <Link className="secondaryButton" href="/schema-drift">
+            Schema Drift &amp; Repair
+          </Link>
           <Link className="secondaryButton" href="/connection-validation">
             Automatic Validation
           </Link>
@@ -45,8 +48,9 @@ export default async function FieldMappingsPage() {
         <strong>Reviewed mapping is configuration evidence, not a live connection.</strong>
         <p>
           Build 287 persists source field paths, transforms, contract fingerprints,
-          review state and audit evidence only. It does not copy source records,
-          activate connectors, authorize writes or resume QL-266. Connection state
+          review state and audit evidence only. Build 288 now verifies source/canonical
+          schema drift separately before later delivery. Neither surface copies source
+          records, activates connectors, authorizes writes or resumes QL-266. Connection state
           remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED.
         </p>
       </section>

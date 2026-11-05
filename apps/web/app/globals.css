@@ -9224,3 +9224,65 @@ td, th {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Build 288 — Schema Drift Detection & Mapping Repair Assistant */
+.schemaDriftFieldList {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+
+.schemaDriftFieldRow {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.6fr) minmax(8rem, .7fr) auto minmax(12rem, 1fr) auto;
+  gap: 0.7rem;
+  align-items: end;
+  padding: 0.85rem;
+  border: 1px solid rgba(224, 247, 250, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.schemaDriftFieldRow label {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.schemaDriftRequired {
+  justify-items: center;
+  align-content: end;
+}
+
+.schemaDriftRequired input {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.schemaDriftResult {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(224, 247, 250, 0.12);
+}
+
+@media (max-width: 1050px) {
+  .schemaDriftFieldRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .schemaDriftFieldRow > button {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .schemaDriftFieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .schemaDriftRequired {
+    justify-items: start;
+  }
+}

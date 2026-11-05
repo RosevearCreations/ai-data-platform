@@ -175,6 +175,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         itemHrefs: [
           "/data-contracts",
           "/field-mappings",
+          "/schema-drift",
           "/integration-delivery",
           "/integration-simulator",
           "/approved-data/delivery",
@@ -227,6 +228,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/field-mappings",
         label: "Field mapping studio",
         description: "Create and review persisted application-to-canonical mapping profiles."
+      },
+      {
+        href: "/schema-drift",
+        label: "Schema drift & repair",
+        description: "Detect schema changes, identify affected mappings and prepare repair drafts."
       },
       {
         href: "/integration-delivery",

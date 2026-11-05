@@ -319,6 +319,22 @@ export async function saveFieldMappingProfile(
              schema_fingerprint=$6,
              profile_name=$7,
              source_schema_label=$8,
+             source_schema_version=case
+               when application_id=$3 and contract_id=$4 and schema_fingerprint=$6
+                 and source_schema_label=$8 and mapping_entries=$9::jsonb
+               then source_schema_version else null end,
+             source_schema_fingerprint=case
+               when application_id=$3 and contract_id=$4 and schema_fingerprint=$6
+                 and source_schema_label=$8 and mapping_entries=$9::jsonb
+               then source_schema_fingerprint else null end,
+             source_schema_fields=case
+               when application_id=$3 and contract_id=$4 and schema_fingerprint=$6
+                 and source_schema_label=$8 and mapping_entries=$9::jsonb
+               then source_schema_fields else null end,
+             source_schema_reviewed_at=case
+               when application_id=$3 and contract_id=$4 and schema_fingerprint=$6
+                 and source_schema_label=$8 and mapping_entries=$9::jsonb
+               then source_schema_reviewed_at else null end,
              mapping_entries=$9::jsonb,
              notes=$10,
              review_status=$11,
