@@ -411,7 +411,7 @@ export async function executeWorkspaceConnector(
       errorCode: null,
       sdkVersion: result.sdkVersion,
       manifestVersion: result.manifestVersion,
-      transportKind: result.transportKind,
+      transportKind: result.transportKind as "legacy" | "local" | "http",
       transportEvidence: result.transportEvidence,
       sdkAuditEvents: result.sdkAuditEvents
     });
