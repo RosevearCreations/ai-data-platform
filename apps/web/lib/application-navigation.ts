@@ -266,6 +266,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/schema-drift",
+        label: "Schema Drift & Mapping Repair",
+        description: "Detect source/canonical schema drift and prepare reviewed mapping repairs before delivery.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/connector-setup",
         label: "Connector Setup Wizard",
         description: "Prepare peer-app connection drafts with guided environment, tenant/workspace and safe-test readiness checks.",
