@@ -30,6 +30,7 @@ An owner/admin records a stable HTTPS media reference plus provenance:
 - source application;
 - canonical tenant;
 - source record ID and optional version;
+- source updated timestamp;
 - asset kind;
 - Build 286 media type;
 - optional owner kind and owner record ID;
