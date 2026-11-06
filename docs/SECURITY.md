@@ -675,3 +675,10 @@ Build 296 performs no binary upload/download, no peer-application write, no QL-3
 Notification consent evidence, held requests, reviews, delivery evidence and audit records are workspace scoped under RLS and append-only to the runtime role. Request approval requires workspace owner/admin authority and exact latest consent evidence in the granted state for the same tenant, customer and channel.
 
 All requests remain `held` with `notification-dispatch-not-authorized`. Build 297 records Rosevear Comms Hub as the preferred operator but performs no Comms Hub call, provider API call, outbound network request, peer-application write or automatic dispatch. Missing, denied, revoked, mismatched or expired consent fails closed. QL-266 is not resumed.
+
+
+## Build 298 shared task exchange security
+
+Shared task work items, task links, exchange packages, reviews and audit evidence are workspace scoped under RLS and append-only to the runtime role. Creation, linking, package preparation and review require workspace owner/admin authority.
+
+All task exchange packages remain `held` with `task-exchange-not-authorized`. Build 298 performs no peer-application write, no outbound network request, no automatic task creation in another application and no task status mutation after creation. Approval records future handoff suitability only. QL-266 is not resumed.
