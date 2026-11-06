@@ -41,7 +41,11 @@ const requiredTables = [
   "customer_identity_decisions",
   "customer_identity_groups",
   "customer_identity_links",
-  "customer_identity_audit"
+  "customer_identity_audit",
+  "catalogue_exchange_items",
+  "catalogue_exchange_packages",
+  "catalogue_exchange_reviews",
+  "catalogue_exchange_audit"
 ];
 
 const appendOnlyTables = [
@@ -69,7 +73,11 @@ const appendOnlyTables = [
   "customer_identity_decisions",
   "customer_identity_groups",
   "customer_identity_links",
-  "customer_identity_audit"
+  "customer_identity_audit",
+  "catalogue_exchange_items",
+  "catalogue_exchange_packages",
+  "catalogue_exchange_reviews",
+  "catalogue_exchange_audit"
 ];
 
 
@@ -139,10 +147,10 @@ async function main() {
       `select exists(
          select 1
          from app.schema_migrations
-         where name='0097_shared_customer_contact_identity.sql'
+         where name='0098_shared_catalogue_exchange.sql'
        ) as exists`
     );
-    assert(latestMigration.rows[0]?.exists === true, "migration 0097 is not recorded");
+    assert(latestMigration.rows[0]?.exists === true, "migration 0098 is not recorded");
 
     console.log(
       "CI integration spine database verification passed for " +

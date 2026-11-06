@@ -539,3 +539,14 @@ Candidate generation is deterministic and exact. Matches are considered only acr
 A candidate never changes source data. Owner/admin acceptance creates or extends an internal shared-identity group; rejection records immutable evidence. Existing links in conflicting groups stop the acceptance transaction for manual resolution rather than triggering an automatic group merge.
 
 This layer performs no peer-app reads or writes, no outbound network request and no QL-266 activation.
+
+
+## Build 295 shared catalogue exchange boundary
+
+Build 295 adds an internal catalogue-normalization and exchange-preparation layer for Devil n Dove, Rosie Dazzlers, Yard Workers and iCamp. It reuses the Build 286 `rosevear.shared.product.v1` and `rosevear.shared.service.v1` contracts rather than creating a competing schema.
+
+Products normalize to the product contract. Services, packages, add-ons, campsites, amenities and rentals normalize to the service contract. Each snapshot keeps source application, tenant, source record/version and a SHA-256 content digest so the originating application remains authoritative.
+
+Destination exchange packages are immutable, bind source and destination tenant/application identity, require source and destination applications to differ, and are always created in `held` state with `catalogue-exchange-not-authorized`. Owner/admin approval records suitability for future transport only; it does not release the package.
+
+Build 295 introduces no outbound worker, peer-application write, QL-337 catalogue payload or QL-266 activation.
