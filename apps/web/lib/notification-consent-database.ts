@@ -15,7 +15,7 @@ async function requireWorkspaceAdmin(client: PoolClient, workspaceId: string) {
   const result = await client.query<{ role: string }>(
     `select role from app.workspace_members
      where workspace_id=$1
-       and user_id=nullif(current_setting('app.user_id',true),'')::uuid
+       and user_id=nullif(current_setting('app.user_id',true),'')
      limit 1`,
     [workspaceId]
   );
