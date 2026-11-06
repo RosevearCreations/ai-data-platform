@@ -332,6 +332,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/catalogue-exchange",
+        label: "Catalogue Exchange",
+        description: "Normalize product, service and campground catalogue records and review held exchange packages.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
