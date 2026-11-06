@@ -326,6 +326,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/workflow-automation",
+        label: "Workflow Automation",
+        description: "Author reviewed event-to-action rules and inspect held governed cross-app action intents.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/event-recovery",
         label: "Event Recovery Console",
         description: "Review dead-letter failures, bounded replay requests and durable held recovery routes.",
