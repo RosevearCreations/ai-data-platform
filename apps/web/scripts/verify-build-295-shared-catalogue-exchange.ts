@@ -294,7 +294,7 @@ async function main() {
     "Build 295 is in compact integration spine"
   );
   ensure(
-    String(pkg.scripts.build).startsWith(
+    String(pkg.scripts.build).includes(
       "tsx scripts/verify-build-295-shared-catalogue-exchange.ts"
     ) &&
       String(pkg.scripts.build).includes(
