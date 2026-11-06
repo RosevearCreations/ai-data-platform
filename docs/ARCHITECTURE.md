@@ -573,3 +573,8 @@ Build 297 adds an append-only, workspace-scoped consent and notification coordin
 ## Build 298 — Shared Tasks, Follow-Ups & Work Queue Exchange
 
 Build 298 adds a shared, append-only work-queue coordination layer for governed exceptions and follow-ups. Source and destination application identity remain explicit, tasks can be linked by immutable relationship evidence, and destination packages remain held after review. The platform does not create or modify peer-application task records in this build.
+
+
+## Build 299 — Shared Scheduling, Appointments & Calendar Exchange
+
+Build 299 extends the integration spine with append-only schedule items that reuse `rosevear.shared.booking.v1`. Local overlap checks provide bounded conflict evidence inside the AI Data Platform, while destination exchange packages remain held after review. No peer calendar is read or written by this build.
