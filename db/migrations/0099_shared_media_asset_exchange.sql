@@ -111,6 +111,10 @@ create table if not exists app.shared_media_references (
     check (reference_sha256 ~ '^[a-f0-9]{64}$'),
   recorded_by text not null references auth."user"(id) on delete restrict,
   recorded_at timestamptz not null default now(),
+  check (portable_record->>'sourceApplicationId'=source_application_id),
+  check (portable_record->>'sourceRecordId'=source_record_id),
+  check (portable_record->>'tenantKey'=canonical_tenant_key),
+  check (portable_record ? 'updatedAt'),
   check (portable_record->>'url'=source_url),
   check (portable_record->>'mediaType' in ('image','video','document','audio')),
   unique (
