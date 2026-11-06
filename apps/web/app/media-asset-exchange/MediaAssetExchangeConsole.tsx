@@ -137,6 +137,9 @@ export function MediaAssetExchangeConsole({
   const [sourceRecordId, setSourceRecordId] = useState("");
   const [sourceRecordVersion, setSourceRecordVersion] =
     useState("");
+  const [updatedAt, setUpdatedAt] = useState(
+    new Date().toISOString()
+  );
   const [assetKind, setAssetKind] =
     useState<(typeof assetKinds)[number]>("photo");
   const [mediaType, setMediaType] =
@@ -192,6 +195,7 @@ export function MediaAssetExchangeConsole({
         canonicalTenantKey,
         sourceRecordId,
         sourceRecordVersion,
+        updatedAt,
         assetKind,
         mediaType,
         url,
@@ -395,6 +399,16 @@ export function MediaAssetExchangeConsole({
                     setSourceRecordVersion(event.target.value)
                   }
                   placeholder="optional"
+                />
+              </label>
+              <label>
+                Source updated at
+                <input
+                  value={updatedAt}
+                  onChange={(event) =>
+                    setUpdatedAt(event.target.value)
+                  }
+                  placeholder="ISO timestamp"
                 />
               </label>
               <label>
