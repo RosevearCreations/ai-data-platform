@@ -96,6 +96,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "System Reliability",
         description: "Review measured health, durable trend comparison, recurring failure patterns and recovery readiness.",
         helpTopic: "command-center"
+      },
+      {
+        href: "/integration-health",
+        label: "Integration Health",
+        description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",
+        helpTopic: "connectors-overview"
       }
     ]
   },
