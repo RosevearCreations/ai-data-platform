@@ -153,7 +153,17 @@ export async function recordNotificationConsent(userId: string, input: {
         normalized.sourceRecordId,normalized.observedAt,normalized.expiresAt,normalized.evidenceSha256,userId
       ]
     );
-    const resolvedId = result.rows[0]?.consent_id ?? consentId;
+    let resolvedId = result.rows[0]?.consent_id ? String(result.rows[0].consent_id) : "";
+    if (!resolvedId) {
+      const existing = await client.query<{ consent_id: string }>(
+        `select consent_id from app.notification_consent_evidence
+         where workspace_id=$1 and canonical_tenant_key=$2 and customer_record_id=$3
+           and channel=$4 and evidence_sha256=$5 limit 1`,
+        [input.workspaceId,normalized.canonicalTenantKey,normalized.customerRecordId,normalized.channel,normalized.evidenceSha256]
+      );
+      resolvedId = existing.rows[0]?.consent_id ?? "";
+    }
+    if (!resolvedId) throw new Error("notification_consent_conflict");
     await client.query(
       `insert into app.notification_consent_audit
        (audit_id,workspace_id,actor_user_id,action,consent_id,details)
@@ -223,7 +233,16 @@ export async function prepareNotificationRequest(userId: string, input: {
         row?.consent_id ?? null,consentDecision.code,userId
       ]
     );
-    const resolvedId = result.rows[0]?.request_id ?? requestId;
+    let resolvedId = result.rows[0]?.request_id ? String(result.rows[0].request_id) : "";
+    if (!resolvedId) {
+      const existing = await client.query<{ request_id: string }>(
+        `select request_id from app.notification_requests
+         where workspace_id=$1 and request_sha256=$2 limit 1`,
+        [input.workspaceId,normalized.requestSha256]
+      );
+      resolvedId = existing.rows[0]?.request_id ?? "";
+    }
+    if (!resolvedId) throw new Error("notification_request_conflict");
     await client.query(
       `insert into app.notification_consent_audit
        (audit_id,workspace_id,actor_user_id,action,request_id,details)
