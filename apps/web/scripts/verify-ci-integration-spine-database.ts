@@ -45,7 +45,12 @@ const requiredTables = [
   "catalogue_exchange_items",
   "catalogue_exchange_packages",
   "catalogue_exchange_reviews",
-  "catalogue_exchange_audit"
+  "catalogue_exchange_audit",
+  "shared_media_assets",
+  "shared_media_references",
+  "shared_media_exchange_packages",
+  "shared_media_exchange_reviews",
+  "shared_media_exchange_audit"
 ];
 
 const appendOnlyTables = [
@@ -77,7 +82,12 @@ const appendOnlyTables = [
   "catalogue_exchange_items",
   "catalogue_exchange_packages",
   "catalogue_exchange_reviews",
-  "catalogue_exchange_audit"
+  "catalogue_exchange_audit",
+  "shared_media_assets",
+  "shared_media_references",
+  "shared_media_exchange_packages",
+  "shared_media_exchange_reviews",
+  "shared_media_exchange_audit"
 ];
 
 
@@ -147,10 +157,10 @@ async function main() {
       `select exists(
          select 1
          from app.schema_migrations
-         where name='0098_shared_catalogue_exchange.sql'
+         where name='0099_shared_media_asset_exchange.sql'
        ) as exists`
     );
-    assert(latestMigration.rows[0]?.exists === true, "migration 0098 is not recorded");
+    assert(latestMigration.rows[0]?.exists === true, "migration 0099 is not recorded");
 
     console.log(
       "CI integration spine database verification passed for " +
