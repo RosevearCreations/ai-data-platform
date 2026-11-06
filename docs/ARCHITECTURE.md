@@ -550,3 +550,16 @@ Products normalize to the product contract. Services, packages, add-ons, campsit
 Destination exchange packages are immutable, bind source and destination tenant/application identity, require source and destination applications to differ, and are always created in `held` state with `catalogue-exchange-not-authorized`. Owner/admin approval records suitability for future transport only; it does not release the package.
 
 Build 295 introduces no outbound worker, peer-application write, QL-337 catalogue payload or QL-266 activation.
+
+
+## Build 296 shared media and asset exchange boundary
+
+Build 296 adds a reference-first media layer across all six peer applications. It reuses the Build 286 `rosevear.shared.media.v1` contract for portable metadata and does not store media file bodies.
+
+A canonical asset identity is workspace- and tenant-scoped. SHA-256 content digests are preferred for deduplication; when no digest is supplied, the normalized stable HTTPS reference is hashed instead. Multiple applications can retain separate immutable source references to one canonical asset, so provenance is preserved without forcing duplicate copies.
+
+Source references retain source application, tenant, record/version, asset classification and Build 286 media metadata. Stable URLs reject embedded credentials and secret-like query parameters.
+
+Destination media packages bind the source reference, canonical dedupe identity, destination application/tenant and portable media contract. Packages are always created as `held` with `media-exchange-not-authorized` and explicitly state `binaryTransferRequested=false`.
+
+Build 296 introduces no binary upload/download worker, no remote media fetch, no peer-application write, no QL-337 media payload and no QL-266 activation.

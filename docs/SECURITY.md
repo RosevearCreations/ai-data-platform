@@ -655,3 +655,16 @@ Catalogue normalization accepts only bounded fields and validates the resulting 
 Prepared exchange packages remain `held` with `catalogue-exchange-not-authorized`. A workspace owner/admin may approve or reject a package with a bounded reason, but approval does not change package state or enable transport.
 
 Build 295 makes no external network request, writes no peer-application record, adds no product/service payload to QL-337, infers no owner authorization and does not resume QL-266.
+
+
+## Build 296 shared media and asset exchange security
+
+Canonical media assets, source references, held exchange packages, reviews and audit evidence are workspace scoped under RLS. Runtime access is SELECT/INSERT only so asset identity, provenance and review evidence remain append-only.
+
+Durable media references must be HTTPS, must not contain URL credentials, and reject secret-like query parameter names including tokens, API keys, signatures and expiring signed-URL fields. Build 296 never downloads remote content to inspect or hash it. A caller-supplied SHA-256 content digest is accepted only as bounded metadata; otherwise deduplication uses a SHA-256 digest of the normalized stable URL.
+
+Deduplication is tenant scoped and therefore never converges assets across canonical tenants. The same canonical asset may still retain multiple source references and source-specific asset classifications.
+
+Owner/admin authority is required to register references, prepare destination packages and approve/reject packages. Approval does not release the package. Every package remains `held` with `media-exchange-not-authorized`, requests no binary transfer and creates no external side effect.
+
+Build 296 performs no binary upload/download, no peer-application write, no QL-337 media payload, no connection activation and no QL-266 resumption.

@@ -338,6 +338,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/media-asset-exchange",
+        label: "Media & Asset Exchange",
+        description: "Register deduplicated photos, documents, receipts and generated-media references and review held exchange packages.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",

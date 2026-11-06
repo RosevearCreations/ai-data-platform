@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/customer-identities", "/catalogue-exchange", "/remote-execution"]
+        itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/customer-identities", "/catalogue-exchange", "/media-asset-exchange", "/remote-execution"]
       },
       {
         id: "deliver",
@@ -238,6 +238,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/catalogue-exchange",
         label: "Catalogue exchange",
         description: "Normalize shared product/service records and review HELD cross-application catalogue packages."
+      },
+      {
+        href: "/media-asset-exchange",
+        label: "Media & asset exchange",
+        description: "Register deduplicated shared media references and review HELD cross-application asset packages."
       },
       {
         href: "/event-recovery",

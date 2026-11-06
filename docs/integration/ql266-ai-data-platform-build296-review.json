@@ -1,0 +1,58 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build296-review.v1",
+  "application": "AI Data Platform",
+  "build": 296,
+  "media_asset_exchange": {
+    "applications": [
+      "devilndove",
+      "rosiedazzlers",
+      "yard-workers",
+      "icamp",
+      "rosevear-comms-hub",
+      "rosevear-ai-hub"
+    ],
+    "contract_id": "rosevear.shared.media.v1",
+    "contract_version": "1.0.0",
+    "asset_kinds": [
+      "photo",
+      "document",
+      "receipt",
+      "generated-media",
+      "video",
+      "audio"
+    ],
+    "media_types": [
+      "image",
+      "video",
+      "document",
+      "audio"
+    ],
+    "build286_contract_reused": true,
+    "source_application_authoritative": true,
+    "content_hash_dedupe_preferred": true,
+    "stable_url_hash_fallback": true,
+    "cross_tenant_dedupe": false,
+    "binary_uploads_performed": false,
+    "binary_downloads_performed": false,
+    "remote_content_fetches": 0,
+    "source_destination_must_differ": true,
+    "package_state": "held",
+    "hold_reason": "media-exchange-not-authorized",
+    "owner_admin_review_required": true,
+    "approval_releases_package": false,
+    "automatic_dispatch": false,
+    "outbound_network_requests": false,
+    "peer_application_writes": false,
+    "ql337_media_payload_enabled": false,
+    "external_requests": 0,
+    "live_exchanges": 0
+  },
+  "migration": "0099_shared_media_asset_exchange.sql",
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "owner_authorization_inferred": false,
+  "next_build": 297,
+  "next_build_title": "Cross-App Notification & Consent Service"
+}
