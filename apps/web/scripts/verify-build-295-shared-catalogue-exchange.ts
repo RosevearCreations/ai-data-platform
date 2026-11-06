@@ -312,7 +312,7 @@ async function main() {
     "catalogue_exchange_packages",
     "catalogue_exchange_reviews",
     "catalogue_exchange_audit",
-    "0098_shared_catalogue_exchange.sql"
+    "schema_migrations"
   ]) {
     ensure(ciDb.includes(token), "compact database gate token " + token);
   }
