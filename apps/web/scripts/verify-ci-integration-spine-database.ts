@@ -50,7 +50,12 @@ const requiredTables = [
   "shared_media_references",
   "shared_media_exchange_packages",
   "shared_media_exchange_reviews",
-  "shared_media_exchange_audit"
+  "shared_media_exchange_audit",
+  "notification_consent_evidence",
+  "notification_requests",
+  "notification_request_reviews",
+  "notification_delivery_evidence",
+  "notification_consent_audit"
 ];
 
 const appendOnlyTables = [
@@ -87,7 +92,12 @@ const appendOnlyTables = [
   "shared_media_references",
   "shared_media_exchange_packages",
   "shared_media_exchange_reviews",
-  "shared_media_exchange_audit"
+  "shared_media_exchange_audit",
+  "notification_consent_evidence",
+  "notification_requests",
+  "notification_request_reviews",
+  "notification_delivery_evidence",
+  "notification_consent_audit"
 ];
 
 
@@ -157,10 +167,10 @@ async function main() {
       `select exists(
          select 1
          from app.schema_migrations
-         where name='0099_shared_media_asset_exchange.sql'
+         where name='0100_cross_app_notification_consent.sql'
        ) as exists`
     );
-    assert(latestMigration.rows[0]?.exists === true, "migration 0099 is not recorded");
+    assert(latestMigration.rows[0]?.exists === true, "migration 0100 is not recorded");
 
     console.log(
       "CI integration spine database verification passed for " +
