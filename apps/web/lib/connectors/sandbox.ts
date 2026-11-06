@@ -124,3 +124,61 @@ export async function executeConnectorBoundary(input: {
     controller.abort();
   }
 }
+
+
+export async function executeConnectorHealthBoundary(input: {
+  definition: ConnectorDefinition;
+  workspaceId: string;
+  config: unknown;
+  secretRefs: unknown;
+}) {
+  const manifest = input.definition.manifest;
+  if (manifest.manifestVersion !== 2 || manifest.transport.kind !== "http") {
+    throw new Error("connector_health_retry_not_supported");
+  }
+  const config = normalizeConnectorConfig(manifest, input.config);
+  const secretRefs = validateConnectorSecretReferences(manifest, input.secretRefs);
+  const frozenConfig = freeze(clone(config)) as Record<string, string | number | boolean>;
+  const controller = new AbortController();
+  const sdkAuditEvents: ConnectorAuditEvent[] = [];
+
+  const resolveSecret = async (key: string) => {
+    const declaration = manifest.secrets.find((item) => item.key === key);
+    if (!declaration) throw new Error("connector_secret_not_declared");
+    const reference = (secretRefs as ConnectorSecretReferences)[key];
+    if (
+      !reference ||
+      reference.kind !== "environment" ||
+      reference.environmentVariable !== declaration.environmentVariable
+    ) {
+      throw new Error("connector_secret_reference_invalid:" + key);
+    }
+    const value = process.env[declaration.environmentVariable];
+    if (!value) throw new Error("connector_secret_not_configured:" + key);
+    return value;
+  };
+
+  const http = createExecutionHttpClient({
+    manifest,
+    config: frozenConfig,
+    secret: resolveSecret,
+    signal: controller.signal,
+    audit: {
+      record(event) {
+        if (sdkAuditEvents.length < 100) sdkAuditEvents.push(clone(event));
+      }
+    }
+  });
+  if (!http) throw new Error("connector_health_retry_not_supported");
+
+  try {
+    const result = await http.health();
+    return {
+      ...result,
+      transportEvidence: http.evidence(),
+      sdkAuditEvents: clone(sdkAuditEvents)
+    };
+  } finally {
+    controller.abort();
+  }
+}
