@@ -219,7 +219,7 @@ async function main() {
     "event_bus_delivery_attempt_reservations",
     "event_bus_duplicate_decisions",
     "event_bus_delivery_guarantee_audit",
-    "0096_event_idempotency_delivery_guarantees.sql"
+    "schema_migrations"
   ]) {
     ensure(ciDb.includes(token), "compact database gate token " + token);
   }
