@@ -689,3 +689,10 @@ All task exchange packages remain `held` with `task-exchange-not-authorized`. Bu
 Shared schedule items, local conflict evidence, exchange packages, reviews and audit evidence are workspace scoped under RLS and append-only to the runtime role. Creation, package preparation and review require workspace owner/admin authority.
 
 All schedule packages remain `held` with `schedule-exchange-not-authorized`. Build 299 performs no peer-calendar write, no remote availability query, no outbound network request and no automatic appointment creation in another application. Local overlap evidence is explicitly scoped to held AI Data Platform records only. QL-266 is not resumed.
+
+
+## Build 300 unified integration health security
+
+The Integration Health Command Center is read-only and composes existing RLS-scoped evidence from the application registry, System Reliability, credential-reference metadata, connector audit records, webhook intake and event-bus recovery tables. It does not read credential values, issue external health probes, infer remote availability, release held routes, trigger retries, activate connections or resume QL-266.
+
+Build 300 introduces no database migration and no new mutation authority.

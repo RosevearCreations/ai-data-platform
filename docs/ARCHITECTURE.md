@@ -578,3 +578,8 @@ Build 298 adds a shared, append-only work-queue coordination layer for governed 
 ## Build 299 — Shared Scheduling, Appointments & Calendar Exchange
 
 Build 299 extends the integration spine with append-only schedule items that reuse `rosevear.shared.booking.v1`. Local overlap checks provide bounded conflict evidence inside the AI Data Platform, while destination exchange packages remain held after review. No peer calendar is read or written by this build.
+
+
+## Build 300 — Unified Integration Health Command Center
+
+Build 300 composes existing governed integration evidence into one authenticated read-only dashboard at `/integration-health`. It reports registered peer state, measured database/connector latency, credential-reference risk, webhook outcomes, event queues, failures, dead letters and inherited degraded-service signals. No second health store or Build 300 migration is introduced.
