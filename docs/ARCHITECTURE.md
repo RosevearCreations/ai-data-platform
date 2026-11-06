@@ -568,3 +568,8 @@ Build 296 introduces no binary upload/download worker, no remote media fetch, no
 ## Build 297 — Cross-App Notification & Consent Service
 
 Build 297 adds an append-only, workspace-scoped consent and notification coordination layer. It reuses `rosevear.shared.notification.v1`, evaluates the latest exact tenant/customer/channel consent evidence, creates only held requests, and records Rosevear Comms Hub as the preferred future operator. No delivery worker or provider transport is introduced; review records future handoff suitability only.
+
+
+## Build 298 — Shared Tasks, Follow-Ups & Work Queue Exchange
+
+Build 298 adds a shared, append-only work-queue coordination layer for governed exceptions and follow-ups. Source and destination application identity remain explicit, tasks can be linked by immutable relationship evidence, and destination packages remain held after review. The platform does not create or modify peer-application task records in this build.
