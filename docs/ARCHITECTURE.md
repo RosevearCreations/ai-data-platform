@@ -563,3 +563,8 @@ Source references retain source application, tenant, record/version, asset class
 Destination media packages bind the source reference, canonical dedupe identity, destination application/tenant and portable media contract. Packages are always created as `held` with `media-exchange-not-authorized` and explicitly state `binaryTransferRequested=false`.
 
 Build 296 introduces no binary upload/download worker, no remote media fetch, no peer-application write, no QL-337 media payload and no QL-266 activation.
+
+
+## Build 297 — Cross-App Notification & Consent Service
+
+Build 297 adds an append-only, workspace-scoped consent and notification coordination layer. It reuses `rosevear.shared.notification.v1`, evaluates the latest exact tenant/customer/channel consent evidence, creates only held requests, and records Rosevear Comms Hub as the preferred future operator. No delivery worker or provider transport is introduced; review records future handoff suitability only.
