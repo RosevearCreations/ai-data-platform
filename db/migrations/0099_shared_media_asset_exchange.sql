@@ -67,6 +67,15 @@ create table if not exists app.shared_media_references (
         and source_record_version !~ '[[:cntrl:]]'
       )
     ),
+  asset_kind text not null
+    check (asset_kind in (
+      'photo',
+      'document',
+      'receipt',
+      'generated-media',
+      'video',
+      'audio'
+    )),
   owner_kind text
     check (
       owner_kind is null
