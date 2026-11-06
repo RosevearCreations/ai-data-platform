@@ -63,7 +63,7 @@ create table if not exists app.integration_recovery_decisions (
     check (char_length(reason) between 8 and 500 and reason !~ '[[:cntrl:]]'),
   consequence text not null
     check (consequence in (
-      'prepare-held-event-replay',
+      'event-replay-authorized-for-owner-workbench',
       'credential-remediation-authorized-for-owner-workbench',
       'connector-remediation-authorized-for-owner-workbench'
     )),
@@ -85,8 +85,7 @@ create table if not exists app.integration_recovery_audit (
       'safe-retry-succeeded',
       'safe-retry-failed',
       'owner-approved',
-      'owner-rejected',
-      'held-event-replay-prepared'
+      'owner-rejected'
     )),
   details jsonb not null default '{}'::jsonb
     check (jsonb_typeof(details)='object' and octet_length(details::text)<=16384),
