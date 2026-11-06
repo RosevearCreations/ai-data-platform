@@ -16,7 +16,10 @@ import {
   listWorkspacesForUser,
   withUserDatabase
 } from "./database";
-import type { WebhookSourceApplication } from "./webhook-gateway-core";
+import {
+  WEBHOOK_SOURCE_APPLICATIONS,
+  type WebhookSourceApplication
+} from "./webhook-gateway-core";
 
 export type WorkflowAutomationRuleState =
   | "draft"
@@ -405,6 +408,14 @@ export async function listWorkflowAutomationForUser(userId:string){
 
   return {
     workspaces,
+    applications:[...WEBHOOK_SOURCE_APPLICATIONS],
+    actionKinds:[
+      "prepare-shared-task",
+      "prepare-notification",
+      "prepare-schedule",
+      "review-event-recovery",
+      "review-integration-recovery"
+    ] as const,
     ...state,
     summary:{
       rules:state.rules.length,
