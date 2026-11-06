@@ -55,7 +55,12 @@ const requiredTables = [
   "notification_requests",
   "notification_request_reviews",
   "notification_delivery_evidence",
-  "notification_consent_audit"
+  "notification_consent_audit",
+  "shared_task_work_items",
+  "shared_task_links",
+  "shared_task_exchange_packages",
+  "shared_task_exchange_reviews",
+  "shared_task_exchange_audit"
 ];
 
 const appendOnlyTables = [
@@ -97,7 +102,12 @@ const appendOnlyTables = [
   "notification_requests",
   "notification_request_reviews",
   "notification_delivery_evidence",
-  "notification_consent_audit"
+  "notification_consent_audit",
+  "shared_task_work_items",
+  "shared_task_links",
+  "shared_task_exchange_packages",
+  "shared_task_exchange_reviews",
+  "shared_task_exchange_audit"
 ];
 
 
@@ -169,7 +179,8 @@ async function main() {
        where name = any($1::text[])`,
       [[
         "0099_shared_media_asset_exchange.sql",
-        "0100_cross_app_notification_consent.sql"
+        "0100_cross_app_notification_consent.sql",
+        "0101_shared_task_work_queue_exchange.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -180,6 +191,10 @@ async function main() {
     assert(
       migrationNames.has("0100_cross_app_notification_consent.sql"),
       "migration 0100 is not recorded"
+    );
+    assert(
+      migrationNames.has("0101_shared_task_work_queue_exchange.sql"),
+      "migration 0101 is not recorded"
     );
 
     console.log(

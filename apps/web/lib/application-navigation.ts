@@ -350,6 +350,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/shared-task-exchange",
+        label: "Shared Tasks & Work Queue",
+        description: "Create governed cross-app tasks, link follow-ups and review held work-queue exchange packages.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
