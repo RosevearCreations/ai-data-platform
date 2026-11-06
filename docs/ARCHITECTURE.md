@@ -583,3 +583,10 @@ Build 299 extends the integration spine with append-only schedule items that reu
 ## Build 300 — Unified Integration Health Command Center
 
 Build 300 composes existing governed integration evidence into one authenticated read-only dashboard at `/integration-health`. It reports registered peer state, measured database/connector latency, credential-reference risk, webhook outcomes, event queues, failures, dead letters and inherited degraded-service signals. No second health store or Build 300 migration is introduced.
+
+
+## Build 301 — Self-Healing Connection Recovery & Safe Retry Automation
+
+Build 301 adds append-only recovery plans, attempts, owner decisions and audit evidence. The automatic lane is limited to transient connector failures on SDK v2 HTTP connectors and executes only the manifest-declared GET/HEAD health check. Recovery cycles are bounded independently of the SDK request retry budget.
+
+Consequential recovery remains in existing modules: event replay stays in Event Recovery, credential changes stay in Credential Vault, connector activation remains owner-controlled and no held event route is released by the recovery engine. Migration `0103_self_healing_connection_recovery.sql` stores only recovery evidence and grants the runtime SELECT/INSERT access without UPDATE/DELETE.
