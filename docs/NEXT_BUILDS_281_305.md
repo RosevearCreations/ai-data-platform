@@ -75,8 +75,10 @@ Centralize consent-aware notification requests and delivery evidence, with Comms
 ### Build 298 — Shared Tasks, Follow-Ups & Work Queue Exchange
 Allow governed exceptions and follow-ups to create linked tasks across applications.
 
-### Build 299 — Cross-App Search & Linked Record Explorer
-Search for a customer, product, vehicle, campsite, job or order and inspect authorized linked records across apps.
+### Build 299 — Shared Scheduling, Appointments & Calendar Exchange
+Prepare governed appointments, bookings, jobs, maintenance windows and calendar events across apps using held exchange packages and local-only overlap evidence.
+
+Owner-selected scope override: the earlier **Cross-App Search & Linked Record Explorer** item is deferred to the next roadmap renewal after Build 305; it is not removed from the product backlog.
 
 ### Build 300 — Unified Integration Health Command Center
 Show connection health, latency, failures, stale credentials, webhooks, queued events and degraded services in one dashboard.

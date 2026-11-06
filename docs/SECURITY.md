@@ -682,3 +682,10 @@ All requests remain `held` with `notification-dispatch-not-authorized`. Build 29
 Shared task work items, task links, exchange packages, reviews and audit evidence are workspace scoped under RLS and append-only to the runtime role. Creation, linking, package preparation and review require workspace owner/admin authority.
 
 All task exchange packages remain `held` with `task-exchange-not-authorized`. Build 298 performs no peer-application write, no outbound network request, no automatic task creation in another application and no task status mutation after creation. Approval records future handoff suitability only. QL-266 is not resumed.
+
+
+## Build 299 shared scheduling security
+
+Shared schedule items, local conflict evidence, exchange packages, reviews and audit evidence are workspace scoped under RLS and append-only to the runtime role. Creation, package preparation and review require workspace owner/admin authority.
+
+All schedule packages remain `held` with `schedule-exchange-not-authorized`. Build 299 performs no peer-calendar write, no remote availability query, no outbound network request and no automatic appointment creation in another application. Local overlap evidence is explicitly scoped to held AI Data Platform records only. QL-266 is not resumed.

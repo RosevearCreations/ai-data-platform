@@ -60,7 +60,12 @@ const requiredTables = [
   "shared_task_links",
   "shared_task_exchange_packages",
   "shared_task_exchange_reviews",
-  "shared_task_exchange_audit"
+  "shared_task_exchange_audit",
+  "shared_schedule_items",
+  "shared_schedule_conflict_evidence",
+  "shared_schedule_exchange_packages",
+  "shared_schedule_exchange_reviews",
+  "shared_schedule_exchange_audit"
 ];
 
 const appendOnlyTables = [
@@ -107,7 +112,12 @@ const appendOnlyTables = [
   "shared_task_links",
   "shared_task_exchange_packages",
   "shared_task_exchange_reviews",
-  "shared_task_exchange_audit"
+  "shared_task_exchange_audit",
+  "shared_schedule_items",
+  "shared_schedule_conflict_evidence",
+  "shared_schedule_exchange_packages",
+  "shared_schedule_exchange_reviews",
+  "shared_schedule_exchange_audit"
 ];
 
 
@@ -180,7 +190,8 @@ async function main() {
       [[
         "0099_shared_media_asset_exchange.sql",
         "0100_cross_app_notification_consent.sql",
-        "0101_shared_task_work_queue_exchange.sql"
+        "0101_shared_task_work_queue_exchange.sql",
+        "0102_shared_scheduling_calendar_exchange.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -195,6 +206,10 @@ async function main() {
     assert(
       migrationNames.has("0101_shared_task_work_queue_exchange.sql"),
       "migration 0101 is not recorded"
+    );
+    assert(
+      migrationNames.has("0102_shared_scheduling_calendar_exchange.sql"),
+      "migration 0102 is not recorded"
     );
 
     console.log(
