@@ -344,6 +344,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/notification-consent",
+        label: "Notification & Consent",
+        description: "Record channel consent evidence and review held notification requests for future governed Comms Hub handoff.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/remote-execution",
         label: "Provider Pilot Baseline",
         description: "Review bounded provider readiness, terminal-run cost, latency, outcomes and blockers.",
