@@ -158,10 +158,10 @@ async function main(){
   ]) ensure(database.includes(token),"database boundary "+token);
 
   ensure(
-    database.includes("workflowAutomationRuleMatches") &&
+    database.includes("workflowAutomationRuleMatches(identity,publication)") &&
     database.includes("on conflict (rule_id,publication_id) do nothing") &&
     database.includes("reviewed_at") &&
-    database.includes("publication.publishedAt"),
+    core.includes("publication.publishedAt.getTime()<rule.approvedAt.getTime()"),
     "reviewed future-event matching"
   );
 
