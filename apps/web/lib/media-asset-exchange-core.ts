@@ -162,6 +162,17 @@ function normalizeOptionalMimeType(value: unknown) {
   return normalized;
 }
 
+function normalizeRequiredUpdatedAt(value: unknown) {
+  if (typeof value !== "string") {
+    throw new Error("media_updated_at_invalid");
+  }
+  const ms = Date.parse(value);
+  if (!Number.isFinite(ms)) {
+    throw new Error("media_updated_at_invalid");
+  }
+  return new Date(ms).toISOString();
+}
+
 function normalizeOptionalDateTime(value: unknown) {
   if (value === undefined || value === null || value === "") {
     return null;
@@ -247,6 +258,7 @@ export function normalizeMediaReference(input: {
   canonicalTenantKey: string;
   sourceRecordId: string;
   sourceRecordVersion?: string | null;
+  updatedAt: string;
   assetKind: string;
   mediaType: string;
   url: string;
@@ -276,6 +288,7 @@ export function normalizeMediaReference(input: {
   const sourceRecordVersion = normalizeMediaRecordVersion(
     input.sourceRecordVersion
   );
+  const updatedAt = normalizeRequiredUpdatedAt(input.updatedAt);
   const url = normalizeStableMediaUrl(input.url);
   const ownerKind = boundedText(
     input.ownerKind,
@@ -303,6 +316,10 @@ export function normalizeMediaReference(input: {
   const contentSha256 = normalizeOptionalSha256(input.contentSha256);
 
   const portableRecord: Record<string, unknown> = {
+    sourceApplicationId: input.sourceApplicationId,
+    sourceRecordId,
+    tenantKey: canonicalTenantKey,
+    updatedAt,
     mediaType: input.mediaType,
     url
   };
