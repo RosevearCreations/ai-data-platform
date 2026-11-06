@@ -528,3 +528,14 @@ Build 293 adds a deterministic logical-delivery identity across original and rep
 Each original or replay route receives one immutable attempt reservation. Database uniqueness provides exactly-once internal intent and at-most-once source-route reservation. Existing held routes can be reconciled through the delivery-guarantees console.
 
 This is an internal durability boundary only. All reservations remain held, no outbound worker is introduced and no exactly-once external side-effect claim is made. QL-266 remains deferred and disconnected.
+
+
+## Build 294 shared customer/contact identity boundary
+
+Build 294 introduces a workspace-scoped identity-resolution layer for authorized Rosevear customer/contact source records. Source application, canonical tenant and source record identity are retained as provenance while email, phone, display-name and postal evidence are normalized and persisted only as SHA-256 fingerprints.
+
+Candidate generation is deterministic and exact. Matches are considered only across different authorized applications inside the same workspace and canonical tenant. The matching service does not use fuzzy or AI-inferred similarity.
+
+A candidate never changes source data. Owner/admin acceptance creates or extends an internal shared-identity group; rejection records immutable evidence. Existing links in conflicting groups stop the acceptance transaction for manual resolution rather than triggering an automatic group merge.
+
+This layer performs no peer-app reads or writes, no outbound network request and no QL-266 activation.

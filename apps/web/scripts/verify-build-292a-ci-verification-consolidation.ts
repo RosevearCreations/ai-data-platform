@@ -137,7 +137,7 @@ async function main() {
     "relrowsecurity",
     "ai_data_runtime",
     "UPDATE','DELETE",
-    "0096_event_idempotency_delivery_guarantees.sql"
+    "schema_migrations"
   ]) {
     ensure(dbGate.includes(token), "database gate token " + token);
   }
