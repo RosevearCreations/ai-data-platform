@@ -308,6 +308,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/integration-recovery",
+        label: "Integration Recovery",
+        description: "Run bounded GET/HEAD connector health recovery and review owner-controlled recovery decisions.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/webhook-gateway",
         label: "Webhook Gateway & Event Intake",
         description: "Configure signed, replay-safe inbound event endpoints and inspect durable receipts.",
