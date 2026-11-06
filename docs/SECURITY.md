@@ -668,3 +668,10 @@ Deduplication is tenant scoped and therefore never converges assets across canon
 Owner/admin authority is required to register references, prepare destination packages and approve/reject packages. Approval does not release the package. Every package remains `held` with `media-exchange-not-authorized`, requests no binary transfer and creates no external side effect.
 
 Build 296 performs no binary upload/download, no peer-application write, no QL-337 media payload, no connection activation and no QL-266 resumption.
+
+
+## Build 297 notification consent security
+
+Notification consent evidence, held requests, reviews, delivery evidence and audit records are workspace scoped under RLS and append-only to the runtime role. Request approval requires workspace owner/admin authority and exact latest consent evidence in the granted state for the same tenant, customer and channel.
+
+All requests remain `held` with `notification-dispatch-not-authorized`. Build 297 records Rosevear Comms Hub as the preferred operator but performs no Comms Hub call, provider API call, outbound network request, peer-application write or automatic dispatch. Missing, denied, revoked, mismatched or expired consent fails closed. QL-266 is not resumed.
