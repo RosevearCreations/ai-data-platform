@@ -75,6 +75,7 @@ export async function POST(request: Request) {
             typeof body.sourceRecordVersion === "string"
               ? body.sourceRecordVersion
               : null,
+          updatedAt: String(body.updatedAt ?? ""),
           assetKind: String(body.assetKind ?? ""),
           mediaType: String(body.mediaType ?? ""),
           url: String(body.url ?? ""),
