@@ -387,6 +387,7 @@ export async function recordSharedMediaReference(
     canonicalTenantKey: string;
     sourceRecordId: string;
     sourceRecordVersion?: string | null;
+    updatedAt: string;
     assetKind: string;
     mediaType: string;
     url: string;
