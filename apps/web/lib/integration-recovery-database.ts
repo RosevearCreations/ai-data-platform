@@ -421,7 +421,16 @@ async function insertAttempt(userId:string,input:{
 }
 
 export async function executeSafeRecoveryPlan(userId:string,planId:string){
-  const plan=await withUserDatabase(userId,async(client)=>{
+  type SafeRecoveryContext =
+    | { alreadySucceeded:true; workspaceId:string }
+    | {
+        alreadySucceeded:false;
+        workspaceId:string;
+        attemptNumber:number;
+        sourcePayload:Record<string,unknown>;
+      };
+
+  const plan:SafeRecoveryContext=await withUserDatabase(userId,async(client):Promise<SafeRecoveryContext>=>{
     const result=await client.query(`
       select p.*,
         (select count(*)::int from app.integration_recovery_attempts a where a.plan_id=p.plan_id) as attempt_count,
@@ -442,7 +451,7 @@ export async function executeSafeRecoveryPlan(userId:string,planId:string){
     if(String(row.recovery_action)!=="connector-health-retry"){
       throw new Error("integration_recovery_safe_action_invalid");
     }
-    if(row.already_succeeded) return {alreadySucceeded:true,workspaceId};
+    if(row.already_succeeded) return {alreadySucceeded:true as const,workspaceId};
     if(row.expires_at && new Date(String(row.expires_at)).getTime()<=Date.now()){
       throw new Error("integration_recovery_plan_expired");
     }
@@ -453,14 +462,14 @@ export async function executeSafeRecoveryPlan(userId:string,planId:string){
     const cooldownMs=Number(row.cooldown_seconds??0)*1000;
     if(lastAt && Date.now()-lastAt<cooldownMs) throw new Error("integration_recovery_cooldown_active");
     return {
-      alreadySucceeded:false,
+      alreadySucceeded:false as const,
       workspaceId,
       attemptNumber:attemptCount+1,
       sourcePayload:object(row.source_payload)
     };
   });
 
-  if(plan.alreadySucceeded) return {state:"recovered" as const,alreadySucceeded:true};
+  if(plan.alreadySucceeded===true) return {state:"recovered" as const,alreadySucceeded:true};
   const connectorKey=String(plan.sourcePayload.connectorKey??"");
   if(!connectorKey) throw new Error("integration_recovery_connector_key_missing");
 
