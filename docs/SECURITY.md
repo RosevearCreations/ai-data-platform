@@ -644,3 +644,14 @@ Observations, match candidates, decisions, shared groups, links and audit rows a
 Matching is restricted to exact evidence, the same canonical tenant and different authorized source applications. Fuzzy matching, cross-tenant matching and automatic merge are disabled. Only workspace owners/admins can record evidence or decide candidates, and every decision requires a bounded reason.
 
 Build 294 does not send customer payloads through QL-337, perform external reads/writes, infer owner authorization or resume QL-266.
+
+
+## Build 295 catalogue exchange security
+
+Catalogue snapshots, held exchange packages, package reviews and audit evidence are workspace scoped under RLS. Runtime access is SELECT/INSERT only, preserving append-only source snapshots and review evidence.
+
+Catalogue normalization accepts only bounded fields and validates the resulting portable record against the existing Build 286 product or service contract. Source and destination business applications are restricted to Devil n Dove, Rosie Dazzlers, Yard Workers and iCamp, and a package cannot target its source application.
+
+Prepared exchange packages remain `held` with `catalogue-exchange-not-authorized`. A workspace owner/admin may approve or reject a package with a bounded reason, but approval does not change package state or enable transport.
+
+Build 295 makes no external network request, writes no peer-application record, adds no product/service payload to QL-337, infers no owner authorization and does not resume QL-266.
