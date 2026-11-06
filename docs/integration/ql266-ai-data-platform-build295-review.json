@@ -1,0 +1,46 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build295-review.v1",
+  "application": "AI Data Platform",
+  "build": 295,
+  "catalogue_exchange": {
+    "business_applications": [
+      "devilndove",
+      "rosiedazzlers",
+      "yard-workers",
+      "icamp"
+    ],
+    "product_contract_id": "rosevear.shared.product.v1",
+    "service_contract_id": "rosevear.shared.service.v1",
+    "contract_version": "1.0.0",
+    "item_kinds": [
+      "product",
+      "service",
+      "package",
+      "addon",
+      "campsite",
+      "amenity",
+      "rental"
+    ],
+    "build286_contracts_reused": true,
+    "source_application_authoritative": true,
+    "source_destination_must_differ": true,
+    "package_state": "held",
+    "hold_reason": "catalogue-exchange-not-authorized",
+    "owner_admin_review_required": true,
+    "approval_releases_package": false,
+    "automatic_dispatch": false,
+    "outbound_network_requests": false,
+    "peer_application_writes": false,
+    "ql337_catalogue_payload_enabled": false,
+    "external_requests": 0,
+    "live_exchanges": 0
+  },
+  "migration": "0098_shared_catalogue_exchange.sql",
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "owner_authorization_inferred": false,
+  "next_build": 296,
+  "next_build_title": "Shared Media & Asset Exchange"
+}
