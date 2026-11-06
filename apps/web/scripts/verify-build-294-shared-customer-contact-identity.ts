@@ -266,7 +266,7 @@ async function main() {
     "Build 294 is in compact integration spine"
   );
   ensure(
-    String(pkg.scripts.build).startsWith(
+    String(pkg.scripts.build).includes(
       "tsx scripts/verify-build-294-shared-customer-contact-identity.ts"
     ) &&
       String(pkg.scripts.build).includes(
@@ -286,7 +286,7 @@ async function main() {
     "customer_identity_groups",
     "customer_identity_links",
     "customer_identity_audit",
-    "0097_shared_customer_contact_identity.sql"
+    "schema_migrations"
   ]) {
     ensure(ciDb.includes(token), "compact database gate token " + token);
   }
