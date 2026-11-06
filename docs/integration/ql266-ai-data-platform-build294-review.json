@@ -1,0 +1,42 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build294-review.v1",
+  "application": "AI Data Platform",
+  "build": 294,
+  "customer_identity_resolution": {
+    "authorized_source_applications": [
+      "devilndove",
+      "rosiedazzlers",
+      "yard-workers",
+      "icamp",
+      "rosevear-comms-hub",
+      "rosevear-ai-hub"
+    ],
+    "raw_contact_values_persisted": false,
+    "normalized_fingerprint_algorithm": "sha256",
+    "exact_match_rules": [
+      "email-and-phone-exact",
+      "email-exact",
+      "phone-exact",
+      "name-postal-exact"
+    ],
+    "fuzzy_matching": false,
+    "cross_tenant_matching": false,
+    "cross_application_only": true,
+    "owner_admin_review_required": true,
+    "automatic_merge": false,
+    "conflicting_group_auto_merge": false,
+    "outbound_network_requests": false,
+    "peer_application_writes": false,
+    "ql337_customer_payload_enabled": false,
+    "external_requests": 0,
+    "live_exchanges": 0
+  },
+  "migration": "0097_shared_customer_contact_identity.sql",
+  "ql266_status": "UNDER_REVIEW",
+  "external_test_status": "REVIEW_DEFERRED",
+  "connection_state": "DISCONNECTED",
+  "new_ql266_test_started": false,
+  "owner_authorization_inferred": false,
+  "next_build": 295,
+  "next_build_title": "Shared Product, Service & Catalogue Exchange"
+}

@@ -202,11 +202,16 @@ async function main() {
   const spine = String(pkg.scripts["ci:spine"]);
   ensure(spine.includes("verify-build-293-idempotency-delivery-guarantees.ts"), "Build 293 is in compact integration spine");
   ensure(
-    String(pkg.scripts.build).startsWith("tsx scripts/verify-build-293-idempotency-delivery-guarantees.ts") &&
+    String(pkg.scripts["ci:spine"]).includes(
+      "tsx scripts/verify-build-293-idempotency-delivery-guarantees.ts"
+    ) &&
+      String(pkg.scripts.build).includes(
+        "tsx scripts/verify-build-293-idempotency-delivery-guarantees.ts"
+      ) &&
       String(pkg.scripts.build).includes("verify-build-292-event-replay-dlq.ts") &&
       String(pkg.scripts.build).includes("verify-build-292a-ci-verification-consolidation.ts") &&
       String(pkg.scripts.build).includes("run-production-migrations.ts"),
-    "Build 293 gates production before inherited safety and migration gates"
+    "Build 293 remains in compact CI and the production safety chain"
   );
   ensure(impact.includes("29[0-9]"), "CI impact detector recognizes current 293-era verifier");
   for (const token of [
@@ -214,7 +219,7 @@ async function main() {
     "event_bus_delivery_attempt_reservations",
     "event_bus_duplicate_decisions",
     "event_bus_delivery_guarantee_audit",
-    "0096_event_idempotency_delivery_guarantees.sql"
+    "schema_migrations"
   ]) {
     ensure(ciDb.includes(token), "compact database gate token " + token);
   }

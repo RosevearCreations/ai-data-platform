@@ -633,3 +633,14 @@ Delivery intent, attempt-reservation, duplicate-decision and guarantee-audit rec
 Idempotency keys are SHA-256 digests of bounded identifiers, not secrets. The logical key excludes retry route IDs so retries converge on one intent; each source route has a separate deterministic attempt key protected by uniqueness constraints.
 
 Duplicate reservation requests are suppressed and recorded immutably. All intents and attempts remain held. Build 293 performs no external network delivery, does not release routes, does not infer owner authorization and does not resume QL-266.
+
+
+## Build 294 customer identity privacy and review controls
+
+Customer/contact values supplied to the authenticated Build 294 intake are normalized in server memory and converted to SHA-256 fingerprints before persistence. The Build 294 tables contain no raw email, phone, display-name or postal columns.
+
+Observations, match candidates, decisions, shared groups, links and audit rows are workspace scoped under RLS. Runtime access is SELECT/INSERT only; the evidence and decision model is append-only.
+
+Matching is restricted to exact evidence, the same canonical tenant and different authorized source applications. Fuzzy matching, cross-tenant matching and automatic merge are disabled. Only workspace owners/admins can record evidence or decide candidates, and every decision requires a bounded reason.
+
+Build 294 does not send customer payloads through QL-337, perform external reads/writes, infer owner authorization or resume QL-266.
