@@ -590,3 +590,10 @@ Build 300 composes existing governed integration evidence into one authenticated
 Build 301 adds append-only recovery plans, attempts, owner decisions and audit evidence. The automatic lane is limited to transient connector failures on SDK v2 HTTP connectors and executes only the manifest-declared GET/HEAD health check. Recovery cycles are bounded independently of the SDK request retry budget.
 
 Consequential recovery remains in existing modules: event replay stays in Event Recovery, credential changes stay in Credential Vault, connector activation remains owner-controlled and no held event route is released by the recovery engine. Migration `0103_self_healing_connection_recovery.sql` stores only recovery evidence and grants the runtime SELECT/INSERT access without UPDATE/DELETE.
+
+
+## Build 302 — Cross-App Workflow Automation Builder
+
+Build 302 adds an event-to-action orchestration layer between the existing Build 291 event bus and governed destination workbenches. Rules are immutable definitions with append-only review decisions. Approved rules match only future durable publications and create idempotent held action intents; destination modules keep all existing role checks, confirmations, evidence requirements and execution gates.
+
+Migration `0104_cross_app_workflow_automation.sql` adds rule, review, action-intent and audit tables. Event-bus publication invokes the Build 302 evaluator on the authenticated server path, while an operator recovery action can re-evaluate recent post-approval publications. No destination mutation is performed by the automation engine.
