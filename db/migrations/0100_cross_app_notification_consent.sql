@@ -109,12 +109,12 @@ begin
   loop
     execute format('drop policy if exists %I_member_select on app.%I', t, t);
     execute format(
-      'create policy %I_member_select on app.%I for select using (exists (select 1 from app.workspace_members wm where wm.workspace_id=%I.workspace_id and wm.user_id=nullif(current_setting(''app.user_id'',true),'''')::uuid))',
+      'create policy %I_member_select on app.%I for select using (exists (select 1 from app.workspace_members wm where wm.workspace_id=%I.workspace_id and wm.user_id=nullif(current_setting(''app.user_id'',true),'''')))',
       t, t, t
     );
     execute format('drop policy if exists %I_admin_insert on app.%I', t, t);
     execute format(
-      'create policy %I_admin_insert on app.%I for insert with check (exists (select 1 from app.workspace_members wm where wm.workspace_id=%I.workspace_id and wm.user_id=nullif(current_setting(''app.user_id'',true),'''')::uuid and wm.role in (''owner'',''admin'')))',
+      'create policy %I_admin_insert on app.%I for insert with check (exists (select 1 from app.workspace_members wm where wm.workspace_id=%I.workspace_id and wm.user_id=nullif(current_setting(''app.user_id'',true),'''') and wm.role in (''owner'',''admin'')))',
       t, t, t
     );
   end loop;
