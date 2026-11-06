@@ -1,5 +1,3 @@
-import { performance } from "node:perf_hooks";
-
 import { buildAppConnectionRegistry } from "./app-connection-registry";
 import { credentialReferenceRiskState } from "./credential-vault-database";
 import { withUserDatabase } from "./database";
@@ -117,8 +115,6 @@ function worst(states:IntegrationHealthState[]):IntegrationHealthState{
 export async function buildIntegrationHealthCommandCenter(
   userId:string
 ):Promise<IntegrationHealthCommandCenterModel>{
-  const dbStarted=performance.now();
-
   const [reliability,registry,databaseEvidence]=await Promise.all([
     buildSystemReliabilityDashboard(userId),
     Promise.resolve(buildAppConnectionRegistry()),
@@ -145,17 +141,23 @@ export async function buildIntegrationHealthCommandCenter(
         client.query(`
           select e.workspace_id,e.endpoint_id,e.display_name,e.source_application_id,
                  e.enabled,e.environment,
-                 count(a.audit_id) filter (
-                   where a.outcome='accepted' and a.occurred_at>=now()-interval '24 hours'
-                 )::int as accepted_24h,
-                 count(a.audit_id) filter (
-                   where a.outcome='denied' and a.occurred_at>=now()-interval '24 hours'
-                 )::int as denied_24h,
-                 max(r.received_at) as last_receipt_at
+                 (
+                   select count(*)::int from app.webhook_request_audit a
+                   where a.endpoint_id=e.endpoint_id
+                     and a.outcome='accepted'
+                     and a.occurred_at>=now()-interval '24 hours'
+                 ) as accepted_24h,
+                 (
+                   select count(*)::int from app.webhook_request_audit a
+                   where a.endpoint_id=e.endpoint_id
+                     and a.outcome='denied'
+                     and a.occurred_at>=now()-interval '24 hours'
+                 ) as denied_24h,
+                 (
+                   select max(r.received_at) from app.webhook_receipts r
+                   where r.endpoint_id=e.endpoint_id
+                 ) as last_receipt_at
           from app.webhook_endpoints e
-          left join app.webhook_request_audit a on a.endpoint_id=e.endpoint_id
-          left join app.webhook_receipts r on r.endpoint_id=e.endpoint_id
-          group by e.workspace_id,e.endpoint_id,e.display_name,e.source_application_id,e.enabled,e.environment
           order by e.source_application_id,e.display_name`),
         client.query<{state:string;count:string}>(`
           select state,count(*)::text as count
@@ -184,7 +186,7 @@ export async function buildIntegrationHealthCommandCenter(
     })
   ]);
 
-  const databaseLatencyMs=Math.max(0,Math.round(performance.now()-dbStarted));
+  const databaseLatencyMs=reliability.database.latencyMs;
 
   const peers:PeerConnectionHealth[]=registry.peerApplications.map((item)=>({
     applicationId:item.id,
