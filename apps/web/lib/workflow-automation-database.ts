@@ -356,17 +356,27 @@ export async function evaluateWorkflowAutomationForPublication(
   }
 
   if(created.length===0){
-    await appendAutomationAudit(client,{
-      workspaceId:publication.workspaceId,
-      userId,
-      action:"publication-evaluated-no-match",
-      publicationId:publication.publicationId,
-      details:{
-        eventType:publication.eventType,
-        sourceApplicationId:publication.sourceApplicationId,
-        destinationActionExecuted:false
-      }
-    });
+    const alreadyAudited=await client.query(
+      `select audit_id
+       from app.workflow_automation_audit
+       where publication_id=$1
+         and action='publication-evaluated-no-match'
+       limit 1`,
+      [publication.publicationId]
+    );
+    if(!alreadyAudited.rows[0]){
+      await appendAutomationAudit(client,{
+        workspaceId:publication.workspaceId,
+        userId,
+        action:"publication-evaluated-no-match",
+        publicationId:publication.publicationId,
+        details:{
+          eventType:publication.eventType,
+          sourceApplicationId:publication.sourceApplicationId,
+          destinationActionExecuted:false
+        }
+      });
+    }
   }
 
   return created;
