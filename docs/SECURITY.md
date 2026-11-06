@@ -705,3 +705,12 @@ Build 301 adds one tightly bounded automatic recovery path: SDK v2 connector hea
 A Build 301 recovery plan adds a second outer limit of three recovery cycles, a five-minute cooldown and a 24-hour expiry. Successful health evidence closes the plan; exhausted or expired plans cannot continue automatically.
 
 Credential mutation, event replay, held-route release, connection activation, export/write capabilities, authorization/trust changes and QL-266 resumption are never auto-executed. Owner/admin approve/reject decisions are append-only evidence and route the operator back to the existing governed workbench rather than bypassing its confirmation gates.
+
+
+## Build 302 cross-app workflow automation security
+
+Build 302 evaluates only durable Build 291 event publications against immutable owner/admin-authored rules. A rule cannot match until its latest append-only review is `approve`, and only publications created at or after that approval time are eligible. Exact workspace, environment, optional source application, optional tenant and exact event-type matching remain fail-closed.
+
+A match creates one append-only `held / workflow-action-not-authorized` intent per rule/publication pair. The evaluator does not call destination APIs, does not read event bodies or credential values into action configuration, and cannot release event routes, replay dead letters, mutate credentials, activate connections, perform export/write operations, change trust or authorization, send outbound network traffic or resume QL-266.
+
+Rule disable/reject/approve decisions are append-only review records. Replacement rules supersede predecessors only after the replacement itself is approved. Runtime UPDATE/DELETE is revoked on all Build 302 tables.
