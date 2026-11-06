@@ -69,7 +69,11 @@ const requiredTables = [
   "integration_recovery_plans",
   "integration_recovery_attempts",
   "integration_recovery_decisions",
-  "integration_recovery_audit"
+  "integration_recovery_audit",
+  "workflow_automation_rules",
+  "workflow_automation_rule_reviews",
+  "workflow_automation_action_intents",
+  "workflow_automation_audit"
 ];
 
 const appendOnlyTables = [
@@ -125,7 +129,11 @@ const appendOnlyTables = [
   "integration_recovery_plans",
   "integration_recovery_attempts",
   "integration_recovery_decisions",
-  "integration_recovery_audit"
+  "integration_recovery_audit",
+  "workflow_automation_rules",
+  "workflow_automation_rule_reviews",
+  "workflow_automation_action_intents",
+  "workflow_automation_audit"
 ];
 
 
@@ -200,7 +208,8 @@ async function main() {
         "0100_cross_app_notification_consent.sql",
         "0101_shared_task_work_queue_exchange.sql",
         "0102_shared_scheduling_calendar_exchange.sql",
-        "0103_self_healing_connection_recovery.sql"
+        "0103_self_healing_connection_recovery.sql",
+        "0104_cross_app_workflow_automation.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -223,6 +232,10 @@ async function main() {
     assert(
       migrationNames.has("0103_self_healing_connection_recovery.sql"),
       "migration 0103 is not recorded"
+    );
+    assert(
+      migrationNames.has("0104_cross_app_workflow_automation.sql"),
+      "migration 0104 is not recorded"
     );
 
     console.log(
