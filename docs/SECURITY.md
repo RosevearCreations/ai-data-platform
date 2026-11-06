@@ -696,3 +696,12 @@ All schedule packages remain `held` with `schedule-exchange-not-authorized`. Bui
 The Integration Health Command Center is read-only and composes existing RLS-scoped evidence from the application registry, System Reliability, credential-reference metadata, connector audit records, webhook intake and event-bus recovery tables. It does not read credential values, issue external health probes, infer remote availability, release held routes, trigger retries, activate connections or resume QL-266.
 
 Build 300 introduces no database migration and no new mutation authority.
+
+
+## Build 301 self-healing recovery security
+
+Build 301 adds one tightly bounded automatic recovery path: SDK v2 connector health checks for transient HTTP failures. The health path is declared in the reviewed connector manifest and is restricted to GET/HEAD. The existing connector SDK continues to enforce exact HTTPS origins, declared secret references, bounded request timeouts, bounded per-request retry policy and sanitized audit evidence.
+
+A Build 301 recovery plan adds a second outer limit of three recovery cycles, a five-minute cooldown and a 24-hour expiry. Successful health evidence closes the plan; exhausted or expired plans cannot continue automatically.
+
+Credential mutation, event replay, held-route release, connection activation, export/write capabilities, authorization/trust changes and QL-266 resumption are never auto-executed. Owner/admin approve/reject decisions are append-only evidence and route the operator back to the existing governed workbench rather than bypassing its confirmation gates.
