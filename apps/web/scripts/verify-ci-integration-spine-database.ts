@@ -163,14 +163,24 @@ async function main() {
         grants.rows.map((row) => row.table_name + ":" + row.privilege_type).join(",")
     );
 
-    const latestMigration = await pool.query<{ exists: boolean }>(
-      `select exists(
-         select 1
-         from app.schema_migrations
-         where name='0100_cross_app_notification_consent.sql'
-       ) as exists`
+    const migrationEvidence = await pool.query<{ name: string }>(
+      `select name
+       from app.schema_migrations
+       where name = any($1::text[])`,
+      [[
+        "0099_shared_media_asset_exchange.sql",
+        "0100_cross_app_notification_consent.sql"
+      ]]
     );
-    assert(latestMigration.rows[0]?.exists === true, "migration 0100 is not recorded");
+    const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
+    assert(
+      migrationNames.has("0099_shared_media_asset_exchange.sql"),
+      "migration 0099 is not recorded"
+    );
+    assert(
+      migrationNames.has("0100_cross_app_notification_consent.sql"),
+      "migration 0100 is not recorded"
+    );
 
     console.log(
       "CI integration spine database verification passed for " +
