@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 
 import { eventBusSubscriptionMatches } from "./event-bus-core";
+import { evaluateWorkflowAutomationForPublication } from "./workflow-automation-database";
 import { ensureDeliveryGuaranteeForSource } from "./event-delivery-guarantees-database";
 import {
   safeWebhookEventType,
@@ -566,9 +567,24 @@ export async function publishWebhookReceiptToEventBus(
          order by created_at,route_id`,
         [publication.publicationId]
       );
+      const automationIntents=await evaluateWorkflowAutomationForPublication(
+        client,
+        userId,
+        {
+          publicationId:publication.publicationId,
+          workspaceId:publication.workspaceId,
+          sourceApplicationId:publication.sourceApplicationId,
+          environment:publication.environment,
+          tenantId:publication.tenantId,
+          eventId:publication.eventId,
+          eventType:publication.eventType,
+          publishedAt:publication.publishedAt
+        }
+      );
       return {
         publication,
         routes: routes.rows.map(routeRow),
+        automationIntents,
         alreadyPublished: true
       };
     }
@@ -689,9 +705,26 @@ export async function publishWebhookReceiptToEventBus(
       });
     }
 
+    const publication=publicationRow(publicationResult.rows[0]);
+    const automationIntents=await evaluateWorkflowAutomationForPublication(
+      client,
+      userId,
+      {
+        publicationId:publication.publicationId,
+        workspaceId:publication.workspaceId,
+        sourceApplicationId:publication.sourceApplicationId,
+        environment:publication.environment,
+        tenantId:publication.tenantId,
+        eventId:publication.eventId,
+        eventType:publication.eventType,
+        publishedAt:publication.publishedAt
+      }
+    );
+
     return {
-      publication: publicationRow(publicationResult.rows[0]),
+      publication,
       routes,
+      automationIntents,
       alreadyPublished: false
     };
   });
