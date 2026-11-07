@@ -3,7 +3,6 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import {
-  EMBEDDED_MODULE_ELEMENT_TAG,
   EMBEDDED_MODULE_REFERRER_POLICY,
   EMBEDDED_MODULE_RUNTIME_SCHEMA,
   EMBEDDED_MODULE_RUNTIME_VERSION,
