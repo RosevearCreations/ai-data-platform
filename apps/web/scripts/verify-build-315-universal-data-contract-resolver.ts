@@ -59,7 +59,8 @@ async function main() {
 
   const unresolved = resolveUniversalDataContract({
     descriptor,
-    contractId: customer.contractId
+    contractId: customer.contractId,
+    consumerApplicationId: "rosevear-comms-hub"
   });
 
   assert.equal(unresolved.compatibility.compatible, true);
@@ -88,6 +89,7 @@ async function main() {
   const resolved = resolveUniversalDataContract({
     descriptor,
     contractId: customer.contractId,
+    consumerApplicationId: "rosevear-comms-hub",
     mappingEntries: reviewedMappings
   });
 
@@ -114,6 +116,7 @@ async function main() {
   const drifted = resolveUniversalDataContract({
     descriptor: changedDescriptor,
     contractId: customer.contractId,
+    consumerApplicationId: "rosevear-comms-hub",
     mappingEntries: reviewedMappings,
     previous: {
       canonicalFingerprint: customer.schemaFingerprint,
