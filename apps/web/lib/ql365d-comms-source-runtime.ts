@@ -58,6 +58,7 @@ type OriginalGetInput = {
 };
 
 type SourceSignerEnvironment = {
+  [key: string]: string | undefined;
   QL256_SIGNER_PRIVATE_KEY_PEM?: string;
   QL256_SIGNER_PUBLIC_KEY_PEM?: string;
   QL256_SIGNER_SPKI_SHA256?: string;
