@@ -74,8 +74,9 @@ export default async function ProductionLearningPage() {
           candidates remain unnumbered until explicitly authorized by the owner.
         </p>
         <p className="srOnly">
-          Historical checkpoints remain available through Build 280 Owner Acceptance. No speculative Build 306+
-          queue is created automatically.
+          Historical checkpoints remain available through Build 280 Owner Acceptance. Historical Build 272
+          checkpoint: Production Learning IV. No speculative Build 273+ queue was created automatically at that
+          checkpoint. No speculative Build 306+ queue is created automatically.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/autonomous-operations">Open Build 305 Autonomous Operations</Link>
