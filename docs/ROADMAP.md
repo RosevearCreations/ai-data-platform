@@ -2110,3 +2110,15 @@ After Build 280 production GREEN and the Production Learning V renewal checkpoin
 Build 281 establishes the authoritative peer-app connection registry and Build 305 is the next evidence-driven roadmap renewal checkpoint.
 
 Repository branch policy for this batch: only `dev` and `main` are intended as long-lived branches. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED until explicitly resumed.
+
+
+## Current official build batch — Builds 306–330
+
+Build 305 reached production GREEN and completed the mandatory Production Learning VI renewal checkpoint. The owner then explicitly authorized `docs/NEXT_BUILDS_306_330.md` as the **Universal Module & Autonomous Integration** batch.
+
+The batch makes the AI Data Platform a reusable module for supported host applications through a universal manifest/host contract, headless SDK, embedded shell, host adapters, auth/tenant/capability bridges, shared data/events/workflows/search/media services, connector/relay/offline transport, bounded autonomous supervision, owner controls, guided installation, upgrade/rollback and universal certification.
+
+Build 306 is the next queued build.
+Build 330 is the next mandatory evidence-driven Production Learning VII roadmap-renewal checkpoint.
+
+QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED unless independently satisfied and explicitly resumed.
