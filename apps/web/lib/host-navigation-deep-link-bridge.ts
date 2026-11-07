@@ -566,7 +566,7 @@ export class HostNavigationBridge {
       ).id;
     }
 
-    this.registration = Object.freeze({
+    const registration: HostNavigationRegistration = {
       schema: HOST_NAVIGATION_REGISTRATION_SCHEMA,
       version: HOST_NAVIGATION_BRIDGE_VERSION,
       hostApplicationId: input.hostApplicationId,
@@ -585,7 +585,8 @@ export class HostNavigationBridge {
         rawSecretsAcceptedInLaunchContext: false,
         absoluteReturnUrlsAccepted: false
       }
-    });
+    };
+    this.registration = Object.freeze(registration);
     this.options = options;
   }
 
@@ -733,7 +734,7 @@ export class HostNavigationBridge {
       context
     });
 
-    const launch: HostNavigationLaunch = Object.freeze({
+    const launchValue: HostNavigationLaunch = {
       schema: HOST_NAVIGATION_LAUNCH_SCHEMA,
       version: HOST_NAVIGATION_BRIDGE_VERSION,
       navigationItemId: currentItem?.id ?? null,
@@ -764,7 +765,8 @@ export class HostNavigationBridge {
         contextualParametersAreNonAuthorizing: true,
         rawSecretsAccepted: false
       }
-    });
+    };
+    const launch = Object.freeze(launchValue);
 
     await this.options.auditSink?.record({
       schema: "rosevear.ai-data-platform.host-navigation-audit.v1",
