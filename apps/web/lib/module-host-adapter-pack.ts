@@ -35,6 +35,7 @@ export type ModuleHostAdapterDefinition = {
   moduleOriginSource: string;
   rendererIsolationRequired: boolean;
   supportsCustomElement: true;
+  customElementTag: string;
   supportsIframeFallback: true;
   credentialsInSourceAllowed: false;
   mountGrantsAuthorization: false;
@@ -84,6 +85,7 @@ const ADAPTER_DEFINITIONS: Readonly<
     moduleOriginSource: "VITE_AI_DATA_MODULE_ORIGIN",
     rendererIsolationRequired: false,
     supportsCustomElement: true,
+    customElementTag: EMBEDDED_MODULE_ELEMENT_TAG,
     supportsIframeFallback: true,
     credentialsInSourceAllowed: false,
     mountGrantsAuthorization: false
@@ -96,6 +98,7 @@ const ADAPTER_DEFINITIONS: Readonly<
     moduleOriginSource: "NEXT_PUBLIC_AI_DATA_MODULE_ORIGIN",
     rendererIsolationRequired: false,
     supportsCustomElement: true,
+    customElementTag: EMBEDDED_MODULE_ELEMENT_TAG,
     supportsIframeFallback: true,
     credentialsInSourceAllowed: false,
     mountGrantsAuthorization: false
@@ -108,6 +111,7 @@ const ADAPTER_DEFINITIONS: Readonly<
     moduleOriginSource: "VITE_AI_DATA_MODULE_ORIGIN",
     rendererIsolationRequired: false,
     supportsCustomElement: true,
+    customElementTag: EMBEDDED_MODULE_ELEMENT_TAG,
     supportsIframeFallback: true,
     credentialsInSourceAllowed: false,
     mountGrantsAuthorization: false
@@ -120,6 +124,7 @@ const ADAPTER_DEFINITIONS: Readonly<
     moduleOriginSource: "window.AI_DATA_MODULE_CONFIG.moduleOrigin",
     rendererIsolationRequired: false,
     supportsCustomElement: true,
+    customElementTag: EMBEDDED_MODULE_ELEMENT_TAG,
     supportsIframeFallback: true,
     credentialsInSourceAllowed: false,
     mountGrantsAuthorization: false
@@ -132,6 +137,7 @@ const ADAPTER_DEFINITIONS: Readonly<
     moduleOriginSource: "preload contextBridge configuration",
     rendererIsolationRequired: true,
     supportsCustomElement: true,
+    customElementTag: EMBEDDED_MODULE_ELEMENT_TAG,
     supportsIframeFallback: true,
     credentialsInSourceAllowed: false,
     mountGrantsAuthorization: false
@@ -235,9 +241,7 @@ function hostContextSource(input: {
 }
 
 function browserElementHelperSource(moduleOriginExpression: string) {
-  return `const AI_DATA_MODULE_TAG = ${json(EMBEDDED_MODULE_ELEMENT_TAG)};
-
-export function mountAiDataModule(input) {
+  return `export function mountAiDataModule(input) {
   if (!input?.target) throw new Error("A mount target is required.");
   if (!input.auditCorrelationId) {
     throw new Error("An audit correlation ID is required.");
@@ -248,14 +252,29 @@ export function mountAiDataModule(input) {
     throw new Error("AI Data Platform module origin is not configured.");
   }
 
-  const element = document.createElement(AI_DATA_MODULE_TAG);
-  element.setAttribute("module-origin", moduleOrigin);
-  element.setAttribute("surface", input.surface);
-  element.setAttribute("audit-correlation-id", input.auditCorrelationId);
-  input.target.replaceChildren(element);
+  const origin = new URL(moduleOrigin).origin;
+  const url = new URL(
+    "/module-embed/" + encodeURIComponent(input.surface),
+    origin
+  );
+  url.searchParams.set("runtimeId", "host_" + crypto.randomUUID());
+  url.searchParams.set("hostOrigin", window.location.origin);
+  url.searchParams.set("auditCorrelationId", input.auditCorrelationId);
+
+  const frame = document.createElement("iframe");
+  frame.src = url.toString();
+  frame.sandbox.value = "allow-forms allow-scripts allow-same-origin";
+  frame.referrerPolicy = "origin";
+  frame.loading = "eager";
+  frame.allow = "";
+  frame.title = "AI Data Platform embedded module";
+  frame.style.border = "0";
+  frame.style.width = "100%";
+  frame.style.minHeight = "40rem";
+  input.target.replaceChildren(frame);
 
   return () => {
-    if (element.parentNode === input.target) {
+    if (frame.parentNode === input.target) {
       input.target.replaceChildren();
     }
   };
@@ -274,8 +293,6 @@ function reactFiles(input: {
       path: "src/ai-data/AiDataModule.tsx",
       content: `import { useEffect, useRef } from "react";
 
-const AI_DATA_MODULE_TAG = ${json(EMBEDDED_MODULE_ELEMENT_TAG)};
-
 export function AiDataModule({
   surface = ${json(input.surface)},
   auditCorrelationId
@@ -290,11 +307,23 @@ export function AiDataModule({
     const moduleOrigin = import.meta.env.VITE_AI_DATA_MODULE_ORIGIN;
     if (!target || !moduleOrigin) return;
 
-    const element = document.createElement(AI_DATA_MODULE_TAG);
-    element.setAttribute("module-origin", moduleOrigin);
-    element.setAttribute("surface", surface);
-    element.setAttribute("audit-correlation-id", auditCorrelationId);
-    target.replaceChildren(element);
+    const origin = new URL(moduleOrigin).origin;
+    const url = new URL("/module-embed/" + encodeURIComponent(surface), origin);
+    url.searchParams.set("runtimeId", "react_" + crypto.randomUUID());
+    url.searchParams.set("hostOrigin", window.location.origin);
+    url.searchParams.set("auditCorrelationId", auditCorrelationId);
+
+    const frame = document.createElement("iframe");
+    frame.src = url.toString();
+    frame.sandbox.value = "allow-forms allow-scripts allow-same-origin";
+    frame.referrerPolicy = "origin";
+    frame.loading = "eager";
+    frame.allow = "";
+    frame.title = "AI Data Platform embedded module";
+    frame.style.border = "0";
+    frame.style.width = "100%";
+    frame.style.minHeight = "40rem";
+    target.replaceChildren(frame);
 
     return () => target.replaceChildren();
   }, [surface, auditCorrelationId]);
@@ -327,8 +356,6 @@ function nextFiles(input: {
 
 import { useEffect, useRef } from "react";
 
-const AI_DATA_MODULE_TAG = ${json(EMBEDDED_MODULE_ELEMENT_TAG)};
-
 export function AiDataModule({
   surface = ${json(input.surface)},
   auditCorrelationId
@@ -343,11 +370,23 @@ export function AiDataModule({
     const moduleOrigin = process.env.NEXT_PUBLIC_AI_DATA_MODULE_ORIGIN;
     if (!target || !moduleOrigin) return;
 
-    const element = document.createElement(AI_DATA_MODULE_TAG);
-    element.setAttribute("module-origin", moduleOrigin);
-    element.setAttribute("surface", surface);
-    element.setAttribute("audit-correlation-id", auditCorrelationId);
-    target.replaceChildren(element);
+    const origin = new URL(moduleOrigin).origin;
+    const url = new URL("/module-embed/" + encodeURIComponent(surface), origin);
+    url.searchParams.set("runtimeId", "next_" + crypto.randomUUID());
+    url.searchParams.set("hostOrigin", window.location.origin);
+    url.searchParams.set("auditCorrelationId", auditCorrelationId);
+
+    const frame = document.createElement("iframe");
+    frame.src = url.toString();
+    frame.sandbox.value = "allow-forms allow-scripts allow-same-origin";
+    frame.referrerPolicy = "origin";
+    frame.loading = "eager";
+    frame.allow = "";
+    frame.title = "AI Data Platform embedded module";
+    frame.style.border = "0";
+    frame.style.width = "100%";
+    frame.style.minHeight = "40rem";
+    target.replaceChildren(frame);
 
     return () => target.replaceChildren();
   }, [surface, auditCorrelationId]);
