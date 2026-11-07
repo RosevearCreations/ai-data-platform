@@ -257,7 +257,8 @@ async function main() {
     "window.parent.postMessage(message, hostOrigin)",
     "validateEmbeddedHostMessage",
     "runtime.reload",
-    "surface.navigate"
+    "encodeURIComponent(message.surfaceId)",
+    "router.replace"
   ]) {
     assert.ok(bridgeSource.includes(token), "Build 308 bridge missing " + token);
   }
