@@ -244,7 +244,7 @@ async function main() {
 
   for (const token of [
     "registerAiDataPlatformModuleElement",
-    EMBEDDED_MODULE_ELEMENT_TAG,
+    "EMBEDDED_MODULE_ELEMENT_TAG",
     "event.source !== this.frame.contentWindow",
     "postMessage(",
     "descriptor.moduleOrigin",
