@@ -65,6 +65,8 @@ export const MODULE_FEATURE_FLAGS = [
   "headless-module-sdk-v1",
   "embedded-runtime-shell-v1",
   "secure-postmessage-boundary",
+  "host-adapter-pack-v1",
+  "credential-free-scaffold-generator",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -183,6 +185,8 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     sdkRequiresIndependentAuthorization: true,
     hostAdapterGrantsPlatformAuthority: false,
     embeddedMountGrantsPlatformAuthority: false,
+    adapterPresenceGrantsAuthorization: false,
+    scaffoldEmbedsCredentials: false,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
