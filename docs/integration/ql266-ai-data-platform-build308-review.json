@@ -1,0 +1,32 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build308-review.v1",
+  "application": "AI Data Platform",
+  "build": 308,
+  "embeddedRuntime": {
+    "runtimeSchema": "rosevear.ai-data-platform.embedded-module-runtime.v1",
+    "runtimeVersion": "1.0.0",
+    "customElementTag": "rosevear-ai-data-module",
+    "customElementMounting": true,
+    "iframeFallback": true,
+    "isolatedRuntimeLifecycle": true,
+    "supportedSurfaceRouting": true,
+    "strictHostToModuleMessaging": true,
+    "strictModuleToHostMessaging": true,
+    "exactOriginRequired": true,
+    "wildcardOriginAllowed": false,
+    "frameAncestorsDefaultSelfOnly": true,
+    "externalOriginsRequireExplicitServerConfiguration": true,
+    "rawHostSecretsAccepted": false,
+    "mountGrantsPlatformAuthority": false
+  },
+  "evidence": {
+    "syntheticRuntimeCertification": true,
+    "liveExternalHostMountVerified": false,
+    "livePeerConnectionVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerWriteVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
