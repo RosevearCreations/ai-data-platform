@@ -141,8 +141,9 @@ async function main() {
     expected
   });
 
-  assert.equal(accepted.status, "accepted");
-  assert.ok(accepted.context);
+  if (accepted.status !== "accepted") {
+    throw new Error("Expected a valid signed host session to be accepted.");
+  }
   assert.equal(accepted.context.signatureValidated, true);
   assert.equal(accepted.context.subjectMapped, true);
   assert.equal(accepted.context.moduleSubjectId, "module_subject_001");
@@ -327,7 +328,9 @@ async function main() {
     }),
     expected
   });
-  assert.equal(expired.status, "reauthentication_required");
+  if (expired.status !== "reauthentication_required") {
+    throw new Error("Expected expired session to require reauthentication.");
+  }
   assert.equal(expired.context, null);
   assert.equal(expired.reauthentication.reason, "session_expired");
   assert.equal(expired.reauthentication.carriesCredential, false);
@@ -348,7 +351,9 @@ async function main() {
     }),
     expected
   });
-  assert.equal(future.status, "reauthentication_required");
+  if (future.status !== "reauthentication_required") {
+    throw new Error("Expected future session to require reauthentication.");
+  }
   assert.equal(future.reauthentication.reason, "session_not_yet_valid");
 
   const lifetimeFixture = bridgeFixture();
