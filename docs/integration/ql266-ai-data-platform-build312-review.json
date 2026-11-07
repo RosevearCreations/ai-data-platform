@@ -1,0 +1,36 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build312-review.v1",
+  "application": "AI Data Platform",
+  "build": 312,
+  "capabilityNegotiation": {
+    "version": "1.0.0",
+    "capabilityDiscovery": true,
+    "classificationSupport": [
+      "read",
+      "write",
+      "action"
+    ],
+    "liveRegisteredCapabilitiesReadOnly": true,
+    "requestedVsGrantedComparison": true,
+    "leastPrivilegeProjection": true,
+    "ownerControlledGrantsRequired": true,
+    "exactScopeRequired": true,
+    "expiryEnforced": true,
+    "reviewDateEnforced": true,
+    "ambiguityFailsClosed": true,
+    "deniedCapabilityExplanation": true,
+    "discoveryGrantsAuthorization": false,
+    "hostRequestGrantsAuthorization": false,
+    "unrequestedCapabilitiesGranted": false
+  },
+  "evidence": {
+    "syntheticGrantLifecycleCertification": true,
+    "headlessAuthorizerIntegrationCertified": true,
+    "liveOwnerGrantRecordsVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerConnectionVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
