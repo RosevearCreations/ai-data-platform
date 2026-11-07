@@ -203,7 +203,7 @@ async function main() {
 
   for (const token of [
     "Run certification suite",
-    "six applications · thirty evidence checks",
+    "Six applications · thirty evidence checks",
     "BLOCKED / not proven",
     "Authentication",
     "Approved exchange",
