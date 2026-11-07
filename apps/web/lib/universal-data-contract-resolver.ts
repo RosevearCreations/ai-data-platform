@@ -76,6 +76,7 @@ export type RequiredFieldDiagnostic = {
 export type DataContractResolutionInput = {
   descriptor: HostSchemaDescriptor;
   contractId: string;
+  consumerApplicationId: string;
   mappingEntries?: readonly FieldMappingEntry[];
   previous?: {
     canonicalFingerprint: string;
@@ -345,7 +346,7 @@ export function resolveUniversalDataContract(
   const compatibility = evaluateCrossAppDataContractCompatibility({
     contractId: contract.contractId,
     producerApplicationId: input.descriptor.hostApplicationId,
-    consumerApplicationId: "ai-data-platform",
+    consumerApplicationId: input.consumerApplicationId,
     producerVersion: contract.version,
     consumerVersion: contract.version,
     schemaId: contract.schemaId,
