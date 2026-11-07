@@ -1,0 +1,16 @@
+{
+  "schema": "ai-data-platform.roadmap-authorization.v1",
+  "authorized_after_build": 305,
+  "authorized_batch": {
+    "first_build": 306,
+    "last_build": 330,
+    "count": 25,
+    "document": "docs/NEXT_BUILDS_306_330.md"
+  },
+  "goal": "Make the AI Data Platform a reusable autonomous integration module that can plug into supported host applications through a universal governed contract.",
+  "owner_authorized": true,
+  "automatic_trust_authorization": false,
+  "automatic_connection_authorization": false,
+  "ql266_resumed": false,
+  "renewal_checkpoint": 330
+}
