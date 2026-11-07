@@ -102,6 +102,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Integration Health",
         description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",
         helpTopic: "connectors-overview"
+      },
+      {
+        href: "/autonomous-operations",
+        label: "Autonomous Operations",
+        description: "Control bounded monitoring, safe health recovery, kill-switch policy and Production Learning VI roadmap renewal.",
+        helpTopic: "learning-overview"
       }
     ]
   },
@@ -463,7 +469,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/production-learning",
         label: "Production Learning",
-        description: "Review measured production outcomes, Production Learning V evidence gaps and next-batch renewal candidates.",
+        description: "Review measured production outcomes, Production Learning VI evidence gaps and owner-authorized roadmap renewal candidates.",
         helpTopic: "learning-overview"
       },
       {
