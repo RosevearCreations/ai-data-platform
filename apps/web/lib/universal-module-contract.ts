@@ -70,6 +70,9 @@ export const MODULE_FEATURE_FLAGS = [
   "signed-host-session-assertions-v1",
   "authenticated-user-context-bridge-v1",
   "host-reauthentication-handoff-v1",
+  "tenant-workspace-resolution-v1",
+  "explicit-tenant-mapping-v1",
+  "rls-isolation-verification-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -195,6 +198,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     hostSessionGrantsPlatformAuthority: false,
     rawHostCredentialsAccepted: false,
     tenantAccessInferredFromHostSession: false,
+    exactTenantWorkspaceMappingRequired: true,
+    implicitCrossTenantFallbackAllowed: false,
+    ambiguousTenantMappingAccepted: false,
+    tenantResolutionGrantsPlatformAuthority: false,
+    rlsVerificationRequiredForTenantResolution: true,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
