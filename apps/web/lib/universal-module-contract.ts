@@ -67,6 +67,9 @@ export const MODULE_FEATURE_FLAGS = [
   "secure-postmessage-boundary",
   "host-adapter-pack-v1",
   "credential-free-scaffold-generator",
+  "signed-host-session-assertions-v1",
+  "authenticated-user-context-bridge-v1",
+  "host-reauthentication-handoff-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -187,6 +190,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     embeddedMountGrantsPlatformAuthority: false,
     adapterPresenceGrantsAuthorization: false,
     scaffoldEmbedsCredentials: false,
+    hostSessionSignatureRequired: true,
+    hostSessionReplayGuardRequired: true,
+    hostSessionGrantsPlatformAuthority: false,
+    rawHostCredentialsAccepted: false,
+    tenantAccessInferredFromHostSession: false,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
