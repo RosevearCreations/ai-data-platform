@@ -240,6 +240,35 @@ function hostContextSource(input: {
 `;
 }
 
+function hostContextJavaScriptSource(input: {
+  hostApplicationId: string;
+  environment: HostEnvironment;
+  capabilities: ModuleHeadlessCapability[];
+}) {
+  return `export function createAiDataHostContext(input) {
+  return {
+    hostContractVersion: 1,
+    hostApplication: {
+      id: ${json(input.hostApplicationId)},
+      environment: ${json(input.environment)},
+      instanceId: input.hostInstanceId
+    },
+    subject: {
+      id: input.subjectId
+    },
+    tenancy: {
+      tenantId: input.tenantId,
+      workspaceId: input.workspaceId
+    },
+    requestedCapabilities: ${json(input.capabilities)},
+    auditCorrelationId: input.auditCorrelationId
+  };
+}
+
+// This object is context input only. It is not an authorization grant.
+`;
+}
+
 function browserElementHelperSource(moduleOriginExpression: string) {
   return `export function mountAiDataModule(input) {
   if (!input?.target) throw new Error("A mount target is required.");
@@ -495,7 +524,7 @@ mountAiDataModule({
     },
     {
       path: "host-context.js",
-      content: hostContextSource(input)
+      content: hostContextJavaScriptSource(input)
     }
   ];
 }
