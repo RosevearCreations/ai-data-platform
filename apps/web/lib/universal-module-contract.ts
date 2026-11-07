@@ -62,6 +62,7 @@ export const MODULE_FEATURE_FLAGS = [
   "runtime-identity-v1",
   "fail-closed-host-validation",
   "headless-read-capabilities",
+  "headless-module-sdk-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -177,6 +178,8 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     discoveryActivatesConnection: false,
     discoveryGrantsCapabilities: false,
     hostRequestedCapabilityIsAuthorization: false,
+    sdkRequiresIndependentAuthorization: true,
+    hostAdapterGrantsPlatformAuthority: false,
     rawSecretsAcceptedInHostContext: false,
     peerWritesEnabledByDiscovery: false,
     ql266ResumedByDiscovery: false
