@@ -373,7 +373,7 @@ async function main() {
   ]);
 
   for (const token of [
-    "semantic",
+    "DESIGN_TOKEN_KEYS",
     "securityStatesStyleable: false",
     "approvalStatesStyleable: false",
     "stylingGrantsAuthorization: false",
