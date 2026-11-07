@@ -538,48 +538,41 @@ export async function runIntegrationCertification(userId: string) {
   const runId = randomUUID();
 
   await withUserDatabase(userId, async client => {
-    await client.query("begin");
-    try {
+    await client.query(
+      `insert into app.integration_certification_runs (
+        run_id,suite_version,applications_expected,checks_expected,
+        evidence_window_days,passed_count,failed_count,blocked_count,
+        overall_outcome,generated_by
+      ) values ($1,'304.1',6,30,$2,$3,$4,$5,$6,$7)`,
+      [
+        runId,
+        EVIDENCE_WINDOW_DAYS,
+        result.summary.passed,
+        result.summary.failed,
+        result.summary.blocked,
+        result.summary.overallOutcome,
+        userId
+      ]
+    );
+
+    for (const item of result.assertions) {
       await client.query(
-        `insert into app.integration_certification_runs (
-          run_id,suite_version,applications_expected,checks_expected,
-          evidence_window_days,passed_count,failed_count,blocked_count,
-          overall_outcome,generated_by
-        ) values ($1,'304.1',6,30,$2,$3,$4,$5,$6,$7)`,
+        `insert into app.integration_certification_assertions (
+          assertion_id,run_id,application_id,dimension,outcome,
+          evidence_code,evidence_refs,detail,generated_by
+        ) values ($1,$2,$3,$4,$5,$6,$7::jsonb,$8,$9)`,
         [
+          randomUUID(),
           runId,
-          EVIDENCE_WINDOW_DAYS,
-          result.summary.passed,
-          result.summary.failed,
-          result.summary.blocked,
-          result.summary.overallOutcome,
+          item.applicationId,
+          item.dimension,
+          item.outcome,
+          item.evidenceCode,
+          JSON.stringify(item.evidenceRefs),
+          item.detail,
           userId
         ]
       );
-
-      for (const item of result.assertions) {
-        await client.query(
-          `insert into app.integration_certification_assertions (
-            assertion_id,run_id,application_id,dimension,outcome,
-            evidence_code,evidence_refs,detail,generated_by
-          ) values ($1,$2,$3,$4,$5,$6,$7::jsonb,$8,$9)`,
-          [
-            randomUUID(),
-            runId,
-            item.applicationId,
-            item.dimension,
-            item.outcome,
-            item.evidenceCode,
-            JSON.stringify(item.evidenceRefs),
-            item.detail,
-            userId
-          ]
-        );
-      }
-      await client.query("commit");
-    } catch (error) {
-      await client.query("rollback");
-      throw error;
     }
   });
 
