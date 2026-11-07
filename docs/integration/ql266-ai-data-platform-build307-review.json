@@ -1,0 +1,29 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build307-review.v1",
+  "application": "AI Data Platform",
+  "build": 307,
+  "moduleFoundation": {
+    "sdkSchema": "rosevear.ai-data-platform.headless-module-sdk.v1",
+    "sdkVersion": "1.0.0",
+    "frameworkNeutral": true,
+    "typedHostAdapter": true,
+    "contextProvider": true,
+    "independentCapabilityAuthorizer": true,
+    "typedInvocationEnvelope": true,
+    "standardizedErrorsAndRetryHints": true,
+    "requestCorrelation": true,
+    "auditMetadata": true,
+    "deterministicCertificationAdapter": true,
+    "hostRequestedCapabilityIsAuthorization": false,
+    "peerWritesAuthorized": false
+  },
+  "evidence": {
+    "syntheticSdkCertification": true,
+    "livePeerConnectionVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerWriteVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
