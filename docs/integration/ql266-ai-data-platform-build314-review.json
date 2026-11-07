@@ -1,0 +1,33 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build314-review.v1",
+  "application": "AI Data Platform",
+  "build": 314,
+  "presentationBridge": {
+    "version": "1.0.0",
+    "themePreferenceBridge": true,
+    "semanticDesignTokenImport": true,
+    "rawCssAccepted": false,
+    "arbitrarySelectorsAccepted": false,
+    "densityAdaptation": true,
+    "typographyAdaptation": true,
+    "reducedMotionSupported": true,
+    "forcedColorsSupported": true,
+    "localeCanonicalization": true,
+    "ianaTimeZoneValidation": true,
+    "keyboardFocusBoundaryChecks": true,
+    "accessibleDialogContract": true,
+    "securityStatesStyleable": false,
+    "approvalStatesStyleable": false,
+    "stylingGrantsAuthorization": false
+  },
+  "evidence": {
+    "syntheticPresentationCertification": true,
+    "liveExternalHostThemeVerified": false,
+    "liveEmbeddedKeyboardAuditVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerConnectionVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
