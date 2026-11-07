@@ -604,3 +604,12 @@ Migration `0104_cross_app_workflow_automation.sql` adds rule, review, action-int
 Build 303 composes existing Build 286/287/288 schema evidence with Build 291 event metadata and Build 302 workflow-rule metadata into a read-only integration suggestion model. Deterministic code creates the allowed candidate set first; optional AI Gateway use may only rank and explain those candidate IDs.
 
 The architecture intentionally introduces no Build 303 persistence or migration. Mapping changes continue through Build 287, and workflow-rule creation/approval continues through Build 302. This keeps suggestion generation separate from configuration mutation and activation authority.
+
+
+## Build 304 — Six-App End-to-End Integration Certification Suite
+
+Build 304 composes the existing Build 282/285/290/291/292/301/302 evidence surfaces into an append-only six-application certification snapshot. Each run contains exactly 30 assertions: authentication, approved exchange, event handling, failure recovery and tenant isolation for each registered peer application.
+
+The suite separates software/mechanism readiness from observed peer evidence. A production deployment may be GREEN while one or more peer certifications remain BLOCKED. This prevents release health from being mistaken for authenticated live connectivity.
+
+Migration 0105 stores only run summaries and bounded assertion evidence IDs. No certification operation activates or mutates the underlying integration.

@@ -723,3 +723,12 @@ Build 303 is advisory and read-only. Candidate generation uses RLS-scoped schema
 Optional AI ranking is an explicit operator action. The server rebuilds the candidate set and sends only bounded candidate metadata to the configured AI Gateway. The structured-output schema restricts candidate IDs to the exact server-generated set, and response sanitization rejects unknown or duplicate IDs. AI cannot add a field path, canonical target, transform, event type, destination application or workflow action outside the deterministic candidate set.
 
 No Build 303 endpoint writes to mapping, workflow, event, credential, connection, trust or authorization tables. The build does not create/approve rules, save mappings, release held actions, activate connections, execute external operations or resume QL-266.
+
+
+## Build 304 six-app integration certification security
+
+Build 304 records an operator-owned, append-only 30-assertion snapshot across the six registered peer applications and five certification dimensions. Missing runtime evidence is BLOCKED and contradictory evidence is FAIL; the suite never promotes absence into a successful certification.
+
+Certification queries reuse existing authorization and RLS boundaries for webhook, event-bus, workflow and recovery evidence. Only bounded evidence IDs, outcome codes and explanatory text are persisted. Event bodies, customer/source values, credential values and raw secrets are excluded.
+
+Certification itself grants no authority. It cannot enable a connector, activate a connection, release a held action or replay route, mutate trust, write to a peer application or resume QL-266.
