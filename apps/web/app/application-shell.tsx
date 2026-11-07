@@ -42,7 +42,8 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
   if (
     pathname.startsWith("/sign-in") ||
     pathname.startsWith("/sign-up") ||
-    pathname.startsWith("/api/")
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/module-embed/")
   ) {
     return children;
   }
