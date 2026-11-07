@@ -732,3 +732,12 @@ Build 304 records an operator-owned, append-only 30-assertion snapshot across th
 Certification queries reuse existing authorization and RLS boundaries for webhook, event-bus, workflow and recovery evidence. Only bounded evidence IDs, outcome codes and explanatory text are persisted. Event bodies, customer/source values, credential values and raw secrets are excluded.
 
 Certification itself grants no authority. It cannot enable a connector, activate a connection, release a held action or replay route, mutate trust, write to a peer application or resume QL-266.
+
+
+## Build 305 autonomous-operations security
+
+Build 305 introduces an owner-scoped policy, explicit kill switch, bounded cycle rate and append-only autonomous evidence. The effective default is disabled with the kill switch engaged. Saving or changing the policy requires an authenticated user that currently holds owner/admin authority in at least one accessible workspace.
+
+Autonomous execution is limited to existing non-consequential operations: Build 304 certification refresh, Build 301 recovery-plan scanning and, only when separately enabled, Build 301 connector-health GET/HEAD recovery. Build 305 does not widen Build 301's retry count, cooldown, expiry, connector-registration, credential-reference or health-endpoint controls.
+
+No Build 305 autonomous path enables a connector, rotates a credential, activates a connection, replays an event, releases a held route/action, changes tenant/trust state, performs a peer write or resumes QL-266. Production Learning VI stores bounded counts, IDs and evidence text only; raw secrets, event bodies, peer payloads and credential values remain excluded.
