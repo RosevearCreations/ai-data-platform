@@ -4,8 +4,7 @@ import {
   buildProductionLearningVI,
   normalizeAutonomousOwnerPolicy,
   type AutonomousOwnerPolicy,
-  type AutonomousOwnerPolicyInput,
-  type ProductionLearningVICandidate
+  type AutonomousOwnerPolicyInput
 } from "./autonomous-operations-core";
 import {
   listIntegrationCertificationForUser,
