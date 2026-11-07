@@ -613,3 +613,12 @@ Build 304 composes the existing Build 282/285/290/291/292/301/302 evidence surfa
 The suite separates software/mechanism readiness from observed peer evidence. A production deployment may be GREEN while one or more peer certifications remain BLOCKED. This prevents release health from being mistaken for authenticated live connectivity.
 
 Migration 0105 stores only run summaries and bounded assertion evidence IDs. No certification operation activates or mutates the underlying integration.
+
+
+## Build 305 — Autonomous Operations V1, Owner Controls & Production Learning VI
+
+Build 305 adds a policy-controlled orchestration layer over existing governed evidence and recovery functions. The orchestration layer does not introduce a broader connector executor: its only automatic external operation delegates to the Build 301 connector-health GET/HEAD boundary.
+
+Each autonomous cycle can refresh Build 304 certification evidence, discover Build 301 recovery plans, execute only owner-enabled safe health recoveries within per-cycle/rate limits, and produce a Production Learning VI snapshot. Consequential recovery paths remain in their existing owner workbenches.
+
+Migration 0106 persists the mutable owner policy plus append-only policy events, cycle/action evidence, Production Learning VI snapshots and unnumbered renewal candidates. Build 305 closes the 281–305 batch without automatically assigning Build 306 or authorizing another numbered batch.

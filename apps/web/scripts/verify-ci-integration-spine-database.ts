@@ -75,7 +75,13 @@ const requiredTables = [
   "workflow_automation_action_intents",
   "workflow_automation_audit",
   "integration_certification_runs",
-  "integration_certification_assertions"
+  "integration_certification_assertions",
+  "autonomous_operation_policies",
+  "autonomous_operation_policy_events",
+  "autonomous_operation_cycles",
+  "autonomous_operation_actions",
+  "production_learning_vi_snapshots",
+  "production_learning_vi_candidates"
 ];
 
 const appendOnlyTables = [
@@ -137,7 +143,12 @@ const appendOnlyTables = [
   "workflow_automation_action_intents",
   "workflow_automation_audit",
   "integration_certification_runs",
-  "integration_certification_assertions"
+  "integration_certification_assertions",
+  "autonomous_operation_policy_events",
+  "autonomous_operation_cycles",
+  "autonomous_operation_actions",
+  "production_learning_vi_snapshots",
+  "production_learning_vi_candidates"
 ];
 
 
@@ -214,7 +225,8 @@ async function main() {
         "0102_shared_scheduling_calendar_exchange.sql",
         "0103_self_healing_connection_recovery.sql",
         "0104_cross_app_workflow_automation.sql",
-        "0105_six_app_integration_certification.sql"
+        "0105_six_app_integration_certification.sql",
+        "0106_autonomous_operations_owner_controls_learning_vi.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -245,6 +257,10 @@ async function main() {
     assert(
       migrationNames.has("0105_six_app_integration_certification.sql"),
       "migration 0105 is not recorded"
+    );
+    assert(
+      migrationNames.has("0106_autonomous_operations_owner_controls_learning_vi.sql"),
+      "migration 0106 is not recorded"
     );
 
     console.log(
