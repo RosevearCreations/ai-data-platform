@@ -73,6 +73,9 @@ export const MODULE_FEATURE_FLAGS = [
   "tenant-workspace-resolution-v1",
   "explicit-tenant-mapping-v1",
   "rls-isolation-verification-v1",
+  "capability-negotiation-v1",
+  "least-privilege-grants-v1",
+  "owner-controlled-capability-grants-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -203,6 +206,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     ambiguousTenantMappingAccepted: false,
     tenantResolutionGrantsPlatformAuthority: false,
     rlsVerificationRequiredForTenantResolution: true,
+    capabilityDiscoveryGrantsAuthorization: false,
+    hostRequestedCapabilityGrantsAuthorization: false,
+    unrequestedCapabilitiesMayBeGranted: false,
+    capabilityGrantExpiryRequired: true,
+    capabilityGrantReviewRequired: true,
+    tenantResolutionGrantsCapabilities: false,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
