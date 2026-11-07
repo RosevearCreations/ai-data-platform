@@ -714,3 +714,12 @@ Build 302 evaluates only durable Build 291 event publications against immutable 
 A match creates one append-only `held / workflow-action-not-authorized` intent per rule/publication pair. The evaluator does not call destination APIs, does not read event bodies or credential values into action configuration, and cannot release event routes, replay dead letters, mutate credentials, activate connections, perform export/write operations, change trust or authorization, send outbound network traffic or resume QL-266.
 
 Rule disable/reject/approve decisions are append-only review records. Replacement rules supersede predecessors only after the replacement itself is approved. Runtime UPDATE/DELETE is revoked on all Build 302 tables.
+
+
+## Build 303 AI-assisted integration suggestion security
+
+Build 303 is advisory and read-only. Candidate generation uses RLS-scoped schema descriptors, field-mapping metadata, event type/count/timestamp metadata and existing workflow-rule metadata. Event bodies, source record values, customer values, credential values and secrets are not read into the suggestion model.
+
+Optional AI ranking is an explicit operator action. The server rebuilds the candidate set and sends only bounded candidate metadata to the configured AI Gateway. The structured-output schema restricts candidate IDs to the exact server-generated set, and response sanitization rejects unknown or duplicate IDs. AI cannot add a field path, canonical target, transform, event type, destination application or workflow action outside the deterministic candidate set.
+
+No Build 303 endpoint writes to mapping, workflow, event, credential, connection, trust or authorization tables. The build does not create/approve rules, save mappings, release held actions, activate connections, execute external operations or resume QL-266.
