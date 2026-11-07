@@ -8,7 +8,6 @@ import {
   type CrossAppFieldType
 } from "./cross-app-data-contract-registry";
 import {
-  FIELD_MAPPING_TRANSFORMS,
   validateFieldMappingEntries,
   type FieldMappingEntry,
   type FieldMappingTransform
