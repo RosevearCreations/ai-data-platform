@@ -296,7 +296,7 @@ export function createEmbeddedMountDescriptor(input: {
   const moduleOrigin = normalizeTrustedOrigin(input.moduleOrigin);
   const surface = resolveEmbeddedSurface(input.surfaceId);
 
-  return Object.freeze({
+  const descriptor: EmbeddedMountDescriptor = {
     schema: EMBEDDED_MODULE_RUNTIME_SCHEMA,
     runtimeVersion: EMBEDDED_MODULE_RUNTIME_VERSION,
     moduleId: AI_DATA_MODULE_ID,
@@ -326,7 +326,9 @@ export function createEmbeddedMountDescriptor(input: {
       mountGrantsAuthorization: false,
       frameAncestorsMustBeServerEnforced: true
     }
-  });
+  };
+
+  return Object.freeze(descriptor);
 }
 
 export function validateEmbeddedHostMessage(input: {
