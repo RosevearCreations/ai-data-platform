@@ -82,6 +82,10 @@ export const MODULE_FEATURE_FLAGS = [
   "host-presentation-bridge-v1",
   "semantic-design-token-bridge-v1",
   "accessible-dialog-boundary-v1",
+  "host-schema-discovery-v1",
+  "universal-data-contract-resolver-v1",
+  "mapping-profile-suggestions-v1",
+  "schema-drift-integration-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -230,6 +234,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     rawHostCssAccepted: false,
     forcedColorsRemainAuthoritative: true,
     reducedMotionRemainsAuthoritative: true,
+    schemaDiscoveryRequiresRawRecords: false,
+    schemaDiscoveryGrantsPlatformAuthority: false,
+    schemaDiscoveryActivatesConnection: false,
+    mappingSuggestionAutoApproved: false,
+    contractCompatibilityAuthorizesExchange: false,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,

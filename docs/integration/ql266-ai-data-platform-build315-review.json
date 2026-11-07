@@ -1,0 +1,34 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build315-review.v1",
+  "application": "AI Data Platform",
+  "build": 315,
+  "schemaDiscovery": {
+    "universalResolver": true,
+    "rawRecordContentsRequired": false,
+    "mappingSuggestionsAutoApproved": false,
+    "driftIntegration": true,
+    "compatibilityAuthorizesExchange": false
+  },
+  "commsAttachment": {
+    "sourceId": "ai-data-platform",
+    "repository": "RosevearCreations/ai-data-platform",
+    "sourceRole": "support_broker",
+    "tenantBoundary": "no_customer_tenant",
+    "manifestPath": "apps/web/public/.well-known/rosevear-integration-manifest.json",
+    "handlerPath": "apps/web/lib/ql364-source-health.mjs",
+    "endpoint": "/api/integration/v1/shell/health",
+    "runtimeAdaptersWired": true,
+    "durableOneUseClaim": true,
+    "ownerApprovalCryptographicVerification": true,
+    "manifestSigned": false,
+    "signedSourceContractVerified": false,
+    "productionSourceSignerProvisioned": false,
+    "existingSignerKeyId": "ql256-ai-data-platform-d16f21ab82c12760",
+    "existingSignerSpkiSha256": "d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6",
+    "existingSignerCustodyState": "SIGNER_EXISTS_CUSTODY_NOT_VERIFIED",
+    "genuinePrivateTestRun": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}

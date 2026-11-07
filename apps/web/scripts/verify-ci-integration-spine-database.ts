@@ -81,7 +81,10 @@ const requiredTables = [
   "autonomous_operation_cycles",
   "autonomous_operation_actions",
   "production_learning_vi_snapshots",
-  "production_learning_vi_candidates"
+  "production_learning_vi_candidates",
+  "rosevear_comms_authority_pins",
+  "rosevear_comms_source_authorizations",
+  "rosevear_comms_operation_claims"
 ];
 
 const appendOnlyTables = [
@@ -148,7 +151,8 @@ const appendOnlyTables = [
   "autonomous_operation_cycles",
   "autonomous_operation_actions",
   "production_learning_vi_snapshots",
-  "production_learning_vi_candidates"
+  "production_learning_vi_candidates",
+  "rosevear_comms_operation_claims"
 ];
 
 
@@ -226,7 +230,8 @@ async function main() {
         "0103_self_healing_connection_recovery.sql",
         "0104_cross_app_workflow_automation.sql",
         "0105_six_app_integration_certification.sql",
-        "0106_autonomous_operations_owner_controls_learning_vi.sql"
+        "0106_autonomous_operations_owner_controls_learning_vi.sql",
+        "0107_ql365d_ai_data_platform_source_attachment.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -261,6 +266,45 @@ async function main() {
     assert(
       migrationNames.has("0106_autonomous_operations_owner_controls_learning_vi.sql"),
       "migration 0106 is not recorded"
+    );
+    assert(
+      migrationNames.has("0107_ql365d_ai_data_platform_source_attachment.sql"),
+      "migration 0107 is not recorded"
+    );
+
+    const commsGrants = await pool.query<{
+      table_name: string;
+      privilege_type: string;
+    }>(
+      `select table_name, privilege_type
+       from information_schema.role_table_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name = any($1::text[])`,
+      [[
+        "rosevear_comms_authority_pins",
+        "rosevear_comms_source_authorizations",
+        "rosevear_comms_operation_claims"
+      ]]
+    );
+    const grantSet = new Set(
+      commsGrants.rows.map((row) => row.table_name + ":" + row.privilege_type)
+    );
+    assert(
+      grantSet.has("rosevear_comms_authority_pins:SELECT") &&
+      grantSet.has("rosevear_comms_source_authorizations:SELECT") &&
+      grantSet.has("rosevear_comms_operation_claims:SELECT") &&
+      grantSet.has("rosevear_comms_operation_claims:INSERT"),
+      "QL-365D runtime grants are incomplete"
+    );
+    assert(
+      ![...grantSet].some((grant) =>
+        /rosevear_comms_(authority_pins|source_authorizations):(INSERT|UPDATE|DELETE)$/.test(grant)
+      ) &&
+      ![...grantSet].some((grant) =>
+        /rosevear_comms_operation_claims:(UPDATE|DELETE)$/.test(grant)
+      ),
+      "QL-365D runtime grants exceed read-public-evidence plus append-only claim"
     );
 
     console.log(
