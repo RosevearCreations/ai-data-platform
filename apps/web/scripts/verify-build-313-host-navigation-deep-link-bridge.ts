@@ -402,7 +402,7 @@ async function main() {
 
   for (const token of [
     "Build 313",
-    "breadcrumbs",
+    "Breadcrumbs",
     "back stack",
     "Command palette",
     "Safe return-to-host",
