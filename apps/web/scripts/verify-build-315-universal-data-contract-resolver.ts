@@ -282,7 +282,7 @@ async function main() {
     "SIGNER_EXISTS_CUSTODY_VERIFIED",
     "on conflict do nothing",
     "originalIssuerVerified: true",
-    "customer"
+    "SOURCE_ID"
   ]) {
     assert.ok(
       sourceRuntime.includes(token),
