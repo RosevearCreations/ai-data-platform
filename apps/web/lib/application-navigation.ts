@@ -332,6 +332,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/integration-suggestions",
+        label: "Integration Suggestions",
+        description: "Review bounded AI-assisted mapping and workflow suggestions without automatic activation.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/event-recovery",
         label: "Event Recovery Console",
         description: "Review dead-letter failures, bounded replay requests and durable held recovery routes.",
