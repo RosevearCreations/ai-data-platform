@@ -1,0 +1,35 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build310-review.v1",
+  "application": "AI Data Platform",
+  "build": 310,
+  "authenticationBridge": {
+    "version": "1.0.0",
+    "signedHostSessionAssertions": true,
+    "detachedSignatureValidation": true,
+    "algorithms": [
+      "Ed25519",
+      "ES256"
+    ],
+    "subjectMappingRequired": true,
+    "sessionExpiryEnforced": true,
+    "reauthenticationHandoff": true,
+    "identityMismatchRejected": true,
+    "replayGuardRequired": true,
+    "acceptedRejectedAuditEvidence": true,
+    "rawPasswordsAccepted": false,
+    "rawCookiesAccepted": false,
+    "bearerTokensAccepted": false,
+    "privateSigningKeysAcceptedByBrowser": false,
+    "hostSessionGrantsAuthorization": false
+  },
+  "evidence": {
+    "syntheticCryptographicCertification": true,
+    "ephemeralEd25519Verification": true,
+    "liveExternalIssuerEnrolled": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerConnectionVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
