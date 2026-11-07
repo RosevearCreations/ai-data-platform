@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { createHash, generateKeyPairSync } from "node:crypto";
+import { createHash, generateKeyPairSync, verify } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -12,8 +12,13 @@ import {
   UNIVERSAL_DATA_CONTRACT_RESOLVER_VERSION
 } from "../lib/universal-data-contract-resolver";
 import {
+  canonicalRosevearCommsValue,
   inspectQl365dSourceSigner
 } from "../lib/ql365d-comms-source-runtime";
+import {
+  buildAndSignQl365dSourceHealthContract,
+  signQl365dDiscoveryManifest
+} from "../lib/ql365d-source-contract";
 
 const root = path.resolve(process.cwd());
 
@@ -181,6 +186,68 @@ async function main() {
     assert.equal(signerReady.spkiSha256, spki);
   }
 
+  const unsignedManifest = JSON.parse(
+    await source("public/.well-known/rosevear-integration-manifest.json")
+  );
+  const signerEnv = {
+    QL256_SIGNER_PRIVATE_KEY_PEM: privatePem,
+    QL256_SIGNER_PUBLIC_KEY_PEM: publicPem,
+    QL256_SIGNER_SPKI_SHA256: spki,
+    QL256_SIGNER_KEY_ID: "synthetic-build315-source",
+    QL256_SIGNER_STATUS: "SIGNER_EXISTS_CUSTODY_VERIFIED"
+  };
+  const signedManifest = signQl365dDiscoveryManifest(
+    unsignedManifest,
+    signerEnv
+  );
+  assert.equal(signedManifest.signature.state, "SIGNED");
+  assert.equal(
+    signedManifest.signature.key_id,
+    "synthetic-build315-source"
+  );
+  const { signature: manifestEnvelope, ...manifestPayload } = signedManifest;
+  assert.equal(
+    verify(
+      null,
+      Buffer.from(canonicalRosevearCommsValue(manifestPayload)),
+      syntheticSigner.publicKey,
+      Buffer.from(manifestEnvelope.value!, "base64url")
+    ),
+    true
+  );
+
+  const contract = buildAndSignQl365dSourceHealthContract(
+    {
+      sourceCommitSha: "c".repeat(40),
+      manifest: signedManifest,
+      sourceOrigin: "https://ai-data-platform.example.test",
+      issuedAt: "2026-11-07T18:00:00.000Z",
+      expiresAt: "2026-11-07T19:00:00.000Z"
+    },
+    signerEnv
+  );
+  assert.equal(
+    contract.payload.schema,
+    "rosevear.hub.ql363.six-source-health-contract.v1"
+  );
+  assert.equal(contract.payload.sourceId, "ai-data-platform");
+  assert.equal(contract.payload.tenantBoundary, "no_customer_tenant");
+  assert.equal(contract.payload.method, "GET");
+  assert.equal(contract.payload.path, "/api/integration/v1/shell/health");
+  assert.equal(contract.payload.redirects, "DENY");
+  assert.equal(contract.payload.maxResponseBytes, 4096);
+  assert.equal(contract.payload.persistentConnectionAllowed, false);
+  assert.equal(contract.connected, false);
+  assert.equal(
+    verify(
+      null,
+      Buffer.from(canonicalRosevearCommsValue(contract.payload)),
+      syntheticSigner.publicKey,
+      Buffer.from(contract.signature, "base64url")
+    ),
+    true
+  );
+
   const [
     resolverSource,
     apiSource,
@@ -188,6 +255,7 @@ async function main() {
     moduleManifestSource,
     routeSource,
     sourceRuntime,
+    sourceContract,
     migration,
     databaseVerifier,
     docs,
@@ -202,6 +270,7 @@ async function main() {
     source("lib/universal-module-contract.ts"),
     source("app/api/integration/v1/shell/health/route.ts"),
     source("lib/ql365d-comms-source-runtime.ts"),
+    source("lib/ql365d-source-contract.ts"),
     source("../../db/migrations/0107_ql365d_ai_data_platform_source_attachment.sql"),
     source("scripts/verify-ci-integration-spine-database.ts"),
     source("../../docs/BUILD_315_UNIVERSAL_DATA_CONTRACT_RESOLVER.md"),
@@ -293,6 +362,21 @@ async function main() {
     !sourceRuntime.includes("SIGNER_EXISTS_CUSTODY_NOT_VERIFIED\" ||"),
     "unverified signer custody must not be treated as usable"
   );
+
+  for (const token of [
+    "signQl365dDiscoveryManifest",
+    "buildAndSignQl365dSourceHealthContract",
+    "rosevear.hub.ql363.six-source-health-contract.v1",
+    "HEALTH_METADATA_ONLY_NO_CUSTOMERS_OR_DEVICES",
+    "maxResponseBytes: 4096",
+    "persistentConnectionAllowed: false",
+    "SIGNER_EXISTS_CUSTODY_VERIFIED"
+  ]) {
+    assert.ok(
+      sourceContract.includes(token),
+      "QL-365D source contract builder missing " + token
+    );
+  }
 
   for (const token of [
     "rosevear_comms_authority_pins",
