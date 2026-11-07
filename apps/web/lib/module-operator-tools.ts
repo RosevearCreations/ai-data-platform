@@ -169,6 +169,20 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         itemHrefs: ["/app-connections", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/customer-identities", "/catalogue-exchange", "/media-asset-exchange", "/remote-execution"]
       },
       {
+        id: "coordinate-certify",
+        label: "Coordinate & certify",
+        description: "Review recovery, workflow automation, integration suggestions, shared coordination exchanges and certification evidence.",
+        itemHrefs: [
+          "/integration-recovery",
+          "/workflow-automation",
+          "/integration-suggestions",
+          "/integration-certification",
+          "/notification-consent",
+          "/shared-task-exchange",
+          "/shared-scheduling"
+        ]
+      },
+      {
         id: "deliver",
         label: "Prepare & deliver",
         description: "Review integration readiness, publication mapping and controlled live delivery.",
