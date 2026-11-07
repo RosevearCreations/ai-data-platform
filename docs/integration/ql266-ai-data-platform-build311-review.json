@@ -1,0 +1,30 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build311-review.v1",
+  "application": "AI Data Platform",
+  "build": 311,
+  "tenantWorkspaceResolution": {
+    "version": "1.0.0",
+    "exactMappingRequired": true,
+    "environmentAware": true,
+    "organizationContextSupported": true,
+    "businessContextSupported": true,
+    "implicitCrossTenantFallback": false,
+    "ambiguityBlocked": true,
+    "disabledMappingAccepted": false,
+    "deletedMappingAccepted": false,
+    "rlsVerificationRequired": true,
+    "sameTenantForeignWorkspaceDeniedRequired": true,
+    "crossTenantDeniedRequired": true,
+    "resolutionGrantsAuthorization": false
+  },
+  "evidence": {
+    "syntheticIsolationCertification": true,
+    "liveDatabaseRlsProbeVerified": false,
+    "liveExternalTenantMappingVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerConnectionVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
