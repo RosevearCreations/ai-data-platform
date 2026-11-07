@@ -597,3 +597,10 @@ Consequential recovery remains in existing modules: event replay stays in Event 
 Build 302 adds an event-to-action orchestration layer between the existing Build 291 event bus and governed destination workbenches. Rules are immutable definitions with append-only review decisions. Approved rules match only future durable publications and create idempotent held action intents; destination modules keep all existing role checks, confirmations, evidence requirements and execution gates.
 
 Migration `0104_cross_app_workflow_automation.sql` adds rule, review, action-intent and audit tables. Event-bus publication invokes the Build 302 evaluator on the authenticated server path, while an operator recovery action can re-evaluate recent post-approval publications. No destination mutation is performed by the automation engine.
+
+
+## Build 303 — AI-Assisted Integration Mapping & Workflow Suggestions
+
+Build 303 composes existing Build 286/287/288 schema evidence with Build 291 event metadata and Build 302 workflow-rule metadata into a read-only integration suggestion model. Deterministic code creates the allowed candidate set first; optional AI Gateway use may only rank and explain those candidate IDs.
+
+The architecture intentionally introduces no Build 303 persistence or migration. Mapping changes continue through Build 287, and workflow-rule creation/approval continues through Build 302. This keeps suggestion generation separate from configuration mutation and activation authority.
