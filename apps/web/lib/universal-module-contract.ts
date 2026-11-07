@@ -79,6 +79,9 @@ export const MODULE_FEATURE_FLAGS = [
   "host-navigation-bridge-v1",
   "governed-module-deep-links-v1",
   "command-palette-bridge-v1",
+  "host-presentation-bridge-v1",
+  "semantic-design-token-bridge-v1",
+  "accessible-dialog-boundary-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -221,6 +224,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     absoluteHostReturnUrlsAccepted: false,
     rawSecretsAcceptedInNavigationContext: false,
     navigationFallbackRequiresExplicitOptIn: true,
+    hostStylingGrantsPlatformAuthority: false,
+    hostStylingMayHideSecurityStates: false,
+    hostStylingMayHideApprovalStates: false,
+    rawHostCssAccepted: false,
+    forcedColorsRemainAuthoritative: true,
+    reducedMotionRemainsAuthoritative: true,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
