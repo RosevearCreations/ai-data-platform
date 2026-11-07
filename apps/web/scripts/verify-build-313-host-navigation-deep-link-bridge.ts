@@ -362,7 +362,7 @@ async function main() {
     "explicit_compatibility_fallback",
     "normalizeReturnPath",
     "normalizeLaunchContext",
-    "rawHostSecretsAcceptedInLaunchContext: false",
+    "rawSecretsAcceptedInLaunchContext: false",
     "absoluteReturnUrlsAccepted: false",
     "launchGrantsAuthorization: false"
   ]) {
