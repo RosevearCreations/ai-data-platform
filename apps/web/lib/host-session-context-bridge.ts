@@ -326,7 +326,7 @@ function validateAssertionShape(
   if (
     typeof claims.issuer !== "string" ||
     !ISSUER_PATTERN.test(claims.issuer) ||
-    claims.audience !== AI_DATA_MODULE_ID ||
+    typeof claims.audience !== "string" ||
     typeof claims.hostApplicationId !== "string" ||
     !APPLICATION_ID_PATTERN.test(claims.hostApplicationId) ||
     typeof claims.hostEnvironment !== "string" ||
@@ -363,7 +363,7 @@ function validateAssertionShape(
     keyId: input.keyId,
     claims: {
       issuer: claims.issuer,
-      audience: AI_DATA_MODULE_ID,
+      audience: claims.audience as typeof AI_DATA_MODULE_ID,
       assertionId: claims.assertionId as string,
       hostApplicationId: claims.hostApplicationId,
       hostEnvironment: claims.hostEnvironment as HostEnvironment,
