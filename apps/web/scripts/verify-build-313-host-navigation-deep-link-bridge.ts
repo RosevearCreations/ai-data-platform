@@ -88,7 +88,7 @@ async function main() {
   assert.equal(descriptor.security.navigationGrantsAuthorization, false);
   assert.equal(descriptor.security.deepLinksGrantAuthorization, false);
   assert.equal(descriptor.security.commandPaletteGrantsAuthorization, false);
-  assert.equal(descriptor.security.rawHostSecretsAcceptedInLaunchContext, false);
+  assert.equal(descriptor.security.rawSecretsAcceptedInLaunchContext, false);
   assert.equal(descriptor.security.absoluteReturnUrlsAccepted, false);
 
   const items = bridge.listNavigationItems();
