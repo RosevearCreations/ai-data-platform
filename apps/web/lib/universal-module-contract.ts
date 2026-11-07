@@ -76,6 +76,9 @@ export const MODULE_FEATURE_FLAGS = [
   "capability-negotiation-v1",
   "least-privilege-grants-v1",
   "owner-controlled-capability-grants-v1",
+  "host-navigation-bridge-v1",
+  "governed-module-deep-links-v1",
+  "command-palette-bridge-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -212,6 +215,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     capabilityGrantExpiryRequired: true,
     capabilityGrantReviewRequired: true,
     tenantResolutionGrantsCapabilities: false,
+    navigationRegistrationGrantsPlatformAuthority: false,
+    deepLinkGrantsPlatformAuthority: false,
+    commandPaletteGrantsPlatformAuthority: false,
+    absoluteHostReturnUrlsAccepted: false,
+    rawSecretsAcceptedInNavigationContext: false,
+    navigationFallbackRequiresExplicitOptIn: true,
     embeddedRuntimeInheritsRawHostSecrets: false,
     wildcardEmbedOriginsAllowed: false,
     frameAncestorsDefaultSelfOnly: true,
