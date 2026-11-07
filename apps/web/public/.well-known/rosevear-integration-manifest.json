@@ -5,7 +5,7 @@
   "source_app_id": "ai-data-platform",
   "source_role": "support_broker",
   "repository": "RosevearCreations/ai-data-platform",
-  "source_revision": "ql333-discovery-v1",
+  "source_revision": "3c2e581a5b28cc5bc62e800ee1cf4b25744e5fb5",
   "issuer": "ai-data-platform",
   "audience": "rosevear-master",
   "tenant_boundary": "no_customer_tenant",
