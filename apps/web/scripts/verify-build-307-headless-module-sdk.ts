@@ -191,11 +191,19 @@ async function main() {
   );
 
   await sdk.teardown();
-  assert.equal(sdk.state.status, "idle");
+  const stateAfterTeardown = sdk.state as {
+    status: "idle" | "ready";
+    runtimeIdentity: unknown;
+  };
+  assert.equal(stateAfterTeardown.status, "idle");
   assert.equal(adapter.lifecycleEvents.at(-1)?.type, "teardown");
 
   await sdk.teardown();
-  assert.equal(sdk.state.status, "idle");
+  const stateAfterIdempotentTeardown = sdk.state as {
+    status: "idle" | "ready";
+    runtimeIdentity: unknown;
+  };
+  assert.equal(stateAfterIdempotentTeardown.status, "idle");
 
   const badAdapter = createDeterministicTestAdapter({
     context: {
