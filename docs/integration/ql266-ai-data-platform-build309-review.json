@@ -1,0 +1,33 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build309-review.v1",
+  "application": "AI Data Platform",
+  "build": 309,
+  "hostAdapterPack": {
+    "version": "1.0.0",
+    "adapters": [
+      "react",
+      "nextjs",
+      "vite",
+      "vanilla",
+      "electron"
+    ],
+    "credentialFreeScaffoldGenerator": true,
+    "customElementCompatible": true,
+    "iframeFallback": true,
+    "runtimeConfiguredModuleOrigin": true,
+    "electronContextIsolation": true,
+    "credentialsGenerated": false,
+    "credentialsEmbeddedInSource": false,
+    "adapterPresenceGrantsAuthorization": false,
+    "scaffoldGenerationActivatesConnection": false
+  },
+  "evidence": {
+    "syntheticScaffoldCertification": true,
+    "liveExternalHostEnrollmentVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerConnectionVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
