@@ -63,6 +63,8 @@ export const MODULE_FEATURE_FLAGS = [
   "fail-closed-host-validation",
   "headless-read-capabilities",
   "headless-module-sdk-v1",
+  "embedded-runtime-shell-v1",
+  "secure-postmessage-boundary",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -180,6 +182,10 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     hostRequestedCapabilityIsAuthorization: false,
     sdkRequiresIndependentAuthorization: true,
     hostAdapterGrantsPlatformAuthority: false,
+    embeddedMountGrantsPlatformAuthority: false,
+    embeddedRuntimeInheritsRawHostSecrets: false,
+    wildcardEmbedOriginsAllowed: false,
+    frameAncestorsDefaultSelfOnly: true,
     rawSecretsAcceptedInHostContext: false,
     peerWritesEnabledByDiscovery: false,
     ql266ResumedByDiscovery: false
