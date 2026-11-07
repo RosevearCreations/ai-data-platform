@@ -1,0 +1,27 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build306-review.v1",
+  "application": "AI Data Platform",
+  "build": 306,
+  "moduleFoundation": {
+    "manifestVersion": 1,
+    "moduleId": "rosevear.ai-data-platform",
+    "moduleVersion": "1.0.0",
+    "protocolVersion": 1,
+    "hostContractVersion": 1,
+    "manifestRoute": "/api/module-manifest",
+    "runtimeIdentitySchema": "rosevear.ai-data-platform.module-runtime-identity.v1",
+    "discoveryActivatesConnection": false,
+    "discoveryGrantsCapabilities": false,
+    "rawSecretsAccepted": false,
+    "peerWritesAuthorized": false
+  },
+  "evidence": {
+    "syntheticContractVerification": true,
+    "livePeerConnectionVerified": false,
+    "livePeerAuthorizationVerified": false,
+    "livePeerWriteVerified": false
+  },
+  "ql266Resumed": false,
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
