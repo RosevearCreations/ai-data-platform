@@ -136,9 +136,9 @@ export type HeadlessModuleInvocationEnvelope<TPayload = unknown> = {
 };
 
 export type HeadlessModuleServiceInvoker = {
-  invoke<TResult = unknown, TPayload = unknown>(
-    envelope: HeadlessModuleInvocationEnvelope<TPayload>
-  ): MaybePromise<TResult>;
+  invoke(
+    envelope: HeadlessModuleInvocationEnvelope
+  ): MaybePromise<unknown>;
 };
 
 export type HeadlessModuleInvocationResult<TResult = unknown> = {
@@ -474,9 +474,9 @@ export class HeadlessModuleSdk {
     };
 
     try {
-      const result = await this.options.invoker.invoke<TResult, TPayload>(
-        envelope
-      );
+      const result = (await this.options.invoker.invoke(
+        envelope as HeadlessModuleInvocationEnvelope
+      )) as TResult;
 
       const completedAt = this.now();
       await this.audit({
