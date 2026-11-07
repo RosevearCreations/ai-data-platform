@@ -500,6 +500,17 @@ export class HostNavigationBridge {
       }
       ids.add(item.id);
 
+      if (
+        !["primary", "secondary", "settings", "contextual"].includes(
+          item.placement
+        )
+      ) {
+        throw new HostNavigationBridgeError(
+          "navigation_item_invalid",
+          "Navigation placement is invalid."
+        );
+      }
+
       const surface = resolveEmbeddedSurface(item.surfaceId);
       const label = normalizeLabel(item.label, "Navigation label");
       const requiredCapabilities = normalizeRequiredCapabilities(
