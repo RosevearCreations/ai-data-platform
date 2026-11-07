@@ -73,7 +73,9 @@ const requiredTables = [
   "workflow_automation_rules",
   "workflow_automation_rule_reviews",
   "workflow_automation_action_intents",
-  "workflow_automation_audit"
+  "workflow_automation_audit",
+  "integration_certification_runs",
+  "integration_certification_assertions"
 ];
 
 const appendOnlyTables = [
@@ -133,7 +135,9 @@ const appendOnlyTables = [
   "workflow_automation_rules",
   "workflow_automation_rule_reviews",
   "workflow_automation_action_intents",
-  "workflow_automation_audit"
+  "workflow_automation_audit",
+  "integration_certification_runs",
+  "integration_certification_assertions"
 ];
 
 
@@ -209,7 +213,8 @@ async function main() {
         "0101_shared_task_work_queue_exchange.sql",
         "0102_shared_scheduling_calendar_exchange.sql",
         "0103_self_healing_connection_recovery.sql",
-        "0104_cross_app_workflow_automation.sql"
+        "0104_cross_app_workflow_automation.sql",
+        "0105_six_app_integration_certification.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -236,6 +241,10 @@ async function main() {
     assert(
       migrationNames.has("0104_cross_app_workflow_automation.sql"),
       "migration 0104 is not recorded"
+    );
+    assert(
+      migrationNames.has("0105_six_app_integration_certification.sql"),
+      "migration 0105 is not recorded"
     );
 
     console.log(
