@@ -67,17 +67,19 @@ export default async function ProductionLearningPage() {
         </div>
       </section>
       <section className="dataQualityPolicyNote">
-        <strong>Build 280 · Production Learning V renewal checkpoint</strong>
+        <strong>Build 305 · Production Learning VI renewal checkpoint</strong>
         <p>
-          This live RLS-scoped review now feeds the Build 280 owner-acceptance reconciliation. Missing evidence
-          remains missing, successful deployment is not treated as operational acceptance, and renewal candidates
-          remain unnumbered until explicitly authorized.
+          This live RLS-scoped review now feeds the Build 305 autonomous-operations renewal checkpoint. Missing
+          evidence remains missing, deployment success is not treated as operational acceptance, and future roadmap
+          candidates remain unnumbered until explicitly authorized by the owner.
         </p>
         <p className="srOnly">
-          Historical checkpoint: Production Learning IV. No speculative Build 273+ queue is created automatically.
+          Historical checkpoints remain available through Build 280 Owner Acceptance. No speculative Build 306+
+          queue is created automatically.
         </p>
         <div className="heroActions">
-          <Link className="secondaryButton" href="/owner-acceptance">Open Build 280 Owner Acceptance</Link>
+          <Link className="secondaryButton" href="/autonomous-operations">Open Build 305 Autonomous Operations</Link>
+          <Link className="secondaryButton" href="/owner-acceptance">Open historical Build 280 Owner Acceptance</Link>
         </div>
       </section>
       <OperationsAreaBand

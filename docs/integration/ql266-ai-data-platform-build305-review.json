@@ -1,0 +1,35 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build305-review.v1",
+  "application": "AI Data Platform",
+  "build": 305,
+  "autonomous_operations_v1": {
+    "route": "/autonomous-operations",
+    "api_route": "/api/autonomous-operations",
+    "default_enabled": false,
+    "default_kill_switch_engaged": true,
+    "owner_admin_policy_required": true,
+    "certification_refresh_allowed": true,
+    "recovery_plan_scan_allowed": true,
+    "only_automatic_external_action": "connector-health-get-head-only",
+    "automatic_connection_activation": false,
+    "automatic_event_replay": false,
+    "automatic_credential_mutation": false,
+    "automatic_peer_write": false,
+    "automatic_trust_mutation": false
+  },
+  "production_learning_vi": {
+    "batch": "281-305",
+    "measured_evidence_only": true,
+    "automatic_build_306": false,
+    "numbered_next_batch_authorized": false,
+    "owner_authorization_required": true,
+    "renewal_document": "docs/ROADMAP_RENEWAL_AFTER_BUILD_305.md"
+  },
+  "ql266": {
+    "review_state": "UNDER_REVIEW",
+    "external_test_status": "REVIEW_DEFERRED",
+    "connection_state": "DISCONNECTED",
+    "resumed_by_build_305": false,
+    "trust_or_authorization_inferred": false
+  }
+}
