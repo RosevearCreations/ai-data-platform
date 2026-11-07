@@ -442,7 +442,12 @@ async function persistCycle(
 }
 
 export async function runAutonomousOperationsCycle(userId: string) {
-  await requireOwnerAdmin(userId);
+  const workspaces = await requireOwnerAdmin(userId);
+  const adminWorkspaceIds = new Set(
+    workspaces
+      .filter(item => item.role === "owner" || item.role === "admin")
+      .map(item => item.id)
+  );
   const policy = await readPolicy(userId);
   const cycleId = randomUUID();
   const startedAt = new Date();
@@ -598,7 +603,10 @@ export async function runAutonomousOperationsCycle(userId: string) {
   const beforeRecovery = await listIntegrationRecoveryForUser(userId);
   const eligible = beforeRecovery.plans
     .filter(
-      item => item.state === "ready" && item.autoExecutionAllowed === true
+      item =>
+        adminWorkspaceIds.has(item.workspaceId) &&
+        item.state === "ready" &&
+        item.autoExecutionAllowed === true
     )
     .slice(0, policy.maxSafeRecoveriesPerCycle);
   safeRecoveriesEligible = eligible.length;
