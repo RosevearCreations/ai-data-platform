@@ -102,7 +102,11 @@ export function signQl365dDiscoveryManifest(
     throw new Error(signer.state);
   }
 
-  const { signature: _signature, ...payload } = manifest;
+  const payload = structuredClone(manifest) as Omit<
+    DiscoveryManifest,
+    "signature"
+  > & { signature?: never };
+  delete (payload as Partial<DiscoveryManifest>).signature;
   const signature = sign(
     null,
     Buffer.from(canonicalRosevearCommsValue(payload)),
