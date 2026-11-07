@@ -373,7 +373,7 @@ async function main() {
     "HEALTH_METADATA_ONLY_NO_CUSTOMERS_OR_DEVICES",
     "maxResponseBytes: 4096",
     "persistentConnectionAllowed: false",
-    "SIGNER_EXISTS_CUSTODY_VERIFIED"
+    "inspectQl365dSourceSigner"
   ]) {
     assert.ok(
       sourceContract.includes(token),
