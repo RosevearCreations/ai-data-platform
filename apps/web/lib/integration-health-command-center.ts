@@ -102,6 +102,7 @@ export type IntegrationHealthCommandCenterModel={
     automaticRecoveryTriggered:false;
     automaticConnectionActivation:false;
     ql266Resumed:false;
+    legacyQl266PrerequisiteRetired:true;
   };
 };
 
@@ -360,7 +361,8 @@ export async function buildIntegrationHealthCommandCenter(
       credentialValuesRead:false,
       automaticRecoveryTriggered:false,
       automaticConnectionActivation:false,
-      ql266Resumed:false
+      ql266Resumed:false,
+      legacyQl266PrerequisiteRetired:true
     }
   };
 }
