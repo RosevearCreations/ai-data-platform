@@ -1,0 +1,41 @@
+{
+  "schema": "rosevear.ai-data-platform.build333-review.v1",
+  "application": "AI Data Platform",
+  "build": 333,
+  "name": "Route Performance, Core Web Vitals & Rendering Diagnostics",
+  "analysis": {
+    "window": "7d",
+    "coreWebVitals": [
+      "lcp_ms",
+      "cls_score",
+      "inp_ms"
+    ],
+    "routeTransition": true,
+    "hydrationReady": true,
+    "longTaskP95": true,
+    "missingTelemetryIsSuccess": false
+  },
+  "hydration": {
+    "metric": "hydration_ready_ms",
+    "definition": "first client effect after React hydration",
+    "coreWebVital": false
+  },
+  "privacy": {
+    "rawUrlsStored": false,
+    "queryStringsStored": false,
+    "domTextStored": false,
+    "formValuesStored": false,
+    "customerDataStored": false,
+    "credentialsStored": false,
+    "dynamicRouteIdentifiersCollapsed": true
+  },
+  "safety": {
+    "automaticOptimization": false,
+    "automaticReleaseBlocking": false,
+    "automaticConnectionActivation": false,
+    "consequentialPeerWritesAutomatic": false
+  },
+  "surface": "/route-performance",
+  "api": "/api/route-performance",
+  "nextQueuedBuild": 334
+}

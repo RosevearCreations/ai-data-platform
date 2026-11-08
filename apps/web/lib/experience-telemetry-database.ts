@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import { withUserDatabase } from "./database";
+import { classifyRoutePerformance } from "./route-performance-diagnostics";
 import {
   normalizeExperienceValue,
   rateExperienceMetric,
@@ -27,6 +28,7 @@ const metricKeys = new Set<ExperienceMetricKey>([
   "lcp_ms",
   "cls_score",
   "inp_ms",
+  "hydration_ready_ms",
   "route_transition_ms",
   "long_task_ms"
 ]);
@@ -36,6 +38,7 @@ const sampleKinds = new Set<ExperienceSampleKind>([
   "paint",
   "layout",
   "interaction",
+  "hydration",
   "route-transition",
   "long-task"
 ]);
@@ -270,6 +273,100 @@ export async function listExperienceTelemetryForUser(userId: string) {
         maxBatchSize: 20,
         eventIdempotency: true,
         appendOnly: true
+      }
+    };
+  });
+}
+
+
+export async function listRoutePerformanceDiagnosticsForUser(userId: string) {
+  return withUserDatabase(userId, async (client) => {
+    const result = await client.query<{
+      route_family: string;
+      samples: string;
+      core_vital_samples: string;
+      poor_samples: string;
+      lcp_p75: string | null;
+      cls_p75: string | null;
+      inp_p75: string | null;
+      route_transition_p75: string | null;
+      hydration_ready_p75: string | null;
+      long_task_p95: string | null;
+      last_observed_at: Date | null;
+    }>(`
+      select
+        route_family,
+        count(*)::text as samples,
+        count(*) filter (where metric_key in ('lcp_ms','cls_score','inp_ms'))::text
+          as core_vital_samples,
+        count(*) filter (where rating='poor')::text as poor_samples,
+        (percentile_cont(0.75) within group (order by metric_value)
+          filter (where metric_key='lcp_ms'))::text as lcp_p75,
+        (percentile_cont(0.75) within group (order by metric_value)
+          filter (where metric_key='cls_score'))::text as cls_p75,
+        (percentile_cont(0.75) within group (order by metric_value)
+          filter (where metric_key='inp_ms'))::text as inp_p75,
+        (percentile_cont(0.75) within group (order by metric_value)
+          filter (where metric_key='route_transition_ms'))::text as route_transition_p75,
+        (percentile_cont(0.75) within group (order by metric_value)
+          filter (where metric_key='hydration_ready_ms'))::text as hydration_ready_p75,
+        (percentile_cont(0.95) within group (order by metric_value)
+          filter (where metric_key='long_task_ms'))::text as long_task_p95,
+        max(observed_at) as last_observed_at
+      from app.experience_telemetry_events
+      where actor_user_id=$1
+        and recorded_at>=now()-interval '7 days'
+      group by route_family
+      order by
+        count(*) filter (where rating='poor') desc,
+        count(*) desc,
+        route_family
+      limit 50
+    `, [userId]);
+
+    const value = (input: string | null) =>
+      input === null ? null : Number(input);
+
+    const routes = result.rows.map((row) => {
+      const metrics = {
+        lcpP75: value(row.lcp_p75),
+        clsP75: value(row.cls_p75),
+        inpP75: value(row.inp_p75),
+        routeTransitionP75: value(row.route_transition_p75),
+        hydrationReadyP75: value(row.hydration_ready_p75),
+        longTaskP95: value(row.long_task_p95)
+      };
+
+      return {
+        routeFamily: row.route_family,
+        samples: Number(row.samples),
+        coreVitalSamples: Number(row.core_vital_samples),
+        poorSamples: Number(row.poor_samples),
+        ...metrics,
+        status: classifyRoutePerformance(metrics),
+        lastObservedAt: row.last_observed_at?.toISOString() ?? null
+      };
+    });
+
+    return {
+      generatedAt: new Date().toISOString(),
+      analysisWindow: "7d",
+      routes,
+      thresholds: {
+        lcpP75: { goodAtOrBelow: 2500, poorAbove: 4000, unit: "ms" },
+        clsP75: { goodAtOrBelow: 0.1, poorAbove: 0.25, unit: "score" },
+        inpP75: { goodAtOrBelow: 200, poorAbove: 500, unit: "ms" },
+        routeTransitionP75: { goodAtOrBelow: 500, poorAbove: 1500, unit: "ms" },
+        hydrationReadyP75: { goodAtOrBelow: 1000, poorAbove: 2500, unit: "ms" },
+        longTaskP95: { goodAtOrBelow: 100, poorAbove: 250, unit: "ms" }
+      },
+      policy: {
+        coreWebVitals: ["lcp_ms", "cls_score", "inp_ms"],
+        hydrationIsCoreWebVital: false,
+        rawUrlsStored: false,
+        automaticOptimization: false,
+        automaticReleaseBlocking: false,
+        syntheticEvidenceTreatedAsLive: false
       }
     };
   });

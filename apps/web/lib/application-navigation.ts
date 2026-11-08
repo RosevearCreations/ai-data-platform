@@ -98,6 +98,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "shell-overview"
       },
       {
+        href: "/route-performance",
+        label: "Route Performance",
+        description: "Review Build 333 Core Web Vitals, route-transition, hydration-ready and rendering diagnostics.",
+        helpTopic: "shell-overview"
+      },
+      {
         href: "/integration-health",
         label: "Integration Health",
         description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",

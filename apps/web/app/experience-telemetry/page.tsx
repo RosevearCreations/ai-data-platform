@@ -14,6 +14,7 @@ function metricLabel(key: string) {
     lcp_ms: "Largest Contentful Paint",
     cls_score: "Cumulative Layout Shift",
     inp_ms: "Interaction responsiveness",
+    hydration_ready_ms: "Hydration ready",
     route_transition_ms: "Route transition",
     long_task_ms: "Long task duration"
   };
@@ -46,6 +47,9 @@ export default async function ExperienceTelemetryPage() {
         <div className="heroActions">
           <Link className="secondaryButton" href="/performance-baseline">
             Build 331 Performance Baseline
+          </Link>
+          <Link className="secondaryButton" href="/route-performance">
+            Build 333 Route Performance
           </Link>
           <Link className="secondaryButton" href="/integration-health">
             Integration Health
