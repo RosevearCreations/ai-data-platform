@@ -278,6 +278,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/module-certification",
+        label: "Module Certification",
+        description: "Compare host/module compatibility, record cross-host telemetry and certify synthetic versus live evidence without inferring trust.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/data-contracts",
         label: "Cross-App Data Contracts",
         description: "Review reusable versioned customer, product, service, booking, job, staff, equipment, invoice, media, inventory and notification schemas.",
