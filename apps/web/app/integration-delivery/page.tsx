@@ -317,9 +317,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsInspectorCheckpoints
           title="Build 251 review checkpoints"
           checkpoints={[
-            { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "ready" },
-            { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "ready" },
-            { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "ready" },
+            { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "complete" },
+            { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "complete" },
+            { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "complete" },
             { label: "Historical review boundary", detail: "Retired from the active workflow; current readiness comes from live evidence.", state: "ready" }
           ]}
         />
@@ -333,7 +333,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             label: event.eventType,
             detail: event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
             timestamp: event.occurredAt.toLocaleString(),
-            state: "ready" as const
+            state: "complete" as const
           }))}
           emptyLabel="No accepted delivery activity is available."
         />
@@ -376,8 +376,8 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsWorkflowTimeline
           title="Delivery review workflow"
           entries={[
-            { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "ready", meta: last24hEvents.length + " event(s) in the last 24 hours" },
-            { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "ready", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
+            { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "complete", meta: last24hEvents.length + " event(s) in the last 24 hours" },
+            { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "complete", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
             { id: "inspect", label: "Inspect configuration gaps", detail: needsConfigCount + " consumer configuration gap(s) remain.", state: needsConfigCount ? "current" : "complete", meta: configuredCount + "/" + consumers.length + " consumers configured" },
             { id: "handoff", label: "Historical review boundary", detail: "Legacy QL-266 evidence is retained for audit only.", state: "ready", meta: "RETIRED · HISTORICAL" }
           ]}
@@ -543,14 +543,14 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
               label: "Current delivery activity",
               detail: last24hEvents.length + " event(s) occurred in the last 24 hours.",
               meta: previous24hEvents.length + " event(s) occurred in the preceding 24-hour window.",
-              state: "ready" as const
+              state: "complete" as const
             },
             {
               id: "accepted-evidence",
               label: "Accepted acknowledgement evidence",
               detail: acceptedEventRows.length + " accepted/non-error acknowledgement(s) are retained.",
               meta: recentEvents.length + " total recent durable event(s).",
-              state: "ready" as const
+              state: "complete" as const
             },
             {
               id: "exception-evidence",
@@ -730,7 +730,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         steps={[
           { label: "Filter", detail: "Find the consumer or credential binding that needs review.", state: query ? "complete" : "current" },
           { label: "Inspect", detail: "Compare configuration, readiness exceptions and acknowledgement evidence.", state: query ? "current" : "pending" },
-          { label: "Decide", detail: "Use current governed delivery controls and live evidence; legacy QL-266 review is retired.", state: "ready" }
+          { label: "Decide", detail: "Use current governed delivery controls and live evidence; legacy QL-266 review is retired.", state: "complete" }
         ]}
       />
 
