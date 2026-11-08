@@ -19,7 +19,7 @@ export default async function AppConnectionsPage() {
     <main className="shell reviewShell opsDeepScreen opsDeepScreen--it">
       <p className="srOnly">
         Build 281 historical compatibility: Unified App Connection Registry &amp; Capability Discovery.
-        All six peer apps remain DISCONNECTED.
+        Build 281 historical compatibility retained. Current peer connection state is UNMEASURED unless supported by current evidence.
       </p>
       <section className="hero reviewHero">
         <p className="eyebrow">Build 282 · Shared connectivity identity</p>
@@ -164,7 +164,7 @@ export default async function AppConnectionsPage() {
                   </p>
                   <p>
                     <strong>Connection:</strong>{" "}
-                    {registryApp?.connectionState ?? "DISCONNECTED"} · gateway business{" "}
+                    {registryApp?.connectionState ?? "UNMEASURED"} · gateway business{" "}
                     {app.gatewayBusinessId ?? "not declared"}
                   </p>
                 </div>
@@ -186,7 +186,7 @@ export default async function AppConnectionsPage() {
       </section>
       <section className="dataQualityPolicyNote" aria-label="Comms Hub navigation">
         <strong>Rosevear Comms Hub · six-source connection centre</strong>
-        <p><a href="https://rosevear-comms-hub.devilndovelive.workers.dev/" target="_blank" rel="noopener noreferrer">Open the Comms Hub I.T. connection centre</a> — public contracts observed; HOLD, 0/6 authenticated private connections. No new customer access.</p>
+        <p><a href="https://rosevear-comms-hub.devilndovelive.workers.dev/" target="_blank" rel="noopener noreferrer">Open the Comms Hub I.T. connection centre</a> — historical contract material remains available; current connection truth must come from current authenticated evidence. No new customer access is inferred.</p>
       </section>
     </main>
   );
