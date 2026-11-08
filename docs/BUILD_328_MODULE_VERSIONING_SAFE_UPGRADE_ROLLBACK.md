@@ -31,7 +31,7 @@ Build 328 does not execute a host upgrade.
 Planning is fail closed when:
 
 - the target is not newer than the installed version;
-- a breaking major-version boundary lacks owner policy;
+- a breaking major compatibility boundary lacks owner policy;
 - the enrolled host contract is below the target minimum;
 - the enrolled module protocol is below the target minimum;
 - database prerequisite evidence is missing;
