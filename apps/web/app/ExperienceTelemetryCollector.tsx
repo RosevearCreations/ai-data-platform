@@ -110,6 +110,13 @@ export function ExperienceTelemetryCollector() {
       enqueue("fcp_ms", paint.startTime, "ms", "paint");
     }
 
+    // App-specific rendering diagnostic: first client effect after React hydration.
+    // This is not a Core Web Vital and is never treated as one.
+    const hydrationReady = performance.now();
+    if (hydrationReady > 0) {
+      enqueue("hydration_ready_ms", hydrationReady, "ms", "hydration");
+    }
+
     let cls = 0;
     let lcp = 0;
     let inp = 0;
