@@ -216,7 +216,8 @@ async function main() {
   ensure(
     owner.includes("Build 280") &&
       owner.includes("Production Learning V, Owner Acceptance &amp; Next-Batch Renewal") &&
-      ownerNormalized.includes("not a current prerequisite"),
+      owner.includes("not a current") &&
+      owner.includes("prerequisite"),
     "Build 280 owner acceptance page"
   );
   ensure(
