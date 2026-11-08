@@ -275,6 +275,10 @@ async function main() {
   });
   assert.equal(grant.maximumActions, 1);
   assert.deepEqual(grant.allowedMethods, ["GET", "HEAD"]);
+  assert.deepEqual(grant.policyBinding, {
+    policyRevision: 7,
+    globalControlRevision: 4
+  });
   assert.equal(
     grant.consequentialPeerMutationAuthorized,
     false
@@ -301,6 +305,18 @@ async function main() {
       recovery("two")
     ],
     safeHealthGrant: grant,
+    policyControlVerifier: {
+      async verify() {
+        return {
+          emergencyStopEngaged: false,
+          globalControlRevision: 4,
+          policyRevision: 7,
+          hostPolicyEnabled: true,
+          hostKillSwitchEngaged: false,
+          checkedAt: "2026-11-08T13:01:15.000Z"
+        };
+      }
+    },
     safeHealthExecutor: {
       async execute(input) {
         executions += 1;
@@ -326,6 +342,63 @@ async function main() {
       (item) =>
         item.reason ===
         "supervisor-safe-health-cycle-cap-reached"
+    )
+  );
+
+  let revokedExecutions = 0;
+  const revoked = await runAutonomousModuleSupervisorCycle({
+    host,
+    now: "2026-11-08T13:02:00.000Z",
+    certification: {
+      evidenceId: "cert-evidence-build326-revoked",
+      runId: "cert-run-build326-revoked",
+      ...host,
+      outcome: "passed",
+      passed: 5,
+      failed: 0,
+      blocked: 0,
+      refreshedAt: "2026-11-08T13:01:30.000Z"
+    },
+    healthObservations: [],
+    freshnessEvidence: [],
+    recoveryOpportunities: [recovery("revoked")],
+    safeHealthGrant: grant,
+    policyControlVerifier: {
+      async verify() {
+        return {
+          emergencyStopEngaged: true,
+          globalControlRevision: 5,
+          policyRevision: 7,
+          hostPolicyEnabled: true,
+          hostKillSwitchEngaged: false,
+          checkedAt: "2026-11-08T13:02:05.000Z"
+        };
+      }
+    },
+    safeHealthExecutor: {
+      async execute(input) {
+        revokedExecutions += 1;
+        return {
+          planId: input.plan.planId,
+          method: "GET",
+          state: "healthy",
+          evidenceId: "execution-build326-revoked",
+          checkedAt: "2026-11-08T13:02:10.000Z",
+          connectionActivated: false,
+          peerMutationExecuted: false,
+          credentialMutationExecuted: false,
+          eventReplayExecuted: false
+        };
+      }
+    }
+  });
+  assert.equal(revokedExecutions, 0);
+  assert.equal(revoked.recovery.executed, 0);
+  assert.ok(
+    revoked.workItems.some(
+      (item) =>
+        item.reason ===
+        "module_supervisor_policy_bound_grant_revoked"
     )
   );
 
@@ -396,6 +469,14 @@ async function main() {
     descriptor.budgets.safeHealthPerCycle.maximum,
     3
   );
+  assert.equal(
+    descriptor.budgets.policyGrantRequiresLiveControlRecheck,
+    true
+  );
+  assert.equal(
+    descriptor.security.globalStopRevokesPolicyGrantBeforeNextAction,
+    true
+  );
 
   const [
     policySource,
@@ -447,6 +528,8 @@ async function main() {
     "maximumActions: number",
     "module_supervisor_grant_action_budget_invalid",
     "policyGrantMayLowerCycleMaximum: true",
+    "ModuleSupervisorPolicyControlVerifier",
+    "module_supervisor_policy_bound_grant_revoked",
     "validGrant.maximumActions"
   ]) {
     assert.ok(
@@ -462,6 +545,7 @@ async function main() {
     "safe_health_quantity",
     "evaluateModuleSupervisorHostPolicy",
     "createPolicyBoundSafeHealthGrant",
+    "readModuleSupervisorPolicyControlState",
     "missing-control-fails-closed"
   ]) {
     assert.ok(
@@ -474,6 +558,7 @@ async function main() {
     '"set-global-stop"',
     '"upsert-host-policy"',
     '"authorize-cycle"',
+    '"control-state"',
     "authentication_required",
     "Cache-Control"
   ]) {
@@ -536,6 +621,8 @@ async function main() {
     "moduleSupervisorGlobalStopOverridesHostPolicy: true",
     "moduleSupervisorHostKillSwitchFailClosed: true",
     "moduleSupervisorBudgetReservationRequired: true",
+    "moduleSupervisorPolicyBoundGrantLiveRecheckRequired: true",
+    "moduleSupervisorGlobalStopRevokesOutstandingGrant: true",
     "moduleSupervisorPolicyCanAuthorizeConsequentialMutations: false"
   ]) {
     assert.ok(
@@ -553,6 +640,7 @@ async function main() {
     "Maintenance windows",
     "Authorization precedence",
     "Short-lived safe-health grant",
+    "live control-state verifier",
     "Durable evidence",
     "Build 327"
   ]) {
@@ -570,6 +658,14 @@ async function main() {
   );
   assert.equal(
     review.security.globalStopOverridesEveryHost,
+    true
+  );
+  assert.equal(
+    review.security.policyBoundGrantRequiresLiveRecheck,
+    true
+  );
+  assert.equal(
+    review.security.globalStopRevokesOutstandingPolicyGrant,
     true
   );
   assert.equal(review.nextQueuedBuild, 327);
