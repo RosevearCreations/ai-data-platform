@@ -1,0 +1,35 @@
+{
+  "schema": "rosevear.integration.ql266.ai-data-platform.build316-review.v1",
+  "application": "AI Data Platform",
+  "build": 316,
+  "capability": {
+    "name": "Cross-App Search & Linked Record Explorer",
+    "version": "1.0.0",
+    "authorizedFederatedSearch": true,
+    "linkedRecordGraph": true,
+    "canonicalKinds": [
+      "customer",
+      "contact",
+      "product",
+      "service",
+      "job",
+      "booking"
+    ],
+    "sourceProvenance": true,
+    "hostContextFilters": true,
+    "tenantSafeIsolation": true,
+    "sourceDeepLinks": true,
+    "sourceRecordMutation": false
+  },
+  "security": {
+    "authorizationRequiredPerSource": true,
+    "exactSubjectTenantWorkspaceBinding": true,
+    "mappingRequiredPerSource": true,
+    "deepLinksGrantAuthorization": false,
+    "searchActivatesConnection": false,
+    "ql266Resumed": false
+  },
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD",
+  "nextQueuedBuild": 317
+}
