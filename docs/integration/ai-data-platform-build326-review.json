@@ -1,0 +1,37 @@
+{
+  "schema": "rosevear.ai-data-platform.build326-review.v1",
+  "application": "AI Data Platform",
+  "build": 326,
+  "name": "Per-Host Owner Policies, Kill Switches & Autonomy Budgets",
+  "capabilities": {
+    "perHostEnableDisable": true,
+    "perHostKillSwitch": true,
+    "safeActionAllowlist": true,
+    "cycleRateBudgets": true,
+    "recoveryBudgets": true,
+    "maintenanceWindows": true,
+    "policyVersioning": true,
+    "appendOnlyPolicyAuditHistory": true,
+    "emergencyGlobalStop": true,
+    "transactionalBudgetReservation": true,
+    "livePolicyControlStateRead": true
+  },
+  "security": {
+    "missingGlobalControlFailsClosed": true,
+    "missingHostPolicyFailsClosed": true,
+    "globalStopOverridesEveryHost": true,
+    "safeActionGetHeadOnly": true,
+    "policyGrantCanOnlyLowerBuild325Cap": true,
+    "automaticConnectionActivation": false,
+    "automaticPeerMutation": false,
+    "automaticEventReplay": false,
+    "automaticCredentialMutation": false,
+    "automaticWorkflowRelease": false,
+    "automaticTrustMutation": false,
+    "policyBoundGrantRequiresLiveRecheck": true,
+    "globalStopRevokesOutstandingPolicyGrant": true,
+    "policyRevisionChangeRevokesOutstandingPolicyGrant": true
+  },
+  "migration": "0109_module_supervisor_host_policies.sql",
+  "nextQueuedBuild": 327
+}

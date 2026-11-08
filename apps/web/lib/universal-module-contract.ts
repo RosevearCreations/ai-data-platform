@@ -123,6 +123,12 @@ export const MODULE_FEATURE_FLAGS = [
   "certification-refresh-adapter-v1",
   "safe-health-supervision-v1",
   "owner-review-work-items-v1",
+  "per-host-autonomy-policy-v1",
+  "global-emergency-stop-v1",
+  "autonomy-budget-reservation-v1",
+  "maintenance-window-policy-v1",
+  "policy-audit-history-v1",
+  "live-policy-revocation-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -340,6 +346,17 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     moduleSupervisorSafeHealthGetHeadOnly: true,
     moduleSupervisorWorkItemsGrantAuthorization: false,
     moduleSupervisorPerHostPolicyDeferredToBuild326: true,
+    moduleSupervisorMissingGlobalControlBlocks: true,
+    moduleSupervisorMissingHostPolicyBlocks: true,
+    moduleSupervisorGlobalStopOverridesHostPolicy: true,
+    moduleSupervisorHostKillSwitchFailClosed: true,
+    moduleSupervisorBudgetReservationRequired: true,
+    moduleSupervisorPolicyBoundGrantLiveRecheckRequired: true,
+    moduleSupervisorGlobalStopRevokesOutstandingGrant: true,
+    moduleSupervisorPolicyRevisionRevokesOutstandingGrant: true,
+    moduleSupervisorMaintenanceWindowEnforced: true,
+    moduleSupervisorSafeActionAllowlistGetHeadOnly: true,
+    moduleSupervisorPolicyCanAuthorizeConsequentialMutations: false,
     ql266ResumedByDiscovery: false
   }
 });
