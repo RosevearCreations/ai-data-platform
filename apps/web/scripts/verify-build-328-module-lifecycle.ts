@@ -442,7 +442,7 @@ async function main() {
     )
   );
   assert.ok(
-    pkg.scripts["ci:promotion"].includes(
+    pkg.scripts["build"].includes(
       "verify-build-328-module-lifecycle.ts"
     )
   );
