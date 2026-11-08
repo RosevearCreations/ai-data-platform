@@ -122,7 +122,7 @@ assert.ok(api.includes("authentication_required"));
 
 const page = source("app/performance-baseline/page.tsx");
 const consoleSource = source(
-  "../app/performance-baseline/PerformanceBaselineConsole.tsx"
+  "app/performance-baseline/PerformanceBaselineConsole.tsx"
 );
 assert.ok(page.includes("Production Performance Baseline"));
 assert.ok(page.includes("Missing telemetry is never converted into a PASS"));
@@ -133,7 +133,7 @@ const navigation = source("lib/application-navigation.ts");
 assert.equal(count(navigation, 'href: "/performance-baseline"'), 1);
 
 const compactDb = source(
-  "../scripts/verify-ci-integration-spine-database.ts"
+  "scripts/verify-ci-integration-spine-database.ts"
 );
 assert.equal(count(compactDb, '"performance_baseline_snapshots"'), 2);
 
