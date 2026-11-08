@@ -1,0 +1,36 @@
+{
+  "schema": "rosevear.ai-data-platform.build331-review.v1",
+  "application": "AI Data Platform",
+  "build": 331,
+  "name": "Production Performance Baseline, SLOs & Regression Budgets",
+  "evidenceWindowHours": 24,
+  "measuredEvidenceOnly": true,
+  "metrics": {
+    "databaseProbeLatency": true,
+    "connectorP95Latency": true,
+    "connectorErrorRate": true,
+    "webhookDeniedRate": true,
+    "eventDeliveryFailures24h": true,
+    "browserPageLoadPercentiles": false,
+    "interactionPercentiles": false,
+    "apiEndpointPercentiles": false,
+    "serverCpuMemory": false
+  },
+  "regressionBudget": {
+    "previousSnapshotComparison": true,
+    "firstSnapshotInventsBaseline": false,
+    "automaticOptimization": false,
+    "automaticBudgetChanges": false,
+    "automaticReleaseBlocking": false
+  },
+  "storage": {
+    "migration": "0114_production_performance_baseline_slos.sql",
+    "appendOnly": true,
+    "rlsProtected": true,
+    "ownerScoped": true
+  },
+  "surface": "/performance-baseline",
+  "api": "/api/performance-baseline",
+  "ql266Resumed": false,
+  "nextQueuedBuild": 332
+}

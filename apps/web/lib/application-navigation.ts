@@ -131,6 +131,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "data-library-overview"
       },
       {
+        href: "/performance-baseline",
+        label: "Performance Baseline",
+        description: "Review Build 331 measured production baselines, SLO budgets and regressions.",
+        helpTopic: "shell-overview"
+      },
+      {
         href: "/data-review",
         label: "Data Review",
         description: "Review extracted and normalized data before approval.",
