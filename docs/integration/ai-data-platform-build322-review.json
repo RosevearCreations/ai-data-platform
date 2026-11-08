@@ -1,0 +1,29 @@
+{
+  "schema": "rosevear.ai-data-platform.build322-review.v1",
+  "application": "AI Data Platform",
+  "build": 322,
+  "name": "Webhook, Callback & Inbound Endpoint Module",
+  "sourceBuild": 290,
+  "capabilities": {
+    "endpointRegistration": true,
+    "signingVerificationReferences": true,
+    "nonceReplayProtection": true,
+    "callbackRouting": true,
+    "hostEventTranslation": true,
+    "receiptSearch": true,
+    "endpointDisable": true,
+    "endpointRevoke": true,
+    "environmentSpecificEndpointEvidence": true
+  },
+  "security": {
+    "rawSecretsStoredOrReturned": false,
+    "replayProtectionWeakened": false,
+    "endpointAutoEnabled": false,
+    "revokedEndpointCanReenable": false,
+    "endpointEvidenceDeletedOnRevoke": false,
+    "callbackDispatchedByModule": false,
+    "hostEventPublishedByModule": false,
+    "endpointPresenceActivatesConnection": false
+  },
+  "nextQueuedBuild": 323
+}
