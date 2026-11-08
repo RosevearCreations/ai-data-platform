@@ -527,7 +527,12 @@ export async function executeAuthorizedFederatedSearch(
   );
 
   const results: CrossAppSearchResult[] = [];
-  const sourceSummaries: Array<{\n    sourceApplicationId: string;\n    resultCount: number;\n    mappedApplication: true;\n    authorizationEvidenceId: string;\n  }> = [];
+  const sourceSummaries: Array<{
+    sourceApplicationId: string;
+    resultCount: number;
+    mappedApplication: true;
+    authorizationEvidenceId: string;
+  }> = [];
 
   for (const adapter of selected) {
     assertAdapterAuthorized(adapter, request.context);
