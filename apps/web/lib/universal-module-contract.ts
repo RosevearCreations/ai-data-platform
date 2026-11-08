@@ -90,6 +90,10 @@ export const MODULE_FEATURE_FLAGS = [
   "event-subscription-pack-v1",
   "exact-event-type-contracts-v1",
   "replay-safe-event-receipt-correlation-v1",
+  "workflow-action-plugin-v1",
+  "typed-action-input-schema-v1",
+  "idempotent-action-handoff-v1",
+  "host-action-callback-receipts-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -254,6 +258,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     eventBridgeRequiresExactEventContracts: true,
     eventBridgePreservesTenantEnvironmentScope: true,
     eventBridgeReleasesHeldRoutes: false,
+    workflowRuleMatchExecutesHostAction: false,
+    workflowApprovalExecutesHostAction: false,
+    workflowActionCallbackProvesExternalSideEffect: false,
+    workflowActionHandoffRequiresIndependentGrant: true,
+    workflowActionPluginRequiresTypedInput: true,
     ql266ResumedByDiscovery: false
   }
 });

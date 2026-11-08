@@ -1,0 +1,27 @@
+{
+  "schema": "rosevear.ai-data-platform.build318-review.v1",
+  "application": "AI Data Platform",
+  "build": 318,
+  "name": "Workflow Action Plug-In Interface",
+  "productFocus": "reusable application actions, typed inputs, explicit human decisions and evidence-first host handoff",
+  "capabilities": {
+    "actionCapabilityDescriptors": true,
+    "typedInputSchemas": true,
+    "heldActionIntents": true,
+    "ownerReviewerDecisions": true,
+    "hostCallbackReceipts": true,
+    "idempotentExecutionHandoff": true,
+    "rejectionAndErrorEvidence": true
+  },
+  "security": {
+    "ruleMatchExecutesAction": false,
+    "approvalExecutesAction": false,
+    "independentHostGrantRequired": true,
+    "rejectedDecisionCanHandoff": false,
+    "callbackIdempotencyMismatchAccepted": false,
+    "callbackReceiptProvesExternalSideEffect": false,
+    "destinationGovernanceBypassed": false
+  },
+  "sourceAutomationBuild": 302,
+  "nextQueuedBuild": 319
+}
