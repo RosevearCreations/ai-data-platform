@@ -67,6 +67,22 @@ export default async function AppConnectionsPage() {
         </div>
       </section>
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 324 offline synchronization</strong>
+        <p>
+          Host integrations can now queue bounded reference-only work while
+          disconnected, detect reconnect, preserve deterministic idempotency,
+          expire stale work and route conflicts or ambiguous remote outcomes to
+          manual review. Offline mode never claims remote success without a
+          genuine receipt and exact idempotency-key echo.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-offline-sync">
+            View offline synchronization contract
+          </Link>
+        </div>
+      </section>
+
       <section className="reviewSummary" aria-label="Shared application identity summary">
         <div className="commandMetrics">
           <article>

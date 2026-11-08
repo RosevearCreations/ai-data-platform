@@ -262,7 +262,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/app-connections",
         label: "App Connection Registry",
-        description: "Catalog peer applications with stable identity, environment and tenant/workspace mappings plus safe capability discovery and secure transport selection.",
+        description: "Catalog peer applications with stable identity, environment and tenant/workspace mappings plus safe capability discovery, secure transport selection and bounded offline synchronization.",
         helpTopic: "connectors-overview"
       },
       {

@@ -114,6 +114,10 @@ export const MODULE_FEATURE_FLAGS = [
   "trusted-local-relay-v1",
   "transport-health-evidence-v1",
   "no-silent-transport-downgrade-v1",
+  "offline-sync-queue-v1",
+  "reconnect-detection-v1",
+  "idempotent-offline-sync-v1",
+  "offline-conflict-review-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -312,6 +316,14 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     transportSelectorPerformsNetworkRequest: false,
     transportSilentSecurityDowngradeAllowed: false,
     transportFailoverRequiresExplicitOptIn: true,
+    offlineQueueStoresRawPayload: false,
+    offlineQueueClaimsRemoteSuccess: false,
+    offlineReconnectExecutesWork: false,
+    offlineSynchronizationGrantsAuthorization: false,
+    offlineQueuePerformsNetworkRequest: false,
+    offlineAmbiguousOutcomeAutoRetries: false,
+    offlineRetryChangesIdempotencyKey: false,
+    offlineConfirmedSuccessRequiresRemoteReceipt: true,
     ql266ResumedByDiscovery: false
   }
 });
