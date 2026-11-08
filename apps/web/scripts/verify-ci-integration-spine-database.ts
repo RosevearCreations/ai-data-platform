@@ -83,7 +83,7 @@ const requiredTables = [
   "production_learning_vi_snapshots",
   "production_learning_vi_candidates",
   "production_learning_vii_snapshots",
-  "production_learning_vii_candidates",
+  "production_learning_vii_candidates",\n  "performance_baseline_snapshots",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -155,7 +155,7 @@ const appendOnlyTables = [
   "production_learning_vi_snapshots",
   "production_learning_vi_candidates",
   "production_learning_vii_snapshots",
-  "production_learning_vii_candidates",
+  "production_learning_vii_candidates",\n  "performance_baseline_snapshots",
   "rosevear_comms_operation_claims"
 ];
 
