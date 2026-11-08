@@ -328,7 +328,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/event-bus",
         label: "Cross-App Event Bus",
-        description: "Publish reviewed webhook receipts into governed subscriptions and inspect durable held routes.",
+        description: "Manage governed subscriptions, held routes and the reusable host/module event bridge with exact event contracts.",
         helpTopic: "integration-delivery"
       },
       {

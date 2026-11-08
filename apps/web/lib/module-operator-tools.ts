@@ -236,7 +236,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/event-bus",
         label: "Event bus",
-        description: "Review governed subscriptions, publications and held internal routes."
+        description: "Review governed subscriptions, publications, held routes and the host/module event bridge."
       },
       {
         href: "/delivery-guarantees",
