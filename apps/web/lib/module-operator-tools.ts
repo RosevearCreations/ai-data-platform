@@ -166,7 +166,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "connect-execute",
         label: "Connect & execute",
         description: "Review connector authority and controlled remote execution.",
-        itemHrefs: ["/app-connections", "/module-installer", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/customer-identities", "/catalogue-exchange", "/media-asset-exchange", "/remote-execution"]
+        itemHrefs: ["/app-connections", "/module-installer", "/module-lifecycle", "/connector-setup", "/credential-vault", "/connection-validation", "/connectors", "/connector-diagnostics", "/webhook-gateway", "/event-bus", "/event-recovery", "/delivery-guarantees", "/customer-identities", "/catalogue-exchange", "/media-asset-exchange", "/remote-execution"]
       },
       {
         id: "coordinate-certify",
@@ -207,6 +207,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/module-installer",
         label: "Module installer",
         description: "Prepare exact host enrollment, review dry-run evidence and generate an owner-approved package without activating a connection."
+      },
+      {
+        href: "/module-lifecycle",
+        label: "Module lifecycle",
+        description: "Review installed versions, prepare staged upgrades, record failures and preserve rollback evidence without automatic host execution."
       },
       {
         href: "/connector-setup",
