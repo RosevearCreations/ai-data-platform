@@ -98,6 +98,10 @@ export const MODULE_FEATURE_FLAGS = [
   "notification-module-api-v1",
   "task-follow-up-module-api-v1",
   "schedule-module-api-v1",
+  "media-host-bridge-v1",
+  "media-reference-registration-v1",
+  "media-transfer-handoff-v1",
+  "media-lifecycle-evidence-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -272,6 +276,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     sharedCoordinationPeerWritesRequested: false,
     sharedCoordinationScheduleConflictsAreLocalOnly: true,
     sharedCoordinationConsentGrantsDispatchAuthority: false,
+    mediaHostBridgeAcceptsRawBinary: false,
+    mediaHostBridgeTransfersBinary: false,
+    mediaHostBridgeSensitiveCopyRequiresExplicitAuthorization: true,
+    mediaHostBridgeDeletesSourceContent: false,
+    mediaHostBridgeInfersOwnership: false,
+    mediaHostBridgePreviewFetchesContent: false,
     ql266ResumedByDiscovery: false
   }
 });

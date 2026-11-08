@@ -76,6 +76,21 @@ export default async function MediaAssetExchangePage() {
         </p>
       </section>
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 320 media host bridge</strong>
+        <p>
+          Build 296 references can now be exposed to host applications with
+          checksum/deduplication evidence, ownership metadata, MIME/size policy,
+          reference-only previews, controlled upload/download handoffs and
+          retention/deletion evidence. The bridge never copies binary content itself.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-media-assets">
+            View media host bridge descriptor
+          </Link>
+        </div>
+      </section>
+
       <MediaAssetExchangeConsole
         model={{
           workspaces: model.workspaces.map((workspace) => ({

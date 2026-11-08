@@ -256,7 +256,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/media-asset-exchange",
         label: "Media & asset exchange",
-        description: "Register deduplicated shared media references and review HELD cross-application asset packages."
+        description: "Register shared media references, review HELD packages and inspect the portable media host bridge."
       },
       {
         href: "/event-recovery",
