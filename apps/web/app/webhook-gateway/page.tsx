@@ -78,6 +78,21 @@ export default async function WebhookGatewayPage() {
         </p>
       </section>
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 322 inbound endpoint module</strong>
+        <p>
+          Build 290 intake is now packaged for host use with callback-route
+          metadata, receipt search, host-event translation and durable endpoint
+          revocation. Secrets remain environment-variable references, and neither
+          callback routing nor event translation performs outbound dispatch.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-inbound-endpoints">
+            View inbound endpoint module
+          </Link>
+        </div>
+      </section>
+
       <WebhookGatewayCenter
         model={{
           workspaces: model.workspaces.map((workspace) => ({
