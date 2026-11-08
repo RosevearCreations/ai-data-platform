@@ -1,0 +1,55 @@
+{
+  "schema": "rosevear.ai-data-platform.build332-review.v1",
+  "application": "AI Data Platform",
+  "build": 332,
+  "name": "Real User Monitoring, Interaction Timing & Experience Telemetry",
+  "telemetry": {
+    "navigationLoad": true,
+    "firstContentfulPaint": true,
+    "largestContentfulPaint": true,
+    "cumulativeLayoutShift": true,
+    "interactionTiming": true,
+    "routeTransitionTiming": true,
+    "longTasks": true,
+    "percentileWindows": [
+      "24h",
+      "7d"
+    ]
+  },
+  "privacy": {
+    "rawUrlsStored": false,
+    "queryStringsStored": false,
+    "domTextStored": false,
+    "formValuesStored": false,
+    "customerDataStored": false,
+    "exactViewportStored": false,
+    "dynamicRouteIdentifiersCollapsed": true
+  },
+  "storage": {
+    "migration": "0115_real_user_experience_telemetry.sql",
+    "table": "app.experience_telemetry_events",
+    "appendOnly": true,
+    "rlsProtected": true,
+    "eventIdempotency": true
+  },
+  "itTruthCleanup": {
+    "build273EvidenceBaselineCurrentNavigation": false,
+    "build280OwnerAcceptanceCurrentNavigation": false,
+    "topBarSystemStatus": "/integration-health",
+    "ql266GlobalPrerequisiteRetired": true,
+    "legacyPeerDisconnectedInferenceRemoved": true,
+    "unknownPeerState": "UNMEASURED",
+    "historicalQl365dSnapshotRetained": true
+  },
+  "safety": {
+    "automaticOptimization": false,
+    "automaticReleaseBlocking": false,
+    "automaticConnectionActivation": false,
+    "consequentialPeerWritesAutomatic": false,
+    "authenticationRetained": true,
+    "tenantWorkspaceIsolationRetained": true
+  },
+  "surface": "/experience-telemetry",
+  "api": "/api/experience-telemetry",
+  "nextQueuedBuild": 333
+}
