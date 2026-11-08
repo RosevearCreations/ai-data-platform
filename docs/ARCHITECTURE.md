@@ -622,3 +622,10 @@ Build 305 adds a policy-controlled orchestration layer over existing governed ev
 Each autonomous cycle can refresh Build 304 certification evidence, discover Build 301 recovery plans, execute only owner-enabled safe health recoveries within per-cycle/rate limits, and produce a Production Learning VI snapshot. Consequential recovery paths remain in their existing owner workbenches.
 
 Migration 0106 persists the mutable owner policy plus append-only policy events, cycle/action evidence, Production Learning VI snapshots and unnumbered renewal candidates. Build 305 closes the 281–305 batch without automatically assigning Build 306 or authorizing another numbered batch.
+
+
+## Build 329 — Cross-Host Observability, Compatibility Matrix & Universal Certification Suite
+
+Build 329 composes Build 327 enrollment identity and Build 328 installed-version inventory into a reusable host certification control plane. The server resolves expected module version, host contract, protocol and adapter from durable host records, then evaluates ten certification dimensions through a pure reusable harness.
+
+Observations, runs and assertions are append-only. Synthetic fixtures validate harness behavior but never establish live host health or live certification. Genuine live certification requires evidence references for every PASS plus telemetry samples. The latest run feeds the compatibility matrix and per-host health view; each run is also compared with the prior run to preserve regression history.
