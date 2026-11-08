@@ -111,7 +111,7 @@ const page = source("app/route-performance/page.tsx");
 assert.ok(page.includes("Rendering Diagnostics"));
 assert.ok(page.includes("Core Web Vitals"));
 assert.ok(page.includes("Hydration-ready"));
-assert.ok(page.includes("does not automatically optimize production"));
+assert.ok(page.replace(/\\s+/g, " ").includes("does not automatically optimize production"));
 
 const navigation = source("lib/application-navigation.ts");
 assert.ok(navigation.includes('href: "/route-performance"'));
