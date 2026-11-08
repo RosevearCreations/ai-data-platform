@@ -52,6 +52,21 @@ export default async function AppConnectionsPage() {
         </div>
       </section>
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 323 secure transport selection</strong>
+        <p>
+          Host/module communication can now describe direct HTTPS, trusted local
+          relay and approved cloud relay transports with exact origin allowlists,
+          fresh health evidence and explicit equal-or-stronger failover rules.
+          Transport selection remains separate from connection authorization.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-transports">
+            View secure transport contract
+          </Link>
+        </div>
+      </section>
+
       <section className="reviewSummary" aria-label="Shared application identity summary">
         <div className="commandMetrics">
           <article>
