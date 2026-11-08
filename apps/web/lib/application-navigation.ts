@@ -298,7 +298,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/connectors",
         label: "Connectors",
-        description: "Review connector capabilities, grants and workspace use.",
+        description: "Review connector capabilities, grants, workspace use and the connector driver registry without activating connections.",
         helpTopic: "connectors-overview"
       },
       {
