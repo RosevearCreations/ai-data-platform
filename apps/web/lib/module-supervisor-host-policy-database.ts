@@ -4,6 +4,7 @@ import {
   createPolicyBoundSafeHealthGrant,
   evaluateModuleSupervisorHostPolicy,
   normalizeModuleSupervisorHostPolicy,
+  validateModuleSupervisorHostScope,
   type ModuleSupervisorGlobalControl,
   type ModuleSupervisorHostPolicy,
   type ModuleSupervisorHostPolicyInput,
@@ -253,6 +254,7 @@ export async function upsertModuleSupervisorHostPolicy(
     policy: ModuleSupervisorHostPolicyInput;
   }
 ) {
+  const host = validateModuleSupervisorHostScope(input.host);
   const normalized = normalizeModuleSupervisorHostPolicy(
     input.policy
   );
@@ -260,7 +262,7 @@ export async function upsertModuleSupervisorHostPolicy(
   return withUserDatabase(userId, async (client) => {
     await requireWorkspaceOwnerAdmin(
       client,
-      input.host.workspaceId
+      host.workspaceId
     );
 
     const existing = await client.query(
@@ -275,11 +277,11 @@ export async function upsertModuleSupervisorHostPolicy(
        for update`,
       [
         userId,
-        input.host.workspaceId,
-        input.host.hostApplicationId,
-        input.host.hostInstanceId,
-        input.host.environment,
-        input.host.tenantId
+        host.workspaceId,
+        host.hostApplicationId,
+        host.hostInstanceId,
+        host.environment,
+        host.tenantId
       ]
     );
 
@@ -324,11 +326,11 @@ export async function upsertModuleSupervisorHostPolicy(
       [
         policyId,
         userId,
-        input.host.workspaceId,
-        input.host.hostApplicationId,
-        input.host.hostInstanceId,
-        input.host.environment,
-        input.host.tenantId,
+        host.workspaceId,
+        host.hostApplicationId,
+        host.hostInstanceId,
+        host.environment,
+        host.tenantId,
         normalized.enabled,
         normalized.killSwitchEngaged,
         normalized.safeActions,
@@ -382,12 +384,12 @@ export async function upsertModuleSupervisorHostPolicy(
         randomUUID(),
         policyId,
         userId,
-        input.host.workspaceId,
+        host.workspaceId,
         revision,
         action,
         JSON.stringify(
           policySnapshot({
-            host: input.host,
+            host,
             ...normalized
           })
         )
@@ -408,10 +410,11 @@ export async function authorizeModuleSupervisorHostCycle(
     requestSafeHealth: boolean;
   }
 ) {
+  const host = validateModuleSupervisorHostScope(input.host);
   return withUserDatabase(userId, async (client) => {
     await requireWorkspaceOwnerAdmin(
       client,
-      input.host.workspaceId
+      host.workspaceId
     );
 
     const globalResult = await client.query(
@@ -437,11 +440,11 @@ export async function authorizeModuleSupervisorHostCycle(
        for update`,
       [
         userId,
-        input.host.workspaceId,
-        input.host.hostApplicationId,
-        input.host.hostInstanceId,
-        input.host.environment,
-        input.host.tenantId
+        host.workspaceId,
+        host.hostApplicationId,
+        host.hostInstanceId,
+        host.environment,
+        host.tenantId
       ]
     );
 
@@ -493,7 +496,7 @@ export async function authorizeModuleSupervisorHostCycle(
 
     const evaluatedAt = new Date().toISOString();
     const decision = evaluateModuleSupervisorHostPolicy({
-      host: input.host,
+      host,
       policy,
       globalControl,
       usage,
@@ -532,7 +535,7 @@ export async function authorizeModuleSupervisorHostCycle(
         reservationId,
         String(policyRow.policy_id),
         userId,
-        input.host.workspaceId,
+        host.workspaceId,
         policy.policyRevision,
         globalControl.revision,
         decision.maximumSafeHealthActions,
