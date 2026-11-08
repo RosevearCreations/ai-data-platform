@@ -200,7 +200,7 @@ async function main(){
     page.includes("Build 301") &&
     page.includes("GET/HEAD connector health retries") &&
     page.includes("never auto-executed") &&
-    page.includes("QL-266 remains unchanged"),
+    page.includes("Legacy QL-266 status is historical"),
     "operator safety boundary copy"
   );
 
