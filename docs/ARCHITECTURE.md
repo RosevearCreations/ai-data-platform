@@ -651,3 +651,12 @@ The server-side model evaluates five currently measurable signals: authenticated
 The operator surface is `/performance-baseline` with authenticated JSON at `/api/performance-baseline`. Capture is owner/admin controlled and observational only.
 
 Real-user browser timing, complete API percentiles and host CPU/memory remain outside Build 331 until supported telemetry sources exist.
+
+
+## Build 332 — Real User Monitoring, Interaction Timing & Experience Telemetry
+
+Build 332 adds an authenticated client measurement layer through `ExperienceTelemetryCollector`. The collector uses supported browser Performance APIs to observe navigation load, FCP, LCP, CLS, interaction duration, route transitions and long tasks. It sends bounded batches to `/api/experience-telemetry`.
+
+The server revalidates metric vocabulary, units, timestamps and route families before inserting append-only rows into `app.experience_telemetry_events`. P50/P75/P95 views are computed from durable PostgreSQL evidence for 24-hour and seven-day windows.
+
+Build 332 also updates the I.T. truth model. Static legacy QL-266 disconnected/review-deferred states no longer define current readiness. The peer registry reports `UNMEASURED` when no current evidence establishes connection state. Integration Health distinguishes unmeasured from genuinely disconnected evidence. Historical status documents remain audit records, not active prerequisites.
