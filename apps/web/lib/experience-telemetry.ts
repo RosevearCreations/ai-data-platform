@@ -9,6 +9,7 @@ export type ExperienceMetricKey =
   | "lcp_ms"
   | "cls_score"
   | "inp_ms"
+  | "hydration_ready_ms"
   | "route_transition_ms"
   | "long_task_ms";
 
@@ -23,6 +24,7 @@ export type ExperienceSampleKind =
   | "paint"
   | "layout"
   | "interaction"
+  | "hydration"
   | "route-transition"
   | "long-task";
 
@@ -93,6 +95,7 @@ export function rateExperienceMetric(
     lcp_ms: { good: 2500, poor: 4000 },
     cls_score: { good: 0.1, poor: 0.25 },
     inp_ms: { good: 200, poor: 500 },
+    hydration_ready_ms: { good: 1000, poor: 2500 },
     route_transition_ms: { good: 500, poor: 1500 },
     long_task_ms: { good: 100, poor: 250 }
   };
