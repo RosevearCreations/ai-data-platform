@@ -527,6 +527,11 @@ export function createPolicyBoundSafeHealthGrant(input: {
     host: validateModuleSupervisorHostScope(input.decision.host),
     allowedMethods: ["GET", "HEAD"],
     maximumActions: input.decision.maximumSafeHealthActions,
+    policyBinding: {
+      policyRevision: input.decision.policyRevision!,
+      globalControlRevision:
+        input.decision.globalControlRevision!
+    },
     issuedAt: input.decision.evaluatedAt,
     expiresAt: safeIso(
       input.expiresAt,
