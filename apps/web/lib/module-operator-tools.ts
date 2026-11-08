@@ -171,7 +171,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         id: "coordinate-certify",
         label: "Coordinate & certify",
-        description: "Review recovery, workflow automation, the workflow action plug-in, shared coordination exchanges and certification evidence.",
+        description: "Review recovery, workflow automation, the workflow action plug-in, the shared coordination module and certification evidence.",
         itemHrefs: [
           "/integration-recovery",
           "/workflow-automation",
