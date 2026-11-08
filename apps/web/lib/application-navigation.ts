@@ -382,19 +382,19 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/notification-consent",
         label: "Notification & Consent",
-        description: "Record channel consent evidence and review held notification requests for future governed Comms Hub handoff.",
+        description: "Record consent evidence and prepare held notifications through the shared coordination module with governed Comms Hub routing.",
         helpTopic: "integration-delivery"
       },
       {
         href: "/shared-task-exchange",
         label: "Shared Tasks & Work Queue",
-        description: "Create governed cross-app tasks, link follow-ups and review held work-queue exchange packages.",
+        description: "Create tasks and follow-ups through the shared coordination module and review held work-queue exchange packages.",
         helpTopic: "integration-delivery"
       },
       {
         href: "/shared-scheduling",
         label: "Shared Scheduling & Calendar",
-        description: "Prepare governed appointments and held cross-app calendar exchange packages with local overlap evidence.",
+        description: "Prepare appointments through the shared coordination module with held calendar packages and local overlap evidence.",
         helpTopic: "integration-delivery"
       },
       {

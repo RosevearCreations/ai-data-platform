@@ -94,6 +94,10 @@ export const MODULE_FEATURE_FLAGS = [
   "typed-action-input-schema-v1",
   "idempotent-action-handoff-v1",
   "host-action-callback-receipts-v1",
+  "shared-coordination-module-v1",
+  "notification-module-api-v1",
+  "task-follow-up-module-api-v1",
+  "schedule-module-api-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -263,6 +267,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     workflowActionCallbackProvesExternalSideEffect: false,
     workflowActionHandoffRequiresIndependentGrant: true,
     workflowActionPluginRequiresTypedInput: true,
+    sharedCoordinationDiscoveryDispatchesOutbound: false,
+    sharedCoordinationCommsRoutingGrantsAuthorization: false,
+    sharedCoordinationPeerWritesRequested: false,
+    sharedCoordinationScheduleConflictsAreLocalOnly: true,
+    sharedCoordinationConsentGrantsDispatchAuthority: false,
     ql266ResumedByDiscovery: false
   }
 });
