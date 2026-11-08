@@ -272,6 +272,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/module-lifecycle",
+        label: "Module Lifecycle",
+        description: "Track owner-observed installed versions, stage compatibility-checked upgrades, preserve last-known-good versions and prepare rollback without automatic host mutation.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/data-contracts",
         label: "Cross-App Data Contracts",
         description: "Review reusable versioned customer, product, service, booking, job, staff, equipment, invoice, media, inventory and notification schemas.",
