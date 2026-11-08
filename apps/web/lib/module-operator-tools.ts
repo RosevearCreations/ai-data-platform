@@ -221,7 +221,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/connectors",
         label: "Connectors",
-        description: "Review connector capabilities and grants."
+        description: "Review connector capabilities, grants and the connector driver registry without treating discovery as activation."
       },
       {
         href: "/connector-diagnostics",
