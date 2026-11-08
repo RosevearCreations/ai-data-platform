@@ -55,6 +55,7 @@ function baseInput(
     recovery: {
       total: 1,
       recovered: 1,
+      failedAttempts: 0,
       approvalRequired: 0,
       exhausted: 0,
       notRetryable: 0
@@ -195,6 +196,7 @@ async function main() {
       recovery: {
         total: 4,
         recovered: 1,
+        failedAttempts: 2,
         approvalRequired: 1,
         exhausted: 1,
         notRetryable: 1
@@ -346,6 +348,7 @@ async function main() {
     "liveCertified",
     "rollbackPrepared",
     "safeRecoveriesFailed",
+    "failedAttempts",
     "tenantIsolation",
     "eventPublications",
     "workflowIntents",
