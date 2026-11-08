@@ -405,7 +405,7 @@ async function main() {
     "host/module compatibility matrix",
     "synthetic fixtures",
     "live-certified",
-    "latency p95",
+    "p95 latency",
     "regression history",
     "0112_cross_host_observability_certification.sql",
     "Build 330"
