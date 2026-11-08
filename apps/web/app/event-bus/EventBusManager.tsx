@@ -139,6 +139,25 @@ export function EventBusManager({
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
+  const normalizedEventTypes = useMemo(
+    () =>
+      [...new Set(
+        eventTypes
+          .split(",")
+          .map((value) => value.trim())
+          .filter(Boolean)
+      )],
+    [eventTypes]
+  );
+  const canCreateSubscription = Boolean(
+    workspaceId &&
+      name.trim() &&
+      destinationApplicationId &&
+      normalizedEventTypes.length > 0 &&
+      (!sourceApplicationId ||
+        sourceApplicationId !== destinationApplicationId)
+  );
+
   async function createSubscription() {
     setBusy(true);
     setMessage("");
@@ -151,10 +170,7 @@ export function EventBusManager({
         destinationApplicationId,
         environment,
         tenantId: tenantId || null,
-        eventTypes: eventTypes
-          .split(",")
-          .map((value) => value.trim())
-          .filter(Boolean)
+        eventTypes: normalizedEventTypes
       });
       setMessage("Subscription created as draft. Reloading.");
       window.location.reload();
@@ -374,13 +390,18 @@ export function EventBusManager({
                     setEventTypes(event.target.value)
                   }
                   placeholder="booking.created, booking.updated"
+                  aria-describedby="event-types-help"
                 />
+                <small id="event-types-help">
+                  Use exact comma-separated event types. Duplicates are removed
+                  before the draft is created.
+                </small>
               </label>
             </div>
             <div className="heroActions">
               <button
                 className="primaryButton"
-                disabled={busy}
+                disabled={busy || !canCreateSubscription}
                 onClick={createSubscription}
               >
                 Create draft subscription

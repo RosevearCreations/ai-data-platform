@@ -19,11 +19,11 @@ export default async function EventBusPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="integration-delivery" />
-          <p className="eyebrow">Build 291</p>
+          <p className="eyebrow">Build 317 · reusable host event bridge</p>
           <h1>Cross-App Event Bus &amp; Subscription Manager</h1>
           <p className="lead">
-            Sign in to create governed subscriptions and publish reviewed
-            Build 290 receipts into the internal event bus.
+            Sign in to manage governed event subscriptions, reviewed publications,
+            and the reusable host/module event bridge.
           </p>
           <Link
             className="primaryLink"
@@ -43,13 +43,12 @@ export default async function EventBusPage() {
       <section className="hero">
         <HelpInfo topic="integration-delivery" />
         <p className="eyebrow">
-          Build 291 · governed publish/subscribe routing
+          Build 317 · event bus host bridge & subscription pack
         </p>
         <h1>Cross-App Event Bus &amp; Subscription Manager</h1>
         <p className="lead">
-          Publish reviewed webhook receipts into a workspace event bus,
-          match them against explicit subscriptions, and create durable
-          held routes without direct point-to-point application wiring.
+          Use one governed event-bus workspace for reviewed publications, exact
+          subscriptions, host/module event contracts, and durable held-route evidence.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/webhook-gateway">
@@ -77,8 +76,24 @@ export default async function EventBusPage() {
           Publishing a reviewed receipt only creates internal durable routes.
           Every matched route remains held with
           <code>delivery-not-authorized</code>; Build 291 sends no network
-          request and does not activate QL-266.
+          request and route release remains separately governed.
         </p>
+      </section>
+
+      <section className="dataQualityPolicyNote">
+        <strong>Build 317 host/module pack</strong>
+        <p>
+          Hosts can prepare exact event contracts, held publication intents,
+          draft subscription registrations, deterministic idempotency keys,
+          and replay-safe receipt correlations without sending raw event
+          payloads through the bridge. Existing governed server workflows
+          remain authoritative for activation, publication, and route release.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-event-bus">
+            View module capability descriptor
+          </Link>
+        </div>
       </section>
 
       <EventBusManager
