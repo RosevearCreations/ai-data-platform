@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import {
   authorizeModuleSupervisorHostCycle,
   listModuleSupervisorPoliciesForUser,
+  readModuleSupervisorPolicyControlState,
   updateModuleSupervisorGlobalStop,
   upsertModuleSupervisorHostPolicy
 } from "@/lib/module-supervisor-host-policy-database";
@@ -161,6 +162,14 @@ export async function POST(request: Request) {
         await authorizeModuleSupervisorHostCycle(id, {
           host: hostFromBody(body),
           requestSafeHealth: body.requestSafeHealth === true
+        })
+      );
+    }
+
+    if (action === "control-state") {
+      return Response.json(
+        await readModuleSupervisorPolicyControlState(id, {
+          host: hostFromBody(body)
         })
       );
     }
