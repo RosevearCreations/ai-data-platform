@@ -1,0 +1,28 @@
+{
+  "schema": "rosevear.ai-data-platform.build321-review.v1",
+  "application": "AI Data Platform",
+  "build": 321,
+  "name": "Connector Driver Packaging & Dynamic Module Registry",
+  "sourceBuild": 289,
+  "capabilities": {
+    "connectorDriverManifest": true,
+    "capabilityMetadata": true,
+    "healthContract": true,
+    "authReferenceRequirements": true,
+    "semanticVersionCompatibility": true,
+    "installDisableState": true,
+    "signedPackageProvenanceWhereAvailable": true,
+    "registryValidation": true
+  },
+  "security": {
+    "driverPresenceActivatesConnection": false,
+    "installedEnabledProvesLiveConnection": false,
+    "discoveryGrantsCapabilities": false,
+    "rawSecretValuesIncluded": false,
+    "discoveryPerformsHealthProbe": false,
+    "incompatibleInstallationsAutoUpgraded": false,
+    "unsignedPackageClaimedSigned": false,
+    "signatureMetadataClaimedVerified": false
+  },
+  "nextQueuedBuild": 322
+}
