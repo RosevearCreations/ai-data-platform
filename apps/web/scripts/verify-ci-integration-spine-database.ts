@@ -85,6 +85,7 @@ const requiredTables = [
   "production_learning_vii_snapshots",
   "production_learning_vii_candidates",
   "performance_baseline_snapshots",
+  "experience_telemetry_events",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -158,6 +159,7 @@ const appendOnlyTables = [
   "production_learning_vii_snapshots",
   "production_learning_vii_candidates",
   "performance_baseline_snapshots",
+  "experience_telemetry_events",
   "rosevear_comms_operation_claims"
 ];
 
