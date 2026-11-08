@@ -73,8 +73,7 @@ export default async function DataContractsPage() {
           does not activate a connection and does not authorize live exchange.
           Unknown contracts and unknown fields fail closed. Build 287 can persist
           reviewed mapping profiles against these fingerprints, but no mapping
-          activates a connection. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED /
-          DISCONNECTED.
+          activates a connection. The retired QL-266 review hold is historical only and is not a current prerequisite.
         </p>
       </section>
 

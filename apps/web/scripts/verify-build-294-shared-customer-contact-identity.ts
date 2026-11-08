@@ -203,7 +203,7 @@ async function main() {
     page.includes("Build 294") &&
       page.includes("Raw email, phone, name and postal values") &&
       page.includes("No candidate is") &&
-      page.includes("QL-266 remains disconnected"),
+      page.includes("Legacy QL-266 connection status is historical"),
     "operator page explains privacy and review boundary"
   );
   ensure(

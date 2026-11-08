@@ -22,7 +22,8 @@ async function main() {
   ensure(registry.summary.applications === 6, "six peer applications");
   ensure(registry.summary.gatewayReadOnlyReady === 5, "five gateway-discoverable peers");
   ensure(registry.summary.catalogOnly === 1, "one catalog-only peer");
-  ensure(registry.summary.disconnected === 6, "all peer connections remain disconnected");
+  ensure(registry.summary.disconnected === 0, "no peer is hard-coded disconnected");
+  ensure(registry.summary.unmeasured === 6, "all peer states start unmeasured without current evidence");
   ensure(
     registry.summary.mutatingCapabilitiesDiscovered === 0,
     "no mutating capability discovered"
@@ -30,7 +31,8 @@ async function main() {
   ensure(registry.policy.authoritativeRegistry === true, "authoritative registry");
   ensure(registry.policy.discoveryIsReadOnly === true, "read-only discovery");
   ensure(registry.policy.liveConnectionImplied === false, "no live connection inference");
-  ensure(registry.policy.ql266Resumed === false, "QL-266 not resumed");
+  ensure(registry.policy.ql266Resumed === false, "legacy compatibility flag remains false");
+  ensure(registry.policy.legacyQl266PrerequisiteRetired === true, "legacy QL-266 prerequisite retired");
   ensure(registry.policy.automaticActivation === false, "no automatic activation");
 
   const expected = new Map([
@@ -44,8 +46,8 @@ async function main() {
 
   for (const app of registry.peerApplications) {
     ensure(expected.get(app.id) === app.repository, "repository identity for " + app.id);
-    ensure(app.connectionState === "DISCONNECTED", "connection state for " + app.id);
-    ensure(app.ownerAuthorization === "NOT_GIVEN", "authorization state for " + app.id);
+    ensure(app.connectionState === "UNMEASURED", "unmeasured connection state for " + app.id);
+    ensure(app.ownerAuthorization === "LEGACY_NOT_APPLICABLE", "legacy authorization state for " + app.id);
     ensure(app.automaticActivationAllowed === false, "automatic activation for " + app.id);
     ensure(app.mutatingCapabilityDiscovered === false, "mutating capability for " + app.id);
     ensure(
@@ -99,7 +101,7 @@ async function main() {
   );
   ensure(
     page.includes("Unified App Connection Registry &amp; Capability Discovery") &&
-      page.includes("All six peer apps remain DISCONNECTED"),
+      page.includes("Current peer connection state is UNMEASURED"),
     "Build 281 page"
   );
   ensure(

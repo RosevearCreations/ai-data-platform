@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { ExperienceTelemetryCollector } from "@/app/ExperienceTelemetryCollector";
 import { InterfacePreferenceController } from "@/app/InterfacePreferenceController";
 import { NavigationAssist } from "@/app/NavigationAssist";
 import { NavigationInsights } from "@/app/NavigationInsights";
@@ -55,6 +56,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="applicationFrame">
+      <ExperienceTelemetryCollector />
       <InterfacePreferenceController />
       <a className="skipToContent" href="#application-main-content">Skip to main content</a>
       <div
@@ -129,7 +131,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="applicationSidebarFooter">
-          <span>Operations Command · Marble Standard · Owner acceptance</span>
+          <span>Operations Command · Marble Standard · Current evidence</span>
           <Link href="/help#help-system-standard">Help standard</Link>
         </div>
       </aside>
@@ -166,7 +168,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <Link className={pathname === "/" ? "opsTopLink active" : "opsTopLink"} href="/">Management</Link>
             <Link className={pathname.startsWith("/attention") ? "opsTopLink active" : "opsTopLink"} href="/attention">Attention</Link>
             <Link className={pathname.startsWith("/production-learning") ? "opsTopLink active" : "opsTopLink"} href="/production-learning">Statistical</Link>
-            <Link className={pathname.startsWith("/integration-delivery") ? "opsTopLink active" : "opsTopLink"} href="/integration-delivery">System Status</Link>
+            <Link className={pathname.startsWith("/integration-health") ? "opsTopLink active" : "opsTopLink"} href="/integration-health">System Status</Link>
             {activeModuleHub ? <Link href={activeModuleHub}>Module hub</Link> : null}
             <Link className={pathname.startsWith("/search") ? "opsTopLink active" : "opsTopLink"} href="/search">Search</Link>
             <OperatorWorkspaceMenu />

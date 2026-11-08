@@ -69,6 +69,7 @@ export type IntegrationHealthCommandCenterModel={
     state:IntegrationHealthState;
     registeredPeers:number;
     disconnectedPeers:number;
+    unmeasuredPeers:number;
     staleCredentials:number;
     webhookEndpoints:number;
     webhookDenied24h:number;
@@ -101,6 +102,7 @@ export type IntegrationHealthCommandCenterModel={
     automaticRecoveryTriggered:false;
     automaticConnectionActivation:false;
     ql266Resumed:false;
+    legacyQl266PrerequisiteRetired:true;
   };
 };
 
@@ -248,6 +250,7 @@ export async function buildIntegrationHealthCommandCenter(
   const staleCredentials=credentials.filter((item)=>item.riskState!=="active").length;
   const webhookDenied24h=webhooks.reduce((sum,item)=>sum+item.denied24h,0);
   const disconnectedPeers=peers.filter((item)=>item.connectionState==="DISCONNECTED").length;
+  const unmeasuredPeers=peers.filter((item)=>item.connectionState==="UNMEASURED").length;
   const queuedEvents=queues.heldRoutes+queues.pendingRoutes;
 
   const connectorDurations=connectorLatency
@@ -262,9 +265,9 @@ export async function buildIntegrationHealthCommandCenter(
     {
       id:"peer-connections",
       label:"Peer connection registry",
-      state:disconnectedPeers>0?"attention":"healthy",
-      value:`${disconnectedPeers} disconnected`,
-      detail:`${peers.length} registered peer application(s). Registry state is evidence only; no live connection is inferred.`,
+      state:disconnectedPeers>0||unmeasuredPeers>0?"attention":"healthy",
+      value:disconnectedPeers>0?`${disconnectedPeers} disconnected`:`${unmeasuredPeers} unmeasured`,
+      detail:`${peers.length} registered peer application(s). Legacy QL-266 disconnected state is retired; live connection state is not inferred without current evidence.`,
       href:"/app-connections"
     },
     {
@@ -333,6 +336,7 @@ export async function buildIntegrationHealthCommandCenter(
       state:worst(signals.map((item)=>item.state)),
       registeredPeers:peers.length,
       disconnectedPeers,
+      unmeasuredPeers,
       staleCredentials,
       webhookEndpoints:webhooks.length,
       webhookDenied24h,
@@ -357,7 +361,8 @@ export async function buildIntegrationHealthCommandCenter(
       credentialValuesRead:false,
       automaticRecoveryTriggered:false,
       automaticConnectionActivation:false,
-      ql266Resumed:false
+      ql266Resumed:false,
+      legacyQl266PrerequisiteRetired:true
     }
   };
 }

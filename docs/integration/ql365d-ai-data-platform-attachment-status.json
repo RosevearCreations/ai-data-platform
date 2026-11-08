@@ -44,5 +44,15 @@
     "genuineIndependentClosureVerified": false
   },
   "connected": false,
-  "connectionState": "DISCONNECTED / HOLD"
+  "connectionState": "DISCONNECTED / HOLD",
+  "lifecycle": {
+    "state": "HISTORICAL_SNAPSHOT",
+    "currentPrerequisite": false,
+    "supersededForCurrentReadinessBy": [
+      "Build 300 Unified Integration Health Command Center",
+      "Build 329 Cross-Host Observability & Certification",
+      "Build 332 current-evidence truth cleanup"
+    ],
+    "note": "The captured QL-365D values remain immutable historical evidence and do not establish current connection readiness."
+  }
 }

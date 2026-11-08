@@ -61,7 +61,7 @@ async function main(){
     page.includes("Build 300") &&
     page.includes("Unified Integration Health Command Center") &&
     page.includes("performs no external health probe") &&
-    page.includes("does not resume QL-266"),
+    page.includes("does not bypass current connection authorization"),
     "operator observation boundary copy"
   );
 
@@ -110,7 +110,8 @@ async function main(){
   ]) ensure(ciDb.includes('"'+table+'"'),"existing compact DB evidence table "+table);
 
   ensure(reliability.includes("database.latencyMs"),"Build 263 measured database latency retained");
-  ensure(registry.includes('connectionState: typeof INTEGRATION_V1_STATUS'),"registered connection state remains authoritative");
+  ensure(registry.includes('connectionState: "UNMEASURED"'),"registry does not invent disconnected or connected state");
+  ensure(registry.includes("legacyQl266PrerequisiteRetired: true"),"legacy QL-266 prerequisite is retired");
 
   console.log("Build 300 verification passed: unified integration health is read-only, evidence-based and performs no external activation or recovery.");
 }

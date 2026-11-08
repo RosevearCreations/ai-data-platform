@@ -52,8 +52,7 @@ export default async function ConnectorSetupPage() {
         <p>
           Build 283 never accepts raw secret values, installs or enables a connector,
           executes an external connection test, creates a tenant/workspace, or changes
-          the DISCONNECTED state. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED /
-          DISCONNECTED.
+          the DISCONNECTED state. The retired QL-266 review hold is historical only and is not a current prerequisite.
         </p>
       </section>
 

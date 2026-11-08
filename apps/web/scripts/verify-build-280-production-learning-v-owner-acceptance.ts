@@ -215,12 +215,13 @@ async function main() {
   ensure(
     owner.includes("Build 280") &&
       owner.includes("Production Learning V, Owner Acceptance &amp; Next-Batch Renewal") &&
-      owner.includes("No numbered Builds 281+ batch is authorized automatically"),
+      owner.includes("not a current") &&
+      owner.includes("prerequisite"),
     "Build 280 owner acceptance page"
   );
   ensure(
     owner.includes("Owner Acceptance, Legacy Cleanup &amp; Production Learning IV") &&
-      owner.includes("owner-authorized Builds 273–280 batch"),
+      owner.includes("Historical checkpoint"),
     "Build 272 historical verifier compatibility"
   );
   ensure(
@@ -235,8 +236,8 @@ async function main() {
     "authenticated Build 280 API"
   );
   ensure(
-    nav.includes("Production Learning V") &&
-      nav.includes("next-batch renewal"),
+    !nav.includes('href: "/owner-acceptance"') &&
+      nav.includes("Production Learning"),
     "navigation guidance"
   );
   ensure(

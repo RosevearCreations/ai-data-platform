@@ -50,8 +50,7 @@ export default async function FieldMappingsPage() {
           Build 287 persists source field paths, transforms, contract fingerprints,
           review state and audit evidence only. Build 288 now verifies source/canonical
           schema drift separately before later delivery. Neither surface copies source
-          records, activates connectors, authorizes writes or resumes QL-266. Connection state
-          remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED.
+          records, activates connectors, authorizes writes or resumes QL-266. The retired QL-266 review hold is historical only and no longer defines current connection readiness.
         </p>
       </section>
 

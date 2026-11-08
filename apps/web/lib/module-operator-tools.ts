@@ -28,12 +28,6 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         itemHrefs: ["/data-library"]
       },
       {
-        id: "monitor-performance",
-        label: "Monitor performance",
-        description: "Review measured production baselines, SLO standing and regression evidence before performance changes.",
-        itemHrefs: ["/performance-baseline"]
-      },
-      {
         id: "review-approve",
         label: "Review & approve",
         description: "Review normalized data, inspect deterministic quality findings, then inspect the governed approved-data surface.",

@@ -52,8 +52,7 @@ export default async function ConnectionValidationPage() {
           enabled, only with owner/admin authority, only with a supported non-export
           capability and only after configuration/vault/destination checks pass.
           Arbitrary URL probing, automatic connector activation and secret-value
-          return/persistence are prohibited. QL-266 remains UNDER_REVIEW /
-          REVIEW_DEFERRED / DISCONNECTED.
+          return/persistence are prohibited. The retired QL-266 review hold is historical only and is not a current prerequisite.
         </p>
       </section>
 

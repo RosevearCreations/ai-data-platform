@@ -62,18 +62,6 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "shell-overview"
       },
       {
-        href: "/owner-acceptance",
-        label: "Owner Acceptance",
-        description: "Review Build 280 Production Learning V, owner acceptance and evidence-backed next-batch renewal.",
-        helpTopic: "learning-overview"
-      },
-      {
-        href: "/evidence-baseline",
-        label: "Evidence Baseline",
-        description: "Triage current evidence into active, validated and historical findings for Builds 274–279.",
-        helpTopic: "learning-overview"
-      },
-      {
         href: "/search",
         label: "Unified Search",
         description: "Search authorized records, evidence, workspaces and guidance.",
@@ -96,6 +84,18 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "System Reliability",
         description: "Review measured health, durable trend comparison, recurring failure patterns and recovery readiness.",
         helpTopic: "command-center"
+      },
+      {
+        href: "/performance-baseline",
+        label: "Performance Baseline",
+        description: "Review Build 331 measured production baselines, SLO budgets and regressions.",
+        helpTopic: "shell-overview"
+      },
+      {
+        href: "/experience-telemetry",
+        label: "Experience Telemetry",
+        description: "Review Build 332 real-user loading, interaction and route-transition timing.",
+        helpTopic: "shell-overview"
       },
       {
         href: "/integration-health",
@@ -129,12 +129,6 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         label: "Unified Data Library",
         description: "Search and inspect governed records and provenance.",
         helpTopic: "data-library-overview"
-      },
-      {
-        href: "/performance-baseline",
-        label: "Performance Baseline",
-        description: "Review Build 331 measured production baselines, SLO budgets and regressions.",
-        helpTopic: "shell-overview"
       },
       {
         href: "/data-review",

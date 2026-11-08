@@ -47,7 +47,7 @@ export default async function SchemaDriftPage() {
           Build 288 stores schema descriptors, fingerprints, drift evidence and
           repair proposals only. Deterministic suggestions may be applied to a
           mapping draft, but the mapping must be reviewed again in Build 287.
-          QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED and no live
+          The retired QL-266 review hold is historical only and is not a current prerequisite. and no live
           exchange is activated.
         </p>
       </section>

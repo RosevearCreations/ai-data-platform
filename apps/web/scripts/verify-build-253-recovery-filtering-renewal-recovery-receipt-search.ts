@@ -45,9 +45,10 @@ async function main(){
   ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsStatusMatrix","OperationsComparisonBand","OperationsReviewQueue","OperationsInspectorEscalationCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 253 — status matrices, comparison bands, responsive review queues and inspector escalation cards"),"Build 253 styles");
-  for(const token of ["Delivery status matrix","Current operating comparison","System Status review queue","Configuration escalation","Delivery escalation","QL-266 escalation boundary"]) ensure(statusPage.includes(token),"System Status "+token);
+  for(const token of ["Delivery status matrix","Current operating comparison","System Status review queue","Configuration escalation","Delivery escalation"]) ensure(statusPage.includes(token),"System Status "+token);
   ensure(statusPage.includes("configuredCount")&&statusPage.includes("needsConfigCount")&&statusPage.includes("acceptedEventRows")&&statusPage.includes("rejectedEvents"),"real matrix and queue data");
   ensure(statusPage.includes('id="build250-ql266"'),"QL-266 evidence anchor compatibility");
+  ensure(!statusPage.includes('id="ql266-boundary"'),"retired QL-266 active review-queue item removed");
   ensure(pkg.includes("verify-build-253-recovery-filtering-renewal-recovery-receipt-search.ts"),"registered");
 
   const status=JSON.parse(statusRaw);
