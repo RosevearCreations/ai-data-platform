@@ -48,7 +48,7 @@ Build 309 will package framework-specific host adapters/scaffolds around this fo
 
 ## Embedded surface route
 
-`/module-embed/[surface]` renders one of the five Build 306 module surfaces without the normal AI Data Platform application sidebar/top bar.
+`/module-embed/[surface]` renders one of the supported Build 306+ module surfaces without the normal AI Data Platform application sidebar/top bar.
 
 Supported surfaces:
 
@@ -56,6 +56,7 @@ Supported surfaces:
 - app-connections;
 - integration-health;
 - integration-certification;
+- module-certification;
 - production-learning.
 
 The route requires:

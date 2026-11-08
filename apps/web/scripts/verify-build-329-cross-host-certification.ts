@@ -235,6 +235,8 @@ async function main() {
     navigationSource,
     toolsSource,
     manifestSource,
+    embeddedPageSource,
+    embeddedBridgeSource,
     migrationSource,
     docsSource,
     reviewSource,
@@ -251,6 +253,8 @@ async function main() {
     source("lib/application-navigation.ts"),
     source("lib/module-operator-tools.ts"),
     source("lib/universal-module-contract.ts"),
+    source("app/module-embed/[surface]/page.tsx"),
+    source("app/module-embed/[surface]/EmbeddedModuleBridge.tsx"),
     source(
       "../../db/migrations/0112_cross_host_observability_certification.sql"
     ),
@@ -382,6 +386,22 @@ async function main() {
       "Build 329 universal manifest missing " + token
     );
   }
+
+  for (const token of [
+    'import ModuleCertificationPage from "@/app/module-certification/page";',
+    'case "module-certification"',
+    "content = <ModuleCertificationPage />"
+  ]) {
+    assert.ok(
+      embeddedPageSource.includes(token),
+      "Build 329 embedded page missing " + token
+    );
+  }
+
+  assert.ok(
+    embeddedBridgeSource.includes('| "module-certification"'),
+    "Build 329 embedded bridge must accept module-certification."
+  );
 
   for (const token of [
     "module_host_observations",
