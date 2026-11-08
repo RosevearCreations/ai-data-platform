@@ -376,7 +376,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/media-asset-exchange",
         label: "Media & Asset Exchange",
-        description: "Register deduplicated photos, documents, receipts and generated-media references and review held exchange packages.",
+        description: "Register deduplicated media references, review held packages and use the media host bridge for preview, transfer and lifecycle contracts.",
         helpTopic: "integration-delivery"
       },
       {
