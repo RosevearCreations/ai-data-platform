@@ -58,6 +58,21 @@ export default async function NotificationConsentPage() {
         </p>
       </section>
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 319 shared coordination module</strong>
+        <p>
+          This workbench is now available through the unified notification,
+          task/follow-up and scheduling host module. Host preparation preserves
+          the existing held package, consent and conflict boundaries; optional
+          Comms Hub routing is a preference only and requires separate authority.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-shared-coordination">
+            View shared coordination module descriptor
+          </Link>
+        </div>
+      </section>
+
       <NotificationConsentConsole
         model={{
           workspaces: model.workspaces.map((workspace) => ({
