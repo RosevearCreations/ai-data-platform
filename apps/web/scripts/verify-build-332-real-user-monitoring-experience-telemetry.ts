@@ -157,6 +157,22 @@ assert.ok(
   ownerAcceptance.includes("not a current prerequisite")
 );
 
+const ql365dHistorical = JSON.parse(
+  source("../../docs/integration/ql365d-ai-data-platform-attachment-status.json")
+);
+assert.equal(ql365dHistorical.lifecycle.state, "HISTORICAL_SNAPSHOT");
+assert.equal(ql365dHistorical.lifecycle.currentPrerequisite, false);
+assert.equal(ql365dHistorical.connected, false);
+
+const review = JSON.parse(
+  source("../../docs/integration/ai-data-platform-build332-review.json")
+);
+assert.equal(review.build, 332);
+assert.equal(review.itTruthCleanup.ql266GlobalPrerequisiteRetired, true);
+assert.equal(review.itTruthCleanup.unknownPeerState, "UNMEASURED");
+assert.equal(review.privacy.rawUrlsStored, false);
+assert.equal(review.nextQueuedBuild, 333);
+
 const retirement = source("../../docs/IT_TRUTH_RETIREMENT_BUILD_332.md");
 assert.ok(retirement.includes("Retired from the active task queue"));
 assert.ok(retirement.includes("Still authoritative"));
