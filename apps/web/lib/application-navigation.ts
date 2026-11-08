@@ -322,7 +322,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/webhook-gateway",
         label: "Webhook Gateway & Event Intake",
-        description: "Configure signed, replay-safe inbound event endpoints and inspect durable receipts.",
+        description: "Configure signed, replay-safe inbound endpoints and use the inbound endpoint module for callback routing, receipt search and durable revoke evidence.",
         helpTopic: "integration-delivery"
       },
       {

@@ -35,6 +35,10 @@ import {
 
 const ENV_VAR_PATTERN = /^[A-Z][A-Z0-9_]{2,127}$/;
 const DISPLAY_NAME_PATTERN = /^[^\u0000-\u001f\u007f]{1,160}$/;
+const CALLBACK_APPLICATION_PATTERN =
+  /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
+const CALLBACK_PATH_PATTERN =
+  /^\/[A-Za-z0-9._~:/-]{1,240}$/;
 
 export interface WebhookEndpointRecord {
   endpointId: string;
@@ -46,7 +50,11 @@ export interface WebhookEndpointRecord {
   displayName: string;
   keyId: string;
   secretEnvVar: string;
+  callbackApplicationId: string | null;
+  callbackPath: string | null;
   enabled: boolean;
+  revokedAt: Date | null;
+  revokedBy: string | null;
   allowedEventTypes: string[];
   maxBodyBytes: number;
   createdBy: string;
@@ -68,6 +76,7 @@ export interface WebhookReceiptRecord {
   requestTimestampMs: number;
   bodySha256: string;
   payloadSizeBytes: number;
+  eventEnvelope: WebhookEventEnvelope;
   receiptPayload: Record<string, unknown>;
   receiptSignature: string;
   receivedAt: Date;
@@ -107,7 +116,24 @@ function endpointRow(row: Record<string, unknown>): WebhookEndpointRecord {
     displayName: String(row.display_name),
     keyId: String(row.key_id),
     secretEnvVar: String(row.secret_env_var),
+    callbackApplicationId:
+      row.callback_application_id === null ||
+      row.callback_application_id === undefined
+        ? null
+        : String(row.callback_application_id),
+    callbackPath:
+      row.callback_path === null || row.callback_path === undefined
+        ? null
+        : String(row.callback_path),
     enabled: Boolean(row.enabled),
+    revokedAt:
+      row.revoked_at === null || row.revoked_at === undefined
+        ? null
+        : new Date(String(row.revoked_at)),
+    revokedBy:
+      row.revoked_by === null || row.revoked_by === undefined
+        ? null
+        : String(row.revoked_by),
     allowedEventTypes: stringArray(row.allowed_event_types),
     maxBodyBytes: Number(row.max_body_bytes),
     createdBy: String(row.created_by),
@@ -133,6 +159,7 @@ function receiptRow(row: Record<string, unknown>): WebhookReceiptRecord {
     requestTimestampMs: Number(row.request_timestamp_ms),
     bodySha256: String(row.body_sha256),
     payloadSizeBytes: Number(row.payload_size_bytes),
+    eventEnvelope: parseWebhookEventEnvelope(row.event_envelope),
     receiptPayload:
       row.receipt_payload &&
       typeof row.receipt_payload === "object" &&
@@ -210,6 +237,41 @@ function normalizeKeyId(value: unknown) {
   return result;
 }
 
+function normalizeCallbackRegistration(input: {
+  callbackApplicationId?: unknown;
+  callbackPath?: unknown;
+}) {
+  const callbackApplicationId =
+    input.callbackApplicationId === undefined ||
+    input.callbackApplicationId === null ||
+    input.callbackApplicationId === ""
+      ? null
+      : String(input.callbackApplicationId).trim();
+  const callbackPath =
+    input.callbackPath === undefined ||
+    input.callbackPath === null ||
+    input.callbackPath === ""
+      ? null
+      : String(input.callbackPath).trim();
+
+  if ((callbackApplicationId === null) !== (callbackPath === null)) {
+    throw new Error("webhook_callback_pair_required");
+  }
+  if (
+    callbackApplicationId !== null &&
+    !CALLBACK_APPLICATION_PATTERN.test(callbackApplicationId)
+  ) {
+    throw new Error("webhook_callback_application_invalid");
+  }
+  if (
+    callbackPath !== null &&
+    !CALLBACK_PATH_PATTERN.test(callbackPath)
+  ) {
+    throw new Error("webhook_callback_path_invalid");
+  }
+  return { callbackApplicationId, callbackPath };
+}
+
 async function requireWorkspaceAdmin(
   client: PoolClient,
   workspaceId: string
@@ -243,7 +305,7 @@ export async function listWebhookGatewayForUser(userId: string) {
         `select receipt_id,endpoint_id,workspace_id,source_application_id,
                 environment,tenant_id,event_id,event_type,event_occurred_at,
                 request_timestamp_ms,body_sha256,payload_size_bytes,
-                receipt_payload,receipt_signature,received_at
+                event_envelope,receipt_payload,receipt_signature,received_at
          from app.webhook_receipts
          order by received_at desc
          limit 200`
@@ -277,7 +339,12 @@ export async function listWebhookGatewayForUser(userId: string) {
     summary: {
       endpoints: state.endpoints.length,
       enabled: state.endpoints.filter((item) => item.enabled).length,
-      disabled: state.endpoints.filter((item) => !item.enabled).length,
+      disabled: state.endpoints.filter(
+        (item) => !item.enabled && item.revokedAt === null
+      ).length,
+      revoked: state.endpoints.filter(
+        (item) => item.revokedAt !== null
+      ).length,
       receipts: state.receipts.length,
       accepted: state.audit.filter((item) => item.outcome === "accepted").length,
       denied: state.audit.filter((item) => item.outcome === "denied").length,
@@ -292,6 +359,9 @@ export async function listWebhookGatewayForUser(userId: string) {
       signedRequestsRequired: true,
       signedReceipts: true,
       atomicReplaySuppression: true,
+      irreversibleRevocation: true,
+      callbackDispatch: false,
+      hostEventTranslationDispatch: false,
       downstreamDispatch: false,
       automaticConnectionActivation: false,
       ql266Resumed: false
@@ -309,6 +379,8 @@ export async function createWebhookEndpoint(
     displayName: string;
     keyId: string;
     secretEnvVar: string;
+    callbackApplicationId?: string | null;
+    callbackPath?: string | null;
     allowedEventTypes: string[];
     maxBodyBytes?: number;
   }
@@ -330,6 +402,7 @@ export async function createWebhookEndpoint(
   const displayName = normalizeDisplayName(input.displayName);
   const keyId = normalizeKeyId(input.keyId);
   const secretEnvVar = normalizeSecretEnvVar(input.secretEnvVar);
+  const callback = normalizeCallbackRegistration(input);
   const allowedEventTypes = normalizeAllowedEventTypes(input.allowedEventTypes);
   const maxBodyBytes = input.maxBodyBytes ?? WEBHOOK_MAX_BODY_BYTES;
   if (
@@ -349,9 +422,10 @@ export async function createWebhookEndpoint(
       `insert into app.webhook_endpoints (
         endpoint_id,endpoint_key,workspace_id,source_application_id,
         environment,tenant_id,display_name,key_id,secret_env_var,
+        callback_application_id,callback_path,
         enabled,allowed_event_types,max_body_bytes,created_by,updated_by
       ) values (
-        $1,$2,$3,$4,$5,$6,$7,$8,$9,false,$10::jsonb,$11,$12,$12
+        $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,false,$12::jsonb,$13,$14,$14
       )
       returning *`,
       [
@@ -364,6 +438,8 @@ export async function createWebhookEndpoint(
         displayName,
         keyId,
         secretEnvVar,
+        callback.callbackApplicationId,
+        callback.callbackPath,
         JSON.stringify(allowedEventTypes),
         maxBodyBytes,
         userId
@@ -381,6 +457,8 @@ export async function updateWebhookEndpoint(
     displayName?: string;
     keyId?: string;
     secretEnvVar?: string;
+    callbackApplicationId?: string | null;
+    callbackPath?: string | null;
     allowedEventTypes?: string[];
     maxBodyBytes?: number;
   }
@@ -395,6 +473,9 @@ export async function updateWebhookEndpoint(
     if (!current.rows[0]) throw new Error("webhook_endpoint_not_found");
     const endpoint = endpointRow(current.rows[0]);
     await requireWorkspaceAdmin(client, endpoint.workspaceId);
+    if (endpoint.revokedAt !== null) {
+      throw new Error("webhook_endpoint_revoked");
+    }
 
     const displayName =
       input.displayName === undefined
@@ -408,6 +489,16 @@ export async function updateWebhookEndpoint(
       input.secretEnvVar === undefined
         ? endpoint.secretEnvVar
         : normalizeSecretEnvVar(input.secretEnvVar);
+    const callback = normalizeCallbackRegistration({
+      callbackApplicationId:
+        input.callbackApplicationId === undefined
+          ? endpoint.callbackApplicationId
+          : input.callbackApplicationId,
+      callbackPath:
+        input.callbackPath === undefined
+          ? endpoint.callbackPath
+          : input.callbackPath
+    });
     const allowedEventTypes =
       input.allowedEventTypes === undefined
         ? endpoint.allowedEventTypes
@@ -438,18 +529,23 @@ export async function updateWebhookEndpoint(
        set display_name=$2,
            key_id=$3,
            secret_env_var=$4,
-           allowed_event_types=$5::jsonb,
-           max_body_bytes=$6,
-           enabled=$7,
-           updated_by=$8,
+           callback_application_id=$5,
+           callback_path=$6,
+           allowed_event_types=$7::jsonb,
+           max_body_bytes=$8,
+           enabled=$9,
+           updated_by=$10,
            updated_at=now()
        where endpoint_id=$1
+         and revoked_at is null
        returning *`,
       [
         endpoint.endpointId,
         displayName,
         keyId,
         secretEnvVar,
+        callback.callbackApplicationId,
+        callback.callbackPath,
         JSON.stringify(allowedEventTypes),
         maxBodyBytes,
         enabled,
@@ -457,6 +553,132 @@ export async function updateWebhookEndpoint(
       ]
     );
     return endpointRow(result.rows[0]);
+  });
+}
+
+export async function revokeWebhookEndpoint(
+  userId: string,
+  endpointId: string
+) {
+  return withUserDatabase(userId, async (client) => {
+    const current = await client.query(
+      `select * from app.webhook_endpoints
+       where endpoint_id=$1
+       for update`,
+      [endpointId]
+    );
+    if (!current.rows[0]) {
+      throw new Error("webhook_endpoint_not_found");
+    }
+    const endpoint = endpointRow(current.rows[0]);
+    await requireWorkspaceAdmin(client, endpoint.workspaceId);
+    if (endpoint.revokedAt !== null) {
+      return endpoint;
+    }
+
+    const result = await client.query(
+      `update app.webhook_endpoints
+       set enabled=false,
+           revoked_at=now(),
+           revoked_by=$2,
+           updated_by=$2,
+           updated_at=now()
+       where endpoint_id=$1
+         and revoked_at is null
+       returning *`,
+      [endpointId, userId]
+    );
+    if (!result.rows[0]) {
+      throw new Error("webhook_endpoint_revoke_conflict");
+    }
+    return endpointRow(result.rows[0]);
+  });
+}
+
+export async function searchWebhookReceiptsForUser(
+  userId: string,
+  input: {
+    workspaceId?: string | null;
+    endpointId?: string | null;
+    receiptId?: string | null;
+    eventId?: string | null;
+    eventType?: string | null;
+    sourceApplicationId?: string | null;
+    environment?: "nonproduction" | "production" | null;
+    tenantId?: string | null;
+    limit?: number;
+  }
+) {
+  const limit = Math.min(
+    100,
+    Math.max(1, Number.isInteger(input.limit) ? Number(input.limit) : 50)
+  );
+  const values: unknown[] = [];
+  const filters: string[] = [];
+  const add = (sql: string, value: unknown) => {
+    values.push(value);
+    filters.push(sql.replace("$?", "$" + values.length));
+  };
+
+  if (input.workspaceId) {
+    add("workspace_id=$?", input.workspaceId);
+  }
+  if (input.endpointId) {
+    add("endpoint_id=$?", input.endpointId);
+  }
+  if (input.receiptId) {
+    add("receipt_id=$?", input.receiptId);
+  }
+  if (input.eventId) {
+    if (!safeWebhookEventId(input.eventId)) {
+      throw new Error("webhook_event_id_invalid");
+    }
+    add("event_id=$?", input.eventId);
+  }
+  if (input.eventType) {
+    if (!safeWebhookEventType(input.eventType)) {
+      throw new Error("webhook_event_type_invalid");
+    }
+    add("event_type=$?", input.eventType);
+  }
+  if (input.sourceApplicationId) {
+    if (
+      !WEBHOOK_SOURCE_APPLICATIONS.includes(
+        input.sourceApplicationId as WebhookSourceApplication
+      )
+    ) {
+      throw new Error("webhook_source_application_invalid");
+    }
+    add("source_application_id=$?", input.sourceApplicationId);
+  }
+  if (input.environment) {
+    if (
+      input.environment !== "nonproduction" &&
+      input.environment !== "production"
+    ) {
+      throw new Error("webhook_environment_invalid");
+    }
+    add("environment=$?", input.environment);
+  }
+  if (input.tenantId) {
+    if (!safeWebhookTenantId(input.tenantId)) {
+      throw new Error("webhook_tenant_invalid");
+    }
+    add("tenant_id=$?", input.tenantId);
+  }
+  return withUserDatabase(userId, async (client) => {
+    const result = await client.query(
+      `select receipt_id,endpoint_id,workspace_id,source_application_id,
+              environment,tenant_id,event_id,event_type,event_occurred_at,
+              request_timestamp_ms,body_sha256,payload_size_bytes,
+              event_envelope,receipt_payload,receipt_signature,received_at
+       from app.webhook_receipts
+       ${filters.length ? "where " + filters.join(" and ") : ""}
+       order by received_at desc
+       limit ${limit}`,
+      values
+    );
+    return result.rows.map(receiptRow);
   });
 }
 
@@ -536,6 +758,12 @@ export async function acceptInboundWebhook(input: {
   const now = input.now ?? Date.now();
 
   try {
+    if (endpoint.revokedAt !== null) {
+      throw new WebhookGatewayError(
+        "webhook_endpoint_revoked",
+        404
+      );
+    }
     if (!endpoint.enabled) {
       throw new WebhookGatewayError(
         "webhook_endpoint_disabled",
@@ -694,6 +922,7 @@ export async function acceptInboundWebhook(input: {
         }
         const latest = endpointRow(latestResult.rows[0]);
         if (
+          latest.revokedAt !== null ||
           !latest.enabled ||
           latest.updatedAt.getTime() !== endpoint.updatedAt.getTime() ||
           latest.keyId !== endpoint.keyId ||

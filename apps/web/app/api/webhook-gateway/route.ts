@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import {
   createWebhookEndpoint,
   listWebhookGatewayForUser,
+  revokeWebhookEndpoint,
   updateWebhookEndpoint
 } from "@/lib/webhook-gateway-database";
 
@@ -64,6 +65,15 @@ export async function POST(request: Request) {
       displayName: String(body.displayName ?? ""),
       keyId: String(body.keyId ?? ""),
       secretEnvVar: String(body.secretEnvVar ?? ""),
+      callbackApplicationId:
+        body.callbackApplicationId === null ||
+        body.callbackApplicationId === undefined
+          ? null
+          : String(body.callbackApplicationId),
+      callbackPath:
+        body.callbackPath === null || body.callbackPath === undefined
+          ? null
+          : String(body.callbackPath),
       allowedEventTypes: Array.isArray(body.allowedEventTypes)
         ? body.allowedEventTypes.map(String)
         : [],
@@ -95,6 +105,13 @@ export async function PATCH(request: Request) {
   }
   try {
     const body = await request.json();
+    if (body.action === "revoke") {
+      const endpoint = await revokeWebhookEndpoint(
+        userId,
+        String(body.endpointId ?? "")
+      );
+      return Response.json({ endpoint, control: "revoked" });
+    }
     const endpoint = await updateWebhookEndpoint(userId, {
       endpointId: String(body.endpointId ?? ""),
       enabled:
@@ -113,6 +130,18 @@ export async function PATCH(request: Request) {
         body.secretEnvVar === undefined
           ? undefined
           : String(body.secretEnvVar),
+      callbackApplicationId:
+        body.callbackApplicationId === undefined
+          ? undefined
+          : body.callbackApplicationId === null
+            ? null
+            : String(body.callbackApplicationId),
+      callbackPath:
+        body.callbackPath === undefined
+          ? undefined
+          : body.callbackPath === null
+            ? null
+            : String(body.callbackPath),
       allowedEventTypes:
         body.allowedEventTypes === undefined
           ? undefined
