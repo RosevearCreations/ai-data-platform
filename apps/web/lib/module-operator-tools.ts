@@ -323,7 +323,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         id: "operate-maintain",
         label: "Operate & maintain",
         description: "Create genuine first evidence, review retention and inspect measured production learning.",
-        itemHrefs: ["/first-evidence", "/retention", "/production-learning", "/production-learning-vii"]
+        itemHrefs: ["/first-evidence", "/retention", "/production-learning"]
       },
       {
         id: "appearance",
@@ -352,11 +352,6 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/retention",
         label: "Retention governance",
         description: "Review archive candidates, protected evidence and bounded cleanup impact."
-      },
-      {
-        href: "/production-learning-vii",
-        label: "Production Learning VII",
-        description: "Review the evidence-driven 306–330 batch closeout and unnumbered next-roadmap candidates."
       }
     ]
   }
