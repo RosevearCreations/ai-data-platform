@@ -320,7 +320,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "complete" },
             { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "complete" },
             { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "complete" },
-            { label: "Historical review boundary", detail: "Retired from the active workflow; current readiness comes from live evidence.", state: "ready" }
+            { label: "Historical review boundary", detail: "Retired from the active workflow; current readiness comes from live evidence.", state: "complete" }
           ]}
         />
       </div>
@@ -379,7 +379,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "complete", meta: last24hEvents.length + " event(s) in the last 24 hours" },
             { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "complete", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
             { id: "inspect", label: "Inspect configuration gaps", detail: needsConfigCount + " consumer configuration gap(s) remain.", state: needsConfigCount ? "current" : "complete", meta: configuredCount + "/" + consumers.length + " consumers configured" },
-            { id: "handoff", label: "Historical review boundary", detail: "Legacy QL-266 evidence is retained for audit only.", state: "ready", meta: "RETIRED · HISTORICAL" }
+            { id: "handoff", label: "Historical review boundary", detail: "Legacy QL-266 evidence is retained for audit only.", state: "complete", meta: "RETIRED · HISTORICAL" }
           ]}
         />
         <div className="opsInspectorHandoffGrid" id="build252-inspector-handoffs">
