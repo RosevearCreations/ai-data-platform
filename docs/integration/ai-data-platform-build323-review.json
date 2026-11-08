@@ -1,0 +1,27 @@
+{
+  "schema": "rosevear.ai-data-platform.build323-review.v1",
+  "application": "AI Data Platform",
+  "build": 323,
+  "name": "Secure Local/Cloud Relay & Transport Selection",
+  "capabilities": {
+    "transportManifest": true,
+    "exactOriginAllowlist": true,
+    "localRelayRegistration": true,
+    "cloudDirectMode": true,
+    "transportHealth": true,
+    "failoverEligibilityRules": true,
+    "noSilentSecurityDowngrade": true,
+    "chosenTransportAuditEvidence": true
+  },
+  "security": {
+    "wildcardOriginsAllowed": false,
+    "rawCredentialsAccepted": false,
+    "rawRelayTrustMaterialAccepted": false,
+    "selectorPerformsNetworkRequest": false,
+    "transportPresenceActivatesConnection": false,
+    "transportSelectionGrantsAuthorization": false,
+    "automaticFailoverWithoutOptIn": false,
+    "weakerSecurityFailoverAllowed": false
+  },
+  "nextQueuedBuild": 324
+}
