@@ -325,6 +325,27 @@ function validateSnapshotItem(item: OfflineSyncQueueItem) {
     "offline_queue_idempotency_key_invalid"
   );
   if (
+    ![
+      "queued-offline",
+      "ready",
+      "syncing",
+      "review-required",
+      "conflict",
+      "expired",
+      "confirmed"
+    ].includes(item.state)
+  ) {
+    throw new Error("offline_queue_item_state_invalid");
+  }
+  if (
+    ![
+      "host-encrypted",
+      "unsupported-reference-only"
+    ].includes(item.storageEncryption)
+  ) {
+    throw new Error("offline_queue_storage_encryption_invalid");
+  }
+  if (
     item.attemptCount < 0 ||
     item.attemptCount > OFFLINE_QUEUE_MAX_ATTEMPTS
   ) {
@@ -451,7 +472,26 @@ export class OfflineSynchronizationQueue {
       this.detector.seed(restored.online);
 
       let changed = false;
+      const currentStorageEncryption =
+        storageEncryption(this.storage);
       for (const item of this.snapshotValue.items) {
+        if (
+          item.hostApplicationId !==
+            this.snapshotValue.hostApplicationId ||
+          item.hostInstanceId !==
+            this.snapshotValue.hostInstanceId ||
+          item.environment !== this.snapshotValue.environment ||
+          item.workspaceId !== this.snapshotValue.workspaceId ||
+          item.tenantId !== this.snapshotValue.tenantId
+        ) {
+          throw new Error("offline_queue_item_scope_mismatch");
+        }
+        if (
+          item.storageEncryption !== currentStorageEncryption
+        ) {
+          item.storageEncryption = currentStorageEncryption;
+          changed = true;
+        }
         if (item.state === "syncing") {
           item.state = "review-required";
           item.reviewReason =
@@ -461,7 +501,7 @@ export class OfflineSynchronizationQueue {
           changed = true;
         }
       }
-      this.expireStaleItems(now);
+      changed = this.expireStaleItems(now) || changed;
       if (changed) await this.persist();
     }
     this.initialized = true;
@@ -644,7 +684,9 @@ export class OfflineSynchronizationQueue {
           | "offline"
           | "transport-unavailable"
           | "no-pending-work"
-          | "precondition-evidence-required";
+          | "precondition-evidence-required"
+          | "conflict-detected"
+          | "manual-review-required";
         itemId: string | null;
       }
   > {
@@ -715,7 +757,7 @@ export class OfflineSynchronizationQueue {
         await this.persist();
         return {
           state: "held",
-          reason: "no-pending-work",
+          reason: "conflict-detected",
           itemId: item.itemId
         };
       }
@@ -727,7 +769,7 @@ export class OfflineSynchronizationQueue {
       await this.persist();
       return {
         state: "held",
-        reason: "no-pending-work",
+        reason: "manual-review-required",
         itemId: item.itemId
       };
     }
