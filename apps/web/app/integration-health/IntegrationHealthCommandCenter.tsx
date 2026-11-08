@@ -37,7 +37,7 @@ export function IntegrationHealthCommandCenter({
       </div>
       <div className="commandMetrics">
         <article><strong>{model.summary.registeredPeers}</strong><span>registered peer apps</span></article>
-        <article><strong>{model.summary.disconnectedPeers}</strong><span>registry-disconnected peers</span></article>
+        <article><strong>{model.summary.unmeasuredPeers}</strong><span>peer states awaiting current evidence</span></article>
         <article><strong>{model.summary.staleCredentials}</strong><span>credential references needing attention</span></article>
         <article><strong>{model.summary.queuedEvents}</strong><span>held/pending event routes</span></article>
         <article><strong>{model.summary.deliveryFailures24h}</strong><span>delivery failures / 24h</span></article>
@@ -136,7 +136,7 @@ export function IntegrationHealthCommandCenter({
 
     <section className="dataQualityPolicyNote">
       <strong>Build 300 evidence boundary</strong>
-      <p>Read-only dashboard: <code>{String(model.policy.readOnlyDashboard)}</code>. External health probes: <code>{String(model.policy.externalHealthProbePerformed)}</code>. Credential values read: <code>{String(model.policy.credentialValuesRead)}</code>. Automatic recovery: <code>{String(model.policy.automaticRecoveryTriggered)}</code>. Automatic connection activation: <code>{String(model.policy.automaticConnectionActivation)}</code>. QL-266 resumed: <code>{String(model.policy.ql266Resumed)}</code>.</p>
+      <p>Read-only dashboard: <code>{String(model.policy.readOnlyDashboard)}</code>. External health probes: <code>{String(model.policy.externalHealthProbePerformed)}</code>. Credential values read: <code>{String(model.policy.credentialValuesRead)}</code>. Automatic recovery: <code>{String(model.policy.automaticRecoveryTriggered)}</code>. Automatic connection activation: <code>{String(model.policy.automaticConnectionActivation)}</code>. Legacy QL-266 prerequisite retired: <code>{String(model.policy.legacyQl266PrerequisiteRetired)}</code>.</p>
     </section>
   </>;
 }
