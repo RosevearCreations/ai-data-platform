@@ -102,6 +102,10 @@ export const MODULE_FEATURE_FLAGS = [
   "media-reference-registration-v1",
   "media-transfer-handoff-v1",
   "media-lifecycle-evidence-v1",
+  "connector-driver-registry-v1",
+  "versioned-connector-driver-packages-v1",
+  "connector-driver-install-state-v1",
+  "connector-driver-provenance-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -282,6 +286,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     mediaHostBridgeDeletesSourceContent: false,
     mediaHostBridgeInfersOwnership: false,
     mediaHostBridgePreviewFetchesContent: false,
+    connectorDriverPresenceActivatesConnection: false,
+    connectorDriverInstallStateActivatesConnection: false,
+    connectorDriverDiscoveryGrantsCapabilities: false,
+    connectorDriverRegistryReadsRawSecrets: false,
+    connectorDriverDiscoveryPerformsHealthProbe: false,
+    connectorDriverEnabledStateProvesRemoteAvailability: false,
     ql266ResumedByDiscovery: false
   }
 });

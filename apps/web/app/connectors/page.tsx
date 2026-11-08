@@ -58,6 +58,21 @@ export default async function ConnectorsPage() {
         ]}
       />
 
+      <section className="dataQualityPolicyNote">
+        <strong>Build 321 connector driver registry</strong>
+        <p>
+          Trusted Connector SDK definitions are now packaged as versioned drivers
+          with capability, health, auth-reference, compatibility, install-state and
+          provenance metadata. Driver discovery or install state never activates a
+          connection and an enabled installation does not prove remote availability.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-connector-drivers">
+            View connector driver registry
+          </Link>
+        </div>
+      </section>
+
       <ConnectorManager
         manifests={overview.manifests}
         workspaces={overview.workspaces.map((entry) => ({

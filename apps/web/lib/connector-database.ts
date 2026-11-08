@@ -10,6 +10,7 @@ import {
 } from "@rosevear/ai-data-connector-sdk";
 
 import { listWorkspacesForUser, withUserDatabase } from "./database";
+import { buildConnectorDriverRegistry } from "./connector-driver-registry";
 import { executeConnectorBoundary } from "./connectors/sandbox";
 import {
   getRegisteredConnector,
@@ -146,9 +147,17 @@ export async function listConnectorOverviewForUser(userId: string) {
         audit: audit.rows.map(auditRow)
       };
     });
-    result.push({ workspace, ...state });
+    result.push({
+      workspace,
+      ...state,
+      driverRegistry: buildConnectorDriverRegistry({ installations: state.installations })
+    });
   }
-  return { manifests: listRegisteredConnectorManifests(), workspaces: result };
+  return {
+    manifests: listRegisteredConnectorManifests(),
+    driverRegistry: buildConnectorDriverRegistry(),
+    workspaces: result
+  };
 }
 
 export async function configureWorkspaceConnector(
