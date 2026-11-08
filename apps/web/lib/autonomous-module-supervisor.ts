@@ -375,7 +375,10 @@ function validateGrant(
     grant.allowedMethods.length < 1 ||
     grant.allowedMethods.some(
       (method) => method !== "GET" && method !== "HEAD"
-    )
+    ) ||
+    !Number.isInteger(grant.maximumActions) ||
+    grant.maximumActions < 1 ||
+    grant.maximumActions > MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
   ) {
     return false;
   }
