@@ -3,9 +3,11 @@ import Link from "next/link";
 
 import { auth } from "@/lib/auth";
 import { listAutonomousOperationsForUser } from "@/lib/autonomous-operations-database";
+import { listModuleSupervisorPoliciesForUser } from "@/lib/module-supervisor-host-policy-database";
 
 import { HelpInfo } from "../help/HelpInfo";
 import { AutonomousOperationsConsole } from "./AutonomousOperationsConsole";
+import { ModuleSupervisorPolicyConsole } from "./ModuleSupervisorPolicyConsole";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +36,10 @@ export default async function AutonomousOperationsPage() {
     );
   }
 
-  const model = await listAutonomousOperationsForUser(session.user.id);
+  const [model, hostPolicies] = await Promise.all([
+    listAutonomousOperationsForUser(session.user.id),
+    listModuleSupervisorPoliciesForUser(session.user.id)
+  ]);
 
   return (
     <main className="shell opsCommandScreen opsCommandScreen--it">
@@ -92,6 +97,8 @@ export default async function AutonomousOperationsPage() {
           does not resume QL-266.
         </p>
       </section>
+
+      <ModuleSupervisorPolicyConsole model={hostPolicies} />
 
       <AutonomousOperationsConsole
         model={{
