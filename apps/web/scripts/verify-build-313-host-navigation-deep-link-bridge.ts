@@ -329,7 +329,8 @@ async function main() {
   assert.ok(
     MODULE_SURFACES.every((surface) =>
       ["/data-library", "/app-connections", "/integration-health",
-       "/integration-certification", "/production-learning"].includes(
+       "/integration-certification", "/module-certification",
+       "/production-learning"].includes(
         surface.route
       )
     )
