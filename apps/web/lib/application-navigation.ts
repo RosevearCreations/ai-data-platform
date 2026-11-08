@@ -106,7 +106,13 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/autonomous-operations",
         label: "Autonomous Operations",
-        description: "Control bounded monitoring, safe health recovery, kill-switch policy and Production Learning VI roadmap renewal.",
+        description: "Control bounded monitoring and safe health recovery under owner policy while reviewing Build 330 Production Learning VII evidence.",
+        helpTopic: "learning-overview"
+      },
+      {
+        href: "/production-learning-vii",
+        label: "Production Learning VII",
+        description: "Close Builds 306–330 from measured module adoption, certification, lifecycle, autonomy, health and policy evidence without auto-numbering the next batch.",
         helpTopic: "learning-overview"
       }
     ]
