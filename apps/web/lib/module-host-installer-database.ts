@@ -640,7 +640,10 @@ export async function listModuleHostEnrollmentsForUser(
           workspaceId: String(row.workspace_id),
           credentialRefId: String(row.credential_ref_id),
           label: String(row.label),
-          referenceKind: String(row.reference_kind),
+          referenceKind: String(row.reference_kind) as
+            | "environment-variable"
+            | "external-vault-reference"
+            | "provider-managed-reference",
           lifecycleStatus: String(row.lifecycle_status) as
             | "active"
             | "revoked",
