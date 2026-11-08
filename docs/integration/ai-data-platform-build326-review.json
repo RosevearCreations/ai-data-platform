@@ -13,7 +13,8 @@
     "policyVersioning": true,
     "appendOnlyPolicyAuditHistory": true,
     "emergencyGlobalStop": true,
-    "transactionalBudgetReservation": true
+    "transactionalBudgetReservation": true,
+    "livePolicyControlStateRead": true
   },
   "security": {
     "missingGlobalControlFailsClosed": true,
@@ -26,7 +27,10 @@
     "automaticEventReplay": false,
     "automaticCredentialMutation": false,
     "automaticWorkflowRelease": false,
-    "automaticTrustMutation": false
+    "automaticTrustMutation": false,
+    "policyBoundGrantRequiresLiveRecheck": true,
+    "globalStopRevokesOutstandingPolicyGrant": true,
+    "policyRevisionChangeRevokesOutstandingPolicyGrant": true
   },
   "migration": "0109_module_supervisor_host_policies.sql",
   "nextQueuedBuild": 327
