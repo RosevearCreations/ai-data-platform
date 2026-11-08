@@ -231,7 +231,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             { label: "Review visible event history", href: "#build250-event-groups", detail: eventRows.length + " event(s) in the current drilldown.", state: "ready" },
             { label: "Inspect consumer configuration", href: "#build250-consumer-table", detail: needsConfigCount + " consumer(s) need configuration review.", state: needsConfigCount ? "review" : "ready" },
             { label: "Review Comms Hub checks", href: "/integration-delivery/comms-hub", detail: "Source-side connection checks remain available.", state: "review" },
-            { label: "Historical QL-266 snapshot", href: "#build250-ql266", detail: "Retained only as historical evidence; not an active prerequisite.", state: "complete" }
+            { label: "Historical QL-266 snapshot", href: "#build250-ql266", detail: "Retained only as historical evidence; not an active prerequisite.", state: "ready" }
           ]}
         />
       </div>
@@ -317,10 +317,10 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsInspectorCheckpoints
           title="Build 251 review checkpoints"
           checkpoints={[
-            { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "complete" },
-            { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "complete" },
-            { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "complete" },
-            { label: "Historical review boundary", detail: "Retired from the active workflow; current readiness comes from live evidence.", state: "complete" }
+            { label: "Recovery presets", detail: "Recovery preset definitions remain available and verifiable.", state: "ready" },
+            { label: "Renewal filtering", detail: "Renewal recovery evidence supports all, 24-hour and 7-day filters.", state: "ready" },
+            { label: "Receipt persistence", detail: "Receipt recovery evidence retains versioned storage and parse/serialize checks.", state: "ready" },
+            { label: "Historical review boundary", detail: "Retired from the active workflow; current readiness comes from live evidence.", state: "ready" }
           ]}
         />
       </div>
@@ -333,7 +333,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             label: event.eventType,
             detail: event.target + " · " + event.validationCode + (event.httpStatus ? " · HTTP " + event.httpStatus : ""),
             timestamp: event.occurredAt.toLocaleString(),
-            state: "complete" as const
+            state: "ready" as const
           }))}
           emptyLabel="No accepted delivery activity is available."
         />
@@ -357,7 +357,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             { label: "Consumer readiness", value: configuredCount + "/" + consumers.length, detail: needsConfigCount + " consumer(s) need review.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
             { label: "Accepted delivery", value: recentEvents.length ? Math.round((acceptedEventRows.length / recentEvents.length) * 100) + "%" : "—", detail: acceptedEventRows.length + " accepted/non-error event(s).", tone: rejectedEvents ? "attention" as const : "healthy" as const },
             { label: "Exception pressure", value: rejectedEvents, detail: "HTTP exception acknowledgement(s).", tone: rejectedEvents ? "critical" as const : "healthy" as const },
-            { label: "Legacy QL-266", value: "RETIRED", detail: "Historical snapshot only; not a current readiness prerequisite.", tone: "neutral" as const }
+            { label: "Legacy QL-266", value: "RETIRED", detail: "Historical snapshot only; not a current readiness prerequisite.", tone: "info" as const }
           ]}
         />
         <OperationsSegmentedView
@@ -376,10 +376,10 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsWorkflowTimeline
           title="Delivery review workflow"
           entries={[
-            { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "complete", meta: last24hEvents.length + " event(s) in the last 24 hours" },
-            { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "complete", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
+            { id: "observe", label: "Observe delivery evidence", detail: recentEvents.length + " recent durable acknowledgement event(s) are available.", state: "ready", meta: last24hEvents.length + " event(s) in the last 24 hours" },
+            { id: "segment", label: "Segment accepted and exception outcomes", detail: acceptedEventRows.length + " accepted/non-error and " + rejectedEvents + " exception event(s).", state: "ready", meta: eventView === "all" ? "All delivery segments visible" : "Segmented review active" },
             { id: "inspect", label: "Inspect configuration gaps", detail: needsConfigCount + " consumer configuration gap(s) remain.", state: needsConfigCount ? "current" : "complete", meta: configuredCount + "/" + consumers.length + " consumers configured" },
-            { id: "handoff", label: "Historical review boundary", detail: "Legacy QL-266 evidence is retained for audit only.", state: "complete", meta: "RETIRED · HISTORICAL" }
+            { id: "handoff", label: "Historical review boundary", detail: "Legacy QL-266 evidence is retained for audit only.", state: "ready", meta: "RETIRED · HISTORICAL" }
           ]}
         />
         <div className="opsInspectorHandoffGrid" id="build252-inspector-handoffs">
@@ -435,7 +435,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
               label: "Legacy QL-266",
               cells: [
                 { value: "UNDER REVIEW", tone: "info" as const },
-                { value: "RETIRED", tone: "neutral" as const },
+                { value: "RETIRED", tone: "info" as const },
                 { value: "Do not resume", tone: "info" as const }
               ]
             }
@@ -520,7 +520,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             { label: "Configuration risk", value: needsConfigCount, detail: needsConfigCount + " consumer(s) require configuration review.", tone: needsConfigCount ? "attention" as const : "healthy" as const },
             { label: "Delivery exception risk", value: rejectedEvents, detail: "HTTP 4xx/5xx acknowledgement(s) in visible history.", tone: rejectedEvents ? "critical" as const : "healthy" as const },
             { label: "Recent activity", value: last24hEvents.length, detail: (eventDelta >= 0 ? "+" : "") + eventDelta + " versus the prior 24-hour window.", tone: eventDelta > 0 ? "info" as const : "healthy" as const },
-            { label: "Legacy QL-266", value: "RETIRED", detail: "Historical snapshot only; current readiness is measured elsewhere.", tone: "neutral" as const }
+            { label: "Legacy QL-266", value: "RETIRED", detail: "Historical snapshot only; current readiness is measured elsewhere.", tone: "info" as const }
           ]}
         />
         <OperationsDrillThroughBand
@@ -543,14 +543,14 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
               label: "Current delivery activity",
               detail: last24hEvents.length + " event(s) occurred in the last 24 hours.",
               meta: previous24hEvents.length + " event(s) occurred in the preceding 24-hour window.",
-              state: "complete" as const
+              state: "ready" as const
             },
             {
               id: "accepted-evidence",
               label: "Accepted acknowledgement evidence",
               detail: acceptedEventRows.length + " accepted/non-error acknowledgement(s) are retained.",
               meta: recentEvents.length + " total recent durable event(s).",
-              state: "complete" as const
+              state: "ready" as const
             },
             {
               id: "exception-evidence",
@@ -692,7 +692,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <article className="card" id="build250-ql266">
           <h3>Legacy QL-266 snapshot</h3>
           <p>Former owner-review evidence retained for audit only.</p>
-          <OperationsStatusBadge tone="neutral">RETIRED</OperationsStatusBadge>
+          <OperationsStatusBadge tone="info">RETIRED</OperationsStatusBadge>
         </article>
       </OperationsEvidenceGroup>
 
@@ -708,9 +708,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsStatusGroup
           title="Review state"
           items={[
-            { label: "Legacy QL-266", value: "RETIRED", tone: "neutral" as const },
+            { label: "Legacy QL-266", value: "RETIRED", tone: "info" as const },
             { label: "Configured consumers", value: consumers.filter((consumer) => consumer.configured).length + "/" + consumers.length, tone: consumers.every((consumer) => consumer.configured) ? "healthy" as const : "attention" as const },
-            { label: "Legacy connection state", value: "HISTORICAL", tone: "neutral" as const }
+            { label: "Legacy connection state", value: "HISTORICAL", tone: "info" as const }
           ]}
         />
       </div>
@@ -730,7 +730,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         steps={[
           { label: "Filter", detail: "Find the consumer or credential binding that needs review.", state: query ? "complete" : "current" },
           { label: "Inspect", detail: "Compare configuration, readiness exceptions and acknowledgement evidence.", state: query ? "current" : "pending" },
-          { label: "Decide", detail: "Use current governed delivery controls and live evidence; legacy QL-266 review is retired.", state: "complete" }
+          { label: "Decide", detail: "Use current governed delivery controls and live evidence; legacy QL-266 review is retired.", state: "ready" }
         ]}
       />
 
@@ -779,7 +779,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           ]}
         />
         <OperationsInspector title="Connection boundary" eyebrow="System Status">
-          <OperationsStatusBadge tone="neutral">Legacy QL-266 retired</OperationsStatusBadge>
+          <OperationsStatusBadge tone="info">Legacy QL-266 retired</OperationsStatusBadge>
           <p>QL-266 is retained only as historical evidence. It is not an active prerequisite or task queue for current integration operation.</p>
           <p>Current readiness is determined by live registry, certification, credential, tenant/workspace and transport evidence.</p>
           <OpsDrawerLink href="/integration-delivery/comms-hub">Open Comms Hub gate</OpsDrawerLink>
