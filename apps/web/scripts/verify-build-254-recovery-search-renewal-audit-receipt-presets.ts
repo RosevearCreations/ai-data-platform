@@ -51,7 +51,7 @@ async function main(){
   ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsRiskSummary","OperationsDrillThroughBand","OperationsEvidenceLane","OperationsInspectorResolutionCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 254 — risk summaries, drill-through bands, responsive evidence lanes and inspector resolution cards"),"Build 254 styles");
-  for(const token of ["Delivery risk summary","Risk drill-through","Delivery evidence lane","Configuration resolution","Delivery exception resolution","QL-266 resolution boundary"]) ensure(statusPage.includes(token),"System Status "+token);
+  for(const token of ["Delivery risk summary","Risk drill-through","Delivery evidence lane","Configuration resolution","Delivery exception resolution","Historical resolution boundary"]) ensure(statusPage.includes(token),"System Status "+token);
   ensure(statusPage.includes("last24hEvents")&&statusPage.includes("previous24hEvents")&&statusPage.includes("acceptedEventRows")&&statusPage.includes("rejectedEvents")&&statusPage.includes("needsConfigCount"),"real risk and evidence data");
   ensure(statusPage.includes('id="build250-ql266"'),"QL-266 evidence anchor compatibility");
   ensure(pkg.includes("verify-build-254-recovery-search-renewal-audit-receipt-presets.ts"),"registered");

@@ -49,7 +49,7 @@ async function main(){
   ensure(shell.includes("Operations Command"),"canonical Operations Command shell");
   for(const token of ["OperationsHealthSummary","OperationsSegmentedView","OperationsWorkflowTimeline","OperationsInspectorHandoffCard"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 252 — health summaries, segmented views, responsive workflow timelines and inspector handoff cards"),"Build 252 styles");
-  for(const token of ["Delivery health","System Status segments","Delivery review workflow","Configuration review","Exception review","QL-266 owner boundary"]) ensure(statusPage.includes(token),"System Status "+token);
+  for(const token of ["Delivery health","System Status segments","Delivery review workflow","Configuration review","Exception review","Historical owner boundary"]) ensure(statusPage.includes(token),"System Status "+token);
   ensure(statusPage.includes("configuredCount")&&statusPage.includes("needsConfigCount")&&statusPage.includes("acceptedEventRows")&&statusPage.includes("rejectedEvents"),"real health and workflow data");
   ensure(statusPage.includes('id="build250-ql266"'),"QL-266 evidence anchor compatibility");
   ensure(pkg.includes("verify-build-252-recovery-audit-renewal-persistence-receipt-filtering.ts"),"registered");
