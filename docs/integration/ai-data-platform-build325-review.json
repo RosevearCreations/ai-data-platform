@@ -1,0 +1,32 @@
+{
+  "schema": "rosevear.ai-data-platform.build325-review.v1",
+  "application": "AI Data Platform",
+  "build": 325,
+  "name": "Autonomous Module Supervisor V1",
+  "capabilities": {
+    "perHostHealthMonitoring": true,
+    "certificationRefreshAdapter": true,
+    "safeRecoveryOpportunityScan": true,
+    "explicitlySafeHealthRetry": true,
+    "staleMappingDetection": true,
+    "staleCredentialReferenceDetection": true,
+    "staleConfigurationDetection": true,
+    "ownerReviewWorkItems": true
+  },
+  "security": {
+    "exactHostScopeRequired": true,
+    "safeHealthGrantRequired": true,
+    "safeHealthGetHeadOnly": true,
+    "maximumSafeHealthActionsPerCycle": 3,
+    "automaticConsequentialPeerMutation": false,
+    "automaticConnectionActivation": false,
+    "automaticEventReplay": false,
+    "automaticCredentialMutation": false,
+    "automaticWorkflowRelease": false,
+    "automaticTrustMutation": false,
+    "workItemsGrantAuthorization": false,
+    "hiddenPerHostPolicyCreated": false
+  },
+  "migrationRequired": false,
+  "nextQueuedBuild": 326
+}
