@@ -403,6 +403,64 @@ export async function upsertModuleSupervisorHostPolicy(
   });
 }
 
+export async function readModuleSupervisorPolicyControlState(
+  userId: string,
+  input: {
+    host: ModuleSupervisorHostScope;
+  }
+) {
+  const host = validateModuleSupervisorHostScope(input.host);
+  return withUserDatabase(userId, async (client) => {
+    await requireWorkspaceOwnerAdmin(client, host.workspaceId);
+
+    const [globalResult, policyResult] = await Promise.all([
+      client.query(
+        `select *
+         from app.module_supervisor_global_controls
+         where owner_user_id=$1
+         limit 1`,
+        [userId]
+      ),
+      client.query(
+        `select *
+         from app.module_supervisor_host_policies
+         where owner_user_id=$1
+           and workspace_id=$2
+           and host_application_id=$3
+           and host_instance_id=$4
+           and environment=$5
+           and tenant_id=$6
+         limit 1`,
+        [
+          userId,
+          host.workspaceId,
+          host.hostApplicationId,
+          host.hostInstanceId,
+          host.environment,
+          host.tenantId
+        ]
+      )
+    ]);
+
+    const globalControl = globalControlFromRow(
+      globalResult.rows[0] as RawRow | undefined
+    );
+    const policyRow = policyResult.rows[0] as RawRow | undefined;
+    const policy = policyRow ? policyFromRow(policyRow) : null;
+
+    return {
+      emergencyStopEngaged:
+        globalControl?.emergencyStopEngaged ?? true,
+      globalControlRevision: globalControl?.revision ?? 0,
+      policyRevision: policy?.policyRevision ?? 0,
+      hostPolicyEnabled: policy?.enabled ?? false,
+      hostKillSwitchEngaged:
+        policy?.killSwitchEngaged ?? true,
+      checkedAt: new Date().toISOString()
+    };
+  });
+}
+
 export async function authorizeModuleSupervisorHostCycle(
   userId: string,
   input: {
