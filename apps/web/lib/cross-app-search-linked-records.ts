@@ -30,7 +30,7 @@ export type CrossAppSearchSourceRecord = {
   workspaceId: string;
   sourcePath: string;
   contractId?: string | null;
-  canonicalLinks: CrossAppSearchCanonicalLink[];
+  canonicalLinks: readonly CrossAppSearchCanonicalLink[];
   tags?: string[];
 };
 
@@ -45,7 +45,7 @@ export type CrossAppSearchAuthorization = {
 
 export type CrossAppSearchAdapterQuery = {
   query: string;
-  recordKinds: CrossAppSearchRecordKind[];
+  recordKinds: readonly CrossAppSearchRecordKind[];
   updatedAfter: string | null;
   limit: number;
 };
@@ -100,7 +100,7 @@ export type CrossAppSearchResult = {
   recordKind: CrossAppSearchRecordKind;
   title: string;
   summary: string | null;
-  canonicalLinks: CrossAppSearchCanonicalLink[];
+  canonicalLinks: readonly CrossAppSearchCanonicalLink[];
   sourceDeepLink: string;
   provenance: CrossAppSearchProvenance;
 };
@@ -119,12 +119,12 @@ export type CrossAppSearchResponse = {
   query: string;
   tenantId: string;
   workspaceId: string;
-  results: CrossAppSearchResult[];
+  results: readonly CrossAppSearchResult[];
   graph: {
-    nodes: string[];
-    edges: CrossAppSearchGraphEdge[];
+    nodes: readonly string[];
+    edges: readonly CrossAppSearchGraphEdge[];
   };
-  sources: Array<{
+  sources: ReadonlyArray<{
     sourceApplicationId: string;
     resultCount: number;
     mappedApplication: true;
@@ -290,7 +290,7 @@ function normalizeSourcePath(value: string) {
   return parsed.pathname + parsed.search + parsed.hash;
 }
 
-function normalizeCanonicalLinks(values: CrossAppSearchCanonicalLink[]) {
+function normalizeCanonicalLinks(values: readonly CrossAppSearchCanonicalLink[]) {
   if (!Array.isArray(values) || values.length > 20) {
     throw new CrossAppSearchError(
       "source_record_invalid",
@@ -527,7 +527,7 @@ export async function executeAuthorizedFederatedSearch(
   );
 
   const results: CrossAppSearchResult[] = [];
-  const sourceSummaries: CrossAppSearchResponse["sources"] = [];
+  const sourceSummaries: Array<{\n    sourceApplicationId: string;\n    resultCount: number;\n    mappedApplication: true;\n    authorizationEvidenceId: string;\n  }> = [];
 
   for (const adapter of selected) {
     assertAdapterAuthorized(adapter, request.context);
@@ -535,7 +535,7 @@ export async function executeAuthorizedFederatedSearch(
     const raw = await adapter.search(
       Object.freeze({
         query,
-        recordKinds: Object.freeze([...recordKinds]) as CrossAppSearchRecordKind[],
+        recordKinds: Object.freeze([...recordKinds]),
         updatedAfter,
         limit
       })
