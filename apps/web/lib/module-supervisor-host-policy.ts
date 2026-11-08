@@ -143,11 +143,17 @@ function boundedInteger(
   value: unknown,
   minimum: number,
   maximum: number,
-  fallback: number
+  code: string
 ) {
   const number = Number(value);
-  if (!Number.isInteger(number)) return fallback;
-  return Math.min(maximum, Math.max(minimum, number));
+  if (
+    !Number.isInteger(number) ||
+    number < minimum ||
+    number > maximum
+  ) {
+    throw new Error(code);
+  }
+  return number;
 }
 
 function safeIso(value: string, code: string) {
@@ -160,15 +166,18 @@ function normalizeMaintenanceWindow(
   input: ModuleSupervisorMaintenanceWindow | null
 ): ModuleSupervisorMaintenanceWindow | null {
   if (input === null) return null;
-  const daysOfWeekUtc = [
-    ...new Set(
-      input.daysOfWeekUtc
-        .map(Number)
-        .filter(
-          (value) =>
-            Number.isInteger(value) && value >= 0 && value <= 6
-        )
+  if (
+    !Array.isArray(input.daysOfWeekUtc) ||
+    input.daysOfWeekUtc.length < 1 ||
+    input.daysOfWeekUtc.some(
+      (value) =>
+        !Number.isInteger(value) || value < 0 || value > 6
     )
+  ) {
+    throw new Error("module_supervisor_maintenance_window_invalid");
+  }
+  const daysOfWeekUtc = [
+    ...new Set(input.daysOfWeekUtc)
   ].sort((left, right) => left - right);
   if (
     !Number.isInteger(input.startMinuteUtc) ||
@@ -209,19 +218,19 @@ export function normalizeModuleSupervisorHostPolicy(
     input.maxSafeHealthActionsPerCycle,
     0,
     3,
-    0
+    "module_supervisor_policy_cycle_recovery_budget_invalid"
   );
   const maxSafeHealthActionsPerHour = boundedInteger(
     input.maxSafeHealthActionsPerHour,
     0,
     20,
-    0
+    "module_supervisor_policy_hourly_recovery_budget_invalid"
   );
   const maxSafeHealthActionsPerDay = boundedInteger(
     input.maxSafeHealthActionsPerDay,
     0,
     50,
-    0
+    "module_supervisor_policy_daily_recovery_budget_invalid"
   );
 
   return {
@@ -232,7 +241,7 @@ export function normalizeModuleSupervisorHostPolicy(
       input.maxCyclesPerHour,
       1,
       12,
-      1
+      "module_supervisor_policy_cycle_budget_invalid"
     ),
     maxSafeHealthActionsPerCycle,
     maxSafeHealthActionsPerHour,
