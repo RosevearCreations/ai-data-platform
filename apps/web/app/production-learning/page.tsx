@@ -67,6 +67,23 @@ export default async function ProductionLearningPage() {
         </div>
       </section>
       <section className="dataQualityPolicyNote">
+        <strong>Build 330 · Production Learning VII renewal checkpoint</strong>
+        <p>
+          Builds 306–330 now close through a separate evidence-driven module
+          reconciliation view. It measures installed hosts, capability use,
+          certification, lifecycle, autonomy, recovery, tenant isolation,
+          event/workflow/search evidence, connector/offline health and owner
+          policy use. It creates only unnumbered candidates and never extends
+          the roadmap automatically.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/production-learning-vii">
+            Open Build 330 Production Learning VII
+          </Link>
+        </div>
+      </section>
+
+      <section className="dataQualityPolicyNote">
         <strong>Build 305 · Production Learning VI renewal checkpoint</strong>
         <p>
           This live RLS-scoped review now feeds the Build 305 autonomous-operations renewal checkpoint. Missing

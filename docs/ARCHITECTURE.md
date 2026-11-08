@@ -629,3 +629,12 @@ Migration 0106 persists the mutable owner policy plus append-only policy events,
 Build 329 composes Build 327 enrollment identity and Build 328 installed-version inventory into a reusable host certification control plane. The server resolves expected module version, host contract, protocol and adapter from durable host records, then evaluates ten certification dimensions through a pure reusable harness.
 
 Observations, runs and assertions are append-only. Synthetic fixtures validate harness behavior but never establish live host health or live certification. Genuine live certification requires evidence references for every PASS plus telemetry samples. The latest run feeds the compatibility matrix and per-host health view; each run is also compared with the prior run to preserve regression history.
+
+
+## Build 330 — Autonomous Operations V2, Production Learning VII & Next Roadmap Renewal
+
+Build 330 closes the Builds 306–330 module batch by composing existing durable evidence rather than creating a parallel telemetry system. The reconciliation adapter reads production-learning adoption evidence, Build 328 lifecycle state, Build 329 cross-host certification, Build 305 autonomous cycles, Build 301 recovery state, Build 326 host policies and budget reservations, event-bus publications, workflow intents and connector execution evidence.
+
+The pure Production Learning VII model converts only measured gaps into a finite set of at most 12 unnumbered candidates. Healthy evidence may produce no candidate. Snapshots and candidates are append-only under RLS; candidate state remains `candidate` and `numbered_build` is constrained to `NULL`.
+
+Autonomous Operations V2 is intentionally an evidence/governance revision rather than an authority expansion. The automatic action envelope remains bounded connector-health GET/HEAD recovery. The Build 330 checkpoint does not automatically create Build 331 or any subsequent numbered batch.

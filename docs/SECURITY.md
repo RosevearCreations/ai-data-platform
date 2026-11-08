@@ -748,3 +748,10 @@ No Build 305 autonomous path enables a connector, rotates a credential, activate
 Build 329 records owner-scoped, append-only host observations and certification evidence. Synthetic fixtures are explicitly separated from live evidence and can never produce a live-certified host. A live PASS requires concrete evidence references for every dimension plus non-zero telemetry samples. Missing live evidence is BLOCKED; contradictory evidence is FAIL.
 
 Compatibility expectations come from the registered Build 328 installed-host and enrollment records rather than browser-provided expected values. Certification does not probe a host automatically, read raw credentials, activate connections, grant capabilities, release holds, execute workflows, mutate host configuration or infer trust.
+
+
+## Build 330 Autonomous Operations V2 and Production Learning VII security
+
+Build 330 is an evidence-reconciliation and roadmap-renewal checkpoint. It does not widen the Build 305/325 automatic execution boundary: only the existing bounded connector-health GET/HEAD recovery lane may execute automatically, and only under the existing owner policy, exact per-host policy, safe-health grant, budgets and kill switches.
+
+Production Learning VII reads existing RLS-scoped evidence and records owner-scoped append-only snapshots plus unnumbered candidates. A candidate cannot authorize work, receive a build number in Build 330, activate a connection, grant a capability, execute a peer write, replay an event, mutate credentials or alter trust. Missing relay-runtime evidence is reported as unproven rather than inferred healthy. Synthetic or fixture evidence is never promoted to live evidence. QL-266 is not resumed.

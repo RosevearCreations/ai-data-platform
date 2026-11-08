@@ -1,0 +1,46 @@
+{
+  "schema": "rosevear.ai-data-platform.build330-review.v1",
+  "application": "AI Data Platform",
+  "build": 330,
+  "name": "Autonomous Operations V2, Production Learning VII & Next Roadmap Renewal",
+  "closedBatch": "306-330",
+  "reconciliation": {
+    "installedHosts": true,
+    "activeVsUnusedCapabilities": true,
+    "certificationState": true,
+    "upgradeRollbackOutcomes": true,
+    "autonomousCycleOutcomes": true,
+    "recoveryOutcomes": true,
+    "tenantIsolationFindings": true,
+    "eventWorkflowSearchActivity": true,
+    "connectorRelayOfflineHealth": true,
+    "ownerPolicyUsage": true
+  },
+  "autonomousOperationsV2": {
+    "automaticActionEnvelopeExpanded": false,
+    "existingSafeAction": "connector-health-get-head-only",
+    "consequentialPeerWritesAutomatic": false,
+    "eventReplayAutomatic": false,
+    "credentialMutationAutomatic": false,
+    "trustMutationAutomatic": false
+  },
+  "roadmapRenewal": {
+    "evidenceBackedOnly": true,
+    "finiteCandidateLimit": 12,
+    "candidatesUnnumbered": true,
+    "automaticBuild331": false,
+    "ownerAuthorizationRequired": true
+  },
+  "security": {
+    "installationAuthorizesConnection": false,
+    "mountedUiGrantsPermission": false,
+    "discoveredCapabilityIsGrant": false,
+    "syntheticTestIsLiveCertification": false,
+    "rawSecretsRequired": false,
+    "ql266Resumed": false
+  },
+  "migration": "0113_autonomous_operations_v2_production_learning_vii.sql",
+  "surface": "/production-learning-vii",
+  "api": "/api/production-learning-vii",
+  "nextBuildNumber": null
+}
