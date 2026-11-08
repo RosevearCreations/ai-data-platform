@@ -42,12 +42,12 @@ type LiveModel = {
   regressions: Regression[];
   instrumentationGaps: Gap[];
   policy: {
-    measuredEvidenceOnly: true;
-    missingEvidenceIsHealthy: false;
-    syntheticEvidenceCountsAsProduction: false;
-    automaticOptimization: false;
-    automaticBudgetChanges: false;
-    automaticReleaseBlocking: false;
+    measuredEvidenceOnly: boolean;
+    missingEvidenceIsHealthy: boolean;
+    syntheticEvidenceCountsAsProduction: boolean;
+    automaticOptimization: boolean;
+    automaticBudgetChanges: boolean;
+    automaticReleaseBlocking: boolean;
   };
 };
 
