@@ -360,7 +360,7 @@ export function prepareNotificationModuleRequest(
     holdReason: consent.allowed
       ? ("notification-dispatch-not-authorized" as const)
       : ("notification-consent-not-granted" as const),
-    conflicts: Object.freeze(conflicts) as SharedCoordinationConflictEvidence[],
+    conflicts: [...conflicts],
     routing: Object.freeze({
       preference,
       preferredOperatorApplicationId: "rosevear-comms-hub" as const,
@@ -491,7 +491,7 @@ export function prepareScheduleModuleRequest(
     approvalEligible: conflicts.length === 0,
     state: "held" as const,
     holdReason: "schedule-exchange-not-authorized" as const,
-    conflicts: Object.freeze(conflicts) as SharedCoordinationConflictEvidence[],
+    conflicts: [...conflicts],
     routing: Object.freeze({
       preference,
       preferredOperatorApplicationId:
