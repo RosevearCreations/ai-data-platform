@@ -184,34 +184,109 @@ on app.module_supervisor_host_policies
 for all to ai_data_runtime
 using (
   owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_host_policies.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
 )
 with check (
   owner_user_id=nullif(current_setting('app.user_id',true),'')
   and updated_by=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_host_policies.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
 );
 
-do $$
-declare
-  t text;
-begin
-  foreach t in array array[
-    'module_supervisor_global_control_events',
-    'module_supervisor_host_policy_events',
-    'module_supervisor_budget_reservations'
-  ]
-  loop
-    execute format('drop policy if exists %I_owner_select on app.%I',t,t);
-    execute format(
-      'create policy %I_owner_select on app.%I for select to ai_data_runtime using (owner_user_id=nullif(current_setting(''app.user_id'',true),''''))',
-      t,t,t
-    );
-    execute format('drop policy if exists %I_owner_insert on app.%I',t,t);
-    execute format(
-      'create policy %I_owner_insert on app.%I for insert to ai_data_runtime with check (owner_user_id=nullif(current_setting(''app.user_id'',true),''''))',
-      t,t,t
-    );
-  end loop;
-end $$;
+drop policy if exists module_supervisor_global_control_events_owner_select
+  on app.module_supervisor_global_control_events;
+create policy module_supervisor_global_control_events_owner_select
+on app.module_supervisor_global_control_events
+for select to ai_data_runtime
+using (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+);
+
+drop policy if exists module_supervisor_global_control_events_owner_insert
+  on app.module_supervisor_global_control_events;
+create policy module_supervisor_global_control_events_owner_insert
+on app.module_supervisor_global_control_events
+for insert to ai_data_runtime
+with check (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and actor_user_id=nullif(current_setting('app.user_id',true),'')
+);
+
+drop policy if exists module_supervisor_host_policy_events_owner_select
+  on app.module_supervisor_host_policy_events;
+create policy module_supervisor_host_policy_events_owner_select
+on app.module_supervisor_host_policy_events
+for select to ai_data_runtime
+using (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_host_policy_events.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
+);
+
+drop policy if exists module_supervisor_host_policy_events_owner_insert
+  on app.module_supervisor_host_policy_events;
+create policy module_supervisor_host_policy_events_owner_insert
+on app.module_supervisor_host_policy_events
+for insert to ai_data_runtime
+with check (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and actor_user_id=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_host_policy_events.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
+);
+
+drop policy if exists module_supervisor_budget_reservations_owner_select
+  on app.module_supervisor_budget_reservations;
+create policy module_supervisor_budget_reservations_owner_select
+on app.module_supervisor_budget_reservations
+for select to ai_data_runtime
+using (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_budget_reservations.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
+);
+
+drop policy if exists module_supervisor_budget_reservations_owner_insert
+  on app.module_supervisor_budget_reservations;
+create policy module_supervisor_budget_reservations_owner_insert
+on app.module_supervisor_budget_reservations
+for insert to ai_data_runtime
+with check (
+  owner_user_id=nullif(current_setting('app.user_id',true),'')
+  and exists (
+    select 1
+    from app.workspace_members wm
+    where wm.workspace_id=module_supervisor_budget_reservations.workspace_id
+      and wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
+  )
+);
 
 revoke all on
   app.module_supervisor_global_controls,
