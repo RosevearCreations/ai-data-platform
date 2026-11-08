@@ -18,7 +18,11 @@ type Endpoint = {
   displayName: string;
   keyId: string;
   secretEnvVar: string;
+  callbackApplicationId: string | null;
+  callbackPath: string | null;
   enabled: boolean;
+  revokedAt: string | null;
+  revokedBy: string | null;
   allowedEventTypes: string[];
   maxBodyBytes: number;
   createdAt: string;
@@ -72,6 +76,7 @@ type Model = {
     endpoints: number;
     enabled: number;
     disabled: number;
+    revoked: number;
     receipts: number;
     accepted: number;
     denied: number;
@@ -84,6 +89,9 @@ type Model = {
     signedRequestsRequired: boolean;
     signedReceipts: boolean;
     atomicReplaySuppression: boolean;
+    irreversibleRevocation: boolean;
+    callbackDispatch: boolean;
+    hostEventTranslationDispatch: boolean;
     downstreamDispatch: boolean;
     automaticConnectionActivation: boolean;
     ql266Resumed: boolean;
@@ -136,6 +144,9 @@ export function WebhookGatewayCenter({
   const [displayName, setDisplayName] = useState("");
   const [keyId, setKeyId] = useState("whk-key-primary");
   const [secretEnvVar, setSecretEnvVar] = useState("");
+  const [callbackApplicationId, setCallbackApplicationId] =
+    useState("");
+  const [callbackPath, setCallbackPath] = useState("");
   const [eventTypes, setEventTypes] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -156,6 +167,8 @@ export function WebhookGatewayCenter({
         displayName,
         keyId,
         secretEnvVar,
+        callbackApplicationId: callbackApplicationId || null,
+        callbackPath: callbackPath || null,
         allowedEventTypes
       });
       setMessage("Webhook endpoint created disabled. Reloading.");
@@ -165,6 +178,34 @@ export function WebhookGatewayCenter({
         error instanceof Error
           ? error.message
           : "Webhook endpoint creation failed."
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function revokeEndpoint(endpoint: Endpoint) {
+    if (
+      !window.confirm(
+        "Revoke this endpoint permanently? A revoked endpoint cannot be re-enabled; future intake requires a new registration."
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setMessage("");
+    try {
+      await mutate("PATCH", {
+        endpointId: endpoint.endpointId,
+        action: "revoke"
+      });
+      setMessage("Webhook endpoint revoked. Reloading.");
+      window.location.reload();
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Webhook endpoint revocation failed."
       );
     } finally {
       setBusy(false);
@@ -215,6 +256,10 @@ export function WebhookGatewayCenter({
           <article>
             <strong>{model.summary.enabled}</strong>
             <span>enabled</span>
+          </article>
+          <article>
+            <strong>{model.summary.revoked}</strong>
+            <span>revoked endpoints</span>
           </article>
           <article>
             <strong>{model.summary.receipts}</strong>
@@ -331,6 +376,26 @@ export function WebhookGatewayCenter({
                 />
               </label>
               <label>
+                Host callback application (optional)
+                <input
+                  value={callbackApplicationId}
+                  onChange={(event) =>
+                    setCallbackApplicationId(event.target.value)
+                  }
+                  placeholder="rosevear.icamp"
+                />
+              </label>
+              <label>
+                Host callback path (optional)
+                <input
+                  value={callbackPath}
+                  onChange={(event) =>
+                    setCallbackPath(event.target.value)
+                  }
+                  placeholder="/api/module-events/inbound"
+                />
+              </label>
+              <label>
                 Allowed event types
                 <input
                   value={eventTypes}
@@ -396,10 +461,20 @@ export function WebhookGatewayCenter({
                   Key reference: {endpoint.keyId} ·{" "}
                   {endpoint.secretEnvVar}
                 </p>
+                {endpoint.callbackApplicationId && endpoint.callbackPath ? (
+                  <p>
+                    Callback: {endpoint.callbackApplicationId} ·{" "}
+                    <code>{endpoint.callbackPath}</code>
+                  </p>
+                ) : null}
                 <span className="badge">
-                  {endpoint.enabled ? "enabled" : "disabled"}
+                  {endpoint.revokedAt
+                    ? "revoked"
+                    : endpoint.enabled
+                      ? "enabled"
+                      : "disabled"}
                 </span>
-                {canManage ? (
+                {canManage && !endpoint.revokedAt ? (
                   <div className="heroActions">
                     <button
                       className="secondaryButton"
@@ -409,6 +484,13 @@ export function WebhookGatewayCenter({
                       {endpoint.enabled
                         ? "Disable endpoint"
                         : "Enable endpoint"}
+                    </button>
+                    <button
+                      className="secondaryButton"
+                      disabled={busy}
+                      onClick={() => revokeEndpoint(endpoint)}
+                    >
+                      Revoke endpoint
                     </button>
                   </div>
                 ) : null}

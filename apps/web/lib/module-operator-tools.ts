@@ -231,7 +231,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/webhook-gateway",
         label: "Webhook intake",
-        description: "Review signed inbound endpoints, replay denials and durable receipts."
+        description: "Review signed inbound endpoints, replay denials, durable receipts and the inbound endpoint module."
       },
       {
         href: "/event-bus",

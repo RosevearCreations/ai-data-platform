@@ -106,6 +106,10 @@ export const MODULE_FEATURE_FLAGS = [
   "versioned-connector-driver-packages-v1",
   "connector-driver-install-state-v1",
   "connector-driver-provenance-v1",
+  "inbound-endpoint-module-v1",
+  "webhook-callback-routing-v1",
+  "host-inbound-event-translation-v1",
+  "webhook-receipt-search-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -292,6 +296,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     connectorDriverRegistryReadsRawSecrets: false,
     connectorDriverDiscoveryPerformsHealthProbe: false,
     connectorDriverEnabledStateProvesRemoteAvailability: false,
+    inboundEndpointDiscoveryActivatesConnection: false,
+    inboundEndpointModuleReadsRawSecrets: false,
+    inboundEndpointCallbackDispatchesAutomatically: false,
+    inboundEndpointHostEventPublishesAutomatically: false,
+    inboundEndpointReplayProtectionBypassed: false,
+    inboundEndpointRevokedCanReenable: false,
     ql266ResumedByDiscovery: false
   }
 });
