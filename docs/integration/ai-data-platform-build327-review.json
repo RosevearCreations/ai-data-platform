@@ -1,0 +1,35 @@
+{
+  "schema": "rosevear.ai-data-platform.build327-review.v1",
+  "application": "AI Data Platform",
+  "build": 327,
+  "name": "Zero-Touch Module Installer & Guided Host Enrollment",
+  "capabilities": {
+    "explicitHostManifestDiscovery": true,
+    "adapterSelection": true,
+    "exactTenantWorkspaceMapping": true,
+    "capabilityPreview": true,
+    "credentialReferenceRequirements": true,
+    "transportConfigurationSelection": true,
+    "compatibilityValidation": true,
+    "installDryRun": true,
+    "ownerApproval": true,
+    "generatedHostIntegrationPackage": true,
+    "durableEnrollmentInventory": true,
+    "canonicalEvidenceHashing": true
+  },
+  "security": {
+    "networkScanAutomatic": false,
+    "filesystemScanAutomatic": false,
+    "rawSecretsAccepted": false,
+    "capabilityPreviewGrantsAuthorization": false,
+    "ownerApprovalActivatesConnection": false,
+    "ownerApprovalAuthorizesTrust": false,
+    "transportPreparationProvesHealth": false,
+    "credentialLocatorsIncludedInPackage": false,
+    "hostFilesWrittenAutomatically": false,
+    "autonomyPolicyCreatedAutomatically": false,
+    "packageProvesHostInstalled": false
+  },
+  "migration": "0110_module_host_guided_enrollment.sql",
+  "nextQueuedBuild": 328
+}
