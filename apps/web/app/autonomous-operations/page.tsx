@@ -19,8 +19,8 @@ export default async function AutonomousOperationsPage() {
       <main className="shell">
         <section className="hero">
           <HelpInfo topic="learning-overview" />
-          <p className="eyebrow">Build 305</p>
-          <h1>Autonomous Operations V1 &amp; Production Learning VI</h1>
+          <p className="eyebrow">Build 330</p>
+          <h1>Autonomous Operations V2 &amp; Production Learning VII</h1>
           <p className="lead">
             Sign in to review owner controls, bounded autonomous monitoring,
             safe recovery and the evidence-driven roadmap renewal checkpoint.
@@ -46,14 +46,14 @@ export default async function AutonomousOperationsPage() {
       <section className="hero">
         <HelpInfo topic="learning-overview" />
         <p className="eyebrow">
-          Build 305 · controlled autonomy · owner authority
+          Build 330 · Autonomous Operations V2 · measured module evidence
         </p>
-        <h1>Autonomous Operations V1 &amp; Production Learning VI</h1>
+        <h1>Autonomous Operations V2 &amp; Production Learning VII</h1>
         <p className="lead">
-          Run evidence refresh, recovery-plan discovery and only the existing
-          bounded connector-health GET/HEAD recovery lane under an explicit
-          owner policy and kill switch. Consequential changes stay outside the
-          autonomous boundary.
+          Preserve the existing bounded connector-health GET/HEAD recovery lane
+          while reconciling installed-host, certification, lifecycle, recovery
+          and policy outcomes. Build 330 does not widen automatic authority;
+          consequential changes stay outside the autonomous boundary.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/integration-certification">
@@ -65,8 +65,27 @@ export default async function AutonomousOperationsPage() {
           <Link className="secondaryButton" href="/integration-health">
             Integration Health
           </Link>
+          <Link className="secondaryButton" href="/production-learning-vii">
+            Production Learning VII
+          </Link>
           <Link className="secondaryButton" href="/production-learning">
-            Production Learning
+            Historical Production Learning
+          </Link>
+        </div>
+      </section>
+
+      <section className="dataQualityPolicyNote">
+        <strong>Build 330 Autonomous Operations V2 boundary</strong>
+        <p>
+          Build 330 keeps the Build 305/325 automatic action envelope unchanged:
+          only bounded connector-health GET/HEAD recovery may execute under
+          existing owner policy, exact host policy, safe-health grant, budget
+          and kill-switch controls. Production Learning VII may recommend work,
+          but recommendations do not execute work or create numbered builds.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/production-learning-vii">
+            Open Build 330 closeout
           </Link>
         </div>
       </section>

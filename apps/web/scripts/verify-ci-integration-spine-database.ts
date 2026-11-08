@@ -82,6 +82,8 @@ const requiredTables = [
   "autonomous_operation_actions",
   "production_learning_vi_snapshots",
   "production_learning_vi_candidates",
+  "production_learning_vii_snapshots",
+  "production_learning_vii_candidates",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -152,6 +154,8 @@ const appendOnlyTables = [
   "autonomous_operation_actions",
   "production_learning_vi_snapshots",
   "production_learning_vi_candidates",
+  "production_learning_vii_snapshots",
+  "production_learning_vii_candidates",
   "rosevear_comms_operation_claims"
 ];
 
