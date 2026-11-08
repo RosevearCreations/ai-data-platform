@@ -562,7 +562,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             {
               id: "ql266-evidence",
               label: "Historical owner boundary evidence",
-              detail: "Build 254 preserves UNDER_REVIEW and does not start external testing or a connection gate.",
+              detail: "Build 254 historical owner-review evidence is retained for audit only.",
               meta: "RETIRED · HISTORICAL",
               state: "review" as const
             }
@@ -589,9 +589,9 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
           />
           <OperationsInspectorResolutionCard
             title="Historical resolution boundary"
-            state="UNDER REVIEW"
-            detail="Owner deferral remains authoritative. Build 254 does not alter connection or test status."
-            resolution="Do not resume until explicitly authorized"
+            state="HISTORICAL"
+            detail="The former owner-review boundary is retained only as historical evidence."
+            resolution="Use current health, certification and authorization evidence"
             href="#build250-ql266"
             actionLabel="Open historical evidence"
             tone="info"
@@ -691,8 +691,8 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         </article>
         <article className="card" id="build250-ql266">
           <h3>Legacy QL-266 snapshot</h3>
-          <p>Deferred by owner direction and not reactivated in Build 250.</p>
-          <OperationsStatusBadge tone="info">UNDER REVIEW</OperationsStatusBadge>
+          <p>Former owner-review evidence retained for audit only.</p>
+          <OperationsStatusBadge tone="neutral">RETIRED</OperationsStatusBadge>
         </article>
       </OperationsEvidenceGroup>
 
@@ -708,7 +708,7 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
         <OperationsStatusGroup
           title="Review state"
           items={[
-            { label: "Legacy QL-266", value: "UNDER REVIEW", tone: "info" as const },
+            { label: "Legacy QL-266", value: "RETIRED", tone: "neutral" as const },
             { label: "Configured consumers", value: consumers.filter((consumer) => consumer.configured).length + "/" + consumers.length, tone: consumers.every((consumer) => consumer.configured) ? "healthy" as const : "attention" as const },
             { label: "Legacy connection state", value: "HISTORICAL", tone: "neutral" as const }
           ]}
