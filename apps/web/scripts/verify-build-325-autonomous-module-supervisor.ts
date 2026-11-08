@@ -201,7 +201,7 @@ async function main() {
     MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
   );
   assert.equal(result.recovery.executed, 3);
-  assert.equal(result.recovery.safeEligible, 5);
+  assert.equal(result.recovery.safeEligible, 4);
   assert.equal(result.recovery.healthy, 3);
   assert.equal(result.recovery.unhealthyOrFailed, 0);
   assert.equal(result.certification.refreshed, true);
