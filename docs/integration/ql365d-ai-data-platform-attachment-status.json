@@ -1,0 +1,48 @@
+{
+  "schema": "rosevear.ai-data-platform.ql365d.attachment-status.v1",
+  "application": "AI Data Platform",
+  "sourceId": "ai-data-platform",
+  "repository": "RosevearCreations/ai-data-platform",
+  "shellIdentity": {
+    "sourceAppId": "ai-data-platform",
+    "sourceRole": "support_broker",
+    "tenantBoundary": "no_customer_tenant",
+    "audience": "rosevear-master"
+  },
+  "manifest": {
+    "path": "apps/web/public/.well-known/rosevear-integration-manifest.json",
+    "immutableRevisionRequired": true,
+    "signatureState": "AWAITING_INDEPENDENT_SOURCE_SIGNER"
+  },
+  "health": {
+    "endpoint": "/api/integration/v1/shell/health",
+    "handler": "apps/web/lib/ql364-source-health.mjs",
+    "method": "GET",
+    "environment": "TEST",
+    "redirects": "DENY",
+    "maxResponseBytes": 4096,
+    "customerDataAllowed": false,
+    "deviceActionsAllowed": false,
+    "persistentConnectionAllowed": false
+  },
+  "sourceRuntime": {
+    "adapter": "apps/web/lib/ql365d-comms-source-runtime.ts",
+    "ownerApprovalsCryptographicallyReverified": true,
+    "independentlyVerifiedPublicPinsRequired": true,
+    "appendOnlyDurableOperationClaimRequired": true,
+    "sourceSignerCustodyVerifiedRequired": true,
+    "existingSourceSignerKeyId": "ql256-ai-data-platform-d16f21ab82c12760",
+    "existingSourceSignerSpkiSha256": "d16f21ab82c12760c88b1cdaa7d2fe7491148e9efd4a8762c4a0e9be137311c6",
+    "existingSourceSignerCustodyState": "SIGNER_EXISTS_CUSTODY_NOT_VERIFIED"
+  },
+  "evidence": {
+    "syntheticHandlerCertification": true,
+    "genuineOriginalOwnerApprovalsVerified": false,
+    "genuineSourceSignerCustodyVerified": false,
+    "genuineSignedSourceContractVerified": false,
+    "genuinePrivateTestVerified": false,
+    "genuineIndependentClosureVerified": false
+  },
+  "connected": false,
+  "connectionState": "DISCONNECTED / HOLD"
+}
