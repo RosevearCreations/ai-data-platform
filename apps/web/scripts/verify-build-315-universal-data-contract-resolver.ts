@@ -426,7 +426,7 @@ async function main() {
   const sourceStatus = JSON.parse(attachment);
   assert.equal(sourceStatus.sourceId, "ai-data-platform");
   assert.equal(sourceStatus.repository, "RosevearCreations/ai-data-platform");
-  assert.equal(sourceStatus.sourceRuntime.durableOneUseClaimRequired, true);
+  assert.equal(sourceStatus.sourceRuntime.appendOnlyDurableOperationClaimRequired, true);
   assert.equal(
     sourceStatus.sourceRuntime.existingSourceSignerCustodyState,
     "SIGNER_EXISTS_CUSTODY_NOT_VERIFIED"
