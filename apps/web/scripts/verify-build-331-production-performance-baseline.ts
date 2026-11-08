@@ -103,7 +103,7 @@ for (const token of [
   assert.ok(migration.includes(token), "migration token " + token);
 }
 
-const database = source("../lib/performance-baseline-database.ts");
+const database = source("lib/performance-baseline-database.ts");
 for (const token of [
   "workspace_connector_audit",
   "webhook_request_audit",
@@ -115,12 +115,12 @@ for (const token of [
   assert.ok(database.includes(token), "database token " + token);
 }
 
-const api = source("../app/api/performance-baseline/route.ts");
+const api = source("app/api/performance-baseline/route.ts");
 assert.ok(api.includes("capture-performance-baseline"));
 assert.ok(api.includes("Cache-Control"));
 assert.ok(api.includes("authentication_required"));
 
-const page = source("../app/performance-baseline/page.tsx");
+const page = source("app/performance-baseline/page.tsx");
 const consoleSource = source(
   "../app/performance-baseline/PerformanceBaselineConsole.tsx"
 );
@@ -129,7 +129,7 @@ assert.ok(page.includes("Missing telemetry is never converted into a PASS"));
 assert.ok(consoleSource.includes("Capture performance baseline"));
 assert.ok(consoleSource.includes("Observation does not equal automation"));
 
-const navigation = source("../lib/application-navigation.ts");
+const navigation = source("lib/application-navigation.ts");
 assert.equal(count(navigation, 'href: "/performance-baseline"'), 1);
 
 const compactDb = source(
@@ -159,7 +159,7 @@ assert.equal(review.regressionBudget.automaticReleaseBlocking, false);
 assert.equal(review.nextQueuedBuild, 332);
 assert.equal(review.ql266Resumed, false);
 
-const pkg = JSON.parse(source("../package.json"));
+const pkg = JSON.parse(source("package.json"));
 const verifier =
   "tsx scripts/verify-build-331-production-performance-baseline.ts";
 assert.ok(String(pkg.scripts.build).includes(verifier));
