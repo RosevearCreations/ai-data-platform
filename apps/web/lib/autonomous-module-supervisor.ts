@@ -19,7 +19,6 @@ export const MODULE_SUPERVISOR_CERTIFICATION_MAX_AGE_MS =
 const APPLICATION_ID_PATTERN =
   /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
 const ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@/+-]{5,159}$/;
-const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
 export type ModuleSupervisorHostScope = {
   hostApplicationId: string;
