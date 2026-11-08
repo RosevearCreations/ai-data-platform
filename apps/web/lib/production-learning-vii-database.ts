@@ -237,6 +237,14 @@ async function currentProductionLearningVII(userId: string) {
     recovery: {
       total: recovery.summary.total,
       recovered: recovery.summary.recovered,
+      failedAttempts: recovery.plans.reduce(
+        (sum, plan) =>
+          sum +
+          plan.attempts.filter(
+            attempt => attempt.outcome === "failed"
+          ).length,
+        0
+      ),
       approvalRequired: recovery.summary.approvalRequired,
       exhausted: recovery.summary.exhausted,
       notRetryable: recovery.summary.notRetryable
