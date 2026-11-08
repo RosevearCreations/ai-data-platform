@@ -1,7 +1,6 @@
 import {
   INTEGRATION_V1_BUSINESS_CAPABILITIES,
-  INTEGRATION_V1_CONTRACT,
-  INTEGRATION_V1_STATUS
+  INTEGRATION_V1_CONTRACT
 } from "./integration-v1-gateway";
 
 export type PeerApplicationId =
@@ -34,8 +33,8 @@ export type PeerApplicationDefinition = {
 
 export type AppConnectionRegistryItem = PeerApplicationDefinition & {
   contract: typeof INTEGRATION_V1_CONTRACT;
-  connectionState: typeof INTEGRATION_V1_STATUS;
-  ownerAuthorization: "NOT_GIVEN";
+  connectionState: "UNMEASURED";
+  ownerAuthorization: "LEGACY_NOT_APPLICABLE";
   discoveryState: AppConnectionDiscoveryState;
   discoveryCapabilities: string[];
   discoverySurfaces: Array<{
@@ -58,6 +57,7 @@ export type AppConnectionRegistry = {
     gatewayReadOnlyReady: number;
     catalogOnly: number;
     disconnected: number;
+    unmeasured: number;
     mutatingCapabilitiesDiscovered: number;
   };
   policy: {
@@ -65,6 +65,7 @@ export type AppConnectionRegistry = {
     discoveryIsReadOnly: true;
     liveConnectionImplied: false;
     ql266Resumed: false;
+    legacyQl266PrerequisiteRetired: true;
     automaticActivation: false;
   };
 };
@@ -142,8 +143,8 @@ function itemFromDefinition(
   return {
     ...definition,
     contract: INTEGRATION_V1_CONTRACT,
-    connectionState: INTEGRATION_V1_STATUS,
-    ownerAuthorization: "NOT_GIVEN",
+    connectionState: "UNMEASURED",
+    ownerAuthorization: "LEGACY_NOT_APPLICABLE",
     discoveryState: definition.gatewayBusinessId
       ? "gateway-read-only-ready"
       : "catalog-only",
@@ -200,8 +201,9 @@ export function buildAppConnectionRegistry(
       catalogOnly: peerApplications.filter(
         (item) => item.discoveryState === "catalog-only"
       ).length,
-      disconnected: peerApplications.filter(
-        (item) => item.connectionState === "DISCONNECTED"
+      disconnected: 0,
+      unmeasured: peerApplications.filter(
+        (item) => item.connectionState === "UNMEASURED"
       ).length,
       mutatingCapabilitiesDiscovered: peerApplications.filter(
         (item) => item.mutatingCapabilityDiscovered
@@ -212,6 +214,7 @@ export function buildAppConnectionRegistry(
       discoveryIsReadOnly: true,
       liveConnectionImplied: false,
       ql266Resumed: false,
+      legacyQl266PrerequisiteRetired: true,
       automaticActivation: false
     }
   };
