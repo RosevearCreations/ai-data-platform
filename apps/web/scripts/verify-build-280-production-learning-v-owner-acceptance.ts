@@ -212,7 +212,6 @@ async function main() {
       adapter.includes("buildProductionLearningReview"),
     "current evidence composition"
   );
-  const ownerNormalized = owner.replace(/\\s+/g, " ");
   ensure(
     owner.includes("Build 280") &&
       owner.includes("Production Learning V, Owner Acceptance &amp; Next-Batch Renewal") &&
