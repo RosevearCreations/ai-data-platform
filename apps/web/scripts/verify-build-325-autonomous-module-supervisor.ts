@@ -174,7 +174,7 @@ async function main() {
         );
         return {
           planId: input.plan.planId,
-          method: input.plan.method,
+          method: input.plan.method === "HEAD" ? "HEAD" : "GET",
           state: "healthy",
           evidenceId:
             "execution-" + input.plan.planId,
