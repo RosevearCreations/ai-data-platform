@@ -1,0 +1,36 @@
+{
+  "schema": "rosevear.ai-data-platform.build329-review.v1",
+  "application": "AI Data Platform",
+  "build": 329,
+  "name": "Cross-Host Observability, Compatibility Matrix & Universal Certification Suite",
+  "capabilities": {
+    "hostModuleCompatibilityMatrix": true,
+    "authenticationCertification": true,
+    "tenantCertification": true,
+    "capabilityCertification": true,
+    "eventCertification": true,
+    "workflowCertification": true,
+    "dataCertification": true,
+    "searchCertification": true,
+    "safeRecoveryCertification": true,
+    "offlineCertification": true,
+    "latencyErrorRetryTelemetry": true,
+    "perHostHealth": true,
+    "regressionHistory": true,
+    "syntheticLiveEvidenceSeparation": true,
+    "reusableCertificationHarness": true
+  },
+  "security": {
+    "syntheticFixtureMayLiveCertify": false,
+    "missingLiveEvidenceMayPass": false,
+    "certificationActivatesConnection": false,
+    "certificationGrantsCapabilities": false,
+    "certificationExecutesWorkflow": false,
+    "certificationMutatesHost": false,
+    "rawSecretsRequired": false
+  },
+  "migration": "0112_cross_host_observability_certification.sql",
+  "surface": "/module-certification",
+  "api": "/api/module-certification",
+  "nextQueuedBuild": 330
+}
