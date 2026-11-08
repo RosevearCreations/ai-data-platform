@@ -666,8 +666,6 @@ export async function searchWebhookReceiptsForUser(
     }
     add("tenant_id=$?", input.tenantId);
   }
-  values.push(limit);
-
   return withUserDatabase(userId, async (client) => {
     const result = await client.query(
       `select receipt_id,endpoint_id,workspace_id,source_application_id,
@@ -677,7 +675,7 @@ export async function searchWebhookReceiptsForUser(
        from app.webhook_receipts
        ${filters.length ? "where " + filters.join(" and ") : ""}
        order by received_at desc
-       limit ${values.length}`,
+       limit ${limit}`,
       values
     );
     return result.rows.map(receiptRow);
