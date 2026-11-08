@@ -755,3 +755,17 @@ Compatibility expectations come from the registered Build 328 installed-host and
 Build 330 is an evidence-reconciliation and roadmap-renewal checkpoint. It does not widen the Build 305/325 automatic execution boundary: only the existing bounded connector-health GET/HEAD recovery lane may execute automatically, and only under the existing owner policy, exact per-host policy, safe-health grant, budgets and kill switches.
 
 Production Learning VII reads existing RLS-scoped evidence and records owner-scoped append-only snapshots plus unnumbered candidates. A candidate cannot authorize work, receive a build number in Build 330, activate a connection, grant a capability, execute a peer write, replay an event, mutate credentials or alter trust. Missing relay-runtime evidence is reported as unproven rather than inferred healthy. Synthetic or fixture evidence is never promoted to live evidence. QL-266 is not resumed.
+
+
+## Build 331 Production Performance Baseline security
+
+Build 331 adds owner-scoped, RLS-protected, append-only performance snapshots.
+
+- measurements are derived only from authenticated, authorized database evidence;
+- raw credentials, request bodies and secret values are not collected;
+- missing browser, API or host telemetry remains explicitly unmeasured;
+- synthetic evidence is not promoted to live production evidence;
+- SLO and regression findings are advisory in Build 331;
+- the build cannot automatically optimize production, change SLOs or block a release;
+- connection authorization, trust, issuer, witness and owner-consent state are unchanged;
+- QL-266 is not resumed.
