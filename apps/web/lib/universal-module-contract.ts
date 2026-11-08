@@ -110,6 +110,10 @@ export const MODULE_FEATURE_FLAGS = [
   "webhook-callback-routing-v1",
   "host-inbound-event-translation-v1",
   "webhook-receipt-search-v1",
+  "secure-transport-selection-v1",
+  "trusted-local-relay-v1",
+  "transport-health-evidence-v1",
+  "no-silent-transport-downgrade-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -302,6 +306,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     inboundEndpointHostEventPublishesAutomatically: false,
     inboundEndpointReplayProtectionBypassed: false,
     inboundEndpointRevokedCanReenable: false,
+    transportSelectionActivatesConnection: false,
+    transportSelectionGrantsAuthorization: false,
+    transportSelectorReadsRawCredentials: false,
+    transportSelectorPerformsNetworkRequest: false,
+    transportSilentSecurityDowngradeAllowed: false,
+    transportFailoverRequiresExplicitOptIn: true,
     ql266ResumedByDiscovery: false
   }
 });
