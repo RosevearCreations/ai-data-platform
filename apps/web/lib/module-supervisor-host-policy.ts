@@ -16,6 +16,11 @@ export const MODULE_SUPERVISOR_SAFE_ACTIONS = [
   "connector-health-retry"
 ] as const;
 
+const APPLICATION_ID_PATTERN =
+  /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
+const OPAQUE_ID_PATTERN =
+  /^[A-Za-z0-9][A-Za-z0-9._:@/+-]{5,159}$/;
+
 export type ModuleSupervisorSafeAction =
   (typeof MODULE_SUPERVISOR_SAFE_ACTIONS)[number];
 
@@ -92,6 +97,34 @@ export type ModuleSupervisorPolicyDecision = {
     trustMutationAuthorized: false;
   };
 };
+
+export function validateModuleSupervisorHostScope(
+  host: ModuleSupervisorHostScope
+) {
+  if (
+    !APPLICATION_ID_PATTERN.test(host.hostApplicationId) ||
+    host.hostApplicationId.length > 120
+  ) {
+    throw new Error("module_supervisor_policy_host_application_invalid");
+  }
+  if (!OPAQUE_ID_PATTERN.test(host.hostInstanceId)) {
+    throw new Error("module_supervisor_policy_host_instance_invalid");
+  }
+  if (!OPAQUE_ID_PATTERN.test(host.workspaceId)) {
+    throw new Error("module_supervisor_policy_workspace_invalid");
+  }
+  if (!OPAQUE_ID_PATTERN.test(host.tenantId)) {
+    throw new Error("module_supervisor_policy_tenant_invalid");
+  }
+  if (
+    !["development", "test", "staging", "production"].includes(
+      host.environment
+    )
+  ) {
+    throw new Error("module_supervisor_policy_environment_invalid");
+  }
+  return Object.freeze({ ...host });
+}
 
 function boundedInteger(
   value: unknown,
@@ -270,6 +303,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
   requestSafeHealth: boolean;
   now?: string;
 }): ModuleSupervisorPolicyDecision {
+  const host = validateModuleSupervisorHostScope(input.host);
   const evaluatedAt = safeIso(
     input.now ?? new Date().toISOString(),
     "module_supervisor_policy_time_invalid"
@@ -282,7 +316,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
     globalControl.emergencyStopEngaged === true
   ) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy?.policyRevision ?? null,
       globalControlRevision: globalControl?.revision ?? null,
       state: "blocked",
@@ -296,7 +330,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (!policy) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: null,
       globalControlRevision: globalControl.revision,
       state: "blocked",
@@ -310,7 +344,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (!policy.enabled) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "blocked",
@@ -324,7 +358,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (policy.killSwitchEngaged) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "blocked",
@@ -343,7 +377,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
     )
   ) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "blocked",
@@ -357,7 +391,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (input.usage.cyclesLastHour >= policy.maxCyclesPerHour) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "blocked",
@@ -371,7 +405,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (!input.requestSafeHealth) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "observe-only",
@@ -385,7 +419,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (!policy.safeActions.includes("connector-health-retry")) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "observe-only",
@@ -416,7 +450,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
 
   if (maximumSafeHealthActions <= 0) {
     return decision({
-      host: input.host,
+      host,
       policyRevision: policy.policyRevision,
       globalControlRevision: globalControl.revision,
       state: "observe-only",
@@ -459,7 +493,7 @@ export function createPolicyBoundSafeHealthGrant(input: {
 
   return createModuleSupervisorSafeHealthGrant({
     grantId: input.grantId,
-    host: input.decision.host,
+    host: validateModuleSupervisorHostScope(input.decision.host),
     allowedMethods: ["GET", "HEAD"],
     maximumActions: input.decision.maximumSafeHealthActions,
     issuedAt: input.decision.evaluatedAt,
