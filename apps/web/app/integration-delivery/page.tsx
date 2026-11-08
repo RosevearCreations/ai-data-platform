@@ -431,14 +431,6 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
                 { value: rejectedEvents ? "Review exceptions" : "Monitor", tone: rejectedEvents ? "attention" as const : "healthy" as const }
               ]
             },
-            {
-              label: "Legacy QL-266",
-              cells: [
-                { value: "UNDER REVIEW", tone: "info" as const },
-                { value: "RETIRED", tone: "info" as const },
-                { value: "Do not resume", tone: "info" as const }
-              ]
-            }
           ]}
         />
         <OperationsComparisonBand
@@ -474,15 +466,6 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
               actionLabel: "Review exceptions",
               state: "blocked" as const
             }] : []),
-            {
-              id: "ql266-boundary",
-              label: "Historical owner review boundary",
-              detail: "Legacy QL-266 evidence is retained for historical audit and is not an active prerequisite.",
-              meta: "RETIRED · HISTORICAL",
-              href: "#build250-ql266",
-              actionLabel: "Review boundary",
-              state: "review" as const
-            }
           ]}
         />
         <div className="opsInspectorEscalationGrid" id="build253-inspector-escalations">
@@ -501,14 +484,6 @@ export default async function IntegrationDeliveryPage({ searchParams }: { search
             href={eventViewHref("errors")}
             actionLabel="Open delivery review"
             tone={rejectedEvents ? "critical" : "healthy"}
-          />
-          <OperationsInspectorEscalationCard
-            title="Historical escalation boundary"
-            state="UNDER REVIEW"
-            detail="Legacy escalation evidence is historical; current authorization controls remain authoritative."
-            href="#build250-ql266"
-            actionLabel="Open historical state"
-            tone="info"
           />
         </div>
       </div>
