@@ -70,29 +70,17 @@ type Run = {
   liveCertified: boolean;
   fixtureCertified: boolean;
   regressionCount: number;
-  regressions: Array<{
-    dimension?: string;
-    previous?: string;
-    current?: string;
-    detail?: string;
-  }>;
-  certification: {
-    telemetry?: {
-      sampleCount?: number;
-      latencyMsP95?: number | null;
-      errorCount?: number;
-      retryCount?: number;
-    };
-  };
+  regressions: Array<Record<string, unknown>>;
+  certification: Record<string, unknown>;
   generatedAt: string;
 };
 
 type Model = {
   descriptor: {
     version: string;
-    dimensions: string[];
-    supportedAdapters: string[];
-    policy: Record<string, boolean>;
+    dimensions: readonly string[];
+    supportedAdapters: readonly string[];
+    policy: Readonly<Record<string, boolean>>;
   };
   hosts: Host[];
   compatibilityMatrix: MatrixRow[];
@@ -648,7 +636,14 @@ export function CrossHostCertificationConsole({
                 item.moduleHostInstanceId ===
                 run.moduleHostInstanceId
             );
-            const telemetry = run.certification.telemetry;
+            const telemetryValue =
+              run.certification.telemetry;
+            const telemetry =
+              telemetryValue &&
+              typeof telemetryValue === "object" &&
+              !Array.isArray(telemetryValue)
+                ? (telemetryValue as Record<string, unknown>)
+                : {};
             return (
               <article className="reviewCard" key={run.runId}>
                 <h3>
@@ -676,15 +671,15 @@ export function CrossHostCertificationConsole({
                 </p>
                 <p>
                   Telemetry: samples{" "}
-                  {telemetry?.sampleCount ?? 0} · P95{" "}
-                  {telemetry?.latencyMsP95 ?? "n/a"} ms · errors{" "}
-                  {telemetry?.errorCount ?? 0} · retries{" "}
-                  {telemetry?.retryCount ?? 0}
+                  {String(telemetry.sampleCount ?? 0)} · P95{" "}
+                  {String(telemetry.latencyMsP95 ?? "n/a")} ms · errors{" "}
+                  {String(telemetry.errorCount ?? 0)} · retries{" "}
+                  {String(telemetry.retryCount ?? 0)}
                 </p>
                 {run.regressions.map((regression, index) => (
                   <p key={index}>
-                    Regression · {regression.dimension ?? "unknown"} —{" "}
-                    {regression.detail ?? "Evidence regressed."}
+                    Regression · {String(regression.dimension ?? "unknown")} —{" "}
+                    {String(regression.detail ?? "Evidence regressed.")}
                   </p>
                 ))}
               </article>
