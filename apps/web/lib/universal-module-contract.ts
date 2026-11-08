@@ -118,6 +118,11 @@ export const MODULE_FEATURE_FLAGS = [
   "reconnect-detection-v1",
   "idempotent-offline-sync-v1",
   "offline-conflict-review-v1",
+  "autonomous-module-supervisor-v1",
+  "per-host-health-monitoring-v1",
+  "certification-refresh-adapter-v1",
+  "safe-health-supervision-v1",
+  "owner-review-work-items-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -324,6 +329,17 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     offlineAmbiguousOutcomeAutoRetries: false,
     offlineRetryChangesIdempotencyKey: false,
     offlineConfirmedSuccessRequiresRemoteReceipt: true,
+    moduleSupervisorConsequentialPeerMutationAutomatic: false,
+    moduleSupervisorConnectionActivationAutomatic: false,
+    moduleSupervisorEventReplayAutomatic: false,
+    moduleSupervisorCredentialMutationAutomatic: false,
+    moduleSupervisorWorkflowReleaseAutomatic: false,
+    moduleSupervisorTrustMutationAutomatic: false,
+    moduleSupervisorRequiresExactHostScope: true,
+    moduleSupervisorRequiresExplicitSafeHealthGrant: true,
+    moduleSupervisorSafeHealthGetHeadOnly: true,
+    moduleSupervisorWorkItemsGrantAuthorization: false,
+    moduleSupervisorPerHostPolicyDeferredToBuild326: true,
     ql266ResumedByDiscovery: false
   }
 });
