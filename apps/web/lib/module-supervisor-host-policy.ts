@@ -126,6 +126,19 @@ export function validateModuleSupervisorHostScope(
   return Object.freeze({ ...host });
 }
 
+function exactHostScope(
+  left: ModuleSupervisorHostScope,
+  right: ModuleSupervisorHostScope
+) {
+  return (
+    left.hostApplicationId === right.hostApplicationId &&
+    left.hostInstanceId === right.hostInstanceId &&
+    left.environment === right.environment &&
+    left.workspaceId === right.workspaceId &&
+    left.tenantId === right.tenantId
+  );
+}
+
 function boundedInteger(
   value: unknown,
   minimum: number,
@@ -157,18 +170,18 @@ function normalizeMaintenanceWindow(
         )
     )
   ].sort((left, right) => left - right);
-  const startMinuteUtc = boundedInteger(
-    input.startMinuteUtc,
-    0,
-    1439,
-    0
-  );
-  const endMinuteUtc = boundedInteger(
-    input.endMinuteUtc,
-    0,
-    1439,
-    0
-  );
+  if (
+    !Number.isInteger(input.startMinuteUtc) ||
+    input.startMinuteUtc < 0 ||
+    input.startMinuteUtc > 1439 ||
+    !Number.isInteger(input.endMinuteUtc) ||
+    input.endMinuteUtc < 0 ||
+    input.endMinuteUtc > 1439
+  ) {
+    throw new Error("module_supervisor_maintenance_window_invalid");
+  }
+  const startMinuteUtc = input.startMinuteUtc;
+  const endMinuteUtc = input.endMinuteUtc;
   if (
     daysOfWeekUtc.length === 0 ||
     startMinuteUtc === endMinuteUtc
@@ -308,8 +321,26 @@ export function evaluateModuleSupervisorHostPolicy(input: {
     input.now ?? new Date().toISOString(),
     "module_supervisor_policy_time_invalid"
   );
-  const policy = input.policy;
+  const policy = input.policy
+    ? {
+        ...input.policy,
+        ...normalizeModuleSupervisorHostPolicy(input.policy),
+        host: validateModuleSupervisorHostScope(input.policy.host)
+      }
+    : null;
   const globalControl = input.globalControl;
+
+  if (policy && !exactHostScope(host, policy.host)) {
+    throw new Error("module_supervisor_policy_scope_mismatch");
+  }
+
+  for (const [key, value] of Object.entries(input.usage)) {
+    if (!Number.isInteger(value) || value < 0) {
+      throw new Error(
+        "module_supervisor_policy_usage_invalid:" + key
+      );
+    }
+  }
 
   if (
     !globalControl ||
@@ -463,7 +494,7 @@ export function evaluateModuleSupervisorHostPolicy(input: {
   }
 
   return decision({
-    host: input.host,
+    host,
     policyRevision: policy.policyRevision,
     globalControlRevision: globalControl.revision,
     state: "safe-health",
