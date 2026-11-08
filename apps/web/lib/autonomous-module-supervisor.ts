@@ -102,6 +102,7 @@ export type ModuleSupervisorSafeHealthGrant = {
   environment: HostEnvironment;
   action: "connector-health-retry";
   allowedMethods: Array<"GET" | "HEAD">;
+  maximumActions: number;
   issuedAt: string;
   expiresAt: string;
   ownerPolicyEvidenceId: string;
@@ -443,6 +444,7 @@ export function createModuleSupervisorSafeHealthGrant(input: {
   grantId: string;
   host: ModuleSupervisorHostScope;
   allowedMethods?: Array<"GET" | "HEAD">;
+  maximumActions?: number;
   issuedAt: string;
   expiresAt: string;
   ownerPolicyEvidenceId: string;
@@ -469,6 +471,10 @@ export function createModuleSupervisorSafeHealthGrant(input: {
       input.allowedMethods ?? ["GET", "HEAD"]
     )
   ];
+  const maximumActions = Math.min(
+    MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS,
+    Math.max(1, Math.trunc(input.maximumActions ?? MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS))
+  );
   if (
     allowedMethods.length < 1 ||
     allowedMethods.some(
@@ -484,6 +490,7 @@ export function createModuleSupervisorSafeHealthGrant(input: {
     ...host,
     action: "connector-health-retry" as const,
     allowedMethods,
+    maximumActions,
     issuedAt,
     expiresAt,
     ownerPolicyEvidenceId: input.ownerPolicyEvidenceId,
@@ -746,7 +753,10 @@ export async function runAutonomousModuleSupervisorCycle(input: {
       !validGrant.allowedMethods.includes(plan.method) ||
       !input.safeHealthExecutor ||
       executions.length >=
-        MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
+        Math.min(
+          MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS,
+          validGrant.maximumActions
+        )
     ) {
       heldForReview += 1;
       workItems.push(
@@ -757,7 +767,11 @@ export async function runAutonomousModuleSupervisorCycle(input: {
           title: "Safe health recovery is ready but not authorized",
           reason:
             executions.length >=
-            MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
+            Math.min(
+              MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS,
+              validGrant?.maximumActions ??
+                MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
+            )
               ? "supervisor-safe-health-cycle-cap-reached"
               : !validGrant
                 ? "exact-safe-health-grant-required"
@@ -916,6 +930,7 @@ export function autonomousModuleSupervisorDescriptor() {
       allowedMethods: ["GET", "HEAD"] as const,
       maximumActionsPerCycle:
         MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS,
+      policyGrantMayLowerCycleMaximum: true,
       exactScopedGrantRequired: true,
       executorBoundaryValidated: true
     },
