@@ -136,6 +136,7 @@ export type MediaHostTransferHandoff = {
     | null;
   authorizationEvidenceId: string | null;
   idempotencyKeySha256: string;
+  createdAt: string;
   security: {
     binaryTransferPerformed: false;
     bridgeFetchedSourceContent: false;
@@ -212,7 +213,6 @@ export class MediaHostBridgeError extends Error {
 
 const HOST_APP_PATTERN = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
 const OPAQUE_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:@/+-]{1,159}$/;
-const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 const CONTROL_PATTERN = /[\u0000-\u001f\u007f]/;
 
 const MAX_BYTES = Object.freeze({
@@ -600,6 +600,7 @@ export function createMediaHostTransferHandoff(
     holdReason,
     authorizationEvidenceId,
     idempotencyKeySha256,
+    createdAt,
     security: Object.freeze({
       binaryTransferPerformed: false as const,
       bridgeFetchedSourceContent: false as const,
