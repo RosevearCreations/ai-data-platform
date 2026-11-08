@@ -23,6 +23,7 @@ export function EmbeddedModuleBridge({
     | "app-connections"
     | "integration-health"
     | "integration-certification"
+    | "module-certification"
     | "production-learning";
 }) {
   const router = useRouter();

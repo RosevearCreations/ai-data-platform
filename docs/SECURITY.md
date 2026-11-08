@@ -741,3 +741,10 @@ Build 305 introduces an owner-scoped policy, explicit kill switch, bounded cycle
 Autonomous execution is limited to existing non-consequential operations: Build 304 certification refresh, Build 301 recovery-plan scanning and, only when separately enabled, Build 301 connector-health GET/HEAD recovery. Build 305 does not widen Build 301's retry count, cooldown, expiry, connector-registration, credential-reference or health-endpoint controls.
 
 No Build 305 autonomous path enables a connector, rotates a credential, activates a connection, replays an event, releases a held route/action, changes tenant/trust state, performs a peer write or resumes QL-266. Production Learning VI stores bounded counts, IDs and evidence text only; raw secrets, event bodies, peer payloads and credential values remain excluded.
+
+
+## Build 329 cross-host certification security
+
+Build 329 records owner-scoped, append-only host observations and certification evidence. Synthetic fixtures are explicitly separated from live evidence and can never produce a live-certified host. A live PASS requires concrete evidence references for every dimension plus non-zero telemetry samples. Missing live evidence is BLOCKED; contradictory evidence is FAIL.
+
+Compatibility expectations come from the registered Build 328 installed-host and enrollment records rather than browser-provided expected values. Certification does not probe a host automatically, read raw credentials, activate connections, grant capabilities, release holds, execute workflows, mutate host configuration or infer trust.

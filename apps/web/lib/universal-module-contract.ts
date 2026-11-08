@@ -39,6 +39,12 @@ export const MODULE_SURFACES = [
     mutating: false
   },
   {
+    id: "module-certification",
+    route: "/module-certification",
+    mode: "embedded-or-deep-link",
+    mutating: false
+  },
+  {
     id: "production-learning",
     route: "/production-learning",
     mode: "embedded-or-deep-link",
@@ -134,6 +140,11 @@ export const MODULE_FEATURE_FLAGS = [
   "installer-dry-run-v1",
   "owner-approved-install-package-v1",
   "host-enrollment-evidence-v1",
+  "cross-host-observability-v1",
+  "host-module-compatibility-matrix-v1",
+  "universal-host-certification-suite-v1",
+  "live-fixture-evidence-separation-v1",
+  "host-regression-history-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -252,6 +263,11 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     sdkRequiresIndependentAuthorization: true,
     hostAdapterGrantsPlatformAuthority: false,
     embeddedMountGrantsPlatformAuthority: false,
+    syntheticFixtureProvesLiveHost: false,
+    certificationActivatesConnection: false,
+    certificationGrantsCapabilities: false,
+    certificationExecutesWorkflow: false,
+    certificationMutatesHost: false,
     adapterPresenceGrantsAuthorization: false,
     scaffoldEmbedsCredentials: false,
     hostSessionSignatureRequired: true,

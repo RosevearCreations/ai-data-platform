@@ -5,6 +5,7 @@ import AppConnectionsPage from "@/app/app-connections/page";
 import DataLibraryPage from "@/app/data-library/page";
 import IntegrationCertificationPage from "@/app/integration-certification/page";
 import IntegrationHealthPage from "@/app/integration-health/page";
+import ModuleCertificationPage from "@/app/module-certification/page";
 import ProductionLearningPage from "@/app/production-learning/page";
 import {
   EmbeddedModuleRuntimeError,
@@ -121,6 +122,9 @@ export default async function EmbeddedSurfacePage({
       break;
     case "integration-certification":
       content = <IntegrationCertificationPage />;
+      break;
+    case "module-certification":
+      content = <ModuleCertificationPage />;
       break;
     case "production-learning":
       content = <ProductionLearningPage />;
