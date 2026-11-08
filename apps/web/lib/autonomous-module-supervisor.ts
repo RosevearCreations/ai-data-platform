@@ -106,7 +106,27 @@ export type ModuleSupervisorSafeHealthGrant = {
   issuedAt: string;
   expiresAt: string;
   ownerPolicyEvidenceId: string;
+  policyBinding: {
+    policyRevision: number;
+    globalControlRevision: number;
+  } | null;
   consequentialPeerMutationAuthorized: false;
+};
+
+export type ModuleSupervisorPolicyControlSnapshot = {
+  emergencyStopEngaged: boolean;
+  globalControlRevision: number;
+  policyRevision: number;
+  hostPolicyEnabled: boolean;
+  hostKillSwitchEngaged: boolean;
+  checkedAt: string;
+};
+
+export type ModuleSupervisorPolicyControlVerifier = {
+  verify(input: {
+    host: ModuleSupervisorHostScope;
+    grant: ModuleSupervisorSafeHealthGrant;
+  }): Promise<ModuleSupervisorPolicyControlSnapshot>;
 };
 
 export type ModuleSupervisorWorkItem = {
@@ -378,7 +398,14 @@ function validateGrant(
     ) ||
     !Number.isInteger(grant.maximumActions) ||
     grant.maximumActions < 1 ||
-    grant.maximumActions > MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
+    grant.maximumActions > MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS ||
+    (grant.policyBinding !== null &&
+      (!Number.isInteger(grant.policyBinding.policyRevision) ||
+        grant.policyBinding.policyRevision < 1 ||
+        !Number.isInteger(
+          grant.policyBinding.globalControlRevision
+        ) ||
+        grant.policyBinding.globalControlRevision < 1))
   ) {
     return false;
   }
@@ -448,6 +475,10 @@ export function createModuleSupervisorSafeHealthGrant(input: {
   host: ModuleSupervisorHostScope;
   allowedMethods?: Array<"GET" | "HEAD">;
   maximumActions?: number;
+  policyBinding?: {
+    policyRevision: number;
+    globalControlRevision: number;
+  } | null;
   issuedAt: string;
   expiresAt: string;
   ownerPolicyEvidenceId: string;
@@ -485,6 +516,18 @@ export function createModuleSupervisorSafeHealthGrant(input: {
     throw new Error("module_supervisor_grant_action_budget_invalid");
   }
   if (
+    input.policyBinding !== undefined &&
+    input.policyBinding !== null &&
+    (!Number.isInteger(input.policyBinding.policyRevision) ||
+      input.policyBinding.policyRevision < 1 ||
+      !Number.isInteger(
+        input.policyBinding.globalControlRevision
+      ) ||
+      input.policyBinding.globalControlRevision < 1)
+  ) {
+    throw new Error("module_supervisor_grant_policy_binding_invalid");
+  }
+  if (
     allowedMethods.length < 1 ||
     allowedMethods.some(
       (method) => method !== "GET" && method !== "HEAD"
@@ -500,6 +543,7 @@ export function createModuleSupervisorSafeHealthGrant(input: {
     action: "connector-health-retry" as const,
     allowedMethods,
     maximumActions,
+    policyBinding: input.policyBinding ?? null,
     issuedAt,
     expiresAt,
     ownerPolicyEvidenceId: input.ownerPolicyEvidenceId,
@@ -517,6 +561,7 @@ export async function runAutonomousModuleSupervisorCycle(input: {
   safeHealthGrant?: ModuleSupervisorSafeHealthGrant | null;
   certificationRefresher?: ModuleSupervisorCertificationRefresher;
   safeHealthExecutor?: ModuleSupervisorSafeHealthExecutor;
+  policyControlVerifier?: ModuleSupervisorPolicyControlVerifier;
   workItemSink?: ModuleSupervisorWorkItemSink;
   now?: string;
 }): Promise<ModuleSupervisorCycleResult> {
@@ -708,11 +753,18 @@ export async function runAutonomousModuleSupervisorCycle(input: {
     );
   }
 
-  const validGrant =
+  let validGrant =
     input.safeHealthGrant &&
     validateGrant(host, input.safeHealthGrant, nowMs)
       ? input.safeHealthGrant
       : null;
+
+  if (
+    validGrant?.policyBinding &&
+    !input.policyControlVerifier
+  ) {
+    validGrant = null;
+  }
 
   let safeEligible = 0;
   let heldForReview = 0;
@@ -796,6 +848,30 @@ export async function runAutonomousModuleSupervisorCycle(input: {
     }
 
     try {
+      if (validGrant.policyBinding) {
+        const control = await input.policyControlVerifier!.verify({
+          host,
+          grant: validGrant
+        });
+        assertIso(
+          control.checkedAt,
+          "module_supervisor_policy_control_time_invalid"
+        );
+        if (
+          control.emergencyStopEngaged ||
+          control.globalControlRevision !==
+            validGrant.policyBinding.globalControlRevision ||
+          control.policyRevision !==
+            validGrant.policyBinding.policyRevision ||
+          control.hostPolicyEnabled !== true ||
+          control.hostKillSwitchEngaged !== false
+        ) {
+          throw new Error(
+            "module_supervisor_policy_bound_grant_revoked"
+          );
+        }
+      }
+
       const result = await input.safeHealthExecutor.execute({
         host,
         plan,
