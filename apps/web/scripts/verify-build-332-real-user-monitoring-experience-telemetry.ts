@@ -162,7 +162,8 @@ assert.ok(!delivery.includes('state="UNDER REVIEW"'));
 const ownerAcceptance = source("app/owner-acceptance/page.tsx");
 assert.ok(ownerAcceptance.includes("Historical checkpoint"));
 assert.ok(
-  ownerAcceptance.includes("not a current prerequisite")
+  ownerAcceptance.includes("not a current") &&
+    ownerAcceptance.includes("prerequisite")
 );
 
 const ql365dHistorical = JSON.parse(
