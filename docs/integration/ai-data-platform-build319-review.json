@@ -1,0 +1,31 @@
+{
+  "schema": "rosevear.ai-data-platform.build319-review.v1",
+  "application": "AI Data Platform",
+  "build": 319,
+  "name": "Shared Notification, Task, Follow-Up & Scheduling Module APIs",
+  "sourceBuilds": [
+    297,
+    298,
+    299
+  ],
+  "capabilities": {
+    "notificationRequestModule": true,
+    "taskFollowUpModule": true,
+    "appointmentScheduleModule": true,
+    "consentAwareRouting": true,
+    "heldExchangePackages": true,
+    "conflictEvidence": true,
+    "hostSourceCorrelation": true,
+    "optionalCommsHubRouting": true
+  },
+  "security": {
+    "consentGrantsDispatchAuthority": false,
+    "outboundDeliveryPerformed": false,
+    "peerTaskWriteRequested": false,
+    "peerCalendarWriteRequested": false,
+    "peerCalendarQueried": false,
+    "commsHubPreferenceGrantsAuthorization": false,
+    "heldPackagesAutoReleased": false
+  },
+  "nextQueuedBuild": 320
+}
