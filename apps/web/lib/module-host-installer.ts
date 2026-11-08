@@ -217,7 +217,8 @@ const FORBIDDEN_SECRET_KEYS = new Set([
 
 function stableJson(value: unknown): string {
   if (value === null || typeof value !== "object") {
-    return JSON.stringify(value);
+    const encoded = JSON.stringify(value);
+    return encoded === undefined ? "null" : encoded;
   }
   if (Array.isArray(value)) {
     return "[" + value.map(stableJson).join(",") + "]";
