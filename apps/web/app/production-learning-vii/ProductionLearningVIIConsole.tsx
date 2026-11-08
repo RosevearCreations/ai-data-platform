@@ -65,6 +65,7 @@ type LiveModel = {
     recovery: {
       total: number;
       recovered: number;
+      failedAttempts: number;
       approvalRequired: number;
       exhausted: number;
       notRetryable: number;
@@ -298,6 +299,7 @@ export function ProductionLearningVIIConsole({
         <h2>Real operating footprint</h2>
         <p>
           Recovery: {evidence.recovery.total} plans · {evidence.recovery.recovered} recovered ·{" "}
+          {evidence.recovery.failedAttempts} failed attempts ·{" "}
           {evidence.recovery.approvalRequired} owner approval required ·{" "}
           {evidence.recovery.exhausted} exhausted · {evidence.recovery.notRetryable} not retryable.
         </p>
