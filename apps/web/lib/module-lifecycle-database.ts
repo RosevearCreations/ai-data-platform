@@ -268,10 +268,14 @@ export async function prepareModuleUpgrade(
 ) {
   return withUserDatabase(userId, async (client) => {
     const current = await client.query(
-      `select *
-       from app.module_host_instances
-       where module_host_instance_id=$1
-       for update`,
+      `select i.*,
+              e.host_contract_version as enrolled_host_contract_version,
+              e.protocol_version as enrolled_protocol_version
+       from app.module_host_instances i
+       join app.module_host_enrollments e
+         on e.enrollment_id=i.enrollment_id
+       where i.module_host_instance_id=$1
+       for update of i`,
       [String(input.moduleHostInstanceId ?? "")]
     );
     const row = current.rows[0] as RawRow | undefined;
@@ -287,7 +291,11 @@ export async function prepareModuleUpgrade(
       targetVersion: String(input.targetVersion ?? ""),
       lastKnownGoodVersion: String(row.last_known_good_version),
       canary: input.canary === true,
-      prerequisites: input.prerequisites,
+      prerequisites: {
+        ...input.prerequisites,
+        hostContractVersion: Number(row.enrolled_host_contract_version),
+        protocolVersion: Number(row.enrolled_protocol_version)
+      },
       policy: input.policy,
       migrations: input.migrations
     });
@@ -326,7 +334,11 @@ export async function prepareModuleUpgrade(
         plan.canary,
         plan.breakingCompatibilityBoundary,
         plan.state === "held" ? "held" : "pass",
-        JSON.stringify(input.prerequisites),
+        JSON.stringify({
+          ...input.prerequisites,
+          hostContractVersion: Number(row.enrolled_host_contract_version),
+          protocolVersion: Number(row.enrolled_protocol_version)
+        }),
         JSON.stringify(plan.migrations),
         plan.migrationPlanSha256,
         JSON.stringify(plan.rollback),
