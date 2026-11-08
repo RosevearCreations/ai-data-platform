@@ -1572,7 +1572,7 @@ export const HELP_TOPICS = {
       "A card disappears only when the source condition changes. There is no cosmetic acknowledge or dismiss action that hides unresolved evidence.",
       "Approved-but-unpublished datasets are classified as stale after 14 days so long-running publication decisions are visible.",
       "Saved Attention filters may use Build 257 browser-local Operator Workspaces, but saved views never grant access or change workflow state.",
-      "QL-266 remains under review, review-deferred and disconnected."
+      "Legacy QL-266 review state is historical and is not a current prerequisite."
     ]
   },
   "operator-workspaces": {
@@ -1589,7 +1589,7 @@ export const HELP_TOPICS = {
       "Operator Workspaces use browser localStorage only and do not create account, workspace or PostgreSQL preference rows.",
       "Saved workspace context never grants access. Reopening a profile still passes through the destination screen's authentication, membership, RLS, role and workflow controls.",
       "Build 044 Data Library saved views migrate into the shared Build 257 store on first use.",
-      "QL-266 remains under review and is not changed by saved operator workspaces."
+      "Legacy QL-266 review state is historical; saved workspaces do not change current authorization controls."
     ]
   },
   "unified-search": {
@@ -1604,7 +1604,7 @@ export const HELP_TOPICS = {
     ],
     notes: [
       "Build 256 composes existing user-scoped read models and PostgreSQL RLS transactions; it does not create a separate search database or copy governed records.",
-      "Search does not broaden workspace membership, roles, connector grants, workflow eligibility or QL-266 state.",
+      "Search does not broaden workspace membership, roles, connector grants, workflow eligibility or current connection authority.",
       "Result links are navigation only and do not perform mutations."
     ]
   },
