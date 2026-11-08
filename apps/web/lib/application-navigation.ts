@@ -334,7 +334,7 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
       {
         href: "/workflow-automation",
         label: "Workflow Automation",
-        description: "Author reviewed event-to-action rules and inspect held governed cross-app action intents.",
+        description: "Author reviewed rules, inspect held intents and use the workflow action plug-in for typed, reviewed host handoffs.",
         helpTopic: "integration-delivery"
       },
       {
