@@ -119,12 +119,18 @@ assert.ok(registry.includes("legacyQl266PrerequisiteRetired: true"));
 assert.ok(!registry.includes("connectionState: INTEGRATION_V1_STATUS"));
 
 const health = source("lib/integration-health-command-center.ts");
+const healthClient = source(
+  "app/integration-health/IntegrationHealthCommandCenter.tsx"
+);
 assert.ok(health.includes("unmeasuredPeers"));
 assert.ok(
   health.includes(
     "Legacy QL-266 disconnected state is retired"
   )
 );
+assert.ok(health.includes("legacyQl266PrerequisiteRetired:true"));
+assert.ok(healthClient.includes("peer states awaiting current evidence"));
+assert.ok(healthClient.includes("Legacy QL-266 prerequisite retired"));
 
 for (const path of [
   "app/app-connections/page.tsx",
@@ -150,6 +156,8 @@ for (const path of [
 const delivery = source("app/integration-delivery/page.tsx");
 assert.ok(delivery.includes("Legacy QL-266 retired"));
 assert.ok(!delivery.includes("QL-266 under review</OperationsStatusBadge>"));
+assert.ok(!delivery.includes('value: "UNDER REVIEW"'));
+assert.ok(!delivery.includes('state="UNDER REVIEW"'));
 
 const ownerAcceptance = source("app/owner-acceptance/page.tsx");
 assert.ok(ownerAcceptance.includes("Historical checkpoint"));
