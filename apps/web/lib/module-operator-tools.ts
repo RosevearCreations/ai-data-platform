@@ -201,7 +201,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
       {
         href: "/app-connections",
         label: "App registry",
-        description: "Review peer applications, safe capability discovery and secure transport selection."
+        description: "Review peer applications, secure transport selection and bounded offline synchronization."
       },
       {
         href: "/connector-setup",
