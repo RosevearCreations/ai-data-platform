@@ -113,8 +113,7 @@ export default async function AppConnectionsPage() {
         <p>
           Logical tenant keys and environment aliases are routing metadata only.
           Build 282 creates no tenant, no workspace, no credential and no live
-          authorization. QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED /
-          DISCONNECTED.
+          authorization. The retired QL-266 review hold is historical only and is not a current prerequisite.
         </p>
       </section>
 
