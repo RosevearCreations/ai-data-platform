@@ -437,7 +437,7 @@ export async function decideModuleHostEnrollment(
            approval_event_id=$7,
            package_sha256=null,
            package_generated_at=null,
-           updated_by=$4,
+           updated_by=$8,
            updated_at=now()
        where enrollment_id=$1
        returning *`,
@@ -445,10 +445,11 @@ export async function decideModuleHostEnrollment(
         input.enrollmentId,
         nextState,
         revision,
-        userId,
+        input.decision === "approve" ? userId : null,
         input.decision === "approve" ? new Date() : null,
         reason,
-        input.decision === "approve" ? eventId : null
+        input.decision === "approve" ? eventId : null,
+        userId
       ]
     );
 
