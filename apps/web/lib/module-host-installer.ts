@@ -817,6 +817,10 @@ export function buildHostInstallDryRun(input: {
     const evidence = evidenceByReference.get(
       binding.credentialRefId
     );
+    const expiryMs =
+      evidence?.expiresAt === null || evidence?.expiresAt === undefined
+        ? null
+        : Date.parse(evidence.expiresAt);
     if (
       !evidence ||
       evidence.workspaceId !== manifest.tenancy.workspaceId ||
@@ -825,8 +829,8 @@ export function buildHostInstallDryRun(input: {
       !requirement.acceptedReferenceKinds.includes(
         evidence.referenceKind
       ) ||
-      (evidence.expiresAt !== null &&
-        Date.parse(evidence.expiresAt) <= nowMs)
+      (expiryMs !== null &&
+        (!Number.isFinite(expiryMs) || expiryMs <= nowMs))
     ) {
       invalidBindings.push(requirement.requirementId);
       continue;
