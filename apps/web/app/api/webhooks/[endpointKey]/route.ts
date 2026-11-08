@@ -23,7 +23,7 @@ export async function POST(
 ) {
   const { endpointKey } = await context.params;
   const endpoint = await loadWebhookEndpointForIntake(endpointKey);
-  if (!endpoint || !endpoint.enabled) {
+  if (!endpoint || endpoint.revokedAt !== null || !endpoint.enabled) {
     return json(
       { accepted: false, error: "webhook_endpoint_not_found" },
       404
