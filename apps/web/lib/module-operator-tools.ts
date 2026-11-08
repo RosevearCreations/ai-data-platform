@@ -177,6 +177,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/workflow-automation",
           "/integration-suggestions",
           "/integration-certification",
+          "/module-certification",
           "/notification-consent",
           "/shared-task-exchange",
           "/shared-scheduling"
@@ -212,6 +213,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/module-lifecycle",
         label: "Module lifecycle",
         description: "Review installed versions, prepare staged upgrades, record failures and preserve rollback evidence without automatic host execution."
+      },
+      {
+        href: "/module-certification",
+        label: "Module certification",
+        description: "Review cross-host compatibility, telemetry, health, fixture/live certification and regression history."
       },
       {
         href: "/connector-setup",
