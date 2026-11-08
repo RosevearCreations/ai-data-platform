@@ -266,6 +266,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/module-installer",
+        label: "Module Installer",
+        description: "Prepare exact host enrollment, run a fail-closed install dry run and generate an owner-approved integration package without activating trust.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/data-contracts",
         label: "Cross-App Data Contracts",
         description: "Review reusable versioned customer, product, service, booking, job, staff, equipment, invoice, media, inventory and notification schemas.",

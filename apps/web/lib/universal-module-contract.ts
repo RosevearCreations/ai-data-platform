@@ -129,6 +129,11 @@ export const MODULE_FEATURE_FLAGS = [
   "maintenance-window-policy-v1",
   "policy-audit-history-v1",
   "live-policy-revocation-v1",
+  "zero-touch-module-installer-v1",
+  "guided-host-enrollment-v1",
+  "installer-dry-run-v1",
+  "owner-approved-install-package-v1",
+  "host-enrollment-evidence-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -357,6 +362,17 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     moduleSupervisorMaintenanceWindowEnforced: true,
     moduleSupervisorSafeActionAllowlistGetHeadOnly: true,
     moduleSupervisorPolicyCanAuthorizeConsequentialMutations: false,
+    moduleInstallerFilesystemScanAutomatic: false,
+    moduleInstallerNetworkScanAutomatic: false,
+    moduleInstallerAcceptsRawSecrets: false,
+    moduleInstallerCapabilityPreviewGrantsAuthorization: false,
+    moduleInstallerOwnerApprovalActivatesConnection: false,
+    moduleInstallerOwnerApprovalAuthorizesTrust: false,
+    moduleInstallerPackageContainsCredentialLocators: false,
+    moduleInstallerTransportPreparationProvesHealth: false,
+    moduleInstallerWritesHostFilesAutomatically: false,
+    moduleInstallerCreatesAutonomyPolicyAutomatically: false,
+    moduleInstallerPackageProvesHostInstalled: false,
     ql266ResumedByDiscovery: false
   }
 });
