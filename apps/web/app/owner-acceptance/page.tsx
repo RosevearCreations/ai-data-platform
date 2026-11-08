@@ -20,7 +20,7 @@ export default async function OwnerAcceptancePage() {
       <main className="shell reviewShell">
         <section className="hero reviewHero">
           <p className="eyebrow">Build 280</p>
-          <h1>Production Learning V, Owner Acceptance &amp; Next-Batch Renewal</h1>
+          <h1>Historical Owner Acceptance &amp; Renewal Evidence</h1>
           <p className="lead">
             Sign in to reconcile the completed 273–280 evidence cycle and review
             any evidence-backed renewal candidates.
@@ -74,7 +74,7 @@ export default async function OwnerAcceptancePage() {
   return (
     <main className="shell reviewShell opsDeepScreen opsDeepScreen--management">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 280 · 273–280 cycle renewal checkpoint</p>
+        <p className="eyebrow">Historical checkpoint · Builds 273–280</p>
         <h1>Production Learning V, Owner Acceptance &amp; Next-Batch Renewal</h1>
         <p className="lead">
           Reconcile every Build 273–279 criterion against current authorized
@@ -233,18 +233,18 @@ export default async function OwnerAcceptancePage() {
       <section className="dataQualityPolicyNote">
         <strong>Owner acceptance remains explicit.</strong>
         <p>
-          Deployment, CI success and Vercel readiness do not automatically accept
-          production evidence or authorize an external connection. QL-266 remains
-          UNDER_REVIEW, REVIEW_DEFERRED and DISCONNECTED.
+          This page is a historical Build 280 checkpoint. It is not a current
+          prerequisite for production, connection readiness or the active roadmap.
+          Current truth comes from the live health, certification and evidence surfaces.
         </p>
       </section>
 
       <section className="dataQualityPolicyNote">
         <strong>Roadmap state: renewal checkpoint</strong>
         <p>
-          The owner-authorized Builds 273–280 batch is the completed cycle under
-          review. No numbered Builds 281+ batch is authorized automatically.
-          Renewal candidates remain unnumbered until a separate explicit owner decision.
+          Builds 273–280 are a completed historical cycle. The active owner-authorized
+          roadmap is the later 331–350 performance and interaction batch; this page
+          no longer creates prerequisite work for that roadmap.
         </p>
       </section>
     </main>
