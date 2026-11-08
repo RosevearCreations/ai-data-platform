@@ -638,3 +638,16 @@ Build 330 closes the Builds 306–330 module batch by composing existing durable
 The pure Production Learning VII model converts only measured gaps into a finite set of at most 12 unnumbered candidates. Healthy evidence may produce no candidate. Snapshots and candidates are append-only under RLS; candidate state remains `candidate` and `numbered_build` is constrained to `NULL`.
 
 Autonomous Operations V2 is intentionally an evidence/governance revision rather than an authority expansion. The automatic action envelope remains bounded connector-health GET/HEAD recovery. The Build 330 checkpoint does not automatically create Build 331 or any subsequent numbered batch.
+
+
+## Build 331 — Production Performance Baseline, SLOs & Regression Budgets
+
+Build 331 introduces a measured performance evidence layer that composes existing authorized operational telemetry rather than creating synthetic production claims.
+
+The server-side model evaluates five currently measurable signals: authenticated database probe latency, connector P95 latency, connector error rate, webhook denial rate and 24-hour event-delivery failures. Explicit SLO warning/critical thresholds and bounded regression tolerances are evaluated in `apps/web/lib/performance-baseline.ts`.
+
+`apps/web/lib/performance-baseline-database.ts` captures a 24-hour evidence window and stores snapshots in `app.performance_baseline_snapshots`. Runtime access is select/insert only; updates and deletes are revoked. Each snapshot retains the metrics, SLO results, regression comparison and known instrumentation gaps.
+
+The operator surface is `/performance-baseline` with authenticated JSON at `/api/performance-baseline`. Capture is owner/admin controlled and observational only.
+
+Real-user browser timing, complete API percentiles and host CPU/memory remain outside Build 331 until supported telemetry sources exist.
