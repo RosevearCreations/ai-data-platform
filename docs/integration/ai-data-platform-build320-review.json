@@ -1,0 +1,28 @@
+{
+  "schema": "rosevear.ai-data-platform.build320-review.v1",
+  "application": "AI Data Platform",
+  "build": 320,
+  "name": "Shared Media, File & Asset Host Bridge",
+  "sourceBuild": 296,
+  "capabilities": {
+    "mediaReferenceRegistration": true,
+    "checksumDeduplication": true,
+    "sourceOwnershipMetadata": true,
+    "mimeSizePolicy": true,
+    "hostDownloadHandoff": true,
+    "hostUploadHandoff": true,
+    "previewReferences": true,
+    "retentionDeletionEvidence": true
+  },
+  "security": {
+    "rawBinaryAccepted": false,
+    "previewContentFetched": false,
+    "binaryTransferPerformedByBridge": false,
+    "exactTransferGrantRequired": true,
+    "sensitiveBinaryCopyRequiresExplicitAuthorization": true,
+    "sourceOwnershipInferred": false,
+    "sourceDeletionPerformed": false,
+    "deletionWithoutSourceReceiptAccepted": false
+  },
+  "nextQueuedBuild": 321
+}
