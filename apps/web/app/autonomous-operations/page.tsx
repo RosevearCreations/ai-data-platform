@@ -67,6 +67,23 @@ export default async function AutonomousOperationsPage() {
       </section>
 
       <section className="dataQualityPolicyNote">
+        <strong>Build 325 Autonomous Module Supervisor</strong>
+        <p>
+          The reusable per-host supervisor can monitor module health, refresh
+          certification through a validated adapter, detect stale mappings,
+          credential references and configuration, supervise only explicitly
+          granted connector-health GET/HEAD recovery, and create non-authorizing
+          owner-review work items. Consequential peer mutations remain outside
+          the supervisor boundary.
+        </p>
+        <div className="heroActions">
+          <Link className="secondaryButton" href="/api/module-supervisor">
+            View module supervisor contract
+          </Link>
+        </div>
+      </section>
+
+      <section className="dataQualityPolicyNote">
         <strong>Owner enablement is required.</strong>
         <p>
           Build 305 deploys disabled with the kill switch engaged. An
