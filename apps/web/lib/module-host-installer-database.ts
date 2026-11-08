@@ -17,6 +17,7 @@ import {
   listWorkspacesForUser,
   withUserDatabase
 } from "./database";
+import { AI_DATA_MODULE_VERSION } from "./universal-module-contract";
 
 type RawRow = Record<string, unknown>;
 
@@ -339,7 +340,7 @@ export async function prepareModuleHostEnrollment(
         manifest.hostApplication.environment,
         manifest.tenancy.hostTenantId,
         manifest.tenancy.platformTenantId,
-        "1.0.0",
+        AI_DATA_MODULE_VERSION,
         manifest.hostContractVersion,
         manifest.protocolVersion,
         manifest.runtime.framework,
