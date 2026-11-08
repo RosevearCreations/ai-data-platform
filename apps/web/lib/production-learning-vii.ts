@@ -53,6 +53,7 @@ export type ProductionLearningVIIInput = {
   recovery: {
     total: number;
     recovered: number;
+    failedAttempts: number;
     approvalRequired: number;
     exhausted: number;
     notRetryable: number;
@@ -239,6 +240,7 @@ export function buildProductionLearningVII(
         [
           input.recovery.total + " recovery plans",
           input.recovery.recovered + " recovered",
+          input.recovery.failedAttempts + " failed attempts",
           input.recovery.approvalRequired + " owner approval required",
           input.recovery.exhausted + " exhausted",
           input.recovery.notRetryable + " not retryable"
