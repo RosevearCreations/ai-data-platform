@@ -16,7 +16,7 @@ export default async function WorkflowAutomationPage(){
     return <main className="shell">
       <section className="hero">
         <HelpInfo topic="integration-delivery"/>
-        <p className="eyebrow">Build 302</p>
+        <p className="eyebrow">Build 318 · workflow action plug-in</p>
         <h1>Cross-App Workflow Automation Builder</h1>
         <p className="lead">
           Sign in to author reviewed event-to-action rules and inspect held cross-app action intents.
@@ -31,7 +31,7 @@ export default async function WorkflowAutomationPage(){
   return <main className="shell opsCommandScreen opsCommandScreen--it">
     <section className="hero">
       <HelpInfo topic="integration-delivery"/>
-      <p className="eyebrow">Build 302 · reviewed event-to-action automation</p>
+      <p className="eyebrow">Build 318 · workflow action plug-in interface</p>
       <h1>Cross-App Workflow Automation Builder</h1>
       <p className="lead">
         Connect approved event-bus publications to governed cross-app action workbenches
@@ -54,6 +54,22 @@ export default async function WorkflowAutomationPage(){
         Event replay, notifications, tasks, schedules, credentials, connections, exports,
         writes and trust changes continue through their existing governed workbenches.
       </p>
+    </section>
+
+    <section className="dataQualityPolicyNote">
+      <strong>Build 318 workflow action plug-in</strong>
+      <p>
+        Build 302 held intents can now be exposed to host applications through
+        strict action capability descriptors and typed input schemas. Approval
+        makes an intent eligible for an idempotent host handoff only; it does
+        not execute the action. Host callbacks preserve accepted, rejected, or
+        error evidence without bypassing the destination workbench.
+      </p>
+      <div className="heroActions">
+        <Link className="secondaryButton" href="/api/module-workflow-actions">
+          View workflow action plug-in descriptor
+        </Link>
+      </div>
     </section>
 
     <WorkflowAutomationBuilder model={{
