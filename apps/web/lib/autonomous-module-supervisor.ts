@@ -474,10 +474,16 @@ export function createModuleSupervisorSafeHealthGrant(input: {
       input.allowedMethods ?? ["GET", "HEAD"]
     )
   ];
-  const maximumActions = Math.min(
-    MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS,
-    Math.max(1, Math.trunc(input.maximumActions ?? MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS))
-  );
+  const maximumActions =
+    input.maximumActions ??
+    MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS;
+  if (
+    !Number.isInteger(maximumActions) ||
+    maximumActions < 1 ||
+    maximumActions > MODULE_SUPERVISOR_MAX_SAFE_HEALTH_ACTIONS
+  ) {
+    throw new Error("module_supervisor_grant_action_budget_invalid");
+  }
   if (
     allowedMethods.length < 1 ||
     allowedMethods.some(
