@@ -566,7 +566,8 @@ export function moduleSupervisorHostPolicyDescriptor() {
       safeHealthPerCycle: { minimum: 0, maximum: 3 },
       safeHealthPerHour: { minimum: 0, maximum: 20 },
       safeHealthPerDay: { minimum: 0, maximum: 50 },
-      reservationsAreConservative: true
+      reservationsAreConservative: true,
+      policyGrantRequiresLiveControlRecheck: true
     },
     maintenanceWindows: {
       timezone: "UTC",
@@ -585,6 +586,8 @@ export function moduleSupervisorHostPolicyDescriptor() {
     ] as const,
     security: {
       globalStopOverridesEveryHost: true,
+      globalStopRevokesPolicyGrantBeforeNextAction: true,
+      policyRevisionChangeRevokesPolicyGrant: true,
       missingGlobalControlFailsClosed: true,
       missingHostPolicyFailsClosed: true,
       safeHealthOnly: true,
