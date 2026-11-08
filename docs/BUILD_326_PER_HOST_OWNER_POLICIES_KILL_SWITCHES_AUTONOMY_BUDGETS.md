@@ -131,6 +131,18 @@ The grant carries:
 
 The grant can only lower Build 325's execution ceiling.
 
+A Build 326 policy-bound grant also carries the host-policy revision and global-control revision. Before each safe-health action, the supervisor requires a live control-state verifier. The next action is blocked when:
+
+- the global emergency stop is engaged;
+- the global-control revision changed;
+- the host-policy revision changed;
+- the host policy was disabled;
+- the host kill switch was engaged.
+
+A policy-bound grant without a live verifier is not executable.
+
+This allows the emergency stop and host kill switch to revoke outstanding short-lived policy grants before the next safe-health action.
+
 ## Durable evidence
 
 Migration:
