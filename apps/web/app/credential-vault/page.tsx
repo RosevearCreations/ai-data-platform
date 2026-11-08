@@ -50,7 +50,7 @@ export default async function CredentialVaultPage() {
           Build 284 stores reference locators, scope, dates and append-only rotation
           evidence. Passwords, tokens, API keys, HMAC keys and credential values
           remain in their external environment, provider or vault. Rotation is never
-          automatic and QL-266 remains UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED.
+          automatic and The retired QL-266 review hold is historical only and is not a current prerequisite.
         </p>
       </section>
 

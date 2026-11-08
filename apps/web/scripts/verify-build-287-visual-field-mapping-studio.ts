@@ -188,7 +188,7 @@ async function main() {
   ensure(
     page.includes("Visual Field Mapping Studio") &&
       page.includes("Reviewed mapping is configuration evidence, not a live connection.") &&
-      page.includes("UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED"),
+      page.includes("retired QL-266 review hold is historical only"),
     "operator page and safety boundary"
   );
   for (const token of [

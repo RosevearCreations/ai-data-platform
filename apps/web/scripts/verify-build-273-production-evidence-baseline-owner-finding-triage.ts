@@ -155,7 +155,7 @@ async function main() {
   ensure(page.includes("Measurable exit criteria"), "exit criteria UI");
   ensure(page.includes("Historical findings"), "historical UI");
   ensure(owner.includes('href="/evidence-baseline"'), "owner acceptance handoff");
-  ensure(nav.includes('href: "/evidence-baseline"') && nav.includes('label: "Evidence Baseline"'), "navigation");
+  ensure(!nav.includes('href: "/evidence-baseline"'), "historical evidence baseline removed from active navigation");
   ensure(pkg.includes("verify-build-273-production-evidence-baseline-owner-finding-triage.ts"), "verifier registered");
 
   const status = JSON.parse(statusRaw);

@@ -295,7 +295,7 @@ async function main() {
     (page.includes("Schema Drift Detection & Mapping Repair Assistant") ||
       page.includes("Schema Drift Detection &amp; Mapping Repair Assistant")) &&
       page.includes("Drift repair never auto-approves a mapping.") &&
-      page.includes("UNDER_REVIEW / REVIEW_DEFERRED / DISCONNECTED"),
+      page.includes("retired QL-266 review hold is historical only"),
     "operator page safety boundary"
   );
   for (const token of [

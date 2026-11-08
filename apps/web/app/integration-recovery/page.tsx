@@ -51,7 +51,7 @@ export default async function IntegrationRecoveryPage(){
         Automatic recovery is limited to connector SDK health checks using the connector&apos;s
         declared GET/HEAD health path and bounded retry policy. Credential changes, event replay,
         connection activation, export/write operations and trust decisions are never auto-executed.
-        QL-266 remains unchanged.
+        Legacy QL-266 status is historical and is not a current recovery prerequisite.
       </p>
     </section>
 

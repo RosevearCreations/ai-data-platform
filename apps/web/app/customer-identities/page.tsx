@@ -78,7 +78,7 @@ export default async function CustomerIdentityPage() {
           the raw values are not persisted. Matching is exact,
           tenant scoped and cross-application only. No candidate is
           merged automatically, no external records are changed and
-          QL-266 remains disconnected.
+          Legacy QL-266 connection status is historical and no longer defines current readiness.
         </p>
       </section>
 

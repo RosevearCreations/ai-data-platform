@@ -769,3 +769,16 @@ Build 331 adds owner-scoped, RLS-protected, append-only performance snapshots.
 - the build cannot automatically optimize production, change SLOs or block a release;
 - connection authorization, trust, issuer, witness and owner-consent state are unchanged;
 - QL-266 is not resumed.
+
+
+## Build 332 Real User Monitoring and current I.T. truth
+
+Build 332 records privacy-minimized authenticated browser performance evidence.
+
+- raw URLs, query strings, DOM text, form values, customer records, cookies and credentials are not persisted;
+- dynamic-looking route identifiers are collapsed before storage;
+- telemetry events are append-only and RLS scoped to the authenticated actor;
+- unsupported browser metrics remain absent rather than being synthesized;
+- RUM cannot change configuration, SLOs, connection authority or release state;
+- the historical QL-266 review hold is retired as a global operator prerequisite, but authentication, tenant/workspace isolation, credential-reference controls, certification, transport security, idempotency and explicit consequential-write authorization remain authoritative;
+- historical QL-266 and QL-365D snapshots remain evidence and are not rewritten into false current success.

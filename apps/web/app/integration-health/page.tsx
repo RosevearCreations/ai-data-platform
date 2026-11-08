@@ -48,7 +48,7 @@ export default async function IntegrationHealthPage(){
       <p>
         This dashboard combines authorized stored evidence and the registered local application state.
         It performs no external health probe, reads no credential value, activates no connection,
-        triggers no automatic recovery and does not resume QL-266.
+        triggers no automatic recovery and does not bypass current connection authorization.
       </p>
     </section>
 

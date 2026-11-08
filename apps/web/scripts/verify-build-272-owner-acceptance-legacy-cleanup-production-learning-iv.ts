@@ -27,10 +27,10 @@ async function main() {
 
   ensure(owner.includes("Owner Acceptance, Legacy Cleanup &amp; Production Learning IV"), "owner acceptance page");
   ensure(owner.includes("buildProductionLearningReview") && owner.includes("buildHardeningAudit"), "evidence-backed owner acceptance");
-  ensure(owner.includes('href="/evidence-baseline"') && owner.includes("owner-authorized Builds 273–280 batch"), "owner-authorized roadmap handoff");
+  ensure(owner.includes('href="/evidence-baseline"') && owner.includes("Historical checkpoint"), "historical owner-acceptance handoff retained");
   ensure(learning.includes("Production Learning IV"), "Production Learning IV label");
   ensure(learning.includes("No speculative Build 273+ queue"), "Production Learning renewal rule");
-  ensure(shell.includes("Operations Command") && shell.includes("Marble Standard") && shell.includes("Owner acceptance"), "canonical shell footer");
+  ensure(shell.includes("Operations Command") && shell.includes("Marble Standard") && shell.includes("Current evidence"), "canonical shell footer");
   ensure(!shell.includes("legacy verifier marker"), "shell legacy marker cleanup");
   ensure(!shell.includes("Build 259 · Operations Command"), "stale shell build branding removed");
 
@@ -38,7 +38,7 @@ async function main() {
     ensure(!content.includes("legacy verifier marker"), label + " legacy marker cleanup");
   }
 
-  ensure(nav.includes('href: "/owner-acceptance"') && nav.includes('label: "Owner Acceptance"'), "navigation");
+  ensure(!nav.includes('href: "/owner-acceptance"'), "historical owner acceptance removed from active navigation");
   ensure(pkg.includes("verify-build-272-owner-acceptance-legacy-cleanup-production-learning-iv.ts"), "verifier registered");
 
   const parsed = JSON.parse(status);
