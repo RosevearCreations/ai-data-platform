@@ -465,8 +465,10 @@ export function createModuleSupervisorSafeHealthGrant(input: {
   if (Date.parse(expiresAt) <= Date.parse(issuedAt)) {
     throw new Error("module_supervisor_grant_expiry_invalid");
   }
-  const allowedMethods = [
-    ...new Set(input.allowedMethods ?? ["GET", "HEAD"])
+  const allowedMethods: Array<"GET" | "HEAD"> = [
+    ...new Set<"GET" | "HEAD">(
+      input.allowedMethods ?? ["GET", "HEAD"]
+    )
   ];
   if (
     allowedMethods.length < 1 ||
