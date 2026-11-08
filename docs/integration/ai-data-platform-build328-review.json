@@ -1,0 +1,30 @@
+{
+  "schema": "rosevear.ai-data-platform.build328-review.v1",
+  "application": "AI Data Platform",
+  "build": 328,
+  "name": "Module Versioning, Safe Upgrade, Rollback & Migration Orchestration",
+  "capabilities": {
+    "installedVersionInventory": true,
+    "enrolledHostCompatibilityChecks": true,
+    "stagedUpgradePlanning": true,
+    "canaryHostSupport": true,
+    "databasePrerequisiteCheck": true,
+    "schemaPrerequisiteCheck": true,
+    "rollbackBackupCheck": true,
+    "migrationOrderingProtection": true,
+    "rollbackPlan": true,
+    "lastKnownGoodVersion": true,
+    "failedUpgradeEvidence": true,
+    "appendOnlyUpgradeEvents": true
+  },
+  "security": {
+    "packageGenerationProvesInstallation": false,
+    "automaticHostUpgrade": false,
+    "breakingUpgradeWithoutOwnerPolicy": false,
+    "ownerApprovalProvesHostApplied": false,
+    "irreversibleMigrationAutoRollback": false,
+    "rawSecretsRequired": false
+  },
+  "migration": "0111_module_versioning_upgrade_rollback.sql",
+  "nextQueuedBuild": 329
+}
