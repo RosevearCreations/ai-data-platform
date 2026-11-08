@@ -102,6 +102,7 @@ export default async function WebhookGatewayPage() {
           })),
           endpoints: model.endpoints.map((endpoint) => ({
             ...endpoint,
+            revokedAt: endpoint.revokedAt?.toISOString() ?? null,
             createdAt: endpoint.createdAt.toISOString(),
             updatedAt: endpoint.updatedAt.toISOString()
           })),
