@@ -60,7 +60,9 @@ function runRow(row: RawRow) {
     liveCertified: row.live_certified === true,
     fixtureCertified: row.fixture_certified === true,
     regressionCount: Number(row.regression_count),
-    regressions: array(row.regression_snapshot),
+    regressions: array(row.regression_snapshot).map((item) =>
+      object(item)
+    ),
     certification: object(row.certification_snapshot),
     generatedAt: dateIso(row.generated_at)
   };
@@ -113,7 +115,12 @@ function hostRow(row: RawRow) {
     lifecycleState: String(row.lifecycle_state),
     hostContractVersion: Number(row.host_contract_version),
     protocolVersion: Number(row.protocol_version),
-    adapterKind: String(row.adapter_kind),
+    adapterKind: String(row.adapter_kind) as
+      | "react"
+      | "nextjs"
+      | "vite"
+      | "vanilla"
+      | "electron",
     updatedAt: dateIso(row.updated_at)
   };
 }
