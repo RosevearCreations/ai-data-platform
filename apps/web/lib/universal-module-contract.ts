@@ -86,6 +86,10 @@ export const MODULE_FEATURE_FLAGS = [
   "universal-data-contract-resolver-v1",
   "mapping-profile-suggestions-v1",
   "schema-drift-integration-v1",
+  "event-bus-host-bridge-v1",
+  "event-subscription-pack-v1",
+  "exact-event-type-contracts-v1",
+  "replay-safe-event-receipt-correlation-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -244,6 +248,12 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     frameAncestorsDefaultSelfOnly: true,
     rawSecretsAcceptedInHostContext: false,
     peerWritesEnabledByDiscovery: false,
+    hostEventPublicationBypassesReview: false,
+    hostSubscriptionAutoActivates: false,
+    eventBridgeAcceptsRawPayloadBodies: false,
+    eventBridgeRequiresExactEventContracts: true,
+    eventBridgePreservesTenantEnvironmentScope: true,
+    eventBridgeReleasesHeldRoutes: false,
     ql266ResumedByDiscovery: false
   }
 });
