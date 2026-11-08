@@ -128,6 +128,7 @@ export const MODULE_FEATURE_FLAGS = [
   "autonomy-budget-reservation-v1",
   "maintenance-window-policy-v1",
   "policy-audit-history-v1",
+  "live-policy-revocation-v1",
   "embedded-surface-descriptors"
 ] as const;
 
@@ -350,6 +351,9 @@ export const UNIVERSAL_MODULE_MANIFEST = Object.freeze({
     moduleSupervisorGlobalStopOverridesHostPolicy: true,
     moduleSupervisorHostKillSwitchFailClosed: true,
     moduleSupervisorBudgetReservationRequired: true,
+    moduleSupervisorPolicyBoundGrantLiveRecheckRequired: true,
+    moduleSupervisorGlobalStopRevokesOutstandingGrant: true,
+    moduleSupervisorPolicyRevisionRevokesOutstandingGrant: true,
     moduleSupervisorMaintenanceWindowEnforced: true,
     moduleSupervisorSafeActionAllowlistGetHeadOnly: true,
     moduleSupervisorPolicyCanAuthorizeConsequentialMutations: false,
