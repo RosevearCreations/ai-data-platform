@@ -215,10 +215,31 @@ const FORBIDDEN_SECRET_KEYS = new Set([
   "credentialvalue"
 ]);
 
+function stableJson(value: unknown): string {
+  if (value === null || typeof value !== "object") {
+    return JSON.stringify(value);
+  }
+  if (Array.isArray(value)) {
+    return "[" + value.map(stableJson).join(",") + "]";
+  }
+  const object = value as Record<string, unknown>;
+  return (
+    "{" +
+    Object.keys(object)
+      .sort()
+      .map(
+        (key) =>
+          JSON.stringify(key) + ":" + stableJson(object[key])
+      )
+      .join(",") +
+    "}"
+  );
+}
+
 function sha256(value: unknown) {
   return createHash("sha256")
     .update(
-      typeof value === "string" ? value : JSON.stringify(value),
+      typeof value === "string" ? value : stableJson(value),
       "utf8"
     )
     .digest("hex");
