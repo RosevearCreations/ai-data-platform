@@ -43,7 +43,7 @@ async function main(){
   for(const token of ["OperationsKpiCard","OperationsFilterToolbar","OperationsDetailInspector","OperationsModuleGrid"]) ensure(panels.includes(token),"panel "+token);
   ensure(css.includes("Build 246 — KPI cards, filter toolbars, detail inspectors and responsive module grids"),"Build 246 UI styles");
   ensure(statistical.includes("OperationsKpiCard")&&statistical.includes("OperationsFilterToolbar"),"Statistical KPI/filter conversion");
-  ensure(statusPage.includes("QL-266 under review"),"System Status QL-266 review label");
+  ensure(statusPage.includes("Legacy QL-266 retired"),"System Status historical QL-266 retirement label");
   ensure(statusPage.includes("OperationsDetailInspector")&&statusPage.includes("OperationsModuleGrid"),"System Status inspector/grid conversion");
   ensure(pkg.includes("verify-build-246-repair-presets-renewal-filtering-receipt-persistence-review.ts"),"registered");
 
@@ -57,6 +57,6 @@ async function main(){
   ensure(status.source_A_sha==="73842314ae77af0826c6403d851dbdd58ae964fe","source A");
 
 
-  console.log("Build 246 recovery and Operations Command UI verification passed; QL-266 remains under review.");
+  console.log("Build 246 recovery and Operations Command UI verification passed; historical QL-266 evidence remains preserved.");
 }
 void main();
