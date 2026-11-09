@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rosevear.ai/contracts/rosevear.master-shell.event.v1.schema.json",
+  "title": "Rosevear Master Shell Event V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "schema",
+    "schemaVersion",
+    "sourceId",
+    "sourceRevision",
+    "shellId",
+    "tenantId",
+    "eventType",
+    "occurredAt",
+    "publishedAt",
+    "sourceSequence",
+    "correlationId",
+    "causationId",
+    "idempotencyKey",
+    "sensitivity",
+    "audience",
+    "evidenceURI",
+    "verificationState",
+    "payloadHash",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "pattern": "^evt_[A-Za-z0-9_-]{12,100}$"
+    },
+    "schema": {
+      "const": "rosevear.master-shell.event.v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "sourceId": {
+      "enum": [
+        "yw",
+        "icamp",
+        "rosiedazzlers",
+        "devilndove",
+        "ai-data-platform",
+        "rosevear-ai-hub"
+      ]
+    },
+    "sourceRevision": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+    },
+    "shellId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+    },
+    "tenantId": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+        }
+      ]
+    },
+    "eventType": {
+      "enum": [
+        "source.health.reported",
+        "release.promoted",
+        "module.readiness.changed",
+        "incident.opened",
+        "incident.updated",
+        "consent.changed",
+        "workflow.status.changed",
+        "audit.evidence.recorded"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceSequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "correlationId": {
+      "type": "string",
+      "pattern": "^corr_[A-Za-z0-9_-]{12,100}$"
+    },
+    "causationId": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cause_[A-Za-z0-9_-]{12,100}$"
+        }
+      ]
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+    },
+    "sensitivity": {
+      "enum": [
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "audience": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "yw",
+          "icamp",
+          "rosiedazzlers",
+          "devilndove",
+          "ai-data-platform",
+          "rosevear-ai-hub",
+          "rosevear-comms-hub",
+          "rosevear-suite-owner",
+          "rosevear-it"
+        ]
+      }
+    },
+    "evidenceURI": {
+      "type": "string",
+      "pattern": "^(https://|urn:rosevear:evidence:)[^\\\\s]{1,500}$"
+    },
+    "verificationState": {
+      "enum": [
+        "observed",
+        "reported",
+        "independently-verified",
+        "stale",
+        "disconnected",
+        "held",
+        "unknown"
+      ]
+    },
+    "payloadHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "yw"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "yard-workers"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "icamp"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "icamp"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "rosiedazzlers"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "rosiedazzlers"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "devilndove"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "devilndove"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "ai-data-platform"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "ai-data-platform"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "rosevear-ai-hub"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "rosevear-ai-hub"
+          }
+        }
+      }
+    }
+  ]
+}
