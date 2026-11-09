@@ -861,3 +861,23 @@ Build 337 reuses and re-checks existing transport trust rather than weakening it
 - a disabled or revoked transport may provide historical provenance but cannot advance current registry state;
 - registry projection requires explicit owner/admin acceptance and fresh independently verified source-health evidence;
 - no outbound request, source mutation, event-bus route release, trust activation or peer write is performed.
+
+
+## Build 338 Master Completion security and evidence integrity
+
+Build 338 treats Master Completion as governed evidence, not a mutable progress gauge.
+
+- requirement revisions are append-only and suite-admin RLS protected;
+- stable requirement identity cannot drift across source/module/key boundaries;
+- denominator approvals are append-only and explicitly select exact requirement revisions;
+- denominator hashes are recomputed when read and fail closed on mismatch;
+- only REQUIRED requirements may enter a denominator;
+- module-scoped denominators cannot include another module;
+- evidence is append-only and pinned to an exact requirement revision and axis;
+- old-revision evidence does not carry forward;
+- missing evidence derives UNKNOWN and expired evidence derives STALE;
+- UNKNOWN and STALE block completion-percentage calculation rather than being silently treated as zero;
+- implementation evidence never satisfies testing, integration, security, accessibility/device or production/user acceptance;
+- every calculated percentage retains scope revision and evidence/reviewer/confidence context;
+- runtime roles receive SELECT/INSERT only; UPDATE/DELETE is revoked;
+- Build 338 performs no source mutation, outbound request, peer write, trust activation or production-acceptance inference.

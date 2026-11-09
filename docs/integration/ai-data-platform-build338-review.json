@@ -1,0 +1,60 @@
+{
+  "schema": "rosevear.ai-data-platform.build338-review.v1",
+  "application": "AI Data Platform",
+  "build": 338,
+  "name": "Master Completion Requirements Registry & Evidence-Axis Scoring",
+  "axes": [
+    "design",
+    "implementation",
+    "automated-testing",
+    "integration-verification",
+    "security",
+    "accessibility-device-acceptance",
+    "production-user-acceptance"
+  ],
+  "identity": {
+    "stableRequirementIds": true,
+    "appendOnlyRequirementRevisions": true,
+    "evidencePinnedToRequirementRevision": true,
+    "oldRevisionEvidenceCarriesForward": false
+  },
+  "denominator": {
+    "explicitOwnerAdminApproval": true,
+    "inferredFromCatalogue": false,
+    "pinsExactRequirementRevisions": true,
+    "recordsScopeDate": true,
+    "recordsBranchCommit": true,
+    "recordsHash": true
+  },
+  "scoring": {
+    "unweighted": true,
+    "weighted": true,
+    "perAxis": true,
+    "evidenceCoverage": true,
+    "completionUnavailableWhenUnknownOrStale": true,
+    "unknownConvertedToZero": false,
+    "staleConvertedToZero": false,
+    "implementationImpliesOtherAxes": false,
+    "calculatedPercentageRetainsAuditContext": true
+  },
+  "persistence": {
+    "migration": "0120_master_completion_requirements_scoring.sql",
+    "tables": [
+      "app.master_completion_requirement_revisions",
+      "app.master_completion_denominator_approvals",
+      "app.master_completion_evidence"
+    ],
+    "appendOnlyRuntime": true
+  },
+  "safety": {
+    "sourceMutationPerformed": false,
+    "outboundDeliveryPerformed": false,
+    "sixSourceDenominatorsInvented": false,
+    "greenReleaseEqualsProductionAcceptance": false
+  },
+  "surfaces": {
+    "operator": "/master-completion",
+    "api": "/api/master-completion"
+  },
+  "nextQueuedBuild": 339
+}

@@ -714,3 +714,20 @@ The normalized ledger stores only bounded operational fields for source health, 
 Duplicate receipt, event, source-sequence and source/idempotency identities are fail-closed. Out-of-order or stale evidence remains observable but is not permitted to advance the source registry.
 
 Registry projection requires explicit owner/admin acceptance plus fresh independently verified source-health evidence over a currently active transport. Existing Build 336 transition rules remain authoritative.
+
+
+## Build 338 — Master Completion Requirements Registry & Evidence-Axis Scoring
+
+Build 338 adds a suite-wide append-only Master Completion layer above the Build 335–337 source identity, registry and ingestion foundations.
+
+Requirement identity is stable across revisions and is derived from source ID, optional module ID and stable requirement key. Requirement definitions are immutable revisions. Evidence is pinned to one exact revision.
+
+Denominator approvals are independent append-only records. They pin exact requirement revisions and weights for a source or module scope together with scope date, branch, commit SHA, approver and a deterministic denominator hash.
+
+The seven independent evidence axes are design, implementation, automated testing, integration verification, security, accessibility/device acceptance and production/user acceptance. Required axes are declared per requirement revision; structurally non-applicable axes do not enter the axis denominator.
+
+Current evidence is derived from the latest evidence version for the exact requirement revision and axis. Missing evidence is UNKNOWN; expired evidence is STALE. Neither state is rewritten to failed or complete.
+
+Unweighted completion, weighted completion and per-axis completion remain unavailable while the approved denominator contains UNKNOWN or STALE required evidence. Evidence coverage is calculated separately.
+
+No six-source requirement inventory or denominator is seeded automatically, and no source application is mutated.

@@ -89,6 +89,9 @@ const requiredTables = [
   "service_performance_events",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
+  "master_completion_requirement_revisions",
+  "master_completion_denominator_approvals",
+  "master_completion_evidence",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -164,6 +167,9 @@ const appendOnlyTables = [
   "performance_baseline_snapshots",
   "experience_telemetry_events",
   "master_shell_source_updates",
+  "master_completion_requirement_revisions",
+  "master_completion_denominator_approvals",
+  "master_completion_evidence",
   "master_shell_source_registry_evidence",
   "service_performance_events",
   "rosevear_comms_operation_claims"
