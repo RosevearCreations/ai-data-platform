@@ -1,0 +1,47 @@
+{
+  "schema": "rosevear.ai-data-platform.build334-review.v1",
+  "application": "AI Data Platform",
+  "build": 334,
+  "name": "API, Database Query & Dependency Performance Observatory",
+  "evidence": {
+    "window": "7d",
+    "apiTiming": true,
+    "databaseProbe": true,
+    "poolCounts": true,
+    "poolWaitingPressure": true,
+    "dependencyTimingSource": "workspace_connector_audit",
+    "percentiles": [
+      "p50",
+      "p75",
+      "p95"
+    ],
+    "failureRates": true
+  },
+  "privacy": {
+    "rawUrlsStored": false,
+    "queryStringsStored": false,
+    "sqlTextStored": false,
+    "requestBodiesStored": false,
+    "responseBodiesStored": false,
+    "customerDataStored": false,
+    "credentialValuesStored": false,
+    "poolConnectionStringsStored": false
+  },
+  "safety": {
+    "automaticOptimization": false,
+    "automaticPoolResize": false,
+    "automaticReleaseBlocking": false,
+    "automaticConnectionActivation": false,
+    "consequentialPeerWritesAutomatic": false
+  },
+  "masterShell": {
+    "architectureAcceptedAsProposedContract": true,
+    "aiDataTargetRole": "master-intelligence-and-monitoring",
+    "fullMasterCompletionImplemented": false,
+    "missingEvidenceState": "UNKNOWN_OR_HOLD",
+    "implementationResponse": "docs/MASTER_SHELL_AI_DATA_PLATFORM_IMPLEMENTATION_RESPONSE.md"
+  },
+  "surface": "/performance-observatory",
+  "api": "/api/performance-observatory",
+  "nextQueuedBuild": 335
+}

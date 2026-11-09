@@ -660,3 +660,16 @@ Build 332 adds an authenticated client measurement layer through `ExperienceTele
 The server revalidates metric vocabulary, units, timestamps and route families before inserting append-only rows into `app.experience_telemetry_events`. P50/P75/P95 views are computed from durable PostgreSQL evidence for 24-hour and seven-day windows.
 
 Build 332 also updates the I.T. truth model. Static legacy QL-266 disconnected/review-deferred states no longer define current readiness. The peer registry reports `UNMEASURED` when no current evidence establishes connection state. Integration Health distinguishes unmeasured from genuinely disconnected evidence. Historical status documents remain audit records, not active prerequisites.
+
+
+## Build 334 — API, Database Query & Dependency Performance Observatory
+
+Build 334 adds a bounded server-side observability layer that complements the Build 331 baseline and Build 332–333 browser/route evidence.
+
+Authenticated server operations use fixed operation keys and record duration, outcome, status code and count-only application-pool pressure in `app.service_performance_events`. The runtime role has SELECT/INSERT only under actor-scoped RLS.
+
+The observatory does not duplicate connector transport evidence. It correlates the existing RLS-authorized `workspace_connector_audit` durations by workspace and connector key, preserving source provenance rather than flattening separate dependencies into a false global success state.
+
+The operator surface is `/performance-observatory` with authenticated JSON at `/api/performance-observatory`. Missing measurements remain unmeasured.
+
+The Master Shell handoff is recorded in `docs/MASTER_SHELL_AI_DATA_PLATFORM_IMPLEMENTATION_RESPONSE.md`. AI Data Platform accepts the target Master Intelligence and Monitoring role, but Build 334 does not claim the full Master Completion Dashboard, all proposed event contracts or six-source live acceptance are already implemented.
