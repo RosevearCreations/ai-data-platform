@@ -22,7 +22,7 @@ assert.deepEqual(
   ["yw", "icamp", "rosiedazzlers", "devilndove", "ai-data-platform", "rosevear-ai-hub"]
 );
 assert.equal(empty.every((item) => item.effectiveStatus === "UNKNOWN"), true);
-assert.equal(empty.some((item) => item.sourceId === ("rosevear-comms-hub" as never)), false);
+assert.equal(empty.map((item) => String(item.sourceId)).includes("rosevear-comms-hub"), false);
 assert.equal(masterShellSourceRegistrySummary(empty).unknown, 6);
 assert.deepEqual([...MASTER_SHELL_SOURCE_STATES], [
   "UNKNOWN",
