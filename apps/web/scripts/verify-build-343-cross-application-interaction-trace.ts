@@ -161,7 +161,7 @@ assert.ok(
 const docs = source(
   "../../docs/BUILD_343_CROSS_APPLICATION_INTERACTION_TRACE.md"
 );
-assert.ok(docs.includes("correlation does not prove causation"));
+assert.ok(docs.includes("Correlation does not prove causation."));
 assert.ok(
   docs.includes(
     "Build 344 — Module Health, Stuck-State, Staleness, HOLD & Blocker Intelligence"
