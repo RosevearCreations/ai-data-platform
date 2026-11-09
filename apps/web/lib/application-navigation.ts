@@ -116,6 +116,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "shell-overview"
       },
       {
+        href: "/cross-application-interaction-trace",
+        label: "Interaction Trace",
+        description: "Trace cross-application correlation, dependency and failure-propagation evidence without inferring authority.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/integration-health",
         label: "Integration Health",
         description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",
