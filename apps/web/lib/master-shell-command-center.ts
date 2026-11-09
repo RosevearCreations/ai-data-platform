@@ -1,4 +1,11 @@
 import {
+  composeCommsComplementaryPlane,
+  type CommsComplementaryPlaneModel
+} from "./comms-complementary-plane";
+import {
+  listCommsComplementaryPlaneForUser
+} from "./comms-complementary-plane-database";
+import {
   listMasterApplicationInventoryForUser
 } from "./master-application-inventory-database";
 import {
@@ -66,11 +73,14 @@ export function composeMasterShellCommandCenter(input: {
   integrationHealth: Awaited<
     ReturnType<typeof buildIntegrationHealthCommandCenter>
   >;
+  commsPlane?: CommsComplementaryPlaneModel;
   now?: Date;
 }) {
   const inventory = input.inventory;
   const integrationHealth = input.integrationHealth;
   const now = input.now ?? new Date();
+  const commsPlane =
+    input.commsPlane ?? composeCommsComplementaryPlane({ now });
 
   const applications = inventory.applications.map((app) => {
     const attentionState = applicationAttentionState(
@@ -157,7 +167,7 @@ export function composeMasterShellCommandCenter(input: {
 
   const attentionQueue: Array<{
     id: string;
-    area: "Applications" | "IT" | "Management";
+    area: "Applications" | "IT" | "Management" | "Comms";
     state: MasterCommandAttentionState;
     title: string;
     detail: string;
@@ -222,6 +232,43 @@ export function composeMasterShellCommandCenter(input: {
         href: signal.href
       });
     }
+  }
+
+  if (commsPlane.projectionState !== "AUTHORIZED_READ_ONLY") {
+    attentionQueue.push({
+      id: "comms:projection",
+      area: "Comms",
+      state:
+        commsPlane.projectionState === "HOLD_INVALID"
+          ? "critical"
+          : "unmeasured",
+      title:
+        "Rosevear Comms Hub · " +
+        commsPlane.projectionState,
+      detail:
+        commsPlane.projectionState === "STALE"
+          ? "The last independently verified Comms projection has expired. Current incident and follow-up counts are unknown."
+          : commsPlane.projectionState === "HOLD_INVALID"
+            ? "Recorded Comms projection evidence failed validation and is held from the Master Shell read model."
+            : "QL-392 production preview capability exists, but no independently verified Comms incident/follow-up projection is currently accepted.",
+      href: "/comms-complementary-plane"
+    });
+  } else if (commsPlane.summary.attentionGroups > 0) {
+    attentionQueue.push({
+      id: "comms:attention",
+      area: "Comms",
+      state:
+        commsPlane.summary.reviewNow > 0
+          ? "critical"
+          : "attention",
+      title:
+        "Rosevear Comms Hub · " +
+        commsPlane.summary.attentionGroups +
+        " evidence-aware group(s) need review",
+      detail:
+        "These are read-only Comms projections. AI Data Platform cannot acknowledge, route, assign, close or create communications work.",
+      href: "/comms-complementary-plane"
+    });
   }
 
   attentionQueue.sort(
@@ -394,6 +441,7 @@ export function composeMasterShellCommandCenter(input: {
     generatedAt: now.toISOString(),
     views: {
       applications,
+      comms: commsPlane,
       it,
       management,
       statistics
@@ -401,6 +449,7 @@ export function composeMasterShellCommandCenter(input: {
     attentionQueue,
     navigation: {
       applications: "/master-application-inventory",
+      comms: "/comms-complementary-plane",
       it: "/integration-health",
       management: "/master-completion",
       statistics: "/master-shell-command-center#statistics"
@@ -414,6 +463,13 @@ export function composeMasterShellCommandCenter(input: {
       discoveryImpliesAuthorization: false,
       greenReleaseImpliesFunctionalAcceptance: false,
       sourceAcceptedImpliesMasterAcceptance: false,
+      commsHubIsComplementaryPlane: true,
+      commsHubApplicationCountContribution: 0,
+      commsHubSourceCountContribution: 0,
+      commsProjectionReadOnly: true,
+      commsMessageAuthorityRetainedByCommsHub: true,
+      commsIncidentAuthorityRetainedByCommsHub: true,
+      commsFollowUpAuthorityRetainedByCommsHub: true,
       portfolioPercentageRequiresAllSixCalculable: true,
       missingEvidenceRemainsUnknownOrUnmeasured: true,
       externalHealthProbePerformed:
@@ -434,13 +490,15 @@ export async function buildMasterShellCommandCenter(
   userId: string,
   now = new Date()
 ) {
-  const [inventory, integrationHealth] = await Promise.all([
+  const [inventory, integrationHealth, commsPlane] = await Promise.all([
     listMasterApplicationInventoryForUser(userId, now),
-    buildIntegrationHealthCommandCenter(userId)
+    buildIntegrationHealthCommandCenter(userId),
+    listCommsComplementaryPlaneForUser(userId, now)
   ]);
   return composeMasterShellCommandCenter({
     inventory,
     integrationHealth,
+    commsPlane,
     now
   });
 }
