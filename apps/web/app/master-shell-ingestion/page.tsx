@@ -46,6 +46,9 @@ export default async function MasterShellIngestionPage() {
           <a className="secondaryButton" href="/api/master-shell-ingestion">
             Ingestion JSON
           </a>
+          <Link className="secondaryButton" href="/master-completion">
+            Master Completion
+          </Link>
         </div>
       </section>
 
