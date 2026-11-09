@@ -881,3 +881,23 @@ Build 338 treats Master Completion as governed evidence, not a mutable progress 
 - every calculated percentage retains scope revision and evidence/reviewer/confidence context;
 - runtime roles receive SELECT/INSERT only; UPDATE/DELETE is revoked;
 - Build 338 performs no source mutation, outbound request, peer write, trust activation or production-acceptance inference.
+
+
+## Build 339 inventory/readiness security
+
+Build 339 preserves provenance rather than promoting discovery into authority.
+
+- the exact six source identities come from the Master Shell contract;
+- Rosevear Comms Hub remains outside the six-source child inventory;
+- source state is read from Build 336 evidence and freshness;
+- module readiness is read only from normalized signed Build 337 events;
+- Master Completion remains separately derived from explicit Build 338 denominators/evidence;
+- Build 281 discovery capabilities are labelled discovery-only and never grant authorization;
+- AI Data Platform's own declared capabilities come from its local source-owned module contract;
+- Build 328 installed AI Data module versions remain distinct from source-owned host-module versions;
+- missing product/module owners remain UNMEASURED;
+- missing source-module versions remain UNMEASURED;
+- source-reported ACCEPTED does not imply Master Completion acceptance;
+- catalogue/module presence does not imply functional, security, accessibility/device or production/user acceptance;
+- GREEN release evidence does not imply functional acceptance;
+- the Build 339 API is GET-only and performs no source mutation, connection activation, capability grant, trust change, outbound request or peer write.

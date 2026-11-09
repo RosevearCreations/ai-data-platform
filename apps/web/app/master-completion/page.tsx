@@ -44,6 +44,12 @@ export default async function MasterCompletionPage() {
           <a className="secondaryButton" href="/api/master-completion">
             Completion JSON
           </a>
+          <Link
+            className="secondaryButton"
+            href="/master-application-inventory"
+          >
+            Application Inventory
+          </Link>
         </div>
       </section>
 

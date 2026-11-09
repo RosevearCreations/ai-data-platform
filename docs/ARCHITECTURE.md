@@ -731,3 +731,18 @@ Current evidence is derived from the latest evidence version for the exact requi
 Unweighted completion, weighted completion and per-axis completion remain unavailable while the approved denominator contains UNKNOWN or STALE required evidence. Evidence coverage is calculated separately.
 
 No six-source requirement inventory or denominator is seeded automatically, and no source application is mutated.
+
+
+## Build 339 — Application & Module Inventory, Capability and Readiness Read Models
+
+Build 339 is a read-model composition layer above Builds 336–338.
+
+It always emits the exact six Master Shell source definitions, then composes current source-registry evidence, latest signed module-readiness events, latest signed release events, Build 338 requirements/scopes, existing installed AI Data module host evidence and Build 281 discovery-only capability metadata.
+
+Module identity is the union of explicit evidence origins. Build 339 does not create module rows from guesses.
+
+Application state, source-reported module readiness and Master Completion evidence remain separate namespaces in the model. Freshness for signed module/release evidence is recalculated at read time.
+
+Build 328 installed versions are represented only as versions of the AI Data Platform module observed on a mapped host. They are not reinterpreted as versions of the host application's own modules.
+
+No new persistence table is introduced because Build 339 is a derived read model. Existing RLS-protected ledgers remain authoritative.
