@@ -206,7 +206,7 @@ assert.ok(
     "Build 336 — Six-Source Registry, Freshness & Source State Machine"
   )
 );
-assert.ok(docs.includes("Source ingestion remains Build 337"));
+assert.ok(docs.includes("source-update ingestion remains Build 337"));
 
 const roadmap = source("../../docs/NEXT_BUILDS_331_350.md");
 for (const token of [
