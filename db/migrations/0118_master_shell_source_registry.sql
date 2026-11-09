@@ -54,7 +54,40 @@ create table if not exists app.master_shell_source_registry_evidence (
   recorded_at timestamptz not null default now(),
   unique (source_id, record_version),
   check (status_expires_at > status_observed_at),
-  check (status_observed_at <= recorded_at + interval '5 minutes')
+  check (status_observed_at <= recorded_at + interval '5 minutes'),
+  check (
+    declared_status not in (
+      'CONFIGURED','AUTHORIZATION_HELD','TEST_VERIFIED','CONNECTED'
+    )
+    or (
+      manifest_uri is not null
+      and immutable_revision is not null
+      and capability_version is not null
+      and approved_origin is not null
+    )
+  ),
+  check (
+    declared_status <> 'AUTHORIZATION_HELD'
+    or (hold_reason is not null and owner_authorized = false)
+  ),
+  check (
+    declared_status not in ('TEST_VERIFIED','CONNECTED')
+    or (
+      evidence_authority='independent-source-verification'
+      and owner_authorized=true
+      and independent_test_verified=true
+      and test_evidence_uri is not null
+      and signer_key_id is not null
+      and signer_fingerprint is not null
+    )
+  ),
+  check (
+    declared_status <> 'CONNECTED'
+    or (
+      independent_connection_verified=true
+      and connection_evidence_uri is not null
+    )
+  )
 );
 
 create index if not exists master_shell_registry_source_version_idx
