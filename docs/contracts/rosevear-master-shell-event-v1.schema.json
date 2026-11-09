@@ -49,20 +49,22 @@
     },
     "sourceRevision": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 160
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
     },
     "shellId": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 160
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
     },
     "tenantId": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "maxLength": 160
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
+        }
+      ]
     },
     "eventType": {
       "enum": [
@@ -93,15 +95,19 @@
       "pattern": "^corr_[A-Za-z0-9_-]{12,100}$"
     },
     "causationId": {
-      "type": [
-        "string",
-        "null"
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^cause_[A-Za-z0-9_-]{12,100}$"
+        }
       ]
     },
     "idempotencyKey": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 160
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$"
     },
     "sensitivity": {
       "enum": [
@@ -131,8 +137,7 @@
     },
     "evidenceURI": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 512
+      "pattern": "^(https://|urn:rosevear:evidence:)[^\\\\s]{1,500}$"
     },
     "verificationState": {
       "enum": [
