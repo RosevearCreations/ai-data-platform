@@ -1,35 +1,53 @@
 # AI Data Platform — Owner-Authorized Builds 331–350
 
-This finite batch was explicitly authorized after the Build 330 Production Learning VII checkpoint. Numbering is now owner-authorized for this batch only.
+This finite batch was explicitly authorized after the Build 330 Production Learning VII checkpoint and was re-aligned after Build 334 to implement the Rosevear Suite Master Shell architecture.
 
-1. **Build 331 — Production Performance Baseline, SLOs & Regression Budgets** — establish measured production baselines, SLO thresholds and bounded regression budgets.
-2. **Build 332 — Real User Monitoring, Interaction Timing & Experience Telemetry** — capture privacy-safe browser and interaction timing from real sessions.
-3. **Build 333 — Route Performance, Core Web Vitals & Rendering Diagnostics** — analyze route transitions, rendering, hydration and Core Web Vitals.
-4. **Build 334 — API, Database Query & Dependency Performance Observatory** — correlate API, query, pool and dependency latency.
-5. **Build 335 — Cross-Application Interaction Trace & Correlation IDs** — trace authorized actions across modules and peer applications.
-6. **Build 336 — Application Interaction Health Monitor & Stuck-State Detection** — detect stalled forms, dead controls, retry loops and nonterminal workflows.
-7. **Build 337 — Intelligent Caching, Prefetch & Data-Reuse Optimization** — reduce repeated work while preserving tenant isolation.
-8. **Build 338 — Front-End Responsiveness & Long-Task Reduction** — identify long tasks, rerender pressure and browser memory growth.
-9. **Build 339 — Database Slow-Query Analyzer, Index Recommendations & Query Regression Detection** — detect query regressions and recommend safe improvements.
-10. **Build 340 — Live System Performance Command Center** — unify application, database, interaction, module and SLO health.
-11. **Build 341 — Performance Anomaly Detection & Owner Alerting** — detect meaningful deviations and deduplicate owner-facing alerts.
-12. **Build 342 — Cross-Host Module Runtime Monitoring V2** — compare runtime health and compatibility across supported hosts.
-13. **Build 343 — Module Interaction Dependency Graph & Failure Propagation View** — map dependencies and likely upstream causes.
-14. **Build 344 — Workflow Journey Monitoring & Completion Analytics** — measure end-to-end operator journeys and friction.
-15. **Build 345 — Automated Performance Regression Certification** — gate releases on explicitly approved performance budgets.
-16. **Build 346 — Adaptive Health Checks, Smart Sampling & Monitoring Cost Controls** — tune sampling within owner-defined budgets.
-17. **Build 347 — Runtime Error Intelligence, Deduplication & Root-Cause Clustering** — correlate repeated errors with releases and workflows.
-18. **Build 348 — Safe Self-Healing Performance Recovery V1** — allow only narrow, pre-approved recovery actions.
-19. **Build 349 — Capacity Forecasting, Saturation Prediction & Scale Readiness** — forecast pressure before limits become outages.
-20. **Build 350 — Production Learning VIII, Performance Outcomes & Next Roadmap Renewal** — measure outcomes and require another explicit roadmap renewal.
+The roadmap is evidence-first. A GREEN release does not by itself establish live source connectivity, functional acceptance, tenant acceptance or Master Completion.
+
+## Production foundation
+
+1. **Build 331 — Production Performance Baseline, SLOs & Regression Budgets** — Production.
+2. **Build 332 — Real User Monitoring, Interaction Timing & Experience Telemetry** — Production.
+3. **Build 333 — Route Performance, Core Web Vitals & Rendering Diagnostics** — Production.
+4. **Build 334 — API, Database Query & Dependency Performance Observatory** — Production.
+5. **Build 335 — Master Shell Contract V1, Correlation IDs & Standard Event Envelope** — current Master Shell contract foundation; Production when this protected promotion completes.
+
+## Master Shell implementation sequence
+
+6. **Build 336 — Six-Source Registry, Freshness & Source State Machine** — reconcile the exact six shell identities, versioned registry records, freshness/expiry and UNKNOWN → DISCOVERED → CONFIGURED → AUTHORIZATION_HELD → TEST_VERIFIED → CONNECTED state evidence without inferred success.
+7. **Build 337 — Read-Only Source Update Ingestion & Provenance Normalization** — ingest authorized health, release, module-readiness and audit evidence with replay, expiry, audience, tenancy and source provenance validation.
+8. **Build 338 — Master Completion Requirements Registry & Evidence-Axis Scoring** — stable requirement IDs, approved denominators and independent design/implementation/test/integration/security/UX/production evidence axes.
+9. **Build 339 — Application & Module Inventory, Capability and Readiness Read Models** — compose source-owned capabilities, versions, modules, ownership, evidence freshness and current readiness without treating catalogue presence as acceptance.
+10. **Build 340 — Master Shell Command Center V1: Applications, IT, Management & Statistics** — unify the read-only suite overview, application cards, IT/security, management and statistical operational views.
+11. **Build 341 — Outer Sysop Navigation, Ree/Jack Context Handoff, Role & Tenant Isolation** — responsive desktop/tablet/mobile shell navigation, separately authenticated Sysop context and fail-closed destination authorization.
+12. **Build 342 — Comms Hub Complementary Plane Integration & Incident/Follow-Up Read Models** — consume authorized Comms status, incident and follow-up projections while keeping message/command authority in Rosevear Comms Hub.
+13. **Build 343 — Cross-Application Interaction Trace, Dependency Graph & Failure Propagation** — use correlation/causation IDs to trace governed flows, dependencies and likely upstream causes while retaining source provenance.
+14. **Build 344 — Module Health, Stuck-State, Staleness, HOLD & Blocker Intelligence** — identify stale evidence, nonterminal work, held authorization, stuck workflows and blockers without silently mutating source state.
+15. **Build 345 — Role/Device Acceptance Matrix: Customer, Worker & Admin / Mobile, Tablet, Desktop** — store evidence-backed role/device acceptance separately from implementation and automated-test readiness.
+16. **Build 346 — One-to-One, One-to-Many, Many-to-One & Many-to-Many Integration Certification** — certify contract, identity, replay, expiry, audience and tenant isolation across supported relationship patterns.
+17. **Build 347 — Master Security, Authorization, Consent & Evidence Certification** — reconcile source signing/trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls.
+18. **Build 348 — Six-Application Source Onboarding & Supervised Production Pilot** — onboard one source shell at a time with original source-owned evidence, recovery and rollback; retain HOLD when independent evidence is incomplete.
+19. **Build 349 — Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback** — consolidate operational recovery, accessibility, production safeguards, owner acceptance and rollback evidence without replacing source-specific gates.
+20. **Build 350 — Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal** — measure Master Shell outcomes, unresolved gaps and owner acceptance, then require explicit authorization for any Build 351+ roadmap.
+
+## Deferred candidate pool after the Master Shell sequence
+
+The earlier performance roadmap ideas are retained rather than discarded: intelligent caching/prefetch, long-task and rerender reduction, slow-query/index recommendations, anomaly detection, adaptive sampling/cost controls, runtime-error clustering, narrowly approved self-healing performance recovery and capacity forecasting.
+
+They may be absorbed into Builds 340–349 when directly required by Master Shell acceptance, or proposed in the next owner-authorized roadmap after Build 350.
 
 ## Batch rules
 
 - measure first, optimize second, automate third;
-- missing telemetry is not success;
+- missing telemetry or evidence is not success;
+- UNKNOWN, STALE and HOLD remain distinct from CONNECTED or accepted;
 - synthetic evidence is not live production evidence;
+- preserve exact source identity and per-source provenance;
+- Yard Workers and iCamp integrate at platform-shell level, not child-tenant identity;
+- Rosevear Comms Hub remains the complementary communications/control plane rather than a seventh child source;
 - tenant/workspace isolation remains authoritative;
 - no raw secret exposure;
 - no automatic trust, issuer, witness or owner-consent inference;
 - consequential peer writes require explicit authorization;
+- protected dev/main release GREEN does not replace functional or source acceptance;
 - Build 350 is the mandatory renewal checkpoint and does not automatically create Build 351.
