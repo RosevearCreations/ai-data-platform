@@ -6,6 +6,7 @@ import {
   recordExperienceTelemetry
 } from "@/lib/experience-telemetry-database";
 import type { ExperienceTelemetryEventInput } from "@/lib/experience-telemetry";
+import { observeApiOperation } from "@/lib/performance-observatory-database";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,9 +25,14 @@ export async function GET() {
     );
   }
 
-  return Response.json(await listExperienceTelemetryForUser(userId), {
-    headers: { "Cache-Control": "no-store" }
-  });
+  return observeApiOperation(
+    userId,
+    "api.experience-telemetry.get",
+    async () =>
+      Response.json(await listExperienceTelemetryForUser(userId), {
+        headers: { "Cache-Control": "no-store" }
+      })
+  );
 }
 
 export async function POST(request: Request) {
@@ -35,22 +41,28 @@ export async function POST(request: Request) {
     return new Response(null, { status: 204 });
   }
 
-  try {
-    const body = (await request.json()) as {
-      events?: ExperienceTelemetryEventInput[];
-    };
-    const result = await recordExperienceTelemetry(
-      userId,
-      Array.isArray(body.events) ? body.events : []
-    );
-    return Response.json(result, {
-      headers: { "Cache-Control": "no-store" }
-    });
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "experience_telemetry_request_failed";
-    return Response.json({ error: message }, { status: 400 });
-  }
+  return observeApiOperation(
+    userId,
+    "api.experience-telemetry.post",
+    async () => {
+      try {
+        const body = (await request.json()) as {
+          events?: ExperienceTelemetryEventInput[];
+        };
+        const result = await recordExperienceTelemetry(
+          userId,
+          Array.isArray(body.events) ? body.events : []
+        );
+        return Response.json(result, {
+          headers: { "Cache-Control": "no-store" }
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "experience_telemetry_request_failed";
+        return Response.json({ error: message }, { status: 400 });
+      }
+    }
+  );
 }
