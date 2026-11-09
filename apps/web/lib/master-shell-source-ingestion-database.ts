@@ -8,7 +8,6 @@ import type { PoolClient } from "pg";
 
 import { withUserDatabase } from "./database";
 import {
-  parseMasterShellEventEnvelope,
   type MasterShellSourceId
 } from "./master-shell-contract-v1";
 import {
