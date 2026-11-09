@@ -152,5 +152,103 @@
     "payload": {
       "type": "object"
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "yw"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "yard-workers"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "icamp"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "icamp"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "rosiedazzlers"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "rosiedazzlers"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "devilndove"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "devilndove"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "ai-data-platform"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "ai-data-platform"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "sourceId": {
+            "const": "rosevear-ai-hub"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "shellId": {
+            "const": "rosevear-ai-hub"
+          }
+        }
+      }
+    }
+  ]
 }
