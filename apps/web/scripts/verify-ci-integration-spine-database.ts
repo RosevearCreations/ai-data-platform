@@ -93,6 +93,8 @@ const requiredTables = [
   "master_completion_denominator_approvals",
   "master_completion_evidence",
   "master_role_device_acceptance_evidence",
+  "master_relationship_certification_runs",
+  "master_relationship_certification_assertions",
   "master_sysop_members",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -175,6 +177,8 @@ const appendOnlyTables = [
   "master_completion_denominator_approvals",
   "master_completion_evidence",
   "master_role_device_acceptance_evidence",
+  "master_relationship_certification_runs",
+  "master_relationship_certification_assertions",
   "master_shell_source_registry_evidence",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -261,7 +265,8 @@ async function main() {
         "0107_ql365d_ai_data_platform_source_attachment.sql",
         "0121_master_sysop_navigation_context.sql",
         "0122_comms_complementary_plane_projection.sql",
-        "0123_master_role_device_acceptance_matrix.sql"
+        "0123_master_role_device_acceptance_matrix.sql",
+        "0124_master_relationship_integration_certification.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -313,6 +318,42 @@ async function main() {
       migrationNames.has("0123_master_role_device_acceptance_matrix.sql"),
       "migration 0123 is not recorded"
     );
+    assert(
+      migrationNames.has("0124_master_relationship_integration_certification.sql"),
+      "migration 0124 is not recorded"
+    );
+
+    const relationshipCertificationGrants = await pool.query<{
+      table_name: string;
+      privilege_type: string;
+    }>(
+      `select table_name,privilege_type
+       from information_schema.role_table_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name = any($1::text[])`,
+      [[
+        "master_relationship_certification_runs",
+        "master_relationship_certification_assertions"
+      ]]
+    );
+    const relationshipCertificationGrantSet = new Set(
+      relationshipCertificationGrants.rows.map(
+        (row) => row.table_name + ":" + row.privilege_type
+      )
+    );
+    for (const table of [
+      "master_relationship_certification_runs",
+      "master_relationship_certification_assertions"
+    ]) {
+      assert(
+        relationshipCertificationGrantSet.has(table + ":SELECT") &&
+        relationshipCertificationGrantSet.has(table + ":INSERT") &&
+        !relationshipCertificationGrantSet.has(table + ":UPDATE") &&
+        !relationshipCertificationGrantSet.has(table + ":DELETE"),
+        "Build 346 relationship certification tables must be append-only for runtime: " + table
+      );
+    }
 
     const roleDeviceAcceptanceGrants = await pool.query<{
       privilege_type: string;
