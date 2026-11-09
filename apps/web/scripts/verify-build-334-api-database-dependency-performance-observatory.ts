@@ -139,7 +139,7 @@ for (const token of [
 const documentation = source(
   "../../docs/BUILD_334_API_DATABASE_DEPENDENCY_PERFORMANCE_OBSERVATORY.md"
 );
-assert.ok(documentation.includes("Build 335 — Cross-Application Interaction Trace & Correlation IDs"));
+assert.ok(documentation.includes("Build 335 — Master Shell Contract V1, Correlation IDs & Standard Event Envelope"));
 assert.ok(documentation.includes("Missing API or dependency evidence remains explicitly unmeasured"));
 
 const architecture = source("../../docs/ARCHITECTURE.md");
