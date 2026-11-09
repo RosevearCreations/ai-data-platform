@@ -223,10 +223,13 @@ export default async function MasterApplicationInventoryPage() {
                       <p>
                         Source-reported completion{" "}
                         <strong>
-                          {module.sourceReportedReadiness.completionPercent ??
-                            "UNMEASURED"}
-                        </strong>
-                        % · suite completion{" "}
+                          {module.sourceReportedReadiness.completionPercent ===
+                          null
+                            ? "UNMEASURED"
+                            : module.sourceReportedReadiness
+                                .completionPercent + "%"}
+                        </strong>{" "}
+                        · suite completion{" "}
                         <strong>
                           {module.masterCompletion.completion
                             ? percent(
