@@ -134,7 +134,9 @@ export function composeMasterShellCommandCenter(input: {
     (app) => app.completion !== null
   );
   const sourceWideCalculable = applications.filter(
-    (app) => app.completion?.percent !== null
+    (app) =>
+      app.completion !== null &&
+      app.completion.percent !== null
   );
   const allSixSourceWideCalculable =
     sourceWideCalculable.length === applications.length &&
