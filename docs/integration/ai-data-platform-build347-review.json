@@ -1,0 +1,42 @@
+{
+  "application": "AI Data Platform",
+  "build": 347,
+  "title": "Master Security, Authorization, Consent & Evidence Certification",
+  "sourceCount": 6,
+  "dimensions": [
+    "source-signing-trust",
+    "role-authorization",
+    "consent",
+    "sensitive-data-handling",
+    "audit-evidence",
+    "fail-closed-controls"
+  ],
+  "effectiveStates": [
+    "PASS",
+    "FAIL",
+    "BLOCKED",
+    "STALE",
+    "UNKNOWN"
+  ],
+  "evidence": {
+    "appendOnly": true,
+    "rls": true,
+    "expiryRequired": true,
+    "evidenceUriRequired": true,
+    "reviewerRequired": true,
+    "branchCommitRequired": true
+  },
+  "authority": {
+    "signingSoftwareImpliesTrust": false,
+    "roleDeviceAcceptanceImpliesAuthorization": false,
+    "membershipImpliesConsent": false,
+    "relationshipPassImpliesSecurityCertification": false,
+    "deploymentGreenImpliesCertification": false,
+    "sourceMutationPerformed": false,
+    "peerWritePerformed": false,
+    "externalProbePerformed": false,
+    "holdReleasePerformed": false,
+    "productionAcceptanceInferred": false
+  },
+  "nextQueuedBuild": 348
+}
