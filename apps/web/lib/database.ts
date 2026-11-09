@@ -43,6 +43,19 @@ if (process.env.NODE_ENV !== "production") {
   globalThis.__aiDataAuthPool = authPool;
 }
 
+export function getDatabasePoolStats() {
+  const summarize = (pool: Pool) => ({
+    totalCount: pool.totalCount,
+    idleCount: pool.idleCount,
+    waitingCount: pool.waitingCount
+  });
+
+  return {
+    app: summarize(appPool),
+    auth: summarize(authPool)
+  };
+}
+
 export type WorkspaceRole = "owner" | "admin" | "member";
 
 export interface WorkspaceSummary extends QueryResultRow {
