@@ -364,6 +364,9 @@ export function buildMasterSysopLaunchUrl(
   if (url.protocol !== "https:") {
     throw new Error("master_sysop_destination_origin_invalid");
   }
+  url.pathname = "/";
+  url.search = "";
+  url.hash = "";
   url.searchParams.set("rosevear_context", encodedContext);
   return url.toString();
 }
