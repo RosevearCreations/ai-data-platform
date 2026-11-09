@@ -796,3 +796,11 @@ Incident correlation IDs remain opaque and do not create cross-tenant identity. 
 Build 343 composes the existing Build 337 signed, normalized source-ingestion evidence into a read-only interaction trace. Correlation groups preserve source provenance and causation identifiers without creating a second event authority. Cross-source dependency edges are deliberately `CORRELATED_FLOW / UNDIRECTED`; event order is not converted into a write direction, ownership relationship or authorization path.
 
 Failure propagation is review intelligence only. Stale, out-of-order or non-independently-verified events can nominate an earliest adverse source as a candidate upstream cause, but the model labels that result inference-only and never mutates source truth, triggers recovery, changes routing or performs a peer write. Missing trace evidence remains unmeasured.
+
+## Build 344 — Module health, stuck-state and blocker intelligence
+
+Build 344 composes the existing Build 339 application/module inventory into a read-only health model. It does not create another source-state or readiness authority. Build 336 remains authoritative for source registry state, Build 337 for source-reported module readiness, Build 338 for Master Completion evidence and Build 339 for the six-application/module inventory.
+
+The health composer separates explicit hard blockers, evidence blockers and evidence gaps. A fresh module that remains source-reported `IN_PROGRESS` for at least 24 hours becomes a `STUCK_CANDIDATE` for review only. That derived state is never written back to the source and never starts recovery.
+
+`HOLD`, source-reported `BLOCKED`, stale evidence and evidence-blocked states remain separate so the Master Shell does not convert incomplete evidence into success or failure.
