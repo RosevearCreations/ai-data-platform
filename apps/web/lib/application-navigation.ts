@@ -104,6 +104,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "shell-overview"
       },
       {
+        href: "/performance-observatory",
+        label: "Performance Observatory",
+        description: "Review Build 334 API, database query, pool-pressure and dependency timing evidence.",
+        helpTopic: "shell-overview"
+      },
+      {
         href: "/integration-health",
         label: "Integration Health",
         description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",
