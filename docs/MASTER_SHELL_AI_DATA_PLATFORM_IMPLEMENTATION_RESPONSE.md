@@ -246,3 +246,9 @@ Likely upstream causes are explicitly inference-only. AI Data Platform does not 
 Build 344 adds the Master Shell's read-only module-health layer over Build 339 inventory evidence. It separates explicit source/module blockers, stale evidence, incomplete evidence, HOLD state, in-progress work and evidence-backed stuck candidates.
 
 A stuck candidate requires fresh source-reported `IN_PROGRESS` evidence at least 24 hours old. AI Data Platform does not write a stuck state back, release HOLDs, restart work, trigger automatic recovery, infer acceptance or convert missing evidence into health.
+
+## Build 345 contribution — role/device acceptance matrix
+
+Build 345 adds evidence-backed Customer/Worker/Admin × Mobile/Tablet/Desktop acceptance at application and module scope. Nine independent cells are composed from append-only reviewer evidence, with UNKNOWN for missing evidence and STALE after expiry.
+
+This acceptance evidence remains separate from implementation, automated tests, source readiness and deployment state. Build 345 does not automatically satisfy Master Completion axes, mutate a source, probe a device or grant application authority.
