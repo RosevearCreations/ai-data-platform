@@ -55,6 +55,12 @@ export default async function MasterApplicationInventoryPage() {
           >
             Inventory JSON
           </a>
+          <Link
+            className="secondaryButton"
+            href="/master-shell-command-center"
+          >
+            Master Command Center
+          </Link>
         </div>
       </section>
 
