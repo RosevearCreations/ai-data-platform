@@ -318,7 +318,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 336 — Six-Source Registry, Freshness & Source State Machine** — current build"
+    "Build 336 — Six-Source Registry, Freshness & Source State Machine** — Production"
   )
 );
 assert.ok(

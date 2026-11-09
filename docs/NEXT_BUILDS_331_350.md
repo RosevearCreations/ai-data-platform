@@ -14,8 +14,8 @@ The roadmap is evidence-first. A GREEN release does not by itself establish live
 
 ## Master Shell implementation sequence
 
-6. **Build 336 — Six-Source Registry, Freshness & Source State Machine** — current build; reconcile the exact six shell identities, versioned append-only evidence, freshness/expiry and UNKNOWN → DISCOVERED → CONFIGURED → AUTHORIZATION_HELD → TEST_VERIFIED → CONNECTED state evidence without inferred success.
-7. **Build 337 — Read-Only Source Update Ingestion & Provenance Normalization** — ingest authorized health, release, module-readiness and audit evidence with replay, expiry, audience, tenancy and source provenance validation.
+6. **Build 336 — Six-Source Registry, Freshness & Source State Machine** — Production; reconcile the exact six shell identities, versioned append-only evidence, freshness/expiry and UNKNOWN → DISCOVERED → CONFIGURED → AUTHORIZATION_HELD → TEST_VERIFIED → CONNECTED state evidence without inferred success.
+7. **Build 337 — Read-Only Source Update Ingestion & Provenance Normalization** — current build; ingest authorized health, release, module-readiness and audit evidence with replay, expiry, audience, tenancy and source provenance validation.
 8. **Build 338 — Master Completion Requirements Registry & Evidence-Axis Scoring** — stable requirement IDs, approved denominators and independent design/implementation/test/integration/security/UX/production evidence axes.
 9. **Build 339 — Application & Module Inventory, Capability and Readiness Read Models** — compose source-owned capabilities, versions, modules, ownership, evidence freshness and current readiness without treating catalogue presence as acceptance.
 10. **Build 340 — Master Shell Command Center V1: Applications, IT, Management & Statistics** — unify the read-only suite overview, application cards, IT/security, management and statistical operational views.
