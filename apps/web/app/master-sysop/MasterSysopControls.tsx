@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";\nimport type { FormEvent } from "react";
 
 type Destination = {
   key: string;
