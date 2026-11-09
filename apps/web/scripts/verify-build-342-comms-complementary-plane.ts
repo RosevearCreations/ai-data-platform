@@ -306,7 +306,7 @@ for (const token of [
   "Comms Hub Complementary Plane",
   "Complementary plane, not a seventh application.",
   "This does not mean there are zero incidents.",
-  "SUGGESTION_ONLY",
+  "Task created",
   "Authority remains in Comms Hub."
 ]) {
   assert.ok(page.includes(token), "page token " + token);
