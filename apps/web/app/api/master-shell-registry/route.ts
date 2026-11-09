@@ -116,15 +116,22 @@ export async function POST(request: Request) {
         const declaredStatus = String(
           body.declaredStatus ?? ""
         ) as Exclude<MasterShellSourceState, "UNKNOWN">;
+        const environment = String(body.environment ?? "");
+        if (
+          environment !== "production" &&
+          environment !== "nonproduction"
+        ) {
+          return Response.json(
+            { error: "master_shell_registry_environment_invalid" },
+            { status: 400 }
+          );
+        }
 
         const evidence = await recordOperatorMasterShellSourceEvidence(
           userId,
           {
             sourceId,
-            environment:
-              body.environment === "production"
-                ? "production"
-                : "nonproduction",
+            environment,
             declaredStatus,
             statusObservedAt: String(body.statusObservedAt ?? ""),
             statusExpiresAt: String(body.statusExpiresAt ?? ""),
