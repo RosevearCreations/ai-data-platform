@@ -59,14 +59,18 @@ function rank(value: MasterCommandAttentionState) {
         : 1;
 }
 
-export async function buildMasterShellCommandCenter(
-  userId: string,
-  now = new Date()
-) {
-  const [inventory, integrationHealth] = await Promise.all([
-    listMasterApplicationInventoryForUser(userId, now),
-    buildIntegrationHealthCommandCenter(userId)
-  ]);
+export function composeMasterShellCommandCenter(input: {
+  inventory: Awaited<
+    ReturnType<typeof listMasterApplicationInventoryForUser>
+  >;
+  integrationHealth: Awaited<
+    ReturnType<typeof buildIntegrationHealthCommandCenter>
+  >;
+  now?: Date;
+}) {
+  const inventory = input.inventory;
+  const integrationHealth = input.integrationHealth;
+  const now = input.now ?? new Date();
 
   const applications = inventory.applications.map((app) => {
     const attentionState = applicationAttentionState(
@@ -422,6 +426,21 @@ export async function buildMasterShellCommandCenter(
         integrationHealth.policy.automaticConnectionActivation
     }
   };
+}
+
+export async function buildMasterShellCommandCenter(
+  userId: string,
+  now = new Date()
+) {
+  const [inventory, integrationHealth] = await Promise.all([
+    listMasterApplicationInventoryForUser(userId, now),
+    buildIntegrationHealthCommandCenter(userId)
+  ]);
+  return composeMasterShellCommandCenter({
+    inventory,
+    integrationHealth,
+    now
+  });
 }
 
 export type MasterShellCommandCenterModel =
