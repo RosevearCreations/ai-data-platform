@@ -40,6 +40,9 @@ export default async function MasterShellContractsPage() {
           <Link className="secondaryButton" href="/event-bus">
             Event Bus
           </Link>
+          <Link className="secondaryButton" href="/master-shell-registry">
+            Source Registry
+          </Link>
           <a className="secondaryButton" href="/api/master-shell-contract-v1">
             Contract JSON
           </a>

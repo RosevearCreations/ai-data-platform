@@ -142,3 +142,14 @@ Build 335 implements the first shared-schema portion of Stage A.
 It establishes the exact six Master Shell source IDs, keeps Rosevear Comms Hub outside the six-source count as the complementary control plane, publishes machine-readable registry/event V1 schemas, requires source-to-shell identity matching and defines correlation, causation, idempotency, source-sequence, audience, sensitivity, evidence and verification-state fields.
 
 This is contract readiness only. Build 335 does not claim source implementation, source ingestion, live connectivity or Master Completion acceptance. Build 336 remains responsible for the six-source registry/freshness/state-machine layer, and Build 337 remains responsible for read-only source update ingestion.
+
+
+## Build 336 contribution — six-source registry and freshness
+
+Build 336 advances Stage A from shared contract definition into an evidence-backed six-source registry.
+
+The registry always exposes the exact six source-shell identities from Build 335. Missing source evidence is UNKNOWN. Accepted evidence is versioned and append-only. Positive state evidence has explicit observation and expiry timestamps, and expired positive evidence becomes STALE without inventing DISCONNECTED.
+
+The positive state path is UNKNOWN → DISCOVERED → CONFIGURED → AUTHORIZATION_HELD → TEST_VERIFIED → CONNECTED. TEST_VERIFIED and CONNECTED require independent source verification and cannot be created by the Build 336 operator API.
+
+Build 336 does not rewrite legacy QL/integration connection evidence. Build 337 remains responsible for read-only source update ingestion and provenance normalization.
