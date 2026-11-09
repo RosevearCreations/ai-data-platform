@@ -219,10 +219,7 @@ export function validateMasterShellSourceEvidence(
   ) {
     throw new Error("master_shell_registry_environment_invalid");
   }
-  if (
-    evidence.declaredStatus === "UNKNOWN" ||
-    !isMasterShellSourceState(evidence.declaredStatus)
-  ) {
+  if (!isMasterShellSourceState(evidence.declaredStatus)) {
     throw new Error("master_shell_registry_status_invalid");
   }
   if (
