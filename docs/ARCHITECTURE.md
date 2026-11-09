@@ -673,3 +673,16 @@ The observatory does not duplicate connector transport evidence. It correlates t
 The operator surface is `/performance-observatory` with authenticated JSON at `/api/performance-observatory`. Missing measurements remain unmeasured.
 
 The Master Shell handoff is recorded in `docs/MASTER_SHELL_AI_DATA_PLATFORM_IMPLEMENTATION_RESPONSE.md`. AI Data Platform accepts the target Master Intelligence and Monitoring role, but Build 334 does not claim the full Master Completion Dashboard, all proposed event contracts or six-source live acceptance are already implemented.
+
+
+## Build 335 — Master Shell Contract V1, Correlation IDs & Standard Event Envelope
+
+Build 335 establishes the first machine-readable Master Shell contract boundary.
+
+The six source identities are `yw`, `icamp`, `rosiedazzlers`, `devilndove`, `ai-data-platform` and `rosevear-ai-hub`. Rosevear Comms Hub remains the complementary communications/control plane and is an audience/consumer rather than a seventh child source.
+
+`rosevear.master-shell.event.v1` requires exact source/shell identity, source revision and sequence, tenant context, event family, occurred/published times, correlation and causation identity, deterministic idempotency, sensitivity, exact audience, evidence URI, verification state, payload hash and payload.
+
+The V1 parser rejects unknown top-level fields, mismatched source/shell identity, unsupported event families, invalid audience, invalid temporal ordering and payload hash drift.
+
+Build 335 deliberately does not ingest V1 events or reinterpret historical Build 290/291 evidence. Source update ingestion is a later stage, preserving the distinction between contract availability and source implementation evidence.
