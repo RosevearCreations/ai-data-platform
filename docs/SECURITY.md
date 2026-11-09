@@ -977,3 +977,19 @@ Build 343 is an authenticated GET-only composition of existing Build 337 evidenc
 - inferred failure origin is never written back as source truth;
 - missing trace evidence never means no interaction occurred;
 - no external probe, connection activation, route release, task creation, message operation, automatic recovery, source mutation or peer write is performed.
+
+## Build 344 module health intelligence security boundary
+
+Build 344 is an authenticated GET-only composition of existing Master Shell evidence.
+
+- no source state is written or changed;
+- no peer application is mutated;
+- no external health probe is initiated;
+- no HOLD is released automatically;
+- no stuck candidate triggers retry, restart or recovery;
+- stale or missing evidence never becomes healthy;
+- `HEALTHY_SIGNAL` never means owner, module or production acceptance;
+- source-reported blockers remain distinguishable from Master Shell evidence blockers;
+- module evidence retains its source/application provenance.
+
+The default 24-hour stuck threshold is review logic only and does not grant action authority.
