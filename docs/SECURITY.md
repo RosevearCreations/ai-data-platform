@@ -963,3 +963,17 @@ Build 342 consumes only read-only Comms status/evidence projections.
 - AI Data cannot modify tenant membership or six-source connection state;
 - message bodies, phone numbers, email addresses and customer records are outside the Build 342 projection contract;
 - all communications and incident action authority remains in Rosevear Comms Hub.
+
+
+## Build 343 cross-application interaction trace security boundary
+
+Build 343 is an authenticated GET-only composition of existing Build 337 evidence.
+
+- the exact six Master Shell source IDs remain authoritative;
+- correlation IDs do not establish causation, customer identity, tenant identity or permission;
+- causation IDs are retained as evidence but do not authorize a dependency direction;
+- cross-source graph edges are read-only and undirected;
+- stale, out-of-order and unverified evidence may create an inference-only review candidate;
+- inferred failure origin is never written back as source truth;
+- missing trace evidence never means no interaction occurred;
+- no external probe, connection activation, route release, task creation, message operation, automatic recovery, source mutation or peer write is performed.
