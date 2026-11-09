@@ -178,7 +178,7 @@ export async function listMasterSysopShellForUser(
       name: principal.name,
       email: principal.email,
       role:
-        data.membership?.revoked_at === null
+        data.membership && data.membership.revoked_at === null
           ? data.membership.role
           : data.membership?.role ?? null,
       revokedAt:
