@@ -317,9 +317,26 @@ async function main() {
     assert(
       sysopGrantSet.has("master_sysop_members:SELECT") &&
       sysopGrantSet.has("master_sysop_members:INSERT") &&
-      sysopGrantSet.has("master_sysop_members:UPDATE") &&
       !sysopGrantSet.has("master_sysop_members:DELETE"),
-      "Master Sysop membership grants are not fail-closed"
+      "Master Sysop membership table grants are not fail-closed"
+    );
+    const sysopUpdateColumns = await pool.query<{
+      column_name: string;
+      privilege_type: string;
+    }>(
+      `select column_name,privilege_type
+       from information_schema.role_column_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name='master_sysop_members'
+         and privilege_type='UPDATE'`
+    );
+    assert(
+      new Set(sysopUpdateColumns.rows.map((row) => row.column_name)).size === 3 &&
+      ["role","revoked_at","note"].every((column) =>
+        sysopUpdateColumns.rows.some((row) => row.column_name === column)
+      ),
+      "Master Sysop membership UPDATE must be limited to role/revoked_at/note"
     );
     assert(
       sysopGrantSet.has("master_sysop_handoff_audit:SELECT") &&
