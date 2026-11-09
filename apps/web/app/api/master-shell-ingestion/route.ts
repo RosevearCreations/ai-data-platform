@@ -32,7 +32,8 @@ function statusForError(message: string) {
   if (
     message.includes("_invalid") ||
     message.includes("_unsupported") ||
-    message.includes("_required")
+    message.includes("_required") ||
+    message.includes("_not_source")
   ) {
     return 400;
   }
