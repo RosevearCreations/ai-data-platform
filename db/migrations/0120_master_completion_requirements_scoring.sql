@@ -17,7 +17,15 @@ create table if not exists app.master_completion_requirement_revisions (
   description text not null check (char_length(description) between 1 and 1000),
   applicability text not null
     check (applicability in ('required','not-applicable','unscoped')),
-  required_axes jsonb not null check (jsonb_typeof(required_axes)='array'),
+  required_axes jsonb not null check (
+    jsonb_typeof(required_axes)='array'
+    and required_axes <@ '[
+      "design","implementation","automated-testing",
+      "integration-verification","security",
+      "accessibility-device-acceptance",
+      "production-user-acceptance"
+    ]'::jsonb
+  ),
   weight numeric(8,3) not null check (weight > 0 and weight <= 100),
   critical boolean not null default false,
   recorded_at timestamptz not null default now(),
@@ -48,7 +56,7 @@ create table if not exists app.master_completion_denominator_approvals (
   items jsonb not null check (
     jsonb_typeof(items)='array' and jsonb_array_length(items) > 0
   ),
-  approved_by text not null,
+  approved_by text not null check (char_length(approved_by) between 1 and 160),
   approved_at timestamptz not null default now(),
   unique (scope_key, scope_version)
 );
