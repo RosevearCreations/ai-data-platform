@@ -5,6 +5,7 @@ import {
   capturePerformanceBaseline,
   listPerformanceBaselineForUser
 } from "@/lib/performance-baseline-database";
+import { observeApiOperation } from "@/lib/performance-observatory-database";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,9 +25,14 @@ export async function GET() {
       { status: 401 }
     );
   }
-  return Response.json(
-    await listPerformanceBaselineForUser(id),
-    { headers: { "Cache-Control": "no-store" } }
+  return observeApiOperation(
+    id,
+    "api.performance-baseline.get",
+    async () =>
+      Response.json(
+        await listPerformanceBaselineForUser(id),
+        { headers: { "Cache-Control": "no-store" } }
+      )
   );
 }
 
@@ -39,27 +45,33 @@ export async function POST(request: Request) {
     );
   }
 
-  try {
-    const value = (await request.json()) as { action?: unknown };
-    if (String(value.action ?? "") !== "capture-performance-baseline") {
-      return Response.json(
-        { error: "performance_baseline_action_invalid" },
-        { status: 400 }
-      );
-    }
-    return Response.json(await capturePerformanceBaseline(id));
-  } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "performance_baseline_request_failed";
-    return Response.json(
-      { error: message },
-      {
-        status: message.includes("owner_admin_required")
-          ? 403
-          : 409
+  return observeApiOperation(
+    id,
+    "api.performance-baseline.post",
+    async () => {
+      try {
+        const value = (await request.json()) as { action?: unknown };
+        if (String(value.action ?? "") !== "capture-performance-baseline") {
+          return Response.json(
+            { error: "performance_baseline_action_invalid" },
+            { status: 400 }
+          );
+        }
+        return Response.json(await capturePerformanceBaseline(id));
+      } catch (error) {
+        const message =
+          error instanceof Error
+            ? error.message
+            : "performance_baseline_request_failed";
+        return Response.json(
+          { error: message },
+          {
+            status: message.includes("owner_admin_required")
+              ? 403
+              : 409
+          }
+        );
       }
-    );
-  }
+    }
+  );
 }
