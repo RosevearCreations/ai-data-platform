@@ -920,3 +920,25 @@ Build 340 is a GET-only, authenticated, read-only composition surface.
 - GREEN release evidence does not imply functional acceptance;
 - suite-wide completion remains unavailable until all six source-wide denominators are approved and calculable;
 - Build 340 performs no peer write, trust mutation or QL-266 resumption.
+
+
+## Build 341 Outer Sysop security boundary
+
+Build 341 separates suite navigation authority from tenant authority.
+
+- ordinary workspace owner/admin/member roles never automatically grant Master Sysop;
+- Master Sysop membership is explicit and separately revocable;
+- first-Sysop bootstrap is allowed only through the original first-owner path or an unambiguous sole Personal-workspace owner;
+- the final active Master Sysop owner cannot be revoked/demoted;
+- Ree/Jack use separate Better Auth accounts/sessions rather than shared credentials;
+- exact-email enrollment applies only to an existing authenticated account;
+- tenant/workspace context comes only from current-user RLS membership;
+- Rosie Dazzlers and Devil n Dove mapped context is denied when membership is absent;
+- Yard Workers/iCamp child tenant identity is never guessed;
+- source navigation requires fresh configured/test-verified/connected evidence plus an approved HTTPS origin;
+- AUTHORIZATION_HELD, stale, missing-origin, unmapped and denied context remain fail-closed;
+- handoff payload contains no user ID, email, password, cookie or destination permission;
+- destination reauthentication and destination-owned authorization remain mandatory;
+- local workspace role is only a non-authorizing hint and is never elevated;
+- handoff audit is append-only;
+- navigation never changes source connection state and never performs a peer write.

@@ -1,0 +1,54 @@
+{
+  "schema": "rosevear.ai-data-platform.build341-review.v1",
+  "application": "AI Data Platform",
+  "build": 341,
+  "name": "Outer Sysop Navigation, Ree/Jack Context Handoff, Role & Tenant Isolation",
+  "authority": {
+    "dedicatedMasterSysopMembership": true,
+    "roles": [
+      "owner",
+      "operator"
+    ],
+    "tenantAdminImpliesSysop": false,
+    "safeInitialClaim": true,
+    "lastOwnerProtection": true,
+    "separateAuthenticatedSessions": true
+  },
+  "handoff": {
+    "nonAuthorizing": true,
+    "userIdTransferred": false,
+    "emailTransferred": false,
+    "passwordTransferred": false,
+    "authSessionTransferred": false,
+    "destinationReauthenticationRequired": true,
+    "destinationAuthorizationGranted": false,
+    "tenantRoleElevationAllowed": false,
+    "ttlSeconds": 600,
+    "appendOnlyAudit": true
+  },
+  "tenantIsolation": {
+    "workspaceMembershipIsRlsScoped": true,
+    "rosieWorkspaceMappingReused": true,
+    "devilNDoveWorkspaceMappingReused": true,
+    "yardWorkersChildTenantGuessed": false,
+    "iCampChildTenantGuessed": false,
+    "missingMembershipDenied": true
+  },
+  "sourceGate": {
+    "freshEvidenceRequired": true,
+    "approvedHttpsOriginRequired": true,
+    "authorizationHeldIsReady": false,
+    "navigationChangesSourceState": false
+  },
+  "responsive": {
+    "desktopColumns": 3,
+    "tabletColumns": 2,
+    "mobileColumns": 1
+  },
+  "persistence": {
+    "migration": "0121_master_sysop_navigation_context.sql",
+    "membershipTable": "app.master_sysop_members",
+    "handoffAuditTable": "app.master_sysop_handoff_audit"
+  },
+  "nextQueuedBuild": 342
+}
