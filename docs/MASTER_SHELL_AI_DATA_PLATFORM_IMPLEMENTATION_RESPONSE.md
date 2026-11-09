@@ -166,3 +166,18 @@ Source, tenant, audience, correlation, idempotency, source sequence, expiry and 
 Registry projection is separate from normalization and requires explicit owner/admin acceptance. A qualifying source-health event must be fresh, independently verified and carried through a currently active authenticated transport before the next legal Build 336 transition can be attempted.
 
 Build 337 performs no source mutation, outbound command, route release or consequential peer write.
+
+
+## Build 338 contribution — Master Completion evidence model
+
+Build 338 implements the Stage E Master Completion evidence foundation without fabricating application completeness.
+
+Stable requirement IDs are derived from source/module scope and a stable requirement key. Requirement changes create immutable revisions, and evidence is pinned to an exact revision so old evidence does not silently satisfy changed requirements.
+
+The exact seven evidence axes are design, implementation, automated testing, integration verification, security, accessibility/device acceptance and production/user acceptance. Each axis remains independent; implementation does not imply any other axis.
+
+Completion denominators are explicit owner/admin approvals that pin exact requirement revisions and weights together with scope date, branch, commit SHA and denominator hash. NOT_APPLICABLE and UNSCOPED requirements remain visible but cannot enter an approved denominator.
+
+Completion percentages remain unavailable while required evidence is UNKNOWN or STALE. Evidence coverage is shown separately. Every calculated percentage retains numerator, denominator, scope date, branch/commit, evidence references, reviewers and confidence.
+
+Build 338 does not invent the six applications' full requirement inventories or approved denominators. Those remain incomplete until real requirements are registered and explicitly approved. Build 339 can compose application/module inventory and readiness read models on top of this evidence foundation.
