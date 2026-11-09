@@ -207,14 +207,8 @@ export function validateSourceOnboardingRun(input: SourceOnboardingRun) {
     }
   }
 
-  const summary = summarizeSourceOnboarding(
-    input.assertions,
-    input.pilotOutcome
-  );
   if (
     input.pilotOutcome !== "not-run" &&
-    summary.failed === 0 &&
-    summary.blocked === 0 &&
     input.assertions.some((item) => item.outcome !== "pass")
   ) {
     throw new Error("source_onboarding_pilot_prerequisites_invalid");
