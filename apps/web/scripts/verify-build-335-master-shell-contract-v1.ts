@@ -31,12 +31,8 @@ assert.deepEqual([...MASTER_SHELL_SOURCE_IDS], [
   "ai-data-platform",
   "rosevear-ai-hub"
 ]);
-assert.equal(
-  descriptor.sourceApplications.some(
-    (item) => item.sourceId === "rosevear-comms-hub"
-  ),
-  false
-);
+assert.equal(descriptor.sourceApplications.length, 6);
+assert.deepEqual(descriptor.controlPlanes, ["rosevear-comms-hub"]);
 assert.deepEqual([...MASTER_SHELL_EVENT_FAMILIES], [
   "source.health.reported",
   "release.promoted",
