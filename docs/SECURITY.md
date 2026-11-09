@@ -1008,3 +1008,18 @@ Role/device acceptance evidence is stored in an RLS-protected append-only ledger
 - expired evidence becomes STALE and missing evidence remains UNKNOWN;
 - implementation, automated testing, source readiness and deployment GREEN never imply acceptance;
 - no source state, peer application or external device is mutated or probed.
+
+## Build 346 relationship certification security boundary
+
+Relationship certification is fail-closed and append-only.
+
+- source and destination identities are restricted to the six Master Shell source IDs;
+- declared cardinality must match one-to-one, one-to-many, many-to-one or many-to-many;
+- source and destination sets may not overlap;
+- every run requires exactly one assertion for contract, identity, replay, expiry, audience and tenant isolation;
+- every assertion requires PASS, FAIL or BLOCKED plus an evidence URI and detail;
+- suite admins may SELECT and INSERT only;
+- runtime UPDATE and DELETE are revoked for both certification tables;
+- expired evidence becomes STALE;
+- Build 304 PASS and deployment GREEN do not imply relationship certification;
+- no connection activation, replay execution, peer write, source mutation or external probe is performed.

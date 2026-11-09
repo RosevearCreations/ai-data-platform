@@ -814,3 +814,11 @@ The append-only `master_role_device_acceptance_evidence` ledger is separate from
 A scope-level accepted percentage is deliberately unavailable until all nine cells are freshly measured. The matrix never converts a deployment, implementation, automated test, catalogue entry or module-readiness state into acceptance.
 
 Build 345 does not automatically satisfy Build 338's accessibility/device acceptance axis; reconciliation remains an explicit later evidence decision.
+
+## Build 346 — Relationship-pattern integration certification
+
+Build 346 adds a cardinality-aware certification plane above the existing Build 304 six-application operational certification. It supports one-to-one, one-to-many, many-to-one and many-to-many relationships across the exact six Build 335 Master Shell source identities.
+
+Every immutable certification run contains exactly six assertion dimensions: contract, identity, replay, expiry, audience and tenant isolation. A relationship passes only when all six assertions pass while the run is fresh. Any failed assertion fails the run, any blocked assertion retains BLOCKED, and expiry changes the effective state to STALE.
+
+Migration 0124 stores append-only run and assertion evidence. Certification records do not activate a connection, execute replay, mutate a source, write to a peer application or imply production acceptance.
