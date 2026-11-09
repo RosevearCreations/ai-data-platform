@@ -362,6 +362,16 @@ export async function approveMasterCompletionDenominator(
     throw new Error("master_completion_source_id_invalid");
   }
   if (
+    !/^\\d{4}-\\d{2}-\\d{2}$/.test(input.scopeDate) ||
+    !/^[A-Za-z0-9][A-Za-z0-9._/-]{0,159}$/.test(input.branch) ||
+    !/^[a-f0-9]{7,64}$/.test(input.commitSha) ||
+    input.approvedBy.trim().length < 1 ||
+    input.approvedBy.trim().length > 160
+  ) {
+    throw new Error("master_completion_denominator_metadata_invalid");
+  }
+
+  if (
     !Array.isArray(input.requirementIds) ||
     input.requirementIds.length < 1 ||
     input.requirementIds.length > 500 ||
