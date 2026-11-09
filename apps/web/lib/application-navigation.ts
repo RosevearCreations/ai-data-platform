@@ -374,6 +374,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-security-certification",
+        label: "Master Security Certification",
+        description: "Certify source signing and trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls without inferring authority.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

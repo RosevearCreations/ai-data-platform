@@ -822,3 +822,11 @@ Build 346 adds a cardinality-aware certification plane above the existing Build 
 Every immutable certification run contains exactly six assertion dimensions: contract, identity, replay, expiry, audience and tenant isolation. A relationship passes only when all six assertions pass while the run is fresh. Any failed assertion fails the run, any blocked assertion retains BLOCKED, and expiry changes the effective state to STALE.
 
 Migration 0124 stores append-only run and assertion evidence. Certification records do not activate a connection, execute replay, mutate a source, write to a peer application or imply production acceptance.
+
+## Build 347 — Master security certification
+
+Build 347 adds a source-scoped security certification plane across the exact six Master Shell source identities. Each immutable run requires six independent evidence dimensions: source signing and trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls.
+
+The read model is fail closed. Missing source evidence remains UNKNOWN, expired evidence becomes STALE, any failed dimension fails the source, and any blocked dimension retains BLOCKED. A suite PASS is possible only when every source has fresh PASS evidence.
+
+Migration 0125 stores append-only run and assertion evidence under RLS. Build 347 does not enroll signers, grant roles or consent, release HOLD, activate connections, mutate sources, perform peer writes or infer authority from deployment GREEN, role/device acceptance or Build 346 relationship certification.

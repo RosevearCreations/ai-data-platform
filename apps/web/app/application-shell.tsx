@@ -172,6 +172,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <Link className={pathname.startsWith("/module-health-intelligence") ? "opsTopLink active" : "opsTopLink"} href="/module-health-intelligence">Health</Link>
             <Link className={pathname.startsWith("/role-device-acceptance") ? "opsTopLink active" : "opsTopLink"} href="/role-device-acceptance">Acceptance</Link>
             <Link className={pathname.startsWith("/relationship-certification") ? "opsTopLink active" : "opsTopLink"} href="/relationship-certification">Relations</Link>
+            <Link className={pathname.startsWith("/master-security-certification") ? "opsTopLink active" : "opsTopLink"} href="/master-security-certification">Security</Link>
             <Link className={pathname.startsWith("/attention") ? "opsTopLink active" : "opsTopLink"} href="/attention">Attention</Link>
             <Link className={pathname.startsWith("/production-learning") ? "opsTopLink active" : "opsTopLink"} href="/production-learning">Statistical</Link>
             <Link className={pathname.startsWith("/integration-health") ? "opsTopLink active" : "opsTopLink"} href="/integration-health">System Status</Link>

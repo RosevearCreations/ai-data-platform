@@ -1023,3 +1023,11 @@ Relationship certification is fail-closed and append-only.
 - expired evidence becomes STALE;
 - Build 304 PASS and deployment GREEN do not imply relationship certification;
 - no connection activation, replay execution, peer write, source mutation or external probe is performed.
+
+## Build 347 master security certification controls
+
+Build 347 records owner/admin-reviewed security certification evidence for the six Master Shell source identities.
+
+Security certification requires exactly one assertion for source signing/trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls. Every assertion requires PASS, FAIL or BLOCKED plus a bounded evidence URI and detail. Certification expires explicitly and becomes STALE.
+
+The certification ledger is append-only under forced RLS with runtime SELECT/INSERT only. Signing software does not prove trusted custody, workspace membership does not imply consent, role/device acceptance does not grant source authority, relationship certification does not imply security certification, and deployment GREEN does not override missing or contradictory evidence. The surface cannot enroll a signer, grant a role or consent, release HOLD, activate a connection, mutate a source or write to a peer.
