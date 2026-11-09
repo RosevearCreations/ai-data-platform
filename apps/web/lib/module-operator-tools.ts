@@ -198,6 +198,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/module-health-intelligence",
           "/role-device-acceptance",
           "/relationship-certification",
+          "/master-security-certification",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
