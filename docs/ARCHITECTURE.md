@@ -830,3 +830,11 @@ Build 347 adds a source-scoped security certification plane across the exact six
 The read model is fail closed. Missing source evidence remains UNKNOWN, expired evidence becomes STALE, any failed dimension fails the source, and any blocked dimension retains BLOCKED. A suite PASS is possible only when every source has fresh PASS evidence.
 
 Migration 0125 stores append-only run and assertion evidence under RLS. Build 347 does not enroll signers, grant roles or consent, release HOLD, activate connections, mutate sources, perform peer writes or infer authority from deployment GREEN, role/device acceptance or Build 346 relationship certification.
+
+## Build 348 — six-source onboarding and supervised pilot
+
+Build 348 adds a source-scoped onboarding layer over the existing Build 336 source registry and Build 347 security certification. Each of the exact six source identities is reviewed independently against original source-owned evidence, registry readiness, security certification, recovery readiness, rollback readiness and explicit owner pilot authorization.
+
+A supervised production pilot may be recorded only after all six prerequisites PASS. Pilot windows are globally serialized with an advisory lock and rejected when they overlap a previously recorded source pilot window. A successful pilot produces an ONBOARDED evidence state, but that state does not activate a connection or mutate Build 336 source truth.
+
+The read model keeps missing evidence on HOLD, expires stale evidence, and exposes current Build 336 registry and Build 347 security states beside each onboarding record.

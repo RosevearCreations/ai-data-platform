@@ -1031,3 +1031,11 @@ Build 347 records owner/admin-reviewed security certification evidence for the s
 Security certification requires exactly one assertion for source signing/trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls. Every assertion requires PASS, FAIL or BLOCKED plus a bounded evidence URI and detail. Certification expires explicitly and becomes STALE.
 
 The certification ledger is append-only under forced RLS with runtime SELECT/INSERT only. Signing software does not prove trusted custody, workspace membership does not imply consent, role/device acceptance does not grant source authority, relationship certification does not imply security certification, and deployment GREEN does not override missing or contradictory evidence. The surface cannot enroll a signer, grant a role or consent, release HOLD, activate a connection, mutate a source or write to a peer.
+
+## Build 348 source onboarding and pilot controls
+
+Build 348 is an evidence-only supervised onboarding gate. It requires original source-owned evidence, source-registry readiness, current Build 347 security certification, recovery evidence, rollback evidence and explicit owner pilot authorization before a pilot can be recorded.
+
+A registry-readiness PASS is rejected unless the exact source is currently TEST_VERIFIED or CONNECTED in Build 336. A security PASS is rejected unless the exact source is currently PASS in Build 347. Pilot windows require start/end timestamps and evidence and may not overlap any other source pilot window.
+
+The append-only Build 348 tables are protected by forced RLS and runtime SELECT/INSERT-only grants. The build does not create credentials, call source endpoints, activate connections, release HOLD, mutate peers or infer owner approval from deployment state.

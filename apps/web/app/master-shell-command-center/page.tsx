@@ -93,6 +93,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Master Security Certification
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/source-onboarding-pilot"
+          >
+            Source Onboarding & Pilot
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"

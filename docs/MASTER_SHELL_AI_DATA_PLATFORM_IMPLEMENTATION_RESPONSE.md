@@ -266,3 +266,11 @@ Build 347 adds the Master Shell security certification layer across all six sour
 The certification remains separate from Build 345 role/device acceptance and Build 346 relationship certification. Missing evidence remains UNKNOWN, expired evidence becomes STALE, and no GREEN deployment, configured signer, membership, prior communication or relationship PASS is converted into trust, consent or authorization.
 
 Build 347 records append-only evidence only. It performs no signer enrollment, consent grant, role grant, source mutation, peer write, external probe, HOLD release, connection activation or production acceptance.
+
+## Build 348 contribution — six-source onboarding and supervised pilot
+
+Build 348 implements the staged source-onboarding/pilot evidence layer for the exact six source shells. It keeps each source separate, requires original source-owned evidence plus registry, security, recovery, rollback and owner-authorization evidence, and permits only non-overlapping supervised pilot windows.
+
+The implementation composes current Build 336 registry state and Build 347 security state without replacing either source of truth. Incomplete evidence remains HOLD; expired evidence becomes STALE; deployment GREEN never becomes onboarding evidence.
+
+A Build 348 ONBOARDED result is an evidence/read-model conclusion only. It does not activate a connection, release a source HOLD, create credentials, call a peer, send communications or establish final production/user acceptance.

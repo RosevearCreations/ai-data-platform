@@ -380,6 +380,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-onboarding-pilot",
+        label: "Source Onboarding & Pilot",
+        description: "Review six-source onboarding prerequisites and non-overlapping supervised pilot evidence while retaining HOLD for incomplete independent evidence.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
