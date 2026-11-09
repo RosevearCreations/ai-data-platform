@@ -6,6 +6,7 @@ export const DEFAULT_STUCK_AFTER_HOURS = 24 as const;
 export type ModuleHealthState =
   | "HOLD"
   | "BLOCKED"
+  | "EVIDENCE_BLOCKED"
   | "STALE"
   | "STUCK_CANDIDATE"
   | "IN_PROGRESS"
@@ -96,11 +97,13 @@ function stateRank(state: ModuleHealthState) {
         ? 5
         : state === "STUCK_CANDIDATE"
           ? 4
-          : state === "UNMEASURED"
+          : state === "EVIDENCE_BLOCKED"
             ? 3
-            : state === "IN_PROGRESS"
+            : state === "UNMEASURED"
               ? 2
-              : 1;
+              : state === "IN_PROGRESS"
+                ? 1
+                : 0;
 }
 
 export function composeModuleHealthIntelligence(input: {
@@ -281,6 +284,8 @@ export function composeModuleHealthIntelligence(input: {
         healthState = "STALE";
       } else if (stuckCandidate) {
         healthState = "STUCK_CANDIDATE";
+      } else if (evidenceBlockers.length > 0) {
+        healthState = "EVIDENCE_BLOCKED";
       } else if (
         readiness.readinessState === "UNKNOWN" ||
         readiness.freshness === "UNMEASURED"
@@ -340,6 +345,9 @@ export function composeModuleHealthIntelligence(input: {
         hold: modules.filter((item) => item.healthState === "HOLD").length,
         blocked: modules.filter((item) => item.healthState === "BLOCKED").length,
         stale: modules.filter((item) => item.healthState === "STALE").length,
+        evidenceBlocked: modules.filter(
+          (item) => item.healthState === "EVIDENCE_BLOCKED"
+        ).length,
         stuckCandidates: modules.filter(
           (item) => item.healthState === "STUCK_CANDIDATE"
         ).length,
@@ -395,6 +403,9 @@ export function composeModuleHealthIntelligence(input: {
       hold: allModules.filter((item) => item.healthState === "HOLD").length,
       blocked: allModules.filter((item) => item.healthState === "BLOCKED").length,
       stale: allModules.filter((item) => item.healthState === "STALE").length,
+      evidenceBlocked: allModules.filter(
+        (item) => item.healthState === "EVIDENCE_BLOCKED"
+      ).length,
       stuckCandidates: allModules.filter(
         (item) => item.healthState === "STUCK_CANDIDATE"
       ).length,
