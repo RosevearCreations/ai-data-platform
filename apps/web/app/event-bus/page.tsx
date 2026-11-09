@@ -63,6 +63,9 @@ export default async function EventBusPage() {
           <Link className="secondaryButton" href="/app-connections">
             App registry
           </Link>
+          <Link className="secondaryButton" href="/master-shell-contracts">
+            Master Shell Contract V1
+          </Link>
           <Link className="secondaryButton" href="/integration-delivery">
             Delivery evidence
           </Link>

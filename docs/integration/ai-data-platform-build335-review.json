@@ -1,0 +1,50 @@
+{
+  "schema": "rosevear.ai-data-platform.build335-review.v1",
+  "application": "AI Data Platform",
+  "build": 335,
+  "name": "Master Shell Contract V1, Correlation IDs & Standard Event Envelope",
+  "stage": "A-shared-registry-and-schema-alignment",
+  "eventContract": {
+    "schema": "rosevear.master-shell.event.v1",
+    "version": "1.0.0",
+    "exactSixSourceIds": [
+      "yw",
+      "icamp",
+      "rosiedazzlers",
+      "devilndove",
+      "ai-data-platform",
+      "rosevear-ai-hub"
+    ],
+    "commsHubControlPlaneNotSeventhSource": true,
+    "correlationRequired": true,
+    "causationNullableForRoot": true,
+    "sourceSequenceRequired": true,
+    "idempotencyRequired": true,
+    "payloadHashRequired": true,
+    "exactAudienceRequired": true,
+    "sourceShellIdentityMatchRequired": true
+  },
+  "eventFamilies": [
+    "source.health.reported",
+    "release.promoted",
+    "module.readiness.changed",
+    "incident.opened",
+    "incident.updated",
+    "consent.changed",
+    "workflow.status.changed",
+    "audit.evidence.recorded"
+  ],
+  "safety": {
+    "eventIngestionImplemented": false,
+    "legacyReceiptsAutoUpgraded": false,
+    "sourceConnectivityInferred": false,
+    "unknownOrHeldPromotedToConnected": false,
+    "connectionActivationAutomatic": false,
+    "consequentialPeerWritesAutomatic": false
+  },
+  "surfaces": {
+    "operator": "/master-shell-contracts",
+    "api": "/api/master-shell-contract-v1"
+  },
+  "nextQueuedBuild": 336
+}

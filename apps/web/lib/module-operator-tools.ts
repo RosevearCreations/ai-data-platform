@@ -189,6 +189,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         description: "Review integration readiness, publication mapping and controlled live delivery.",
         itemHrefs: [
           "/data-contracts",
+          "/master-shell-contracts",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
@@ -288,6 +289,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/data-contracts",
         label: "Data contracts",
         description: "Review canonical shared schemas and structural compatibility."
+      },
+      {
+        href: "/master-shell-contracts",
+        label: "Master Shell Contract V1",
+        description: "Review exact six-source identities, standard event-envelope provenance and correlation semantics."
       },
       {
         href: "/field-mappings",

@@ -798,3 +798,24 @@ Build 334 stores only bounded authenticated server performance evidence.
 - no timing signal automatically changes queries, indexes, pool size, application configuration, release state, connection authority, trust or consequential peer-write permission.
 
 The Master Shell architecture remains evidence-first: a GREEN code/deployment result is not converted into functional acceptance or live source verification.
+
+
+## Build 335 Master Shell V1 contract security
+
+Build 335 is a contract-validation boundary, not a new trust or transport authority.
+
+- only the six exact Master Shell source IDs are valid;
+- source ID must match the declared shell identity;
+- Yard Workers and iCamp child tenants cannot become source identities;
+- Rosevear Comms Hub is a complementary control plane, not a seventh source;
+- correlation ID is mandatory and causation ID is nullable only for root events;
+- source sequence and idempotency are mandatory;
+- audience must be an exact known Master Shell audience;
+- payload SHA-256 must match the canonical payload;
+- unknown top-level envelope fields fail closed;
+- the validation endpoint is authenticated, bounded and non-persistent;
+- historical webhook/event-bus receipts are not automatically upgraded into V1 evidence;
+- contract validation cannot activate a connection, change source trust, release a held route or authorize a peer write;
+- UNKNOWN, STALE, HELD or missing evidence is not converted to CONNECTED or accepted status.
+
+The AI Data envelope construction helper is fixed to source `ai-data-platform`; it cannot synthesize another application's source identity.

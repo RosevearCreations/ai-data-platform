@@ -133,3 +133,12 @@ The following remain HOLD/UNKNOWN until evidence exists:
 Protected `dev`/`main` promotion remains a software release gate. It does not replace functional acceptance, live source verification, owner approval, tenant isolation, consent or independent evidence review.
 
 No implementation may force a GREEN status by fabricating evidence, converting missing telemetry into success or weakening a source authorization boundary.
+
+
+## Build 335 contribution — Stage A contract foundation
+
+Build 335 implements the first shared-schema portion of Stage A.
+
+It establishes the exact six Master Shell source IDs, keeps Rosevear Comms Hub outside the six-source count as the complementary control plane, publishes machine-readable registry/event V1 schemas, requires source-to-shell identity matching and defines correlation, causation, idempotency, source-sequence, audience, sensitivity, evidence and verification-state fields.
+
+This is contract readiness only. Build 335 does not claim source implementation, source ingestion, live connectivity or Master Completion acceptance. Build 336 remains responsible for the six-source registry/freshness/state-machine layer, and Build 337 remains responsible for read-only source update ingestion.
