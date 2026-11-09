@@ -111,7 +111,8 @@ const model = composeSourceOnboardingModel({
     run("devilndove", {
       observedAt: "2026-09-01T22:00:00.000Z",
       expiresAt: "2026-10-01T22:00:00.000Z"
-    })
+    }),
+    run("ai-data-platform")
   ],
   now: new Date("2026-11-09T23:00:00.000Z")
 });
