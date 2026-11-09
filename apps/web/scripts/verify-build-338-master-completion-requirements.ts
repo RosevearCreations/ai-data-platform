@@ -176,6 +176,16 @@ const implementationOnlyScore = scoreMasterCompletionScope({
 });
 assert.equal(implementationOnlyScore.completion.percent, null);
 assert.ok(implementationOnlyScore.counts.unknown > 0);
+
+const failedButUnknownScore = scoreMasterCompletionScope({
+  approval,
+  requirementRevisions: [req1, req2],
+  evidence: [evidence(req1, "implementation", "FAILED")],
+  now: new Date("2026-11-09T13:00:00.000Z")
+});
+assert.equal(failedButUnknownScore.completion.percent, null);
+assert.ok(failedButUnknownScore.counts.failed > 0);
+assert.ok(failedButUnknownScore.counts.unknown > 0);
 assert.equal(
   implementationOnlyScore.policy.implementationDoesNotImplyOtherAxes,
   true
