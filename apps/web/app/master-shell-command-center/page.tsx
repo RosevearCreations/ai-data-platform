@@ -57,6 +57,12 @@ export default async function MasterShellCommandCenterPage() {
           <Link className="secondaryButton" href="/master-completion">
             Management
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/comms-complementary-plane"
+          >
+            Comms Plane
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
@@ -173,6 +179,59 @@ export default async function MasterShellCommandCenterPage() {
               </Link>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="reviewQueue" id="comms">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Comms complementary plane</p>
+            <h2>Incident and follow-up read model</h2>
+          </div>
+        </div>
+        <div className="reviewBatchList">
+          <article className="reviewBatchSummary">
+            <span
+              className={
+                "reviewStatus reviewStatus--" +
+                stateClass(model.views.comms.projectionState)
+              }
+            >
+              {model.views.comms.projectionState}
+            </span>
+            <h3>Rosevear Comms Hub</h3>
+            <p>
+              Relationship <strong>complementary control plane</strong> ·
+              application-count contribution <strong>0</strong> ·
+              source-count contribution <strong>0</strong>
+            </p>
+            <p>
+              Current real incident count known{" "}
+              <strong>
+                {model.views.comms.realIncidentCountKnown ? "yes" : "no"}
+              </strong>{" "}
+              · current real follow-up count known{" "}
+              <strong>
+                {model.views.comms.realFollowUpCountKnown ? "yes" : "no"}
+              </strong>
+            </p>
+            <p>
+              Read-only groups{" "}
+              <strong>
+                {model.views.comms.summary.displayedCorrelationGroups}
+              </strong>{" "}
+              · evidence-aware follow-up suggestions{" "}
+              <strong>
+                {model.views.comms.summary.displayedFollowUpSuggestions}
+              </strong>
+            </p>
+            <Link
+              className="secondaryButton"
+              href="/comms-complementary-plane"
+            >
+              Open Comms evidence
+            </Link>
+          </article>
         </div>
       </section>
 

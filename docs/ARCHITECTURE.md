@@ -774,3 +774,18 @@ The handoff model is non-SSO and non-authorizing. AI Data Platform may prepare a
 Owned-business tenant hints are bound to existing Build 282 mappings plus current-user RLS membership. Platform shells retain child-tenant selection at the destination. Missing mappings or memberships fail closed.
 
 `app.master_sysop_handoff_audit` is append-only runtime evidence. Membership is the only controlled mutable Build 341 authority state and final-owner protection is enforced in PostgreSQL.
+
+
+## Build 342 — Comms complementary-plane read architecture
+
+Build 342 adds a seventh **view**, not a seventh application or Master Shell source.
+
+The six source identities remain unchanged. Rosevear Comms Hub is represented as the complementary communications/control plane with zero contribution to the application/source denominators.
+
+The current source software baseline is Comms QL-392. Because QL-392's present data is explicitly synthetic `INERT_PREVIEW`, AI Data exposes that as software capability evidence only.
+
+`app.comms_plane_projection_evidence` is the independent projection boundary. Accepted rows are source-labelled `rosevear-comms-hub`, `AUTHORIZED_READ_MODEL`, independently verified, time-bounded and append-only from the application runtime's perspective. Runtime access is SELECT-only under active Master Sysop RLS.
+
+The read model validates exact shape, source IDs, freshness, priorities, six-source impact membership and canonical SHA-256 integrity. Missing evidence remains PREVIEW_ONLY; expired evidence remains STALE; invalid/tampered evidence is held.
+
+Incident correlation IDs remain opaque and do not create cross-tenant identity. Follow-up output is suggestion-only and cannot create operator tasks or communications actions.

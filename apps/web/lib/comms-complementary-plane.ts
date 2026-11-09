@@ -1,0 +1,434 @@
+import { createHash } from "node:crypto";
+
+import {
+  MASTER_SHELL_SOURCE_IDS,
+  type MasterShellSourceId
+} from "./master-shell-contract-v1";
+
+export const COMMS_COMPLEMENTARY_PLANE_BUILD = 342 as const;
+
+export const COMMS_QL392_BASELINE = Object.freeze({
+  repository: "RosevearCreations/rosevear-comms-hub",
+  sourceRevision: "fa65f23d17b21c1764f6ba416a3433ff466f3882",
+  release: "QL-392",
+  releaseName:
+    "Operator Incident Review Filters, Source Impact Summaries & Freshness-Aware Follow-Up Priorities",
+  sourceMode: "INERT_PREVIEW" as const,
+  sourceDocument:
+    "docs/handoffs/QL392_OPERATOR_INCIDENT_FILTERS_IMPACT_PRIORITIES.md",
+  correlationDocument:
+    "docs/handoffs/QL391_CROSS_APP_INCIDENT_CORRELATION_TIMELINE.md",
+  sourceCode:
+    "app/src/auth/ql392OperatorIncidentReview.ts"
+});
+
+export type CommsProjectionFreshness =
+  | "CURRENT"
+  | "UNKNOWN"
+  | "STALE"
+  | "MISSING"
+  | "INVALID"
+  | "CONFLICT";
+
+export type CommsProjectionPriority =
+  | "REVIEW_NOW"
+  | "VERIFY_EVIDENCE"
+  | "MONITOR_ONLY";
+
+export type CommsProjectionGroup = {
+  correlationId: string;
+  sourceIds: MasterShellSourceId[];
+  latestOccurredAt: string;
+  timelineCount: number;
+  freshness: CommsProjectionFreshness;
+  priority: CommsProjectionPriority;
+  guidance: string;
+};
+
+export type CommsProjectionSourceImpact = {
+  sourceId: MasterShellSourceId;
+  correlatedGroups: number;
+  timelineEntries: number;
+  attentionGroups: number;
+  highestPriority: CommsProjectionPriority | "NONE";
+};
+
+export type CommsAuthorizedProjection = {
+  schema: "rosevear.comms.master-shell-read-model.v1";
+  sourceId: "rosevear-comms-hub";
+  sourceRevision: string;
+  projectionMode: "AUTHORIZED_READ_MODEL";
+  observedAt: string;
+  expiresAt: string;
+  evidenceURI: string;
+  independentlyVerified: true;
+  groups: CommsProjectionGroup[];
+  impact: CommsProjectionSourceImpact[];
+  heldUnverified: number;
+};
+
+const SAFE_OPAQUE_ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/;
+const SAFE_EVENT_GUIDANCE = new RegExp("^[^\\u0000-\\u001f\\u007f]{1,256}$");
+const SHA = /^[0-9a-f]{40,64}$/;
+const EVIDENCE_URI = new RegExp("^(https://|urn:rosevear:evidence:)[^\\s]{1,500}$");
+
+const FRESHNESS = new Set<CommsProjectionFreshness>([
+  "CURRENT",
+  "UNKNOWN",
+  "STALE",
+  "MISSING",
+  "INVALID",
+  "CONFLICT"
+]);
+
+const PRIORITIES = new Set<CommsProjectionPriority>([
+  "REVIEW_NOW",
+  "VERIFY_EVIDENCE",
+  "MONITOR_ONLY"
+]);
+
+function canonicalValue(value: unknown): string {
+  if (Array.isArray(value)) {
+    return "[" + value.map(canonicalValue).join(",") + "]";
+  }
+  if (value && typeof value === "object") {
+    const object = value as Record<string, unknown>;
+    return (
+      "{" +
+      Object.keys(object)
+        .sort()
+        .map(
+          (key) =>
+            JSON.stringify(key) + ":" + canonicalValue(object[key])
+        )
+        .join(",") +
+      "}"
+    );
+  }
+  return JSON.stringify(value) ?? "null";
+}
+
+export function hashCommsAuthorizedProjection(value: unknown) {
+  return createHash("sha256")
+    .update(canonicalValue(value))
+    .digest("hex");
+}
+
+function validIso(value: unknown) {
+  return (
+    typeof value === "string" &&
+    Number.isFinite(Date.parse(value)) &&
+    new Date(Date.parse(value)).toISOString() === value
+  );
+}
+
+function isSourceId(value: unknown): value is MasterShellSourceId {
+  return (
+    typeof value === "string" &&
+    MASTER_SHELL_SOURCE_IDS.includes(value as MasterShellSourceId)
+  );
+}
+
+function exactKeys(
+  value: Record<string, unknown>,
+  expected: readonly string[]
+) {
+  const keys = Object.keys(value);
+  return (
+    keys.length === expected.length &&
+    keys.every((key) => expected.includes(key))
+  );
+}
+
+function validGroup(value: unknown): value is CommsProjectionGroup {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+  const item = value as Record<string, unknown>;
+  if (
+    !exactKeys(item, [
+      "correlationId",
+      "sourceIds",
+      "latestOccurredAt",
+      "timelineCount",
+      "freshness",
+      "priority",
+      "guidance"
+    ])
+  ) {
+    return false;
+  }
+  return (
+    typeof item.correlationId === "string" &&
+    SAFE_OPAQUE_ID.test(item.correlationId) &&
+    Array.isArray(item.sourceIds) &&
+    item.sourceIds.length >= 1 &&
+    item.sourceIds.length <= 6 &&
+    item.sourceIds.every(isSourceId) &&
+    new Set(item.sourceIds).size === item.sourceIds.length &&
+    validIso(item.latestOccurredAt) &&
+    typeof item.timelineCount === "number" &&
+    Number.isSafeInteger(item.timelineCount) &&
+    item.timelineCount >= 1 &&
+    item.timelineCount <= 50 &&
+    FRESHNESS.has(item.freshness as CommsProjectionFreshness) &&
+    PRIORITIES.has(item.priority as CommsProjectionPriority) &&
+    typeof item.guidance === "string" &&
+    SAFE_EVENT_GUIDANCE.test(item.guidance)
+  );
+}
+
+function validImpact(value: unknown): value is CommsProjectionSourceImpact {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+  const item = value as Record<string, unknown>;
+  if (
+    !exactKeys(item, [
+      "sourceId",
+      "correlatedGroups",
+      "timelineEntries",
+      "attentionGroups",
+      "highestPriority"
+    ])
+  ) {
+    return false;
+  }
+  return (
+    isSourceId(item.sourceId) &&
+    [item.correlatedGroups, item.timelineEntries, item.attentionGroups].every(
+      (count) =>
+        typeof count === "number" &&
+        Number.isSafeInteger(count) &&
+        count >= 0 &&
+        count <= 50
+    ) &&
+    (item.highestPriority === "NONE" ||
+      PRIORITIES.has(item.highestPriority as CommsProjectionPriority))
+  );
+}
+
+export function validateCommsAuthorizedProjection(
+  value: unknown
+): CommsAuthorizedProjection {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("comms_projection_shape_invalid");
+  }
+  const input = value as Record<string, unknown>;
+  if (
+    !exactKeys(input, [
+      "schema",
+      "sourceId",
+      "sourceRevision",
+      "projectionMode",
+      "observedAt",
+      "expiresAt",
+      "evidenceURI",
+      "independentlyVerified",
+      "groups",
+      "impact",
+      "heldUnverified"
+    ])
+  ) {
+    throw new Error("comms_projection_shape_invalid");
+  }
+  if (
+    input.schema !== "rosevear.comms.master-shell-read-model.v1" ||
+    input.sourceId !== "rosevear-comms-hub" ||
+    input.projectionMode !== "AUTHORIZED_READ_MODEL" ||
+    input.independentlyVerified !== true
+  ) {
+    throw new Error("comms_projection_authority_invalid");
+  }
+  if (
+    typeof input.sourceRevision !== "string" ||
+    !SHA.test(input.sourceRevision)
+  ) {
+    throw new Error("comms_projection_revision_invalid");
+  }
+  if (
+    !validIso(input.observedAt) ||
+    !validIso(input.expiresAt) ||
+    Date.parse(String(input.expiresAt)) <= Date.parse(String(input.observedAt))
+  ) {
+    throw new Error("comms_projection_freshness_invalid");
+  }
+  if (
+    typeof input.evidenceURI !== "string" ||
+    !EVIDENCE_URI.test(input.evidenceURI)
+  ) {
+    throw new Error("comms_projection_evidence_uri_invalid");
+  }
+  if (
+    !Array.isArray(input.groups) ||
+    input.groups.length > 50 ||
+    !input.groups.every(validGroup) ||
+    new Set(
+      (input.groups as CommsProjectionGroup[]).map(
+        (group) => group.correlationId
+      )
+    ).size !== input.groups.length
+  ) {
+    throw new Error("comms_projection_groups_invalid");
+  }
+  if (
+    !Array.isArray(input.impact) ||
+    input.impact.length !== MASTER_SHELL_SOURCE_IDS.length ||
+    !input.impact.every(validImpact) ||
+    new Set(
+      (input.impact as CommsProjectionSourceImpact[]).map(
+        (item) => item.sourceId
+      )
+    ).size !== MASTER_SHELL_SOURCE_IDS.length
+  ) {
+    throw new Error("comms_projection_impact_invalid");
+  }
+  if (
+    typeof input.heldUnverified !== "number" ||
+    !Number.isSafeInteger(input.heldUnverified) ||
+    input.heldUnverified < 0 ||
+    input.heldUnverified > 50
+  ) {
+    throw new Error("comms_projection_held_count_invalid");
+  }
+
+  const groups = input.groups as CommsProjectionGroup[];
+  const impact = input.impact as CommsProjectionSourceImpact[];
+  for (const item of impact) {
+    const matchingGroups = groups.filter((group) =>
+      group.sourceIds.includes(item.sourceId)
+    );
+    if (
+      item.correlatedGroups !== matchingGroups.length ||
+      item.attentionGroups !==
+        matchingGroups.filter(
+          (group) => group.priority !== "MONITOR_ONLY"
+        ).length
+    ) {
+      throw new Error("comms_projection_impact_mismatch");
+    }
+  }
+
+  return {
+    schema: "rosevear.comms.master-shell-read-model.v1",
+    sourceId: "rosevear-comms-hub",
+    sourceRevision: input.sourceRevision,
+    projectionMode: "AUTHORIZED_READ_MODEL",
+    observedAt: input.observedAt as string,
+    expiresAt: input.expiresAt as string,
+    evidenceURI: input.evidenceURI,
+    independentlyVerified: true,
+    groups,
+    impact,
+    heldUnverified: Number(input.heldUnverified)
+  };
+}
+
+export function composeCommsComplementaryPlane(input?: {
+  projection?: CommsAuthorizedProjection | null;
+  now?: Date;
+}) {
+  const now = input?.now ?? new Date();
+  const projection = input?.projection
+    ? validateCommsAuthorizedProjection(input.projection)
+    : null;
+  const projectionStale = Boolean(
+    projection && Date.parse(projection.expiresAt) <= now.getTime()
+  );
+
+  const groups = projection?.groups ?? [];
+  const followUpSuggestions = groups.map((group) => ({
+    correlationId: group.correlationId,
+    sourceIds: group.sourceIds,
+    priority: group.priority,
+    state: "SUGGESTION_ONLY" as const,
+    guidance: group.guidance,
+    latestOccurredAt: group.latestOccurredAt,
+    evidenceFreshness: group.freshness,
+    taskCreated: false,
+    notificationSent: false,
+    acknowledgementRecorded: false,
+    routeChanged: false
+  }));
+
+  return {
+    schema: "ai-data-platform.comms-complementary-plane.v1",
+    build: COMMS_COMPLEMENTARY_PLANE_BUILD,
+    generatedAt: now.toISOString(),
+    plane: {
+      id: "rosevear-comms-hub",
+      relationship: "complementary-control-plane",
+      repository: COMMS_QL392_BASELINE.repository,
+      sourceCountContribution: 0,
+      applicationCountContribution: 0
+    },
+    capabilityBaseline: {
+      ...COMMS_QL392_BASELINE,
+      productionSoftwareAvailable: true,
+      liveIncidentReceiverProven: false,
+      durableIncidentLedgerProven: false,
+      liveFollowUpQueueProven: false,
+      sourceSignedProjectionContractProven: false
+    },
+    projectionState: projection
+      ? projectionStale
+        ? ("STALE" as const)
+        : ("AUTHORIZED_READ_ONLY" as const)
+      : ("PREVIEW_ONLY" as const),
+    authorizedProjectionAvailable: Boolean(projection),
+    projectionFresh: Boolean(projection && !projectionStale),
+    realIncidentCountKnown: Boolean(projection && !projectionStale),
+    realFollowUpCountKnown: Boolean(projection && !projectionStale),
+    incidents: groups,
+    followUpSuggestions,
+    sourceImpact: projection?.impact ?? [],
+    heldUnverified: projection?.heldUnverified ?? null,
+    evidence: projection
+      ? {
+          sourceRevision: projection.sourceRevision,
+          observedAt: projection.observedAt,
+          expiresAt: projection.expiresAt,
+          evidenceURI: projection.evidenceURI,
+          independentlyVerified: true as const
+        }
+      : null,
+    summary: {
+      displayedCorrelationGroups: groups.length,
+      displayedFollowUpSuggestions: followUpSuggestions.length,
+      attentionGroups: groups.filter(
+        (group) => group.priority !== "MONITOR_ONLY"
+      ).length,
+      reviewNow: groups.filter(
+        (group) => group.priority === "REVIEW_NOW"
+      ).length,
+      verifyEvidence: groups.filter(
+        (group) => group.priority === "VERIFY_EVIDENCE"
+      ).length,
+      monitorOnly: groups.filter(
+        (group) => group.priority === "MONITOR_ONLY"
+      ).length
+    },
+    policy: {
+      complementaryPlaneOnly: true,
+      seventhApplicationCreated: false,
+      seventhSourceCreated: false,
+      readOnlyProjection: true,
+      sourceAuthorityRemainsCommsHub: true,
+      messageAuthorityRemainsCommsHub: true,
+      incidentAuthorityRemainsCommsHub: true,
+      followUpTaskAuthorityRemainsCommsHub: true,
+      notificationAuthorityRemainsCommsHub: true,
+      acknowledgementAuthorityRemainsCommsHub: true,
+      routeAuthorityRemainsCommsHub: true,
+      tenantMembershipChanged: false,
+      sourceConnectionStateChanged: false,
+      previewExamplesCountAsRealIncidents: false,
+      missingProjectionMeansZeroIncidents: false,
+      missingProjectionMeansZeroFollowUps: false
+    }
+  };
+}
+
+export type CommsComplementaryPlaneModel = ReturnType<
+  typeof composeCommsComplementaryPlane
+>;
