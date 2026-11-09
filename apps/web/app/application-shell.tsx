@@ -170,7 +170,8 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <Link className={pathname.startsWith("/comms-complementary-plane") ? "opsTopLink active" : "opsTopLink"} href="/comms-complementary-plane">Comms</Link>
             <Link className={pathname.startsWith("/cross-application-interaction-trace") ? "opsTopLink active" : "opsTopLink"} href="/cross-application-interaction-trace">Trace</Link>
             <Link className={pathname.startsWith("/module-health-intelligence") ? "opsTopLink active" : "opsTopLink"} href="/module-health-intelligence">Health</Link>
-            <Link className={pathname.startsWith("/role-device-acceptance") ? "opsTopLink active" : "opsTopLink"} href="/role-device-acceptance">Acceptance</Link>\n            <Link className={pathname.startsWith("/relationship-certification") ? "opsTopLink active" : "opsTopLink"} href="/relationship-certification">Relations</Link>
+            <Link className={pathname.startsWith("/role-device-acceptance") ? "opsTopLink active" : "opsTopLink"} href="/role-device-acceptance">Acceptance</Link>
+            <Link className={pathname.startsWith("/relationship-certification") ? "opsTopLink active" : "opsTopLink"} href="/relationship-certification">Relations</Link>
             <Link className={pathname.startsWith("/attention") ? "opsTopLink active" : "opsTopLink"} href="/attention">Attention</Link>
             <Link className={pathname.startsWith("/production-learning") ? "opsTopLink active" : "opsTopLink"} href="/production-learning">Statistical</Link>
             <Link className={pathname.startsWith("/integration-health") ? "opsTopLink active" : "opsTopLink"} href="/integration-health">System Status</Link>
