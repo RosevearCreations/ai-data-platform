@@ -193,6 +193,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/master-shell-registry",
           "/master-shell-ingestion",
           "/master-completion",
+          "/master-application-inventory",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
@@ -312,6 +313,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/master-completion",
         label: "Master Completion",
         description: "Review stable requirements, explicit denominators and independent evidence-axis completion scoring."
+      },
+      {
+        href: "/master-application-inventory",
+        label: "Master Application Inventory",
+        description: "Review exact source applications, module inventory origins, capability/version provenance and separate readiness evidence."
       },
       {
         href: "/field-mappings",
