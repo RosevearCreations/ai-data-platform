@@ -219,8 +219,17 @@ export function validateMasterShellSourceEvidence(
   ) {
     throw new Error("master_shell_registry_environment_invalid");
   }
-  if (!isMasterShellSourceState(evidence.declaredStatus)) {
+  if (
+    (evidence.declaredStatus as string) === "UNKNOWN" ||
+    !isMasterShellSourceState(evidence.declaredStatus)
+  ) {
     throw new Error("master_shell_registry_status_invalid");
+  }
+  if (
+    evidence.evidenceAuthority !== "operator-recorded" &&
+    evidence.evidenceAuthority !== "independent-source-verification"
+  ) {
+    throw new Error("master_shell_registry_evidence_authority_invalid");
   }
   if (
     !validIso(evidence.statusObservedAt) ||
