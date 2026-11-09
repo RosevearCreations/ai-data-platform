@@ -1729,6 +1729,22 @@ export async function bootstrapFirstOwner(userId: string) {
         `,
         [userId]
       );
+
+      const sysopTable = await client.query<{ table_name: string | null }>(
+        `select to_regclass('app.master_sysop_members')::text as table_name`
+      );
+      if (sysopTable.rows[0]?.table_name === "app.master_sysop_members") {
+        await client.query(
+          `insert into app.master_sysop_members (
+             user_id,role,granted_by,note
+           ) values ($1,'owner',$1,$2)
+           on conflict (user_id) do nothing`,
+          [
+            userId,
+            "First-owner bootstrap: initial Master Sysop authority."
+          ]
+        );
+      }
     }
 
     await client.query("commit");
