@@ -81,6 +81,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Role / Device Acceptance
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/relationship-certification"
+          >
+            Relationship Certification
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"

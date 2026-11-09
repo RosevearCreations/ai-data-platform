@@ -1,0 +1,60 @@
+{
+  "schema": "rosevear.ai-data-platform.build346-review.v1",
+  "application": "AI Data Platform",
+  "build": 346,
+  "title": "One-to-One, One-to-Many, Many-to-One & Many-to-Many Integration Certification",
+  "patterns": [
+    "one-to-one",
+    "one-to-many",
+    "many-to-one",
+    "many-to-many"
+  ],
+  "dimensions": [
+    "contract",
+    "identity",
+    "replay",
+    "expiry",
+    "audience",
+    "tenant-isolation"
+  ],
+  "persistence": {
+    "migration": "0124_master_relationship_integration_certification.sql",
+    "tables": [
+      "app.master_relationship_certification_runs",
+      "app.master_relationship_certification_assertions"
+    ],
+    "appendOnly": true,
+    "runtimePrivileges": [
+      "SELECT",
+      "INSERT"
+    ],
+    "runtimeUpdateDelete": false,
+    "rls": true
+  },
+  "semantics": {
+    "passRequiresAllSixFreshPass": true,
+    "failDominates": true,
+    "blockedRetained": true,
+    "expiredBecomesStale": true,
+    "missingPatternEvidenceMeansCertified": false,
+    "build304PassImpliesRelationshipCertification": false,
+    "deploymentGreenImpliesCertification": false
+  },
+  "authority": {
+    "certificationIsActivation": false,
+    "peerWriteAllowed": false,
+    "sourceMutationAllowed": false,
+    "replayExecutionAllowed": false,
+    "externalProbeAllowed": false,
+    "productionAcceptanceInferred": false
+  },
+  "surfaces": {
+    "page": "/relationship-certification",
+    "api": "/api/relationship-certification",
+    "apiMethods": [
+      "GET",
+      "POST"
+    ]
+  },
+  "nextQueuedBuild": 347
+}

@@ -252,3 +252,9 @@ A stuck candidate requires fresh source-reported `IN_PROGRESS` evidence at least
 Build 345 adds evidence-backed Customer/Worker/Admin × Mobile/Tablet/Desktop acceptance at application and module scope. Nine independent cells are composed from append-only reviewer evidence, with UNKNOWN for missing evidence and STALE after expiry.
 
 This acceptance evidence remains separate from implementation, automated tests, source readiness and deployment state. Build 345 does not automatically satisfy Master Completion axes, mutate a source, probe a device or grant application authority.
+
+## Build 346 contribution — relationship-pattern certification
+
+Build 346 adds explicit one-to-one, one-to-many, many-to-one and many-to-many certification across contract, identity, replay, expiry, audience and tenant-isolation evidence. The evidence is stored as immutable versioned runs plus six append-only assertions.
+
+This layer does not replace Build 304 operational certification and does not infer certification from a GREEN deployment. It records evidence only and performs no peer write, source mutation, replay execution, external probe or production acceptance.
