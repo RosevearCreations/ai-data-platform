@@ -1,0 +1,38 @@
+{
+  "schema": "rosevear.ai-data-platform.build343-review.v1",
+  "application": "AI Data Platform",
+  "build": 343,
+  "title": "Cross-Application Interaction Trace, Dependency Graph & Failure Propagation",
+  "sources": {
+    "count": 6,
+    "evidence": "Build 337 signed normalized source ingestion"
+  },
+  "trace": {
+    "correlationGrouped": true,
+    "causationRetained": true,
+    "dependencyRelationship": "CORRELATED_FLOW",
+    "dependencyDirection": "UNDIRECTED",
+    "missingEvidenceMeansNoInteraction": false
+  },
+  "inference": {
+    "correlationProvesCausation": false,
+    "failureOriginIsSourceTruth": false,
+    "tenantIdentityInferred": false,
+    "customerIdentityInferred": false
+  },
+  "authority": {
+    "readOnly": true,
+    "peerWriteAllowed": false,
+    "sourceMutationAllowed": false,
+    "externalProbeAllowed": false,
+    "automaticRecoveryAllowed": false
+  },
+  "surfaces": {
+    "apiMethods": [
+      "GET"
+    ],
+    "page": "/cross-application-interaction-trace",
+    "api": "/api/cross-application-interaction-trace"
+  },
+  "nextQueuedBuild": 344
+}
