@@ -141,6 +141,35 @@ revoke all on function app.master_sysop_claim_eligible() from public;
 grant execute on function app.current_master_sysop_role() to ai_data_runtime;
 grant execute on function app.master_sysop_claim_eligible() to ai_data_runtime;
 
+
+create or replace function app.master_sysop_source_navigation_evidence()
+returns table (
+  source_id text,
+  declared_status text,
+  status_expires_at timestamptz,
+  approved_origin text,
+  roles_allowed jsonb
+)
+language sql
+stable
+security definer
+set search_path=pg_catalog,app
+as $
+  select distinct on (e.source_id)
+    e.source_id,
+    e.declared_status,
+    e.status_expires_at,
+    e.approved_origin,
+    e.roles_allowed
+  from app.master_shell_source_registry_evidence e
+  where app.current_master_sysop_role() in ('owner','operator')
+  order by e.source_id,e.record_version desc
+$;
+
+revoke all on function app.master_sysop_source_navigation_evidence() from public;
+grant execute on function app.master_sysop_source_navigation_evidence()
+  to ai_data_runtime;
+
 alter table app.master_sysop_members enable row level security;
 alter table app.master_sysop_handoff_audit enable row level security;
 
