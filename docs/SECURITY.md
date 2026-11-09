@@ -942,3 +942,24 @@ Build 341 separates suite navigation authority from tenant authority.
 - local workspace role is only a non-authorizing hint and is never elevated;
 - handoff audit is append-only;
 - navigation never changes source connection state and never performs a peer write.
+
+
+## Build 342 Comms complementary-plane security boundary
+
+Build 342 consumes only read-only Comms status/evidence projections.
+
+- Rosevear Comms Hub remains outside the fixed six-source/application count;
+- QL-392 synthetic `INERT_PREVIEW` examples are never promoted to real incident evidence;
+- missing projection evidence never means zero incidents or zero follow-ups;
+- accepted projection rows require `independent-source-verification`;
+- runtime RLS visibility requires active Master Sysop owner/operator authority;
+- the web runtime has SELECT only on `app.comms_plane_projection_evidence`;
+- runtime INSERT, UPDATE and DELETE are revoked;
+- stored projection JSON is canonically SHA-256 verified before display;
+- expired projections remain STALE rather than being treated as current;
+- malformed or tampered projections become HOLD_INVALID;
+- correlation IDs are opaque and do not establish customer/tenant identity;
+- AI Data cannot send/acknowledge messages, assign operators, create follow-up tasks, close incidents or change Comms routes;
+- AI Data cannot modify tenant membership or six-source connection state;
+- message bodies, phone numbers, email addresses and customer records are outside the Build 342 projection contract;
+- all communications and incident action authority remains in Rosevear Comms Hub.

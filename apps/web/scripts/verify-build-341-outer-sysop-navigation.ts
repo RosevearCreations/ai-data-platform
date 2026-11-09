@@ -399,7 +399,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 341 — Outer Sysop Navigation, Ree/Jack Context Handoff, Role & Tenant Isolation** — current build"
+    "Build 341 — Outer Sysop Navigation, Ree/Jack Context Handoff, Role & Tenant Isolation** — Production"
   )
 );
 assert.ok(
