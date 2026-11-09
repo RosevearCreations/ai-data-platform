@@ -122,6 +122,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "connectors-overview"
       },
       {
+        href: "/module-health-intelligence",
+        label: "Module Health Intelligence",
+        description: "Review evidence-backed module health, stale signals, HOLDs, stuck candidates and blockers without mutating source state.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/integration-health",
         label: "Integration Health",
         description: "Review connection state, measured latency, credential risk, webhook outcomes, event queues and degraded integration services.",

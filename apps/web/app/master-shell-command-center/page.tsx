@@ -69,6 +69,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Interaction Trace
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/module-health-intelligence"
+          >
+            Module Health
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
