@@ -345,7 +345,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 339 — Application & Module Inventory, Capability and Readiness Read Models** — current build"
+    "Build 339 — Application & Module Inventory, Capability and Readiness Read Models** — Production"
   )
 );
 assert.ok(

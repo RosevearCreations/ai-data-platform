@@ -901,3 +901,22 @@ Build 339 preserves provenance rather than promoting discovery into authority.
 - catalogue/module presence does not imply functional, security, accessibility/device or production/user acceptance;
 - GREEN release evidence does not imply functional acceptance;
 - the Build 339 API is GET-only and performs no source mutation, connection activation, capability grant, trust change, outbound request or peer write.
+
+
+## Build 340 Master Shell Command Center security boundary
+
+Build 340 is a GET-only, authenticated, read-only composition surface.
+
+- application/source truth remains in Builds 336–339;
+- integration-health truth remains in the existing Build 300 evidence paths;
+- attention ranking does not alter the underlying state;
+- credential-reference metadata may be summarized but credential values are never read;
+- no external health probe is issued;
+- remote availability is never inferred;
+- no recovery, retry, route release, connection activation or capability grant is triggered;
+- no source state, requirement, denominator or completion evidence is written;
+- source-reported ACCEPTED does not imply Master Completion acceptance;
+- discovery/catalogue presence does not imply authorization or acceptance;
+- GREEN release evidence does not imply functional acceptance;
+- suite-wide completion remains unavailable until all six source-wide denominators are approved and calculable;
+- Build 340 performs no peer write, trust mutation or QL-266 resumption.
