@@ -258,7 +258,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 345 — Role/Device Acceptance Matrix: Customer, Worker & Admin / Mobile, Tablet, Desktop** — current build"
+    "Build 345 — Role/Device Acceptance Matrix: Customer, Worker & Admin / Mobile, Tablet, Desktop** — Production"
   )
 );
 assert.ok(
