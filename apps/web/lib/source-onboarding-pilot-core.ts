@@ -60,6 +60,7 @@ export type SourceOnboardingRun = {
   assertions: SourceOnboardingAssertion[];
 };
 
+const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}$/;
 const SAFE_TEXT = /^[^\u0000-\u001f\u007f]{1,1200}$/;
 const BRANCH = /^[A-Za-z0-9][A-Za-z0-9._/-]{0,159}$/;
 const COMMIT = /^[a-f0-9]{7,64}$/;
@@ -146,6 +147,9 @@ export function summarizeSourceOnboarding(
 }
 
 export function validateSourceOnboardingRun(input: SourceOnboardingRun) {
+  if (!SAFE_ID.test(input.runId)) {
+    throw new Error("source_onboarding_run_id_invalid");
+  }
   if (!MASTER_SHELL_SOURCE_IDS.includes(input.sourceId)) {
     throw new Error("source_onboarding_source_invalid");
   }
