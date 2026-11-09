@@ -240,3 +240,9 @@ The Master Command Center gains a separate Comms complementary-plane view and at
 Build 343 adds the Master Shell's cross-application trace view over the existing signed Build 337 source-update evidence. It groups events by correlation ID, retains causation/provenance, shows undirected cross-source dependency edges and flags adverse evidence for operator review.
 
 Likely upstream causes are explicitly inference-only. AI Data Platform does not turn correlation into source truth, infer tenant/customer identity, mutate any source, perform a peer write or trigger recovery. Missing trace evidence remains unmeasured.
+
+## Build 344 contribution — module health, stuck-state and blocker intelligence
+
+Build 344 adds the Master Shell's read-only module-health layer over Build 339 inventory evidence. It separates explicit source/module blockers, stale evidence, incomplete evidence, HOLD state, in-progress work and evidence-backed stuck candidates.
+
+A stuck candidate requires fresh source-reported `IN_PROGRESS` evidence at least 24 hours old. AI Data Platform does not write a stuck state back, release HOLDs, restart work, trigger automatic recovery, infer acceptance or convert missing evidence into health.
