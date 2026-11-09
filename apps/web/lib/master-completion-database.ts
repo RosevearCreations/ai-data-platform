@@ -264,6 +264,8 @@ export async function recordMasterCompletionRequirementRevision(
   if (!validApplicability(input.applicability)) {
     throw new Error("master_completion_applicability_invalid");
   }
+  const sourceId = input.sourceId;
+  const applicability = input.applicability;
   if (
     input.requiredAxes.some((axis) => !validAxis(axis)) ||
     new Set(input.requiredAxes).size !== input.requiredAxes.length
@@ -278,7 +280,7 @@ export async function recordMasterCompletionRequirementRevision(
       ? null
       : input.moduleId;
   const requirementId = stableMasterCompletionRequirementId({
-    sourceId: input.sourceId,
+    sourceId,
     moduleId,
     requirementKey: input.requirementKey
   });
@@ -294,7 +296,7 @@ export async function recordMasterCompletionRequirementRevision(
     if (
       current &&
       (
-        current.sourceId !== input.sourceId ||
+        current.sourceId !== sourceId ||
         current.moduleId !== moduleId ||
         current.requirementKey !== input.requirementKey
       )
@@ -306,12 +308,12 @@ export async function recordMasterCompletionRequirementRevision(
     const candidate = validateMasterCompletionRequirementRevision({
       requirementId,
       revisionNumber: nextRevision,
-      sourceId: input.sourceId,
+      sourceId,
       moduleId,
       requirementKey: input.requirementKey,
       title: input.title,
       description: input.description,
-      applicability: input.applicability,
+      applicability,
       requiredAxes: input.requiredAxes as MasterCompletionAxis[],
       weight: input.weight,
       critical: input.critical,
@@ -489,6 +491,8 @@ export async function recordMasterCompletionEvidence(
   if (!validEvidenceState(input.state)) {
     throw new Error("master_completion_evidence_state_invalid");
   }
+  const axis = input.axis;
+  const state = input.state;
 
   return withUserDatabase(userId, async (client) => {
     await requireSuiteAdmin(client);
@@ -502,7 +506,7 @@ export async function recordMasterCompletionEvidence(
     if (requirement.applicability !== "required") {
       throw new Error("master_completion_evidence_nonrequired");
     }
-    if (!requirement.requiredAxes.includes(input.axis)) {
+    if (!requirement.requiredAxes.includes(axis)) {
       throw new Error("master_completion_axis_not_required");
     }
 
@@ -514,7 +518,7 @@ export async function recordMasterCompletionEvidence(
           ":" +
           requirement.revisionNumber +
           ":" +
-          input.axis
+          axis
       ]
     );
 
@@ -539,9 +543,9 @@ export async function recordMasterCompletionEvidence(
       evidenceId: randomUUID(),
       requirementId: requirement.requirementId,
       requirementRevision: requirement.revisionNumber,
-      axis: input.axis,
+      axis,
       recordVersion,
-      state: input.state,
+      state,
       evidenceURI: input.evidenceURI,
       reviewer: input.reviewer,
       confidence: input.confidence,
