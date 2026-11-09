@@ -699,3 +699,18 @@ Each accepted source evidence record receives a per-source version and bounded f
 The owner/admin API can record discovery, configuration, explicit authorization HOLD and negative operational evidence. It cannot create TEST_VERIFIED or CONNECTED. Those states require independent source-verification authority, source signer evidence and TEST/connection evidence and are reserved for the subsequent source-ingestion stage.
 
 The evidence table is RLS-protected and append-only for the runtime role.
+
+
+## Build 337 — Read-Only Source Update Ingestion & Provenance Normalization
+
+Build 337 composes the Build 290 signed webhook gateway, Build 335 Master Shell event envelope and Build 336 source registry into a read-only ingestion path.
+
+Only accepted `master-shell.source-update` webhook receipts are eligible. The stored signed receipt is re-verified against the configured HMAC key reference before the nested Master Shell event is parsed.
+
+Transport source identity maps to the exact Master Shell source ID and must match the nested event. Tenant identity must match exactly and the event audience must include `ai-data-platform`.
+
+The normalized ledger stores only bounded operational fields for source health, release promotion, module readiness and audit evidence. Raw webhook bodies and raw HMAC secrets are not copied.
+
+Duplicate receipt, event, source-sequence and source/idempotency identities are fail-closed. Out-of-order or stale evidence remains observable but is not permitted to advance the source registry.
+
+Registry projection requires explicit owner/admin acceptance plus fresh independently verified source-health evidence over a currently active transport. Existing Build 336 transition rules remain authoritative.
