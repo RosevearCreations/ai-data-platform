@@ -207,3 +207,16 @@ The command centre creates an evidence-backed attention queue across application
 Build 340 does not average partial portfolio evidence. A suite-wide completion percentage remains unavailable until all six applications have approved, calculable source-wide Master Completion scopes; only then are exact requirement numerators/denominators aggregated.
 
 No new persistence table, source mutation, completion approval, capability grant, connection activation, credential read, automatic recovery or peer write is introduced.
+
+
+## Build 341 contribution — Stage B outer Sysop identity and navigation
+
+Build 341 implements the AI Data Platform side of Stage B without turning navigation into authorization.
+
+A dedicated Master Sysop membership is now separate from ordinary workspace owner/admin/member roles. Separate Better Auth accounts and sessions remain mandatory; an active Master Sysop owner may enroll another already-authenticated account by exact email, but Build 341 never creates, copies or shares credentials.
+
+The current authenticated user's RLS-visible workspace memberships are the only local tenant/workspace context source. Existing Rosie Dazzlers and Devil n Dove workspace mappings are reused only when that user is actually a member. Yard Workers and iCamp remain platform-shell handoffs with no guessed child tenant. AI Data Platform/AI Hub receive no invented customer tenant, and Comms Hub remains the complementary plane with no invented origin.
+
+External handoff requires fresh configured/test-verified/connected source evidence, an exact approved HTTPS origin and any required local workspace mapping. The handoff carries no user ID, email, password, Better Auth session or destination authority. It contains only a short-lived non-authorizing context hint; the destination must reauthenticate and independently enforce its own roles and tenant boundary.
+
+Build 341 records append-only handoff evidence, protects the final active Master Sysop owner, and adds responsive desktop/tablet/mobile outer navigation. It performs no peer write or source-state mutation.
