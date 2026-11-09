@@ -194,6 +194,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/master-shell-ingestion",
           "/master-completion",
           "/master-application-inventory",
+          "/master-shell-command-center",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
@@ -318,6 +319,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/master-application-inventory",
         label: "Master Application Inventory",
         description: "Review exact source applications, module inventory origins, capability/version provenance and separate readiness evidence."
+      },
+      {
+        href: "/master-shell-command-center",
+        label: "Master Shell Command Center",
+        description: "Review one read-only Applications, I.T./Security, Management and Statistics command-centre view."
       },
       {
         href: "/field-mappings",
