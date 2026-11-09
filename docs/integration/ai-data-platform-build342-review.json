@@ -1,0 +1,53 @@
+{
+  "schema": "rosevear.ai-data-platform.build342-review.v1",
+  "application": "AI Data Platform",
+  "build": 342,
+  "name": "Comms Hub Complementary Plane Integration & Incident/Follow-Up Read Models",
+  "sourceBaseline": {
+    "repository": "RosevearCreations/rosevear-comms-hub",
+    "sourceRevision": "fa65f23d17b21c1764f6ba416a3433ff466f3882",
+    "release": "QL-392",
+    "sourceMode": "INERT_PREVIEW",
+    "productionSoftwareAvailable": true,
+    "liveIncidentReceiverProven": false
+  },
+  "relationship": {
+    "complementaryPlane": true,
+    "applicationCountContribution": 0,
+    "sourceCountContribution": 0,
+    "seventhApplicationCreated": false,
+    "seventhSourceCreated": false
+  },
+  "projection": {
+    "schema": "rosevear.comms.master-shell-read-model.v1",
+    "independentlyVerifiedRequired": true,
+    "runtimeWriteAllowed": false,
+    "canonicalHashVerified": true,
+    "staleEvidencePreserved": true,
+    "missingProjectionMeansZeroIncidents": false,
+    "missingProjectionMeansZeroFollowUps": false
+  },
+  "authority": {
+    "messageAuthority": "rosevear-comms-hub",
+    "incidentAuthority": "rosevear-comms-hub",
+    "followUpTaskAuthority": "rosevear-comms-hub",
+    "acknowledgementAuthority": "rosevear-comms-hub",
+    "routeAuthority": "rosevear-comms-hub"
+  },
+  "persistence": {
+    "migration": "0122_comms_complementary_plane_projection.sql",
+    "table": "app.comms_plane_projection_evidence",
+    "runtimePrivileges": [
+      "SELECT"
+    ]
+  },
+  "surfaces": {
+    "operator": "/comms-complementary-plane",
+    "api": "/api/comms-complementary-plane",
+    "commandCenter": "/master-shell-command-center#comms",
+    "apiMethods": [
+      "GET"
+    ]
+  },
+  "nextQueuedBuild": 343
+}
