@@ -364,7 +364,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 344 — Module Health, Stuck-State, Staleness, HOLD & Blocker Intelligence** — current build"
+    "Build 344 — Module Health, Stuck-State, Staleness, HOLD & Blocker Intelligence** — Production"
   )
 );
 assert.ok(
