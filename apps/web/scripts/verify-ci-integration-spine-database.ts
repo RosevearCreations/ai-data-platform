@@ -94,6 +94,7 @@ const requiredTables = [
   "master_completion_evidence",
   "master_sysop_members",
   "master_sysop_handoff_audit",
+  "comms_plane_projection_evidence",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -174,6 +175,7 @@ const appendOnlyTables = [
   "master_completion_evidence",
   "master_shell_source_registry_evidence",
   "master_sysop_handoff_audit",
+  "comms_plane_projection_evidence",
   "service_performance_events",
   "rosevear_comms_operation_claims"
 ];
@@ -255,7 +257,8 @@ async function main() {
         "0105_six_app_integration_certification.sql",
         "0106_autonomous_operations_owner_controls_learning_vi.sql",
         "0107_ql365d_ai_data_platform_source_attachment.sql",
-        "0121_master_sysop_navigation_context.sql"
+        "0121_master_sysop_navigation_context.sql",
+        "0122_comms_complementary_plane_projection.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -298,6 +301,30 @@ async function main() {
     assert(
       migrationNames.has("0121_master_sysop_navigation_context.sql"),
       "migration 0121 is not recorded"
+    );
+    assert(
+      migrationNames.has("0122_comms_complementary_plane_projection.sql"),
+      "migration 0122 is not recorded"
+    );
+
+    const commsPlaneGrants = await pool.query<{
+      privilege_type: string;
+    }>(
+      `select privilege_type
+       from information_schema.role_table_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name='comms_plane_projection_evidence'`
+    );
+    const commsPlaneGrantSet = new Set(
+      commsPlaneGrants.rows.map((row) => row.privilege_type)
+    );
+    assert(
+      commsPlaneGrantSet.has("SELECT") &&
+      !commsPlaneGrantSet.has("INSERT") &&
+      !commsPlaneGrantSet.has("UPDATE") &&
+      !commsPlaneGrantSet.has("DELETE"),
+      "Comms complementary-plane projection evidence must be runtime read-only"
     );
 
     const sysopGrants = await pool.query<{
