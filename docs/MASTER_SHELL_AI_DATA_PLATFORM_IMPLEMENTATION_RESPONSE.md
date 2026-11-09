@@ -220,3 +220,16 @@ The current authenticated user's RLS-visible workspace memberships are the only 
 External handoff requires fresh configured/test-verified/connected source evidence, an exact approved HTTPS origin and any required local workspace mapping. The handoff carries no user ID, email, password, Better Auth session or destination authority. It contains only a short-lived non-authorizing context hint; the destination must reauthenticate and independently enforce its own roles and tenant boundary.
 
 Build 341 records append-only handoff evidence, protects the final active Master Sysop owner, and adds responsive desktop/tablet/mobile outer navigation. It performs no peer write or source-state mutation.
+
+
+## Build 342 contribution — Stage D Comms complementary plane
+
+Build 342 implements the AI Data Platform side of Stage D without absorbing communications authority.
+
+The current Rosevear Comms Hub source baseline is QL-392 at revision `fa65f23d17b21c1764f6ba416a3433ff466f3882`. QL-392 is production software but explicitly labels its current incident/correlation/follow-up examples as synthetic `INERT_PREVIEW`. AI Data therefore records that capability as preview-only software readiness and does not present those examples as live incident evidence.
+
+A separate Build 342 compatibility contract accepts only independently verified, read-only Comms projection evidence. The projection may expose opaque correlation groups, six-source impact summaries, evidence freshness and deterministic follow-up priorities. It may not transfer message bodies, customer records, tenant authority or Comms command rights.
+
+Migration 0122 adds an RLS-protected projection evidence table. The application runtime has SELECT only; it cannot create, update or delete independently verified Comms evidence. Canonical SHA-256 integrity is checked before a stored projection enters the read model. Missing projection evidence remains PREVIEW_ONLY, expired evidence remains STALE and malformed/tampered evidence becomes HOLD_INVALID.
+
+The Master Command Center gains a separate Comms complementary-plane view and attention source without changing the exact six-application/six-source denominators. AI Data performs no message send, acknowledgement, operator assignment, incident closure, route change, follow-up task creation or Comms peer write.
