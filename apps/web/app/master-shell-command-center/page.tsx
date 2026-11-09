@@ -75,6 +75,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Module Health
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/role-device-acceptance"
+          >
+            Role / Device Acceptance
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"

@@ -92,6 +92,7 @@ const requiredTables = [
   "master_completion_requirement_revisions",
   "master_completion_denominator_approvals",
   "master_completion_evidence",
+  "master_role_device_acceptance_evidence",
   "master_sysop_members",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -173,6 +174,7 @@ const appendOnlyTables = [
   "master_completion_requirement_revisions",
   "master_completion_denominator_approvals",
   "master_completion_evidence",
+  "master_role_device_acceptance_evidence",
   "master_shell_source_registry_evidence",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -258,7 +260,8 @@ async function main() {
         "0106_autonomous_operations_owner_controls_learning_vi.sql",
         "0107_ql365d_ai_data_platform_source_attachment.sql",
         "0121_master_sysop_navigation_context.sql",
-        "0122_comms_complementary_plane_projection.sql"
+        "0122_comms_complementary_plane_projection.sql",
+        "0123_master_role_device_acceptance_matrix.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -305,6 +308,30 @@ async function main() {
     assert(
       migrationNames.has("0122_comms_complementary_plane_projection.sql"),
       "migration 0122 is not recorded"
+    );
+    assert(
+      migrationNames.has("0123_master_role_device_acceptance_matrix.sql"),
+      "migration 0123 is not recorded"
+    );
+
+    const roleDeviceAcceptanceGrants = await pool.query<{
+      privilege_type: string;
+    }>(
+      `select privilege_type
+       from information_schema.role_table_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name='master_role_device_acceptance_evidence'`
+    );
+    const roleDeviceAcceptanceGrantSet = new Set(
+      roleDeviceAcceptanceGrants.rows.map((row) => row.privilege_type)
+    );
+    assert(
+      roleDeviceAcceptanceGrantSet.has("SELECT") &&
+      roleDeviceAcceptanceGrantSet.has("INSERT") &&
+      !roleDeviceAcceptanceGrantSet.has("UPDATE") &&
+      !roleDeviceAcceptanceGrantSet.has("DELETE"),
+      "Build 345 role/device acceptance ledger must be append-only for runtime"
     );
 
     const commsPlaneGrants = await pool.query<{
