@@ -321,7 +321,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 346 — One-to-One, One-to-Many, Many-to-One & Many-to-Many Integration Certification** — current build"
+    "Build 346 — One-to-One, One-to-Many, Many-to-One & Many-to-Many Integration Certification** — Production"
   )
 );
 assert.ok(
