@@ -36,6 +36,21 @@ create table if not exists app.master_relationship_certification_runs (
   check (expires_at > observed_at),
   check (cardinality(source_ids) between 1 and 6),
   check (cardinality(destination_ids) between 1 and 6),
+  check (array_position(source_ids, null) is null),
+  check (array_position(destination_ids, null) is null),
+  check (
+    source_ids <@ array[
+      'yw','icamp','rosiedazzlers','devilndove',
+      'ai-data-platform','rosevear-ai-hub'
+    ]::text[]
+  ),
+  check (
+    destination_ids <@ array[
+      'yw','icamp','rosiedazzlers','devilndove',
+      'ai-data-platform','rosevear-ai-hub'
+    ]::text[]
+  ),
+  check (not (source_ids && destination_ids)),
   check (
     relationship_pattern <> 'one-to-one'
     or (
