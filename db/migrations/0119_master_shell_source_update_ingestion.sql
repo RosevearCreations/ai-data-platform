@@ -6,7 +6,7 @@ create table if not exists app.master_shell_source_updates (
   ingestion_id uuid primary key,
   actor_user_id text not null references auth."user"(id) on delete restrict,
   workspace_id uuid not null references app.workspaces(id) on delete restrict,
-  webhook_receipt_id uuid not null
+  webhook_receipt_id text not null
     references app.webhook_receipts(receipt_id) on delete restrict,
   source_id text not null
     check (source_id in (
