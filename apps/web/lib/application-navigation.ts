@@ -326,6 +326,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-completion",
+        label: "Master Completion",
+        description: "Review Build 338 stable requirements, approved denominators and independent evidence-axis completion scoring.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/field-mappings",
         label: "Visual Field Mapping Studio",
         description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",
