@@ -1,6 +1,7 @@
 import { withUserDatabase } from "./database";
 import {
   composeCommsComplementaryPlane,
+  hashCommsAuthorizedProjection,
   validateCommsAuthorizedProjection,
   type CommsAuthorizedProjection
 } from "./comms-complementary-plane";
@@ -52,6 +53,12 @@ export async function listCommsComplementaryPlaneForUser(
     const projection = validateCommsAuthorizedProjection(
       row.projection
     ) as CommsAuthorizedProjection;
+    if (
+      hashCommsAuthorizedProjection(row.projection) !==
+        row.projection_sha256
+    ) {
+      throw new Error("comms_projection_hash_mismatch");
+    }
     if (
       projection.sourceRevision !== row.source_revision ||
       projection.observedAt !== row.observed_at.toISOString() ||
