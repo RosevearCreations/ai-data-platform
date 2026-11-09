@@ -11,7 +11,8 @@ create table if not exists app.master_role_device_acceptance_evidence (
       'ai-data-platform','rosevear-ai-hub'
     )),
   module_id text check (
-    module_id is null or module_id ~ '^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}
+    module_id is null or module_id ~ '^[A-Za-z0-9][A-Za-z0-9._:/-]{0,159}$'
+  ),
   role_name text not null
     check (role_name in ('customer','worker','admin')),
   device_class text not null
