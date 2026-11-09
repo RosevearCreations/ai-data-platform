@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rosevear.ai/contracts/rosevear.master-shell.event.v1.schema.json",
+  "title": "Rosevear Master Shell Event V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "schema",
+    "schemaVersion",
+    "sourceId",
+    "sourceRevision",
+    "shellId",
+    "tenantId",
+    "eventType",
+    "occurredAt",
+    "publishedAt",
+    "sourceSequence",
+    "correlationId",
+    "causationId",
+    "idempotencyKey",
+    "sensitivity",
+    "audience",
+    "evidenceURI",
+    "verificationState",
+    "payloadHash",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "pattern": "^evt_[A-Za-z0-9_-]{12,100}$"
+    },
+    "schema": {
+      "const": "rosevear.master-shell.event.v1"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "sourceId": {
+      "enum": [
+        "yw",
+        "icamp",
+        "rosiedazzlers",
+        "devilndove",
+        "ai-data-platform",
+        "rosevear-ai-hub"
+      ]
+    },
+    "sourceRevision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "shellId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "tenantId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 160
+    },
+    "eventType": {
+      "enum": [
+        "source.health.reported",
+        "release.promoted",
+        "module.readiness.changed",
+        "incident.opened",
+        "incident.updated",
+        "consent.changed",
+        "workflow.status.changed",
+        "audit.evidence.recorded"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceSequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "correlationId": {
+      "type": "string",
+      "pattern": "^corr_[A-Za-z0-9_-]{12,100}$"
+    },
+    "causationId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "sensitivity": {
+      "enum": [
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "audience": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "yw",
+          "icamp",
+          "rosiedazzlers",
+          "devilndove",
+          "ai-data-platform",
+          "rosevear-ai-hub",
+          "rosevear-comms-hub",
+          "rosevear-suite-owner",
+          "rosevear-it"
+        ]
+      }
+    },
+    "evidenceURI": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "verificationState": {
+      "enum": [
+        "observed",
+        "reported",
+        "independently-verified",
+        "stale",
+        "disconnected",
+        "held",
+        "unknown"
+      ]
+    },
+    "payloadHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}
