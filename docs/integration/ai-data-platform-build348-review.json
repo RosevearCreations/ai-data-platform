@@ -1,0 +1,47 @@
+{
+  "application": "AI Data Platform",
+  "build": 348,
+  "title": "Six-Application Source Onboarding & Supervised Production Pilot",
+  "sourceCount": 6,
+  "prerequisites": [
+    "original-source-owned-evidence",
+    "source-registry-readiness",
+    "security-certification",
+    "recovery-readiness",
+    "rollback-readiness",
+    "owner-pilot-authorization"
+  ],
+  "pilotOutcomes": [
+    "not-run",
+    "pass",
+    "fail",
+    "blocked"
+  ],
+  "effectiveStates": [
+    "HOLD",
+    "READY_FOR_PILOT",
+    "ONBOARDED",
+    "FAIL",
+    "PILOT_FAILED",
+    "STALE"
+  ],
+  "controls": {
+    "oneSourcePilotAtATime": true,
+    "nonOverlappingPilotWindows": true,
+    "registryPassRequiresTestVerifiedOrConnected": true,
+    "securityPassRequiresBuild347Pass": true,
+    "allPrerequisitesPassBeforePilot": true,
+    "appendOnly": true,
+    "rls": true
+  },
+  "authority": {
+    "onboardingIsConnectionActivation": false,
+    "deploymentGreenImpliesOnboarded": false,
+    "sourceMutationPerformed": false,
+    "peerWritePerformed": false,
+    "externalProbePerformed": false,
+    "automaticHoldRelease": false,
+    "productionAcceptanceInferred": false
+  },
+  "nextQueuedBuild": 349
+}
