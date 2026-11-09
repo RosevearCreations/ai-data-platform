@@ -356,6 +356,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/module-health-intelligence",
+        label: "Module Health Intelligence",
+        description: "Review evidence-backed module health, stale signals, HOLDs, stuck candidates and blockers without mutating source state.",
+        helpTopic: "connectors-overview"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

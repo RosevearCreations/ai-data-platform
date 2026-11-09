@@ -195,6 +195,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/master-completion",
           "/master-application-inventory",
           "/master-shell-command-center",
+          "/module-health-intelligence",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",

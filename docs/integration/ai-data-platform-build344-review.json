@@ -1,0 +1,47 @@
+{
+  "schema": "rosevear.ai-data-platform.build344-review.v1",
+  "application": "AI Data Platform",
+  "build": 344,
+  "title": "Module Health, Stuck-State, Staleness, HOLD & Blocker Intelligence",
+  "evidence": {
+    "registry": "Build 336 source registry",
+    "moduleReadiness": "Build 337 normalized module readiness",
+    "completion": "Build 338 Master Completion",
+    "inventory": "Build 339 application/module inventory"
+  },
+  "healthStates": [
+    "HOLD",
+    "BLOCKED",
+    "STALE",
+    "STUCK_CANDIDATE",
+    "EVIDENCE_BLOCKED",
+    "IN_PROGRESS",
+    "HEALTHY_SIGNAL",
+    "UNMEASURED"
+  ],
+  "stuckRule": {
+    "defaultHours": 24,
+    "requiresFreshInProgress": true
+  },
+  "inference": {
+    "stuckCandidateIsSourceTruth": false,
+    "missingEvidenceMeansHealthy": false,
+    "healthySignalMeansAcceptance": false
+  },
+  "authority": {
+    "readOnly": true,
+    "sourceMutationAllowed": false,
+    "peerWriteAllowed": false,
+    "externalProbeAllowed": false,
+    "automaticRecoveryAllowed": false,
+    "holdReleaseAllowed": false
+  },
+  "surfaces": {
+    "page": "/module-health-intelligence",
+    "api": "/api/module-health-intelligence",
+    "apiMethods": [
+      "GET"
+    ]
+  },
+  "nextQueuedBuild": 345
+}
