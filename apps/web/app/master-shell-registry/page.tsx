@@ -40,6 +40,9 @@ export default async function MasterShellRegistryPage() {
           <a className="secondaryButton" href="/api/master-shell-registry">
             Registry JSON
           </a>
+          <Link className="secondaryButton" href="/master-shell-ingestion">
+            Source Ingestion
+          </Link>
         </div>
       </section>
 
