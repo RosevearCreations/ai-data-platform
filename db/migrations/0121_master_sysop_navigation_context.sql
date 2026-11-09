@@ -154,7 +154,7 @@ language sql
 stable
 security definer
 set search_path=pg_catalog,app
-as $
+as $sysop_nav$
   select distinct on (e.source_id)
     e.source_id,
     e.declared_status,
@@ -164,7 +164,7 @@ as $
   from app.master_shell_source_registry_evidence e
   where app.current_master_sysop_role() in ('owner','operator')
   order by e.source_id,e.record_version desc
-$;
+$sysop_nav$;
 
 revoke all on function app.master_sysop_source_navigation_evidence() from public;
 grant execute on function app.master_sysop_source_navigation_evidence()
