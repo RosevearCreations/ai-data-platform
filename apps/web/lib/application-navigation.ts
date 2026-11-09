@@ -332,6 +332,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-application-inventory",
+        label: "Master Application Inventory",
+        description: "Review Build 339 six-application modules, capability/version provenance, ownership evidence and readiness read models.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/field-mappings",
         label: "Visual Field Mapping Studio",
         description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",

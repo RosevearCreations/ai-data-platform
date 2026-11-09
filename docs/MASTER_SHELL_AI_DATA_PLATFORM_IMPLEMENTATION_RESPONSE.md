@@ -181,3 +181,16 @@ Completion denominators are explicit owner/admin approvals that pin exact requir
 Completion percentages remain unavailable while required evidence is UNKNOWN or STALE. Evidence coverage is shown separately. Every calculated percentage retains numerator, denominator, scope date, branch/commit, evidence references, reviewers and confidence.
 
 Build 338 does not invent the six applications' full requirement inventories or approved denominators. Those remain incomplete until real requirements are registered and explicitly approved. Build 339 can compose application/module inventory and readiness read models on top of this evidence foundation.
+
+
+## Build 339 contribution — application/module inventory read models
+
+Build 339 composes the exact six Master Shell source applications into a read-only inventory without creating a duplicate inventory source of truth.
+
+Application identity and current source-state freshness come from Build 336. Latest signed module-readiness and release evidence come from Build 337. Module IDs and approved completion scopes from Build 338 are composed without treating requirement presence as readiness. Existing Build 328 installed AI Data module host evidence is displayed separately from source-owned module versions, and Build 281 metadata/read-only discovery capabilities remain discovery-only.
+
+The read model deliberately keeps application source state, source-reported module readiness and Master Completion evidence separate. A source-reported ACCEPTED state does not become Master Completion acceptance; catalogue/discovery presence does not become authorization; installed AI Data module presence does not prove a host application's source-module acceptance; and deployment GREEN remains release evidence rather than functional acceptance.
+
+Named product/module owners and source-module versions remain UNMEASURED when no authoritative evidence exists.
+
+Build 339 adds no mutable inventory table and performs no source mutation or outbound operation. Build 340 can now build the unified Master Shell command centre on top of these provenance-preserving application/module read models.

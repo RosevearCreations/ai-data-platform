@@ -393,7 +393,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 338 — Master Completion Requirements Registry & Evidence-Axis Scoring** — current build"
+    "Build 338 — Master Completion Requirements Registry & Evidence-Axis Scoring** — Production"
   )
 );
 assert.ok(

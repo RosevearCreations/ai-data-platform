@@ -1,0 +1,61 @@
+{
+  "schema": "rosevear.ai-data-platform.build339-review.v1",
+  "application": "AI Data Platform",
+  "build": 339,
+  "name": "Application & Module Inventory, Capability and Readiness Read Models",
+  "applications": {
+    "exactSixSources": true,
+    "commsHubIsComplementaryControlPlane": true,
+    "sourceRegistryEvidenceComposed": true
+  },
+  "modules": {
+    "inventoryOrigins": [
+      "source-readiness-event",
+      "master-completion-requirement",
+      "master-completion-scope",
+      "installed-ai-data-module"
+    ],
+    "cataloguePresenceImpliesAcceptance": false,
+    "sourceReportedAcceptedImpliesMasterAcceptance": false,
+    "sourceModuleVersionInferred": false
+  },
+  "capabilities": {
+    "build281DiscoveryReused": true,
+    "discoveryImpliesAuthorization": false,
+    "discoveryImpliesAcceptance": false,
+    "aiDataOwnManifestIsSourceOwned": true
+  },
+  "versions": {
+    "sourceRegistryRevisionReused": true,
+    "sourceCapabilityVersionReused": true,
+    "releaseEvidenceReused": true,
+    "installedAiDataModuleVersionSeparated": true,
+    "greenReleaseImpliesFunctionalAcceptance": false
+  },
+  "ownership": {
+    "sourceRegistryRolesReused": true,
+    "productOwnerInferred": false,
+    "moduleOwnerInferred": false
+  },
+  "readiness": {
+    "sourceRegistryStateSeparate": true,
+    "signedModuleReadinessSeparate": true,
+    "masterCompletionSeparate": true,
+    "freshnessRecalculatedAtReadTime": true
+  },
+  "persistence": {
+    "newInventoryTable": false,
+    "readOnlyComposition": true
+  },
+  "surfaces": {
+    "operator": "/master-application-inventory",
+    "api": "/api/master-application-inventory"
+  },
+  "safety": {
+    "sourceMutationPerformed": false,
+    "outboundDeliveryPerformed": false,
+    "capabilityGrantPerformed": false,
+    "connectionActivationPerformed": false
+  },
+  "nextQueuedBuild": 340
+}
