@@ -32,6 +32,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/master-sysop",
+        label: "Master Sysop Shell",
+        description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
+        helpTopic: "shell-overview"
+      },
+      {
         href: "/workflows",
         label: "Workflow Directory",
         description: "Task-oriented directory for every current operator workflow.",
