@@ -461,7 +461,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 340 — Master Shell Command Center V1: Applications, IT, Management & Statistics** — current build"
+    "Build 340 — Master Shell Command Center V1: Applications, IT, Management & Statistics** — Production"
   )
 );
 assert.ok(

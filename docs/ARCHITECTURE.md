@@ -761,3 +761,16 @@ Attention items are deterministic derived priorities and contain links back to t
 Suite-wide completion is deliberately fail-closed: no portfolio percentage exists unless all six applications have approved and calculable source-wide Master Completion scopes.
 
 Build 340 adds no migration or command-centre persistence table.
+
+
+## Build 341 — Outer Sysop identity, context handoff and tenant isolation
+
+Build 341 adds a dedicated outer-shell authorization layer above the existing application/tenant workspace model.
+
+`app.master_sysop_members` defines only Master Sysop `owner` and `operator` authority. It is intentionally distinct from `app.workspace_members`, so tenant administration does not imply suite administration.
+
+The handoff model is non-SSO and non-authorizing. AI Data Platform may prepare a short-lived navigation context containing destination identity and an optional already-authorized local workspace hint. No authenticated-user identifier or session credential is transferred. Every external destination must perform its own authentication and authorization.
+
+Owned-business tenant hints are bound to existing Build 282 mappings plus current-user RLS membership. Platform shells retain child-tenant selection at the destination. Missing mappings or memberships fail closed.
+
+`app.master_sysop_handoff_audit` is append-only runtime evidence. Membership is the only controlled mutable Build 341 authority state and final-owner protection is enforced in PostgreSQL.
