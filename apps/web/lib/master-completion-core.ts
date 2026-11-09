@@ -574,16 +574,20 @@ export function scoreMasterCompletionScope(input: {
     (item) => item.state === "SATISFIED"
   ).length;
   const unknownRequirements = scored.filter(
-    (item) => item.state === "UNKNOWN"
+    (item) =>
+      item.axes.some((axis) => axis.state === "UNKNOWN")
   ).length;
   const staleRequirements = scored.filter(
-    (item) => item.state === "STALE"
+    (item) =>
+      item.axes.some((axis) => axis.state === "STALE")
   ).length;
   const failedRequirements = scored.filter(
-    (item) => item.state === "FAILED"
+    (item) =>
+      item.axes.some((axis) => axis.state === "FAILED")
   ).length;
   const partialRequirements = scored.filter(
-    (item) => item.state === "PARTIAL"
+    (item) =>
+      item.axes.some((axis) => axis.state === "PARTIAL")
   ).length;
 
   const totalWeight = scored.reduce(
