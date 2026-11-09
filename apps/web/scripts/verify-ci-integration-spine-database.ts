@@ -305,7 +305,14 @@ async function main() {
       migrationNames.has("0121_master_sysop_navigation_context.sql"),
       "migration 0121 is not recorded"
     );
-    assert(\n      migrationNames.has("0122_comms_complementary_plane_projection.sql"),\n      "migration 0122 is not recorded"\n    );\n    assert(\n      migrationNames.has("0123_master_role_device_acceptance_matrix.sql"),\n      "migration 0123 is not recorded"\n    );
+    assert(
+      migrationNames.has("0122_comms_complementary_plane_projection.sql"),
+      "migration 0122 is not recorded"
+    );
+    assert(
+      migrationNames.has("0123_master_role_device_acceptance_matrix.sql"),
+      "migration 0123 is not recorded"
+    );
 
     const roleDeviceAcceptanceGrants = await pool.query<{
       privilege_type: string;
