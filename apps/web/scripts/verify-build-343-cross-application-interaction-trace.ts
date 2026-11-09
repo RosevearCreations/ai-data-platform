@@ -149,7 +149,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 343 — Cross-Application Interaction Trace, Dependency Graph & Failure Propagation** — current build"
+    "Build 343 — Cross-Application Interaction Trace, Dependency Graph & Failure Propagation** — Production"
   )
 );
 assert.ok(
