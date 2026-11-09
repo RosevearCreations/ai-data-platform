@@ -100,6 +100,47 @@ create trigger master_sysop_member_update_guard
 before update on app.master_sysop_members
 for each row execute function app.enforce_master_sysop_member_update();
 
+create or replace function app.current_master_sysop_role()
+returns text
+language sql
+stable
+security definer
+set search_path=pg_catalog,app
+as $$
+  select role
+  from app.master_sysop_members
+  where user_id=nullif(current_setting('app.user_id',true),'')
+    and revoked_at is null
+  limit 1
+$$;
+
+create or replace function app.master_sysop_claim_eligible()
+returns boolean
+language sql
+stable
+security definer
+set search_path=pg_catalog,app
+as $$
+  select
+    not exists (
+      select 1 from app.master_sysop_members
+      where revoked_at is null
+    )
+    and exists (
+      select 1
+      from app.workspace_members wm
+      join app.workspaces w on w.id=wm.workspace_id
+      where wm.user_id=nullif(current_setting('app.user_id',true),'')
+        and wm.role='owner'
+        and w.slug='personal'
+    )
+$$;
+
+revoke all on function app.current_master_sysop_role() from public;
+revoke all on function app.master_sysop_claim_eligible() from public;
+grant execute on function app.current_master_sysop_role() to ai_data_runtime;
+grant execute on function app.master_sysop_claim_eligible() to ai_data_runtime;
+
 alter table app.master_sysop_members enable row level security;
 alter table app.master_sysop_handoff_audit enable row level security;
 
@@ -111,14 +152,7 @@ for select
 to ai_data_runtime
 using (
   user_id=nullif(current_setting('app.user_id',true),'')
-  or exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.role='owner'
-      and current_member.revoked_at is null
-  )
+  or app.current_master_sysop_role()='owner'
 );
 
 drop policy if exists master_sysop_members_insert
@@ -128,30 +162,12 @@ on app.master_sysop_members
 for insert
 to ai_data_runtime
 with check (
-  exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.role='owner'
-      and current_member.revoked_at is null
-  )
+  app.current_master_sysop_role()='owner'
   or (
-    user_id=nullif(current_setting('app.user_id',true),'')
+    app.master_sysop_claim_eligible()
+    and user_id=nullif(current_setting('app.user_id',true),'')
     and granted_by=user_id
-    and not exists (
-      select 1
-      from app.master_sysop_members active_member
-      where active_member.revoked_at is null
-    )
-    and exists (
-      select 1
-      from app.workspace_members wm
-      join app.workspaces w on w.id=wm.workspace_id
-      where wm.user_id=nullif(current_setting('app.user_id',true),'')
-        and wm.role='owner'
-        and w.slug='personal'
-    )
+    and role='owner'
   )
 );
 
@@ -161,26 +177,8 @@ create policy master_sysop_members_update
 on app.master_sysop_members
 for update
 to ai_data_runtime
-using (
-  exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.role='owner'
-      and current_member.revoked_at is null
-  )
-)
-with check (
-  exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.role='owner'
-      and current_member.revoked_at is null
-  )
-);
+using (app.current_master_sysop_role()='owner')
+with check (app.current_master_sysop_role()='owner');
 
 drop policy if exists master_sysop_handoff_select
   on app.master_sysop_handoff_audit;
@@ -190,14 +188,7 @@ for select
 to ai_data_runtime
 using (
   actor_user_id=nullif(current_setting('app.user_id',true),'')
-  or exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.role='owner'
-      and current_member.revoked_at is null
-  )
+  or app.current_master_sysop_role()='owner'
 );
 
 drop policy if exists master_sysop_handoff_insert
@@ -208,13 +199,7 @@ for insert
 to ai_data_runtime
 with check (
   actor_user_id=nullif(current_setting('app.user_id',true),'')
-  and exists (
-    select 1
-    from app.master_sysop_members current_member
-    where current_member.user_id=
-      nullif(current_setting('app.user_id',true),'')
-      and current_member.revoked_at is null
-  )
+  and app.current_master_sysop_role() in ('owner','operator')
 );
 
 grant select,insert on app.master_sysop_members to ai_data_runtime;
