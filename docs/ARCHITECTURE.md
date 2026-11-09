@@ -789,3 +789,10 @@ The current source software baseline is Comms QL-392. Because QL-392's present d
 The read model validates exact shape, source IDs, freshness, priorities, six-source impact membership and canonical SHA-256 integrity. Missing evidence remains PREVIEW_ONLY; expired evidence remains STALE; invalid/tampered evidence is held.
 
 Incident correlation IDs remain opaque and do not create cross-tenant identity. Follow-up output is suggestion-only and cannot create operator tasks or communications actions.
+
+
+## Build 343 — Cross-application interaction trace architecture
+
+Build 343 composes the existing Build 337 signed, normalized source-ingestion evidence into a read-only interaction trace. Correlation groups preserve source provenance and causation identifiers without creating a second event authority. Cross-source dependency edges are deliberately `CORRELATED_FLOW / UNDIRECTED`; event order is not converted into a write direction, ownership relationship or authorization path.
+
+Failure propagation is review intelligence only. Stale, out-of-order or non-independently-verified events can nominate an earliest adverse source as a candidate upstream cause, but the model labels that result inference-only and never mutates source truth, triggers recovery, changes routing or performs a peer write. Missing trace evidence remains unmeasured.

@@ -233,3 +233,10 @@ A separate Build 342 compatibility contract accepts only independently verified,
 Migration 0122 adds an RLS-protected projection evidence table. The application runtime has SELECT only; it cannot create, update or delete independently verified Comms evidence. Canonical SHA-256 integrity is checked before a stored projection enters the read model. Missing projection evidence remains PREVIEW_ONLY, expired evidence remains STALE and malformed/tampered evidence becomes HOLD_INVALID.
 
 The Master Command Center gains a separate Comms complementary-plane view and attention source without changing the exact six-application/six-source denominators. AI Data performs no message send, acknowledgement, operator assignment, incident closure, route change, follow-up task creation or Comms peer write.
+
+
+## Build 343 contribution — Stage E interaction trace and dependency intelligence
+
+Build 343 adds the Master Shell's cross-application trace view over the existing signed Build 337 source-update evidence. It groups events by correlation ID, retains causation/provenance, shows undirected cross-source dependency edges and flags adverse evidence for operator review.
+
+Likely upstream causes are explicitly inference-only. AI Data Platform does not turn correlation into source truth, infer tenant/customer identity, mutate any source, perform a peer write or trigger recovery. Missing trace evidence remains unmeasured.

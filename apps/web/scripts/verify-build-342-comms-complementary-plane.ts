@@ -397,7 +397,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 342 — Comms Hub Complementary Plane Integration & Incident/Follow-Up Read Models** — current build"
+    "Build 342 — Comms Hub Complementary Plane Integration & Incident/Follow-Up Read Models** — Production"
   )
 );
 assert.ok(
