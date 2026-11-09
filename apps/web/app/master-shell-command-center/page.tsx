@@ -63,6 +63,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Comms Plane
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/cross-application-interaction-trace"
+          >
+            Interaction Trace
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
