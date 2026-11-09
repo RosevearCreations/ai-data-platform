@@ -187,6 +187,22 @@ assert.throws(
     }),
   /master_shell_registry_hold_cannot_be_authorized/
 );
+assert.throws(
+  () =>
+    validateMasterShellSourceEvidence({
+      ...base,
+      declaredStatus: "UNKNOWN" as never
+    }),
+  /master_shell_registry_status_invalid/
+);
+assert.throws(
+  () =>
+    validateMasterShellSourceEvidence({
+      ...base,
+      evidenceAuthority: "invented-authority" as never
+    }),
+  /master_shell_registry_evidence_authority_invalid/
+);
 
 const staleView = buildMasterShellSourceRegistryView(
   { "ai-data-platform": connected },
@@ -206,7 +222,9 @@ for (const token of [
   "master_shell_registry_suite_admin_select",
   "master_shell_registry_suite_admin_insert",
   "grant select, insert",
-  "revoke update, delete"
+  "revoke update, delete",
+  "evidence_authority='independent-source-verification'",
+  "independent_connection_verified=true"
 ]) {
   assert.ok(migration.includes(token), "migration token " + token);
 }
@@ -234,6 +252,7 @@ for (const token of [
   "MAX_BODY_BYTES",
   "api.master-shell-registry.get",
   "api.master-shell-registry.post",
+  "master_shell_registry_environment_invalid",
   "testVerifiedOrConnectedCreated: false",
   "Cache-Control"
 ]) {
