@@ -155,9 +155,9 @@ for select to ai_data_runtime
 using (
   exists (
     select 1
-    from app.master_relationship_certification_runs r
-    where r.run_id=master_relationship_certification_assertions.run_id
-      and r.actor_user_id=nullif(current_setting('app.user_id',true),'')
+    from app.workspace_members wm
+    where wm.user_id=nullif(current_setting('app.user_id',true),'')
+      and wm.role in ('owner','admin')
   )
 );
 
