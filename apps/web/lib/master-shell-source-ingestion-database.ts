@@ -445,9 +445,13 @@ export async function ingestMasterShellWebhookReceipt(
       transport: {
         environment: row.environment,
         keyId: row.key_id,
-        secretFingerprint: transport.secretFingerprint
+        secretFingerprint: transport.secretFingerprint,
+        endpointCurrentActive:
+          row.enabled === true && row.revoked_at === null
       },
       registryEligible:
+        row.enabled === true &&
+        row.revoked_at === null &&
         sequenceState !== "out-of-order" &&
         canAdvanceRegistryFromNormalizedUpdate(update)
     };
@@ -527,6 +531,7 @@ export async function ingestMasterShellWebhookReceipt(
       outboundDeliveryPerformed: false,
       legacyReceiptUpgradedAutomatically: false,
       acceptedReceiptReverified: true,
+      currentActiveTransportRequiredForRegistryProjection: true,
       rawSecretPersisted: false,
       outOfOrderAdvancesRegistry: false,
       staleEvidenceAdvancesRegistry: false,
