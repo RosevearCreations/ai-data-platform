@@ -73,7 +73,9 @@ export function composeMasterShellCommandCenter(input: {
   integrationHealth: Awaited<
     ReturnType<typeof buildIntegrationHealthCommandCenter>
   >;
-  commsPlane?: CommsComplementaryPlaneModel;
+  commsPlane?:
+    | CommsComplementaryPlaneModel
+    | Awaited<ReturnType<typeof listCommsComplementaryPlaneForUser>>;
   now?: Date;
 }) {
   const inventory = input.inventory;
