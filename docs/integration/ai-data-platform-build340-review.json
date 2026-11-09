@@ -1,0 +1,63 @@
+{
+  "schema": "rosevear.ai-data-platform.build340-review.v1",
+  "application": "AI Data Platform",
+  "build": 340,
+  "name": "Master Shell Command Center V1: Applications, IT, Management & Statistics",
+  "inputs": {
+    "masterApplicationInventoryBuild339": true,
+    "integrationHealthBuild300": true,
+    "newOperationalSourceOfTruth": false
+  },
+  "views": {
+    "applications": true,
+    "itSecurity": true,
+    "management": true,
+    "statistics": true,
+    "sharedEvidence": true
+  },
+  "attention": {
+    "applicationState": true,
+    "completionEvidence": true,
+    "integrationHealth": true,
+    "ordering": [
+      "critical",
+      "held",
+      "attention",
+      "unmeasured"
+    ],
+    "mutationActions": false
+  },
+  "management": {
+    "sourceWideScopeCoverage": true,
+    "calculableScopeCoverage": true,
+    "portfolioPercentageRequiresAllSixCalculable": true,
+    "partialPortfolioAverageAllowed": false
+  },
+  "security": {
+    "credentialValuesRead": false,
+    "externalHealthProbePerformed": false,
+    "remoteAvailabilityInferred": false,
+    "automaticRecoveryTriggered": false,
+    "automaticConnectionActivation": false
+  },
+  "persistence": {
+    "newDatabaseMigration": false,
+    "newCommandCenterTable": false,
+    "readOnlyComposition": true
+  },
+  "surfaces": {
+    "operator": "/master-shell-command-center",
+    "api": "/api/master-shell-command-center",
+    "apiMethods": [
+      "GET"
+    ]
+  },
+  "safety": {
+    "sourceMutationPerformed": false,
+    "denominatorApprovalPerformed": false,
+    "evidenceMutationPerformed": false,
+    "peerWritePerformed": false,
+    "greenReleaseEqualsAcceptance": false
+  },
+  "nextQueuedBuild": 341
+}

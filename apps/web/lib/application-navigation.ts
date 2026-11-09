@@ -338,6 +338,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-shell-command-center",
+        label: "Master Shell Command Center",
+        description: "Review Build 340 unified Applications, I.T./Security, Management and Statistics evidence without inferred acceptance.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/field-mappings",
         label: "Visual Field Mapping Studio",
         description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",

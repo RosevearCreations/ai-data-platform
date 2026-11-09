@@ -194,3 +194,16 @@ The read model deliberately keeps application source state, source-reported modu
 Named product/module owners and source-module versions remain UNMEASURED when no authoritative evidence exists.
 
 Build 339 adds no mutable inventory table and performs no source mutation or outbound operation. Build 340 can now build the unified Master Shell command centre on top of these provenance-preserving application/module read models.
+
+
+## Build 340 contribution — Master Shell Command Center V1
+
+Build 340 composes the Build 339 six-application inventory and the existing Build 300 Integration Health Command Center into one read-only Applications, I.T./Security, Management and Statistics surface.
+
+Application cards preserve exact source state/freshness, release evidence, module readiness and Master Completion evidence. The I.T./Security view reuses measured database/connector/credential-reference/webhook/queue evidence and does not issue a new external probe. Management shows exact application readiness and completion-scope coverage. Statistics are derived only from the same current read models.
+
+The command centre creates an evidence-backed attention queue across application state, completion evidence and I.T. signals, with each item linking back to its authoritative underlying screen.
+
+Build 340 does not average partial portfolio evidence. A suite-wide completion percentage remains unavailable until all six applications have approved, calculable source-wide Master Completion scopes; only then are exact requirement numerators/denominators aggregated.
+
+No new persistence table, source mutation, completion approval, capability grant, connection activation, credential read, automatic recovery or peer write is introduced.
