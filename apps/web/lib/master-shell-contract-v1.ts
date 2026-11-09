@@ -69,6 +69,7 @@ export type MasterShellSensitivity =
 
 export type MasterShellSourceDefinition = {
   sourceId: MasterShellSourceId;
+  shellId: string;
   repository: string;
   shellBoundary: string;
   tenancyModel:
@@ -83,6 +84,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
   readonly MasterShellSourceDefinition[] = Object.freeze([
     {
       sourceId: "yw",
+      shellId: "yard-workers",
       repository: "RosevearCreations/yw",
       shellBoundary: "Yard Workers platform shell",
       tenancyModel: "platform-shell-with-child-tenants",
@@ -90,6 +92,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
     },
     {
       sourceId: "icamp",
+      shellId: "icamp",
       repository: "RosevearCreations/iCamp",
       shellBoundary: "iCamp platform shell",
       tenancyModel: "platform-shell-with-child-tenants",
@@ -97,6 +100,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
     },
     {
       sourceId: "rosiedazzlers",
+      shellId: "rosiedazzlers",
       repository: "RosevearCreations/rosiedazzlers",
       shellBoundary: "Rosie Dazzlers owned-business shell",
       tenancyModel: "owned-business-shell",
@@ -104,6 +108,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
     },
     {
       sourceId: "devilndove",
+      shellId: "devilndove",
       repository: "RosevearCreations/devilndove-site",
       shellBoundary: "Devil n Dove owned-business shell",
       tenancyModel: "owned-business-shell",
@@ -111,6 +116,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
     },
     {
       sourceId: "ai-data-platform",
+      shellId: "ai-data-platform",
       repository: "RosevearCreations/ai-data-platform",
       shellBoundary: "AI Data Platform support broker and module boundary",
       tenancyModel: "support-broker-no-customer-tenant",
@@ -118,6 +124,7 @@ export const MASTER_SHELL_SOURCE_DEFINITIONS:
     },
     {
       sourceId: "rosevear-ai-hub",
+      shellId: "rosevear-ai-hub",
       repository: "RosevearCreations/rosevear-ai-hub",
       shellBoundary: "Rosevear AI Hub original local Windows support server",
       tenancyModel: "local-support-server",
@@ -303,6 +310,12 @@ export function parseMasterShellEventEnvelope(
     !SAFE_ID.test(input.shellId)
   ) {
     throw new MasterShellContractError("master_shell_shell_id_invalid");
+  }
+  const sourceDefinition = MASTER_SHELL_SOURCE_DEFINITIONS.find(
+    (item) => item.sourceId === input.sourceId
+  );
+  if (!sourceDefinition || input.shellId !== sourceDefinition.shellId) {
+    throw new MasterShellContractError("master_shell_shell_identity_mismatch");
   }
   if (
     input.tenantId !== null &&
