@@ -191,6 +191,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/data-contracts",
           "/master-shell-contracts",
           "/master-shell-registry",
+          "/master-shell-ingestion",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
@@ -300,6 +301,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/master-shell-registry",
         label: "Master Shell Source Registry",
         description: "Review exact source state, freshness, expiry and evidence-backed Master Shell transitions."
+      },
+      {
+        href: "/master-shell-ingestion",
+        label: "Master Shell Source Ingestion",
+        description: "Normalize signed source updates into read-only provenance evidence and review registry projection eligibility."
       },
       {
         href: "/field-mappings",

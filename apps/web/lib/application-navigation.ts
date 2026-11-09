@@ -320,6 +320,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-shell-ingestion",
+        label: "Master Shell Source Ingestion",
+        description: "Review Build 337 signed source-update normalization, provenance, replay suppression, freshness and registry projection eligibility.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/field-mappings",
         label: "Visual Field Mapping Studio",
         description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",

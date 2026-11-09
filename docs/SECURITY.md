@@ -839,3 +839,25 @@ Build 336 treats source state as evidence, not a UI label.
 - UPDATE and DELETE are revoked from the runtime role;
 - legacy QL or integration connection evidence is not silently upgraded into Master Shell state;
 - registry recording does not activate a connection, release a route, authorize a peer write or modify source trust.
+
+
+## Build 337 read-only source-ingestion security
+
+Build 337 reuses and re-checks existing transport trust rather than weakening it.
+
+- only accepted signed webhook receipts may enter the Master Shell ingestion path;
+- stored receipt signatures are re-verified against the configured 32-byte HMAC secret;
+- the raw HMAC secret is never persisted and is zeroed after verification;
+- a SHA-256 fingerprint of verified key material may be retained as non-secret provenance;
+- the receipt must bind endpoint, source application, event ID/type, body hash and key ID exactly;
+- Rosevear Comms Hub is rejected as a child source;
+- transport source identity must map exactly to the nested Master Shell source ID;
+- transport tenant and Master Shell tenant must match exactly;
+- `ai-data-platform` must be an explicit event audience;
+- only source-health, release, module-readiness and audit-evidence families are normalized;
+- normalized payloads use bounded event-specific allowlists instead of arbitrary source data;
+- duplicate receipt/event/source-sequence/idempotency identities are suppressed;
+- stale or out-of-order evidence cannot advance current source state;
+- a disabled or revoked transport may provide historical provenance but cannot advance current registry state;
+- registry projection requires explicit owner/admin acceptance and fresh independently verified source-health evidence;
+- no outbound request, source mutation, event-bus route release, trust activation or peer write is performed.

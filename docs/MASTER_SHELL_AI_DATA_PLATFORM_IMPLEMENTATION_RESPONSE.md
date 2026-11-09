@@ -153,3 +153,16 @@ The registry always exposes the exact six source-shell identities from Build 335
 The positive state path is UNKNOWN → DISCOVERED → CONFIGURED → AUTHORIZATION_HELD → TEST_VERIFIED → CONNECTED. TEST_VERIFIED and CONNECTED require independent source verification and cannot be created by the Build 336 operator API.
 
 Build 336 does not rewrite legacy QL/integration connection evidence. Build 337 remains responsible for read-only source update ingestion and provenance normalization.
+
+
+## Build 337 contribution — read-only source update ingestion
+
+Build 337 advances the Master Shell from registry readiness into controlled source-update ingestion.
+
+It reuses the existing signed webhook gateway as the transport trust boundary, re-verifies accepted receipt signatures, maps legacy transport identities to the exact Build 335 source IDs and normalizes only supported operational event families into an append-only Master Shell ledger.
+
+Source, tenant, audience, correlation, idempotency, source sequence, expiry and evidence provenance are all preserved. Duplicate receipt/event/idempotency/sequence identities are suppressed. Stale and out-of-order evidence is retained for audit but cannot advance the Build 336 source registry.
+
+Registry projection is separate from normalization and requires explicit owner/admin acceptance. A qualifying source-health event must be fresh, independently verified and carried through a currently active authenticated transport before the next legal Build 336 transition can be attempted.
+
+Build 337 performs no source mutation, outbound command, route release or consequential peer write.
