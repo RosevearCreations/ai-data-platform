@@ -199,6 +199,8 @@ export function validateSourceOnboardingRun(input: SourceOnboardingRun) {
     }
   } else {
     if (
+      input.pilotStartedAt === null ||
+      input.pilotEndedAt === null ||
       !validIso(input.pilotStartedAt) ||
       !validIso(input.pilotEndedAt) ||
       Date.parse(input.pilotEndedAt) <= Date.parse(input.pilotStartedAt) ||
