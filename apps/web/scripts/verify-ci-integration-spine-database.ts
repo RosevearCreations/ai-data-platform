@@ -92,6 +92,8 @@ const requiredTables = [
   "master_completion_requirement_revisions",
   "master_completion_denominator_approvals",
   "master_completion_evidence",
+  "master_sysop_members",
+  "master_sysop_handoff_audit",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
   "rosevear_comms_operation_claims"
@@ -171,6 +173,7 @@ const appendOnlyTables = [
   "master_completion_denominator_approvals",
   "master_completion_evidence",
   "master_shell_source_registry_evidence",
+  "master_sysop_handoff_audit",
   "service_performance_events",
   "rosevear_comms_operation_claims"
 ];
@@ -251,7 +254,8 @@ async function main() {
         "0104_cross_app_workflow_automation.sql",
         "0105_six_app_integration_certification.sql",
         "0106_autonomous_operations_owner_controls_learning_vi.sql",
-        "0107_ql365d_ai_data_platform_source_attachment.sql"
+        "0107_ql365d_ai_data_platform_source_attachment.sql",
+        "0121_master_sysop_navigation_context.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -290,6 +294,39 @@ async function main() {
     assert(
       migrationNames.has("0107_ql365d_ai_data_platform_source_attachment.sql"),
       "migration 0107 is not recorded"
+    );
+    assert(
+      migrationNames.has("0121_master_sysop_navigation_context.sql"),
+      "migration 0121 is not recorded"
+    );
+
+    const sysopGrants = await pool.query<{
+      table_name: string;
+      privilege_type: string;
+    }>(
+      `select table_name,privilege_type
+       from information_schema.role_table_grants
+       where grantee='ai_data_runtime'
+         and table_schema='app'
+         and table_name = any($1::text[])`,
+      [["master_sysop_members","master_sysop_handoff_audit"]]
+    );
+    const sysopGrantSet = new Set(
+      sysopGrants.rows.map((row) => row.table_name + ":" + row.privilege_type)
+    );
+    assert(
+      sysopGrantSet.has("master_sysop_members:SELECT") &&
+      sysopGrantSet.has("master_sysop_members:INSERT") &&
+      sysopGrantSet.has("master_sysop_members:UPDATE") &&
+      !sysopGrantSet.has("master_sysop_members:DELETE"),
+      "Master Sysop membership grants are not fail-closed"
+    );
+    assert(
+      sysopGrantSet.has("master_sysop_handoff_audit:SELECT") &&
+      sysopGrantSet.has("master_sysop_handoff_audit:INSERT") &&
+      !sysopGrantSet.has("master_sysop_handoff_audit:UPDATE") &&
+      !sysopGrantSet.has("master_sysop_handoff_audit:DELETE"),
+      "Master Sysop handoff audit must remain append-only"
     );
 
     const commsGrants = await pool.query<{
