@@ -746,3 +746,18 @@ Application state, source-reported module readiness and Master Completion eviden
 Build 328 installed versions are represented only as versions of the AI Data Platform module observed on a mapped host. They are not reinterpreted as versions of the host application's own modules.
 
 No new persistence table is introduced because Build 339 is a derived read model. Existing RLS-protected ledgers remain authoritative.
+
+
+## Build 340 — Master Shell Command Center V1
+
+Build 340 is the first unified Rosevear Suite Master Shell operational read surface.
+
+It composes Build 339 application/module inventory with Build 300 integration-health evidence and derives four views: Applications, I.T./Security, Management and Statistics.
+
+The command centre is not a new authority. Source state remains Build 336 evidence, module readiness remains Build 337 evidence, completion remains Build 338 evidence and application/module inventory remains Build 339 composition. Build 300 remains authoritative for its measured integration-health signals.
+
+Attention items are deterministic derived priorities and contain links back to the underlying authoritative workbenches.
+
+Suite-wide completion is deliberately fail-closed: no portfolio percentage exists unless all six applications have approved and calculable source-wide Master Completion scopes.
+
+Build 340 adds no migration or command-centre persistence table.
