@@ -2,7 +2,10 @@ import {
   MASTER_SHELL_SOURCE_DEFINITIONS,
   type MasterShellSourceId
 } from "./master-shell-contract-v1";
-import { buildAppConnectionRegistry } from "./app-connection-registry";
+import {
+  buildAppConnectionRegistry,
+  type PeerApplicationId
+} from "./app-connection-registry";
 import {
   AI_DATA_MODULE_ID,
   AI_DATA_MODULE_VERSION,
@@ -147,7 +150,9 @@ const DISPLAY_NAMES: Record<MasterShellSourceId, string> = {
   "rosevear-ai-hub": "Rosevear AI Hub"
 };
 
-const SOURCE_TO_PEER_ID: Partial<Record<MasterShellSourceId, string>> = {
+const SOURCE_TO_PEER_ID: Partial<
+  Record<MasterShellSourceId, PeerApplicationId>
+> = {
   yw: "yard-workers",
   icamp: "icamp",
   rosiedazzlers: "rosiedazzlers",
@@ -278,7 +283,7 @@ export function buildMasterApplicationInventoryReadModel(
     const requirements = requirementsBySource.get(definition.sourceId) ?? [];
     const installed = installedBySource.get(definition.sourceId) ?? [];
     const peerId = SOURCE_TO_PEER_ID[definition.sourceId] ?? null;
-    const peer = peerId ? peerById.get(peerId as never) ?? null : null;
+    const peer = peerId ? peerById.get(peerId) ?? null : null;
 
     const moduleIds = new Set<string>();
     const origins = new Map<string, Set<InventoryOrigin>>();
