@@ -258,3 +258,11 @@ This acceptance evidence remains separate from implementation, automated tests, 
 Build 346 adds explicit one-to-one, one-to-many, many-to-one and many-to-many certification across contract, identity, replay, expiry, audience and tenant-isolation evidence. The evidence is stored as immutable versioned runs plus six append-only assertions.
 
 This layer does not replace Build 304 operational certification and does not infer certification from a GREEN deployment. It records evidence only and performs no peer write, source mutation, replay execution, external probe or production acceptance.
+
+## Build 347 contribution — master security certification
+
+Build 347 adds the Master Shell security certification layer across all six source identities. It records six independent dimensions per source: signing/trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls.
+
+The certification remains separate from Build 345 role/device acceptance and Build 346 relationship certification. Missing evidence remains UNKNOWN, expired evidence becomes STALE, and no GREEN deployment, configured signer, membership, prior communication or relationship PASS is converted into trust, consent or authorization.
+
+Build 347 records append-only evidence only. It performs no signer enrollment, consent grant, role grant, source mutation, peer write, external probe, HOLD release, connection activation or production acceptance.
