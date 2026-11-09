@@ -287,7 +287,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 337 — Read-Only Source Update Ingestion & Provenance Normalization** — current build"
+    "Build 337 — Read-Only Source Update Ingestion & Provenance Normalization** — Production"
   )
 );
 assert.ok(
