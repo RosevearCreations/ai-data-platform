@@ -782,3 +782,19 @@ Build 332 records privacy-minimized authenticated browser performance evidence.
 - RUM cannot change configuration, SLOs, connection authority or release state;
 - the historical QL-266 review hold is retired as a global operator prerequisite, but authentication, tenant/workspace isolation, credential-reference controls, certification, transport security, idempotency and explicit consequential-write authorization remain authoritative;
 - historical QL-266 and QL-365D snapshots remain evidence and are not rewritten into false current success.
+
+
+## Build 334 API, database, pool and dependency observatory security
+
+Build 334 stores only bounded authenticated server performance evidence.
+
+- operation identity is a fixed sanitized key rather than a raw URL;
+- raw URLs, query strings, SQL text, request/response bodies, customer records, credential values and connection strings are not persisted;
+- service performance evidence is append-only and actor-scoped by PostgreSQL RLS;
+- pool telemetry exposes counts only: total, idle and waiting;
+- dependency timing reuses existing authorized connector audit rows and preserves workspace/connector provenance;
+- observability write failure never changes the original authenticated API result;
+- missing API or dependency evidence remains unmeasured;
+- no timing signal automatically changes queries, indexes, pool size, application configuration, release state, connection authority, trust or consequential peer-write permission.
+
+The Master Shell architecture remains evidence-first: a GREEN code/deployment result is not converted into functional acceptance or live source verification.

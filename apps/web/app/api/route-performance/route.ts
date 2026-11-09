@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 
 import { auth } from "@/lib/auth";
 import { listRoutePerformanceDiagnosticsForUser } from "@/lib/experience-telemetry-database";
+import { observeApiOperation } from "@/lib/performance-observatory-database";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,8 +16,13 @@ export async function GET() {
     );
   }
 
-  return Response.json(
-    await listRoutePerformanceDiagnosticsForUser(session.user.id),
-    { headers: { "Cache-Control": "no-store" } }
+  return observeApiOperation(
+    session.user.id,
+    "api.route-performance.get",
+    async () =>
+      Response.json(
+        await listRoutePerformanceDiagnosticsForUser(session.user.id),
+        { headers: { "Cache-Control": "no-store" } }
+      )
   );
 }
