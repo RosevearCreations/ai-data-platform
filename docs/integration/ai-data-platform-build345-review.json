@@ -1,0 +1,58 @@
+{
+  "schema": "rosevear.ai-data-platform.build345-review.v1",
+  "application": "AI Data Platform",
+  "build": 345,
+  "title": "Role/Device Acceptance Matrix: Customer, Worker & Admin / Mobile, Tablet, Desktop",
+  "persistence": {
+    "migration": "0123_master_role_device_acceptance_matrix.sql",
+    "table": "app.master_role_device_acceptance_evidence",
+    "appendOnly": true,
+    "runtimePrivileges": [
+      "SELECT",
+      "INSERT"
+    ],
+    "runtimeUpdateDelete": false,
+    "rls": true
+  },
+  "matrix": {
+    "roles": [
+      "customer",
+      "worker",
+      "admin"
+    ],
+    "devices": [
+      "mobile",
+      "tablet",
+      "desktop"
+    ],
+    "cellsPerScope": 9,
+    "scopes": [
+      "application",
+      "module"
+    ],
+    "missingEvidence": "UNKNOWN",
+    "expiredEvidence": "STALE"
+  },
+  "separation": {
+    "implementationImpliesAcceptance": false,
+    "automatedTestingImpliesAcceptance": false,
+    "sourceReadinessImpliesAcceptance": false,
+    "deploymentGreenImpliesAcceptance": false,
+    "masterCompletionAxisAutoSatisfied": false
+  },
+  "authority": {
+    "peerWriteAllowed": false,
+    "sourceMutationAllowed": false,
+    "externalDeviceProbeAllowed": false,
+    "automaticAcceptanceAllowed": false
+  },
+  "surfaces": {
+    "page": "/role-device-acceptance",
+    "api": "/api/role-device-acceptance",
+    "apiMethods": [
+      "GET",
+      "POST"
+    ]
+  },
+  "nextQueuedBuild": 346
+}

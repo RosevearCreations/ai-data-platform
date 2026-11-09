@@ -804,3 +804,13 @@ Build 344 composes the existing Build 339 application/module inventory into a re
 The health composer separates explicit hard blockers, evidence blockers and evidence gaps. A fresh module that remains source-reported `IN_PROGRESS` for at least 24 hours becomes a `STUCK_CANDIDATE` for review only. That derived state is never written back to the source and never starts recovery.
 
 `HOLD`, source-reported `BLOCKED`, stale evidence and evidence-blocked states remain separate so the Master Shell does not convert incomplete evidence into success or failure.
+
+## Build 345 — Role/device acceptance matrix
+
+Build 345 adds an explicit acceptance layer for Customer, Worker and Admin across Mobile, Tablet and Desktop. Each application and discovered module receives nine independent cells.
+
+The append-only `master_role_device_acceptance_evidence` ledger is separate from implementation evidence, automated-test evidence and source readiness. Fresh records compose to ACCEPTED/PARTIAL/FAILED, expired records compose to STALE, and absent records compose to UNKNOWN.
+
+A scope-level accepted percentage is deliberately unavailable until all nine cells are freshly measured. The matrix never converts a deployment, implementation, automated test, catalogue entry or module-readiness state into acceptance.
+
+Build 345 does not automatically satisfy Build 338's accessibility/device acceptance axis; reconciliation remains an explicit later evidence decision.

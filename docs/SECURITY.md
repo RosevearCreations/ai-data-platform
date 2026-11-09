@@ -993,3 +993,18 @@ Build 344 is an authenticated GET-only composition of existing Master Shell evid
 - module evidence retains its source/application provenance.
 
 The default 24-hour stuck threshold is review logic only and does not grant action authority.
+
+## Build 345 role/device acceptance security boundary
+
+Role/device acceptance evidence is stored in an RLS-protected append-only ledger.
+
+- exact source identity is restricted to the six Master Shell sources;
+- optional module IDs must exist in the current source inventory before recording;
+- role values are restricted to Customer, Worker and Admin;
+- device values are restricted to Mobile, Tablet and Desktop;
+- evidence URI, reviewer, confidence, observed/expiry timestamps, branch and commit are validated;
+- suite admins may SELECT and INSERT only;
+- runtime UPDATE and DELETE are revoked;
+- expired evidence becomes STALE and missing evidence remains UNKNOWN;
+- implementation, automated testing, source readiness and deployment GREEN never imply acceptance;
+- no source state, peer application or external device is mutated or probed.
