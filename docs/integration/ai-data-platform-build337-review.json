@@ -1,0 +1,48 @@
+{
+  "schema": "rosevear.ai-data-platform.build337-review.v1",
+  "application": "AI Data Platform",
+  "build": 337,
+  "name": "Read-Only Source Update Ingestion & Provenance Normalization",
+  "transport": {
+    "contract": "rosevear.webhook.v1",
+    "requiredOuterEventType": "master-shell.source-update",
+    "acceptedReceiptRequired": true,
+    "receiptSignatureReverified": true,
+    "rawSecretPersisted": false,
+    "secretFingerprintStored": true
+  },
+  "masterShell": {
+    "envelope": "rosevear.master-shell.event.v1",
+    "supportedEventFamilies": [
+      "source.health.reported",
+      "release.promoted",
+      "module.readiness.changed",
+      "audit.evidence.recorded"
+    ],
+    "exactSourceMapping": true,
+    "exactTenantMatch": true,
+    "aiDataAudienceRequired": true,
+    "expiryRequired": true,
+    "sourceSequenceTracked": true,
+    "idempotencyRequired": true
+  },
+  "persistence": {
+    "migration": "0119_master_shell_source_update_ingestion.sql",
+    "table": "app.master_shell_source_updates",
+    "appendOnlyRuntime": true
+  },
+  "safety": {
+    "sourceMutationPerformed": false,
+    "outboundDeliveryPerformed": false,
+    "automaticRouteRelease": false,
+    "automaticPeerWrite": false,
+    "staleAdvancesRegistry": false,
+    "outOfOrderAdvancesRegistry": false,
+    "ownerAcceptanceRequiredForRegistryProjection": true
+  },
+  "surfaces": {
+    "operator": "/master-shell-ingestion",
+    "api": "/api/master-shell-ingestion"
+  },
+  "nextQueuedBuild": 338
+}
