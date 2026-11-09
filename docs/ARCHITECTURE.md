@@ -686,3 +686,16 @@ The six source identities are `yw`, `icamp`, `rosiedazzlers`, `devilndove`, `ai-
 The V1 parser rejects unknown top-level fields, mismatched source/shell identity, unsupported event families, invalid audience, invalid temporal ordering and payload hash drift.
 
 Build 335 deliberately does not ingest V1 events or reinterpret historical Build 290/291 evidence. Source update ingestion is a later stage, preserving the distinction between contract availability and source implementation evidence.
+
+
+## Build 336 — Six-Source Registry, Freshness & Source State Machine
+
+Build 336 introduces an append-only Master Shell source-registry evidence layer on top of Build 335 Contract V1.
+
+The registry is derived for the exact six source shells and remains separate from the legacy application-connection registry. Absence of accepted evidence yields UNKNOWN rather than an inferred disconnect.
+
+Each accepted source evidence record receives a per-source version and bounded freshness window. Positive states automatically present as STALE after expiry. The state machine requires sequential positive progression and forces interrupted sources to restart from DISCOVERED with new evidence.
+
+The owner/admin API can record discovery, configuration, explicit authorization HOLD and negative operational evidence. It cannot create TEST_VERIFIED or CONNECTED. Those states require independent source-verification authority, source signer evidence and TEST/connection evidence and are reserved for the subsequent source-ingestion stage.
+
+The evidence table is RLS-protected and append-only for the runtime role.

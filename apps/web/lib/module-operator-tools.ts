@@ -190,6 +190,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         itemHrefs: [
           "/data-contracts",
           "/master-shell-contracts",
+          "/master-shell-registry",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
@@ -294,6 +295,11 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
         href: "/master-shell-contracts",
         label: "Master Shell Contract V1",
         description: "Review exact six-source identities, standard event-envelope provenance and correlation semantics."
+      },
+      {
+        href: "/master-shell-registry",
+        label: "Master Shell Source Registry",
+        description: "Review exact source state, freshness, expiry and evidence-backed Master Shell transitions."
       },
       {
         href: "/field-mappings",

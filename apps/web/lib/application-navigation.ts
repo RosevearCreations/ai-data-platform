@@ -314,6 +314,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-shell-registry",
+        label: "Master Shell Source Registry",
+        description: "Review Build 336 exact six-source state, evidence freshness, expiry and fail-closed registry transitions.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/field-mappings",
         label: "Visual Field Mapping Studio",
         description: "Map Rosevear application field paths into reviewed canonical data-contract profiles.",

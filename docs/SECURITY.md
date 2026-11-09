@@ -819,3 +819,23 @@ Build 335 is a contract-validation boundary, not a new trust or transport author
 - UNKNOWN, STALE, HELD or missing evidence is not converted to CONNECTED or accepted status.
 
 The AI Data envelope construction helper is fixed to source `ai-data-platform`; it cannot synthesize another application's source identity.
+
+
+## Build 336 Master Shell source-registry security
+
+Build 336 treats source state as evidence, not a UI label.
+
+- only the six exact Build 335 source IDs are accepted;
+- no source is seeded or defaulted to CONNECTED;
+- missing evidence is UNKNOWN;
+- expired positive evidence becomes STALE;
+- positive state progression cannot skip the configured/authorization/test gates;
+- operator-recorded evidence cannot create TEST_VERIFIED or CONNECTED;
+- TEST_VERIFIED requires independent source verification, signer evidence, owner authorization and TEST evidence;
+- CONNECTED additionally requires independent connection evidence;
+- child tenants remain tenant context and cannot become source identities;
+- registry evidence is append-only for the runtime role;
+- SELECT/INSERT is limited by RLS to authenticated owner/admin membership;
+- UPDATE and DELETE are revoked from the runtime role;
+- legacy QL or integration connection evidence is not silently upgraded into Master Shell state;
+- registry recording does not activate a connection, release a route, authorize a peer write or modify source trust.
