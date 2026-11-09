@@ -87,6 +87,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Relationship Certification
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/master-security-certification"
+          >
+            Master Security Certification
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
