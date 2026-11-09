@@ -218,7 +218,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 347 — Master Security, Authorization, Consent & Evidence Certification** — current build"
+    "Build 347 — Master Security, Authorization, Consent & Evidence Certification** — Production"
   )
 );
 assert.ok(

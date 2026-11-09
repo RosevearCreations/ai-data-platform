@@ -97,6 +97,8 @@ const requiredTables = [
   "master_relationship_certification_assertions",
   "master_security_certification_runs",
   "master_security_certification_assertions",
+  "master_source_onboarding_runs",
+  "master_source_onboarding_assertions",
   "master_sysop_members",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -183,6 +185,8 @@ const appendOnlyTables = [
   "master_relationship_certification_assertions",
   "master_security_certification_runs",
   "master_security_certification_assertions",
+  "master_source_onboarding_runs",
+  "master_source_onboarding_assertions",
   "master_shell_source_registry_evidence",
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
@@ -271,7 +275,8 @@ async function main() {
         "0122_comms_complementary_plane_projection.sql",
         "0123_master_role_device_acceptance_matrix.sql",
         "0124_master_relationship_integration_certification.sql",
-        "0125_master_security_certification.sql"
+        "0125_master_security_certification.sql",
+        "0126_master_source_onboarding_pilot.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -330,6 +335,10 @@ async function main() {
     assert(
       migrationNames.has("0125_master_security_certification.sql"),
       "migration 0125 is not recorded"
+    );
+    assert(
+      migrationNames.has("0126_master_source_onboarding_pilot.sql"),
+      "migration 0126 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
