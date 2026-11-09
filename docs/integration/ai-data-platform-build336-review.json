@@ -1,0 +1,54 @@
+{
+  "schema": "rosevear.ai-data-platform.build336-review.v1",
+  "application": "AI Data Platform",
+  "build": 336,
+  "name": "Six-Source Registry, Freshness & Source State Machine",
+  "masterShellStage": "registry-freshness-state-machine",
+  "exactSixSourceIds": [
+    "yw",
+    "icamp",
+    "rosiedazzlers",
+    "devilndove",
+    "ai-data-platform",
+    "rosevear-ai-hub"
+  ],
+  "commsHubControlPlaneNotSeventhSource": true,
+  "persistence": {
+    "migration": "0118_master_shell_source_registry.sql",
+    "table": "app.master_shell_source_registry_evidence",
+    "appendOnlyRuntime": true,
+    "seedConnectedRows": 0
+  },
+  "stateModel": {
+    "positive": [
+      "UNKNOWN",
+      "DISCOVERED",
+      "CONFIGURED",
+      "AUTHORIZATION_HELD",
+      "TEST_VERIFIED",
+      "CONNECTED"
+    ],
+    "interruptions": [
+      "STALE",
+      "DEGRADED",
+      "DISCONNECTED",
+      "REVOKED",
+      "ERROR"
+    ],
+    "expiredPositiveEvidenceBecomes": "STALE",
+    "missingEvidenceBecomes": "UNKNOWN"
+  },
+  "safety": {
+    "legacyConnectionStateRewritten": false,
+    "operatorCanCreateTestVerified": false,
+    "operatorCanCreateConnected": false,
+    "sourceConnectivityInferred": false,
+    "automaticConnectionActivation": false,
+    "peerWritesAuthorized": false
+  },
+  "surfaces": {
+    "operator": "/master-shell-registry",
+    "api": "/api/master-shell-registry"
+  },
+  "nextQueuedBuild": 337
+}
