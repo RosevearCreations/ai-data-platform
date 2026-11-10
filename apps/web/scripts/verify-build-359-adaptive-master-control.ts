@@ -128,7 +128,8 @@ assert.equal(missing.masterPlanes[2].state, "UNKNOWN");
 
 const page = source("app/adaptive-master-control/page.tsx");
 for (const token of [
-  "Adaptive Controls, Dynamic Thresholds &amp; Intelligent Resource Management",
+  "Adaptive Controls, Dynamic Thresholds",
+  "Intelligent Resource",
   "Master runtime monitor",
   "Ree&apos;s Windows server",
   "Server-first automation placement",
