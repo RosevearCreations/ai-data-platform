@@ -49,6 +49,9 @@ export default async function IncidentRunbookRecoveryPage() {
           <Link className="secondaryButton" href="/comms-complementary-plane">
             Comms Plane
           </Link>
+          <Link className="secondaryButton" href="/anomaly-predictive-risk">
+            Anomaly & Predictive Risk
+          </Link>
         </div>
       </section>
 
