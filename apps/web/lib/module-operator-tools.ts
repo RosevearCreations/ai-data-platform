@@ -209,6 +209,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/performance-optimization-control-plane",
           "/capacity-workload-forecasting",
           "/incident-runbook-recovery",
+          "/anomaly-predictive-risk",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
