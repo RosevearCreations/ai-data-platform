@@ -846,3 +846,11 @@ Build 349 adds a final source-scoped production-readiness layer for the exact si
 A source can reach READY_FOR_OWNER only when all five readiness dimensions PASS with fresh evidence. ACCEPTED additionally requires an authenticated suite owner decision and a current Build 348 ONBOARDED state for the same source. Missing or blocked evidence remains HOLD, failed evidence or owner rejection becomes FAIL, and expired evidence becomes STALE.
 
 The Build 349 ledger is append-only under RLS. Acceptance is a Master Shell evidence conclusion only; it does not activate a source connection, execute rollback, mutate a peer or release source-specific gates.
+
+## Build 350 — Production Learning VIII and Master Shell closeout
+
+Build 350 closes the finite Builds 331–350 Master Shell batch from current Build 349 acceptance evidence. It derives suite acceptance only from the exact six source states, captures append-only closeout snapshots, and emits a finite set of evidence-backed unnumbered renewal candidates.
+
+Build 349 remains authoritative for per-source owner acceptance. Build 350 cannot create or change acceptance. Suite ACCEPTED requires all six current Build 349 source states to be ACCEPTED; HOLD, FAIL, STALE and READY_FOR_OWNER remain visible and become closeout gaps rather than being converted into success.
+
+The Build 350 renewal model does not assign a next build number. Build 351+ remains unauthorized until a separate explicit owner instruction after reviewing current Production Learning VIII evidence.

@@ -1,0 +1,44 @@
+{
+  "application": "AI Data Platform",
+  "build": 350,
+  "title": "Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal",
+  "closedBatch": "331-350",
+  "sourceCount": 6,
+  "sourceAcceptanceAuthority": "Build 349",
+  "suiteAcceptanceRule": "all six exact sources must be current ACCEPTED",
+  "unresolvedStates": [
+    "READY_FOR_OWNER",
+    "HOLD",
+    "FAIL",
+    "STALE"
+  ],
+  "persistence": {
+    "snapshots": "production_learning_viii_snapshots",
+    "candidates": "production_learning_viii_candidates",
+    "appendOnly": true,
+    "forcedRls": true,
+    "runtimeGrants": [
+      "SELECT",
+      "INSERT"
+    ]
+  },
+  "roadmapRenewal": {
+    "finiteCandidateLimit": 12,
+    "candidatesUnnumbered": true,
+    "automaticBuild351": false,
+    "numberedBuilds351PlusAuthorized": false,
+    "nextBuildNumber": null,
+    "automaticRoadmapExtension": false,
+    "explicitOwnerAuthorizationRequired": true,
+    "separateAuthorizationAfterBuild350Required": true
+  },
+  "authority": {
+    "build350CreatesOwnerAcceptance": false,
+    "deploymentGreenImpliesAcceptance": false,
+    "candidateExecutesWork": false,
+    "sourceMutationPerformed": false,
+    "connectionActivationPerformed": false,
+    "rollbackExecuted": false,
+    "roadmapAuthorized": false
+  }
+}

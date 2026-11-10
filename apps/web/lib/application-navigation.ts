@@ -392,6 +392,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/production-learning-viii",
+        label: "Production Learning VIII",
+        description: "Close the 331–350 Master Shell batch from current Build 349 acceptance evidence and produce only unnumbered renewal candidates pending separate owner authorization.",
+        helpTopic: "learning-overview"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
