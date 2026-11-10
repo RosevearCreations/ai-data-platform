@@ -1,8 +1,5 @@
 import type { MasterProductionReadinessModel } from "./master-production-readiness-core";
-import {
-  MASTER_SHELL_SOURCE_DEFINITIONS,
-  type MasterShellSourceId
-} from "./master-shell-contract-v1";
+import { MASTER_SHELL_SOURCE_DEFINITIONS } from "./master-shell-contract-v1";
 
 export const BASIC_ALERTS_BUILD = 353 as const;
 export const BASIC_ALERTS_SCHEMA =
