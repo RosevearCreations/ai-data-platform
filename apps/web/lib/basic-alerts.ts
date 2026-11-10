@@ -28,42 +28,111 @@ export const CONNECTION_HANDOFFS = Object.freeze([
     repository: "RosevearCreations/yw",
     label: "Yard Workers",
     token: "MS353-AIDATA-YW-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_HOLD" as const
   },
   {
     targetId: "icamp",
     repository: "RosevearCreations/iCamp",
     label: "iCamp",
     token: "MS353-AIDATA-ICAMP-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_HOLD" as const
   },
   {
     targetId: "rosiedazzlers",
     repository: "RosevearCreations/rosiedazzlers",
     label: "Rosie Dazzlers",
     token: "MS353-AIDATA-ROSIEDAZZLERS-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_REVISION_STALE_HOLD" as const
   },
   {
     targetId: "devilndove",
     repository: "RosevearCreations/devilndove-site",
     label: "Devil n Dove",
     token: "MS353-AIDATA-DEVILNDOVE-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_HOLD" as const
   },
   {
     targetId: "rosevear-ai-hub",
     repository: "RosevearCreations/rosevear-ai-hub",
     label: "Rosevear AI Hub",
     token: "MS353-AIDATA-ROSEVEAR-AI-HUB-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_HOLD" as const
   },
   {
     targetId: "rosevear-comms-hub",
     repository: "RosevearCreations/rosevear-comms-hub",
     label: "Rosevear Comms Hub",
     token: "MS353-AIDATA-COMMS-HUB-HELLO",
-    status: "HANDOFF_SENT" as const
+    status: "ACK_RECEIVED_REVIEW_HOLD" as const
+  }
+]);
+
+export const SOURCE_ACKNOWLEDGEMENTS = Object.freeze([
+  {
+    sourceId: "yw",
+    reportedRevision: "e51cf098aec6d49699645bc2d8ccbd2d756d579d",
+    currentRevisionAtReconciliation: "e51cf098aec6d49699645bc2d8ccbd2d756d579d",
+    role: "platform_shell",
+    connection: "HOLD",
+    manifest: "STALE",
+    ownerProof: "HOLD",
+    signedReceipt: "HOLD",
+    revisionState: "CURRENT"
+  },
+  {
+    sourceId: "icamp",
+    reportedRevision: "b59fa045cb26f441aa32b890ba6c979c34045ce5",
+    currentRevisionAtReconciliation: "b59fa045cb26f441aa32b890ba6c979c34045ce5",
+    role: "INDEPENDENT_SOURCE",
+    connection: "HOLD",
+    manifest: "DISCOVERY_VERIFIED_AUTH_HOLD",
+    ownerProof: "HOLD",
+    signedReceipt: "HOLD",
+    revisionState: "CURRENT"
+  },
+  {
+    sourceId: "rosiedazzlers",
+    reportedRevision: "920e21825605710067ee848c5b33198c6ecd5c17",
+    currentRevisionAtReconciliation: "d66cd3a537892c68287c37c0ded6b69cc24cc2b8",
+    role: "owned_business_legacy",
+    connection: "HOLD",
+    manifest: "SOURCE_CODE_COMPATIBLE",
+    ownerProof: "UNKNOWN",
+    signedReceipt: "UNKNOWN",
+    revisionState: "STALE_REVISION"
+  },
+  {
+    sourceId: "devilndove",
+    reportedRevision: "d8ddee1d288e7db874cbf07448c79fe941f40f5e",
+    currentRevisionAtReconciliation: "d8ddee1d288e7db874cbf07448c79fe941f40f5e",
+    role: "owned_business",
+    connection: "HOLD",
+    manifest: "STALE",
+    ownerProof: "UNKNOWN",
+    signedReceipt: "UNKNOWN",
+    revisionState: "CURRENT"
+  },
+  {
+    sourceId: "rosevear-ai-hub",
+    reportedRevision: "ecfa48707fc34d00cab8d94a4ccb226653c9e13b",
+    currentRevisionAtReconciliation: "ecfa48707fc34d00cab8d94a4ccb226653c9e13b",
+    role: "SOURCE",
+    connection: "HOLD",
+    manifest: "STALE",
+    ownerProof: "HOLD",
+    signedReceipt: "HOLD",
+    revisionState: "CURRENT"
+  },
+  {
+    sourceId: "rosevear-comms-hub",
+    reportedRevision: "7d0aca7052dadc83c536fa372f59254e3f01febe",
+    currentRevisionAtReconciliation: "7d0aca7052dadc83c536fa372f59254e3f01febe",
+    role: "COMPLEMENTARY_CONTROL_PLANE",
+    connection: "HOLD",
+    manifest: "REVISION_DRIFT_REVIEW",
+    ownerProof: "HOLD",
+    signedReceipt: "HOLD",
+    revisionState: "REVIEW"
   }
 ]);
 
@@ -128,19 +197,32 @@ export function composeBasicAlerts(input?: {
     };
   });
 
-  const handoffAlerts: Alert[] = CONNECTION_HANDOFFS.map((handoff) => ({
-    id: "HANDOFF-" + handoff.targetId.toUpperCase(),
-    sourceId: handoff.targetId,
-    level: "INFO",
-    owner:
-      handoff.targetId === "rosevear-comms-hub"
-        ? "Rosevear Comms Hub operator"
-        : handoff.label + " operator",
-    title: handoff.label + " Master Shell handshake",
-    reason: "AI Data Platform handoff has been sent and awaits source-side acknowledgement.",
-    resolutionState: "OPEN",
-    escalation: "No escalation yet; complete the simple source-side acknowledgement."
-  }));
+  const acknowledgementBySource = new Map(
+    SOURCE_ACKNOWLEDGEMENTS.map((ack) => [ack.sourceId, ack])
+  );
+
+  const handoffAlerts: Alert[] = CONNECTION_HANDOFFS.map((handoff) => {
+    const ack = acknowledgementBySource.get(handoff.targetId);
+    const revisionStale = ack?.revisionState === "STALE_REVISION";
+
+    return {
+      id: "HANDOFF-" + handoff.targetId.toUpperCase(),
+      sourceId: handoff.targetId,
+      level: revisionStale ? "CRITICAL" : "WARNING",
+      owner:
+        handoff.targetId === "rosevear-comms-hub"
+          ? "Rosevear Comms Hub operator"
+          : handoff.label + " operator",
+      title: handoff.label + " Master Shell handshake",
+      reason: revisionStale
+        ? "Source acknowledgement received, but its reported revision is older than the current source main revision."
+        : "Source acknowledgement received. The source reports connection HOLD pending stronger connection evidence.",
+      resolutionState: "ACKNOWLEDGED",
+      escalation: revisionStale
+        ? "Re-run the source acknowledgement against the current main revision before any connection promotion."
+        : "Resolve the source-reported HOLD prerequisite; do not promote connection state from the acknowledgement alone."
+    };
+  });
 
   const alerts = [...sourceAlerts, ...handoffAlerts];
 
@@ -170,6 +252,7 @@ export function composeBasicAlerts(input?: {
       ).length
     },
     handoffs: CONNECTION_HANDOFFS,
+    acknowledgements: SOURCE_ACKNOWLEDGEMENTS,
     policy: {
       alertCanChangeSourceState: false as const,
       acknowledgementCanCreateAcceptance: false as const,
