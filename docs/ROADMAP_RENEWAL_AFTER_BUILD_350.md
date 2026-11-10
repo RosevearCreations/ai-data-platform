@@ -49,3 +49,7 @@ This authorization applies to Build 351. The subsequent Builds 352–360 remain 
 ### Build 352 authorization
 
 The owner subsequently authorized **Build 352 — Basic Operator Actions, Safe Refresh, Retry, Recheck & Recovery Controls** for implementation and promotion through `dev` and `main`, with a required Master Shell linkage and master/source role update.
+
+### Build 353 authorization
+
+The owner authorized **Build 353 — Basic Alerts, Thresholds, Ownership, Escalation & Resolution Tracking** for implementation and promotion through `dev` and `main`, and authorized simple non-secret connection handoffs to the companion Rosevear applications.
