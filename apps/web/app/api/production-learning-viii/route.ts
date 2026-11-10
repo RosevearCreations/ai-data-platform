@@ -10,6 +10,8 @@ import { observeApiOperation } from "@/lib/performance-observatory-database";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const MAX_BODY_BYTES = 16_384;
+
 async function currentUserId() {
   const session = await auth.api.getSession({ headers: await headers() });
   return session?.user.id ?? null;
@@ -61,7 +63,31 @@ export async function POST(request: Request) {
     "api.production-learning-viii.post",
     async () => {
       try {
-        const body = (await request.json()) as Record<string, unknown>;
+        const declaredLength = Number(
+          request.headers.get("content-length") ?? ""
+        );
+        if (
+          Number.isFinite(declaredLength) &&
+          declaredLength > MAX_BODY_BYTES
+        ) {
+          return Response.json(
+            { error: "production_learning_viii_body_too_large" },
+            { status: 413 }
+          );
+        }
+
+        const raw = await request.text();
+        if (
+          raw.length < 2 ||
+          Buffer.byteLength(raw, "utf8") > MAX_BODY_BYTES
+        ) {
+          return Response.json(
+            { error: "production_learning_viii_body_invalid" },
+            { status: 400 }
+          );
+        }
+
+        const body = JSON.parse(raw) as Record<string, unknown>;
         if (body.action !== "refresh-learning-viii") {
           return Response.json(
             { error: "production_learning_viii_action_invalid" },
