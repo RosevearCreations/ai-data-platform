@@ -57,3 +57,7 @@ The owner authorized **Build 353 — Basic Alerts, Thresholds, Ownership, Escala
 ### Build 354 authorization
 
 The owner authorized **Build 354 — Moderate Cross-Application Control Center & Dependency-Aware Operations** for implementation and promotion through `dev` and `main`.
+
+### Build 355 authorization
+
+The owner authorized **Build 355 — Moderate Performance Optimization, Caching, Query & Rendering Control Plane** for implementation and promotion through `dev` and `main`.

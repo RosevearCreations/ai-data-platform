@@ -42,6 +42,9 @@ export default async function CrossApplicationControlCenterPage() {
           <Link className="secondaryButton" href="/comms-complementary-plane">
             Comms Plane
           </Link>
+          <Link className="secondaryButton" href="/performance-optimization-control-plane">
+            Performance Optimization
+          </Link>
         </div>
       </section>
 

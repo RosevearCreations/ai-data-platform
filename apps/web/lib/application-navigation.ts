@@ -422,6 +422,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/performance-optimization-control-plane",
+        label: "Performance Optimization Control Plane",
+        description: "Review Build 355 measured cache, query, rendering and dependency optimization candidates with approval, validation and rollback boundaries.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
