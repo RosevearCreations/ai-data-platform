@@ -204,6 +204,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/production-learning-viii",
           "/basic-controls",
           "/basic-operator-actions",
+          "/basic-alerts",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
