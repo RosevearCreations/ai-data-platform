@@ -82,7 +82,7 @@ function readiness(states: State[]): MasterProductionReadinessModel {
       automaticRollbackPerformed: false,
       automaticHoldRelease: false
     }
-  };
+  } as MasterProductionReadinessModel;
 }
 
 const accepted = buildProductionLearningVIII({
