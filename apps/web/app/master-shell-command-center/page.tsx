@@ -59,6 +59,12 @@ export default async function MasterShellCommandCenterPage() {
           </Link>
           <Link
             className="secondaryButton"
+            href="/cross-application-control-center"
+          >
+            Cross-Application Control
+          </Link>
+          <Link
+            className="secondaryButton"
             href="/comms-complementary-plane"
           >
             Comms Plane

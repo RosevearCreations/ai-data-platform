@@ -416,6 +416,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/cross-application-control-center",
+        label: "Cross-Application Control Center",
+        description: "Review Build 354 dependency-aware cross-application blockers, authority boundaries and bounded escalation/recovery handoffs.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
