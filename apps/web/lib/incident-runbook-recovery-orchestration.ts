@@ -142,7 +142,10 @@ export function composeIncidentRunbookRecoveryOrchestration(input: {
   generatedAt?: Date;
 }) {
   const generatedAt = input.generatedAt ?? new Date();
-  const sourceState = new Map(
+  const sourceState = new Map<
+    string,
+    { dependencyState: string; connectionState: string }
+  >(
     input.controlCenter.sources.map((source) => [
       source.sourceId,
       {
