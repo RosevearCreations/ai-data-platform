@@ -69,3 +69,7 @@ The owner authorized **Build 356 — Moderate Capacity, Workload, Resource & Dem
 ### Build 357 authorization
 
 The owner authorized **Build 357 — Moderate Incident Automation, Runbooks & Supervised Recovery Orchestration** for implementation and promotion through `dev` and `main`.
+
+### Build 358 authorization
+
+The owner authorized **Build 358 — Advanced Anomaly Detection, Behaviour Baselines & Predictive Risk Intelligence** for implementation and promotion through `dev` and `main`.
