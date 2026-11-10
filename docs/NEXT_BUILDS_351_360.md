@@ -13,8 +13,8 @@ Only work explicitly authorized by the owner may be implemented or promoted. Thi
 ## Moderate controls
 
 4. **Build 354 — Moderate Cross-Application Control Center & Dependency-Aware Operations** — Production.
-5. **Build 355 — Moderate Performance Optimization, Caching, Query & Rendering Control Plane** — current authorized build.
-6. **Build 356 — Moderate Capacity, Workload, Resource & Demand Forecasting** — queued roadmap candidate.
+5. **Build 355 — Moderate Performance Optimization, Caching, Query & Rendering Control Plane** — Production.
+6. **Build 356 — Moderate Capacity, Workload, Resource & Demand Forecasting** — current authorized build.
 7. **Build 357 — Moderate Incident Automation, Runbooks & Supervised Recovery Orchestration** — queued roadmap candidate.
 
 ## Advanced controls
