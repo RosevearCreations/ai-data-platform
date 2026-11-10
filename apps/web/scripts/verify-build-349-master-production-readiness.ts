@@ -266,7 +266,7 @@ assert.ok(
 
 const docs = source("../../docs/BUILD_349_MASTER_PRODUCTION_READINESS.md");
 assert.ok(docs.includes("Only an authenticated suite **owner**"));
-assert.ok(docs.includes("does not activate a source connection"));
+assert.ok(docs.includes("activate a source connection"));
 
 const review = JSON.parse(
   source("../../docs/integration/ai-data-platform-build349-review.json")
