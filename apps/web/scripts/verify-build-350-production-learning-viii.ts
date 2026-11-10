@@ -274,7 +274,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 350 — Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal** — current build"
+    "Build 350 — Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal** — Production"
   )
 );
 assert.ok(roadmap.includes("no automatically authorized Build 351"));
