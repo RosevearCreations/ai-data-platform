@@ -838,3 +838,11 @@ Build 348 adds a source-scoped onboarding layer over the existing Build 336 sour
 A supervised production pilot may be recorded only after all six prerequisites PASS. Pilot windows are globally serialized with an advisory lock and rejected when they overlap a previously recorded source pilot window. A successful pilot produces an ONBOARDED evidence state, but that state does not activate a connection or mutate Build 336 source truth.
 
 The read model keeps missing evidence on HOLD, expires stale evidence, and exposes current Build 336 registry and Build 347 security states beside each onboarding record.
+
+## Build 349 — Master Shell production readiness and owner acceptance
+
+Build 349 adds a final source-scoped production-readiness layer for the exact six Master Shell sources. It composes Build 348 onboarding with separate operational-recovery, accessibility, production-safeguard and rollback evidence, then requires an explicit owner decision.
+
+A source can reach READY_FOR_OWNER only when all five readiness dimensions PASS with fresh evidence. ACCEPTED additionally requires an authenticated suite owner decision and a current Build 348 ONBOARDED state for the same source. Missing or blocked evidence remains HOLD, failed evidence or owner rejection becomes FAIL, and expired evidence becomes STALE.
+
+The Build 349 ledger is append-only under RLS. Acceptance is a Master Shell evidence conclusion only; it does not activate a source connection, execute rollback, mutate a peer or release source-specific gates.
