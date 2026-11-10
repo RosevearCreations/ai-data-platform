@@ -60,6 +60,9 @@ export default async function PerformanceOptimizationControlPlanePage() {
           <Link className="secondaryButton" href="/cross-application-control-center">
             Cross-Application Control
           </Link>
+          <Link className="secondaryButton" href="/capacity-workload-forecasting">
+            Capacity Forecasting
+          </Link>
         </div>
       </section>
 
