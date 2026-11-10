@@ -105,6 +105,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Master Production Readiness
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/production-learning-viii"
+          >
+            Production Learning VIII
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
