@@ -428,6 +428,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/capacity-workload-forecasting",
+        label: "Capacity & Demand Forecasting",
+        description: "Review Build 356 measured workload demand scenarios, pressure, unknown headroom and supervised capacity guidance.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
