@@ -1,10 +1,20 @@
+import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import { BasicOperatorActionsClient } from "./BasicOperatorActionsClient";
+import { auth } from "@/lib/auth";
 
 import { composeBasicOperatorActions } from "@/lib/basic-operator-actions";
 
 export const dynamic = "force-dynamic";
 
-export default function BasicOperatorActionsPage() {
+export default async function BasicOperatorActionsPage() {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) {
+    redirect("/sign-in?callbackUrl=%2Fbasic-operator-actions");
+  }
+
   const model = composeBasicOperatorActions();
 
   return (
@@ -32,6 +42,8 @@ export default function BasicOperatorActionsPage() {
           Comms Hub remains the complementary communications/control plane.
         </p>
       </section>
+
+      <BasicOperatorActionsClient />
 
       <section className="reviewQueue">
         <div className="sectionHeading">
