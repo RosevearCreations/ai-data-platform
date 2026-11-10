@@ -131,7 +131,8 @@ for (const token of [
   "Adaptive Controls, Dynamic Thresholds",
   "Intelligent Resource",
   "Master runtime monitor",
-  "Ree&apos;s Windows server",
+  "Ree&apos;s",
+  "Windows server",
   "Server-first automation placement",
   "Monitoring gaps remain visible."
 ]) {
