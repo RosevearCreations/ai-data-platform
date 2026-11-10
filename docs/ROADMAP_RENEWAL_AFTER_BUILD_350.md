@@ -53,3 +53,7 @@ The owner subsequently authorized **Build 352 — Basic Operator Actions, Safe R
 ### Build 353 authorization
 
 The owner authorized **Build 353 — Basic Alerts, Thresholds, Ownership, Escalation & Resolution Tracking** for implementation and promotion through `dev` and `main`, and authorized simple non-secret connection handoffs to the companion Rosevear applications.
+
+### Build 354 authorization
+
+The owner authorized **Build 354 — Moderate Cross-Application Control Center & Dependency-Aware Operations** for implementation and promotion through `dev` and `main`.
