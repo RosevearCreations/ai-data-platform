@@ -202,7 +202,9 @@ export function validateMasterProductionReadinessRun(
       input.ownerDecisionDetail === null ||
       !SAFE_TEXT.test(input.ownerDecisionDetail) ||
       input.ownerDecidedAt === null ||
-      !validIso(input.ownerDecidedAt)
+      !validIso(input.ownerDecidedAt) ||
+      Date.parse(input.ownerDecidedAt) < Date.parse(input.observedAt) ||
+      Date.parse(input.ownerDecidedAt) > Date.parse(input.expiresAt)
     ) {
       throw new Error("master_production_readiness_owner_evidence_invalid");
     }
