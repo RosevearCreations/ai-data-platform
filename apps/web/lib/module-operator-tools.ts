@@ -212,6 +212,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/anomaly-predictive-risk",
           "/adaptive-master-control",
           "/master-control-readiness-certification",
+          "/master-activation-reconciliation",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
