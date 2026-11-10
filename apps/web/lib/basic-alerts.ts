@@ -42,7 +42,7 @@ export const CONNECTION_HANDOFFS = Object.freeze([
     repository: "RosevearCreations/rosiedazzlers",
     label: "Rosie Dazzlers",
     token: "MS353-AIDATA-ROSIEDAZZLERS-HELLO",
-    status: "ACK_RECEIVED_REVISION_STALE_HOLD" as const
+    status: "ACK_RECEIVED_HOLD" as const
   },
   {
     targetId: "devilndove",
@@ -92,14 +92,14 @@ export const SOURCE_ACKNOWLEDGEMENTS = Object.freeze([
   },
   {
     sourceId: "rosiedazzlers",
-    reportedRevision: "920e21825605710067ee848c5b33198c6ecd5c17",
-    currentRevisionAtReconciliation: "d66cd3a537892c68287c37c0ded6b69cc24cc2b8",
+    reportedRevision: "91148a6a9beb127f04c7e8719119910709030448",
+    currentRevisionAtReconciliation: "91148a6a9beb127f04c7e8719119910709030448",
     role: "owned_business_legacy",
     connection: "HOLD",
-    manifest: "SOURCE_CODE_COMPATIBLE",
-    ownerProof: "UNKNOWN",
-    signedReceipt: "UNKNOWN",
-    revisionState: "STALE_REVISION"
+    manifest: "VERIFIED",
+    ownerProof: "HOLD",
+    signedReceipt: "HOLD",
+    revisionState: "CURRENT"
   },
   {
     sourceId: "devilndove",
