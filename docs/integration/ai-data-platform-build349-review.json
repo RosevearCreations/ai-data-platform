@@ -1,0 +1,45 @@
+{
+  "application": "AI Data Platform",
+  "build": 349,
+  "title": "Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback",
+  "sourceCount": 6,
+  "dimensions": [
+    "source-onboarding",
+    "operational-recovery",
+    "accessibility",
+    "production-safeguards",
+    "rollback"
+  ],
+  "ownerDecisions": [
+    "not-reviewed",
+    "accepted",
+    "rejected",
+    "held"
+  ],
+  "effectiveStates": [
+    "HOLD",
+    "FAIL",
+    "READY_FOR_OWNER",
+    "ACCEPTED",
+    "STALE"
+  ],
+  "controls": {
+    "build348OnboardedRequiredForOnboardingPass": true,
+    "build348OnboardedRequiredForAcceptance": true,
+    "explicitOwnerOnlyDecision": true,
+    "allDimensionsPassBeforeAcceptance": true,
+    "appendOnly": true,
+    "rls": true
+  },
+  "authority": {
+    "deploymentGreenImpliesAcceptance": false,
+    "build348OnboardedImpliesAcceptance": false,
+    "acceptanceActivatesConnection": false,
+    "sourceSpecificGatesRemainAuthoritative": true,
+    "automaticRollbackPerformed": false,
+    "sourceMutationPerformed": false,
+    "peerWritePerformed": false,
+    "automaticHoldRelease": false
+  },
+  "nextQueuedBuild": 350
+}
