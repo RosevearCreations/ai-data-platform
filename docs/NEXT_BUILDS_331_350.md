@@ -27,8 +27,10 @@ The roadmap is evidence-first. A GREEN release does not by itself establish live
 16. **Build 346 — One-to-One, One-to-Many, Many-to-One & Many-to-Many Integration Certification** — Production; certify contract, identity, replay, expiry, audience and tenant isolation across supported relationship patterns.
 17. **Build 347 — Master Security, Authorization, Consent & Evidence Certification** — Production; reconcile source signing/trust, role authorization, consent, sensitive-data handling, audit evidence and fail-closed controls.
 18. **Build 348 — Six-Application Source Onboarding & Supervised Production Pilot** — Production; onboard one source shell at a time with original source-owned evidence, recovery and rollback; retain HOLD when independent evidence is incomplete.
-19. **Build 349 — Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback** — current build; consolidate operational recovery, accessibility, production safeguards, owner acceptance and rollback evidence without replacing source-specific gates.
-20. **Build 350 — Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal** — measure Master Shell outcomes, unresolved gaps and owner acceptance, then require explicit authorization for any Build 351+ roadmap.
+19. **Build 349 — Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback** — Production; consolidate operational recovery, accessibility, production safeguards, owner acceptance and rollback evidence without replacing source-specific gates.
+20. **Build 350 — Production Learning VIII, Master Shell Acceptance & Next Roadmap Renewal** — current build; measure Master Shell outcomes, unresolved gaps and owner acceptance, then require explicit authorization for any Build 351+ roadmap.
+
+Build 350 is the mandatory renewal checkpoint. There is **no automatically authorized Build 351**; any numbered Build 351+ roadmap requires separate explicit owner authorization after reviewing current Production Learning VIII evidence.
 
 ## Deferred candidate pool after the Master Shell sequence
 
