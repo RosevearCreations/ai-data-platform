@@ -138,8 +138,7 @@ const page = source(
 for (const token of [
   "Build 360 · Master Control Boundary Certification",
   "Three Masters first. Larger applications remain gated.",
-  "MASTER360-COMMS-ACTIVATE",
-  "MASTER360-AIHUB-ACTIVATE",
+  "Two commands for the remaining Master planes",
   "Autonomous actions explicitly denied"
 ]) {
   assert.ok(page.includes(token), "page token " + token);
