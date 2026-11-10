@@ -255,7 +255,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 349 — Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback** — current build"
+    "Build 349 — Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback** — Production"
   )
 );
 assert.ok(
