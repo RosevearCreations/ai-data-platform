@@ -5,6 +5,7 @@ import path from "node:path";
 import {
   BASIC_ALERTS_BUILD,
   CONNECTION_HANDOFFS,
+  SOURCE_ACKNOWLEDGEMENTS,
   composeBasicAlerts
 } from "../lib/basic-alerts";
 
@@ -15,6 +16,13 @@ const source = (relative: string) =>
 assert.equal(BASIC_ALERTS_BUILD, 353);
 assert.equal(CONNECTION_HANDOFFS.length, 6);
 assert.equal(new Set(CONNECTION_HANDOFFS.map((item) => item.token)).size, 6);
+assert.equal(SOURCE_ACKNOWLEDGEMENTS.length, 6);
+assert.ok(SOURCE_ACKNOWLEDGEMENTS.every((item) => item.connection === "HOLD"));
+assert.equal(
+  SOURCE_ACKNOWLEDGEMENTS.find((item) => item.sourceId === "rosiedazzlers")?.revisionState,
+  "STALE_REVISION"
+);
+assert.ok(CONNECTION_HANDOFFS.every((item) => item.status.startsWith("ACK_RECEIVED")));
 
 const model = composeBasicAlerts({
   generatedAt: new Date("2026-11-10T03:30:00.000Z")
@@ -26,6 +34,7 @@ assert.equal(model.policy.escalationCanReleaseHold, false);
 assert.equal(model.policy.commsHubOwnsIncidentWorkflow, true);
 assert.equal(model.policy.sourceOwnerOwnsOperationalResolution, true);
 assert.ok(model.alerts.some((item) => item.id.startsWith("HANDOFF-")));
+assert.equal(model.summary.acknowledged, 6);
 
 const page = source("app/basic-alerts/page.tsx");
 assert.ok(page.includes("Alerts, Ownership, Escalation & Resolution"));
