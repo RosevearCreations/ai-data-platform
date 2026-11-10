@@ -410,6 +410,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/basic-alerts",
+        label: "Basic Alerts",
+        description: "Review Build 353 basic thresholds, ownership, escalation, resolution state and Master Shell connection handoffs.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
