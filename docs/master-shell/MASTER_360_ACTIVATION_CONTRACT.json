@@ -1,0 +1,70 @@
+{
+  "schema": "rosevear.master-shell.activation.v1",
+  "build": 360,
+  "controller": "ai-data-platform",
+  "controllerRole": "MASTER_INTELLIGENCE_MONITORING",
+  "stage": "THREE_MASTER_SYNC_BEFORE_SLAVE_ONBOARDING",
+  "rules": {
+    "reconcileCurrentMainBeforeActivation": true,
+    "preserveSeparateRepositories": true,
+    "preserveSeparateCredentials": true,
+    "preserveSourceAuthority": true,
+    "missingEvidenceIsSuccess": false,
+    "deploymentGreenIsRuntimeHealthy": false,
+    "masterSyncRequiredBeforeSlaveOnboarding": true
+  },
+  "targets": [
+    {
+      "id": "rosevear-comms-hub",
+      "observedProductionBaseline": "ccbeab4307ed6458399dcb0eb03324aeaf12f97f",
+      "observedBuild": "QL-410",
+      "commandToken": "MASTER360-COMMS-ACTIVATE",
+      "nextBuild": "QL-411 — Original-Ree Host Telemetry Adapter, AI Data Platform Uptime Read Models & Comms Incident Correlation Pilot",
+      "requiredCapabilities": [
+        "protected read-only telemetry projection",
+        "telemetry freshness validation",
+        "source-bound incident correlation",
+        "operator acknowledgement/follow-up",
+        "receiver and connection remain fail-closed"
+      ],
+      "forbidden": [
+        "infer connection from source code",
+        "release HOLD automatically",
+        "execute Windows recovery",
+        "send customer communications without authorization"
+      ]
+    },
+    {
+      "id": "rosevear-ai-hub",
+      "observedProductionBaseline": "9df3130cbe87dd65a6a3da9c238a521f8fff38a5",
+      "observedBuild": "Build 303",
+      "commandToken": "MASTER360-AIHUB-ACTIVATE",
+      "nextBuild": "Build 304 — Ree Server Monitoring Persistence, Signed Read-Only Master Telemetry Contract & Comms Incident Handoff Acceptance",
+      "hostPolicy": "REE_ORIGINAL_WINDOWS_ONLY",
+      "requiredCapabilities": [
+        "persistent bounded uptime history",
+        "signed metadata-only read-only telemetry",
+        "Ree-host automation enforcement",
+        "protected Comms incident handoff acceptance",
+        "existing recovery/task authority preserved"
+      ],
+      "forbidden": [
+        "run on Jack reviewer laptop",
+        "create duplicate Windows scheduled tasks",
+        "publish credentials/customer/device secrets",
+        "treat signed telemetry as connection acceptance"
+      ]
+    }
+  ],
+  "slaveGate": {
+    "openWhen": [
+      "comms protected telemetry projection verified",
+      "comms incident correlation accepted",
+      "ai hub original-host monitor enabled",
+      "ai hub persistent telemetry history verified",
+      "ai hub signed read-only telemetry verified",
+      "ai hub Ree-host automation enforcement verified"
+    ],
+    "otherwise": "HOLD_NEXT_MASTER_INTEGRATION_STAGE"
+  }
+}
