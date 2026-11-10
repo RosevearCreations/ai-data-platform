@@ -206,6 +206,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/basic-operator-actions",
           "/basic-alerts",
           "/cross-application-control-center",
+          "/performance-optimization-control-plane",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
