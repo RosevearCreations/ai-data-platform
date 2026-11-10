@@ -166,7 +166,7 @@ const docs = source(
 );
 assert.ok(docs.includes("QL-411"));
 assert.ok(docs.includes("Build 304"));
-assert.ok(docs.includes("larger applications remain gated"));
+assert.ok(docs.includes("Larger applications remain gated"));
 
 const pkg = JSON.parse(source("package.json"));
 const verifier =
