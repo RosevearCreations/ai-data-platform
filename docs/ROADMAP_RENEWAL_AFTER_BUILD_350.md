@@ -39,3 +39,9 @@ None of the following creates a numbered next build:
 - a source becoming Build 349 ACCEPTED.
 
 A separate explicit owner authorization is required before any Build 351+ roadmap is numbered or implemented.
+
+## Owner authorization after the checkpoint
+
+On November 9, 2026, the owner explicitly authorized **Build 351 — Master Basic Controls Completion, Coverage Gaps & Operational Truth Reconciliation** for implementation and promotion through `dev` and `main`.
+
+This authorization applies to Build 351. The subsequent Builds 352–360 remain roadmap candidates until separately directed for implementation. See `docs/NEXT_BUILDS_351_360.md`.
