@@ -63,6 +63,20 @@ async function requireSuiteAdmin(client: PoolClient) {
   }
 }
 
+async function requireSuiteOwner(client: PoolClient) {
+  const result = await client.query<{ allowed: boolean }>(
+    `select exists (
+       select 1
+       from app.workspace_members wm
+       where wm.user_id=nullif(current_setting('app.user_id',true),'')
+         and wm.role='owner'
+     ) as allowed`
+  );
+  if (!result.rows[0]?.allowed) {
+    throw new Error("master_production_readiness_suite_owner_required");
+  }
+}
+
 function includes<T extends string>(
   values: readonly T[],
   value: string
@@ -239,6 +253,9 @@ export async function recordMasterProductionReadinessRun(
 
   return withUserDatabase(userId, async (client) => {
     await requireSuiteAdmin(client);
+    if (ownerDecision !== "not-reviewed") {
+      await requireSuiteOwner(client);
+    }
     await client.query(
       "select pg_advisory_xact_lock(hashtext($1))",
       ["master-production-readiness:" + sourceId]
