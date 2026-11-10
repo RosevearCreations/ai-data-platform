@@ -274,3 +274,11 @@ Build 348 implements the staged source-onboarding/pilot evidence layer for the e
 The implementation composes current Build 336 registry state and Build 347 security state without replacing either source of truth. Incomplete evidence remains HOLD; expired evidence becomes STALE; deployment GREEN never becomes onboarding evidence.
 
 A Build 348 ONBOARDED result is an evidence/read-model conclusion only. It does not activate a connection, release a source HOLD, create credentials, call a peer, send communications or establish final production/user acceptance.
+
+## Build 349 contribution — production readiness, recovery, owner acceptance and rollback
+
+Build 349 consolidates the final per-source Master Shell readiness view across Build 348 onboarding, operational recovery, accessibility, production safeguards and rollback evidence. Each exact source remains independent and fail-closed.
+
+When all five dimensions PASS, the source becomes READY_FOR_OWNER. Only the authenticated suite owner can explicitly ACCEPT, HOLD or REJECT. Acceptance remains evidence-only: it does not activate connections, execute rollback, release source HOLDs or replace source-specific production gates.
+
+This gives Build 350 a truthful final acceptance input while preserving UNKNOWN/HOLD/STALE/FAIL distinctions instead of turning software deployment into business or operational approval.
