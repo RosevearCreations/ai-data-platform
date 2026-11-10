@@ -21,7 +21,7 @@ Only work explicitly authorized by the owner may be implemented or promoted. Thi
 
 8. **Build 358 — Advanced Anomaly Detection, Behaviour Baselines & Predictive Risk Intelligence** — Production.
 9. **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management** — Production.
-10. **Build 360 — Advanced Control Readiness, Supervised Self-Healing & Autonomous-Control Boundary Certification** — current authorized build.
+10. **Build 360 — Advanced Control Readiness, Supervised Self-Healing & Autonomous-Control Boundary Certification** — Production.
 
 ## Control-maturity rules
 
@@ -32,3 +32,8 @@ Only work explicitly authorized by the owner may be implemented or promoted. Thi
 - source-specific trust, consent, owner acceptance and rollback gates remain authoritative;
 - consequential peer writes require explicit authorization;
 - advanced controls must retain bounded scope, rollback, audit evidence and operator override.
+
+
+## Roadmap closure
+
+Builds 351–360 are Production. The owner-authorized continuation is **Build 361 — Master Activation Evidence Reconciliation, Ree-Host Runtime Closure & Source-Onboarding Gate**. Yard Workers/iCamp Master integration remains gated until Build 361 can truthfully report `MASTERS_SYNCED`.
