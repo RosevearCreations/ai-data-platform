@@ -74,3 +74,7 @@ Consequential response remains within Build 357 supervised recovery and existing
 ## Next queued build
 
 **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management**.
+
+## Promotion verification
+
+Production promotion remains gated by the repository's authoritative compact promotion gate and exhaustive historical audit when required. A missing workflow run is not treated as a pass.
