@@ -8,11 +8,11 @@ Only work explicitly authorized by the owner may be implemented or promoted. Thi
 
 1. **Build 351 — Master Basic Controls Completion, Coverage Gaps & Operational Truth Reconciliation** — Production; reconcile foundational controls, separate implementation from live acceptance, remove obsolete preflight/prelaunch blockers and retain current evidence-backed requirements.
 2. **Build 352 — Basic Operator Actions, Safe Refresh, Retry, Recheck & Recovery Controls** — Production.
-3. **Build 353 — Basic Alerts, Thresholds, Ownership, Escalation & Resolution Tracking** — current authorized build.
+3. **Build 353 — Basic Alerts, Thresholds, Ownership, Escalation & Resolution Tracking** — Production.
 
 ## Moderate controls
 
-4. **Build 354 — Moderate Cross-Application Control Center & Dependency-Aware Operations** — queued roadmap candidate.
+4. **Build 354 — Moderate Cross-Application Control Center & Dependency-Aware Operations** — current authorized build.
 5. **Build 355 — Moderate Performance Optimization, Caching, Query & Rendering Control Plane** — queued roadmap candidate.
 6. **Build 356 — Moderate Capacity, Workload, Resource & Demand Forecasting** — queued roadmap candidate.
 7. **Build 357 — Moderate Incident Automation, Runbooks & Supervised Recovery Orchestration** — queued roadmap candidate.
