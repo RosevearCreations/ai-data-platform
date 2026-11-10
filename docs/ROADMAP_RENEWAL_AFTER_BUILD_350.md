@@ -77,3 +77,7 @@ The owner authorized **Build 358 — Advanced Anomaly Detection, Behaviour Basel
 ### Build 359 authorization
 
 The owner authorized **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management** for implementation and promotion through `dev` and `main`. Build 359 also begins coordinated Master-plane convergence across AI Data Platform, Rosevear Comms Hub and Rosevear AI Hub while preserving their security and authority boundaries. Cross-application automation placement is assigned to Rosevear AI Hub on Ree Windows Server; no Windows task is automatically created or modified by this build.
+
+### Build 360 authorization
+
+The owner authorized **Build 360 — Advanced Control Readiness, Supervised Self-Healing & Autonomous-Control Boundary Certification** for implementation and production promotion. The controller must synchronize the three Master planes before opening the next Master-Shell integration stage for Yard Workers, iCamp, Rosie Dazzlers and Devil n Dove. Build 360 issues activation tokens for Comms QL-411 and AI Hub Build 304 and keeps consequential self-healing approval-gated.

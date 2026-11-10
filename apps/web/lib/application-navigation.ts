@@ -452,6 +452,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/master-control-readiness-certification",
+        label: "Master Control Certification",
+        description: "Review Build 360 three-Master activation, supervised self-healing boundaries and the gate before larger source onboarding.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

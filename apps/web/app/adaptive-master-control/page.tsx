@@ -111,6 +111,9 @@ export default async function AdaptiveMasterControlPage({
           <Link className="secondaryButton" href="/cross-application-control-center">
             Cross-App Control
           </Link>
+          <Link className="secondaryButton" href="/master-control-readiness-certification">
+            Master Control Certification
+          </Link>
         </div>
       </section>
 

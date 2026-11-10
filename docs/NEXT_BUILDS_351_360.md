@@ -20,8 +20,8 @@ Only work explicitly authorized by the owner may be implemented or promoted. Thi
 ## Advanced controls
 
 8. **Build 358 — Advanced Anomaly Detection, Behaviour Baselines & Predictive Risk Intelligence** — Production.
-9. **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management** — current authorized build.
-10. **Build 360 — Advanced Control Readiness, Supervised Self-Healing & Autonomous-Control Boundary Certification** — queued roadmap candidate.
+9. **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management** — Production.
+10. **Build 360 — Advanced Control Readiness, Supervised Self-Healing & Autonomous-Control Boundary Certification** — current authorized build.
 
 ## Control-maturity rules
 
