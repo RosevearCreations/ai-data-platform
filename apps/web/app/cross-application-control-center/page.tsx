@@ -45,6 +45,9 @@ export default async function CrossApplicationControlCenterPage() {
           <Link className="secondaryButton" href="/performance-optimization-control-plane">
             Performance Optimization
           </Link>
+          <Link className="secondaryButton" href="/incident-runbook-recovery">
+            Incident Runbooks
+          </Link>
         </div>
       </section>
 
