@@ -47,6 +47,7 @@ export default async function CapacityPlanningPage({
           <Link className="secondaryButton" href="/production-learning">Production Learning</Link>
           <Link className="secondaryButton" href="/reporting">Reporting Studio</Link>
           <Link className="secondaryButton" href="/retention">Retention Governance</Link>
+          <Link className="secondaryButton" href="/capacity-workload-forecasting">Demand Forecasting</Link>
         </div>
       </section>
 
