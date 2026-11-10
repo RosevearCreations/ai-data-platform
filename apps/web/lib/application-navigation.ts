@@ -386,6 +386,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-production-readiness",
+        label: "Master Production Readiness",
+        description: "Consolidate source onboarding, recovery, accessibility, safeguards, rollback and explicit owner acceptance without replacing source-specific gates.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

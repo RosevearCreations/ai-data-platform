@@ -239,7 +239,7 @@ assert.ok(
 );
 assert.ok(
   roadmap.includes(
-    "Build 348 — Six-Application Source Onboarding & Supervised Production Pilot** — current build"
+    "Build 348 — Six-Application Source Onboarding & Supervised Production Pilot** — Production"
   )
 );
 assert.ok(

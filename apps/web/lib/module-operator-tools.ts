@@ -200,6 +200,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/relationship-certification",
           "/master-security-certification",
           "/source-onboarding-pilot",
+          "/master-production-readiness",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",

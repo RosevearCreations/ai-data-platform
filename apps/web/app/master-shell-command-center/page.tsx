@@ -99,6 +99,12 @@ export default async function MasterShellCommandCenterPage() {
           >
             Source Onboarding & Pilot
           </Link>
+          <Link
+            className="secondaryButton"
+            href="/master-production-readiness"
+          >
+            Master Production Readiness
+          </Link>
           <a
             className="secondaryButton"
             href="/api/master-shell-command-center"
