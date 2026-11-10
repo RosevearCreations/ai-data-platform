@@ -446,6 +446,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/adaptive-master-control",
+        label: "Adaptive Master Control",
+        description: "Review Build 359 coordinated Master planes, uptime evidence, dynamic thresholds and server-first automation placement.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

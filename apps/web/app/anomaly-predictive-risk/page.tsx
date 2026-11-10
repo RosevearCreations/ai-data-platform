@@ -87,6 +87,9 @@ export default async function AnomalyPredictiveRiskPage({
           <Link className="secondaryButton" href="/incident-runbook-recovery">
             Incident Runbooks
           </Link>
+          <Link className="secondaryButton" href="/adaptive-master-control">
+            Adaptive Master Control
+          </Link>
         </div>
       </section>
 

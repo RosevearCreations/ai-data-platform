@@ -73,3 +73,7 @@ The owner authorized **Build 357 — Moderate Incident Automation, Runbooks & Su
 ### Build 358 authorization
 
 The owner authorized **Build 358 — Advanced Anomaly Detection, Behaviour Baselines & Predictive Risk Intelligence** for implementation and promotion through `dev` and `main`.
+
+### Build 359 authorization
+
+The owner authorized **Build 359 — Advanced Adaptive Controls, Dynamic Thresholds & Intelligent Resource Management** for implementation and promotion through `dev` and `main`. Build 359 also begins coordinated Master-plane convergence across AI Data Platform, Rosevear Comms Hub and Rosevear AI Hub while preserving their security and authority boundaries. Cross-application automation placement is assigned to Rosevear AI Hub on Ree Windows Server; no Windows task is automatically created or modified by this build.
