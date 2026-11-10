@@ -398,6 +398,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "learning-overview"
       },
       {
+        href: "/basic-controls",
+        label: "Basic Controls",
+        description: "Review Build 351 foundational control coverage, evidence gaps and current operational truth without treating historical preflight labels as automatic blockers.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
