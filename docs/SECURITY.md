@@ -1039,3 +1039,11 @@ Build 348 is an evidence-only supervised onboarding gate. It requires original s
 A registry-readiness PASS is rejected unless the exact source is currently TEST_VERIFIED or CONNECTED in Build 336. A security PASS is rejected unless the exact source is currently PASS in Build 347. Pilot windows require start/end timestamps and evidence and may not overlap any other source pilot window.
 
 The append-only Build 348 tables are protected by forced RLS and runtime SELECT/INSERT-only grants. The build does not create credentials, call source endpoints, activate connections, release HOLD, mutate peers or infer owner approval from deployment state.
+
+## Build 349 production readiness and owner-decision controls
+
+Build 349 separates evidence review from authority. Owners/admins may review and record the five readiness dimensions, but only an authenticated suite owner may record ACCEPTED, HELD or REJECTED. Every explicit owner decision requires its own evidence URI, decision detail and timestamp.
+
+The source-onboarding dimension cannot PASS unless Build 348 currently reports ONBOARDED for that exact source, and ACCEPTED is rejected unless that same current onboarding condition holds. Deployment GREEN, historical owner-acceptance pages, prepared rollback state and recovery automation do not imply acceptance.
+
+Migration 0127 stores append-only readiness runs and assertions under forced RLS with SELECT/INSERT-only runtime grants. Build 349 does not change consent, authorization, source connection state or peer data, and it never executes rollback automatically.
