@@ -64,11 +64,12 @@ function readiness(states: State[]): MasterProductionReadinessModel {
       build348OnboardedImpliesAcceptance: false,
       acceptanceActivatesConnection: false,
       sourceSpecificGatesRemainAuthoritative: true,
-      staleEvidenceCannotPass: true,
-      missingEvidenceCannotPass: true,
-      rollbackIsPreparedNotExecuted: true
+      sourceMutationPerformed: false,
+      peerWritePerformed: false,
+      automaticRollbackPerformed: false,
+      automaticHoldRelease: false
     }
-  };
+  } as MasterProductionReadinessModel;
 }
 
 assert.equal(BASIC_CONTROLS_BUILD, 351);
