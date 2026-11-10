@@ -20,7 +20,11 @@ assert.equal(SOURCE_ACKNOWLEDGEMENTS.length, 6);
 assert.ok(SOURCE_ACKNOWLEDGEMENTS.every((item) => item.connection === "HOLD"));
 assert.equal(
   SOURCE_ACKNOWLEDGEMENTS.find((item) => item.sourceId === "rosiedazzlers")?.revisionState,
-  "STALE_REVISION"
+  "CURRENT"
+);
+assert.equal(
+  SOURCE_ACKNOWLEDGEMENTS.find((item) => item.sourceId === "rosiedazzlers")?.manifest,
+  "VERIFIED"
 );
 assert.ok(CONNECTION_HANDOFFS.every((item) => item.status.startsWith("ACK_RECEIVED")));
 
