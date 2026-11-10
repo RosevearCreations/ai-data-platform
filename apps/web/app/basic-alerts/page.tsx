@@ -89,6 +89,17 @@ export default async function BasicAlertsPage() {
               <h3>{handoff.label}</h3>
               <p><strong>Repository:</strong> {handoff.repository}</p>
               <p><strong>Handshake token:</strong> {handoff.token}</p>
+              {model.acknowledgements
+                .filter((ack) => ack.sourceId === handoff.targetId)
+                .map((ack) => (
+                  <div key={ack.sourceId}>
+                    <p><strong>Reported connection:</strong> {ack.connection}</p>
+                    <p><strong>Revision state:</strong> {ack.revisionState}</p>
+                    <p><strong>Reported revision:</strong> {ack.reportedRevision}</p>
+                    <p><strong>Current revision at reconciliation:</strong> {ack.currentRevisionAtReconciliation}</p>
+                    <p><strong>Evidence:</strong> {ack.manifest} · owner proof {ack.ownerProof} · signed receipt {ack.signedReceipt}</p>
+                  </div>
+                ))}
             </article>
           ))}
         </div>
