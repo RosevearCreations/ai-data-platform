@@ -65,3 +65,7 @@ The owner authorized **Build 355 — Moderate Performance Optimization, Caching,
 ### Build 356 authorization
 
 The owner authorized **Build 356 — Moderate Capacity, Workload, Resource & Demand Forecasting** for implementation and promotion through `dev` and `main`.
+
+### Build 357 authorization
+
+The owner authorized **Build 357 — Moderate Incident Automation, Runbooks & Supervised Recovery Orchestration** for implementation and promotion through `dev` and `main`.
