@@ -458,6 +458,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/master-activation-reconciliation",
+        label: "Master Activation Reconciliation",
+        description: "Review Build 361 Comms/AI Hub ACK evidence, runtime HOLD closure and the Yard Workers/iCamp source-onboarding gate.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
