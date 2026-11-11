@@ -14,8 +14,12 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 10. **Build 370 — Independent Deployed Manifest Observation, Source Signer Custody Evidence Correlation, Fresh Receipt Admission Closure & Three-Master Runtime Decision Recheck** — Production.
 11. **Build 371 — Yard Workers Product-Shell Identity Reconciliation, Independent Source Signer Enrollment Closure, Fresh Signed Health Receipt Admission & Three-Master Runtime Discrepancy Resolution** — Production.
 12. **Build 372 — Yard Workers Independent Signer Custody Evidence Intake, Exact YW561 Signed Health Receipt Admission, Durable Replay Correlation & Three-Master Runtime Closure Recheck** — Production.
-13. **Build 373 — YW561 Live Source-Health Signer Enrollment Correlation, Exact Signed HEALTHY Receipt Closure, Durable Replay Acceptance & Three-Master Owner Decision Recheck** — current authorized build.
+13. **Build 373 — YW561 Live Source-Health Signer Enrollment Correlation, Exact Signed HEALTHY Receipt Closure, Durable Replay Acceptance & Three-Master Owner Decision Recheck** — Production.
+14. **Build 374 — YW561 Trusted Source-Health Signer Admission, Current Receipt/Replay Evidence Activation, Three-Master Runtime Evidence Correlation & Explicit Owner Acceptance Gate** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
 The controller now has durable recheck ledgers for live signer correlation, exact receipt closure, replay acceptance and the exact-receipt owner decision. Current runtime truth remains HOLD because no independently enrolled YW source-health signer, exact admitted YW561 signed HEALTHY receipt or accepted source-health replay exists, and AI Hub 309 / Comms QL-417 remain runtime HOLD.
+
+
+Build 374 adds durable controller activation ledgers for trusted signer admission, exact current receipt/replay activation, three-Master runtime correlation and the explicit exact-receipt owner gate. Current live truth remains fail-closed: source-health activation is HOLD, the AI Hub 309 / Comms QL-417 runtime correlation is HOLD, CONNECTED is not inferred, and owner acceptance is not auto-created.

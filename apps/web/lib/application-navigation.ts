@@ -536,6 +536,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw561-trusted-source-health-activation",
+        label: "YW561 Trusted Source-Health Activation",
+        description: "Review Build 374 trusted source-health signer admission, current receipt/replay activation, three-Master runtime correlation and the explicit owner acceptance gate.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
