@@ -143,7 +143,7 @@ function correlateSignerCustody(
 
   if (!intake) {
     return {
-      signerState: "HOLD_CUSTODY" as const,
+      signerState: "HOLD_CUSTODY_EVIDENCE" as const,
       signer,
       intake: null,
       blockers: ["Trusted YW signer exists but committed independent custody intake is missing."]
@@ -165,7 +165,7 @@ function correlateSignerCustody(
 
   if (!complete || !distinct || !pinMatch) {
     return {
-      signerState: "HOLD_CUSTODY" as const,
+      signerState: "HOLD_CUSTODY_EVIDENCE" as const,
       signer,
       intake,
       blockers: [
