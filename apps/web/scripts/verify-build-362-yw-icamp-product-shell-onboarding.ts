@@ -37,7 +37,7 @@ assert.equal(model.policy.deploymentGreenIsConnectionProof, false);
 
 const page = source("app/source-shell-onboarding/page.tsx");
 for (const token of [
-  "Build 362 · Yard Workers & iCamp product-shell onboarding",
+  "Build 362 · Yard Workers &amp; iCamp product-shell onboarding",
   "Build 362 is code-ready, not connection acceptance.",
   "Child tenants remain child tenants."
 ]) {
