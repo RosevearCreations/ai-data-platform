@@ -518,6 +518,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw-product-shell-resolution",
+        label: "YW Product-Shell Resolution",
+        description: "Review Build 371 YW371 production identity reconciliation, independent signer/custody closure, fresh signed HEALTHY admission and the AI Hub 309 / Comms QL-417 runtime discrepancy recheck.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
