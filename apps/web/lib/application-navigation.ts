@@ -488,6 +488,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-signer-enrollment",
+        label: "Source Signer Enrollment",
+        description: "Review Build 366 independent public-key pin intake, custody challenge verification, signed-health admission and owner-review preparation.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
