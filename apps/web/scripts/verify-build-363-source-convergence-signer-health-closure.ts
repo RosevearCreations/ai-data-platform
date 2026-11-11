@@ -64,12 +64,13 @@ assert.equal(
 const page = source("app/source-convergence/page.tsx");
 for (const token of [
   "Build 363 · Source convergence and acceptance closure",
-  "Build 363 closes evidence gaps, not truth boundaries.",
-  "MASTER363-YW-SOURCE-CONVERGE",
-  "MASTER363-ICAMP-SOURCE-CONVERGE"
+  "Build 363 closes evidence gaps, not truth boundaries."
 ]) {
   assert.ok(page.includes(token), "page token " + token);
 }
+const modelSource = source("lib/source-convergence.ts");
+assert.ok(modelSource.includes("MASTER363-YW-SOURCE-CONVERGE"));
+assert.ok(modelSource.includes("MASTER363-ICAMP-SOURCE-CONVERGE"));
 
 const navigation = source("lib/application-navigation.ts");
 assert.ok(navigation.includes('href: "/source-convergence"'));
