@@ -59,7 +59,7 @@ export default async function MasterActivationReconciliationPage() {
       <section className="dataQualityPolicyNote">
         <strong>Code GREEN is not MASTERS SYNCED.</strong>
         <p>
-          Comms QL-412 and AI Hub Build 305 are code/release GREEN, but the
+          Comms QL-413 and AI Hub Build 305 are code/release GREEN, but the
           supplied receipts still report runtime, owner-proof, deployment and
           acceptance HOLD states. Build 361 therefore keeps the next Master
           integration stage closed.
@@ -99,8 +99,11 @@ export default async function MasterActivationReconciliationPage() {
             <span className="reviewStatus">{model.snapshot.comms.receipt}</span>
             <h3>Rosevear Comms Hub</h3>
             <p><strong>Main:</strong> <code>{model.snapshot.comms.main}</code></p>
+            <p><strong>Receipt intake:</strong> {model.snapshot.comms.receiptIntake}</p>
+            <p><strong>Operational uptime:</strong> {model.snapshot.comms.operationalUptime}</p>
             <p><strong>Signer:</strong> {model.snapshot.comms.signerEnrollment}</p>
             <p><strong>Replay:</strong> {model.snapshot.comms.replayStore}</p>
+            <p><strong>Owner connection:</strong> {model.snapshot.comms.ownerConnectionDecision}</p>
             <p><strong>Receiver:</strong> {model.snapshot.comms.receiver}</p>
           </article>
           <article className="reviewBatchSummary">
@@ -129,9 +132,10 @@ export default async function MasterActivationReconciliationPage() {
       <section className="dataQualityPolicyNote">
         <strong>Next integration stage: HOLD.</strong>
         <p>
-          Yard Workers and iCamp may begin only after this model reaches
-          <code> MASTERS_SYNCED </code>. Rosie Dazzlers and Devil n Dove remain
-          behind that first source-onboarding wave.
+          Build 362 may prepare read-only source identity/health code under owner
+          authorization, but Yard Workers and iCamp supervised acceptance remains
+          blocked until this model reaches <code> MASTERS_SYNCED </code>. Rosie
+          Dazzlers and Devil n Dove remain behind that first acceptance wave.
         </p>
       </section>
     </main>
