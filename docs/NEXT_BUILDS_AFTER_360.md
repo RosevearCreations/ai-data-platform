@@ -11,10 +11,9 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 7. **Build 367 — Verified Source Signer Evidence Reception, Signed Health Admission Reconciliation, Master-Gate Owner Review Packet & Explicit Acceptance Decision** — Production.
 8. **Build 368 — Master Runtime Evidence Closure, iCamp Revision Re-Convergence, Source Receipt Refresh & Supervised Acceptance Recheck** — Production.
 9. **Build 369 — Source Refresh Evidence Intake, iCamp Manifest Re-Convergence Confirmation, YW/iCamp Fresh Signed Health Admission & Three-Master Acceptance Recheck** — Production.
-10. **Build 370 — Independent Deployed Manifest Observation, Source Signer Custody Evidence Correlation, Fresh Receipt Admission Closure & Three-Master Runtime Decision Recheck** — current authorized build.
+10. **Build 370 — Independent Deployed Manifest Observation, Source Signer Custody Evidence Correlation, Fresh Receipt Admission Closure & Three-Master Runtime Decision Recheck** — Production.
+11. **Build 371 — Yard Workers Product-Shell Identity Reconciliation, Independent Source Signer Enrollment Closure, Fresh Signed Health Receipt Admission & Three-Master Runtime Discrepancy Resolution** — current authorized build.
 
-Build 370 independently observed both exact current production revisions through the linked Vercel production deployments: YW560 `2c7234c975528a3a3ab76ca22829c8b4a541de97` and iCamp244 `69d46513b45e340a4e295165abbd3d99b3a62274`. iCamp's deployed source identity is fully `platform_shell`. Yard Workers has an exact revision and `platform_shell` tenant boundary but reports `source_role=business_shell`, so its product-shell identity remains HOLD_ROLE_MISMATCH.
+Build 371 independently re-observed the newly promoted YW371 production deployment `fee921c01a1bcbcb4679ef9a0f6b36d0f29aeaea`. Its deployed manifest now reports the exact production revision, `source_role=platform_shell` and `tenant_boundary=platform_shell`, closing the Build 370 Yard Workers product-shell role discrepancy.
 
-Neither source currently has an independently enrolled Ed25519 source signer/custody chain or current controller-admitted signed HEALTHY receipt. AI Hub 309 and Comms QL-417 also remain runtime HOLD: original-host process/telemetry, one-TEST, receiver-signed ACK, durable replay, sampled uptime and owner-decision evidence are unresolved. Receiver/connection remain OFF/HOLD.
-
-Build 370 records these boundaries without rewriting source manifests, generating source private keys, importing raw telemetry, or inferring CONNECTED/owner acceptance from code or deployment GREEN.
+The source trust and Master runtime gates remain separate. YW still has no independently enrolled controller-trusted Ed25519 signer/custody chain and no current admitted signed HEALTHY receipt. AI Hub 309 and Comms QL-417 remain runtime HOLD. Build 371 therefore records `SOURCE_IDENTITY_RESOLVED_RUNTIME_HOLD` rather than CONNECTED or owner-accepted.

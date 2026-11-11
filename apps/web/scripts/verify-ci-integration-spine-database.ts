@@ -124,7 +124,8 @@ const requiredTables = [
   "master_deployed_manifest_observation_events",
   "master_source_custody_correlation_events",
   "master_fresh_receipt_admission_closure_events",
-  "master_three_master_runtime_decision_rechecks"
+  "master_three_master_runtime_decision_rechecks",
+  "master_yw_source_resolution_events"
 ];
 
 const appendOnlyTables = [
@@ -231,7 +232,8 @@ const appendOnlyTables = [
   "master_deployed_manifest_observation_events",
   "master_source_custody_correlation_events",
   "master_fresh_receipt_admission_closure_events",
-  "master_three_master_runtime_decision_rechecks"
+  "master_three_master_runtime_decision_rechecks",
+  "master_yw_source_resolution_events"
 ];
 
 
@@ -324,7 +326,8 @@ async function main() {
         "0131_master_source_owner_review_acceptance.sql",
         "0132_master_runtime_source_refresh_recheck.sql",
         "0133_master_source_refresh_evidence_three_master_recheck.sql",
-        "0134_master_manifest_custody_receipt_runtime_decision.sql"
+        "0134_master_manifest_custody_receipt_runtime_decision.sql",
+        "0135_master_yw_source_resolution.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -419,6 +422,10 @@ async function main() {
     assert(
       migrationNames.has("0134_master_manifest_custody_receipt_runtime_decision.sql"),
       "migration 0134 is not recorded"
+    );
+    assert(
+      migrationNames.has("0135_master_yw_source_resolution.sql"),
+      "migration 0135 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
