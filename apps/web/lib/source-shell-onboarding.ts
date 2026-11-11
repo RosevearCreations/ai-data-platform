@@ -28,13 +28,13 @@ export const MASTER_362_PRODUCT_SHELLS = Object.freeze([
     sourceAppId: "yard-workers",
     label: "Yard Workers",
     repository: "RosevearCreations/yw",
-    currentProductionMain: "cdc368e2f2773863595ff9cf6f35c1f02773eeaf",
-    manifestRevision: "028aee250857415b9b9035aaec50060757e377a5",
+    currentProductionMain: "0010bbd5ae71cb025d77e613cce9bc6e3f064d34",
+    manifestRevision: "0010bbd5ae71cb025d77e613cce9bc6e3f064d34",
     manifestPath: "/.well-known/rosevear-integration-manifest.json",
     healthPath: "/api/integration/v1/shell/health",
     manifestRole: "business_shell",
     tenantBoundary: "platform_shell",
-    signatureState: "AWAITING_INDEPENDENT_SOURCE_SIGNER",
+    signatureState: "HOLD_UNENROLLED",
     connectionState: "DISCONNECTED / HOLD"
   },
   {
@@ -42,13 +42,13 @@ export const MASTER_362_PRODUCT_SHELLS = Object.freeze([
     sourceAppId: "icamp",
     label: "iCamp",
     repository: "RosevearCreations/iCamp",
-    currentProductionMain: "e2d343595363ca9106e7f1dbc60006e3a6c616aa",
-    manifestRevision: "dc1369338a4b191fc72031b7e62f7e48fd805bcd",
+    currentProductionMain: "00112c6714ecdf4d49dc114d4b29a0a8b9a8bced",
+    manifestRevision: "00112c6714ecdf4d49dc114d4b29a0a8b9a8bced",
     manifestPath: "/.well-known/rosevear-integration-manifest.json",
     healthPath: "/api/integration/v1/shell/health",
     manifestRole: "business_shell",
     tenantBoundary: "platform_shell",
-    signatureState: "AWAITING_INDEPENDENT_SOURCE_SIGNER",
+    signatureState: "HOLD_UNENROLLED",
     connectionState: "DISCONNECTED / HOLD"
   }
 ]);
@@ -56,8 +56,12 @@ export const MASTER_362_PRODUCT_SHELLS = Object.freeze([
 function sourceStatus(source: (typeof MASTER_362_PRODUCT_SHELLS)[number]) {
   const revisionCurrent =
     source.manifestRevision === source.currentProductionMain;
+  const signerState = source.signatureState.toUpperCase();
   const signerEnrolled =
-    source.signatureState !== "AWAITING_INDEPENDENT_SOURCE_SIGNER";
+    !signerState.includes("AWAITING") &&
+    !signerState.includes("HOLD") &&
+    !signerState.includes("MISSING") &&
+    !signerState.includes("UNENROLLED");
   const connectionAccepted =
     !source.connectionState.toUpperCase().includes("HOLD") &&
     !source.connectionState.toUpperCase().includes("DISCONNECTED");
