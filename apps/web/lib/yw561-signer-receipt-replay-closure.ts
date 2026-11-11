@@ -271,7 +271,7 @@ export function composeBuild372Yw561Closure(input: {
       .filter(
         (event) =>
           event.sourceProductionRevision === observation.productionMain &&
-          event.keyId === custody.signer?.keyId
+          (custody.signer === null || event.keyId === custody.signer.keyId)
       )
       .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))[0] ?? null;
 
