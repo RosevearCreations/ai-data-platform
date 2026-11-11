@@ -198,7 +198,7 @@ export async function recordTrustedSourceSignerEvent(
   const custodyEvidenceURI = String(input.custodyEvidenceURI ?? "").trim();
   const independentlyVerifiedAt = String(input.independentlyVerifiedAt ?? "");
   if (!keyId || keyId.length > 160) throw new Error("build365_key_id_invalid");
-  if (!/^(https://|urn:rosevear:evidence:)S{1,500}$/.test(custodyEvidenceURI)) {
+  if (!(custodyEvidenceURI.startsWith("https://") || custodyEvidenceURI.startsWith("urn:rosevear:evidence:")) || /\\s/.test(custodyEvidenceURI) || custodyEvidenceURI.length > 500) {
     throw new Error("build365_custody_evidence_invalid");
   }
   const verifiedAt = new Date(independentlyVerifiedAt);
@@ -381,7 +381,7 @@ export async function recordOwnerDecisionAudit(
   const evidenceURI = String(input.evidenceURI ?? "");
   const detail = String(input.detail ?? "");
   const decidedAt = String(input.decidedAt ?? "");
-  if (!/^(https://|urn:rosevear:evidence:)S{1,500}$/.test(evidenceURI)) {
+  if (!(evidenceURI.startsWith("https://") || evidenceURI.startsWith("urn:rosevear:evidence:")) || /\\s/.test(evidenceURI) || evidenceURI.length > 500) {
     throw new Error("build365_owner_evidence_invalid");
   }
   if (detail.length < 1 || detail.length > 1800) {
