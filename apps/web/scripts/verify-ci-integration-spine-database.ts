@@ -118,7 +118,9 @@ const requiredTables = [
   "master_source_acceptance_decision_events",
   "master_runtime_evidence_rechecks",
   "master_source_receipt_refresh_requests",
-  "master_supervised_acceptance_rechecks"
+  "master_supervised_acceptance_rechecks",
+  "master_source_refresh_evidence_events",
+  "master_three_master_acceptance_rechecks"
 ];
 
 const appendOnlyTables = [
@@ -219,7 +221,9 @@ const appendOnlyTables = [
   "master_source_acceptance_decision_events",
   "master_runtime_evidence_rechecks",
   "master_source_receipt_refresh_requests",
-  "master_supervised_acceptance_rechecks"
+  "master_supervised_acceptance_rechecks",
+  "master_source_refresh_evidence_events",
+  "master_three_master_acceptance_rechecks"
 ];
 
 
@@ -310,7 +314,8 @@ async function main() {
         "0129_master_source_signer_receipt_owner_audit.sql",
         "0130_master_source_signer_enrollment_health_admission.sql",
         "0131_master_source_owner_review_acceptance.sql",
-        "0132_master_runtime_source_refresh_recheck.sql"
+        "0132_master_runtime_source_refresh_recheck.sql",
+        "0133_master_source_refresh_evidence_three_master_recheck.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -397,6 +402,10 @@ async function main() {
     assert(
       migrationNames.has("0132_master_runtime_source_refresh_recheck.sql"),
       "migration 0132 is not recorded"
+    );
+    assert(
+      migrationNames.has("0133_master_source_refresh_evidence_three_master_recheck.sql"),
+      "migration 0133 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
