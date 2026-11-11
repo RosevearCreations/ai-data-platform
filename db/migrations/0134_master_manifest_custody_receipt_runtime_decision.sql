@@ -14,6 +14,7 @@ create table if not exists app.master_deployed_manifest_observation_events (
   deployment_git_revision text not null check (deployment_git_revision ~ '^[a-f0-9]{40}$'),
   observed_manifest_revision text not null check (observed_manifest_revision ~ '^[a-f0-9]{40}$'),
   observed_source_id text not null check (observed_source_id in ('yw','icamp')),
+  observed_source_role text not null check (observed_source_role in ('platform_shell','business_shell')),
   tenant_boundary text not null check (tenant_boundary='platform_shell'),
   signature_state text not null check (
     signature_state in ('AWAITING_INDEPENDENT_SOURCE_SIGNER','SIGNED')
@@ -22,7 +23,7 @@ create table if not exists app.master_deployed_manifest_observation_events (
     connection_state in ('DISCONNECTED / HOLD','CONNECTED')
   ),
   observation_state text not null check (
-    observation_state in ('VERIFIED_EXACT','HOLD_MISMATCH','HOLD_UNVERIFIED')
+    observation_state in ('VERIFIED_EXACT','HOLD_ROLE_MISMATCH','HOLD_MISMATCH','HOLD_UNVERIFIED')
   ),
   response_etag text,
   request_trace text,
