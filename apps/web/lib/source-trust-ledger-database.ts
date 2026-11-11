@@ -267,7 +267,7 @@ export async function recordVerifiedConvergenceReceiptWithClient(
   const sourceId = parseSourceId(receipt.sourceId);
   await requireSuiteAdmin(client);
   await client.query("select pg_advisory_xact_lock(hashtext($1))", [
-  "build365-receipt:" + sourceId
+    "build365-receipt:" + sourceId
   ]);
 
   const signer = await currentTrustedSigner(client, sourceId, receipt.keyId);
@@ -353,10 +353,10 @@ export async function recordVerifiedConvergenceReceiptWithClient(
   }
 
   return {
-  receiptId,
-  sourceId,
-  receiptSha256,
-  verificationState: "VERIFIED_SOURCE_BOUND_HEALTH" as const
+    receiptId,
+    sourceId,
+    receiptSha256,
+    verificationState: "VERIFIED_SOURCE_BOUND_HEALTH" as const
   };
 }
 
