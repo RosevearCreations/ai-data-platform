@@ -530,6 +530,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw561-live-signer-owner-recheck",
+        label: "YW561 Live Signer & Owner Recheck",
+        description: "Review Build 373 live source-health signer correlation, exact signed HEALTHY receipt closure, durable replay acceptance and the three-Master owner decision recheck.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
