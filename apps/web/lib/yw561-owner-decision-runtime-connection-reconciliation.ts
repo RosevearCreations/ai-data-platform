@@ -123,7 +123,10 @@ export function composeBuild375Yw561DecisionRuntimeConnection(
       : ("DISCONNECTED_HOLD" as const);
 
   const blockers = [
-    ...activation.blockers,
+    ...activation.blockers.filter((blocker) => !blocker.includes("Comms QL-417")),
+    ...(currentRuntimeGateState !== "OPEN"
+      ? ["AI Hub 309 / Comms QL-418 three-Master runtime evidence correlation remains HOLD."]
+      : []),
     ...(decisionExecutionState === "HOLD_NO_CURRENT_RECEIPT"
       ? ["No exact current YW561 receipt exists for an owner decision."]
       : []),
