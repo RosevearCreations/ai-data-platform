@@ -14,7 +14,7 @@ create table if not exists app.master_yw_source_resolution_events (
   tenant_boundary text not null check (tenant_boundary='platform_shell'),
   identity_state text not null check (identity_state in ('VERIFIED_EXACT','HOLD')),
   signer_state text not null check (
-    signer_state in ('VERIFIED_CORRELATED','HOLD_UNENROLLED','HOLD_CUSTODY','HOLD_AMBIGUOUS')
+    signer_state in ('VERIFIED_CORRELATED','HOLD_UNENROLLED','HOLD_CUSTODY_EVIDENCE','HOLD_CUSTODY_MISMATCH','HOLD_AMBIGUOUS')
   ),
   receipt_state text not null check (
     receipt_state in ('VERIFIED_CURRENT','HOLD_NOT_RECEIVED','HOLD_STALE','HOLD_REVISION_MISMATCH','HOLD_NOT_ADMITTED','HOLD_SIGNER_CUSTODY')
