@@ -115,7 +115,10 @@ const requiredTables = [
   "master_source_signer_enrollment_intake_events",
   "master_source_health_admission_events",
   "master_source_owner_review_packets",
-  "master_source_acceptance_decision_events"
+  "master_source_acceptance_decision_events",
+  "master_runtime_evidence_rechecks",
+  "master_source_receipt_refresh_requests",
+  "master_supervised_acceptance_rechecks"
 ];
 
 const appendOnlyTables = [
@@ -213,7 +216,10 @@ const appendOnlyTables = [
   "master_source_signer_enrollment_intake_events",
   "master_source_health_admission_events",
   "master_source_owner_review_packets",
-  "master_source_acceptance_decision_events"
+  "master_source_acceptance_decision_events",
+  "master_runtime_evidence_rechecks",
+  "master_source_receipt_refresh_requests",
+  "master_supervised_acceptance_rechecks"
 ];
 
 
@@ -303,7 +309,8 @@ async function main() {
         "0128_production_learning_viii.sql",
         "0129_master_source_signer_receipt_owner_audit.sql",
         "0130_master_source_signer_enrollment_health_admission.sql",
-        "0131_master_source_owner_review_acceptance.sql"
+        "0131_master_source_owner_review_acceptance.sql",
+        "0132_master_runtime_source_refresh_recheck.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -386,6 +393,10 @@ async function main() {
     assert(
       migrationNames.has("0131_master_source_owner_review_acceptance.sql"),
       "migration 0131 is not recorded"
+    );
+    assert(
+      migrationNames.has("0132_master_runtime_source_refresh_recheck.sql"),
+      "migration 0132 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
