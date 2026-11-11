@@ -71,7 +71,17 @@ export const BUILD_368_SOURCE_SNAPSHOT = Object.freeze([
   }
 ] as const);
 
-type SourceSnapshot = (typeof BUILD_368_SOURCE_SNAPSHOT)[number];
+export type Build368SourceSnapshot = {
+  sourceId: Source365Id;
+  sourceAppId: string;
+  label: string;
+  repository: string;
+  productionMain: string;
+  observedManifestRevision: string | null;
+  manifestMode: "DEPLOYMENT_BOUND" | "STATIC";
+  sourceRole: "platform_shell";
+  handoffToken: string;
+};
 
 function activeSigners(sourceId: Source365Id, events: readonly SignerRegistryEvent[]) {
   const latest = new Map<string, SignerRegistryEvent>();
@@ -87,14 +97,15 @@ export function composeBuild368RuntimeRecheck(input: {
   admissionEvents?: readonly HealthAdmissionEvent[];
   ownerDecisions?: readonly OwnerDecisionAuditEvent[];
   now?: Date;
-  sources?: readonly SourceSnapshot[];
+  sources?: readonly Build368SourceSnapshot[];
 } = {}) {
   const now = input.now ?? new Date();
   const signerEvents = input.signerEvents ?? [];
   const receipts = input.receipts ?? [];
   const admissionEvents = input.admissionEvents ?? [];
   const ownerDecisions = input.ownerDecisions ?? [];
-  const sources = input.sources ?? BUILD_368_SOURCE_SNAPSHOT;
+  const sources =
+    input.sources ?? (BUILD_368_SOURCE_SNAPSHOT as readonly Build368SourceSnapshot[]);
 
   const masterChecks = [
     ["aihub-installed-release", BUILD_368_MASTER_SNAPSHOT.aiHub.installedRelease, "VERIFIED"],
