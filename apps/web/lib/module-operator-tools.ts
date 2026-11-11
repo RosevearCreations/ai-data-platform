@@ -224,6 +224,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/manifest-custody-receipt-decision",
           "/yw-product-shell-resolution",
           "/yw561-signer-receipt-replay-closure",
+          "/yw561-live-signer-owner-recheck",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
