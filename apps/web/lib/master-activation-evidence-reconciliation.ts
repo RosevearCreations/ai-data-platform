@@ -161,7 +161,7 @@ export function composeMasterActivationEvidenceReconciliation(
       "Verify Comms has independently enrolled the source signer/owner proof.",
       "Verify the durable replay store is deployed and accepting protected evidence.",
       "Complete the owner-supervised incident acceptance and independently verified Comms acknowledgement.",
-      "Only after all six Build 360 prerequisites are verified may AI Data mark MASTERS_SYNCED and open Yard Workers/iCamp onboarding."
+      "Only after all six Build 360 prerequisites are verified may AI Data mark MASTERS_SYNCED and open Yard Workers/iCamp supervised acceptance."
     ],
     policy: {
       deploymentGreenIsRuntimeProof: false,
