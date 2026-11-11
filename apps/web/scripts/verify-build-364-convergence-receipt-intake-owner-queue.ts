@@ -88,7 +88,7 @@ const ywFixture = signedReceipt({
   sourceId: "yw",
   sourceAppId: "yard-workers",
   repository: "RosevearCreations/yw",
-  revision: "cdc368e2f2773863595ff9cf6f35c1f02773eeaf",
+  revision: "0010bbd5ae71cb025d77e613cce9bc6e3f064d34",
   handoffToken: "MASTER363-YW-SOURCE-CONVERGE",
   nonce: "yw-build364-valid"
 });
@@ -96,7 +96,7 @@ const icampFixture = signedReceipt({
   sourceId: "icamp",
   sourceAppId: "icamp",
   repository: "RosevearCreations/iCamp",
-  revision: "e2d343595363ca9106e7f1dbc60006e3a6c616aa",
+  revision: "00112c6714ecdf4d49dc114d4b29a0a8b9a8bced",
   handoffToken: "MASTER363-ICAMP-SOURCE-CONVERGE",
   nonce: "icamp-build364-valid"
 });
