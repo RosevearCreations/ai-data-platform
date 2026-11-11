@@ -129,7 +129,7 @@ const replayRow=(r:ReplayRow):Build372ReplayCorrelationEvent=>({
   checkedAt:r.checked_at.toISOString(),recordedAt:r.recorded_at.toISOString()
 });
 
-async function loadEvidence(client: PoolClient) {
+export async function loadBuild373EvidenceFromClient(client: PoolClient) {
   const [signers,custody,receipts,admissions,decisions,custodyEvidence,replay] =
     await Promise.all([
       client.query<SignerRow>(`select event_id,source_id,event_type,key_id,public_key_spki_sha256,
@@ -185,7 +185,7 @@ export async function listBuild373Yw561OwnerRecheckForUser(userId:string) {
       client.query(`select * from app.master_yw561_three_master_owner_decision_rechecks order by recorded_at desc limit 100`)
     ]);
     return {
-      model:composeBuild373Yw561OwnerRecheck(await loadEvidence(client)),
+      model:composeBuild373Yw561OwnerRecheck(await loadBuild373EvidenceFromClient(client)),
       signerHistory:signerHistory.rows,
       receiptHistory:receiptHistory.rows,
       replayHistory:replayHistory.rows,
@@ -201,7 +201,7 @@ export async function recordBuild373Yw561OwnerRecheck(userId:string) {
       "build373-yw561-live-signer-receipt-replay-owner-recheck"
     ]);
 
-    const model=composeBuild373Yw561OwnerRecheck(await loadEvidence(client));
+    const model=composeBuild373Yw561OwnerRecheck(await loadBuild373EvidenceFromClient(client));
     const now=new Date().toISOString();
     const o=BUILD_373_YW561_LIVE_OBSERVATION;
 
