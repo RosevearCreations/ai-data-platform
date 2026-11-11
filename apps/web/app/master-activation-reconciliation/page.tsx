@@ -132,9 +132,10 @@ export default async function MasterActivationReconciliationPage() {
       <section className="dataQualityPolicyNote">
         <strong>Next integration stage: HOLD.</strong>
         <p>
-          Yard Workers and iCamp may begin only after this model reaches
-          <code> MASTERS_SYNCED </code>. Rosie Dazzlers and Devil n Dove remain
-          behind that first source-onboarding wave.
+          Build 362 may prepare read-only source identity/health code under owner
+          authorization, but Yard Workers and iCamp supervised acceptance remains
+          blocked until this model reaches <code> MASTERS_SYNCED </code>. Rosie
+          Dazzlers and Devil n Dove remain behind that first acceptance wave.
         </p>
       </section>
     </main>
