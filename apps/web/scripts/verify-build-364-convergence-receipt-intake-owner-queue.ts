@@ -29,6 +29,7 @@ assert.equal(current.sources[1].decisionQueueState, "WAIT_FOR_SOURCE_RECEIPT");
 assert.equal(current.policy.ed25519VerificationRequired, true);
 assert.equal(current.policy.controllerMayAutoAcceptOwnerDecision, false);
 assert.equal(current.policy.controllerMayStorePrivateSigningKeys, false);
+assert.equal(current.policy.receiptSuppliedPublicKeyMayEstablishTrust, false);
 
 function signedReceipt(args: {
   sourceId: "yw" | "icamp";
@@ -37,12 +38,13 @@ function signedReceipt(args: {
   revision: string;
   handoffToken: string;
   nonce: string;
-}): ConvergenceReceipt {
+}) {
   const { publicKey, privateKey } = generateKeyPairSync("ed25519");
   const publicKeyPem = publicKey.export({
     format: "pem",
     type: "spki"
   }).toString();
+  const keyId = `${args.sourceId}-build364-test-key`;
 
   const unsigned = {
     schema: CONVERGENCE_RECEIPT_SCHEMA,
@@ -53,8 +55,7 @@ function signedReceipt(args: {
     repository: args.repository,
     sourceRevision: args.revision,
     manifestRevision: args.revision,
-    keyId: `${args.sourceId}-build364-test-key`,
-    publicKeyPem,
+    keyId,
     issuedAt: "2026-11-11T02:05:00.000Z",
     nonce: args.nonce,
     health: {
@@ -65,7 +66,7 @@ function signedReceipt(args: {
     }
   };
 
-  return {
+  const receipt: ConvergenceReceipt = {
     ...unsigned,
     signatureBase64: sign(
       null,
@@ -73,9 +74,17 @@ function signedReceipt(args: {
       privateKey
     ).toString("base64")
   };
+
+  return {
+    receipt,
+    trustedSigner: {
+      keyId,
+      publicKeyPem
+    }
+  };
 }
 
-const yw = signedReceipt({
+const ywFixture = signedReceipt({
   sourceId: "yw",
   sourceAppId: "yard-workers",
   repository: "RosevearCreations/yw",
@@ -83,7 +92,7 @@ const yw = signedReceipt({
   handoffToken: "MASTER363-YW-SOURCE-CONVERGE",
   nonce: "yw-build364-valid"
 });
-const icamp = signedReceipt({
+const icampFixture = signedReceipt({
   sourceId: "icamp",
   sourceAppId: "icamp",
   repository: "RosevearCreations/iCamp",
@@ -95,8 +104,12 @@ const icamp = signedReceipt({
 const validSources = composeConvergenceReceiptIntake({
   now: "2026-11-11T02:10:00.000Z",
   receipts: {
-    yw: { receipt: yw },
-    icamp: { receipt: icamp }
+    yw: { receipt: ywFixture.receipt },
+    icamp: { receipt: icampFixture.receipt }
+  },
+  trustedSigners: {
+    yw: ywFixture.trustedSigner,
+    icamp: icampFixture.trustedSigner
   }
 });
 assert.equal(validSources.summary.receiptsReceived, 2);
@@ -112,12 +125,13 @@ assert.equal(
 );
 
 const tampered = {
-  ...yw,
+  ...ywFixture.receipt,
   manifestRevision: "tampered-revision"
 };
 const tamperedModel = composeConvergenceReceiptIntake({
   now: "2026-11-11T02:10:00.000Z",
-  receipts: { yw: { receipt: tampered } }
+  receipts: { yw: { receipt: tampered } },
+  trustedSigners: { yw: ywFixture.trustedSigner }
 });
 assert.equal(tamperedModel.sources[0].signatureVerified, false);
 assert.equal(tamperedModel.sources[0].sourceEvidenceVerified, false);
@@ -126,7 +140,8 @@ assert.equal(tamperedModel.sources[0].decisionQueueState, "EVIDENCE_HOLD");
 const replayModel = composeConvergenceReceiptIntake({
   now: "2026-11-11T02:10:00.000Z",
   seenNonces: ["yw-build364-valid"],
-  receipts: { yw: { receipt: yw } }
+  receipts: { yw: { receipt: ywFixture.receipt } },
+  trustedSigners: { yw: ywFixture.trustedSigner }
 });
 assert.equal(replayModel.sources[0].replaySafe, false);
 assert.equal(replayModel.sources[0].sourceEvidenceVerified, false);
