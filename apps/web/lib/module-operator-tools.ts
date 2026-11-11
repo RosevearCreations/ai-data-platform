@@ -221,6 +221,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/source-owner-review",
           "/master-runtime-source-refresh",
           "/source-refresh-evidence",
+          "/manifest-custody-receipt-decision",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",

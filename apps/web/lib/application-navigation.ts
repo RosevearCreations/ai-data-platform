@@ -512,6 +512,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/manifest-custody-receipt-decision",
+        label: "Manifest, Custody & Receipt Decision",
+        description: "Review Build 370 independent live manifest observation, product-shell identity, source signer custody correlation, fresh receipt closure and the AI Hub 309 / Comms QL-417 runtime decision recheck.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
