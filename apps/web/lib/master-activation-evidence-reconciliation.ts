@@ -3,16 +3,21 @@ export const MASTER_ACTIVATION_RECONCILIATION_SCHEMA =
   "rosevear.ai-data-platform.master-activation-evidence-reconciliation.v1" as const;
 
 export const MASTER_361_ACK_SNAPSHOT = Object.freeze({
-  controllerMain: "4b45b435fa7b6fc83b94e31556648fe4190a9f53",
+  controllerMain: "69355a853f10bbe4d3785bcede8b44e0c788be65",
   comms: {
-    receipt: "MASTER360-COMMS-QL412-ACK",
-    main: "e42ffa856595a2d24c634653d83b1d80f2d6eaa4",
-    aiHubMainObserved: "1a52acf4fc756088d0a1ab38b350f96fccce2a1b",
+    receipt: "MASTER360-COMMS-QL413-ACK",
+    main: "c670c2523001294e8ac2e4f283a1f8e5edda3ddb",
+    aiHubMainObserved: "27b234337f5a3f041dfca4541e33ed6aa821fa4f",
     code: "GREEN",
-    telemetry: "CODE_READY_RUNTIME_HOLD",
-    signerEnrollment: "OWNER_PROOF_HOLD",
+    telemetry: "HOLD",
+    receiptIntake: "CODE_READY_RUNTIME_HOLD",
+    operationalUptime: "HOLD",
+    signerEnrollment: "HOLD",
+    protectedSigner: "HOLD",
     replayStore: "CODE_READY_DEPLOYMENT_HOLD",
-    incidentAcceptance: "CODE_READY_OWNER_HOLD",
+    durableReplayLedger: "CODE_READY_DEPLOYMENT_HOLD",
+    incidentAcceptance: "HOLD",
+    ownerConnectionDecision: "HOLD",
     connection: "HOLD",
     receiver: "OFF",
     slaveGate: "HOLD_NEXT_MASTER_INTEGRATION_STAGE"
@@ -156,7 +161,7 @@ export function composeMasterActivationEvidenceReconciliation(
       "Verify Comms has independently enrolled the source signer/owner proof.",
       "Verify the durable replay store is deployed and accepting protected evidence.",
       "Complete the owner-supervised incident acceptance and independently verified Comms acknowledgement.",
-      "Only after all six Build 360 prerequisites are verified may AI Data mark MASTERS_SYNCED and open Yard Workers/iCamp onboarding."
+      "Only after all six Build 360 prerequisites are verified may AI Data mark MASTERS_SYNCED and open Yard Workers/iCamp supervised acceptance."
     ],
     policy: {
       deploymentGreenIsRuntimeProof: false,
