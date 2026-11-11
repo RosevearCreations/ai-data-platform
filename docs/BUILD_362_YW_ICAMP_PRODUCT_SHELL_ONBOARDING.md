@@ -31,7 +31,7 @@ Therefore the three Masters remain **not synchronized**.
 - Master source ID: `yw`
 - source app ID: `yard-workers`
 - repository: `RosevearCreations/yw`
-- current production main: `3389c5bc32af32af3c8c3b00be059fc5137f3145`
+- current production main: `cdc368e2f2773863595ff9cf6f35c1f02773eeaf`
 - manifest revision: `028aee250857415b9b9035aaec50060757e377a5`
 - tenant boundary: `platform_shell`
 - signer: `AWAITING_INDEPENDENT_SOURCE_SIGNER`
@@ -43,7 +43,7 @@ The manifest revision is behind the current production main, so revision drift i
 
 - Master source ID: `icamp`
 - repository: `RosevearCreations/iCamp`
-- current production main: `f2a4df99acfa717f4cacc62a9c2f43d2ba878ff2`
+- current production main: `e2d343595363ca9106e7f1dbc60006e3a6c616aa`
 - manifest revision: `dc1369338a4b191fc72031b7e62f7e48fd805bcd`
 - tenant boundary: `platform_shell`
 - signer: `AWAITING_INDEPENDENT_SOURCE_SIGNER`
@@ -94,3 +94,8 @@ Supervised Master acceptance remains HOLD until:
 5. owner review accepts the resulting evidence.
 
 Deployment GREEN is not connection proof.
+
+
+## Build 363 handoff
+
+Build 363 supersedes the static Build 362 source-revision observations with a dedicated convergence workflow. Yard Workers and iCamp remain platform-shell identities; source-owned manifest, independent signer and verified health evidence remain required before supervised acceptance can close.
