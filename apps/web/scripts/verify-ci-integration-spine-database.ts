@@ -125,7 +125,10 @@ const requiredTables = [
   "master_source_custody_correlation_events",
   "master_fresh_receipt_admission_closure_events",
   "master_three_master_runtime_decision_rechecks",
-  "master_yw_source_resolution_events"
+  "master_yw_source_resolution_events",
+  "master_yw561_custody_evidence_intake_events",
+  "master_yw561_replay_correlation_events",
+  "master_yw561_runtime_closure_rechecks"
 ];
 
 const appendOnlyTables = [
@@ -233,7 +236,10 @@ const appendOnlyTables = [
   "master_source_custody_correlation_events",
   "master_fresh_receipt_admission_closure_events",
   "master_three_master_runtime_decision_rechecks",
-  "master_yw_source_resolution_events"
+  "master_yw_source_resolution_events",
+  "master_yw561_custody_evidence_intake_events",
+  "master_yw561_replay_correlation_events",
+  "master_yw561_runtime_closure_rechecks"
 ];
 
 
@@ -327,7 +333,8 @@ async function main() {
         "0132_master_runtime_source_refresh_recheck.sql",
         "0133_master_source_refresh_evidence_three_master_recheck.sql",
         "0134_master_manifest_custody_receipt_runtime_decision.sql",
-        "0135_master_yw_source_resolution.sql"
+        "0135_master_yw_source_resolution.sql",
+        "0136_master_yw561_signer_receipt_replay_runtime_closure.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -426,6 +433,10 @@ async function main() {
     assert(
       migrationNames.has("0135_master_yw_source_resolution.sql"),
       "migration 0135 is not recorded"
+    );
+    assert(
+      migrationNames.has("0136_master_yw561_signer_receipt_replay_runtime_closure.sql"),
+      "migration 0136 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
