@@ -14,7 +14,7 @@ const source = (relative: string) =>
 const current = composeSourceConvergence();
 assert.equal(current.build, 363);
 assert.equal(current.summary.allIdentitiesBound, true);
-assert.equal(current.summary.allRevisionsConverged, false);
+assert.equal(current.summary.allRevisionsConverged, true);
 assert.equal(current.summary.allSignersReady, false);
 assert.equal(current.summary.allHealthReceiptsVerified, false);
 assert.equal(current.summary.supervisedClosureEligible, false);
@@ -22,11 +22,11 @@ assert.equal(current.summary.closureState, "HOLD");
 
 assert.equal(
   BUILD_363_SOURCE_SNAPSHOT[0].productionMain,
-  "cdc368e2f2773863595ff9cf6f35c1f02773eeaf"
+  "0010bbd5ae71cb025d77e613cce9bc6e3f064d34"
 );
 assert.equal(
   BUILD_363_SOURCE_SNAPSHOT[1].productionMain,
-  "e2d343595363ca9106e7f1dbc60006e3a6c616aa"
+  "00112c6714ecdf4d49dc114d4b29a0a8b9a8bced"
 );
 assert.equal(
   BUILD_363_SOURCE_SNAPSHOT[0].sourceHandoff,
