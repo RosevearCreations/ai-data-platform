@@ -218,6 +218,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/convergence-receipt-intake",
           "/source-trust-ledger",
           "/source-signer-enrollment",
+          "/source-owner-review",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
