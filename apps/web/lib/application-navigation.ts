@@ -506,6 +506,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-refresh-evidence",
+        label: "Source Refresh Evidence & Acceptance Recheck",
+        description: "Review Build 369 YW560/iCamp244 refresh evidence, deployed manifest confirmation, fresh signed-health correlation and the three-Master acceptance recheck.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
