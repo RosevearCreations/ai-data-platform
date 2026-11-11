@@ -26,7 +26,6 @@ export type ConvergenceReceipt = {
   sourceRevision: string;
   manifestRevision: string;
   keyId: string;
-  publicKeyPem: string;
   issuedAt: string;
   nonce: string;
   health: ConvergenceReceiptHealth;
@@ -43,8 +42,14 @@ export type ReceiptInput = {
   ownerDecision?: OwnerDecision;
 };
 
+export type TrustedSourceSigner = {
+  keyId: string;
+  publicKeyPem: string;
+};
+
 export type Build364Options = {
   receipts?: Partial<Record<"yw" | "icamp", ReceiptInput>>;
+  trustedSigners?: Partial<Record<"yw" | "icamp", TrustedSourceSigner>>;
   seenNonces?: string[];
   now?: string;
   maxReceiptAgeMs?: number;
@@ -75,7 +80,8 @@ export function canonicalConvergenceReceiptPayload(
 }
 
 export function verifyConvergenceReceiptSignature(
-  receipt: ConvergenceReceipt
+  receipt: ConvergenceReceipt,
+  trustedSigner: TrustedSourceSigner
 ) {
   try {
     const payload = canonicalConvergenceReceiptPayload({
@@ -88,7 +94,6 @@ export function verifyConvergenceReceiptSignature(
       sourceRevision: receipt.sourceRevision,
       manifestRevision: receipt.manifestRevision,
       keyId: receipt.keyId,
-      publicKeyPem: receipt.publicKeyPem,
       issuedAt: receipt.issuedAt,
       nonce: receipt.nonce,
       health: receipt.health
@@ -96,7 +101,7 @@ export function verifyConvergenceReceiptSignature(
     return verifySignature(
       null,
       Buffer.from(payload, "utf8"),
-      receipt.publicKeyPem,
+      trustedSigner.publicKeyPem,
       Buffer.from(receipt.signatureBase64, "base64")
     );
   } catch {
@@ -116,7 +121,6 @@ function receiptHash(receipt: ConvergenceReceipt) {
       sourceRevision: receipt.sourceRevision,
       manifestRevision: receipt.manifestRevision,
       keyId: receipt.keyId,
-      publicKeyPem: receipt.publicKeyPem,
       issuedAt: receipt.issuedAt,
       nonce: receipt.nonce,
       health: receipt.health
@@ -190,13 +194,16 @@ export function composeConvergenceReceiptIntake(
       receipt.manifestRevision === expected.productionMain &&
       receipt.health.revision === expected.productionMain;
 
+    const trustedSigner = options.trustedSigners?.[sourceId];
     const signerIdentityPresent =
-      Boolean(receipt.keyId.trim()) &&
-      Boolean(receipt.publicKeyPem.trim());
+      Boolean(trustedSigner?.keyId.trim()) &&
+      Boolean(trustedSigner?.publicKeyPem.trim()) &&
+      receipt.keyId === trustedSigner?.keyId;
 
     const signatureVerified =
       signerIdentityPresent &&
-      verifyConvergenceReceiptSignature(receipt);
+      Boolean(trustedSigner) &&
+      verifyConvergenceReceiptSignature(receipt, trustedSigner);
 
     const replaySafe =
       Boolean(receipt.nonce.trim()) &&
@@ -323,7 +330,8 @@ export function composeConvergenceReceiptIntake(
       healthProofIsConnectionAcceptance: false,
       controllerMayAutoAcceptOwnerDecision: false,
       controllerMayStorePrivateSigningKeys: false,
-      publicKeyOnlyAtControllerBoundary: true
+      publicKeyOnlyAtControllerBoundary: true,
+      receiptSuppliedPublicKeyMayEstablishTrust: false
     }
   };
 }
