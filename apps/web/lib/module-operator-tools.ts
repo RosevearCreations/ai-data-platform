@@ -214,6 +214,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/master-control-readiness-certification",
           "/master-activation-reconciliation",
           "/source-shell-onboarding",
+          "/source-convergence",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
