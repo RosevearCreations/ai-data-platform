@@ -542,6 +542,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw561-owner-decision-runtime-connection",
+        label: "YW561 Owner Decision & Connection",
+        description: "Review Build 375 exact-receipt owner decision execution, acceptance continuity, three-Master runtime transitions and connection-state reconciliation.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
