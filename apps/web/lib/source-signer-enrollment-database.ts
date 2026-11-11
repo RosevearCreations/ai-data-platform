@@ -264,6 +264,9 @@ export async function submitSignerEnrollmentIntake(
   const independentPinSpkiSha256 = normalizePin(
     String(input.independentPinSpkiSha256 ?? "")
   );
+  if (!/^sha256:[a-f0-9]{64}$/.test(independentPinSpkiSha256)) {
+    throw new Error("build366_independent_pin_invalid");
+  }
   const pinEvidence = evidenceURI(input.pinEvidenceURI, "pin_evidence");
   const custodyEvidence = evidenceURI(input.custodyEvidenceURI, "custody_evidence");
   const witnessEvidence = evidenceURI(input.witnessEvidenceURI, "witness_evidence");
@@ -359,6 +362,9 @@ export async function issueSignerCustodyChallenge(
     const events = await intakeEvents(client, intakeId);
     const submitted = events.find((event) => event.event_type === "SUBMITTED");
     if (!submitted?.public_key_pem) throw new Error("build366_submitted_intake_required");
+    if (events.at(-1)?.event_type === "REJECTED") {
+      throw new Error("build366_rejected_intake_requires_restart");
+    }
     if (
       submitted.computed_spki_sha256 !== submitted.independent_pin_spki_sha256
     ) {
@@ -434,6 +440,9 @@ export async function verifySignerCustodyAndEnroll(
     ]);
     const events = await intakeEvents(client, intakeId);
     const submitted = events.find((event) => event.event_type === "SUBMITTED");
+    if (events.at(-1)?.event_type === "REJECTED") {
+      throw new Error("build366_rejected_intake_requires_restart");
+    }
     const challenge =
       [...events].reverse().find((event) => event.event_type === "CHALLENGE_ISSUED") ??
       null;
