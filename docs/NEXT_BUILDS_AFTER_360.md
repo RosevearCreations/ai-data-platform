@@ -13,10 +13,9 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 9. **Build 369 — Source Refresh Evidence Intake, iCamp Manifest Re-Convergence Confirmation, YW/iCamp Fresh Signed Health Admission & Three-Master Acceptance Recheck** — Production.
 10. **Build 370 — Independent Deployed Manifest Observation, Source Signer Custody Evidence Correlation, Fresh Receipt Admission Closure & Three-Master Runtime Decision Recheck** — Production.
 11. **Build 371 — Yard Workers Product-Shell Identity Reconciliation, Independent Source Signer Enrollment Closure, Fresh Signed Health Receipt Admission & Three-Master Runtime Discrepancy Resolution** — Production.
-12. **Build 372 — Yard Workers Independent Signer Custody Evidence Intake, Exact YW561 Signed Health Receipt Admission, Durable Replay Correlation & Three-Master Runtime Closure Recheck** — current authorized build.
+12. **Build 372 — Yard Workers Independent Signer Custody Evidence Intake, Exact YW561 Signed Health Receipt Admission, Durable Replay Correlation & Three-Master Runtime Closure Recheck** — Production.
+13. **Build 373 — YW561 Live Source-Health Signer Enrollment Correlation, Exact Signed HEALTHY Receipt Closure, Durable Replay Acceptance & Three-Master Owner Decision Recheck** — current authorized build.
 
-Build 372 independently refreshes Yard Workers to YW561 production main `3ac1bbce127a011af7830ad88da020112d132122`, deployment `dpl_5775v27Ginzas21xz8dP8PT1MUbv`. The live manifest is exact and remains `source_role=platform_shell`, `tenant_boundary=platform_shell`, `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
+Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
-YW561's protected provider-delivery Ed25519 receiver is a separate trust domain and cannot satisfy AI Data source-health signer, source-health signed receipt, durable source-health replay, CONNECTED or owner acceptance.
-
-Current controller truth remains fail-closed: YW source-health signer custody is not independently enrolled/correlated, no exact current YW561 signed HEALTHY receipt is admitted, source-health replay correlation is absent, and AI Hub 309 / Comms QL-417 remain runtime HOLD.
+The controller now has durable recheck ledgers for live signer correlation, exact receipt closure, replay acceptance and the exact-receipt owner decision. Current runtime truth remains HOLD because no independently enrolled YW source-health signer, exact admitted YW561 signed HEALTHY receipt or accepted source-health replay exists, and AI Hub 309 / Comms QL-417 remain runtime HOLD.
