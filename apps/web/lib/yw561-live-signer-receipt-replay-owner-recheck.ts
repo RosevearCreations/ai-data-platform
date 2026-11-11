@@ -80,7 +80,9 @@ export function composeBuild373Yw561OwnerRecheck(input: {
     receiptClosureState === "VERIFIED_CURRENT" &&
     build372.replayState === "VERIFIED_CORRELATED"
       ? ("ACCEPTED" as const)
-      : build372.replayState;
+      : build372.replayState === "VERIFIED_CORRELATED"
+        ? ("HOLD_RECEIPT_NOT_CURRENT" as const)
+        : build372.replayState;
 
   const sourceEvidenceState =
     identityState === "VERIFIED_EXACT" &&
