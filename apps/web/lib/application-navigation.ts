@@ -500,6 +500,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/master-runtime-source-refresh",
+        label: "Master Runtime & Source Refresh",
+        description: "Review Build 368 AI Hub 308 + Comms QL-416 runtime closure, current YW/iCamp revisions, receipt refresh handoffs and supervised acceptance rechecks.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
