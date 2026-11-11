@@ -113,7 +113,9 @@ const requiredTables = [
   "master_convergence_receipt_ledger",
   "master_owner_decision_audit",
   "master_source_signer_enrollment_intake_events",
-  "master_source_health_admission_events"
+  "master_source_health_admission_events",
+  "master_source_owner_review_packets",
+  "master_source_acceptance_decision_events"
 ];
 
 const appendOnlyTables = [
@@ -209,7 +211,9 @@ const appendOnlyTables = [
   "master_convergence_receipt_ledger",
   "master_owner_decision_audit",
   "master_source_signer_enrollment_intake_events",
-  "master_source_health_admission_events"
+  "master_source_health_admission_events",
+  "master_source_owner_review_packets",
+  "master_source_acceptance_decision_events"
 ];
 
 
@@ -298,7 +302,8 @@ async function main() {
         "0127_master_production_readiness.sql",
         "0128_production_learning_viii.sql",
         "0129_master_source_signer_receipt_owner_audit.sql",
-        "0130_master_source_signer_enrollment_health_admission.sql"
+        "0130_master_source_signer_enrollment_health_admission.sql",
+        "0131_master_source_owner_review_acceptance.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -377,6 +382,10 @@ async function main() {
     assert(
       migrationNames.has("0130_master_source_signer_enrollment_health_admission.sql"),
       "migration 0130 is not recorded"
+    );
+    assert(
+      migrationNames.has("0131_master_source_owner_review_acceptance.sql"),
+      "migration 0131 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
