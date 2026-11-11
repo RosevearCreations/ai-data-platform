@@ -92,12 +92,12 @@ for(const key of [
   "receiptAdmissionMustBeControllerVerified",
   "threeMasterRuntimeGateMustOpen",
   "sourceIdentityResolutionDoesNotImplyConnection",
-  "codeGreenIsRuntimeAcceptance",
   "ownerDecisionRemainsExplicit"
 ] as const){
   assert.equal(current.policy[key],true,key);
 }
 assert.equal(current.policy.sourcePrivateKeyMayBeStored,false);
+assert.equal(current.policy.codeGreenIsRuntimeAcceptance,false);
 
 const migration=source("../../db/migrations/0135_master_yw_source_resolution.sql");
 for(const token of [
