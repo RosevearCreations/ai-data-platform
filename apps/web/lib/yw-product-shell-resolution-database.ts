@@ -152,7 +152,8 @@ export async function recordBuild371YwResolution(userId:string){
       'platform_shell','platform_shell',$7,$8,$9,$10,$11,$12,$13::timestamptz)`,[
       observationId,o.productionMain,o.deploymentId,o.deploymentUrl,o.deploymentGitRevision,
       o.deployedManifestRevision,o.signatureState,o.connectionState,
-      model.identityState,o.responseEtag,o.requestTrace,o.evidenceURI,o.observedAt
+      model.identityState==="VERIFIED_EXACT"?"VERIFIED_EXACT":"HOLD_UNVERIFIED",
+      o.responseEtag,o.requestTrace,o.evidenceURI,o.observedAt
     ]);
 
     const correlationId=randomUUID();
