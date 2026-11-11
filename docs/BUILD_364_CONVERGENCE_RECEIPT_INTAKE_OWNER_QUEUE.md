@@ -15,13 +15,13 @@ A receipt is eligible only when all of the following are true:
 
 1. source ID, source app, repository and Build 363 handoff token match exactly;
 2. source, manifest and health revisions all equal the current production source revision;
-3. an independent signer key ID and public Ed25519 verification key are present;
-4. the Ed25519 signature verifies over the canonical source-bound receipt payload;
+3. the receipt key ID matches an independently enrolled trusted source signer already held by the controller;
+4. the Ed25519 signature verifies over the canonical source-bound receipt payload using that separately enrolled public key;
 5. the receipt nonce has not already been seen;
 6. receipt and health timestamps are fresh;
 7. health state is `HEALTHY` and is bound to the exact production revision.
 
-Build 364 stores/verifies only public signing material. Source private keys must never enter AI Data.
+Build 364 stores/verifies only independently enrolled public signing material. A public key carried by a receipt cannot establish its own trust. Source private keys must never enter AI Data.
 
 ## Current source state
 
