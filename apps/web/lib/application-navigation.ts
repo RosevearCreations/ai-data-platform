@@ -494,6 +494,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-owner-review",
+        label: "Source Owner Review & Acceptance",
+        description: "Review Build 367 current source signer/health evidence, AI Hub 307 + Comms QL-415 Master gate, owner packets and explicit acceptance decisions.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
