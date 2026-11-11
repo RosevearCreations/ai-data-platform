@@ -369,8 +369,8 @@ export async function recordVerifiedConvergenceReceipt(
   );
 }
 
-export async function recordOwnerDecisionAudit(
-  userId: string,
+export async function recordOwnerDecisionAuditWithClient(
+  client: PoolClient,
   input: {
     sourceId: unknown;
     receiptId?: unknown;
@@ -392,7 +392,11 @@ export async function recordOwnerDecisionAudit(
   const evidenceURI = String(input.evidenceURI ?? "");
   const detail = String(input.detail ?? "");
   const decidedAt = String(input.decidedAt ?? "");
-  if (!(evidenceURI.startsWith("https://") || evidenceURI.startsWith("urn:rosevear:evidence:")) || /\\s/.test(evidenceURI) || evidenceURI.length > 500) {
+  if (
+    !(evidenceURI.startsWith("https://") || evidenceURI.startsWith("urn:rosevear:evidence:")) ||
+    /\\s/.test(evidenceURI) ||
+    evidenceURI.length > 500
+  ) {
     throw new Error("build365_owner_evidence_invalid");
   }
   if (detail.length < 1 || detail.length > 1800) {
@@ -402,38 +406,52 @@ export async function recordOwnerDecisionAudit(
     throw new Error("build365_owner_decided_at_invalid");
   }
 
-  return withUserDatabase(userId, async (client) => {
-    await requireSuiteOwner(client);
+  await requireSuiteOwner(client);
 
-    if (receiptId) {
-      const receipt = await client.query<{ source_id: Source365Id }>(
-        `select source_id from app.master_convergence_receipt_ledger
-         where receipt_id=$1`,
-        [receiptId]
-      );
-      if (!receipt.rows[0] || receipt.rows[0].source_id !== sourceId) {
-        throw new Error("build365_owner_receipt_invalid");
-      }
-    }
-
-    if (decision === "ACCEPT") {
-      if (!receiptId) throw new Error("build365_owner_accept_receipt_required");
-      const master = composeMasterActivationEvidenceReconciliation();
-      if (!master.summary.mastersSynced) {
-        throw new Error("build365_owner_accept_master_gate_hold");
-      }
-    }
-
-    const decisionId = randomUUID();
-    await client.query(
-      `insert into app.master_owner_decision_audit (
-         decision_id,actor_user_id,source_id,receipt_id,decision,
-         evidence_uri,detail,decided_at
-       ) values (
-         $1,nullif(current_setting('app.user_id',true),''),$2,$3,$4,$5,$6,$7::timestamptz
-       )`,
-      [decisionId, sourceId, receiptId, decision, evidenceURI, detail, decidedAt]
+  if (receiptId) {
+    const receipt = await client.query<{ source_id: Source365Id }>(
+      `select source_id from app.master_convergence_receipt_ledger
+       where receipt_id=$1`,
+      [receiptId]
     );
-    return { decisionId, sourceId, receiptId, decision };
-  });
+    if (!receipt.rows[0] || receipt.rows[0].source_id !== sourceId) {
+      throw new Error("build365_owner_receipt_invalid");
+    }
+  }
+
+  if (decision === "ACCEPT") {
+    if (!receiptId) throw new Error("build365_owner_accept_receipt_required");
+    const master = composeMasterActivationEvidenceReconciliation();
+    if (!master.summary.mastersSynced) {
+      throw new Error("build365_owner_accept_master_gate_hold");
+    }
+  }
+
+  const decisionId = randomUUID();
+  await client.query(
+    `insert into app.master_owner_decision_audit (
+       decision_id,actor_user_id,source_id,receipt_id,decision,
+       evidence_uri,detail,decided_at
+     ) values (
+       $1,nullif(current_setting('app.user_id',true),''),$2,$3,$4,$5,$6,$7::timestamptz
+     )`,
+    [decisionId, sourceId, receiptId, decision, evidenceURI, detail, decidedAt]
+  );
+  return { decisionId, sourceId, receiptId, decision };
+}
+
+export async function recordOwnerDecisionAudit(
+  userId: string,
+  input: {
+    sourceId: unknown;
+    receiptId?: unknown;
+    decision: unknown;
+    evidenceURI: unknown;
+    detail: unknown;
+    decidedAt: unknown;
+  }
+) {
+  return withUserDatabase(userId, async (client) =>
+    recordOwnerDecisionAuditWithClient(client, input)
+  );
 }
