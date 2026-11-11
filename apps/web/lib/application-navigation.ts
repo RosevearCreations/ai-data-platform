@@ -470,6 +470,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-convergence",
+        label: "YW & iCamp Source Convergence",
+        description: "Review Build 363 source revision convergence, independent signer readiness, verified health intake and supervised acceptance closure.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
