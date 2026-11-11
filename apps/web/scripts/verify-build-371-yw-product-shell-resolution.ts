@@ -84,8 +84,18 @@ assert.equal(sourceClosed.sourceClosureState,"READY");
 assert.equal(sourceClosed.master.gateState,"HOLD");
 assert.equal(sourceClosed.resolutionState,"SOURCE_IDENTITY_RESOLVED_RUNTIME_HOLD");
 
-for(const [key,value] of Object.entries(current.policy)){
-  assert.equal(value,true,key);
+for(const key of [
+  "productShellIdentityMustBeExact",
+  "controllerTrustedSignerRequired",
+  "independentCustodyCorrelationRequired",
+  "currentReceiptMustMatchExactYw371Revision",
+  "receiptAdmissionMustBeControllerVerified",
+  "threeMasterRuntimeGateMustOpen",
+  "sourceIdentityResolutionDoesNotImplyConnection",
+  "codeGreenIsRuntimeAcceptance",
+  "ownerDecisionRemainsExplicit"
+] as const){
+  assert.equal(current.policy[key],true,key);
 }
 assert.equal(current.policy.sourcePrivateKeyMayBeStored,false);
 
