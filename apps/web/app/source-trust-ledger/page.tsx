@@ -38,6 +38,9 @@ export default async function SourceTrustLedgerPage() {
           <a className="secondaryButton" href="/api/source-trust-ledger">
             Durable Ledger JSON
           </a>
+          <Link className="secondaryButton" href="/source-signer-enrollment">
+            Build 366 Signer Enrollment
+          </Link>
         </div>
       </section>
 
