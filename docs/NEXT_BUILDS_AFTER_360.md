@@ -15,7 +15,8 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 11. **Build 371 — Yard Workers Product-Shell Identity Reconciliation, Independent Source Signer Enrollment Closure, Fresh Signed Health Receipt Admission & Three-Master Runtime Discrepancy Resolution** — Production.
 12. **Build 372 — Yard Workers Independent Signer Custody Evidence Intake, Exact YW561 Signed Health Receipt Admission, Durable Replay Correlation & Three-Master Runtime Closure Recheck** — Production.
 13. **Build 373 — YW561 Live Source-Health Signer Enrollment Correlation, Exact Signed HEALTHY Receipt Closure, Durable Replay Acceptance & Three-Master Owner Decision Recheck** — Production.
-14. **Build 374 — YW561 Trusted Source-Health Signer Admission, Current Receipt/Replay Evidence Activation, Three-Master Runtime Evidence Correlation & Explicit Owner Acceptance Gate** — current authorized build.
+14. **Build 374 — YW561 Trusted Source-Health Signer Admission, Current Receipt/Replay Evidence Activation, Three-Master Runtime Evidence Correlation & Explicit Owner Acceptance Gate** — Production.
+15. **Build 375 — YW561 Explicit Owner Acceptance Decision Execution, Exact-Receipt Acceptance Continuity, Three-Master Runtime Gate Transition & Connection-State Reconciliation** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
@@ -23,3 +24,6 @@ The controller now has durable recheck ledgers for live signer correlation, exac
 
 
 Build 374 adds durable controller activation ledgers for trusted signer admission, exact current receipt/replay activation, three-Master runtime correlation and the explicit exact-receipt owner gate. Current live truth remains fail-closed: source-health activation is HOLD, the AI Hub 309 / Comms QL-417 runtime correlation is HOLD, CONNECTED is not inferred, and owner acceptance is not auto-created.
+
+
+Build 375 advances the Comms production baseline to QL-418 main `0cd042d044226848ab50da25a5cc0efc14577e39` while AI Hub production remains Build 309 main `0a94c72ee4a1ded1babeac68deeb981ad33835ef`. QL-418 remains metadata-only and explicitly reports owner acceptance HOLD, receiver OFF and connection HOLD. The Build 375 execution path therefore remains fail-closed: no exact current YW561 source-health receipt exists yet, the runtime gate remains HOLD, owner ACCEPT cannot execute, and CONNECTED cannot be inferred.
