@@ -14,13 +14,15 @@ AI Data Platform controller:
 
 Rosevear Comms Hub receipt:
 
-- receipt: `MASTER360-COMMS-QL412-ACK`
-- main: `e42ffa856595a2d24c634653d83b1d80f2d6eaa4`
+- receipt: `MASTER360-COMMS-QL413-ACK`
+- main: `c670c2523001294e8ac2e4f283a1f8e5edda3ddb`
 - code: `GREEN`
-- telemetry: `CODE_READY_RUNTIME_HOLD`
-- signer enrollment: `OWNER_PROOF_HOLD`
+- receipt intake: `CODE_READY_RUNTIME_HOLD`
+- operational uptime: `HOLD`
+- protected signer: `HOLD`
 - replay store: `CODE_READY_DEPLOYMENT_HOLD`
-- incident acceptance: `CODE_READY_OWNER_HOLD`
+- incident acceptance: `HOLD`
+- owner connection decision: `HOLD`
 - receiver: `OFF`
 - connection: `HOLD`
 
@@ -65,8 +67,4 @@ Build 361 adds a dedicated reconciliation screen and CI verifier so the source-o
 
 ## Conditional next build
 
-Only after Build 361 can truthfully report `MASTERS_SYNCED` may the controller authorize:
-
-**Build 362 — Yard Workers & iCamp Product-Shell Onboarding, Source Identity Binding, Health Projection & Supervised Master Acceptance.**
-
-Build 362 is conditional, not currently open.
+The owner subsequently authorized **Build 362 — Yard Workers & iCamp Product-Shell Onboarding, Source Identity Binding, Health Projection & Supervised Master Acceptance** for code/read-only shell onboarding. That authorization does not clear the Build 361 runtime gate: supervised source acceptance remains HOLD until `MASTERS_SYNCED` and source-owned evidence are independently verified.
