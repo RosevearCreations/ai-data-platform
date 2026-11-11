@@ -101,12 +101,18 @@ export function composeBuild368RuntimeRecheck(input: {
     ["aihub-signed-one-test", BUILD_368_MASTER_SNAPSHOT.aiHub.signedOneTest, "VERIFIED"],
     ["aihub-comms-receiver-ack", BUILD_368_MASTER_SNAPSHOT.aiHub.commsReceiverAck, "VERIFIED"],
     ["aihub-three-master-receipts", BUILD_368_MASTER_SNAPSHOT.aiHub.threeMasterReceipts, "VERIFIED"],
+    ["aihub-connection", BUILD_368_MASTER_SNAPSHOT.aiHub.connection, "CONNECTED"],
+    ["aihub-masters-synced", BUILD_368_MASTER_SNAPSHOT.aiHub.mastersSynced, "SYNCED"],
+    ["aihub-slave-gate", BUILD_368_MASTER_SNAPSHOT.aiHub.slaveGate, "OPEN"],
     ["comms-original-host-telemetry", BUILD_368_MASTER_SNAPSHOT.comms.originalHostTelemetry, "VERIFIED"],
     ["comms-signed-one-test", BUILD_368_MASTER_SNAPSHOT.comms.signedOneTest, "VERIFIED"],
     ["comms-signer-custody", BUILD_368_MASTER_SNAPSHOT.comms.signerCustody, "VERIFIED"],
     ["comms-durable-replay", BUILD_368_MASTER_SNAPSHOT.comms.durableReplay, "VERIFIED"],
     ["comms-uptime", BUILD_368_MASTER_SNAPSHOT.comms.uptime, "VERIFIED"],
-    ["comms-owner-acceptance", BUILD_368_MASTER_SNAPSHOT.comms.ownerAcceptance, "ACCEPTED"]
+    ["comms-owner-acceptance", BUILD_368_MASTER_SNAPSHOT.comms.ownerAcceptance, "ACCEPTED"],
+    ["comms-receiver", BUILD_368_MASTER_SNAPSHOT.comms.receiver, "ON"],
+    ["comms-connection", BUILD_368_MASTER_SNAPSHOT.comms.connection, "CONNECTED"],
+    ["comms-slave-gate", BUILD_368_MASTER_SNAPSHOT.comms.slaveGate, "OPEN"]
   ].map(([id,observed,required])=>({
     id:String(id), observed:String(observed), required:String(required),
     verified:String(observed)===String(required)
