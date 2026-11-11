@@ -482,6 +482,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/source-trust-ledger",
+        label: "Source Trust & Receipt Ledger",
+        description: "Review Build 365 trusted signer enrollment, durable source receipts, replay/aging evidence and owner decision audit history.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

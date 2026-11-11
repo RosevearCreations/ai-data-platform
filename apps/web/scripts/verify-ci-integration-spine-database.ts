@@ -108,7 +108,10 @@ const requiredTables = [
   "comms_plane_projection_evidence",
   "rosevear_comms_authority_pins",
   "rosevear_comms_source_authorizations",
-  "rosevear_comms_operation_claims"
+  "rosevear_comms_operation_claims",
+  "master_source_signer_registry_events",
+  "master_convergence_receipt_ledger",
+  "master_owner_decision_audit"
 ];
 
 const appendOnlyTables = [
@@ -199,7 +202,10 @@ const appendOnlyTables = [
   "master_sysop_handoff_audit",
   "comms_plane_projection_evidence",
   "service_performance_events",
-  "rosevear_comms_operation_claims"
+  "rosevear_comms_operation_claims",
+  "master_source_signer_registry_events",
+  "master_convergence_receipt_ledger",
+  "master_owner_decision_audit"
 ];
 
 
@@ -286,7 +292,8 @@ async function main() {
         "0125_master_security_certification.sql",
         "0126_master_source_onboarding_pilot.sql",
         "0127_master_production_readiness.sql",
-        "0128_production_learning_viii.sql"
+        "0128_production_learning_viii.sql",
+        "0129_master_source_signer_receipt_owner_audit.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -357,6 +364,10 @@ async function main() {
     assert(
       migrationNames.has("0128_production_learning_viii.sql"),
       "migration 0128 is not recorded"
+    );
+    assert(
+      migrationNames.has("0129_master_source_signer_receipt_owner_audit.sql"),
+      "migration 0129 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
