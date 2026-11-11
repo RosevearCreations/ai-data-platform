@@ -20,9 +20,12 @@ assert.equal(current.summary.sourceOnboardingGate, "HOLD");
 assert.equal(current.summary.yardWorkersMayBegin, false);
 assert.equal(current.summary.iCampMayBegin, false);
 assert.equal(current.blockers.length, 6);
+assert.equal(MASTER_361_ACK_SNAPSHOT.comms.receipt, "MASTER360-COMMS-QL413-ACK");
+assert.equal(MASTER_361_ACK_SNAPSHOT.comms.receiptIntake, "CODE_READY_RUNTIME_HOLD");
+assert.equal(MASTER_361_ACK_SNAPSHOT.comms.operationalUptime, "HOLD");
 assert.equal(
   MASTER_361_ACK_SNAPSHOT.comms.main,
-  "e42ffa856595a2d24c634653d83b1d80f2d6eaa4"
+  "c670c2523001294e8ac2e4f283a1f8e5edda3ddb"
 );
 assert.equal(
   MASTER_361_ACK_SNAPSHOT.aiHub.main,
