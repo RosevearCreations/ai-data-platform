@@ -219,6 +219,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/source-trust-ledger",
           "/source-signer-enrollment",
           "/source-owner-review",
+          "/master-runtime-source-refresh",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
