@@ -476,6 +476,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/convergence-receipt-intake",
+        label: "YW & iCamp Receipt Intake",
+        description: "Review Build 364 convergence receipts, trusted signer verification, health correlation and the owner acceptance decision queue.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
