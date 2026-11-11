@@ -524,6 +524,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw561-signer-receipt-replay-closure",
+        label: "YW561 Signer, Receipt & Replay Closure",
+        description: "Review Build 372 exact YW561 production identity, source-health signer custody evidence intake, current signed HEALTHY admission, durable replay correlation and the three-Master runtime closure recheck.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
