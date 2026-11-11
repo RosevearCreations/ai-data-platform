@@ -260,102 +260,113 @@ async function currentTrustedSigner(
   return row;
 }
 
+export async function recordVerifiedConvergenceReceiptWithClient(
+  client: PoolClient,
+  receipt: ConvergenceReceipt
+) {
+  const sourceId = parseSourceId(receipt.sourceId);
+  await requireSuiteAdmin(client);
+  await client.query("select pg_advisory_xact_lock(hashtext($1))", [
+  "build365-receipt:" + sourceId
+  ]);
+
+  const signer = await currentTrustedSigner(client, sourceId, receipt.keyId);
+  const seen = await client.query<{ nonce: string }>(
+    `select nonce from app.master_convergence_receipt_ledger
+     where source_id=$1`,
+    [sourceId]
+  );
+  const trustedSigner: TrustedSourceSigner = {
+    keyId: signer.key_id,
+    publicKeyPem: signer.public_key_pem
+  };
+  const model = composeConvergenceReceiptIntake({
+    now: new Date().toISOString(),
+    receipts: { [sourceId]: { receipt } },
+    trustedSigners: { [sourceId]: trustedSigner },
+    seenNonces: seen.rows.map((row) => row.nonce)
+  });
+  const source = model.sources.find((item) => item.sourceId === sourceId);
+  if (!source?.sourceEvidenceVerified) {
+    throw new Error(
+      "build365_receipt_verification_failed:" +
+        (source?.blockers.join("|") ?? "source_missing")
+    );
+  }
+
+  const payload = canonicalConvergenceReceiptPayload({
+    schema: receipt.schema,
+    receiptVersion: receipt.receiptVersion,
+    handoffToken: receipt.handoffToken,
+    sourceId: receipt.sourceId,
+    sourceAppId: receipt.sourceAppId,
+    repository: receipt.repository,
+    sourceRevision: receipt.sourceRevision,
+    manifestRevision: receipt.manifestRevision,
+    keyId: receipt.keyId,
+    issuedAt: receipt.issuedAt,
+    nonce: receipt.nonce,
+    health: receipt.health
+  });
+  const receiptSha256 = createHash("sha256").update(payload).digest("hex");
+  const receiptId = randomUUID();
+
+  try {
+    await client.query(
+      `insert into app.master_convergence_receipt_ledger (
+         receipt_id,actor_user_id,source_id,signer_event_id,key_id,
+         source_revision,manifest_revision,receipt_sha256,nonce,issued_at,
+         health_observed_at,health_state,source_runtime,canonical_payload,
+         signature_base64,verification_state
+       ) values (
+         $1,nullif(current_setting('app.user_id',true),''),$2,$3,$4,
+         $5,$6,$7,$8,$9::timestamptz,$10::timestamptz,$11,$12,$13::jsonb,
+         $14,'VERIFIED_SOURCE_BOUND_HEALTH'
+       )`,
+      [
+        receiptId,
+        sourceId,
+        signer.event_id,
+        receipt.keyId,
+        receipt.sourceRevision,
+        receipt.manifestRevision,
+        receiptSha256,
+        receipt.nonce,
+        receipt.issuedAt,
+        receipt.health.observedAt,
+        receipt.health.state,
+        receipt.health.sourceRuntime,
+        payload,
+        receipt.signatureBase64
+      ]
+    );
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      (error as { code?: string }).code === "23505"
+    ) {
+      throw new Error("build365_receipt_replay_or_duplicate");
+    }
+    throw error;
+  }
+
+  return {
+  receiptId,
+  sourceId,
+  receiptSha256,
+  verificationState: "VERIFIED_SOURCE_BOUND_HEALTH" as const
+  };
+}
+
 export async function recordVerifiedConvergenceReceipt(
   userId: string,
   receipt: ConvergenceReceipt
 ) {
-  const sourceId = parseSourceId(receipt.sourceId);
-
-  return withUserDatabase(userId, async (client) => {
-    await requireSuiteAdmin(client);
-    await client.query("select pg_advisory_xact_lock(hashtext($1))", [
-      "build365-receipt:" + sourceId
-    ]);
-
-    const signer = await currentTrustedSigner(client, sourceId, receipt.keyId);
-    const seen = await client.query<{ nonce: string }>(
-      `select nonce from app.master_convergence_receipt_ledger
-       where source_id=$1`,
-      [sourceId]
-    );
-    const trustedSigner: TrustedSourceSigner = {
-      keyId: signer.key_id,
-      publicKeyPem: signer.public_key_pem
-    };
-    const model = composeConvergenceReceiptIntake({
-      now: new Date().toISOString(),
-      receipts: { [sourceId]: { receipt } },
-      trustedSigners: { [sourceId]: trustedSigner },
-      seenNonces: seen.rows.map((row) => row.nonce)
-    });
-    const source = model.sources.find((item) => item.sourceId === sourceId);
-    if (!source?.sourceEvidenceVerified) {
-      throw new Error(
-        "build365_receipt_verification_failed:" +
-          (source?.blockers.join("|") ?? "source_missing")
-      );
-    }
-
-    const payload = canonicalConvergenceReceiptPayload({
-      schema: receipt.schema,
-      receiptVersion: receipt.receiptVersion,
-      handoffToken: receipt.handoffToken,
-      sourceId: receipt.sourceId,
-      sourceAppId: receipt.sourceAppId,
-      repository: receipt.repository,
-      sourceRevision: receipt.sourceRevision,
-      manifestRevision: receipt.manifestRevision,
-      keyId: receipt.keyId,
-      issuedAt: receipt.issuedAt,
-      nonce: receipt.nonce,
-      health: receipt.health
-    });
-    const receiptSha256 = createHash("sha256").update(payload).digest("hex");
-    const receiptId = randomUUID();
-
-    try {
-      await client.query(
-        `insert into app.master_convergence_receipt_ledger (
-           receipt_id,actor_user_id,source_id,signer_event_id,key_id,
-           source_revision,manifest_revision,receipt_sha256,nonce,issued_at,
-           health_observed_at,health_state,source_runtime,canonical_payload,
-           signature_base64,verification_state
-         ) values (
-           $1,nullif(current_setting('app.user_id',true),''),$2,$3,$4,
-           $5,$6,$7,$8,$9::timestamptz,$10::timestamptz,$11,$12,$13::jsonb,
-           $14,'VERIFIED_SOURCE_BOUND_HEALTH'
-         )`,
-        [
-          receiptId,
-          sourceId,
-          signer.event_id,
-          receipt.keyId,
-          receipt.sourceRevision,
-          receipt.manifestRevision,
-          receiptSha256,
-          receipt.nonce,
-          receipt.issuedAt,
-          receipt.health.observedAt,
-          receipt.health.state,
-          receipt.health.sourceRuntime,
-          payload,
-          receipt.signatureBase64
-        ]
-      );
-    } catch (error) {
-      if (
-        error &&
-        typeof error === "object" &&
-        "code" in error &&
-        (error as { code?: string }).code === "23505"
-      ) {
-        throw new Error("build365_receipt_replay_or_duplicate");
-      }
-      throw error;
-    }
-
-    return { receiptId, sourceId, receiptSha256, verificationState: "VERIFIED_SOURCE_BOUND_HEALTH" as const };
-  });
+  return withUserDatabase(userId, async (client) =>
+    recordVerifiedConvergenceReceiptWithClient(client, receipt)
+  );
 }
 
 export async function recordOwnerDecisionAudit(
