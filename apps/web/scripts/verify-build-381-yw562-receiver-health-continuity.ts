@@ -405,15 +405,13 @@ assert.ok(
   migration.length > 10_000 && migration.length < 13_000,
   "migration 0145 size outside reviewed range"
 );
-assert.ok(
-  migration.includes(
-    "receiver_off_digest text not null check (receiver_off_digest ~ '^[a-f0-9]{64}
 for (const token of [
   "master_build381_receiver_health_renewal_events",
   "master_build381_fail_closed_rollback_events",
   "receiver_health_sequence bigint",
-  "receiver_off_signer_key_id",
-  "receiver_off_signature_sha256",
+  "receiver_off_digest text not null check",
+  "receiver_off_signer_key_id text not null check",
+  "receiver_off_signature_sha256 text not null check",
   "for insert to ai_data_protected_runtime",
   "declared_status in ('CONNECTED','DISCONNECTED')",
   "metadata->>'build'='381'",
@@ -423,6 +421,10 @@ for (const token of [
 ]) {
   assert.ok(migration.includes(token), `migration token ${token}`);
 }
+assert.ok(
+  !migration.includes("receiver_off_digest ~ '^[a-f0-9]{64} check"),
+  "migration 0145 contains the previously corrupted receiver OFF fragment"
+);
 assert.ok(
   !migration.includes(
     "master_build381_receiver_health_renewal_events\n  for insert to ai_data_runtime"
