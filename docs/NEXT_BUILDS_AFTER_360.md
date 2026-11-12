@@ -20,7 +20,8 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 16. **Build 376 — YW561 Independent Connection Evidence Intake, Verified CONNECTED Transition, Exact-Receipt Owner Acceptance Continuity Recheck & Three-Master Synchronization Closure** — Production.
 17. **Build 377 — YW561→YW562 Live Trusted Connection Intake Execution, Exact-Receipt Acceptance Revalidation, Three-Master Sync Activation & Post-Connection Continuity Monitoring** — Production.
 18. **Build 378 — YW562 Runtime Prerequisite Evidence Intake, Fresh Source-Bound Receipt Admission, QL-422 Original-Host Witness/Three-Master Ledger Correlation & Protected Activation Readiness** — Production.
-19. **Build 379 — YW562 Protected Runtime Evidence Admission, Exact Receipt/Owner Continuity, QL-422 Protected Correlation Closure & Supervised Activation Decision Execution** — current authorized build.
+19. **Build 379 — YW562 Protected Runtime Evidence Admission, Exact Receipt/Owner Continuity, QL-422 Protected Correlation Closure & Supervised Activation Decision Execution** — Production.
+20. **Build 380 — Protected External Runtime Activation Ceremony, Receiver-State Proof, Verified CONNECTED Transition & Three-Master Synchronization Closure** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
@@ -43,3 +44,6 @@ Build 378 advances the active YW562 production baseline `6e0b77eebcfc77aa7fc48dc
 
 
 Build 379 begins from AI Data Build 378 main `a0eea834c7e8d62232a70b13b06688c6b9b4babc`, YW562 main `6e0b77eebcfc77aa7fc48dcc398da958af8df696`, AI Hub Build 313 main `b790adf2e19343d1132fad0eef8107c21e3e560d`, and current Comms QL-423 main `2adc527a88adb790f0edc5192df62f03be8c397c`. It preserves the historical Build 378 QL-422 correlation revision separately inside the protected signed envelope. The protected intake uses an Ed25519-pinned server authority and a dedicated no-login database role; owner/browser runtime cannot manufacture protected evidence. A successful owner approval records activation authorization only and remains receiver OFF / DISCONNECTED_HOLD / mastersSynced=false until a later external runtime activation contract supplies genuine operational proof.
+
+
+Build 380 begins from AI Data Build 379 production `ce4216c667b514f40e2fb6e506e5b62c222b1736`, YW562 `6e0b77eebcfc77aa7fc48dcc398da958af8df696`, AI Hub Build 313 `b790adf2e19343d1132fad0eef8107c21e3e560d`, and Comms QL-423 `2adc527a88adb790f0edc5192df62f03be8c397c`. It adds a separate Ed25519-pinned external activation authority, a protected atomic receiver-on ceremony, a YW-only independent CONNECTED registry transition and exact three-Master synchronization closure. Current upstream handoffs still do not prove a live receiver, so production code remains fail-closed until genuine runtime proof is admitted. Code GREEN, browser state and owner authorization alone cannot set CONNECTED.
