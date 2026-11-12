@@ -46,7 +46,7 @@ assert.equal(
 assert.equal(BUILD_379_RUNTIME.aiHub.build, 313);
 assert.equal(
   BUILD_379_RUNTIME.aiHub.main,
-  "e64e4b2e79e7c07bbd077284c298207414b149ad"
+  "b790adf2e19343d1132fad0eef8107c21e3e560d"
 );
 assert.equal(BUILD_379_RUNTIME.comms.build, "QL-423");
 assert.equal(
