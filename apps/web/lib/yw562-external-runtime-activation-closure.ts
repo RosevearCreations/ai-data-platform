@@ -1,4 +1,8 @@
 import type { MasterShellSourceEvidence } from "./master-shell-source-registry-core";
+
+export type Build380RegistryEvidence = MasterShellSourceEvidence & {
+  evidenceId: string;
+};
 import type { Build379ProtectedActivationModel } from "./yw562-protected-runtime-activation-decision";
 
 export const BUILD_380 = 380 as const;
@@ -183,7 +187,7 @@ export type Build380SyncClosureEvent = {
 
 export type Build380Input = {
   build379: Build379ProtectedActivationModel;
-  latestRegistryEvidence?: MasterShellSourceEvidence | null;
+  latestRegistryEvidence?: Build380RegistryEvidence | null;
   ceremonyEvents?: readonly Build380CeremonyEvent[];
   transitionEvents?: readonly Build380ConnectedTransitionEvent[];
   closureEvents?: readonly Build380SyncClosureEvent[];
@@ -204,7 +208,7 @@ function validFreshTime(
 }
 
 function registryCandidateState(
-  evidence: MasterShellSourceEvidence | null,
+  evidence: Build380RegistryEvidence | null,
   now: Date
 ) {
   if (!evidence) return "HOLD_NO_YW_REGISTRY_EVIDENCE" as const;
@@ -381,11 +385,9 @@ export function composeBuild380ExternalRuntimeActivation(
             registry.connectionEvidenceURI !== latestCeremony?.receiverProofURI ||
             registry.immutableRevision !== BUILD_380_RUNTIME.yw.main
           ? ("HOLD_CONNECTED_REGISTRY_NOT_CURRENT" as const)
-          : latestTransition.registryEvidenceId !==
-              (registry as MasterShellSourceEvidence & { evidenceId?: string }).evidenceId &&
-              (registry as MasterShellSourceEvidence & { evidenceId?: string }).evidenceId
-            ? ("HOLD_CONNECTED_REGISTRY_CHANGED" as const)
-            : ("CONNECTED_VERIFIED" as const);
+          : latestTransition.registryEvidenceId !== registry.evidenceId
+          ? ("HOLD_CONNECTED_REGISTRY_CHANGED" as const)
+          : ("CONNECTED_VERIFIED" as const);
 
   const threeMasterSynchronizationClosureState =
     verifiedConnectedTransitionState !== "CONNECTED_VERIFIED"
