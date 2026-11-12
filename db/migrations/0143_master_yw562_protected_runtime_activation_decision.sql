@@ -180,6 +180,27 @@ create policy master_build379_activation_decision_execution_events_insert
     )
   );
 
+do $
+declare t text;
+begin
+  foreach t in array array[
+    'master_source_signer_registry_events',
+    'master_convergence_receipt_ledger',
+    'master_source_health_admission_events',
+    'master_owner_decision_audit',
+    'master_yw561_replay_correlation_events',
+    'master_yw562_runtime_prerequisite_evidence_intakes',
+    'master_yw562_fresh_source_receipt_admission_events',
+    'master_build378_protected_activation_readiness_events'
+  ] loop
+    execute format('drop policy if exists %I_build379_protected_select on app.%I',t,t);
+    execute format(
+      'create policy %I_build379_protected_select on app.%I for select to ai_data_protected_runtime using (true)',
+      t,t
+    );
+  end loop;
+end $;
+
 grant select on
   app.master_source_signer_registry_events,
   app.master_convergence_receipt_ledger,
