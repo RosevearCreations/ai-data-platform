@@ -24,11 +24,14 @@ The protected endpoint is:
 
 There is no browser or owner POST route for activation.
 
-The endpoint requires the server-pinned environment key:
+The endpoint requires four independently pinned Ed25519 public keys:
 
-`BUILD380_EXTERNAL_ACTIVATION_PUBLIC_KEY_PEM`
+- `BUILD380_EXTERNAL_ACTIVATION_PUBLIC_KEY_PEM` — overall protected activation authority;
+- `BUILD380_AI_HUB_RUNTIME_PUBLIC_KEY_PEM` — Rosevear AI Hub runtime receipt signer;
+- `BUILD380_COMMS_RUNTIME_PUBLIC_KEY_PEM` — Rosevear Comms Hub runtime receipt signer;
+- `BUILD380_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM` — AI Data Platform runtime receipt signer.
 
-The key must be Ed25519. The signed envelope's `authorityKeyId` must equal the SHA-256 SPKI fingerprint of that public key.
+Each receipt carries its signer fingerprint and signature. The controller verifies every Master receipt independently before verifying the overall activation envelope. The overall envelope then binds the SHA-256 digest of each already-verified Master signature, preventing a receipt signature from being swapped after activation authorization.
 
 The envelope binds:
 
@@ -138,7 +141,7 @@ The closure binds one exact runtime receipt from each of:
 - `rosevear-comms-hub`;
 - `ai-data-platform`.
 
-All three receipts must be signed into the protected activation envelope with runtime state `CONNECTED_SYNCED`. The closure records their IDs and digests plus the exact terminal synchronization digest.
+All three receipts must independently verify under their own server-pinned Ed25519 key with runtime state `CONNECTED_SYNCED`. The closure records their receipt IDs, runtime digests, signer fingerprints and signature SHA-256 digests plus the exact terminal synchronization digest. The separately pinned activation authority signs the outer envelope after those signature digests are bound.
 
 Only `CLOSED_VERIFIED` sets `mastersSynced=true`.
 
