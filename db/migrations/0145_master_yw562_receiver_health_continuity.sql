@@ -89,7 +89,221 @@ create table if not exists app.master_build381_fail_closed_rollback_events (
   )),
   receiver_off_observed_at timestamptz not null,
   receiver_off_proof_uri text not null check (char_length(receiver_off_proof_uri) between 1 and 512),
-  receiver_off_digest text not null check (receiver_off_digest ~ '^[a-f0-9]{64}$'),
+  receiver_off_digest text not null check (receiver_off_digest ~ '^[a-f0-9]{64} check (char_length(evidence_uri) between 1 and 512),
+  rollback_state text not null check (rollback_state='ROLLED_BACK_VERIFIED'),
+  observed_at timestamptz not null,
+  recorded_at timestamptz not null default now()
+);
+
+create unique index if not exists master_build381_fail_closed_rollback_nonce_unique_idx
+  on app.master_build381_fail_closed_rollback_events(nonce);
+create index if not exists master_build381_fail_closed_rollback_recent_idx
+  on app.master_build381_fail_closed_rollback_events(recorded_at desc);
+
+alter table app.master_build381_receiver_health_renewal_events enable row level security;
+alter table app.master_build381_receiver_health_renewal_events force row level security;
+alter table app.master_build381_fail_closed_rollback_events enable row level security;
+alter table app.master_build381_fail_closed_rollback_events force row level security;
+
+drop policy if exists master_shell_source_registry_evidence_build381_protected_insert
+  on app.master_shell_source_registry_evidence;
+create policy master_shell_source_registry_evidence_build381_protected_insert
+  on app.master_shell_source_registry_evidence
+  for insert to ai_data_protected_runtime
+  with check (
+    source_id='yw'
+    and environment='production'
+    and declared_status in ('CONNECTED','DISCONNECTED')
+    and evidence_authority='independent-source-verification'
+    and metadata->>'build'='381'
+  );
+
+drop policy if exists master_build381_receiver_health_select
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_select
+  on app.master_build381_receiver_health_renewal_events
+  for select to ai_data_runtime
+  using (
+    exists (
+      select 1 from app.workspace_members wm
+      where wm.user_id=nullif(current_setting('app.user_id',true),'')
+        and wm.role in ('owner','admin')
+    )
+  );
+
+drop policy if exists master_build381_receiver_health_protected_select
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_protected_select
+  on app.master_build381_receiver_health_renewal_events
+  for select to ai_data_protected_runtime using (true);
+
+drop policy if exists master_build381_receiver_health_protected_insert
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_protected_insert
+  on app.master_build381_receiver_health_renewal_events
+  for insert to ai_data_protected_runtime
+  with check (
+    renewal_state='RENEWED_VERIFIED'
+    and receiver_state='ON'
+  );
+
+drop policy if exists master_build381_fail_closed_rollback_select
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_select
+  on app.master_build381_fail_closed_rollback_events
+  for select to ai_data_runtime
+  using (
+    exists (
+      select 1 from app.workspace_members wm
+      where wm.user_id=nullif(current_setting('app.user_id',true),'')
+        and wm.role in ('owner','admin')
+    )
+  );
+
+drop policy if exists master_build381_fail_closed_rollback_protected_select
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_protected_select
+  on app.master_build381_fail_closed_rollback_events
+  for select to ai_data_protected_runtime using (true);
+
+drop policy if exists master_build381_fail_closed_rollback_protected_insert
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_protected_insert
+  on app.master_build381_fail_closed_rollback_events
+  for insert to ai_data_protected_runtime
+  with check (
+    rollback_state='ROLLED_BACK_VERIFIED'
+    and receiver_state='OFF'
+  );
+
+grant select on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+to ai_data_runtime;
+
+grant select,insert on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+to ai_data_protected_runtime;
+
+revoke insert,update,delete on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+from ai_data_runtime;
+
+revoke update,delete on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+from ai_data_protected_runtime;
+),
+  receiver_off_signer_key_id text not null check (char_length(receiver_off_signer_key_id) between 1 and 160),
+  receiver_off_signature_sha256 text not null check (receiver_off_signature_sha256 ~ '^[a-f0-9]{64} check (char_length(evidence_uri) between 1 and 512),
+  rollback_state text not null check (rollback_state='ROLLED_BACK_VERIFIED'),
+  observed_at timestamptz not null,
+  recorded_at timestamptz not null default now()
+);
+
+create unique index if not exists master_build381_fail_closed_rollback_nonce_unique_idx
+  on app.master_build381_fail_closed_rollback_events(nonce);
+create index if not exists master_build381_fail_closed_rollback_recent_idx
+  on app.master_build381_fail_closed_rollback_events(recorded_at desc);
+
+alter table app.master_build381_receiver_health_renewal_events enable row level security;
+alter table app.master_build381_receiver_health_renewal_events force row level security;
+alter table app.master_build381_fail_closed_rollback_events enable row level security;
+alter table app.master_build381_fail_closed_rollback_events force row level security;
+
+drop policy if exists master_shell_source_registry_evidence_build381_protected_insert
+  on app.master_shell_source_registry_evidence;
+create policy master_shell_source_registry_evidence_build381_protected_insert
+  on app.master_shell_source_registry_evidence
+  for insert to ai_data_protected_runtime
+  with check (
+    source_id='yw'
+    and environment='production'
+    and declared_status in ('CONNECTED','DISCONNECTED')
+    and evidence_authority='independent-source-verification'
+    and metadata->>'build'='381'
+  );
+
+drop policy if exists master_build381_receiver_health_select
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_select
+  on app.master_build381_receiver_health_renewal_events
+  for select to ai_data_runtime
+  using (
+    exists (
+      select 1 from app.workspace_members wm
+      where wm.user_id=nullif(current_setting('app.user_id',true),'')
+        and wm.role in ('owner','admin')
+    )
+  );
+
+drop policy if exists master_build381_receiver_health_protected_select
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_protected_select
+  on app.master_build381_receiver_health_renewal_events
+  for select to ai_data_protected_runtime using (true);
+
+drop policy if exists master_build381_receiver_health_protected_insert
+  on app.master_build381_receiver_health_renewal_events;
+create policy master_build381_receiver_health_protected_insert
+  on app.master_build381_receiver_health_renewal_events
+  for insert to ai_data_protected_runtime
+  with check (
+    renewal_state='RENEWED_VERIFIED'
+    and receiver_state='ON'
+  );
+
+drop policy if exists master_build381_fail_closed_rollback_select
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_select
+  on app.master_build381_fail_closed_rollback_events
+  for select to ai_data_runtime
+  using (
+    exists (
+      select 1 from app.workspace_members wm
+      where wm.user_id=nullif(current_setting('app.user_id',true),'')
+        and wm.role in ('owner','admin')
+    )
+  );
+
+drop policy if exists master_build381_fail_closed_rollback_protected_select
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_protected_select
+  on app.master_build381_fail_closed_rollback_events
+  for select to ai_data_protected_runtime using (true);
+
+drop policy if exists master_build381_fail_closed_rollback_protected_insert
+  on app.master_build381_fail_closed_rollback_events;
+create policy master_build381_fail_closed_rollback_protected_insert
+  on app.master_build381_fail_closed_rollback_events
+  for insert to ai_data_protected_runtime
+  with check (
+    rollback_state='ROLLED_BACK_VERIFIED'
+    and receiver_state='OFF'
+  );
+
+grant select on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+to ai_data_runtime;
+
+grant select,insert on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+to ai_data_protected_runtime;
+
+revoke insert,update,delete on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+from ai_data_runtime;
+
+revoke update,delete on
+  app.master_build381_receiver_health_renewal_events,
+  app.master_build381_fail_closed_rollback_events
+from ai_data_protected_runtime;
+),
   evidence_uri text not null check (char_length(evidence_uri) between 1 and 512),
   rollback_state text not null check (rollback_state='ROLLED_BACK_VERIFIED'),
   observed_at timestamptz not null,
