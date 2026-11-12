@@ -28,7 +28,7 @@ async function prepareDatabase() {
     await client.query("create schema if not exists app");
 
     await client.query(`
-      do $
+      do $role$
       begin
         if not exists (
           select 1
@@ -38,13 +38,13 @@ async function prepareDatabase() {
           create role ai_data_runtime nologin;
         end if;
       end
-      $;
+      $role$;
     `);
 
     await client.query("grant ai_data_runtime to current_user");
 
     await client.query(`
-      do $
+      do $role$
       begin
         if not exists (
           select 1
@@ -54,7 +54,7 @@ async function prepareDatabase() {
           create role ai_data_protected_runtime nologin;
         end if;
       end
-      $;
+      $role$;
     `);
 
     await client.query("grant ai_data_protected_runtime to current_user");
