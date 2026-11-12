@@ -18,7 +18,10 @@ export default async function Yw562RuntimeActivationClosurePage() {
   );
   const model = data.model;
   const protectedAuthorityConfigured =
-    Boolean(process.env.BUILD380_EXTERNAL_ACTIVATION_PUBLIC_KEY_PEM?.trim());
+    Boolean(process.env.BUILD380_EXTERNAL_ACTIVATION_PUBLIC_KEY_PEM?.trim()) &&
+    Boolean(process.env.BUILD380_AI_HUB_RUNTIME_PUBLIC_KEY_PEM?.trim()) &&
+    Boolean(process.env.BUILD380_COMMS_RUNTIME_PUBLIC_KEY_PEM?.trim()) &&
+    Boolean(process.env.BUILD380_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM?.trim());
 
   return (
     <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
@@ -116,10 +119,10 @@ export default async function Yw562RuntimeActivationClosurePage() {
             <code>{model.runtime.aiHub.originalHost}</code>
           </p>
           <p>
-            <strong>Protected activation authority configured:</strong>{" "}
+            <strong>Protected activation authorities configured:</strong>{" "}
             {protectedAuthorityConfigured
-              ? "YES"
-              : "NO — external activation remains unavailable"}
+              ? "YES — activation + all three Master pins"
+              : "NO — one or more protected signer pins are unavailable"}
           </p>
           <p>
             <strong>Current YW registry evidence:</strong>{" "}
