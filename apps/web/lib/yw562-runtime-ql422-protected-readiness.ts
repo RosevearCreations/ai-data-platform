@@ -397,10 +397,16 @@ export function composeBuild378RuntimeQl422Readiness(
           ? ("ADMITTED_CURRENT" as const)
           : ("READY_FOR_RECEIPT_ADMISSION" as const);
 
-  const latestQl422Correlation =
+  const latestQl422Reference =
     [...ql422CorrelationEvents]
       .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))[0] ?? null;
-  const ql422CorrelationState = ql422State(latestQl422Correlation, now);
+  const latestProtectedQl422Correlation =
+    [...ql422CorrelationEvents]
+      .filter((event) => event.evidenceAuthority === "protected-runtime")
+      .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))[0] ?? null;
+  const effectiveQl422Correlation =
+    latestProtectedQl422Correlation ?? latestQl422Reference;
+  const ql422CorrelationState = ql422State(effectiveQl422Correlation, now);
 
   const protectedActivationReadinessState =
     runtimePrerequisiteState !== "VERIFIED_CURRENT"
@@ -461,7 +467,9 @@ export function composeBuild378RuntimeQl422Readiness(
     exactOwnerAcceptanceState,
     currentFreshReceiptAdmission: currentReceiptAdmission,
     freshSourceBoundReceiptAdmissionState,
-    latestQl422Correlation,
+    latestQl422Reference,
+    latestProtectedQl422Correlation,
+    latestQl422Correlation: effectiveQl422Correlation,
     ql422CorrelationState,
     protectedActivationReadinessState,
     protectedActivationReady:
