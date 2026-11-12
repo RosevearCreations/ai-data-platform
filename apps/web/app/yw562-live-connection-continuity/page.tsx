@@ -77,7 +77,7 @@ export default async function Yw562LiveConnectionContinuityPage() {
           </article>
           <article>
             <strong>{model.currentMasterRuntimeState}</strong>
-            <span>AI Hub 311 / Comms QL-421</span>
+            <span>AI Hub 311 / Comms QL-422</span>
           </article>
           <article>
             <strong>{model.threeMasterSyncActivationState}</strong>
@@ -123,7 +123,7 @@ export default async function Yw562LiveConnectionContinuityPage() {
             <code>{model.masterRuntime.aiHub.main}</code>
           </p>
           <p>
-            <strong>Comms:</strong> QL-421 ·{" "}
+            <strong>Comms:</strong> QL-422 ·{" "}
             <code>{model.masterRuntime.comms.main}</code>
           </p>
           <p>
@@ -162,7 +162,7 @@ export default async function Yw562LiveConnectionContinuityPage() {
       <section className="dataQualityPolicyNote">
         <strong>Three-Master synchronization is an explicit final activation.</strong>
         <p>
-          AI Hub 311 and Comms QL-421 must independently resolve to the exact
+          AI Hub 311 and Comms QL-422 must independently resolve to the exact
           current protected OPEN state before the owner can activate synchronization.
           Code GREEN never substitutes for protected runtime evidence.
         </p>
