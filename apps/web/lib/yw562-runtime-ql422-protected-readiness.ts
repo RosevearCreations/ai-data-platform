@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import {
   summarizeReceiptAge,
   type ConvergenceLedgerReceipt,
@@ -44,6 +45,42 @@ export const BUILD_378_REQUIRED_YW_TABLES = Object.freeze([
   "ywi_landscape_provider_verified_561",
   "ywi_landscape_provider_pilot_decisions_562"
 ] as const);
+
+export const BUILD_378_RUNTIME_PREREQUISITE_REPORT_SCHEMA =
+  "rosevear.yw.runtime-prerequisite-evidence.v1" as const;
+
+export function canonicalBuild378RuntimePrerequisitePayload(input: {
+  keyId: string;
+  sourceProductionRevision: string;
+  requiredTables: readonly string[];
+  schemaChainVerified: boolean;
+  rlsVerified: boolean;
+  ownerHelperVerified: boolean;
+  protectedSummaryVerified: boolean;
+  evidenceURI: string;
+  nonce: string;
+  checkedAt: string;
+}) {
+  return JSON.stringify({
+    schema: BUILD_378_RUNTIME_PREREQUISITE_REPORT_SCHEMA,
+    sourceId: "yw",
+    environment: "production",
+    keyId: input.keyId,
+    sourceProductionRevision: input.sourceProductionRevision,
+    requiredTables: [...input.requiredTables].sort(),
+    schemaChainVerified: input.schemaChainVerified,
+    rlsVerified: input.rlsVerified,
+    ownerHelperVerified: input.ownerHelperVerified,
+    protectedSummaryVerified: input.protectedSummaryVerified,
+    evidenceURI: input.evidenceURI,
+    nonce: input.nonce,
+    checkedAt: input.checkedAt
+  });
+}
+
+export function build378EvidenceDigest(value: string | Buffer) {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 const MASTER_IDS = [
   "rosevear-ai-hub",
