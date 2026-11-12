@@ -422,6 +422,26 @@ assert.equal(connected.policy.threeDistinctMasterRuntimeReceiptsRequired, true);
 const migration = source(
   "../../db/migrations/0144_master_yw562_external_runtime_activation_closure.sql"
 );
+assert.ok(
+  migration.length > 10_000 && migration.length < 20_000,
+  "migration 0144 size is outside the reviewed bounded range"
+);
+assert.ok(
+  migration.includes(
+    "ai_hub_runtime_digest text not null check (ai_hub_runtime_digest ~ '^[a-f0-9]{64}$')"
+  ),
+  "migration 0144 AI Hub digest constraint is malformed"
+);
+assert.ok(
+  migration.includes(
+    "controller_signature_sha256 text not null check (controller_signature_sha256 ~ '^[a-f0-9]{64}$')"
+  ),
+  "migration 0144 controller signature constraint is malformed"
+);
+assert.ok(
+  !migration.includes("ai_hub_runtime_digest ~ '^[a-f0-9]{64}\n"),
+  "migration 0144 contains the previously corrupted digest fragment"
+);
 for (const token of [
   "master_build380_external_runtime_activation_ceremony_events",
   "master_build380_verified_connected_transition_events",
