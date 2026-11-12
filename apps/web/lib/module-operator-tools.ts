@@ -229,6 +229,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/yw561-owner-decision-runtime-connection",
           "/yw561-independent-connection-sync",
           "/yw562-live-connection-continuity",
+          "/yw562-runtime-ql422-readiness",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
