@@ -215,9 +215,7 @@ export function composeBuild377YwLiveConnectionContinuity(
   const runtimeEvidence = input.masterRuntimeEvidence ?? null;
 
   const sourceRevisionTransitionState =
-    BUILD_377_SOURCE_RUNTIME.previousMain !== BUILD_377_SOURCE_RUNTIME.currentMain
-      ? ("ADVANCED_TO_YW562_REVALIDATION_REQUIRED" as const)
-      : ("UNCHANGED" as const);
+    "ADVANCED_TO_YW562_REVALIDATION_REQUIRED" as const;
 
   const activeSigners = latestActiveSigners(signerEvents);
   const exactReceipts = receipts
