@@ -16,7 +16,8 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 12. **Build 372 — Yard Workers Independent Signer Custody Evidence Intake, Exact YW561 Signed Health Receipt Admission, Durable Replay Correlation & Three-Master Runtime Closure Recheck** — Production.
 13. **Build 373 — YW561 Live Source-Health Signer Enrollment Correlation, Exact Signed HEALTHY Receipt Closure, Durable Replay Acceptance & Three-Master Owner Decision Recheck** — Production.
 14. **Build 374 — YW561 Trusted Source-Health Signer Admission, Current Receipt/Replay Evidence Activation, Three-Master Runtime Evidence Correlation & Explicit Owner Acceptance Gate** — Production.
-15. **Build 375 — YW561 Explicit Owner Acceptance Decision Execution, Exact-Receipt Acceptance Continuity, Three-Master Runtime Gate Transition & Connection-State Reconciliation** — current authorized build.
+15. **Build 375 — YW561 Explicit Owner Acceptance Decision Execution, Exact-Receipt Acceptance Continuity, Three-Master Runtime Gate Transition & Connection-State Reconciliation** — Production.
+16. **Build 376 — YW561 Independent Connection Evidence Intake, Verified CONNECTED Transition, Exact-Receipt Owner Acceptance Continuity Recheck & Three-Master Synchronization Closure** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
@@ -27,3 +28,6 @@ Build 374 adds durable controller activation ledgers for trusted signer admissio
 
 
 Build 375 advances the Comms production baseline to QL-418 main `0cd042d044226848ab50da25a5cc0efc14577e39` while AI Hub production remains Build 309 main `0a94c72ee4a1ded1babeac68deeb981ad33835ef`. QL-418 remains metadata-only and explicitly reports owner acceptance HOLD, receiver OFF and connection HOLD. The Build 375 execution path therefore remains fail-closed: no exact current YW561 source-health receipt exists yet, the runtime gate remains HOLD, owner ACCEPT cannot execute, and CONNECTED cannot be inferred.
+
+
+Build 376 consumes only the latest trusted YW source-registry evidence that already passed the signed source-ingestion path and is independently classified CONNECTED for exact YW561 production revision `3ac1bbce127a011af7830ad88da020112d132122`. It does not let browser/operator input manufacture independent connection authority. Current live truth remains fail-closed because no such trusted YW CONNECTED registry record is present, no exact current source-health receipt is active, and the AI Hub 309 / Comms QL-418 runtime gate remains HOLD.
