@@ -71,7 +71,8 @@ function parseEnvelope(body: Record<string, unknown>): Build379ProtectedEnvelope
       throw new Error("build379_master_id_invalid");
     }
     return {
-      masterId,
+      masterId:
+        masterId as Build379ProtectedEnvelope["masterReceipts"][number]["masterId"],
       receiptId: exactString(item.receiptId, "master_receipt_id", 160),
       digest: digest(item.digest, "master_receipt_digest")
     };
