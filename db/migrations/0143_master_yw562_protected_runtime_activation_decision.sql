@@ -185,9 +185,11 @@ declare t text;
 begin
   foreach t in array array[
     'master_source_signer_registry_events',
+    'master_source_signer_enrollment_intake_events',
     'master_convergence_receipt_ledger',
     'master_source_health_admission_events',
     'master_owner_decision_audit',
+    'master_yw561_custody_evidence_intake_events',
     'master_yw561_replay_correlation_events',
     'master_yw562_runtime_prerequisite_evidence_intakes',
     'master_yw562_fresh_source_receipt_admission_events',
@@ -203,9 +205,11 @@ end $;
 
 grant select on
   app.master_source_signer_registry_events,
+  app.master_source_signer_enrollment_intake_events,
   app.master_convergence_receipt_ledger,
   app.master_source_health_admission_events,
   app.master_owner_decision_audit,
+  app.master_yw561_custody_evidence_intake_events,
   app.master_yw561_replay_correlation_events,
   app.master_yw562_runtime_prerequisite_evidence_intakes,
   app.master_yw562_fresh_source_receipt_admission_events,
