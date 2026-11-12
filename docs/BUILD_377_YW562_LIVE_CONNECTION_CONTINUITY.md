@@ -15,9 +15,9 @@ Build 377 is bound to the production revisions observed before release validatio
 - Yard Workers YW562 current main: `6e0b77eebcfc77aa7fc48dcc398da958af8df696`
 - YW562 handoff: `MASTER562-YW-PROVIDER-PILOT`
 - Rosevear AI Hub Build 311 main: `41b3d69962dd22480badf26fc6a65dfb59f88ac9`
-- Rosevear Comms Hub QL-421 main: `a89a885ce444f266da00d9311eeece1811d482e2`
+- Rosevear Comms Hub QL-422 main: `5f360821b361b43dd28aa5b2ca4c147565a84f0a`
 
-The current source/Master handoffs remain fail-closed. YW562 documents missing live provider-evidence database prerequisites; AI Hub 311 reports receiver/connection/Master sync HOLD; Comms QL-421 reports receiver OFF, connection HOLD and owner acceptance HOLD.
+The current source/Master handoffs remain fail-closed. YW562 documents missing live provider-evidence database prerequisites; AI Hub 311 reports receiver/connection/Master sync HOLD; Comms QL-422 adds original-host witness reconciliation, durable three-Master ledger custody and protected operator recheck, while still reporting receiver OFF, connection HOLD, owner acceptance HOLD and slave onboarding HOLD.
 
 ## YW562 exact receipt revalidation
 
@@ -60,7 +60,7 @@ Build 377 consumes the latest append-only Master runtime recheck and requires al
 
 - controller revision = exact Build 376 production main;
 - AI Hub revision = exact Build 311 production main;
-- Comms revision = exact QL-421 production main;
+- Comms revision = exact QL-422 production main;
 - Master recheck gate = `OPEN`;
 - blocker list is empty;
 - AI Hub reports `connection=CONNECTED` and Master synchronization active;
@@ -68,7 +68,7 @@ Build 377 consumes the latest append-only Master runtime recheck and requires al
 
 Only then does Build 377 allow an owner-recorded `ACTIVE_SYNCED` activation.
 
-Current AI Hub 311 / Comms QL-421 handoffs do not meet this condition, so production deployment of Build 377 must not itself create CONNECTED or synchronized runtime truth.
+Current AI Hub 311 / Comms QL-422 handoffs do not meet this condition, so production deployment of Build 377 must not itself create CONNECTED or synchronized runtime truth.
 
 ## Post-connection continuity monitoring
 
@@ -78,7 +78,7 @@ After a legitimate activation, Build 377 continuously re-evaluates the trust bin
 - its explicit owner ACCEPT remains current;
 - the independently verified YW CONNECTED registry evidence remains fresh and current;
 - the live-intake execution remains bound to the exact current receipt;
-- the exact AI Hub 311 / Comms QL-421 Master runtime evidence remains `VERIFIED_OPEN`;
+- the exact AI Hub 311 / Comms QL-422 Master runtime evidence remains `VERIFIED_OPEN`;
 - the explicit sync activation remains bound to those exact revisions.
 
 If any condition changes, monitoring fails closed to a specific HOLD state while preserving the historical audit.
@@ -102,7 +102,7 @@ At the current external baselines, Build 377 is expected to remain fail-closed:
 - exact YW562 receipt: not yet independently established in the controller ledger;
 - exact YW562 owner ACCEPT: not yet established;
 - current independently verified YW562 CONNECTED registry evidence: not established;
-- AI Hub 311 / Comms QL-421 protected Master gate: HOLD;
+- AI Hub 311 / Comms QL-422 protected Master gate: HOLD;
 - live connection intake: HOLD;
 - sync activation: HOLD;
 - connection: `DISCONNECTED_HOLD`;

@@ -34,7 +34,11 @@ assert.equal(
   "6e0b77eebcfc77aa7fc48dcc398da958af8df696"
 );
 assert.equal(BUILD_377_MASTER_RUNTIME.aiHub.build, 311);
-assert.equal(BUILD_377_MASTER_RUNTIME.comms.build, "QL-421");
+assert.equal(BUILD_377_MASTER_RUNTIME.comms.build, "QL-422");
+assert.equal(
+  BUILD_377_MASTER_RUNTIME.comms.main,
+  "5f360821b361b43dd28aa5b2ca4c147565a84f0a"
+);
 assert.equal(
   current.sourceRevisionTransitionState,
   "ADVANCED_TO_YW562_REVALIDATION_REQUIRED"
