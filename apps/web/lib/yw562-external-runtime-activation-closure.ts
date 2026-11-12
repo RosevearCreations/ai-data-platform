@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+
 import type { MasterShellSourceEvidence } from "./master-shell-source-registry-core";
 
 export type Build380RegistryEvidence = MasterShellSourceEvidence & {
@@ -119,6 +121,11 @@ export function canonicalBuild380ExternalActivationEnvelope(
     observedAt: input.observedAt
   });
 }
+
+export function build380Digest(value: string | Buffer) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
 
 export type Build380CeremonyEvent = {
   ceremonyEventId: string;
