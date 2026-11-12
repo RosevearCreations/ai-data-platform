@@ -227,6 +227,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/yw561-live-signer-owner-recheck",
           "/yw561-trusted-source-health-activation",
           "/yw561-owner-decision-runtime-connection",
+          "/yw561-independent-connection-sync",
           "/comms-complementary-plane",
           "/field-mappings",
           "/schema-drift",
