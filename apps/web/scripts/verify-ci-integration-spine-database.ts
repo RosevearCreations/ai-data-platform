@@ -148,7 +148,11 @@ const requiredTables = [
   "master_yw562_live_connection_intake_execution_events",
   "master_yw562_exact_receipt_acceptance_revalidation_events",
   "master_yw562_three_master_sync_activation_events",
-  "master_yw562_post_connection_continuity_events"
+  "master_yw562_post_connection_continuity_events",
+  "master_yw562_runtime_prerequisite_evidence_intakes",
+  "master_yw562_fresh_source_receipt_admission_events",
+  "master_ql422_original_host_three_master_correlation_events",
+  "master_build378_protected_activation_readiness_events"
 ];
 
 const appendOnlyTables = [
@@ -263,7 +267,11 @@ const appendOnlyTables = [
   "master_yw561_live_signer_correlation_events",
   "master_yw561_exact_health_receipt_closure_events",
   "master_yw561_durable_replay_acceptance_events",
-  "master_yw561_three_master_owner_decision_rechecks"
+  "master_yw561_three_master_owner_decision_rechecks",
+  "master_yw562_runtime_prerequisite_evidence_intakes",
+  "master_yw562_fresh_source_receipt_admission_events",
+  "master_ql422_original_host_three_master_correlation_events",
+  "master_build378_protected_activation_readiness_events"
 ];
 
 
@@ -363,7 +371,8 @@ async function main() {
         "0138_master_yw561_trusted_source_health_activation_owner_gate.sql",
         "0139_master_yw561_owner_decision_runtime_connection_reconciliation.sql",
         "0140_master_yw561_independent_connection_three_master_sync.sql",
-        "0141_master_yw562_live_connection_continuity.sql"
+        "0141_master_yw562_live_connection_continuity.sql",
+        "0142_master_yw562_runtime_ql422_protected_readiness.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -486,6 +495,10 @@ async function main() {
     assert(
       migrationNames.has("0141_master_yw562_live_connection_continuity.sql"),
       "migration 0141 is not recorded"
+    );
+    assert(
+      migrationNames.has("0142_master_yw562_runtime_ql422_protected_readiness.sql"),
+      "migration 0142 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
