@@ -319,6 +319,16 @@ export function composeBuild377YwLiveConnectionContinuity(
 
   const currentMasterRuntimeState = masterRuntimeState(runtimeEvidence);
 
+  const latestActivation =
+    [...syncActivationEvents]
+      .filter(
+        (event) =>
+          event.sourceProductionRevision ===
+            BUILD_377_SOURCE_RUNTIME.currentMain &&
+          event.activationState === "ACTIVE_SYNCED"
+      )
+      .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt))[0] ?? null;
+
   const currentActivation =
     currentExecution && exactReceipt && runtimeEvidence
       ? [...syncActivationEvents]
@@ -351,16 +361,18 @@ export function composeBuild377YwLiveConnectionContinuity(
             : ("READY_FOR_EXPLICIT_SYNC_ACTIVATION" as const);
 
   const postConnectionContinuityState =
-    !currentActivation
-      ? ("HOLD_NOT_ACTIVATED" as const)
-      : connectionCandidateState !== "READY_FOR_LIVE_INTAKE"
-        ? ("HOLD_CONNECTION_EVIDENCE" as const)
-        : exactReceiptState !== "ACTIVE_CURRENT"
-          ? ("HOLD_RECEIPT_HEALTH" as const)
-          : acceptanceRevalidationState !== "ACCEPTED_CURRENT"
-            ? ("HOLD_OWNER_ACCEPTANCE" as const)
-            : currentExecution?.exactReceiptId !== exactReceipt?.receiptId
-              ? ("HOLD_RECEIPT_CHANGED" as const)
+    latestActivation &&
+    exactReceipt &&
+    latestActivation.exactReceiptId !== exactReceipt.receiptId
+      ? ("HOLD_RECEIPT_CHANGED" as const)
+      : !currentActivation
+        ? ("HOLD_NOT_ACTIVATED" as const)
+        : connectionCandidateState !== "READY_FOR_LIVE_INTAKE"
+          ? ("HOLD_CONNECTION_EVIDENCE" as const)
+          : exactReceiptState !== "ACTIVE_CURRENT"
+            ? ("HOLD_RECEIPT_HEALTH" as const)
+            : acceptanceRevalidationState !== "ACCEPTED_CURRENT"
+              ? ("HOLD_OWNER_ACCEPTANCE" as const)
               : currentMasterRuntimeState !== "VERIFIED_OPEN"
                 ? ("HOLD_MASTER_SYNC" as const)
                 : ("STABLE_CONNECTED" as const);
@@ -422,6 +434,7 @@ export function composeBuild377YwLiveConnectionContinuity(
     liveConnectionIntakeState,
     masterRuntimeEvidence: runtimeEvidence,
     currentMasterRuntimeState,
+    latestSyncActivation: latestActivation,
     currentSyncActivation: currentActivation,
     threeMasterSyncActivationState,
     postConnectionContinuityState,
