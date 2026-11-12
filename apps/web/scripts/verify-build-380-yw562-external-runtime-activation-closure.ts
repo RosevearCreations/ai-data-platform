@@ -37,15 +37,15 @@ assert.equal(
   BUILD_380_RUNTIME.yw.main,
   "6e0b77eebcfc77aa7fc48dcc398da958af8df696"
 );
-assert.equal(BUILD_380_RUNTIME.aiHub.build, 313);
+assert.equal(BUILD_380_RUNTIME.aiHub.build, 314);
 assert.equal(
   BUILD_380_RUNTIME.aiHub.main,
-  "b790adf2e19343d1132fad0eef8107c21e3e560d"
+  "124c78f0c15b054881c9b7f45c6d9b2f6d8eb88c"
 );
-assert.equal(BUILD_380_RUNTIME.comms.build, "QL-423");
+assert.equal(BUILD_380_RUNTIME.comms.build, "QL-424");
 assert.equal(
   BUILD_380_RUNTIME.comms.main,
-  "2adc527a88adb790f0edc5192df62f03be8c397c"
+  "5697d9e3e953e4f347ff811aaba1cf2824ee8f58"
 );
 assert.equal(BUILD_380_RUNTIME.aiHub.originalHost, "DESKTOP-AE894KC");
 
@@ -421,6 +421,26 @@ assert.equal(connected.policy.threeDistinctMasterRuntimeReceiptsRequired, true);
 
 const migration = source(
   "../../db/migrations/0144_master_yw562_external_runtime_activation_closure.sql"
+);
+assert.ok(
+  migration.length > 10_000 && migration.length < 20_000,
+  "migration 0144 size is outside the reviewed bounded range"
+);
+assert.ok(
+  migration.includes(
+    "ai_hub_runtime_digest text not null check (ai_hub_runtime_digest ~ '^[a-f0-9]{64}$')"
+  ),
+  "migration 0144 AI Hub digest constraint is malformed"
+);
+assert.ok(
+  migration.includes(
+    "controller_signature_sha256 text not null check (controller_signature_sha256 ~ '^[a-f0-9]{64}$')"
+  ),
+  "migration 0144 controller signature constraint is malformed"
+);
+assert.ok(
+  !migration.includes("ai_hub_runtime_digest ~ '^[a-f0-9]{64}\n"),
+  "migration 0144 contains the previously corrupted digest fragment"
 );
 for (const token of [
   "master_build380_external_runtime_activation_ceremony_events",

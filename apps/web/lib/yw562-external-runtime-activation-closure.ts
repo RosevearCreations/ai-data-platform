@@ -21,13 +21,13 @@ export const BUILD_380_RUNTIME = Object.freeze({
     main: "6e0b77eebcfc77aa7fc48dcc398da958af8df696"
   },
   aiHub: {
-    build: 313,
-    main: "b790adf2e19343d1132fad0eef8107c21e3e560d",
+    build: 314,
+    main: "124c78f0c15b054881c9b7f45c6d9b2f6d8eb88c",
     originalHost: "DESKTOP-AE894KC"
   },
   comms: {
-    build: "QL-423",
-    main: "2adc527a88adb790f0edc5192df62f03be8c397c"
+    build: "QL-424",
+    main: "5697d9e3e953e4f347ff811aaba1cf2824ee8f58"
   }
 } as const);
 
@@ -478,7 +478,7 @@ export function composeBuild380ExternalRuntimeActivation(
       : []),
     ...(receiverStateProof !== "ON_VERIFIED_CURRENT"
       ? [
-          "No fresh protected receiver-ON proof is admitted for the exact current YW562 / AI Hub 313 / Comms QL-423 runtime set."
+          "No fresh protected receiver-ON proof is admitted for the exact current YW562 / AI Hub 314 / Comms QL-424 runtime set."
         ]
       : []),
     ...(verifiedConnectedTransitionState !== "CONNECTED_VERIFIED"
@@ -521,7 +521,7 @@ export function composeBuild380ExternalRuntimeActivation(
       currentYw562RegistryTestEvidenceRequired: true,
       protectedRegistryConnectedTransitionRequired: true,
       exactCurrentReceiptOwnerContinuityRequired: true,
-      exactAiHub313AndCommsQl423RevisionsRequired: true,
+      exactAiHub314AndCommsQl424RevisionsRequired: true,
       threeDistinctMasterRuntimeReceiptsRequired: true,
       threeMasterClosureRequired: true,
       browserMaySetReceiverOn: false,
