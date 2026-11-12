@@ -195,13 +195,18 @@ export async function listBuild379ProtectedActivationForUser(userId: string) {
   return withUserDatabase(userId, async (client) => {
     await requireAdmin(client);
     const model = await build379Model(client);
-    const [admissionHistory, decisionHistory, executionHistory] = await Promise.all([
+    const [admissionHistory, decisionHistory, executionHistory, ownerAccess] = await Promise.all([
       client.query(`select * from app.master_build379_protected_runtime_admission_events order by recorded_at desc limit 100`),
       client.query(`select * from app.master_build379_supervised_activation_decision_events order by recorded_at desc limit 100`),
-      client.query(`select * from app.master_build379_activation_decision_execution_events order by recorded_at desc limit 100`)
+      client.query(`select * from app.master_build379_activation_decision_execution_events order by recorded_at desc limit 100`),
+      client.query<{allowed:boolean}>(`select exists (
+        select 1 from app.workspace_members wm
+        where wm.user_id=nullif(current_setting('app.user_id',true),'')
+          and wm.role='owner') as allowed`)
     ]);
     return {
       model,
+      canDecide: ownerAccess.rows[0]?.allowed === true,
       admissionHistory: admissionHistory.rows,
       decisionHistory: decisionHistory.rows,
       executionHistory: executionHistory.rows
