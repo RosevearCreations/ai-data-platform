@@ -43,7 +43,7 @@ assert.equal(
   BUILD_379_RUNTIME.yw.main,
   "6e0b77eebcfc77aa7fc48dcc398da958af8df696"
 );
-assert.equal(BUILD_379_RUNTIME.aiHub.build, 312);
+assert.equal(BUILD_379_RUNTIME.aiHub.build, 313);
 assert.equal(
   BUILD_379_RUNTIME.aiHub.main,
   "e64e4b2e79e7c07bbd077284c298207414b149ad"
