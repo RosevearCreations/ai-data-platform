@@ -21,7 +21,8 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 17. **Build 377 — YW561→YW562 Live Trusted Connection Intake Execution, Exact-Receipt Acceptance Revalidation, Three-Master Sync Activation & Post-Connection Continuity Monitoring** — Production.
 18. **Build 378 — YW562 Runtime Prerequisite Evidence Intake, Fresh Source-Bound Receipt Admission, QL-422 Original-Host Witness/Three-Master Ledger Correlation & Protected Activation Readiness** — Production.
 19. **Build 379 — YW562 Protected Runtime Evidence Admission, Exact Receipt/Owner Continuity, QL-422 Protected Correlation Closure & Supervised Activation Decision Execution** — Production.
-20. **Build 380 — Protected External Runtime Activation Ceremony, Receiver-State Proof, Verified CONNECTED Transition & Three-Master Synchronization Closure** — current authorized build.
+20. **Build 380 — Protected External Runtime Activation Ceremony, Receiver-State Proof, Verified CONNECTED Transition & Three-Master Synchronization Closure** — Production.
+21. **Build 381 — Protected Receiver Health Continuity, Signed Runtime Renewal, Automatic Fail-Closed Rollback & Three-Master CONNECTED Revalidation** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
@@ -47,3 +48,6 @@ Build 379 begins from AI Data Build 378 main `a0eea834c7e8d62232a70b13b06688c6b9
 
 
 Build 380 begins from AI Data Build 379 production `ce4216c667b514f40e2fb6e506e5b62c222b1736`, YW562 `6e0b77eebcfc77aa7fc48dcc398da958af8df696`, current AI Hub Build 314 `124c78f0c15b054881c9b7f45c6d9b2f6d8eb88c`, and current Comms QL-424 `5697d9e3e953e4f347ff811aaba1cf2824ee8f58`. It adds a separate Ed25519-pinned external activation authority, a protected atomic receiver-on ceremony, a YW-only independent CONNECTED registry transition and exact three-Master synchronization closure. QL-424's authenticated isolated one-use pilot does not itself qualify as general CONNECTED or release the slave gate, and AI Hub 314 remains field-evidence HOLD until genuine original-host proof exists. Build 380 therefore remains fail-closed until stronger live runtime proof satisfies its full connection criteria. Code GREEN, browser state, an isolated pilot and owner authorization alone cannot set general CONNECTED.
+
+
+Build 381 begins from AI Data Build 380 production `ccd291f22e15750392fa3995dc3d5811c506cd05`, YW562 `6e0b77eebcfc77aa7fc48dcc398da958af8df696`, current AI Hub Build 321 `dbc3fd8ae7f8df3bfc85a402a00b0954648ec543`, and current Comms QL-432 `f28f14f67d3ecd5fad9972d6f0500c14de0f89b7`. It requires five-minute signed receiver-health renewal plus three independently signed Master CONNECTED_HEALTHY receipts after a genuine Build 380 general connection. Missing renewal automatically projects DISCONNECTED_HOLD; durable rollback additionally requires a separately signed receiver-OFF proof and protected DISCONNECTED registry record. AI Hub 321 isolated-pilot capability and QL-432 signed-OFF recovery review remain operational HOLD and cannot themselves satisfy general CONNECTED continuity.
