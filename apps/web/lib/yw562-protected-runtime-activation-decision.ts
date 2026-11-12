@@ -25,8 +25,8 @@ export const BUILD_379_RUNTIME = Object.freeze({
     originalHost: "DESKTOP-AE894KC"
   },
   comms: {
-    build: "QL-422",
-    main: "5f360821b361b43dd28aa5b2ca4c147565a84f0a"
+    build: "QL-423",
+    main: "2adc527a88adb790f0edc5192df62f03be8c397c"
   }
 } as const);
 
@@ -34,6 +34,8 @@ export type Build379ProtectedEnvelope = {
   authorityKeyId: string;
   controllerRevision: string;
   ql422ControllerRevision: string;
+  build378AiHubRevision: string;
+  build378CommsRevision: string;
   sourceRevision: string;
   aiHubMain: string;
   commsMain: string;
@@ -64,6 +66,8 @@ export function canonicalBuild379ProtectedEnvelope(
     authorityKeyId: input.authorityKeyId,
     controllerRevision: input.controllerRevision,
     ql422ControllerRevision: input.ql422ControllerRevision,
+    build378AiHubRevision: input.build378AiHubRevision,
+    build378CommsRevision: input.build378CommsRevision,
     sourceRevision: input.sourceRevision,
     aiHubMain: input.aiHubMain,
     commsMain: input.commsMain,
