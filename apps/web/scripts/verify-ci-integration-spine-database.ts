@@ -144,7 +144,11 @@ const requiredTables = [
   "master_yw561_independent_connection_evidence_intake_events",
   "master_yw561_acceptance_continuity_connection_recheck_events",
   "master_yw561_verified_connection_transition_events",
-  "master_yw561_three_master_sync_closure_events"
+  "master_yw561_three_master_sync_closure_events",
+  "master_yw562_live_connection_intake_execution_events",
+  "master_yw562_exact_receipt_acceptance_revalidation_events",
+  "master_yw562_three_master_sync_activation_events",
+  "master_yw562_post_connection_continuity_events"
 ];
 
 const appendOnlyTables = [
@@ -358,7 +362,8 @@ async function main() {
         "0137_master_yw561_live_signer_receipt_replay_owner_recheck.sql",
         "0138_master_yw561_trusted_source_health_activation_owner_gate.sql",
         "0139_master_yw561_owner_decision_runtime_connection_reconciliation.sql",
-        "0140_master_yw561_independent_connection_three_master_sync.sql"
+        "0140_master_yw561_independent_connection_three_master_sync.sql",
+        "0141_master_yw562_live_connection_continuity.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -477,6 +482,10 @@ async function main() {
     assert(
       migrationNames.has("0140_master_yw561_independent_connection_three_master_sync.sql"),
       "migration 0140 is not recorded"
+    );
+    assert(
+      migrationNames.has("0141_master_yw562_live_connection_continuity.sql"),
+      "migration 0141 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
