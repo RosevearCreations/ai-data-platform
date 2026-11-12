@@ -10,11 +10,11 @@ Build 380 does **not** treat code GREEN, an owner click, or a browser boolean as
 
 - AI Data Platform Build 379 production: `ce4216c667b514f40e2fb6e506e5b62c222b1736`
 - Yard Workers YW562 production: `6e0b77eebcfc77aa7fc48dcc398da958af8df696`
-- Rosevear AI Hub Build 313 production: `b790adf2e19343d1132fad0eef8107c21e3e560d`
-- Rosevear Comms Hub QL-423 production: `2adc527a88adb790f0edc5192df62f03be8c397c`
+- Rosevear AI Hub Build 314 production: `124c78f0c15b054881c9b7f45c6d9b2f6d8eb88c`
+- Rosevear Comms Hub QL-424 production: `5697d9e3e953e4f347ff811aaba1cf2824ee8f58`
 - original host: `DESKTOP-AE894KC`
 
-AI Hub 313 and Comms QL-423 both remain code-level protected handoff implementations. Their published handoffs do not themselves prove a live receiver. Build 380 therefore ships the controller-side ceremony and fail-closed transition contract while remaining operationally HOLD until genuine external evidence arrives.
+AI Hub 314 and Comms QL-424 are the current production handoffs. Their published handoffs do not themselves prove a live receiver. Build 380 therefore ships the controller-side ceremony and fail-closed transition contract while remaining operationally HOLD until genuine external evidence arrives.
 
 ## Protected external activation authority
 
@@ -37,8 +37,8 @@ The envelope binds:
 
 - exact Build 379 production controller revision;
 - exact current YW562 production revision;
-- exact current AI Hub 313 revision;
-- exact current Comms QL-423 revision;
+- exact current AI Hub 314 revision;
+- exact current Comms QL-424 revision;
 - original host `DESKTOP-AE894KC`;
 - exact Build 379 protected admission;
 - exact Build 379 owner activation decision;
@@ -160,6 +160,8 @@ The protected role receives the minimum additional read access required to re-ch
 ## Truthful production state
 
 Build 380 production code can be GREEN while the live connection remains HOLD.
+
+Comms QL-424 can authenticate an **isolated one-use connected pilot** only. Its own contract explicitly leaves general receiver mode, measured uptime and the slave gate unresolved. AI Hub 314 likewise remains review-only until real original-host evidence exists. Therefore a QL-424 `VERIFIED_CONNECTED_PILOT` is useful protected evidence but does **not** by itself satisfy Build 380's stronger general `CONNECTED` / three-Master closure criteria.
 
 Until a genuine protected activation authority submits a valid external runtime ceremony against a current independent YW TEST registry row:
 
