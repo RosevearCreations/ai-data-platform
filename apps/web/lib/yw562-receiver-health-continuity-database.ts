@@ -114,6 +114,8 @@ type RollbackRow = {
   receiver_off_observed_at: Date;
   receiver_off_proof_uri: string;
   receiver_off_digest: string;
+  receiver_off_signer_key_id: string;
+  receiver_off_signature_sha256: string;
   evidence_uri: string;
   rollback_state: "ROLLED_BACK_VERIFIED";
   observed_at: Date;
@@ -220,6 +222,8 @@ function rollback(row: RollbackRow): Build381RollbackEvent {
     receiverOffObservedAt: row.receiver_off_observed_at.toISOString(),
     receiverOffProofURI: row.receiver_off_proof_uri,
     receiverOffDigest: row.receiver_off_digest,
+    receiverOffSignerKeyId: row.receiver_off_signer_key_id,
+    receiverOffSignatureSha256: row.receiver_off_signature_sha256,
     evidenceURI: row.evidence_uri,
     rollbackState: row.rollback_state,
     observedAt: row.observed_at.toISOString(),
@@ -667,10 +671,11 @@ export async function admitBuild381FailClosedRollback(input: {
       source_revision,ai_hub_main,comms_main,original_host_id,
       receiver_instance_id,receiver_boot_id,receiver_state,reason,
       receiver_off_observed_at,receiver_off_proof_uri,receiver_off_digest,
+      receiver_off_signer_key_id,receiver_off_signature_sha256,
       evidence_uri,rollback_state,observed_at
     ) values(
       $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,'OFF',$17,
-      $18::timestamptz,$19,$20,$21,'ROLLED_BACK_VERIFIED',$22::timestamptz
+      $18::timestamptz,$19,$20,$21,$22,$23,'ROLLED_BACK_VERIFIED',$24::timestamptz
     )`,[
       rollbackEventId,
       input.envelope.renewalEventId,
@@ -692,6 +697,8 @@ export async function admitBuild381FailClosedRollback(input: {
       input.envelope.receiverOffObservedAt,
       input.envelope.receiverOffProofURI,
       input.envelope.receiverOffDigest,
+      input.envelope.receiverOffSignerKeyId,
+      input.envelope.receiverOffSignatureSha256,
       input.envelope.evidenceURI,
       input.envelope.observedAt
     ]);
