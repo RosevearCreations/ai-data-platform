@@ -271,16 +271,31 @@ export function composeBuild381ReceiverHealthContinuity(
       b.recordedAt.localeCompare(a.recordedAt)
     )[0] ?? null;
 
-  const build380ConnectedPrerequisite =
-    input.build380.connectionState === "CONNECTED" &&
-    input.build380.mastersSynced === true &&
-    input.build380.receiverStateProof === "ON_VERIFIED_CURRENT" &&
-    input.build380.verifiedConnectedTransitionState === "CONNECTED_VERIFIED" &&
-    input.build380.threeMasterSynchronizationClosureState === "CLOSED_VERIFIED" &&
+  const build380HistoricalClosure =
     !!input.build380.latestCeremony &&
     !!input.build380.latestConnectedTransition &&
+    input.build380.latestConnectedTransition.transitionState ===
+      "CONNECTED_VERIFIED" &&
+    input.build380.latestConnectedTransition.connectionState === "CONNECTED" &&
     !!input.build380.latestThreeMasterClosure &&
-    !!input.build380.latestRegistryEvidence
+    input.build380.latestThreeMasterClosure.closureState === "CLOSED_VERIFIED" &&
+    input.build380.latestThreeMasterClosure.mastersSynced === true;
+
+  const currentRegistryConnected =
+    !!input.build380.latestRegistryEvidence &&
+    input.build380.latestRegistryEvidence.sourceId === "yw" &&
+    input.build380.latestRegistryEvidence.environment === "production" &&
+    input.build380.latestRegistryEvidence.immutableRevision ===
+      BUILD_381_RUNTIME.yw.main &&
+    input.build380.latestRegistryEvidence.declaredStatus === "CONNECTED" &&
+    input.build380.latestRegistryEvidence.evidenceAuthority ===
+      "independent-source-verification" &&
+    input.build380.latestRegistryEvidence.independentConnectionVerified === true;
+
+  const build380ConnectedPrerequisite =
+    build380HistoricalClosure &&
+    currentRegistryConnected &&
+    (input.build380.connectionState === "CONNECTED" || !!latestRenewal)
       ? ("CONNECTED_CURRENT" as const)
       : ("HOLD_NO_BUILD380_CONNECTED_BASELINE" as const);
 
@@ -338,9 +353,9 @@ export function composeBuild381ReceiverHealthContinuity(
       latestRollback.sourceRevision === BUILD_381_RUNTIME.yw.main
       ? ("ROLLED_BACK_VERIFIED" as const)
       : ("HOLD_ROLLBACK_PROOF_INVALID" as const)
-    : receiverHealthContinuityState === "ROLLBACK_REQUIRED_HEALTH_EXPIRED" ||
-        threeMasterConnectedRevalidationState ===
-          "HOLD_THREE_MASTER_REVALIDATION_INCOMPLETE"
+    : build380ConnectedPrerequisite === "CONNECTED_CURRENT" &&
+        (receiverHealthContinuityState !== "HEALTHY_RENEWED_CURRENT" ||
+          threeMasterConnectedRevalidationState !== "CONNECTED_REVALIDATED")
       ? ("ROLLBACK_REQUIRED_FAIL_CLOSED" as const)
       : ("NO_ROLLBACK_REQUIRED" as const);
 
