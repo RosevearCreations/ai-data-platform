@@ -19,7 +19,8 @@ Build 360 is Production. The current sequence preserves separate Master-runtime,
 15. **Build 375 — YW561 Explicit Owner Acceptance Decision Execution, Exact-Receipt Acceptance Continuity, Three-Master Runtime Gate Transition & Connection-State Reconciliation** — Production.
 16. **Build 376 — YW561 Independent Connection Evidence Intake, Verified CONNECTED Transition, Exact-Receipt Owner Acceptance Continuity Recheck & Three-Master Synchronization Closure** — Production.
 17. **Build 377 — YW561→YW562 Live Trusted Connection Intake Execution, Exact-Receipt Acceptance Revalidation, Three-Master Sync Activation & Post-Connection Continuity Monitoring** — Production.
-18. **Build 378 — YW562 Runtime Prerequisite Evidence Intake, Fresh Source-Bound Receipt Admission, QL-422 Original-Host Witness/Three-Master Ledger Correlation & Protected Activation Readiness** — current authorized build.
+18. **Build 378 — YW562 Runtime Prerequisite Evidence Intake, Fresh Source-Bound Receipt Admission, QL-422 Original-Host Witness/Three-Master Ledger Correlation & Protected Activation Readiness** — Production.
+19. **Build 379 — YW562 Protected Runtime Evidence Admission, Exact Receipt/Owner Continuity, QL-422 Protected Correlation Closure & Supervised Activation Decision Execution** — current authorized build.
 
 Build 373 re-observed exact YW561 production main `3ac1bbce127a011af7830ad88da020112d132122` and keeps its current live discovery state fail-closed: `AWAITING_INDEPENDENT_SOURCE_SIGNER`, `DISCONNECTED / HOLD`.
 
@@ -39,3 +40,6 @@ Build 377 observes the Yard Workers production transition from YW561 main `3ac1b
 
 
 Build 378 advances the active YW562 production baseline `6e0b77eebcfc77aa7fc48dcc398da958af8df696` against AI Hub Build 312 main `e64e4b2e79e7c07bbd077284c298207414b149ad` and Comms QL-422 main `5f360821b361b43dd28aa5b2ca4c147565a84f0a`. YW562 still reports its ordered runtime schema prerequisites as independently unproven; AI Hub 312 and QL-422 remain protected-runtime HOLD. Build 378 therefore requires source-signed Ed25519 prerequisite proof, a fresh exact YW562 receipt binding, explicit exact-receipt Master owner acceptance and protected-runtime QL-422 correlation before reporting activation readiness. READY remains distinct from CONNECTED, and Build 378 never activates a receiver or marks the Masters synchronized.
+
+
+Build 379 begins from AI Data Build 378 main `a0eea834c7e8d62232a70b13b06688c6b9b4babc`, YW562 main `6e0b77eebcfc77aa7fc48dcc398da958af8df696`, AI Hub Build 312 main `e64e4b2e79e7c07bbd077284c298207414b149ad`, and current Comms QL-423 main `2adc527a88adb790f0edc5192df62f03be8c397c`. It preserves the historical Build 378 QL-422 correlation revision separately inside the protected signed envelope. The protected intake uses an Ed25519-pinned server authority and a dedicated no-login database role; owner/browser runtime cannot manufacture protected evidence. A successful owner approval records activation authorization only and remains receiver OFF / DISCONNECTED_HOLD / mastersSynced=false until a later external runtime activation contract supplies genuine operational proof.
