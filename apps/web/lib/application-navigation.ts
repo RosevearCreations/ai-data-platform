@@ -560,6 +560,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw562-runtime-ql422-readiness",
+        label: "YW562 Runtime & QL-422 Readiness",
+        description: "Review Build 378 source-signed YW562 runtime prerequisites, fresh source receipt admission, QL-422 original-host/three-Master correlation and protected activation readiness.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
