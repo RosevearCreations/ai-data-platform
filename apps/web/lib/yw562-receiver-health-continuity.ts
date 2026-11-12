@@ -152,10 +152,24 @@ export type Build381RollbackEnvelope = {
   receiverOffObservedAt: string;
   receiverOffProofURI: string;
   receiverOffDigest: string;
+  receiverOffSignerKeyId: string;
+  receiverOffSignatureSha256: string;
   evidenceURI: string;
   nonce: string;
   observedAt: string;
 };
+
+export function canonicalBuild381ReceiverOffProof(
+  input: Omit<
+    Build381RollbackEnvelope,
+    "authorityKeyId" | "receiverOffSignatureSha256" | "evidenceURI" | "nonce"
+  >
+) {
+  return JSON.stringify({
+    schema: "rosevear.ai-data-platform.build381.receiver-off-proof.v1",
+    ...input
+  });
+}
 
 export function canonicalBuild381RollbackEnvelope(
   input: Build381RollbackEnvelope
@@ -236,6 +250,8 @@ export type Build381RollbackEvent = {
   receiverOffObservedAt: string;
   receiverOffProofURI: string;
   receiverOffDigest: string;
+  receiverOffSignerKeyId: string;
+  receiverOffSignatureSha256: string;
   evidenceURI: string;
   rollbackState: "ROLLED_BACK_VERIFIED";
   observedAt: string;
