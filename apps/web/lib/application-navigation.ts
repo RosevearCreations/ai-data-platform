@@ -578,6 +578,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw562-receiver-health-continuity",
+        label: "YW562 Receiver Health Continuity",
+        description: "Review Build 381 protected receiver-health renewal, automatic fail-closed rollback and three-Master CONNECTED revalidation.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",

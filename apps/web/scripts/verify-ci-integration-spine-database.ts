@@ -158,7 +158,9 @@ const requiredTables = [
   "master_build379_activation_decision_execution_events",
   "master_build380_external_runtime_activation_ceremony_events",
   "master_build380_verified_connected_transition_events",
-  "master_build380_three_master_sync_closure_events"
+  "master_build380_three_master_sync_closure_events",
+  "master_build381_receiver_health_renewal_events",
+  "master_build381_fail_closed_rollback_events"
 ];
 
 const appendOnlyTables = [
@@ -283,7 +285,9 @@ const appendOnlyTables = [
   "master_build379_activation_decision_execution_events",
   "master_build380_external_runtime_activation_ceremony_events",
   "master_build380_verified_connected_transition_events",
-  "master_build380_three_master_sync_closure_events"
+  "master_build380_three_master_sync_closure_events",
+  "master_build381_receiver_health_renewal_events",
+  "master_build381_fail_closed_rollback_events"
 ];
 
 
@@ -386,7 +390,8 @@ async function main() {
         "0141_master_yw562_live_connection_continuity.sql",
         "0142_master_yw562_runtime_ql422_protected_readiness.sql",
         "0143_master_yw562_protected_runtime_activation_decision.sql",
-        "0144_master_yw562_external_runtime_activation_closure.sql"
+        "0144_master_yw562_external_runtime_activation_closure.sql",
+        "0145_master_yw562_receiver_health_continuity.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -521,6 +526,10 @@ async function main() {
     assert(
       migrationNames.has("0144_master_yw562_external_runtime_activation_closure.sql"),
       "migration 0144 is not recorded"
+    );
+    assert(
+      migrationNames.has("0145_master_yw562_receiver_health_continuity.sql"),
+      "migration 0145 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
