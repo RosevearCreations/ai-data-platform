@@ -15,7 +15,7 @@ Approval is an authorization record, not a receiver activation command.
 
 - AI Data Platform Build 378 main: `a0eea834c7e8d62232a70b13b06688c6b9b4babc`
 - Yard Workers YW562 main: `6e0b77eebcfc77aa7fc48dcc398da958af8df696`
-- Rosevear AI Hub Build 312 main: `e64e4b2e79e7c07bbd077284c298207414b149ad`
+- Rosevear AI Hub Build 313 main: `b790adf2e19343d1132fad0eef8107c21e3e560d`
 - Rosevear Comms Hub QL-423 main: `2adc527a88adb790f0edc5192df62f03be8c397c`
 - Build 378 historical Comms correlation baseline: QL-422 `5f360821b361b43dd28aa5b2ca4c147565a84f0a`
 - Build 378 historical AI Hub correlation baseline: Build 312 `e64e4b2e79e7c07bbd077284c298207414b149ad`
@@ -23,7 +23,7 @@ Approval is an authorization record, not a receiver activation command.
 
 QL-423 is deliberately treated as the current protected-runtime software baseline while the signed envelope separately binds the historical QL-422/Build 378 correlation lineage. This prevents a current QL-423 package from silently rewriting Build 378 history.
 
-AI Hub Build 313 was still in a production candidate PR during implementation. Build 379 must be reconciled again before production if AI Hub 313 reaches `main`.
+AI Hub Build 313 reached production during Build 379 implementation and was reconciled before preview. The signed envelope therefore binds current Build 313 separately from the Build 378 historical Build 312 correlation dependency.
 
 ## Protected runtime authority
 
