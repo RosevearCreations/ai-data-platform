@@ -152,7 +152,10 @@ const requiredTables = [
   "master_yw562_runtime_prerequisite_evidence_intakes",
   "master_yw562_fresh_source_receipt_admission_events",
   "master_ql422_original_host_three_master_correlation_events",
-  "master_build378_protected_activation_readiness_events"
+  "master_build378_protected_activation_readiness_events",
+  "master_build379_protected_runtime_admission_events",
+  "master_build379_supervised_activation_decision_events",
+  "master_build379_activation_decision_execution_events"
 ];
 
 const appendOnlyTables = [
@@ -271,7 +274,10 @@ const appendOnlyTables = [
   "master_yw562_runtime_prerequisite_evidence_intakes",
   "master_yw562_fresh_source_receipt_admission_events",
   "master_ql422_original_host_three_master_correlation_events",
-  "master_build378_protected_activation_readiness_events"
+  "master_build378_protected_activation_readiness_events",
+  "master_build379_protected_runtime_admission_events",
+  "master_build379_supervised_activation_decision_events",
+  "master_build379_activation_decision_execution_events"
 ];
 
 
@@ -372,7 +378,8 @@ async function main() {
         "0139_master_yw561_owner_decision_runtime_connection_reconciliation.sql",
         "0140_master_yw561_independent_connection_three_master_sync.sql",
         "0141_master_yw562_live_connection_continuity.sql",
-        "0142_master_yw562_runtime_ql422_protected_readiness.sql"
+        "0142_master_yw562_runtime_ql422_protected_readiness.sql",
+        "0143_master_yw562_protected_runtime_activation_decision.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -499,6 +506,10 @@ async function main() {
     assert(
       migrationNames.has("0142_master_yw562_runtime_ql422_protected_readiness.sql"),
       "migration 0142 is not recorded"
+    );
+    assert(
+      migrationNames.has("0143_master_yw562_protected_runtime_activation_decision.sql"),
+      "migration 0143 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
