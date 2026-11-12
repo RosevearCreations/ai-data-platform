@@ -33,6 +33,7 @@ export const BUILD_379_RUNTIME = Object.freeze({
 export type Build379ProtectedEnvelope = {
   authorityKeyId: string;
   controllerRevision: string;
+  ql422ControllerRevision: string;
   sourceRevision: string;
   aiHubMain: string;
   commsMain: string;
@@ -62,6 +63,7 @@ export function canonicalBuild379ProtectedEnvelope(
     schema: BUILD_379_PROTECTED_ENVELOPE_SCHEMA,
     authorityKeyId: input.authorityKeyId,
     controllerRevision: input.controllerRevision,
+    ql422ControllerRevision: input.ql422ControllerRevision,
     sourceRevision: input.sourceRevision,
     aiHubMain: input.aiHubMain,
     commsMain: input.commsMain,
