@@ -554,6 +554,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw562-live-connection-continuity",
+        label: "YW562 Live Connection & Continuity",
+        description: "Review Build 377 YW561-to-YW562 exact-receipt revalidation, trusted connection intake execution, explicit three-Master sync activation and fail-closed continuity monitoring.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
