@@ -301,7 +301,7 @@ async function ql422CorrelationEvents(client: PoolClient) {
   return result.rows.map(ql422Row);
 }
 
-async function buildCurrentModel(client: PoolClient) {
+export async function loadBuild378RuntimeQl422ReadinessFromClient(client: PoolClient) {
   const [evidence, runtime, receiptAdmissions, ql422] = await Promise.all([
     loadBuild373EvidenceFromClient(client),
     runtimePrerequisiteEvents(client),
@@ -358,7 +358,7 @@ async function recordReadiness(
 export async function listBuild378RuntimeQl422ReadinessForUser(userId: string) {
   return withUserDatabase(userId, async (client) => {
     await requireAdmin(client);
-    const model = await buildCurrentModel(client);
+    const model = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     const [runtimeHistory, receiptHistory, ql422History, readinessHistory] =
       await Promise.all([
         client.query(`select * from app.master_yw562_runtime_prerequisite_evidence_intakes order by recorded_at desc limit 100`),
@@ -487,7 +487,7 @@ export async function intakeBuild378RuntimePrerequisiteEvidence(
       checkedAt
     ]);
 
-    const model = await buildCurrentModel(client);
+    const model = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     const readinessEventId = await recordReadiness(client, model);
     return { evidenceId, readinessEventId, model };
   });
@@ -500,7 +500,7 @@ export async function admitBuild378FreshSourceBoundReceipt(userId: string) {
       "build378-yw562-fresh-receipt-admission"
     ]);
 
-    const before = await buildCurrentModel(client);
+    const before = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     if (before.runtimePrerequisiteState !== "VERIFIED_CURRENT") {
       throw new Error("build378_runtime_prerequisites_required");
     }
@@ -540,7 +540,7 @@ export async function admitBuild378FreshSourceBoundReceipt(userId: string) {
       admittedAt
     ]);
 
-    const model = await buildCurrentModel(client);
+    const model = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     const readinessEventId = await recordReadiness(client, model);
     return { admissionEventId, readinessEventId, model };
   });
@@ -636,7 +636,7 @@ export async function recordBuild378Ql422ReferenceCandidate(
       observedAt
     ]);
 
-    const model = await buildCurrentModel(client);
+    const model = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     const readinessEventId = await recordReadiness(client, model);
     return { correlationEventId, readinessEventId, model };
   });
@@ -648,7 +648,7 @@ export async function recordBuild378ProtectedActivationReadiness(userId: string)
     await client.query("select pg_advisory_xact_lock(hashtext($1))", [
       "build378-protected-activation-readiness"
     ]);
-    const model = await buildCurrentModel(client);
+    const model = await loadBuild378RuntimeQl422ReadinessFromClient(client);
     const readinessEventId = await recordReadiness(client, model);
     return { readinessEventId, model };
   });

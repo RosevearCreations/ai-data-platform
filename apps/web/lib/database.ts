@@ -1821,6 +1821,31 @@ export async function withIntegrationDatabase<T>(
   }
 }
 
+/**
+ * Build 379 protected evidence path.
+ * This role has no browser/user identity and receives only narrowly scoped
+ * INSERT/SELECT grants from migration 0143. Callers must independently
+ * authenticate protected evidence before entering this transaction.
+ */
+export async function withProtectedDatabase<T>(
+  operation: (client: PoolClient) => Promise<T>
+): Promise<T> {
+  const client = await appPool.connect();
+
+  try {
+    await client.query("begin");
+    await client.query("set local role ai_data_protected_runtime");
+    const result = await operation(client);
+    await client.query("commit");
+    return result;
+  } catch (error) {
+    await client.query("rollback");
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 export async function closeDatabasePools() {
   await Promise.all([appPool.end(), authPool.end()]);
 }
