@@ -231,9 +231,11 @@ export async function admitBuild379ProtectedRuntimeEvidence(input: {
       throw new Error("build379_controller_revision_mismatch");
     }
     if (
-      input.envelope.ql422ControllerRevision !== BUILD_378_CONTROLLER_BASE_REVISION
+      input.envelope.ql422ControllerRevision !== BUILD_378_CONTROLLER_BASE_REVISION ||
+      input.envelope.build378AiHubRevision !== BUILD_378_RUNTIME.aiHub.main ||
+      input.envelope.build378CommsRevision !== BUILD_378_RUNTIME.comms.main
     ) {
-      throw new Error("build379_ql422_controller_revision_mismatch");
+      throw new Error("build379_build378_correlation_lineage_mismatch");
     }
     if (
       input.envelope.sourceRevision !== BUILD_379_RUNTIME.yw.main ||
@@ -279,8 +281,8 @@ export async function admitBuild379ProtectedRuntimeEvidence(input: {
       ql422CorrelationEventId,
       input.envelope.ql422ControllerRevision,
       input.envelope.sourceRevision,
-      input.envelope.aiHubMain,
-      input.envelope.commsMain,
+      input.envelope.build378AiHubRevision,
+      input.envelope.build378CommsRevision,
       input.envelope.originalHostId,
       input.envelope.sourceEpisodeId,
       input.envelope.sourceReceiptDigest,
