@@ -19,8 +19,8 @@ export const BUILD_379_RUNTIME = Object.freeze({
     main: "6e0b77eebcfc77aa7fc48dcc398da958af8df696"
   },
   aiHub: {
-    build: 312,
-    main: "e64e4b2e79e7c07bbd077284c298207414b149ad",
+    build: 313,
+    main: "b790adf2e19343d1132fad0eef8107c21e3e560d",
     originalHost: "DESKTOP-AE894KC"
   },
   comms: {
