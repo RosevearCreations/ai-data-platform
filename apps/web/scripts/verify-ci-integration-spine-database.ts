@@ -155,7 +155,10 @@ const requiredTables = [
   "master_build378_protected_activation_readiness_events",
   "master_build379_protected_runtime_admission_events",
   "master_build379_supervised_activation_decision_events",
-  "master_build379_activation_decision_execution_events"
+  "master_build379_activation_decision_execution_events",
+  "master_build380_external_runtime_activation_ceremony_events",
+  "master_build380_verified_connected_transition_events",
+  "master_build380_three_master_sync_closure_events"
 ];
 
 const appendOnlyTables = [
@@ -277,7 +280,10 @@ const appendOnlyTables = [
   "master_build378_protected_activation_readiness_events",
   "master_build379_protected_runtime_admission_events",
   "master_build379_supervised_activation_decision_events",
-  "master_build379_activation_decision_execution_events"
+  "master_build379_activation_decision_execution_events",
+  "master_build380_external_runtime_activation_ceremony_events",
+  "master_build380_verified_connected_transition_events",
+  "master_build380_three_master_sync_closure_events"
 ];
 
 
@@ -379,7 +385,8 @@ async function main() {
         "0140_master_yw561_independent_connection_three_master_sync.sql",
         "0141_master_yw562_live_connection_continuity.sql",
         "0142_master_yw562_runtime_ql422_protected_readiness.sql",
-        "0143_master_yw562_protected_runtime_activation_decision.sql"
+        "0143_master_yw562_protected_runtime_activation_decision.sql",
+        "0144_master_yw562_external_runtime_activation_closure.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -510,6 +517,10 @@ async function main() {
     assert(
       migrationNames.has("0143_master_yw562_protected_runtime_activation_decision.sql"),
       "migration 0143 is not recorded"
+    );
+    assert(
+      migrationNames.has("0144_master_yw562_external_runtime_activation_closure.sql"),
+      "migration 0144 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{

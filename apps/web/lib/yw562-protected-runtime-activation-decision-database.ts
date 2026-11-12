@@ -176,7 +176,7 @@ async function activationExecutions(client: PoolClient) {
   return result.rows.map(execution);
 }
 
-async function build379Model(client: PoolClient) {
+export async function loadBuild379ProtectedActivationFromClient(client: PoolClient) {
   const build378 = await loadBuild378RuntimeQl422ReadinessFromClient(client);
   const [admissions, decisions, executions] = await Promise.all([
     protectedAdmissions(client),
@@ -194,7 +194,7 @@ async function build379Model(client: PoolClient) {
 export async function listBuild379ProtectedActivationForUser(userId: string) {
   return withUserDatabase(userId, async (client) => {
     await requireAdmin(client);
-    const model = await build379Model(client);
+    const model = await loadBuild379ProtectedActivationFromClient(client);
     const [admissionHistory, decisionHistory, executionHistory, ownerAccess] = await Promise.all([
       client.query(`select * from app.master_build379_protected_runtime_admission_events order by recorded_at desc limit 100`),
       client.query(`select * from app.master_build379_supervised_activation_decision_events order by recorded_at desc limit 100`),
@@ -383,7 +383,7 @@ export async function executeBuild379SupervisedActivationDecision(
       "build379-supervised-activation-decision"
     ]);
 
-    const before = await build379Model(client);
+    const before = await loadBuild379ProtectedActivationFromClient(client);
     const admission = before.latestProtectedAdmission;
     if (!admission) {
       throw new Error("build379_protected_admission_required");
@@ -461,7 +461,7 @@ export async function executeBuild379SupervisedActivationDecision(
       now
     ]);
 
-    const model = await build379Model(client);
+    const model = await loadBuild379ProtectedActivationFromClient(client);
     return {
       decisionEventId,
       executionEventId,
@@ -473,6 +473,6 @@ export async function executeBuild379SupervisedActivationDecision(
 export async function recheckBuild379ProtectedActivation(userId: string) {
   return withUserDatabase(userId, async (client) => {
     await requireOwner(client);
-    return build379Model(client);
+    return loadBuild379ProtectedActivationFromClient(client);
   });
 }
