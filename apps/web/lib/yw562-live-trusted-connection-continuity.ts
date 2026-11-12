@@ -41,8 +41,8 @@ export const BUILD_377_MASTER_RUNTIME = Object.freeze({
     masterSync: "HOLD"
   },
   comms: {
-    build: "QL-421",
-    main: "a89a885ce444f266da00d9311eeece1811d482e2",
+    build: "QL-422",
+    main: "5f360821b361b43dd28aa5b2ca4c147565a84f0a",
     receiver: "OFF",
     connection: "HOLD",
     ownerAcceptance: "HOLD",
@@ -399,7 +399,7 @@ export function composeBuild377YwLiveConnectionContinuity(
       : []),
     ...(currentMasterRuntimeState !== "VERIFIED_OPEN"
       ? [
-          "AI Hub 311 / Comms QL-421 protected three-Master runtime evidence is not independently VERIFIED_OPEN."
+          "AI Hub 311 / Comms QL-422 protected three-Master runtime evidence is not independently VERIFIED_OPEN."
         ]
       : []),
     ...(postConnectionContinuityState !== "STABLE_CONNECTED"
@@ -451,7 +451,7 @@ export function composeBuild377YwLiveConnectionContinuity(
       exactReceiptOwnerAcceptRequired: true,
       independentConnectedRegistryRequired: true,
       browserMayAssertIndependentConnection: false,
-      exactAiHub311AndCommsQl421RuntimeEvidenceRequired: true,
+      exactAiHub311AndCommsQl422RuntimeEvidenceRequired: true,
       explicitSyncActivationRequired: true,
       continuityMonitoringFailsClosed: true,
       codeGreenMaySetConnected: false,
