@@ -14,6 +14,7 @@ import {
   BUILD_380_RUNTIME,
   build380Digest,
   canonicalBuild380ExternalActivationEnvelope,
+  canonicalBuild380MasterRuntimeReceipt,
   composeBuild380ExternalRuntimeActivation,
   type Build380CeremonyEvent,
   type Build380ConnectedTransitionEvent,
@@ -166,19 +167,25 @@ const envelope: Build380ExternalActivationEnvelope = {
       masterId: "rosevear-ai-hub",
       receiptId: "aih-runtime-380",
       digest: "1".repeat(64),
-      runtimeState: "CONNECTED_SYNCED"
+      runtimeState: "CONNECTED_SYNCED",
+      signerKeyId: "sha256:" + "1".repeat(64),
+      signatureSha256: "5".repeat(64)
     },
     {
       masterId: "rosevear-comms-hub",
       receiptId: "comms-runtime-380",
       digest: "2".repeat(64),
-      runtimeState: "CONNECTED_SYNCED"
+      runtimeState: "CONNECTED_SYNCED",
+      signerKeyId: "sha256:" + "2".repeat(64),
+      signatureSha256: "6".repeat(64)
     },
     {
       masterId: "ai-data-platform",
       receiptId: "aidp-runtime-380",
       digest: "3".repeat(64),
-      runtimeState: "CONNECTED_SYNCED"
+      runtimeState: "CONNECTED_SYNCED",
+      signerKeyId: "sha256:" + "3".repeat(64),
+      signatureSha256: "7".repeat(64)
     }
   ],
   terminalSyncDigest: "4".repeat(64),
@@ -199,6 +206,42 @@ assert.ok(canonical.includes(BUILD_380_RUNTIME.aiHub.main));
 assert.ok(canonical.includes(BUILD_380_RUNTIME.comms.main));
 assert.ok(canonical.includes(build379DecisionEventId));
 assert.ok(canonical.includes(receiptId));
+
+const masterBinding = {
+  controllerRevision: envelope.controllerRevision,
+  sourceRevision: envelope.sourceRevision,
+  aiHubMain: envelope.aiHubMain,
+  commsMain: envelope.commsMain,
+  exactReceiptId: envelope.exactReceiptId,
+  build379DecisionEventId: envelope.build379DecisionEventId,
+  observedAt: envelope.observedAt
+};
+const masterCanonical = canonicalBuild380MasterRuntimeReceipt(
+  {
+    masterId: "ai-data-platform",
+    receiptId: "aidp-runtime-380",
+    digest: "3".repeat(64),
+    runtimeState: "CONNECTED_SYNCED",
+    signerKeyId: "sha256:" + "3".repeat(64)
+  },
+  masterBinding
+);
+const masterSignature = sign(
+  null,
+  Buffer.from(masterCanonical, "utf8"),
+  privateKey
+);
+assert.equal(
+  verify(
+    null,
+    Buffer.from(masterCanonical, "utf8"),
+    publicKey,
+    masterSignature
+  ),
+  true
+);
+assert.ok(masterCanonical.includes(BUILD_380_CONTROLLER_BASE_REVISION));
+assert.ok(masterCanonical.includes(build379DecisionEventId));
 
 const ceremony: Build380CeremonyEvent = {
   ceremonyEventId: "77777777-7777-4777-8777-777777777777",
@@ -297,10 +340,16 @@ const closure: Build380SyncClosureEvent = {
   transitionEventId: connectedTransition.transitionEventId,
   aiHubRuntimeReceiptId: "aih-runtime-380",
   aiHubRuntimeDigest: "1".repeat(64),
+  aiHubSignerKeyId: "sha256:" + "1".repeat(64),
+  aiHubSignatureSha256: "5".repeat(64),
   commsRuntimeReceiptId: "comms-runtime-380",
   commsRuntimeDigest: "2".repeat(64),
+  commsSignerKeyId: "sha256:" + "2".repeat(64),
+  commsSignatureSha256: "6".repeat(64),
   controllerRuntimeReceiptId: "aidp-runtime-380",
   controllerRuntimeDigest: "3".repeat(64),
+  controllerSignerKeyId: "sha256:" + "3".repeat(64),
+  controllerSignatureSha256: "7".repeat(64),
   terminalSyncDigest: envelope.terminalSyncDigest,
   closureState: "CLOSED_VERIFIED",
   mastersSynced: true,
@@ -386,6 +435,9 @@ for (const token of [
   "connection_state='CONNECTED'",
   "closure_state='CLOSED_VERIFIED'",
   "masters_synced=true",
+  "ai_hub_signature_sha256",
+  "comms_signature_sha256",
+  "controller_signature_sha256",
   "force row level security"
 ]) {
   assert.ok(migration.includes(token), `migration token ${token}`);
@@ -437,10 +489,17 @@ const protectedApi = source(
 );
 for (const token of [
   "BUILD380_EXTERNAL_ACTIVATION_PUBLIC_KEY_PEM",
+  "BUILD380_AI_HUB_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD380_COMMS_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD380_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM",
   "createPublicKey",
   '"ed25519"',
   "trustedSignerFingerprint",
   "canonicalBuild380ExternalActivationEnvelope",
+  "canonicalBuild380MasterRuntimeReceipt",
+  "MASTER_KEY_ENV",
+  "master_signer_key_id",
+  "master_receipt_signature",
   "verify(",
   "signatureBase64",
   "CONNECTED_SYNCED",
