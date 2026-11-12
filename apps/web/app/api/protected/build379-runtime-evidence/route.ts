@@ -11,7 +11,10 @@ import {
   canonicalBuild379ProtectedEnvelope,
   type Build379ProtectedEnvelope
 } from "@/lib/yw562-protected-runtime-activation-decision";
-import { BUILD_378_CONTROLLER_BASE_REVISION } from "@/lib/yw562-runtime-ql422-protected-readiness";
+import {
+  BUILD_378_CONTROLLER_BASE_REVISION,
+  BUILD_378_RUNTIME
+} from "@/lib/yw562-runtime-ql422-protected-readiness";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -104,6 +107,8 @@ function parseEnvelope(body: Record<string, unknown>): Build379ProtectedEnvelope
     authorityKeyId: exactString(body.authorityKeyId, "authority_key_id", 160),
     controllerRevision: exactString(body.controllerRevision, "controller_revision", 40),
     ql422ControllerRevision: exactString(body.ql422ControllerRevision, "ql422_controller_revision", 40),
+    build378AiHubRevision: exactString(body.build378AiHubRevision, "build378_ai_hub_revision", 40),
+    build378CommsRevision: exactString(body.build378CommsRevision, "build378_comms_revision", 40),
     sourceRevision: exactString(body.sourceRevision, "source_revision", 40),
     aiHubMain: exactString(body.aiHubMain, "ai_hub_main", 40),
     commsMain: exactString(body.commsMain, "comms_main", 40),
@@ -129,6 +134,8 @@ function parseEnvelope(body: Record<string, unknown>): Build379ProtectedEnvelope
   if (
     envelope.controllerRevision !== BUILD_379_CONTROLLER_BASE_REVISION ||
     envelope.ql422ControllerRevision !== BUILD_378_CONTROLLER_BASE_REVISION ||
+    envelope.build378AiHubRevision !== BUILD_378_RUNTIME.aiHub.main ||
+    envelope.build378CommsRevision !== BUILD_378_RUNTIME.comms.main ||
     envelope.sourceRevision !== BUILD_379_RUNTIME.yw.main ||
     envelope.aiHubMain !== BUILD_379_RUNTIME.aiHub.main ||
     envelope.commsMain !== BUILD_379_RUNTIME.comms.main ||
