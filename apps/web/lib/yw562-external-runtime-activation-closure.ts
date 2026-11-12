@@ -31,12 +31,51 @@ export const BUILD_380_RUNTIME = Object.freeze({
   }
 } as const);
 
+export const BUILD_380_MASTER_RECEIPT_SCHEMA =
+  "rosevear.ai-data-platform.build380.master-runtime-receipt.v1" as const;
+
 export type Build380MasterRuntimeReceipt = {
   masterId: "rosevear-ai-hub" | "rosevear-comms-hub" | "ai-data-platform";
   receiptId: string;
   digest: string;
   runtimeState: "CONNECTED_SYNCED";
+  signerKeyId: string;
+  signatureSha256: string;
 };
+
+export type Build380MasterReceiptBinding = {
+  controllerRevision: string;
+  sourceRevision: string;
+  aiHubMain: string;
+  commsMain: string;
+  exactReceiptId: string;
+  build379DecisionEventId: string;
+  observedAt: string;
+};
+
+export function canonicalBuild380MasterRuntimeReceipt(
+  receipt: Pick<
+    Build380MasterRuntimeReceipt,
+    "masterId" | "receiptId" | "digest" | "runtimeState" | "signerKeyId"
+  >,
+  binding: Build380MasterReceiptBinding
+) {
+  return JSON.stringify({
+    schema: BUILD_380_MASTER_RECEIPT_SCHEMA,
+    masterId: receipt.masterId,
+    receiptId: receipt.receiptId,
+    digest: receipt.digest,
+    runtimeState: receipt.runtimeState,
+    signerKeyId: receipt.signerKeyId,
+    controllerRevision: binding.controllerRevision,
+    sourceRevision: binding.sourceRevision,
+    aiHubMain: binding.aiHubMain,
+    commsMain: binding.commsMain,
+    exactReceiptId: binding.exactReceiptId,
+    build379DecisionEventId: binding.build379DecisionEventId,
+    observedAt: binding.observedAt
+  });
+}
 
 export type Build380ExternalActivationEnvelope = {
   authorityKeyId: string;
@@ -112,7 +151,9 @@ export function canonicalBuild380ExternalActivationEnvelope(
         masterId: receipt.masterId,
         receiptId: receipt.receiptId,
         digest: receipt.digest,
-        runtimeState: receipt.runtimeState
+        runtimeState: receipt.runtimeState,
+        signerKeyId: receipt.signerKeyId,
+        signatureSha256: receipt.signatureSha256
       }))
       .sort((a, b) => a.masterId.localeCompare(b.masterId)),
     terminalSyncDigest: input.terminalSyncDigest,
@@ -181,10 +222,16 @@ export type Build380SyncClosureEvent = {
   transitionEventId: string;
   aiHubRuntimeReceiptId: string;
   aiHubRuntimeDigest: string;
+  aiHubSignerKeyId: string;
+  aiHubSignatureSha256: string;
   commsRuntimeReceiptId: string;
   commsRuntimeDigest: string;
+  commsSignerKeyId: string;
+  commsSignatureSha256: string;
   controllerRuntimeReceiptId: string;
   controllerRuntimeDigest: string;
+  controllerSignerKeyId: string;
+  controllerSignatureSha256: string;
   terminalSyncDigest: string;
   closureState: "CLOSED_VERIFIED";
   mastersSynced: true;
