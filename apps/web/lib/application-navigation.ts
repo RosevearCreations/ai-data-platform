@@ -566,6 +566,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/yw562-protected-activation",
+        label: "YW562 Protected Activation Decision",
+        description: "Review Build 379 protected runtime admission, exact receipt/owner continuity, QL-422 protected closure and supervised activation authorization.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/comms-complementary-plane",
         label: "Comms Complementary Plane",
         description: "Review Build 342 read-only Comms incident, source-impact and evidence-aware follow-up projections without message or task authority.",
