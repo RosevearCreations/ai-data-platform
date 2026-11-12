@@ -402,8 +402,262 @@ const migration = source(
   "../../db/migrations/0145_master_yw562_receiver_health_continuity.sql"
 );
 assert.ok(
-  migration.length > 8_000 && migration.length < 20_000,
+  migration.length > 10_000 && migration.length < 13_000,
   "migration 0145 size outside reviewed range"
+);
+assert.ok(
+  migration.includes(
+    "receiver_off_digest text not null check (receiver_off_digest ~ '^[a-f0-9]{64}
+for (const token of [
+  "master_build381_receiver_health_renewal_events",
+  "master_build381_fail_closed_rollback_events",
+  "receiver_health_sequence bigint",
+  "receiver_off_signer_key_id",
+  "receiver_off_signature_sha256",
+  "for insert to ai_data_protected_runtime",
+  "declared_status in ('CONNECTED','DISCONNECTED')",
+  "metadata->>'build'='381'",
+  "renewal_state='RENEWED_VERIFIED'",
+  "rollback_state='ROLLED_BACK_VERIFIED'",
+  "force row level security"
+]) {
+  assert.ok(migration.includes(token), `migration token ${token}`);
+}
+assert.ok(
+  !migration.includes(
+    "master_build381_receiver_health_renewal_events\n  for insert to ai_data_runtime"
+  )
+);
+
+const database = source("lib/yw562-receiver-health-continuity-database.ts");
+for (const token of [
+  "withProtectedDatabase",
+  "loadBuild380ExternalRuntimeActivationFromClient",
+  "validateMasterShellSourceTransition",
+  'declaredStatus: "CONNECTED"',
+  'declaredStatus: "DISCONNECTED"',
+  "build381_post_write_renewal_not_connected",
+  "build381_post_write_rollback_not_fail_closed",
+  "receiver_health_sequence_replay"
+]) {
+  assert.ok(database.includes(token), `database token ${token}`);
+}
+
+const renewalApi = source(
+  "app/api/protected/build381-runtime-renewal/route.ts"
+);
+for (const token of [
+  "BUILD381_CONTINUITY_AUTHORITY_PUBLIC_KEY_PEM",
+  "BUILD381_AI_HUB_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD381_COMMS_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD381_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM",
+  "canonicalBuild381MasterRenewalReceipt",
+  "CONNECTED_HEALTHY",
+  "verify(",
+  "build381_protected_renewal_post_only"
+]) {
+  assert.ok(renewalApi.includes(token), `renewal api token ${token}`);
+}
+assert.ok(!renewalApi.includes("auth.api.getSession"));
+
+const rollbackApi = source(
+  "app/api/protected/build381-fail-closed-rollback/route.ts"
+);
+for (const token of [
+  "BUILD381_ROLLBACK_AUTHORITY_PUBLIC_KEY_PEM",
+  "BUILD381_RECEIVER_OFF_PUBLIC_KEY_PEM",
+  "canonicalBuild381ReceiverOffProof",
+  "canonicalBuild381RollbackEnvelope",
+  "receiverOffSignatureBase64",
+  "build381_protected_rollback_post_only"
+]) {
+  assert.ok(rollbackApi.includes(token), `rollback api token ${token}`);
+}
+assert.ok(!rollbackApi.includes("auth.api.getSession"));
+
+const readApi = source(
+  "app/api/yw562-receiver-health-continuity/route.ts"
+);
+assert.ok(readApi.includes("auth.api.getSession"));
+assert.ok(!readApi.includes("export async function POST"));
+
+const page = source("app/yw562-receiver-health-continuity/page.tsx");
+for (const token of [
+  "Build 381 · protected receiver health continuity",
+  "Five-minute renewal is fail-closed.",
+  "Rollback closure requires separate OFF custody.",
+  "Current upstream code is not live connectivity."
+]) {
+  assert.ok(page.includes(token), `page token ${token}`);
+}
+
+const nav = source("lib/application-navigation.ts");
+assert.ok(nav.includes('href: "/yw562-receiver-health-continuity"'));
+const operator = source("lib/module-operator-tools.ts");
+assert.ok(operator.includes('"/yw562-receiver-health-continuity"'));
+
+const spine = source("scripts/verify-ci-integration-spine-database.ts");
+for (const token of [
+  '"master_build381_receiver_health_renewal_events"',
+  '"master_build381_fail_closed_rollback_events"',
+  '"0145_master_yw562_receiver_health_continuity.sql"'
+]) {
+  assert.ok(spine.includes(token), `db spine token ${token}`);
+}
+
+const documentation = source(
+  "../../docs/BUILD_381_YW562_RECEIVER_HEALTH_CONTINUITY.md"
+);
+assert.ok(documentation.includes("AI Hub production: Build 321"));
+assert.ok(documentation.includes("Comms Hub production: QL-432"));
+assert.ok(documentation.includes("Build 381 never upgrades isolated pilot evidence"));
+
+const pkg = JSON.parse(source("package.json"));
+const command =
+  "tsx scripts/verify-build-381-yw562-receiver-health-continuity.ts";
+assert.equal(String(pkg.scripts["verify:build381"]), command);
+assert.ok(String(pkg.scripts.build).includes(command));
+assert.ok(String(pkg.scripts["ci:spine"]).includes(command));
+assert.ok(
+  String(pkg.scripts.build).indexOf(command) <
+    String(pkg.scripts.build).indexOf("run-production-migrations.ts")
+);
+
+console.log(
+  "Build 381 Protected Receiver Health Continuity, Signed Runtime Renewal, Automatic Fail-Closed Rollback & Three-Master CONNECTED Revalidation verification passed."
+);
+)"
+  ),
+  "migration 0145 receiver OFF digest constraint is malformed"
+);
+assert.ok(
+  migration.includes(
+    "receiver_off_signature_sha256 text not null check (receiver_off_signature_sha256 ~ '^[a-f0-9]{64}
+for (const token of [
+  "master_build381_receiver_health_renewal_events",
+  "master_build381_fail_closed_rollback_events",
+  "receiver_health_sequence bigint",
+  "receiver_off_signer_key_id",
+  "receiver_off_signature_sha256",
+  "for insert to ai_data_protected_runtime",
+  "declared_status in ('CONNECTED','DISCONNECTED')",
+  "metadata->>'build'='381'",
+  "renewal_state='RENEWED_VERIFIED'",
+  "rollback_state='ROLLED_BACK_VERIFIED'",
+  "force row level security"
+]) {
+  assert.ok(migration.includes(token), `migration token ${token}`);
+}
+assert.ok(
+  !migration.includes(
+    "master_build381_receiver_health_renewal_events\n  for insert to ai_data_runtime"
+  )
+);
+
+const database = source("lib/yw562-receiver-health-continuity-database.ts");
+for (const token of [
+  "withProtectedDatabase",
+  "loadBuild380ExternalRuntimeActivationFromClient",
+  "validateMasterShellSourceTransition",
+  'declaredStatus: "CONNECTED"',
+  'declaredStatus: "DISCONNECTED"',
+  "build381_post_write_renewal_not_connected",
+  "build381_post_write_rollback_not_fail_closed",
+  "receiver_health_sequence_replay"
+]) {
+  assert.ok(database.includes(token), `database token ${token}`);
+}
+
+const renewalApi = source(
+  "app/api/protected/build381-runtime-renewal/route.ts"
+);
+for (const token of [
+  "BUILD381_CONTINUITY_AUTHORITY_PUBLIC_KEY_PEM",
+  "BUILD381_AI_HUB_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD381_COMMS_RUNTIME_PUBLIC_KEY_PEM",
+  "BUILD381_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM",
+  "canonicalBuild381MasterRenewalReceipt",
+  "CONNECTED_HEALTHY",
+  "verify(",
+  "build381_protected_renewal_post_only"
+]) {
+  assert.ok(renewalApi.includes(token), `renewal api token ${token}`);
+}
+assert.ok(!renewalApi.includes("auth.api.getSession"));
+
+const rollbackApi = source(
+  "app/api/protected/build381-fail-closed-rollback/route.ts"
+);
+for (const token of [
+  "BUILD381_ROLLBACK_AUTHORITY_PUBLIC_KEY_PEM",
+  "BUILD381_RECEIVER_OFF_PUBLIC_KEY_PEM",
+  "canonicalBuild381ReceiverOffProof",
+  "canonicalBuild381RollbackEnvelope",
+  "receiverOffSignatureBase64",
+  "build381_protected_rollback_post_only"
+]) {
+  assert.ok(rollbackApi.includes(token), `rollback api token ${token}`);
+}
+assert.ok(!rollbackApi.includes("auth.api.getSession"));
+
+const readApi = source(
+  "app/api/yw562-receiver-health-continuity/route.ts"
+);
+assert.ok(readApi.includes("auth.api.getSession"));
+assert.ok(!readApi.includes("export async function POST"));
+
+const page = source("app/yw562-receiver-health-continuity/page.tsx");
+for (const token of [
+  "Build 381 · protected receiver health continuity",
+  "Five-minute renewal is fail-closed.",
+  "Rollback closure requires separate OFF custody.",
+  "Current upstream code is not live connectivity."
+]) {
+  assert.ok(page.includes(token), `page token ${token}`);
+}
+
+const nav = source("lib/application-navigation.ts");
+assert.ok(nav.includes('href: "/yw562-receiver-health-continuity"'));
+const operator = source("lib/module-operator-tools.ts");
+assert.ok(operator.includes('"/yw562-receiver-health-continuity"'));
+
+const spine = source("scripts/verify-ci-integration-spine-database.ts");
+for (const token of [
+  '"master_build381_receiver_health_renewal_events"',
+  '"master_build381_fail_closed_rollback_events"',
+  '"0145_master_yw562_receiver_health_continuity.sql"'
+]) {
+  assert.ok(spine.includes(token), `db spine token ${token}`);
+}
+
+const documentation = source(
+  "../../docs/BUILD_381_YW562_RECEIVER_HEALTH_CONTINUITY.md"
+);
+assert.ok(documentation.includes("AI Hub production: Build 321"));
+assert.ok(documentation.includes("Comms Hub production: QL-432"));
+assert.ok(documentation.includes("Build 381 never upgrades isolated pilot evidence"));
+
+const pkg = JSON.parse(source("package.json"));
+const command =
+  "tsx scripts/verify-build-381-yw562-receiver-health-continuity.ts";
+assert.equal(String(pkg.scripts["verify:build381"]), command);
+assert.ok(String(pkg.scripts.build).includes(command));
+assert.ok(String(pkg.scripts["ci:spine"]).includes(command));
+assert.ok(
+  String(pkg.scripts.build).indexOf(command) <
+    String(pkg.scripts.build).indexOf("run-production-migrations.ts")
+);
+
+console.log(
+  "Build 381 Protected Receiver Health Continuity, Signed Runtime Renewal, Automatic Fail-Closed Rollback & Three-Master CONNECTED Revalidation verification passed."
+);
+)"
+  ),
+  "migration 0145 receiver OFF signature constraint is malformed"
+);
+assert.ok(
+  !migration.includes("receiver_off_digest ~ '^[a-f0-9]{64} check"),
+  "migration 0145 contains the previously corrupted receiver OFF fragment"
 );
 for (const token of [
   "master_build381_receiver_health_renewal_events",
