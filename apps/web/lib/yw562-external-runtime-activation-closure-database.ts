@@ -102,10 +102,16 @@ type ClosureRow = {
   transition_event_id: string;
   ai_hub_runtime_receipt_id: string;
   ai_hub_runtime_digest: string;
+  ai_hub_signer_key_id: string;
+  ai_hub_signature_sha256: string;
   comms_runtime_receipt_id: string;
   comms_runtime_digest: string;
+  comms_signer_key_id: string;
+  comms_signature_sha256: string;
   controller_runtime_receipt_id: string;
   controller_runtime_digest: string;
+  controller_signer_key_id: string;
+  controller_signature_sha256: string;
   terminal_sync_digest: string;
   closure_state: "CLOSED_VERIFIED";
   masters_synced: true;
@@ -204,10 +210,16 @@ function closure(row: ClosureRow): Build380SyncClosureEvent {
     transitionEventId: row.transition_event_id,
     aiHubRuntimeReceiptId: row.ai_hub_runtime_receipt_id,
     aiHubRuntimeDigest: row.ai_hub_runtime_digest,
+    aiHubSignerKeyId: row.ai_hub_signer_key_id,
+    aiHubSignatureSha256: row.ai_hub_signature_sha256,
     commsRuntimeReceiptId: row.comms_runtime_receipt_id,
     commsRuntimeDigest: row.comms_runtime_digest,
+    commsSignerKeyId: row.comms_signer_key_id,
+    commsSignatureSha256: row.comms_signature_sha256,
     controllerRuntimeReceiptId: row.controller_runtime_receipt_id,
     controllerRuntimeDigest: row.controller_runtime_digest,
+    controllerSignerKeyId: row.controller_signer_key_id,
+    controllerSignatureSha256: row.controller_signature_sha256,
     terminalSyncDigest: row.terminal_sync_digest,
     closureState: row.closure_state,
     mastersSynced: row.masters_synced,
@@ -553,21 +565,31 @@ export async function admitBuild380ExternalRuntimeActivation(input: {
     await client.query(`insert into app.master_build380_three_master_sync_closure_events(
       closure_event_id,ceremony_event_id,transition_event_id,
       ai_hub_runtime_receipt_id,ai_hub_runtime_digest,
+      ai_hub_signer_key_id,ai_hub_signature_sha256,
       comms_runtime_receipt_id,comms_runtime_digest,
+      comms_signer_key_id,comms_signature_sha256,
       controller_runtime_receipt_id,controller_runtime_digest,
+      controller_signer_key_id,controller_signature_sha256,
       terminal_sync_digest,closure_state,masters_synced,closed_at
     ) values(
-      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'CLOSED_VERIFIED',true,$11::timestamptz
+      $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,
+      'CLOSED_VERIFIED',true,$17::timestamptz
     )`,[
       closureEventId,
       ceremonyEventId,
       transitionEventId,
       aiHubReceipt.receiptId,
       aiHubReceipt.digest,
+      aiHubReceipt.signerKeyId,
+      aiHubReceipt.signatureSha256,
       commsReceipt.receiptId,
       commsReceipt.digest,
+      commsReceipt.signerKeyId,
+      commsReceipt.signatureSha256,
       controllerReceipt.receiptId,
       controllerReceipt.digest,
+      controllerReceipt.signerKeyId,
+      controllerReceipt.signatureSha256,
       input.envelope.terminalSyncDigest,
       input.envelope.observedAt
     ]);
