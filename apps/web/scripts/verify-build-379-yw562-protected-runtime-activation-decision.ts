@@ -419,6 +419,9 @@ assert.ok(
 const migrate = source("scripts/migrate.ts");
 assert.ok(migrate.includes("create role ai_data_protected_runtime nologin"));
 assert.ok(migrate.includes("grant ai_data_protected_runtime to current_user"));
+assert.ok(migrate.includes("do $role$"));
+assert.ok(migrate.includes("$role$;"));
+assert.ok(!migrate.includes("do $\n"));
 
 const databaseBase = source("lib/database.ts");
 assert.ok(databaseBase.includes("withProtectedDatabase"));
