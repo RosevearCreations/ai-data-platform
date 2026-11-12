@@ -180,7 +180,7 @@ create policy master_build379_activation_decision_execution_events_insert
     )
   );
 
-do $
+do $policy$
 declare t text;
 begin
   foreach t in array array[
@@ -201,7 +201,7 @@ begin
       t,t
     );
   end loop;
-end $;
+end $policy$;
 
 grant select on
   app.master_source_signer_registry_events,

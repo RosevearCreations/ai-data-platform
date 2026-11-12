@@ -410,6 +410,9 @@ assert.ok(
     "for insert to ai_data_protected_runtime"
   )
 );
+assert.ok(migration.includes("do $policy$"));
+assert.ok(migration.includes("$policy$;"));
+assert.ok(!migration.includes("do $\ndeclare"));
 assert.ok(
   !migration.includes(
     "master_build379_protected_runtime_admission_events\n  for insert to ai_data_runtime"
