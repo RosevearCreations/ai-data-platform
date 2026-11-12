@@ -184,7 +184,8 @@ export function composeBuild376Yw561ConnectionSync(
         ? ("HOLD_NO_CURRENT_RECEIPT" as const)
         : !currentIntake
           ? ("HOLD_NO_VERIFIED_CONNECTION_INTAKE" as const)
-          : currentIntake.exactReceiptId !== prior.exactCurrentReceiptId
+          : currentIntake.exactReceiptId !== null &&
+              currentIntake.exactReceiptId !== prior.exactCurrentReceiptId
             ? ("HOLD_RECEIPT_CHANGED" as const)
             : ("ACTIVE_CURRENT" as const);
 
