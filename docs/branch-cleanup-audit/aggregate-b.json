@@ -1,0 +1,1376 @@
+{
+  "parts": "013-023",
+  "audited": 171,
+  "safe": [
+    {
+      "branch": "build-275-provider-pilot-baseline-cost-latency-failure",
+      "sha": "d7499046f919915425099981ca951def50413ebf",
+      "ahead_by": 0,
+      "behind_by": 2102,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-276-consumer-acceptance-replay-receipt-reconciliation",
+      "sha": "183e255419c4fd4d50f7ca529f06fdec2761262e",
+      "ahead_by": 0,
+      "behind_by": 2089,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-277-ci-fix-documentation-verifier",
+      "sha": "46f154c06201c73730f8f40940c8bd8c9a1d092a",
+      "ahead_by": 0,
+      "behind_by": 2073,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-277-retention-cleanup-readiness-storage-budget",
+      "sha": "6a889ddb483c84d42b0b193721fd7c3664961a61",
+      "ahead_by": 0,
+      "behind_by": 2075,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-278-least-privilege-adoption-stale-grants",
+      "sha": "1f4f320cb704ef8de85a845c2cdfe4fb395fe2f7",
+      "ahead_by": 0,
+      "behind_by": 2061,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-279-reliability-trend",
+      "sha": "a6c6de46181d2b4e1aada20fc76dae8552d7d939",
+      "ahead_by": 0,
+      "behind_by": 2050,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-280-production-learning-v",
+      "sha": "6e49c2e4c60995c88ef6a338bded20057a9d0bff",
+      "ahead_by": 0,
+      "behind_by": 2037,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-281-unified-app-connection-registry",
+      "sha": "202308d6864ff12da8784ec1b218ede5fe62763b",
+      "ahead_by": 0,
+      "behind_by": 2025,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-282-shared-app-identity-mapping",
+      "sha": "91406173c6e3292055e67d65ff2364942886f811",
+      "ahead_by": 0,
+      "behind_by": 2012,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-283-connector-setup-wizard",
+      "sha": "390f10fbfd4876d2da218627c9c197aa9bc99827",
+      "ahead_by": 0,
+      "behind_by": 1996,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-284-credential-vault-rotation-readiness",
+      "sha": "bb720ddad0fc0dd72725d5fb8fd5ee67a94c2749",
+      "ahead_by": 0,
+      "behind_by": 1978,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-285-automatic-connection-testing-validation",
+      "sha": "8185d9bb6f4b76fc81d0f20fbb02f44662819599",
+      "ahead_by": 0,
+      "behind_by": 1960,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-286-cross-app-data-contract-registry",
+      "sha": "95b5a720cf75a47e699d8c67bfc413022812f1be",
+      "ahead_by": 0,
+      "behind_by": 1944,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-287-visual-field-mapping-studio",
+      "sha": "de35a0babcd07351fa46934530e30e46baaacad9",
+      "ahead_by": 0,
+      "behind_by": 1925,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-288-schema-drift-repair",
+      "sha": "b0a9b5acfdec155ae4b76d603eb258e8ee48bfff",
+      "ahead_by": 0,
+      "behind_by": 1905,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-289-shared-connector-sdk-v2",
+      "sha": "e324fbdcb174a44daa59b88575edfc77b25198e6",
+      "ahead_by": 0,
+      "behind_by": 1880,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-290-webhook-gateway",
+      "sha": "9a80ce235769e58ac4ab9b2a8023544e13dd8a1e",
+      "ahead_by": 0,
+      "behind_by": 1858,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-291-cross-app-event-bus",
+      "sha": "84ac49b786a5cd408c8150c6fd188b8dadbc99f0",
+      "ahead_by": 0,
+      "behind_by": 1838,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292-event-replay-dlq",
+      "sha": "68fb7485fcac6eb1ecdaa0776653f89dece5d314",
+      "ahead_by": 0,
+      "behind_by": 1819,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-build291-ci-contract-fix",
+      "sha": "48d33c6fdb2a624c41d7a94f114795634ecc0058",
+      "ahead_by": 0,
+      "behind_by": 1800,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-ci-lint-fix",
+      "sha": "4ca0b64a2d8a35aa0de2c85666ac8dac5a384627",
+      "ahead_by": 0,
+      "behind_by": 1804,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-ci-verification-consolidation",
+      "sha": "ec41ab2e8aef396346571316fd14a433b1f27848",
+      "ahead_by": 0,
+      "behind_by": 1806,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-current-spine-fix",
+      "sha": "698957065561d10f32fb4aae39648113a51246e9",
+      "ahead_by": 0,
+      "behind_by": 1802,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-db-gate-runtime-fix",
+      "sha": "c69605fd916e4c4de574760c9bc4862c64862161",
+      "ahead_by": 0,
+      "behind_by": 1798,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-293-idempotency-delivery-guarantees",
+      "sha": "a719f09c63691702709d00a51c786089fcb16e83",
+      "ahead_by": 0,
+      "behind_by": 1776,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-294-shared-customer-contact-identity",
+      "sha": "f553de179400e43623c81c6da9a11993710abe57",
+      "ahead_by": 0,
+      "behind_by": 1751,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-295-shared-catalogue-exchange",
+      "sha": "3ae2a0192d394f88999493b80f027221feb9ec5b",
+      "ahead_by": 0,
+      "behind_by": 1733,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-296-shared-media-asset-exchange",
+      "sha": "e1b45f91748160fee8e02e57c92d2f201d2b7b36",
+      "ahead_by": 0,
+      "behind_by": 1710,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-1",
+      "sha": "700f4d5367ecd68c60f70d2e4d9baf02e38cd0bd",
+      "ahead_by": 0,
+      "behind_by": 1690,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-2",
+      "sha": "6ec0a6732f6413b6bdcf18e99ce1f957558bd823",
+      "ahead_by": 0,
+      "behind_by": 1688,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-3",
+      "sha": "32cd484c0b99283b830fd8cd418bfa6eacf57890",
+      "ahead_by": 0,
+      "behind_by": 1686,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-4",
+      "sha": "52079c59af9538d0eca2104970ea60c3392784be",
+      "ahead_by": 0,
+      "behind_by": 1684,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-cross-app-notification-consent",
+      "sha": "6d92400bf1112846a04c9020a937eb3cdaf36a93",
+      "ahead_by": 0,
+      "behind_by": 1693,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-298-shared-task-work-queue-exchange",
+      "sha": "2d6bb9f5142ba6174400baf9771cc3e431e7eb54",
+      "ahead_by": 0,
+      "behind_by": 1668,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-299-shared-scheduling-calendar-exchange",
+      "sha": "4998dc82b18d0777c70e059f00ee61ee61995c77",
+      "ahead_by": 0,
+      "behind_by": 1651,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-300-unified-integration-health-command-center",
+      "sha": "eadc08bc54ac53dc3004c4f1d370f682b9e56d27",
+      "ahead_by": 0,
+      "behind_by": 1638,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-301-self-healing-safe-retry",
+      "sha": "4bb05a1d94beb6137644c235e6fa39d096ffc180",
+      "ahead_by": 0,
+      "behind_by": 1620,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-302-cross-app-workflow-automation",
+      "sha": "e9b6f39f9e20c10a49f1e0d342dfe9fad8fd3193",
+      "ahead_by": 0,
+      "behind_by": 1599,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-303-ai-assisted-integration-suggestions",
+      "sha": "dc7ef12a732dfef1e940e2adf40c9091639d096a",
+      "ahead_by": 0,
+      "behind_by": 1585,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-304-six-app-integration-certification",
+      "sha": "e07a5f5c870c4cfa18a02e51fa07468d8d2a5c67",
+      "ahead_by": 0,
+      "behind_by": 1567,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-305-autonomous-operations-learning-vi",
+      "sha": "56d210068093fbba32d9fd24c054d4c4a9b05375",
+      "ahead_by": 0,
+      "behind_by": 1547,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-316-cross-app-search-linked-records",
+      "sha": "c2a6f30f1e2868bd16343e4adaa54bf227f10798",
+      "ahead_by": 0,
+      "behind_by": 1483,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-317-event-bus-host-bridge",
+      "sha": "eef9d87bd9ce129eb743c4538c2cfe5bb2a814c3",
+      "ahead_by": 0,
+      "behind_by": 1467,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-318-workflow-action-plugin-interface",
+      "sha": "cbc82250c850f105afeaaaf3908a20c26ced7df5",
+      "ahead_by": 0,
+      "behind_by": 1455,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-319-shared-coordination-module-apis",
+      "sha": "f0bb9e3cf9d17eec7436ec7fce7f3b2a91d827ca",
+      "ahead_by": 0,
+      "behind_by": 1438,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-320-shared-media-host-bridge",
+      "sha": "82eeea9ab81ea192bcc2dd1a234051193410ca45",
+      "ahead_by": 0,
+      "behind_by": 1426,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-321-connector-driver-registry",
+      "sha": "732aaa3043e07c70c0291d2e9e90c21aea10eef3",
+      "ahead_by": 0,
+      "behind_by": 1412,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-322-inbound-endpoint-module",
+      "sha": "0001753054e679d0f80487e89affa1b380dfdfe4",
+      "ahead_by": 0,
+      "behind_by": 1391,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-323-secure-transport-selection",
+      "sha": "b1babe50830f4a6128cbfc0763fc53c498fb7f51",
+      "ahead_by": 0,
+      "behind_by": 1379,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-324-offline-queue-sync",
+      "sha": "9bb733e5f912c7fcaa1470f8d877c1cc3adb9d85",
+      "ahead_by": 0,
+      "behind_by": 1366,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-325-autonomous-module-supervisor",
+      "sha": "6fa531fc998a65966fccd65a95061884889956bd",
+      "ahead_by": 0,
+      "behind_by": 1354,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-326-per-host-autonomy-policies",
+      "sha": "45af455d679b4694ffe6af188b0da942eca25959",
+      "ahead_by": 0,
+      "behind_by": 1320,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-327-zero-touch-module-installer",
+      "sha": "c3c533ca5dee517e262aed45ede9543fd03ab9f2",
+      "ahead_by": 0,
+      "behind_by": 1299,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-ci-order-fix",
+      "sha": "c3f8d07add58d5e8299e2853364f03564c9c6fd3",
+      "ahead_by": 0,
+      "behind_by": 1278,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-ci-order-fix-2",
+      "sha": "dc89e84a2a315f9ed51ad898d334b12cd33d6308",
+      "ahead_by": 0,
+      "behind_by": 1276,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-module-lifecycle",
+      "sha": "0a85946f37c059fb98697e4f274e62677b717386",
+      "ahead_by": 0,
+      "behind_by": 1282,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-verifier-fix",
+      "sha": "ecf89d687349ddaf4f31b80917ab38bd6caab05f",
+      "ahead_by": 0,
+      "behind_by": 1280,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-329-cross-host-certification",
+      "sha": "2a8cc0d45502008f79566aeb88e62d52f8c87934",
+      "ahead_by": 0,
+      "behind_by": 1256,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-329-embedded-surface-fix",
+      "sha": "8525f26fcf64a3755f741eb5a7624249df0bb5e4",
+      "ahead_by": 0,
+      "behind_by": 1249,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-329-host-navigation-certification-fix",
+      "sha": "45da8b0751efaf13838a5e2717b93e4d2e67bd79",
+      "ahead_by": 0,
+      "behind_by": 1254,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-330-autonomous-operations-v2-learning-vii",
+      "sha": "6ed4183cbd0e4f8bb1c2cd0ce7ab86cf161af2e9",
+      "ahead_by": 0,
+      "behind_by": 1224,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-ci-fix-1",
+      "sha": "6c73f4d620fcbc4c363da011364848841e558370",
+      "ahead_by": 0,
+      "behind_by": 1205,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-ci-fix-2",
+      "sha": "7ed9d7327596d88c65a73bad9bd480f203f14e07",
+      "ahead_by": 0,
+      "behind_by": 1203,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-ci-fix-3",
+      "sha": "7d69e36b5b03eafea0d58a39748d3df7010b3950",
+      "ahead_by": 0,
+      "behind_by": 1201,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-ci-fix-4",
+      "sha": "90208849bb874be3feb655d77c092de8f52211e4",
+      "ahead_by": 0,
+      "behind_by": 1199,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-historical-audit-fix",
+      "sha": "a5fde268c4993ccbbe251c9b0f4c8f75054b6bd2",
+      "ahead_by": 0,
+      "behind_by": 1197,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-331-production-performance-baseline-slos-regression-budgets",
+      "sha": "d329f25680a32d7e45f0504c516801b56b47eccc",
+      "ahead_by": 0,
+      "behind_by": 1207,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-1",
+      "sha": "33781a361961b430d9c72144ff2e6ccd43637c24",
+      "ahead_by": 0,
+      "behind_by": 1146,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-2",
+      "sha": "b0bd24fe8fb5cc7c3f431f4ddc4129ffe08920bc",
+      "ahead_by": 0,
+      "behind_by": 1144,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-3",
+      "sha": "a792e19f982bb07d4495666546d8918e919e1076",
+      "ahead_by": 0,
+      "behind_by": 1142,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-4",
+      "sha": "9231286576f5e7bd25d44e9772c940255e3ae3bf",
+      "ahead_by": 0,
+      "behind_by": 1140,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-5",
+      "sha": "f273c0a705a6c3c59d8cb5e673f3307fd2b29c47",
+      "ahead_by": 0,
+      "behind_by": 1138,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-6",
+      "sha": "aca7575b3fd717d39b24fcd92ddd0666708ff4de",
+      "ahead_by": 0,
+      "behind_by": 1136,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-7",
+      "sha": "9858f87ced2a5ad99cbca4a5752b251895154d78",
+      "ahead_by": 0,
+      "behind_by": 1134,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-8",
+      "sha": "a449f29a1e4687f997a712d64dbf5a95de5d611d",
+      "ahead_by": 0,
+      "behind_by": 1132,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-9",
+      "sha": "13d1e48b3ec62c2b568a4a71195e512bf5ad6d89",
+      "ahead_by": 0,
+      "behind_by": 1128,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-10",
+      "sha": "c6cc1defe1f2fe35b036b651c4e48fac97e33411",
+      "ahead_by": 0,
+      "behind_by": 1126,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-11",
+      "sha": "6fe3e04c3440c2d21893aaee3e49d1bdefc859b2",
+      "ahead_by": 0,
+      "behind_by": 1124,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-12",
+      "sha": "0bbe0f6963babe78a4cfc498770fc163682e0d92",
+      "ahead_by": 0,
+      "behind_by": 1125,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-13",
+      "sha": "1e3e733d589249c2a5a4bcea6b561308ae60e777",
+      "ahead_by": 0,
+      "behind_by": 1122,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-14",
+      "sha": "b215a7d1ec120a65dcfbeaa05148d28e2e788eb0",
+      "ahead_by": 0,
+      "behind_by": 1120,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-real-user-monitoring-interaction-experience-telemetry",
+      "sha": "142dd49d9d278e065576cdd198a947116dd76496",
+      "ahead_by": 0,
+      "behind_by": 1148,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-ci-fix-1",
+      "sha": "709f0b41c009a62839f895e37beaafe6eb8d6139",
+      "ahead_by": 0,
+      "behind_by": 1103,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-ci-fix-2",
+      "sha": "1bcdab509cafafc584b9a5e7aba07d8a92bd4058",
+      "ahead_by": 0,
+      "behind_by": 1101,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-route-performance-core-web-vitals-rendering-diagnostics",
+      "sha": "f6572be71370e02e751c4d3311a606163b20f1ed",
+      "ahead_by": 0,
+      "behind_by": 1105,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-334-api-database-dependency-performance-observatory",
+      "sha": "1ba0155bad5718c99fae852014c94120b53d8884",
+      "ahead_by": 0,
+      "behind_by": 1081,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-ci-fix-1",
+      "sha": "9858b83dec65b74a277be929dddbba629fa569b9",
+      "ahead_by": 0,
+      "behind_by": 1056,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-ci-fix-2",
+      "sha": "ab8636d98a5404299087f62eefb6842e849815e6",
+      "ahead_by": 0,
+      "behind_by": 1054,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-master-shell-contract-v1-correlation-event-envelope",
+      "sha": "5ae99d56c3a49240ff864392caf54073f38ed102",
+      "ahead_by": 0,
+      "behind_by": 1058,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-336-six-source-registry-freshness-state-machine",
+      "sha": "3e0c2688b53aaa8c497fbda7d2328c2e81821542",
+      "ahead_by": 0,
+      "behind_by": 1028,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-ci-fix-1",
+      "sha": "9860b84148fd50cebd9244e91b640a737feac087",
+      "ahead_by": 0,
+      "behind_by": 1004,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-ci-fix-2",
+      "sha": "bfb70202727b4b2a92b8f057f79bfeab9f9cbea0",
+      "ahead_by": 0,
+      "behind_by": 1002,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-ci-fix-3",
+      "sha": "0410a130ef7e916ac79c8ab0a4fe142ebb632063",
+      "ahead_by": 0,
+      "behind_by": 1000,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-read-only-source-update-ingestion",
+      "sha": "99208da6592e9192ec4ae8dd9795219cb75b2294",
+      "ahead_by": 0,
+      "behind_by": 1006,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-338-master-completion-requirements",
+      "sha": "c239e4f8aa5ccef94b934e8f95ccc3e5fb3908b0",
+      "ahead_by": 0,
+      "behind_by": 974,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-341-outer-sysop-navigation",
+      "sha": "071e2f7799be0b45294bfa9a8cbaa5407a8ab357",
+      "ahead_by": 0,
+      "behind_by": 902,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-347-master-security-certification",
+      "sha": "604b0d552a391ec6f83321e9628480e31c6b19bb",
+      "ahead_by": 0,
+      "behind_by": 748,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-348-ci-fix-1",
+      "sha": "243e9f663a37eea0650c5cb6a5dc7ce55b5c2833",
+      "ahead_by": 0,
+      "behind_by": 721,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-348-six-source-onboarding-pilot",
+      "sha": "0e8f305c0e403145431b5082de2ea22bff8ad055",
+      "ahead_by": 0,
+      "behind_by": 723,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-349-ci-fix-1",
+      "sha": "c2c959ad2f83411a91a370f497648fefb3123d5c",
+      "ahead_by": 0,
+      "behind_by": 695,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-349-master-production-readiness",
+      "sha": "d4b5add127225fc303f4342d2a286e2341f3ecf1",
+      "ahead_by": 0,
+      "behind_by": 697,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-350-production-closeout",
+      "sha": "c505152251c399d3bd3de01b2e97a241df93ea7b",
+      "ahead_by": 0,
+      "behind_by": 666,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-350-production-learning-viii",
+      "sha": "a283dc41f00b4483ea585d3555d34f2fc3bf8364",
+      "ahead_by": 0,
+      "behind_by": 670,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-351-basic-controls-completion",
+      "sha": "6277c0ed2f5a7489f68ce9f1ab99e88b71357be1",
+      "ahead_by": 0,
+      "behind_by": 655,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-351-ci-fix-operator-tools",
+      "sha": "f088cd049811dbd97e1d930fabc9ce6d9154adb5",
+      "ahead_by": 0,
+      "behind_by": 653,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-352-basic-operator-actions",
+      "sha": "536daba3c517d959f815b1ef7c7db8cc3a909349",
+      "ahead_by": 0,
+      "behind_by": 639,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-ack-reconciliation",
+      "sha": "3bb38ec98b5b9e2e41b533b7d74820eefc5d0113",
+      "ahead_by": 0,
+      "behind_by": 619,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-basic-alerts",
+      "sha": "d2debaaec2bf6b392438b974604ec42e9e0f5ee2",
+      "ahead_by": 0,
+      "behind_by": 627,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-ci-fix-unused-import",
+      "sha": "c74ab3ab9b5d1e8b213f0125c69d51335df9970d",
+      "ahead_by": 0,
+      "behind_by": 625,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-rosie-current-ack",
+      "sha": "d55f88ec55d06ac44a40b6708780b5fbd2bbeb50",
+      "ahead_by": 0,
+      "behind_by": 614,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-354-cross-app-control-center",
+      "sha": "12ed804db9abecdbff8fec1884b3c369ba1c34fb",
+      "ahead_by": 0,
+      "behind_by": 602,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-355-performance-optimization-control-plane",
+      "sha": "109e194291e9945a7f59cbdd4682171ea5c2f003",
+      "ahead_by": 0,
+      "behind_by": 590,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-356-capacity-workload-demand-forecasting",
+      "sha": "691cffe9e5834b719eb28d2c028b4c5ed1c82ee3",
+      "ahead_by": 0,
+      "behind_by": 577,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-357-incident-runbook-recovery-orchestration",
+      "sha": "d5b8f0f587237140a77735781eacbc460c8c8186",
+      "ahead_by": 0,
+      "behind_by": 564,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-358-anomaly-behaviour-predictive-risk",
+      "sha": "2442ec9c130823e2be4d80da959b8c2f7ba5125f",
+      "ahead_by": 0,
+      "behind_by": 550,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-359-adaptive-master-control",
+      "sha": "1418bafb39a86787fa4366ad8879b761aed23f1f",
+      "ahead_by": 0,
+      "behind_by": 534,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-360-master-control-boundary-certification",
+      "sha": "4e95127ac9bea21cb8a46a83253929463a1f4283",
+      "ahead_by": 0,
+      "behind_by": 519,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-361-master-activation-evidence-reconciliation",
+      "sha": "57cf61ebed842723e1a7efd8edddaae07cadc594",
+      "ahead_by": 0,
+      "behind_by": 508,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-362-production-verifier-fix",
+      "sha": "e5878d5a05c32862c88b3f6413b5f54bb5423c17",
+      "ahead_by": 0,
+      "behind_by": 489,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-362-yw-icamp-product-shell-onboarding",
+      "sha": "eb3d4ab5d3ede27343def10272bafefe59476583",
+      "ahead_by": 0,
+      "behind_by": 492,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-363-source-convergence-signer-health-closure",
+      "sha": "3f747b25b163a163b5189c66408c5da08e8f58c0",
+      "ahead_by": 0,
+      "behind_by": 476,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-364-convergence-receipt-intake-owner-queue",
+      "sha": "e61be2cfbe29fdf9d5b0abac8b8dc61061d485fd",
+      "ahead_by": 0,
+      "behind_by": 463,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-365-production-parser-fix",
+      "sha": "0ea4b0e8a9a2b1c1321db6bda488d859c199636b",
+      "ahead_by": 0,
+      "behind_by": 441,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-365-trusted-signer-ledger-owner-audit",
+      "sha": "e8f979b10d948df74b189689146fd71a27f1e6c4",
+      "ahead_by": 0,
+      "behind_by": 444,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-365-trusted-source-signer-durable-ledger",
+      "sha": "f0e7d6a6108763c5dc5e8abfe9620378403033f2",
+      "ahead_by": 0,
+      "behind_by": 461,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-366-signer-enrollment-health-admission-owner-review",
+      "sha": "c14771ca59f2d81af20a94c19c079e6f5afe5e54",
+      "ahead_by": 0,
+      "behind_by": 423,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-367-source-evidence-owner-review-acceptance",
+      "sha": "c86dcbe184ff84bcbfd729472d51cf0c6a0dcace",
+      "ahead_by": 0,
+      "behind_by": 408,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-368-master-runtime-reconvergence-receipt-refresh",
+      "sha": "1c0ad27f9e58c09b68f87ddd36e5ec27fea5d9e4",
+      "ahead_by": 0,
+      "behind_by": 392,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-369-source-refresh-evidence-three-master-recheck",
+      "sha": "c3928370b51bacc985ddddc58160fed93f48e618",
+      "ahead_by": 0,
+      "behind_by": 378,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-370-independent-manifest-custody-receipt-master-decision",
+      "sha": "9648e3351f987978c82a7a27288c0f9510de7f29",
+      "ahead_by": 0,
+      "behind_by": 363,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-371-yw-product-shell-signer-health-master-resolution",
+      "sha": "f716b6af5170756ca4aab4605c611f7ddecbc0ff",
+      "ahead_by": 0,
+      "behind_by": 344,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-372-yw561-signer-receipt-replay-master-closure",
+      "sha": "a20ba45908a48bdcbda75bd84e22ffad2c02796c",
+      "ahead_by": 0,
+      "behind_by": 329,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-373-yw561-live-signer-receipt-replay-owner-recheck",
+      "sha": "aa5dda7b5a45876c4999dea7771b2744be0ab23f",
+      "ahead_by": 0,
+      "behind_by": 314,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-374-yw561-trusted-source-health-activation-owner-gate",
+      "sha": "dc78c34da61a7898d03114f7759328cf2fab6ae3",
+      "ahead_by": 0,
+      "behind_by": 299,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-375-yw561-owner-decision-runtime-connection-reconciliation",
+      "sha": "010ce2e2c892d9fd901622836fa97f5420dc4a2b",
+      "ahead_by": 0,
+      "behind_by": 284,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-376-yw561-independent-connection-three-master-sync",
+      "sha": "a8e4811ca2dde5e0df79456d43e098c03d9850ef",
+      "ahead_by": 0,
+      "behind_by": 269,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-377-comms-ql422-reconciliation",
+      "sha": "d69735bd41fffd9abc0c5eb5761ab5bf4ddc11a0",
+      "ahead_by": 0,
+      "behind_by": 247,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-377-yw562-live-connection-continuity",
+      "sha": "acf4cc6ea6012ff66d420c926a2070ec51fb6dd9",
+      "ahead_by": 0,
+      "behind_by": 253,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-378-yw562-runtime-ql422-readiness",
+      "sha": "2a4f3382f16ea4fd1e1c308649a4565df8cdd9da",
+      "ahead_by": 0,
+      "behind_by": 231,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-379-migration-policy-hotfix",
+      "sha": "f29e6f2063ca863d034a9c54b0e8184296f52b01",
+      "ahead_by": 0,
+      "behind_by": 189,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-379-migration-role-hotfix",
+      "sha": "649ed613acdeab6dd3d61716630bd7b26ba48d24",
+      "ahead_by": 0,
+      "behind_by": 193,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-379-protected-runtime-activation-decision",
+      "sha": "a6af99819a0b58e7e92563dc717037acc16364e6",
+      "ahead_by": 0,
+      "behind_by": 197,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-380-external-runtime-activation-closure",
+      "sha": "ac6b3bd6b8ff5c16065b834534e14da59bb50ccc",
+      "ahead_by": 0,
+      "behind_by": 163,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-380-migration-0144-hotfix",
+      "sha": "d6a4a63330960501a1abf4f120f1858d6ba183dd",
+      "ahead_by": 0,
+      "behind_by": 155,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-381-migration-0145-hotfix",
+      "sha": "14c24a2fc37098848e246ede26e8f021565f04e0",
+      "ahead_by": 0,
+      "behind_by": 129,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-381-receiver-health-continuity",
+      "sha": "9bb72072be428184c7fd69082a0ab0357c077768",
+      "ahead_by": 0,
+      "behind_by": 135,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/adp-389-ql442-production-20261113",
+      "sha": "2a72d9a6bdaf03efff0114dcb933e044c0a55e7f",
+      "ahead_by": 0,
+      "behind_by": 13,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/adp-389-ql442-shutdown-closure-20261113",
+      "sha": "e4e43798ef35767c5c992b58db852c3a266ac93e",
+      "ahead_by": 0,
+      "behind_by": 13,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-ci-lint-repair",
+      "sha": "790e17a7f3ff54f8bffc930a8d94d1f3acffe7c7",
+      "ahead_by": 0,
+      "behind_by": 2770,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-ci-repair-build229",
+      "sha": "f454fa77d58b8b12bbdaa9e5d0c02a28ee14734d",
+      "ahead_by": 0,
+      "behind_by": 2758,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-historical-verifier-label-repair",
+      "sha": "253aa859118eec82e9fc0349cf2e65b5274b67df",
+      "ahead_by": 0,
+      "behind_by": 2756,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-six-app-return-reconciliation-after-build228",
+      "sha": "868d54bad1f9265d29cd41d7e95ecc711241ed70",
+      "ahead_by": 0,
+      "behind_by": 2772,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql264-comms-hub-direct-source-handoff",
+      "sha": "d08ad734a094c83d20d06f18ad009e040777731d",
+      "ahead_by": 0,
+      "behind_by": 2670,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql337-ai-comms-contract",
+      "sha": "49287216441baf282edd1ddb23c81cee3401c6c7",
+      "ahead_by": 0,
+      "behind_by": 1774,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql337-isolated-legacy-audit",
+      "sha": "d2a780b05b6bd4671b4909d4aab514473757c8a6",
+      "ahead_by": 0,
+      "behind_by": 1772,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql364-source-health-dev",
+      "sha": "2e36a76fbe9acedae73c9355c47d1c3d05a66505",
+      "ahead_by": 0,
+      "behind_by": 1513,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql364-source-health-main",
+      "sha": "8371f05e9f313ee130b7603739630d31679a884a",
+      "ahead_by": 0,
+      "behind_by": 1515,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "ql265-ai-navigation-coverage-fix",
+      "sha": "e25369944156eba58ee0b6c69a3f11fab85d01c2",
+      "ahead_by": 0,
+      "behind_by": 2662,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "ql265-comms-connection-console",
+      "sha": "c7cc439127e2ea177bdcab58fd4adbefb843a162",
+      "ahead_by": 0,
+      "behind_by": 2665,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "roadmap-306-330-universal-module-autonomy",
+      "sha": "e2d78da7cbae35c23fcfcf45571ca1510cbf78e0",
+      "ahead_by": 0,
+      "behind_by": 1538,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "roadmap-builds-273-280",
+      "sha": "c8925a3bc10474c8ae4c9c20fb684a34d0fac5b3",
+      "ahead_by": 0,
+      "behind_by": 2139,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ],
+  "preserve": [
+    {
+      "branch": "build-306-universal-module-manifest",
+      "sha": "f8c2ddf704f9411f5b086dc08012798bd8d98b48",
+      "ahead_by": 6,
+      "behind_by": 1536,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-307-headless-module-sdk",
+      "sha": "01ef7da657f0c98a0d67ec30ae765266b3d34a94",
+      "ahead_by": 7,
+      "behind_by": 1531,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-308-embeddable-runtime-shell",
+      "sha": "a5698f381ecf64976f8570913a12131708680137",
+      "ahead_by": 12,
+      "behind_by": 1528,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-309-host-adapter-pack",
+      "sha": "7af028d77a2d7a780f8afc743476c31992bf0ad6",
+      "ahead_by": 10,
+      "behind_by": 1522,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-310-auth-user-context-bridge",
+      "sha": "ac55d9b7ddec9f6a578b8a86559165ce4101dae2",
+      "ahead_by": 9,
+      "behind_by": 1520,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-311-tenant-workspace-resolution",
+      "sha": "596beeb4e81bdcbfcbce3f24b26abcd848a03213",
+      "ahead_by": 7,
+      "behind_by": 1518,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-312-capability-negotiation",
+      "sha": "27c65a3191a648abc2b1447ac4c05a3306af8435",
+      "ahead_by": 7,
+      "behind_by": 1516,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-313-host-navigation-bridge",
+      "sha": "956ef9fee7a35b8af502cd84e1df24a682b05c00",
+      "ahead_by": 8,
+      "behind_by": 1514,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-314-theme-accessibility-locale-bridge",
+      "sha": "1e1dea2a02624a989360c2c1801fadc4a1bc3d19",
+      "ahead_by": 7,
+      "behind_by": 1503,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-315-contract-resolver-comms-closure",
+      "sha": "ddf5e1810a1bfcc7105b939b1c314f37ae85745a",
+      "ahead_by": 17,
+      "behind_by": 1500,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    }
+  ]
+}
