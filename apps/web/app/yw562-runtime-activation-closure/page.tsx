@@ -24,7 +24,7 @@ export default async function Yw562RuntimeActivationClosurePage() {
     Boolean(process.env.BUILD380_CONTROLLER_RUNTIME_PUBLIC_KEY_PEM?.trim());
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 380 · protected external runtime activation

@@ -26,7 +26,7 @@ export default async function MasterSysopPage() {
   );
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--management">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--management">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 341 · Rosevear Suite Outer Sysop Shell

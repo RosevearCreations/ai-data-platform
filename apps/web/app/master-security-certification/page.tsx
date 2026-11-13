@@ -21,7 +21,7 @@ export default async function MasterSecurityCertificationPage() {
   const model = await listMasterSecurityCertificationForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 347 · Rosevear Suite Master Shell</p>
         <h1>Master Security, Authorization, Consent & Evidence Certification</h1>

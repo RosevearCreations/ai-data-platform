@@ -17,7 +17,7 @@ export default async function Yw562RuntimeQl422ReadinessPage() {
   const model = data.model;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 378 · YW562 runtime prerequisites &amp; QL-422 readiness

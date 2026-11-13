@@ -64,7 +64,7 @@ export default async function AnomalyPredictiveRiskPage({
   });
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 358 · Advanced Intelligence</p>
         <h1>Anomaly Detection, Behaviour Baselines &amp; Predictive Risk</h1>

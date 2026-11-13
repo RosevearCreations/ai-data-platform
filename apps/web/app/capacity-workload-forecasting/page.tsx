@@ -51,7 +51,7 @@ export default async function CapacityWorkloadForecastingPage({
   });
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 356 · Moderate Controls</p>
         <h1>Capacity, Workload, Resource &amp; Demand Forecasting</h1>

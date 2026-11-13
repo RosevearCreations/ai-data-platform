@@ -1,0 +1,213 @@
+/* Master Shell Instrument UI System
+   Derived from the approved workshop-operations interface specification. */
+.masterInstrumentShell {
+  --instrument-bg: #050b16;
+  --instrument-surface: #081625;
+  --instrument-panel: #0b1c2d;
+  --instrument-panel-strong: #0d2135;
+  --instrument-border: rgba(121, 156, 196, .2);
+  --instrument-purple: #9a46ff;
+  --instrument-purple-soft: rgba(154, 70, 255, .18);
+  --instrument-blue: #31a9ff;
+  --instrument-green: #2ed58f;
+  --instrument-amber: #ffbd4a;
+  --instrument-red: #ff5c72;
+  --instrument-muted: #8ca3b8;
+  --instrument-text: #eef6ff;
+  color: var(--instrument-text);
+  background:
+    radial-gradient(circle at 78% -8%, rgba(125, 48, 220, .18), transparent 30rem),
+    linear-gradient(180deg, #07111f, var(--instrument-bg) 30rem);
+  border: 1px solid rgba(122, 155, 198, .12);
+  border-radius: 1.1rem;
+  padding: clamp(.75rem, 2vw, 1.25rem);
+}
+
+.masterInstrumentShell .reviewHero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--instrument-border);
+  border-radius: 1rem;
+  background:
+    linear-gradient(90deg, rgba(5,11,22,.96), rgba(8,22,37,.86) 64%, rgba(77,21,121,.72)),
+    radial-gradient(circle at 86% 18%, rgba(154,70,255,.34), transparent 18rem);
+  box-shadow: 0 20px 55px rgba(0,0,0,.2);
+}
+
+.masterInstrumentShell .reviewHero::after {
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: min(32rem, 42%);
+  height: .25rem;
+  background: linear-gradient(90deg, transparent, var(--instrument-purple));
+  content: "";
+}
+
+.masterInstrumentShell .reviewHero h1 {
+  max-width: 24ch;
+  letter-spacing: -.025em;
+}
+
+.masterInstrumentShell .reviewHero .lead {
+  max-width: 82ch;
+  color: #a9bbcc;
+}
+
+.masterInstrumentShell .eyebrow {
+  color: #b879ff;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.masterInstrumentShell .secondaryButton,
+.masterInstrumentShell .primaryButton,
+.masterInstrumentShell .primary {
+  border-color: rgba(174, 101, 255, .48);
+  background: linear-gradient(180deg, rgba(112, 37, 183, .3), rgba(52, 18, 92, .34));
+  color: #f5ebff;
+}
+
+.masterInstrumentShell .secondaryButton:hover,
+.masterInstrumentShell .primaryButton:hover,
+.masterInstrumentShell .primary:hover {
+  border-color: rgba(188, 122, 255, .86);
+  box-shadow: 0 0 0 1px rgba(154,70,255,.12), 0 8px 24px rgba(83,31,139,.22);
+}
+
+.masterInstrumentShell .commandMetrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .7rem;
+}
+
+.masterInstrumentShell .commandMetrics > article,
+.masterInstrumentShell .reviewBatchSummary,
+.masterInstrumentShell .dataQualityPolicyNote,
+.masterInstrumentShell .reviewQueue {
+  border: 1px solid var(--instrument-border);
+  background: linear-gradient(180deg, rgba(11,28,45,.96), rgba(6,18,31,.96));
+  box-shadow: inset 0 1px rgba(255,255,255,.018);
+}
+
+.masterInstrumentShell .commandMetrics > article {
+  position: relative;
+  overflow: hidden;
+  min-height: 6.2rem;
+  border-radius: .8rem;
+}
+
+.masterInstrumentShell .commandMetrics > article::after {
+  position: absolute;
+  right: .8rem;
+  bottom: .7rem;
+  width: 3.6rem;
+  height: 1.2rem;
+  background:
+    linear-gradient(135deg, transparent 0 20%, rgba(154,70,255,.8) 21% 27%, transparent 28% 40%, rgba(49,169,255,.7) 41% 49%, transparent 50% 62%, rgba(46,213,143,.72) 63% 70%, transparent 71%);
+  opacity: .7;
+  content: "";
+}
+
+.masterInstrumentShell .commandMetrics strong {
+  color: #fff;
+  font-size: clamp(1.25rem, 2vw, 1.85rem);
+}
+
+.masterInstrumentShell .commandMetrics span,
+.masterInstrumentShell .reviewBatchSummary p,
+.masterInstrumentShell .dataQualityPolicyNote p {
+  color: var(--instrument-muted);
+}
+
+.masterInstrumentShell .reviewBatchList {
+  gap: .75rem;
+}
+
+.masterInstrumentShell .reviewBatchSummary {
+  border-radius: .8rem;
+  transition: border-color .16s ease, transform .16s ease;
+}
+
+.masterInstrumentShell .reviewBatchSummary:hover {
+  border-color: rgba(154,70,255,.38);
+  transform: translateY(-1px);
+}
+
+.masterInstrumentShell .reviewStatus {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid rgba(154,70,255,.3);
+  border-radius: 999px;
+  background: var(--instrument-purple-soft);
+  color: #d5b6ff;
+  padding: .24rem .52rem;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+.masterInstrumentShell .reviewStatus--connected,
+.masterInstrumentShell .reviewStatus--healthy,
+.masterInstrumentShell .reviewStatus--fresh,
+.masterInstrumentShell .reviewStatus--ready {
+  border-color: rgba(46,213,143,.38);
+  background: rgba(46,213,143,.1);
+  color: #78e9b7;
+}
+
+.masterInstrumentShell .reviewStatus--hold,
+.masterInstrumentShell .reviewStatus--warning,
+.masterInstrumentShell .reviewStatus--stale,
+.masterInstrumentShell .reviewStatus--attention {
+  border-color: rgba(255,189,74,.4);
+  background: rgba(255,189,74,.1);
+  color: #ffd17c;
+}
+
+.masterInstrumentShell .reviewStatus--critical,
+.masterInstrumentShell .reviewStatus--error,
+.masterInstrumentShell .reviewStatus--disconnected {
+  border-color: rgba(255,92,114,.4);
+  background: rgba(255,92,114,.1);
+  color: #ff91a2;
+}
+
+.masterInstrumentShell .sectionHeading {
+  padding-bottom: .65rem;
+  border-bottom: 1px solid rgba(121,156,196,.12);
+}
+
+.masterInstrumentShell code {
+  color: #83cfff;
+}
+
+.masterInstrumentShell .dataQualityPolicyNote {
+  border-left: 3px solid var(--instrument-purple);
+}
+
+@media (max-width: 900px) {
+  .masterInstrumentShell .commandMetrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .masterInstrumentShell .heroActions {
+    gap: .45rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .masterInstrumentShell {
+    padding: .55rem;
+    border-radius: .75rem;
+  }
+  .masterInstrumentShell .commandMetrics {
+    grid-template-columns: 1fr;
+  }
+  .masterInstrumentShell .reviewHero,
+  .masterInstrumentShell .reviewQueue,
+  .masterInstrumentShell .dataQualityPolicyNote {
+    border-radius: .75rem;
+  }
+  .masterInstrumentShell .reviewBatchSummary {
+    border-radius: .7rem;
+  }
+}

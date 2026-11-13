@@ -27,7 +27,7 @@ export default async function IncidentRunbookRecoveryPage() {
   });
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 357 · Moderate Controls</p>
         <h1>Incident Automation, Runbooks &amp; Supervised Recovery</h1>

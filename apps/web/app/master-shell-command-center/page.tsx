@@ -32,7 +32,7 @@ export default async function MasterShellCommandCenterPage() {
   );
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 340 · Rosevear Suite Master Shell

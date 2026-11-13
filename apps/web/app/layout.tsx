@@ -5,6 +5,7 @@ import { DEFAULT_UI_THEME } from "@/lib/ui-theme";
 
 import { ApplicationShell } from "./application-shell";
 import "./globals.css";
+import "./master-instrument-shell.css";
 
 export const metadata: Metadata = {
   title: "AI Data Platform",

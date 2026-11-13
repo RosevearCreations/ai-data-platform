@@ -20,7 +20,7 @@ export default async function CrossApplicationControlCenterPage() {
   const model = composeCrossApplicationControlCenter();
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 354 · Moderate Controls</p>
         <h1>Cross-Application Control Center</h1>
