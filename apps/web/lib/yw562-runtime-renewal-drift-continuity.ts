@@ -74,10 +74,6 @@ export function composeBuild382RuntimeRenewalDriftContinuity(
     hasThreeMasterReceiptContinuity(renewal) &&
     build381.threeMasterConnectedRevalidationState === "CONNECTED_REVALIDATED";
 
-  const rollbackPresent =
-    build381.rollbackState === "ROLLED_BACK_VERIFIED" ||
-    build381.connectionState === "DISCONNECTED_HOLD";
-
   let driftReason: Build382DriftReason = "NONE";
   if (!renewal) driftReason = "RENEWAL_MISSING";
   else if (!exactRuntimeBinding) driftReason = "RUNTIME_REVISION_DRIFT";
