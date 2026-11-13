@@ -20,7 +20,7 @@ export default async function CrossApplicationInteractionTracePage() {
   );
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 343 · Rosevear Suite Master Shell</p>
         <h1>Cross-Application Interaction Trace</h1>
