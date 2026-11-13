@@ -32,6 +32,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/master-suite",
+        label: "Unified Master Suite",
+        description: "Open Build 388 three-module Master instrument console and governed cross-shell navigation.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/master-sysop",
         label: "Master Sysop Shell",
         description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
