@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "offset": 83,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-109-corrective-generation-lineage-registry",
+      "sha": "50be08fae1d79e16d11799f6311702834d6f1572",
+      "ahead_by": 0,
+      "behind_by": 4110,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-110-unified-corrective-generation-planning",
+      "sha": "0fd3ee5c568dca3216a522b95a6810c143e747af",
+      "ahead_by": 0,
+      "behind_by": 4098,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-111-fix-delivery-ack",
+      "sha": "917c8c22a0f928d5003f57369512bb95a76a45ea",
+      "ahead_by": 0,
+      "behind_by": 4073,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-111-fix-import-newlines",
+      "sha": "0a9d98f7d7c632981f68a1be2b5d1f5e5406ac35",
+      "ahead_by": 0,
+      "behind_by": 4071,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-111-fix-live-ack-object",
+      "sha": "0ba8a022892708fdf814de52a6f1a0157004f182",
+      "ahead_by": 0,
+      "behind_by": 4069,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-111-unified-corrective-generation-delivery",
+      "sha": "d1436d98f9f65a34b9fa2804ce4cf697c07cfd49",
+      "ahead_by": 0,
+      "behind_by": 4075,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-112-unified-corrective-generation-closure",
+      "sha": "0fb53560cc4d9b07faae34a30fcf347f59de901f",
+      "ahead_by": 0,
+      "behind_by": 4056,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-113-post-unified-corrective-generation-recurrence",
+      "sha": "bab11135bd595159240bf1d43ec39aa57ab37212",
+      "ahead_by": 0,
+      "behind_by": 4043,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-113-unified-retriage-planning-correction",
+      "sha": "9e9ce2a873a1bac80270866265ac2405a23f2cc2",
+      "ahead_by": 0,
+      "behind_by": 4035,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-114-legacy-corrective-generation-compatibility",
+      "sha": "8703c53c25aa804c65557fbdde67b7427f07b56f",
+      "ahead_by": 0,
+      "behind_by": 4016,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-115-corrective-generation-state-machine",
+      "sha": "aa3da7d8d18633a668d618738f4bce16468f7115",
+      "ahead_by": 0,
+      "behind_by": 3999,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-116-audit-schema-literal-fix",
+      "sha": "58fcd3210cb8ba750203e2cd85cdcbe3df74ab2c",
+      "ahead_by": 0,
+      "behind_by": 3979,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-116-corrective-generation-operations-console",
+      "sha": "f1638d82f1521b8c38c3431da22e1fc06edb969c",
+      "ahead_by": 0,
+      "behind_by": 3981,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-117-application-shell-navigation-help",
+      "sha": "8425a6e1506b763432fec378990501cf0b26218d",
+      "ahead_by": 0,
+      "behind_by": 3959,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-118-default-variant-fix",
+      "sha": "651e58a0c0385f9e9c3ce23be12926de68babd1b",
+      "ahead_by": 0,
+      "behind_by": 3937,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-118-marble-design-system",
+      "sha": "518e8f616b378f9c7afc64c9af863bd2b3d586b1",
+      "ahead_by": 0,
+      "behind_by": 3941,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-118-verifier-lint-fix",
+      "sha": "18c066f17b536f8df56efcab00196803ced2a585",
+      "ahead_by": 0,
+      "behind_by": 3939,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
