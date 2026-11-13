@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "offset": 32,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-053-production-closeout",
+      "sha": "2504c1adad544744679077f81ea1038ad2f0dd57",
+      "ahead_by": 0,
+      "behind_by": 5260,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-053-reconciliation-triage-planning",
+      "sha": "98e4be1cf5281bd4166c72474b5aace253c8bbb9",
+      "ahead_by": 0,
+      "behind_by": 5266,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-054-ci-fix-1",
+      "sha": "b67bd52c0dbc955dc04f958c3e227b3e06bccfc3",
+      "ahead_by": 0,
+      "behind_by": 5234,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-054-corrective-activation-execution",
+      "sha": "b7482dd5fa0de31e4a03bf7c5503ae4e31b1145e",
+      "ahead_by": 0,
+      "behind_by": 5236,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-054-production-closeout",
+      "sha": "b8b1492203a6e8983aa6cc901d947568e7b7029f",
+      "ahead_by": 0,
+      "behind_by": 5230,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-055-ci-fix-1",
+      "sha": "639e67adfc830e097b8f08a4a1f33ba36ec774f7",
+      "ahead_by": 0,
+      "behind_by": 5199,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-055-corrective-reconciliation-closure",
+      "sha": "bac05a447dfdfa1040cd256f0732ca00e5dcbf5f",
+      "ahead_by": 0,
+      "behind_by": 5201,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-055-production-closeout",
+      "sha": "615d1e7e7ad53fa9a095b4dda70ebb65af38a181",
+      "ahead_by": 0,
+      "behind_by": 5195,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-056-lint-fix",
+      "sha": "40178e27710a2620e775f126cb3e70c95826ca46",
+      "ahead_by": 0,
+      "behind_by": 5168,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-056-post-closure-regression",
+      "sha": "efcfce3391bdfe4cf90bbf81c3033af088ac824e",
+      "ahead_by": 0,
+      "behind_by": 5172,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-056-production-closeout",
+      "sha": "78e894edf167d4dc64ce2b346cc10e2da509d549",
+      "ahead_by": 0,
+      "behind_by": 5164,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-056-typecheck-fix",
+      "sha": "b811ab908e06b2499212da514eac8cd4e0eb719f",
+      "ahead_by": 0,
+      "behind_by": 5170,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-057-db-verifier-fix",
+      "sha": "dcaea5cc10aa1b9b175140efe9444f031e030467",
+      "ahead_by": 0,
+      "behind_by": 5141,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-057-production-closeout",
+      "sha": "43d490a389c86da2b49f0e8fa9a12050ed1296c2",
+      "ahead_by": 0,
+      "behind_by": 5137,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-057-reopened-exception-successor-planning",
+      "sha": "c96dca07a6d8b305f5338bdedebc5afa8321d115",
+      "ahead_by": 0,
+      "behind_by": 5143,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-058-production-closeout",
+      "sha": "8e7bdd9ae03c0167ef7b7662566fddf50c1fb49e",
+      "ahead_by": 0,
+      "behind_by": 5111,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-058-successor-corrective-execution",
+      "sha": "5908a5524ce8218951b143bace43205153836f1f",
+      "ahead_by": 0,
+      "behind_by": 5115,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
