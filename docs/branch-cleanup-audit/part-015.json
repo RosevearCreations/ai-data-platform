@@ -1,0 +1,144 @@
+{
+  "page": 3,
+  "offset": 34,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-299-shared-scheduling-calendar-exchange",
+      "sha": "4998dc82b18d0777c70e059f00ee61ee61995c77",
+      "ahead_by": 0,
+      "behind_by": 1651,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-300-unified-integration-health-command-center",
+      "sha": "eadc08bc54ac53dc3004c4f1d370f682b9e56d27",
+      "ahead_by": 0,
+      "behind_by": 1638,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-301-self-healing-safe-retry",
+      "sha": "4bb05a1d94beb6137644c235e6fa39d096ffc180",
+      "ahead_by": 0,
+      "behind_by": 1620,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-302-cross-app-workflow-automation",
+      "sha": "e9b6f39f9e20c10a49f1e0d342dfe9fad8fd3193",
+      "ahead_by": 0,
+      "behind_by": 1599,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-303-ai-assisted-integration-suggestions",
+      "sha": "dc7ef12a732dfef1e940e2adf40c9091639d096a",
+      "ahead_by": 0,
+      "behind_by": 1585,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-304-six-app-integration-certification",
+      "sha": "e07a5f5c870c4cfa18a02e51fa07468d8d2a5c67",
+      "ahead_by": 0,
+      "behind_by": 1567,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-305-autonomous-operations-learning-vi",
+      "sha": "56d210068093fbba32d9fd24c054d4c4a9b05375",
+      "ahead_by": 0,
+      "behind_by": 1547,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-306-universal-module-manifest",
+      "sha": "f8c2ddf704f9411f5b086dc08012798bd8d98b48",
+      "ahead_by": 6,
+      "behind_by": 1536,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-307-headless-module-sdk",
+      "sha": "01ef7da657f0c98a0d67ec30ae765266b3d34a94",
+      "ahead_by": 7,
+      "behind_by": 1531,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-308-embeddable-runtime-shell",
+      "sha": "a5698f381ecf64976f8570913a12131708680137",
+      "ahead_by": 12,
+      "behind_by": 1528,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-309-host-adapter-pack",
+      "sha": "7af028d77a2d7a780f8afc743476c31992bf0ad6",
+      "ahead_by": 10,
+      "behind_by": 1522,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-310-auth-user-context-bridge",
+      "sha": "ac55d9b7ddec9f6a578b8a86559165ce4101dae2",
+      "ahead_by": 9,
+      "behind_by": 1520,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-311-tenant-workspace-resolution",
+      "sha": "596beeb4e81bdcbfcbce3f24b26abcd848a03213",
+      "ahead_by": 7,
+      "behind_by": 1518,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-312-capability-negotiation",
+      "sha": "27c65a3191a648abc2b1447ac4c05a3306af8435",
+      "ahead_by": 7,
+      "behind_by": 1516,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-313-host-navigation-bridge",
+      "sha": "956ef9fee7a35b8af502cd84e1df24a682b05c00",
+      "ahead_by": 8,
+      "behind_by": 1514,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-314-theme-accessibility-locale-bridge",
+      "sha": "1e1dea2a02624a989360c2c1801fadc4a1bc3d19",
+      "ahead_by": 7,
+      "behind_by": 1503,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-315-contract-resolver-comms-closure",
+      "sha": "ddf5e1810a1bfcc7105b939b1c314f37ae85745a",
+      "ahead_by": 17,
+      "behind_by": 1500,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    }
+  ]
+}
