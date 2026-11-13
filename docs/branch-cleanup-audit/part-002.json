@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "offset": 15,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-048-data-review-workbench",
+      "sha": "b78636be5ad58a9b72fbce3ed6130a4ebf21665a",
+      "ahead_by": 0,
+      "behind_by": 5424,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-048-production-closeout",
+      "sha": "4561f885cb71ce509abd5df58f944d40f9bf2e18",
+      "ahead_by": 0,
+      "behind_by": 5420,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-049-approved-dataset-publishing",
+      "sha": "2712a979e4dfc5802ed19fbfeff1656626fd6a4c",
+      "ahead_by": 0,
+      "behind_by": 5396,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-049-production-closeout",
+      "sha": "299c0e33860bfca4fdb504866fa573ecd50c94e6",
+      "ahead_by": 0,
+      "behind_by": 5392,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-050-ci-fix-1",
+      "sha": "c65d0b72ac380553c60dbdca8dd46ed04098efae",
+      "ahead_by": 0,
+      "behind_by": 5363,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-050-ci-fix-2",
+      "sha": "7dabde911883e6958f04d61524050389e3197413",
+      "ahead_by": 0,
+      "behind_by": 5360,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-050-production-closeout",
+      "sha": "cc6e3e5bd21dd85dcc3b8ba213063d6e49e7dd4b",
+      "ahead_by": 0,
+      "behind_by": 5356,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-050-publication-delivery-bridge",
+      "sha": "d04fd611adc48fcf2cae9ef9ccc74081889b5ffc",
+      "ahead_by": 0,
+      "behind_by": 5368,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-051-ci-fix-1",
+      "sha": "f70a8de42998b064884fd4569179eac33cc6064c",
+      "ahead_by": 1,
+      "behind_by": 5323,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-051-controlled-live-delivery",
+      "sha": "a0c80aca70bd2985b06d5bf719614e4f828edbec",
+      "ahead_by": 0,
+      "behind_by": 5330,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-051-help-fix",
+      "sha": "87861fb53f1e871fc89cfb056ba6ef776fa3d4ad",
+      "ahead_by": 0,
+      "behind_by": 5328,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-051-production-closeout",
+      "sha": "f28337885b8d71ad65304907592d0ecaf98d02c4",
+      "ahead_by": 0,
+      "behind_by": 5324,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-052-ci-fix-1",
+      "sha": "68f0bbc1cd09714692700c5138bda52587e4d6c5",
+      "ahead_by": 0,
+      "behind_by": 5295,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-052-ci-fix-2",
+      "sha": "6bb9646d8b2bd6350fa77ba1224c01cf3f59cc99",
+      "ahead_by": 0,
+      "behind_by": 5293,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-052-post-delivery-reconciliation",
+      "sha": "3f34a2aca08f909953458e9840994072ceb29756",
+      "ahead_by": 0,
+      "behind_by": 5297,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-052-production-closeout",
+      "sha": "39f6ca5a65fe1a9409af3c8cd07df6b57b0484e2",
+      "ahead_by": 0,
+      "behind_by": 5289,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-053-ci-fix-1",
+      "sha": "64e97e70b2d4c1c1fe25d02eb21bc37f7712dff3",
+      "ahead_by": 0,
+      "behind_by": 5264,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
