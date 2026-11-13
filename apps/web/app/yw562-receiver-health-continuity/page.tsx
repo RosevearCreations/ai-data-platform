@@ -26,7 +26,7 @@ export default async function Yw562ReceiverHealthContinuityPage() {
     Boolean(process.env.BUILD381_RECEIVER_OFF_PUBLIC_KEY_PEM?.trim());
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 381 · protected receiver health continuity
