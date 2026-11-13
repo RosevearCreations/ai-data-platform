@@ -176,7 +176,9 @@ const requiredTables = [
   "master_build386_early_warning_escalation_audits",
   "master_build387_early_warning_recovery_observations",
   "master_build387_remediation_effectiveness_reviews",
-  "master_build387_baseline_restoration_audits"
+  "master_build387_baseline_restoration_audits",
+  "master_build388_theme_governance_audits",
+  "master_build388_module_fusion_audits"
 ];
 
 const appendOnlyTables = [
@@ -319,7 +321,9 @@ const appendOnlyTables = [
   "master_build386_early_warning_escalation_audits",
   "master_build387_early_warning_recovery_observations",
   "master_build387_remediation_effectiveness_reviews",
-  "master_build387_baseline_restoration_audits"
+  "master_build387_baseline_restoration_audits",
+  "master_build388_theme_governance_audits",
+  "master_build388_module_fusion_audits"
 ];
 
 
@@ -429,7 +433,8 @@ async function main() {
         "0148_master_yw562_post_recovery_continuity_watch.sql",
         "0149_master_yw562_long_horizon_continuity_stability.sql",
         "0150_master_yw562_multi_horizon_stability_baseline.sql",
-        "0151_master_yw562_early_warning_recovery.sql"
+        "0151_master_yw562_early_warning_recovery.sql",
+        "0152_master_instrument_theme_governance.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -592,6 +597,10 @@ async function main() {
     assert(
       migrationNames.has("0151_master_yw562_early_warning_recovery.sql"),
       "migration 0151 is not recorded"
+    );
+    assert(
+      migrationNames.has("0152_master_instrument_theme_governance.sql"),
+      "migration 0152 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
