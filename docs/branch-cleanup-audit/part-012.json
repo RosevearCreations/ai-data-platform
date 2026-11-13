@@ -1,0 +1,128 @@
+{
+  "page": 2,
+  "offset": 85,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-244-repair-filtering-ql264-ui-template",
+      "sha": "825a5bb8fee159a45731e2d218c657bca77432f5",
+      "ahead_by": 0,
+      "behind_by": 2523,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-245-repair-search-ql265-ops-tables",
+      "sha": "25ff2fb988656e5cb25016551c58f6ac79640315",
+      "ahead_by": 0,
+      "behind_by": 2505,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-246-repair-presets-ui-review",
+      "sha": "a67266152fea57f3211844b7e12d5fabaf28d5bb",
+      "ahead_by": 0,
+      "behind_by": 2488,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-247-recovery-persistence-ops-search",
+      "sha": "fd79a3276c42b3d6b5d563a28b58cd3c27a9bd1b",
+      "ahead_by": 0,
+      "behind_by": 2478,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-248-recovery-audit-saved-views",
+      "sha": "27ec97ddc6129cf32e3cb30b6aee93bb55052287",
+      "ahead_by": 0,
+      "behind_by": 2468,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-249-recovery-filtering-comparison-history",
+      "sha": "eac6a260fd66839886b84f5e3dc4c510f200b247",
+      "ahead_by": 0,
+      "behind_by": 2456,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-250-recovery-search-trends",
+      "sha": "aba5e7673b71b70d931302feb1f320ce0e0ba32d",
+      "ahead_by": 0,
+      "behind_by": 2445,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-270-capacity-cost-usage-planning",
+      "sha": "df222c4c32dacafafc56afdfcf6eb86e88405a71",
+      "ahead_by": 0,
+      "behind_by": 2188,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-271-accessibility-mobile-performance-recovery",
+      "sha": "627b7662242cfcea18facc5771c2c63f6799cb68",
+      "ahead_by": 0,
+      "behind_by": 2175,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-272-fix-build240-verifier",
+      "sha": "48308528b795bac2671e2d5185098763bd835146",
+      "ahead_by": 0,
+      "behind_by": 2144,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-272-fix-marble-standard-contract",
+      "sha": "c1514587e00061d39bf483fd5a7bf36d9c64daa6",
+      "ahead_by": 0,
+      "behind_by": 2146,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-272-owner-acceptance-legacy-cleanup-production-learning-iv",
+      "sha": "8dc9b52180e904dfd15d9a9f2a1d3081b1a50724",
+      "ahead_by": 0,
+      "behind_by": 2149,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-273-fix-build272-owner-authorized-queue-verifier",
+      "sha": "d8649cf5bc6f080f4f240d1a6b7b50c3440b3e40",
+      "ahead_by": 0,
+      "behind_by": 2127,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-273-production-evidence-baseline-owner-finding-triage",
+      "sha": "acd04a92fef52655d31cca4e4a831d3c5f17b611",
+      "ahead_by": 0,
+      "behind_by": 2129,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-274-guided-adoption-runbook-first-evidence-completion",
+      "sha": "e89a3747bca7b8e4801b2f1b981a9d0b85ff98dc",
+      "ahead_by": 0,
+      "behind_by": 2116,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
