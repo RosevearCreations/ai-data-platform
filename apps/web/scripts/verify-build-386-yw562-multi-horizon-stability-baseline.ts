@@ -26,7 +26,7 @@ const connected385 = {
 const now = new Date("2026-11-13T02:20:00.000Z");
 const horizonSamples = Array.from({length:12}, (_, index) => ({
   sampleId: "sample-" + index,
-  observedAt: new Date(now.getTime() - index * 5 * 60 * 60_000).toISOString(),
+  observedAt: new Date(now.getTime() - index * 2 * 60 * 60_000).toISOString(),
   connectionState: "CONNECTED" as const,
   stabilityRatio: 1,
   preventiveControlsHealthy: true
