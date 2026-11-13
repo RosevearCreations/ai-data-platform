@@ -16,7 +16,7 @@ export default async function ConvergenceReceiptIntakePage() {
   const model = composeConvergenceReceiptIntake();
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 364 · Convergence receipt intake</p>
         <h1>
