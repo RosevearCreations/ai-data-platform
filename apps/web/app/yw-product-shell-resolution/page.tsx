@@ -16,7 +16,7 @@ export default async function YwProductShellResolutionPage() {
   const o = model.observation;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 371 · Yard Workers source reconciliation</p>
         <h1>
