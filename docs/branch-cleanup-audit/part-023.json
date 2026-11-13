@@ -1,0 +1,40 @@
+{
+  "page": 4,
+  "offset": 68,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "ql265-ai-navigation-coverage-fix",
+      "sha": "e25369944156eba58ee0b6c69a3f11fab85d01c2",
+      "ahead_by": 0,
+      "behind_by": 2662,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "ql265-comms-connection-console",
+      "sha": "c7cc439127e2ea177bdcab58fd4adbefb843a162",
+      "ahead_by": 0,
+      "behind_by": 2665,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "roadmap-306-330-universal-module-autonomy",
+      "sha": "e2d78da7cbae35c23fcfcf45571ca1510cbf78e0",
+      "ahead_by": 0,
+      "behind_by": 1538,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "roadmap-builds-273-280",
+      "sha": "c8925a3bc10474c8ae4c9c20fb684a34d0fac5b3",
+      "ahead_by": 0,
+      "behind_by": 2139,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
