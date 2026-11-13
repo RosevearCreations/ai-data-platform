@@ -155,6 +155,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 391 visual governance</p>
+            <h2>Theme drift and responsive-parity monitoring</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Five-shell drift watch</h3>
+            <p>Current evidence must keep every governed shell on the certified instrument contract.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Responsive regression</h3>
+            <p>YW and iCamp retain desktop, tablet and mobile parity as an evidence-backed requirement.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Three-Master closure</h3>
+            <p>Intelligence, Communications and Runtime acknowledgement is required before visual-governance closure.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed acceptance</h3>
+            <p>Deployment GREEN cannot manufacture theme acceptance or close missing visual evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
