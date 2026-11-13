@@ -1,0 +1,145 @@
+{
+  "page": 4,
+  "offset": 0,
+  "size": 17,
+  "total_on_page": 73,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-337-ci-fix-1",
+      "sha": "9860b84148fd50cebd9244e91b640a737feac087",
+      "ahead_by": 0,
+      "behind_by": 1004,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-ci-fix-2",
+      "sha": "bfb70202727b4b2a92b8f057f79bfeab9f9cbea0",
+      "ahead_by": 0,
+      "behind_by": 1002,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-ci-fix-3",
+      "sha": "0410a130ef7e916ac79c8ab0a4fe142ebb632063",
+      "ahead_by": 0,
+      "behind_by": 1000,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-337-read-only-source-update-ingestion",
+      "sha": "99208da6592e9192ec4ae8dd9795219cb75b2294",
+      "ahead_by": 0,
+      "behind_by": 1006,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-338-master-completion-requirements",
+      "sha": "c239e4f8aa5ccef94b934e8f95ccc3e5fb3908b0",
+      "ahead_by": 0,
+      "behind_by": 974,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-341-outer-sysop-navigation",
+      "sha": "071e2f7799be0b45294bfa9a8cbaa5407a8ab357",
+      "ahead_by": 0,
+      "behind_by": 902,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-347-master-security-certification",
+      "sha": "604b0d552a391ec6f83321e9628480e31c6b19bb",
+      "ahead_by": 0,
+      "behind_by": 748,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-348-ci-fix-1",
+      "sha": "243e9f663a37eea0650c5cb6a5dc7ce55b5c2833",
+      "ahead_by": 0,
+      "behind_by": 721,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-348-six-source-onboarding-pilot",
+      "sha": "0e8f305c0e403145431b5082de2ea22bff8ad055",
+      "ahead_by": 0,
+      "behind_by": 723,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-349-ci-fix-1",
+      "sha": "c2c959ad2f83411a91a370f497648fefb3123d5c",
+      "ahead_by": 0,
+      "behind_by": 695,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-349-master-production-readiness",
+      "sha": "d4b5add127225fc303f4342d2a286e2341f3ecf1",
+      "ahead_by": 0,
+      "behind_by": 697,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-350-production-closeout",
+      "sha": "c505152251c399d3bd3de01b2e97a241df93ea7b",
+      "ahead_by": 0,
+      "behind_by": 666,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-350-production-learning-viii",
+      "sha": "a283dc41f00b4483ea585d3555d34f2fc3bf8364",
+      "ahead_by": 0,
+      "behind_by": 670,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-351-basic-controls-completion",
+      "sha": "6277c0ed2f5a7489f68ce9f1ab99e88b71357be1",
+      "ahead_by": 0,
+      "behind_by": 655,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-351-ci-fix-operator-tools",
+      "sha": "f088cd049811dbd97e1d930fabc9ce6d9154adb5",
+      "ahead_by": 0,
+      "behind_by": 653,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-352-basic-operator-actions",
+      "sha": "536daba3c517d959f815b1ef7c7db8cc3a909349",
+      "ahead_by": 0,
+      "behind_by": 639,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-ack-reconciliation",
+      "sha": "3bb38ec98b5b9e2e41b533b7d74820eefc5d0113",
+      "ahead_by": 0,
+      "behind_by": 619,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
