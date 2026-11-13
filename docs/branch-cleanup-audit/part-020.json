@@ -1,0 +1,144 @@
+{
+  "page": 4,
+  "offset": 17,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-353-basic-alerts",
+      "sha": "d2debaaec2bf6b392438b974604ec42e9e0f5ee2",
+      "ahead_by": 0,
+      "behind_by": 627,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-ci-fix-unused-import",
+      "sha": "c74ab3ab9b5d1e8b213f0125c69d51335df9970d",
+      "ahead_by": 0,
+      "behind_by": 625,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-353-rosie-current-ack",
+      "sha": "d55f88ec55d06ac44a40b6708780b5fbd2bbeb50",
+      "ahead_by": 0,
+      "behind_by": 614,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-354-cross-app-control-center",
+      "sha": "12ed804db9abecdbff8fec1884b3c369ba1c34fb",
+      "ahead_by": 0,
+      "behind_by": 602,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-355-performance-optimization-control-plane",
+      "sha": "109e194291e9945a7f59cbdd4682171ea5c2f003",
+      "ahead_by": 0,
+      "behind_by": 590,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-356-capacity-workload-demand-forecasting",
+      "sha": "691cffe9e5834b719eb28d2c028b4c5ed1c82ee3",
+      "ahead_by": 0,
+      "behind_by": 577,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-357-incident-runbook-recovery-orchestration",
+      "sha": "d5b8f0f587237140a77735781eacbc460c8c8186",
+      "ahead_by": 0,
+      "behind_by": 564,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-358-anomaly-behaviour-predictive-risk",
+      "sha": "2442ec9c130823e2be4d80da959b8c2f7ba5125f",
+      "ahead_by": 0,
+      "behind_by": 550,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-359-adaptive-master-control",
+      "sha": "1418bafb39a86787fa4366ad8879b761aed23f1f",
+      "ahead_by": 0,
+      "behind_by": 534,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-360-master-control-boundary-certification",
+      "sha": "4e95127ac9bea21cb8a46a83253929463a1f4283",
+      "ahead_by": 0,
+      "behind_by": 519,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-361-master-activation-evidence-reconciliation",
+      "sha": "57cf61ebed842723e1a7efd8edddaae07cadc594",
+      "ahead_by": 0,
+      "behind_by": 508,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-362-production-verifier-fix",
+      "sha": "e5878d5a05c32862c88b3f6413b5f54bb5423c17",
+      "ahead_by": 0,
+      "behind_by": 489,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-362-yw-icamp-product-shell-onboarding",
+      "sha": "eb3d4ab5d3ede27343def10272bafefe59476583",
+      "ahead_by": 0,
+      "behind_by": 492,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-363-source-convergence-signer-health-closure",
+      "sha": "3f747b25b163a163b5189c66408c5da08e8f58c0",
+      "ahead_by": 0,
+      "behind_by": 476,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-364-convergence-receipt-intake-owner-queue",
+      "sha": "e61be2cfbe29fdf9d5b0abac8b8dc61061d485fd",
+      "ahead_by": 0,
+      "behind_by": 463,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-365-production-parser-fix",
+      "sha": "0ea4b0e8a9a2b1c1321db6bda488d859c199636b",
+      "ahead_by": 0,
+      "behind_by": 441,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-365-trusted-signer-ledger-owner-audit",
+      "sha": "e8f979b10d948df74b189689146fd71a27f1e6c4",
+      "ahead_by": 0,
+      "behind_by": 444,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
