@@ -20,7 +20,7 @@ export default async function Yw562ProtectedActivationPage() {
     Boolean(process.env.BUILD379_PROTECTED_INGEST_PUBLIC_KEY_PEM?.trim());
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">
           Build 379 · protected runtime evidence &amp; activation decision
