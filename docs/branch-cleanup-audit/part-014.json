@@ -1,0 +1,144 @@
+{
+  "page": 3,
+  "offset": 17,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-291-cross-app-event-bus",
+      "sha": "84ac49b786a5cd408c8150c6fd188b8dadbc99f0",
+      "ahead_by": 0,
+      "behind_by": 1838,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292-event-replay-dlq",
+      "sha": "68fb7485fcac6eb1ecdaa0776653f89dece5d314",
+      "ahead_by": 0,
+      "behind_by": 1819,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-build291-ci-contract-fix",
+      "sha": "48d33c6fdb2a624c41d7a94f114795634ecc0058",
+      "ahead_by": 0,
+      "behind_by": 1800,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-ci-lint-fix",
+      "sha": "4ca0b64a2d8a35aa0de2c85666ac8dac5a384627",
+      "ahead_by": 0,
+      "behind_by": 1804,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-ci-verification-consolidation",
+      "sha": "ec41ab2e8aef396346571316fd14a433b1f27848",
+      "ahead_by": 0,
+      "behind_by": 1806,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-current-spine-fix",
+      "sha": "698957065561d10f32fb4aae39648113a51246e9",
+      "ahead_by": 0,
+      "behind_by": 1802,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-292a-db-gate-runtime-fix",
+      "sha": "c69605fd916e4c4de574760c9bc4862c64862161",
+      "ahead_by": 0,
+      "behind_by": 1798,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-293-idempotency-delivery-guarantees",
+      "sha": "a719f09c63691702709d00a51c786089fcb16e83",
+      "ahead_by": 0,
+      "behind_by": 1776,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-294-shared-customer-contact-identity",
+      "sha": "f553de179400e43623c81c6da9a11993710abe57",
+      "ahead_by": 0,
+      "behind_by": 1751,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-295-shared-catalogue-exchange",
+      "sha": "3ae2a0192d394f88999493b80f027221feb9ec5b",
+      "ahead_by": 0,
+      "behind_by": 1733,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-296-shared-media-asset-exchange",
+      "sha": "e1b45f91748160fee8e02e57c92d2f201d2b7b36",
+      "ahead_by": 0,
+      "behind_by": 1710,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-1",
+      "sha": "700f4d5367ecd68c60f70d2e4d9baf02e38cd0bd",
+      "ahead_by": 0,
+      "behind_by": 1690,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-2",
+      "sha": "6ec0a6732f6413b6bdcf18e99ce1f957558bd823",
+      "ahead_by": 0,
+      "behind_by": 1688,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-3",
+      "sha": "32cd484c0b99283b830fd8cd418bfa6eacf57890",
+      "ahead_by": 0,
+      "behind_by": 1686,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-ci-fix-4",
+      "sha": "52079c59af9538d0eca2104970ea60c3392784be",
+      "ahead_by": 0,
+      "behind_by": 1684,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-297-cross-app-notification-consent",
+      "sha": "6d92400bf1112846a04c9020a937eb3cdaf36a93",
+      "ahead_by": 0,
+      "behind_by": 1693,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-298-shared-task-work-queue-exchange",
+      "sha": "2d6bb9f5142ba6174400baf9771cc3e431e7eb54",
+      "ahead_by": 0,
+      "behind_by": 1668,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
