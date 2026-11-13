@@ -1,0 +1,144 @@
+{
+  "page": 2,
+  "offset": 17,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-182-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "1cb920bac4f47605ca9e9d2721d27af29e157a5a",
+      "ahead_by": 0,
+      "behind_by": 3262,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-183-repair-recovery-renewal-presets-receipt-recovery-audit",
+      "sha": "c2edb355e9bb4fd34f82c3b560a0a5c2779555b0",
+      "ahead_by": 0,
+      "behind_by": 3254,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-184-repair-recovery-audit-renewal-persistence-receipt-filtering",
+      "sha": "2111ca8d8c1540e0fbf8a77abd3711bdab0d8ad5",
+      "ahead_by": 0,
+      "behind_by": 3246,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-185-repair-filtering-renewal-recovery-receipt-search",
+      "sha": "19f2965e1038233f45cf3202a0036f3e38af77dc",
+      "ahead_by": 0,
+      "behind_by": 3238,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-186-repair-search-renewal-recovery-audit-receipt-presets",
+      "sha": "f4e9ddc0d978c1c55c5b3d9db568c52be992fe04",
+      "ahead_by": 0,
+      "behind_by": 3230,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-187-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "8e1b7b8fdbbf7066ce8bb2e29b25017533fd0ee0",
+      "ahead_by": 0,
+      "behind_by": 3222,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-188-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "ad1842a6bc49a0faa3c13c48d013b15b8c4151f3",
+      "ahead_by": 0,
+      "behind_by": 3214,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-189-repair-recovery-renewal-presets-receipt-recovery-audit",
+      "sha": "426e7f85a4b1074c77cc11cfe19468104c0e7aa1",
+      "ahead_by": 0,
+      "behind_by": 3206,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-190-repair-recovery-audit-renewal-persistence-receipt-filtering",
+      "sha": "727a14ea5a8c86b7fe4cd46f77ede0a842d63447",
+      "ahead_by": 0,
+      "behind_by": 3198,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-191-repair-filtering-renewal-recovery-receipt-search",
+      "sha": "fb9195a679b0cab5b0b8eed7f03d2ba4a85d7b26",
+      "ahead_by": 0,
+      "behind_by": 3190,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-192-repair-search-renewal-recovery-audit-receipt-presets",
+      "sha": "963df6dfc69c42a83d5a76a57e2aa1bdb8988655",
+      "ahead_by": 0,
+      "behind_by": 3182,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-193-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "3f33388e2705ecb1cacff7faea6bf67a41d1107b",
+      "ahead_by": 0,
+      "behind_by": 3173,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-194-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "969827fc283d853ba1a83fe940fbf61492d01748",
+      "ahead_by": 0,
+      "behind_by": 3165,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-195-repair-preset-recovery",
+      "sha": "f62c93b2e75086a07cca863ee8acca60ce6a3a37",
+      "ahead_by": 0,
+      "behind_by": 3144,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-196-repair-recovery-audit",
+      "sha": "0ed21bdb5e2c27cf29ecd15ac89230f28f46013d",
+      "ahead_by": 0,
+      "behind_by": 3134,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-197-repair-filtering-renewal-recovery-receipt-search",
+      "sha": "319863e6eb1e672e0933ecc2071c5365a12e64ed",
+      "ahead_by": 0,
+      "behind_by": 3124,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-198-repair-search-renewal-recovery-audit-receipt-presets",
+      "sha": "eeb31b7f3959971263ebdeb7d47ea499d4e85af0",
+      "ahead_by": 0,
+      "behind_by": 3114,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
