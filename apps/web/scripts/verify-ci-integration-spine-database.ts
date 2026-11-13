@@ -187,7 +187,10 @@ const requiredTables = [
   "master_build391_visual_governance_closure_audits",
   "master_build392_visual_governance_exceptions",
   "master_build392_remediation_sla_events",
-  "master_build392_recertification_audits"
+  "master_build392_recertification_audits",
+  "master_build393_visual_stability_samples",
+  "master_build393_remediation_effectiveness_reviews",
+  "master_build393_drift_recurrence_prevention_audits"
 ];
 
 const appendOnlyTables = [
@@ -341,7 +344,10 @@ const appendOnlyTables = [
   "master_build391_visual_governance_closure_audits",
   "master_build392_visual_governance_exceptions",
   "master_build392_remediation_sla_events",
-  "master_build392_recertification_audits"
+  "master_build392_recertification_audits",
+  "master_build393_visual_stability_samples",
+  "master_build393_remediation_effectiveness_reviews",
+  "master_build393_drift_recurrence_prevention_audits"
 ];
 
 
@@ -455,7 +461,8 @@ async function main() {
         "0152_master_instrument_theme_governance.sql",
         "0153_master_theme_adoption_parity_certification.sql",
         "0154_master_theme_drift_governance_closure.sql",
-        "0155_master_visual_governance_remediation_recertification.sql"
+        "0155_master_visual_governance_remediation_recertification.sql",
+        "0156_master_post_recertification_visual_stability.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -630,6 +637,14 @@ async function main() {
     assert(
       migrationNames.has("0154_master_theme_drift_governance_closure.sql"),
       "migration 0154 is not recorded"
+    );
+    assert(
+      migrationNames.has("0155_master_visual_governance_remediation_recertification.sql"),
+      "migration 0155 is not recorded"
+    );
+    assert(
+      migrationNames.has("0156_master_post_recertification_visual_stability.sql"),
+      "migration 0156 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
