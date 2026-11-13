@@ -1,0 +1,144 @@
+{
+  "page": 3,
+  "offset": 51,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-316-cross-app-search-linked-records",
+      "sha": "c2a6f30f1e2868bd16343e4adaa54bf227f10798",
+      "ahead_by": 0,
+      "behind_by": 1483,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-317-event-bus-host-bridge",
+      "sha": "eef9d87bd9ce129eb743c4538c2cfe5bb2a814c3",
+      "ahead_by": 0,
+      "behind_by": 1467,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-318-workflow-action-plugin-interface",
+      "sha": "cbc82250c850f105afeaaaf3908a20c26ced7df5",
+      "ahead_by": 0,
+      "behind_by": 1455,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-319-shared-coordination-module-apis",
+      "sha": "f0bb9e3cf9d17eec7436ec7fce7f3b2a91d827ca",
+      "ahead_by": 0,
+      "behind_by": 1438,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-320-shared-media-host-bridge",
+      "sha": "82eeea9ab81ea192bcc2dd1a234051193410ca45",
+      "ahead_by": 0,
+      "behind_by": 1426,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-321-connector-driver-registry",
+      "sha": "732aaa3043e07c70c0291d2e9e90c21aea10eef3",
+      "ahead_by": 0,
+      "behind_by": 1412,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-322-inbound-endpoint-module",
+      "sha": "0001753054e679d0f80487e89affa1b380dfdfe4",
+      "ahead_by": 0,
+      "behind_by": 1391,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-323-secure-transport-selection",
+      "sha": "b1babe50830f4a6128cbfc0763fc53c498fb7f51",
+      "ahead_by": 0,
+      "behind_by": 1379,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-324-offline-queue-sync",
+      "sha": "9bb733e5f912c7fcaa1470f8d877c1cc3adb9d85",
+      "ahead_by": 0,
+      "behind_by": 1366,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-325-autonomous-module-supervisor",
+      "sha": "6fa531fc998a65966fccd65a95061884889956bd",
+      "ahead_by": 0,
+      "behind_by": 1354,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-326-per-host-autonomy-policies",
+      "sha": "45af455d679b4694ffe6af188b0da942eca25959",
+      "ahead_by": 0,
+      "behind_by": 1320,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-327-zero-touch-module-installer",
+      "sha": "c3c533ca5dee517e262aed45ede9543fd03ab9f2",
+      "ahead_by": 0,
+      "behind_by": 1299,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-ci-order-fix",
+      "sha": "c3f8d07add58d5e8299e2853364f03564c9c6fd3",
+      "ahead_by": 0,
+      "behind_by": 1278,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-ci-order-fix-2",
+      "sha": "dc89e84a2a315f9ed51ad898d334b12cd33d6308",
+      "ahead_by": 0,
+      "behind_by": 1276,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-module-lifecycle",
+      "sha": "0a85946f37c059fb98697e4f274e62677b717386",
+      "ahead_by": 0,
+      "behind_by": 1282,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-328-verifier-fix",
+      "sha": "ecf89d687349ddaf4f31b80917ab38bd6caab05f",
+      "ahead_by": 0,
+      "behind_by": 1280,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-329-cross-host-certification",
+      "sha": "2a8cc0d45502008f79566aeb88e62d52f8c87934",
+      "ahead_by": 0,
+      "behind_by": 1256,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
