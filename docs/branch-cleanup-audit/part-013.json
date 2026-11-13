@@ -1,0 +1,144 @@
+{
+  "page": 3,
+  "offset": 0,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-275-provider-pilot-baseline-cost-latency-failure",
+      "sha": "d7499046f919915425099981ca951def50413ebf",
+      "ahead_by": 0,
+      "behind_by": 2102,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-276-consumer-acceptance-replay-receipt-reconciliation",
+      "sha": "183e255419c4fd4d50f7ca529f06fdec2761262e",
+      "ahead_by": 0,
+      "behind_by": 2089,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-277-ci-fix-documentation-verifier",
+      "sha": "46f154c06201c73730f8f40940c8bd8c9a1d092a",
+      "ahead_by": 0,
+      "behind_by": 2073,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-277-retention-cleanup-readiness-storage-budget",
+      "sha": "6a889ddb483c84d42b0b193721fd7c3664961a61",
+      "ahead_by": 0,
+      "behind_by": 2075,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-278-least-privilege-adoption-stale-grants",
+      "sha": "1f4f320cb704ef8de85a845c2cdfe4fb395fe2f7",
+      "ahead_by": 0,
+      "behind_by": 2061,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-279-reliability-trend",
+      "sha": "a6c6de46181d2b4e1aada20fc76dae8552d7d939",
+      "ahead_by": 0,
+      "behind_by": 2050,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-280-production-learning-v",
+      "sha": "6e49c2e4c60995c88ef6a338bded20057a9d0bff",
+      "ahead_by": 0,
+      "behind_by": 2037,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-281-unified-app-connection-registry",
+      "sha": "202308d6864ff12da8784ec1b218ede5fe62763b",
+      "ahead_by": 0,
+      "behind_by": 2025,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-282-shared-app-identity-mapping",
+      "sha": "91406173c6e3292055e67d65ff2364942886f811",
+      "ahead_by": 0,
+      "behind_by": 2012,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-283-connector-setup-wizard",
+      "sha": "390f10fbfd4876d2da218627c9c197aa9bc99827",
+      "ahead_by": 0,
+      "behind_by": 1996,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-284-credential-vault-rotation-readiness",
+      "sha": "bb720ddad0fc0dd72725d5fb8fd5ee67a94c2749",
+      "ahead_by": 0,
+      "behind_by": 1978,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-285-automatic-connection-testing-validation",
+      "sha": "8185d9bb6f4b76fc81d0f20fbb02f44662819599",
+      "ahead_by": 0,
+      "behind_by": 1960,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-286-cross-app-data-contract-registry",
+      "sha": "95b5a720cf75a47e699d8c67bfc413022812f1be",
+      "ahead_by": 0,
+      "behind_by": 1944,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-287-visual-field-mapping-studio",
+      "sha": "de35a0babcd07351fa46934530e30e46baaacad9",
+      "ahead_by": 0,
+      "behind_by": 1925,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-288-schema-drift-repair",
+      "sha": "b0a9b5acfdec155ae4b76d603eb258e8ee48bfff",
+      "ahead_by": 0,
+      "behind_by": 1905,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-289-shared-connector-sdk-v2",
+      "sha": "e324fbdcb174a44daa59b88575edfc77b25198e6",
+      "ahead_by": 0,
+      "behind_by": 1880,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-290-webhook-gateway",
+      "sha": "9a80ce235769e58ac4ab9b2a8023544e13dd8a1e",
+      "ahead_by": 0,
+      "behind_by": 1858,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
