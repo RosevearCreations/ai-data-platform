@@ -160,7 +160,8 @@ const requiredTables = [
   "master_build380_verified_connected_transition_events",
   "master_build380_three_master_sync_closure_events",
   "master_build381_receiver_health_renewal_events",
-  "master_build381_fail_closed_rollback_events"
+  "master_build381_fail_closed_rollback_events",
+  "master_build382_runtime_continuity_audits"
 ];
 
 const appendOnlyTables = [
@@ -391,7 +392,8 @@ async function main() {
         "0142_master_yw562_runtime_ql422_protected_readiness.sql",
         "0143_master_yw562_protected_runtime_activation_decision.sql",
         "0144_master_yw562_external_runtime_activation_closure.sql",
-        "0145_master_yw562_receiver_health_continuity.sql"
+        "0145_master_yw562_receiver_health_continuity.sql",
+        "0146_master_yw562_runtime_renewal_drift_continuity.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
