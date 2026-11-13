@@ -3,7 +3,6 @@ import type { PoolClient } from "pg";
 
 import { withUserDatabase } from "./database";
 import {
-  BUILD_370_MANIFEST_OBSERVATIONS,
   composeBuild370Decision,
   type CustodyIntakeEvent
 } from "./manifest-custody-receipt-decision";
