@@ -17,6 +17,10 @@ import {
   activeNavigationItem,
   moduleHubHref
 } from "@/lib/application-navigation";
+import {
+  MASTER_INSTRUMENT_MODULES,
+  isMasterInstrumentPath
+} from "@/lib/master-instrument-navigation";
 
 function HelpCircle({
   topic,
@@ -51,6 +55,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
 
   const activeGroup = activeNavigationGroup(pathname);
   const activeItem = activeNavigationItem(pathname);
+  const masterInstrumentActive = isMasterInstrumentPath(pathname);
   const moduleGroup = MODULE_CARDS.find((group) => group.id === activeGroup.id) ?? null;
   const activeModuleHub = moduleGroup ? moduleHubHref(moduleGroup.id) : null;
 
@@ -162,6 +167,41 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
             <span className="applicationTopbarEyebrow">Current module</span>
             <strong>{activeGroup.label}</strong>
           </div>
+          {masterInstrumentActive ? (
+            <nav className="masterInstrumentTopnav" aria-label="Unified Master instrument navigation">
+              <Link
+                className={pathname === "/master-suite" ? "active" : ""}
+                href="/master-suite"
+              >
+                Master Suite
+              </Link>
+              {MASTER_INSTRUMENT_MODULES.map((module) => (
+                <Link
+                  className={
+                    pathname === module.href || pathname.startsWith(module.href + "/")
+                      ? "active"
+                      : ""
+                  }
+                  href={module.href}
+                  key={module.id}
+                >
+                  {module.label}
+                </Link>
+              ))}
+              <Link className={pathname.startsWith("/master-sysop") ? "active" : ""} href="/master-sysop">
+                Sysop
+              </Link>
+              <Link className={pathname.startsWith("/master-security-certification") ? "active" : ""} href="/master-security-certification">
+                Security
+              </Link>
+              <Link className={pathname.startsWith("/module-health-intelligence") ? "active" : ""} href="/module-health-intelligence">
+                Health
+              </Link>
+              <Link className={pathname.startsWith("/source-shell-onboarding") ? "active" : ""} href="/source-shell-onboarding">
+                YW / iCamp
+              </Link>
+            </nav>
+          ) : null}
           <div className="applicationTopbarActions">
             <Link className={pathname.startsWith("/data-library") ? "opsTopLink active" : "opsTopLink"} href="/data-library">Front End</Link>
             <Link className={pathname.startsWith("/connectors") ? "opsTopLink active" : "opsTopLink"} href="/connectors">I.T.</Link>
