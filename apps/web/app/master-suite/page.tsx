@@ -209,6 +209,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 393 stability governance</p>
+            <h2>Post-re-certification stability and recurrence prevention</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Five-shell stability watch</h3>
+            <p>Every governed shell requires current independent evidence that the certified visual contract remains stable.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Remediation effectiveness</h3>
+            <p>Previously remediated shells must prove a stable observation window with no recurrent drift.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Recurrence prevention</h3>
+            <p>Cross-shell preventive controls require owner acceptance and independent verification after the newest samples.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed continuity</h3>
+            <p>Production GREEN cannot prove visual stability, erase recurrence or substitute for post-recertification evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
