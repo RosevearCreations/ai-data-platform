@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "offset": 66,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-067-successor-generation-reconciliation-reclosure",
+      "sha": "22bcaf88196d66697f4e8d04c847c8c858568d9b",
+      "ahead_by": 0,
+      "behind_by": 4883,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-068-post-successor-generation-reclosure-governance",
+      "sha": "04c43fea204967f54d356ed015f0650e9ddcd0e0",
+      "ahead_by": 0,
+      "behind_by": 4856,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-069-successor-recurrence-subsequent-planning",
+      "sha": "d56ac56cb0e304644ac862ee7789e96afefe721b",
+      "ahead_by": 0,
+      "behind_by": 4834,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-070-subsequent-generation-delivery-execution",
+      "sha": "9deb1f27c62147cbf83829e90c68dc5607059502",
+      "ahead_by": 0,
+      "behind_by": 4810,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-071-subsequent-generation-reconciliation-reclosure",
+      "sha": "bf8e47d4a521daa37fad5232bb6cf1261034a800",
+      "ahead_by": 0,
+      "behind_by": 4787,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-072-post-subsequent-generation-reclosure-recurrence",
+      "sha": "aa994512ad4d47223fbd7a9589deff65cd8968bc",
+      "ahead_by": 0,
+      "behind_by": 4764,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-073-subsequent-recurrence-successive-planning",
+      "sha": "8cb7e20584b8fc09910a1db841c0426681237045",
+      "ahead_by": 0,
+      "behind_by": 4741,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-101-continuation-cycle-recurrence-next-corrective-generation",
+      "sha": "11ec23c2f3e27085bb6f201d3031386306da9cb0",
+      "ahead_by": 0,
+      "behind_by": 4258,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-101-production-migration-gate",
+      "sha": "46fb7ea61071447e6eb5a3e9e9eb120294f7c32e",
+      "ahead_by": 0,
+      "behind_by": 4253,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-102-freeze-guard-isolation",
+      "sha": "1a953daa7ca1e6029b97cc1a4434f8cb3bf6dd31",
+      "ahead_by": 0,
+      "behind_by": 4238,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-102-next-corrective-generation-delivery",
+      "sha": "f77bab239c8dc1173ffb12c8ac2d4e3f0cf05121",
+      "ahead_by": 0,
+      "behind_by": 4241,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-103-next-corrective-generation-reconciliation-reclosure",
+      "sha": "285e9ecf870df8548dd4123eadd8348be26346d3",
+      "ahead_by": 0,
+      "behind_by": 4216,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-104-post-next-corrective-generation-reclosure",
+      "sha": "128f5f7a250d0195e2b3596e0db30b26c0ea1d1f",
+      "ahead_by": 0,
+      "behind_by": 4197,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-105-ncg-recurrence-following-corrective-planning",
+      "sha": "bb6078d82483f1c6cdd69154d88462a4407a7d20",
+      "ahead_by": 0,
+      "behind_by": 4179,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-106-following-corrective-generation-delivery",
+      "sha": "f4d59bae51bf738333bb857890ba1a7e2c8c6114",
+      "ahead_by": 0,
+      "behind_by": 4162,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-107-following-corrective-generation-reconciliation-reclosure",
+      "sha": "8153ea30a04c95af8dd3197256c772fa193ad3ed",
+      "ahead_by": 0,
+      "behind_by": 4145,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-108-post-following-corrective-generation-reclosure",
+      "sha": "c361df0747e8e86399b4828f935565bb31deff7c",
+      "ahead_by": 0,
+      "behind_by": 4123,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
