@@ -182,6 +182,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 392 remediation governance</p>
+            <h2>Exception routing, SLA tracking and re-certification</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Owner-routed exceptions</h3>
+            <p>Every Build 391 drift or responsive regression requires a distinct owner-assigned remediation route.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Remediation SLA</h3>
+            <p>Open visual exceptions remain measurable against their due time and surface an explicit breach when overdue.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Re-certification gate</h3>
+            <p>Resolved work requires current-theme, responsive-parity, owner-accepted and independently verified evidence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed restoration</h3>
+            <p>Production GREEN alone cannot resolve visual drift, close an SLA exception or manufacture re-certification.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>

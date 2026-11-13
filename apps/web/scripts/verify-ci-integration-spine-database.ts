@@ -184,7 +184,10 @@ const requiredTables = [
   "master_build390_yw_icamp_visual_parity_certifications",
   "master_build391_theme_drift_observations",
   "master_build391_responsive_parity_regressions",
-  "master_build391_visual_governance_closure_audits"
+  "master_build391_visual_governance_closure_audits",
+  "master_build392_visual_governance_exceptions",
+  "master_build392_remediation_sla_events",
+  "master_build392_recertification_audits"
 ];
 
 const appendOnlyTables = [
@@ -335,7 +338,10 @@ const appendOnlyTables = [
   "master_build390_yw_icamp_visual_parity_certifications",
   "master_build391_theme_drift_observations",
   "master_build391_responsive_parity_regressions",
-  "master_build391_visual_governance_closure_audits"
+  "master_build391_visual_governance_closure_audits",
+  "master_build392_visual_governance_exceptions",
+  "master_build392_remediation_sla_events",
+  "master_build392_recertification_audits"
 ];
 
 
@@ -448,7 +454,8 @@ async function main() {
         "0151_master_yw562_early_warning_recovery.sql",
         "0152_master_instrument_theme_governance.sql",
         "0153_master_theme_adoption_parity_certification.sql",
-        "0154_master_theme_drift_governance_closure.sql"
+        "0154_master_theme_drift_governance_closure.sql",
+        "0155_master_visual_governance_remediation_recertification.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
