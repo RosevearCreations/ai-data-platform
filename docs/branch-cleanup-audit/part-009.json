@@ -1,0 +1,144 @@
+{
+  "page": 2,
+  "offset": 34,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-199-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "8d237156f6f102964d85df7c16d38e14ca9b9e5f",
+      "ahead_by": 0,
+      "behind_by": 3104,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-200-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "51e0d18c0e3d5de5778229fab81fee6638eb376b",
+      "ahead_by": 0,
+      "behind_by": 3094,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-201-repair-recovery-renewal-presets-receipt-recovery-audit",
+      "sha": "1a37b14814e118a4b87b530edff5e182f184c1a7",
+      "ahead_by": 0,
+      "behind_by": 3084,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-202-repair-recovery-audit-renewal-persistence-receipt-filtering",
+      "sha": "26e29df4e0a522c7acda3fb99608be94dc6d0898",
+      "ahead_by": 0,
+      "behind_by": 3074,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-203-repair-filtering-renewal-recovery-receipt-search",
+      "sha": "54975c325fbacae82694dafe39393bbec60d2058",
+      "ahead_by": 0,
+      "behind_by": 3064,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-204-repair-search-renewal-audit-receipt-presets",
+      "sha": "a9e736336977da755ed6759522ed9d2029f6b5e6",
+      "ahead_by": 0,
+      "behind_by": 3054,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-205-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "eec00b46f85684ec8e0efa9f5438ad60e81d5f17",
+      "ahead_by": 0,
+      "behind_by": 3044,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-206-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "05299b534a12428aee4e0d9825658ff570576880",
+      "ahead_by": 0,
+      "behind_by": 3034,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-207",
+      "sha": "c2a04c6fbac9a93638f7b778b3c2ab6760f54713",
+      "ahead_by": 0,
+      "behind_by": 3025,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-208",
+      "sha": "8e1d3c552cc12d8d5022d198eab1e944a0c6ca73",
+      "ahead_by": 0,
+      "behind_by": 3016,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-209",
+      "sha": "92865b0cf3f87181c366d2bbceb27c47c55dc3e4",
+      "ahead_by": 0,
+      "behind_by": 3007,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-210",
+      "sha": "7f41dcfe6aa8969a8275b4ec369a6eb3f61aceda",
+      "ahead_by": 0,
+      "behind_by": 2998,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-211",
+      "sha": "1cd0d901743174a65e28b08b097b768b285613d8",
+      "ahead_by": 0,
+      "behind_by": 2989,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-212",
+      "sha": "ca89d08f0dd686e4e2e5ef35bb8680518da03426",
+      "ahead_by": 0,
+      "behind_by": 2980,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-213",
+      "sha": "7c2631e9b8e9b44e7f1826cdb4242ef134d7bbb5",
+      "ahead_by": 0,
+      "behind_by": 2971,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-214",
+      "sha": "cc742cf7fda016320d048c9e6c75d29b8dfb9b98",
+      "ahead_by": 0,
+      "behind_by": 2962,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-215",
+      "sha": "ea8821ad029a7ec2b16128c33e3b62fbe07c4128",
+      "ahead_by": 0,
+      "behind_by": 2953,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
