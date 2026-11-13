@@ -1,0 +1,144 @@
+{
+  "page": 2,
+  "offset": 0,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-119-command-center-v2",
+      "sha": "f64e820ec3c06af9a9ec1841e37aa1b5dca07dbc",
+      "ahead_by": 0,
+      "behind_by": 3927,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-119-verifier-async-fix",
+      "sha": "b7e5d9392ec5eeda0589e568cad23a5164be0477",
+      "ahead_by": 0,
+      "behind_by": 3925,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-119-verifier-await-fix",
+      "sha": "bdd2096ab611853081718c60666a7eca70dfcb10",
+      "ahead_by": 0,
+      "behind_by": 3921,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-119-verifier-newline-fix",
+      "sha": "8459c56245d08bb8cf28c169ca12f5ac8eb5dba0",
+      "ahead_by": 0,
+      "behind_by": 3922,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-169-recovery-audit-recovery",
+      "sha": "79772b0b94985e90cbdfbc9cc9dd0cb03faf4b75",
+      "ahead_by": 0,
+      "behind_by": 3385,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-170-recovery-audit-recovery",
+      "sha": "86f38ed36cb12ae9fd0b78390fa927939010378d",
+      "ahead_by": 0,
+      "behind_by": 3372,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-171-recovery-audit-recovery",
+      "sha": "0e22fbc22786ec6e3ef413b98d1540a842cfbdbc",
+      "ahead_by": 0,
+      "behind_by": 3361,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-172-recovery-audit-recovery",
+      "sha": "8d90eff28d6ef1c7026835b1349a6491232e12a7",
+      "ahead_by": 0,
+      "behind_by": 3352,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-173-recovery-filtering-renewal-recovery-receipt-search",
+      "sha": "b31956da8b7c2de2deb9d3e95b2c9e84cc25f56d",
+      "ahead_by": 0,
+      "behind_by": 3343,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-174-repair-search-renewal-recovery-audit-receipt-presets",
+      "sha": "0010c316656ce48710ee00a0faa2fb052d4e56d7",
+      "ahead_by": 0,
+      "behind_by": 3334,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-175-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "31d82dc6f0cf229f4b8917d8d5aef1e5b6383649",
+      "ahead_by": 0,
+      "behind_by": 3325,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-176-repair-persistence-renewal-search-receipt-recovery",
+      "sha": "9d46188ff4e50598fe9513605bb22d872d627c36",
+      "ahead_by": 0,
+      "behind_by": 3316,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-177-repair-recovery-renewal-presets-receipt-recovery-audit",
+      "sha": "a1ff19695421e20f23d9aa8785983be0c35c5c86",
+      "ahead_by": 0,
+      "behind_by": 3307,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-178-repair-recovery-audit-renewal-persistence-receipt-filtering",
+      "sha": "fe52085aeb0f0a60498d10c3f1905be3cbaea229",
+      "ahead_by": 0,
+      "behind_by": 3298,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-179-repair-filtering-renewal-recovery-receipt-search",
+      "sha": "81cdf6711787de424b4ec6c7a27c4f760edc079d",
+      "ahead_by": 0,
+      "behind_by": 3289,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-180-repair-search-renewal-recovery-audit-receipt-presets",
+      "sha": "9fb9d95a01b7e219123eed769b128e9d165ab706",
+      "ahead_by": 0,
+      "behind_by": 3280,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-181-repair-presets-renewal-filtering-receipt-persistence",
+      "sha": "964a2c8fd8228b0e07e4563ce74fb195218ab247",
+      "ahead_by": 0,
+      "behind_by": 3271,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
