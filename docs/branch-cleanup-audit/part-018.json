@@ -1,0 +1,128 @@
+{
+  "page": 3,
+  "offset": 85,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-332-ci-fix-9",
+      "sha": "13d1e48b3ec62c2b568a4a71195e512bf5ad6d89",
+      "ahead_by": 0,
+      "behind_by": 1128,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-10",
+      "sha": "c6cc1defe1f2fe35b036b651c4e48fac97e33411",
+      "ahead_by": 0,
+      "behind_by": 1126,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-11",
+      "sha": "6fe3e04c3440c2d21893aaee3e49d1bdefc859b2",
+      "ahead_by": 0,
+      "behind_by": 1124,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-12",
+      "sha": "0bbe0f6963babe78a4cfc498770fc163682e0d92",
+      "ahead_by": 0,
+      "behind_by": 1125,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-13",
+      "sha": "1e3e733d589249c2a5a4bcea6b561308ae60e777",
+      "ahead_by": 0,
+      "behind_by": 1122,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-ci-fix-14",
+      "sha": "b215a7d1ec120a65dcfbeaa05148d28e2e788eb0",
+      "ahead_by": 0,
+      "behind_by": 1120,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-332-real-user-monitoring-interaction-experience-telemetry",
+      "sha": "142dd49d9d278e065576cdd198a947116dd76496",
+      "ahead_by": 0,
+      "behind_by": 1148,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-ci-fix-1",
+      "sha": "709f0b41c009a62839f895e37beaafe6eb8d6139",
+      "ahead_by": 0,
+      "behind_by": 1103,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-ci-fix-2",
+      "sha": "1bcdab509cafafc584b9a5e7aba07d8a92bd4058",
+      "ahead_by": 0,
+      "behind_by": 1101,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-333-route-performance-core-web-vitals-rendering-diagnostics",
+      "sha": "f6572be71370e02e751c4d3311a606163b20f1ed",
+      "ahead_by": 0,
+      "behind_by": 1105,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-334-api-database-dependency-performance-observatory",
+      "sha": "1ba0155bad5718c99fae852014c94120b53d8884",
+      "ahead_by": 0,
+      "behind_by": 1081,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-ci-fix-1",
+      "sha": "9858b83dec65b74a277be929dddbba629fa569b9",
+      "ahead_by": 0,
+      "behind_by": 1056,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-ci-fix-2",
+      "sha": "ab8636d98a5404299087f62eefb6842e849815e6",
+      "ahead_by": 0,
+      "behind_by": 1054,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-335-master-shell-contract-v1-correlation-event-envelope",
+      "sha": "5ae99d56c3a49240ff864392caf54073f38ed102",
+      "ahead_by": 0,
+      "behind_by": 1058,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-336-six-source-registry-freshness-state-machine",
+      "sha": "3e0c2688b53aaa8c497fbda7d2328c2e81821542",
+      "ahead_by": 0,
+      "behind_by": 1028,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
