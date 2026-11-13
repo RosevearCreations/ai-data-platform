@@ -133,11 +133,11 @@ fails("source signature forged",f=>{f.input.sourceProof.payload.ql441Digest="0".
 fails("invalid source pin",f=>{f.input.pins.commsSource=keys.owner.pin;},
   "INDEPENDENT_PINNED_SIGNER_SEPARATION_REQUIRED");
 fails("wrong host machine",f=>{f.input.hostShutdown={...f.input.hostShutdown,
-  payload:{...f.host,hostMachineId:"TEMPLAR"} as HostShutdown};},
+  payload:{...f.host,hostMachineId:"TEMPLAR"} as unknown as HostShutdown};},
   "ORIGINAL_HOST_SIGNED_SHUTDOWN_INVALID");
-fails("watchdog off",f=>{f.input.hostShutdown=signed({...f.host,watchdogArmed:false} as HostShutdown,keys.host);},
+fails("watchdog off",f=>{f.input.hostShutdown=signed({...f.host,watchdogArmed:false} as unknown as HostShutdown,keys.host);},
   "ORIGINAL_HOST_SIGNED_SHUTDOWN_INVALID");
-fails("host ON",f=>{f.input.hostShutdown=signed({...f.host,receiverState:"ON"} as HostShutdown,keys.host);},
+fails("host ON",f=>{f.input.hostShutdown=signed({...f.host,receiverState:"ON"} as unknown as HostShutdown,keys.host);},
   "ORIGINAL_HOST_SIGNED_SHUTDOWN_INVALID");
 fails("signed host wrong lease",f=>{f.input.hostShutdown=signed({...f.host,leaseId:"wrong_lease_id_ql442"} as HostShutdown,keys.host);},
   "ORIGINAL_HOST_SIGNED_SHUTDOWN_INVALID");
@@ -154,11 +154,11 @@ fails("missing third Master",f=>{f.input.masterReports=f.input.masterReports.sli
   "THREE_DISTINCT_MASTER_CLOSURE_REPORTS_REQUIRED");
 fails("duplicate Master",f=>{f.input.masterReports=[f.input.masterReports[0],f.input.masterReports[0],f.input.masterReports[2]];},
   "THREE_MASTER_SIGNED_SHUTDOWN_CLOSURE_REJECTED");
-fails("Master false connect",f=>{f.input.masterReports=[signed({...f.reports[0],decision:"CONNECT_NOW"} as MasterClosure,keys.masters[ids[0]]),...f.input.masterReports.slice(1)];},
+fails("Master false connect",f=>{f.input.masterReports=[signed({...f.reports[0],decision:"CONNECT_NOW"} as unknown as MasterClosure,keys.masters[ids[0]]),...f.input.masterReports.slice(1)];},
   "THREE_MASTER_SIGNED_SHUTDOWN_CLOSURE_REJECTED");
 fails("Master wrong digest",f=>{f.input.masterReports=[signed({...f.reports[0],independentOffDigest:"0".repeat(64)},keys.masters[ids[0]]),...f.input.masterReports.slice(1)];},
   "THREE_MASTER_SIGNED_SHUTDOWN_CLOSURE_REJECTED");
-fails("owner asked activate",f=>{f.input.ownerReview.payload={...f.review,decision:"CONNECT_NOW"} as DualOwnerReview;},
+fails("owner asked activate",f=>{f.input.ownerReview.payload={...f.review,decision:"CONNECT_NOW"} as unknown as DualOwnerReview;},
   "DUAL_OWNER_SIGNED_CLOSEOUT_REJECTED");
 fails("same owner identity",f=>{const r={...f.review,reviewerId:f.review.ownerId};f.input.ownerReview={
   payload:r,ownerSignature:signed(r,keys.owner).signature,
