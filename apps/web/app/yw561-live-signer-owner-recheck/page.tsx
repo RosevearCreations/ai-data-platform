@@ -18,7 +18,7 @@ export default async function Yw561LiveSignerOwnerRecheckPage() {
   const o = model.observation;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 373 · YW561 live trust and owner decision recheck</p>
         <h1>
