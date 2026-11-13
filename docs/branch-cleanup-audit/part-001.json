@@ -1,0 +1,120 @@
+{
+  "page": 1,
+  "offset": 0,
+  "size": 15,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "RosevearCreations-patch-1",
+      "sha": "21a816abd09cc339e093de8b311738bd1579490d",
+      "ahead_by": 1,
+      "behind_by": 2713,
+      "status": "diverged",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build382-runtime-continuity",
+      "sha": "d89087c9f71416e70e8a2097561714fce5e0e51c",
+      "ahead_by": 0,
+      "behind_by": 121,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build383-runtime-continuity-incidents",
+      "sha": "198f2047b4d4f467edea832b52b17a52510fc914",
+      "ahead_by": 0,
+      "behind_by": 107,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build384-post-recovery-continuity-watch",
+      "sha": "0b919fb624fdf52cc2730285e8d0c73915e74941",
+      "ahead_by": 0,
+      "behind_by": 99,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build385-long-horizon-stability",
+      "sha": "502e9c738bd8776e9b2acc874b9b6ffc0655bf43",
+      "ahead_by": 0,
+      "behind_by": 91,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build386-multi-horizon-stability",
+      "sha": "e56f42f18804d30c5dc9d5acc9f04e2423753a5d",
+      "ahead_by": 0,
+      "behind_by": 83,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build387-early-warning-recovery",
+      "sha": "c94538007e884e6e89ca7f64f9fa633849ea18a0",
+      "ahead_by": 0,
+      "behind_by": 33,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build388-unified-master-instrument-navigation",
+      "sha": "26a18a49e0992d8b0c9a85d06d0615332c372b9f",
+      "ahead_by": 0,
+      "behind_by": 21,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build390-theme-adoption-parity-certification",
+      "sha": "196063cd2b0a301a228348979791b208d7f9b28e",
+      "ahead_by": 0,
+      "behind_by": 2,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build391-theme-drift-governance-closure",
+      "sha": "6068247dfe44a1e07e2e8d07b57ecc80e355511e",
+      "ahead_by": 8,
+      "behind_by": 0,
+      "status": "ahead",
+      "classification": "PRESERVE_UNMERGED"
+    },
+    {
+      "branch": "build-044-unified-data-library",
+      "sha": "09b153983a12933748ce4b4349718c0c2bcbee67",
+      "ahead_by": 0,
+      "behind_by": 5491,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-045-source-collection-projects",
+      "sha": "94485dc62c950bb60527634a922ffd56234f836f",
+      "ahead_by": 0,
+      "behind_by": 5480,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-046-visual-recipe-builder",
+      "sha": "2e9363de57badfd6a785081cba21e224ab9f15e0",
+      "ahead_by": 0,
+      "behind_by": 5472,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-047-collection-run-console",
+      "sha": "13b38bc47ccfb1e1e5691a6615f13a71fa17651e",
+      "ahead_by": 0,
+      "behind_by": 5447,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
