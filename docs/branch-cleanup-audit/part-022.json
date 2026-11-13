@@ -1,0 +1,136 @@
+{
+  "page": 4,
+  "offset": 51,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-379-protected-runtime-activation-decision",
+      "sha": "a6af99819a0b58e7e92563dc717037acc16364e6",
+      "ahead_by": 0,
+      "behind_by": 197,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-380-external-runtime-activation-closure",
+      "sha": "ac6b3bd6b8ff5c16065b834534e14da59bb50ccc",
+      "ahead_by": 0,
+      "behind_by": 163,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-380-migration-0144-hotfix",
+      "sha": "d6a4a63330960501a1abf4f120f1858d6ba183dd",
+      "ahead_by": 0,
+      "behind_by": 155,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-381-migration-0145-hotfix",
+      "sha": "14c24a2fc37098848e246ede26e8f021565f04e0",
+      "ahead_by": 0,
+      "behind_by": 129,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-381-receiver-health-continuity",
+      "sha": "9bb72072be428184c7fd69082a0ab0357c077768",
+      "ahead_by": 0,
+      "behind_by": 135,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/adp-389-ql442-production-20261113",
+      "sha": "2a72d9a6bdaf03efff0114dcb933e044c0a55e7f",
+      "ahead_by": 0,
+      "behind_by": 13,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/adp-389-ql442-shutdown-closure-20261113",
+      "sha": "e4e43798ef35767c5c992b58db852c3a266ac93e",
+      "ahead_by": 0,
+      "behind_by": 13,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-ci-lint-repair",
+      "sha": "790e17a7f3ff54f8bffc930a8d94d1f3acffe7c7",
+      "ahead_by": 0,
+      "behind_by": 2770,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-ci-repair-build229",
+      "sha": "f454fa77d58b8b12bbdaa9e5d0c02a28ee14734d",
+      "ahead_by": 0,
+      "behind_by": 2758,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-historical-verifier-label-repair",
+      "sha": "253aa859118eec82e9fc0349cf2e65b5274b67df",
+      "ahead_by": 0,
+      "behind_by": 2756,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql253-six-app-return-reconciliation-after-build228",
+      "sha": "868d54bad1f9265d29cd41d7e95ecc711241ed70",
+      "ahead_by": 0,
+      "behind_by": 2772,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql264-comms-hub-direct-source-handoff",
+      "sha": "d08ad734a094c83d20d06f18ad009e040777731d",
+      "ahead_by": 0,
+      "behind_by": 2670,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql337-ai-comms-contract",
+      "sha": "49287216441baf282edd1ddb23c81cee3401c6c7",
+      "ahead_by": 0,
+      "behind_by": 1774,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql337-isolated-legacy-audit",
+      "sha": "d2a780b05b6bd4671b4909d4aab514473757c8a6",
+      "ahead_by": 0,
+      "behind_by": 1772,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql364-source-health-dev",
+      "sha": "2e36a76fbe9acedae73c9355c47d1c3d05a66505",
+      "ahead_by": 0,
+      "behind_by": 1513,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "codex/ql364-source-health-main",
+      "sha": "8371f05e9f313ee130b7603739630d31679a884a",
+      "ahead_by": 0,
+      "behind_by": 1515,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
