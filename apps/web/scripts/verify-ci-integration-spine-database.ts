@@ -178,7 +178,10 @@ const requiredTables = [
   "master_build387_remediation_effectiveness_reviews",
   "master_build387_baseline_restoration_audits",
   "master_build388_theme_governance_audits",
-  "master_build388_module_fusion_audits"
+  "master_build388_module_fusion_audits",
+  "master_build390_theme_adoption_receipts",
+  "master_build390_navigation_acceptance_audits",
+  "master_build390_yw_icamp_visual_parity_certifications"
 ];
 
 const appendOnlyTables = [
@@ -323,7 +326,10 @@ const appendOnlyTables = [
   "master_build387_remediation_effectiveness_reviews",
   "master_build387_baseline_restoration_audits",
   "master_build388_theme_governance_audits",
-  "master_build388_module_fusion_audits"
+  "master_build388_module_fusion_audits",
+  "master_build390_theme_adoption_receipts",
+  "master_build390_navigation_acceptance_audits",
+  "master_build390_yw_icamp_visual_parity_certifications"
 ];
 
 
@@ -434,7 +440,8 @@ async function main() {
         "0149_master_yw562_long_horizon_continuity_stability.sql",
         "0150_master_yw562_multi_horizon_stability_baseline.sql",
         "0151_master_yw562_early_warning_recovery.sql",
-        "0152_master_instrument_theme_governance.sql"
+        "0152_master_instrument_theme_governance.sql",
+        "0153_master_theme_adoption_parity_certification.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -601,6 +608,10 @@ async function main() {
     assert(
       migrationNames.has("0152_master_instrument_theme_governance.sql"),
       "migration 0152 is not recorded"
+    );
+    assert(
+      migrationNames.has("0153_master_theme_adoption_parity_certification.sql"),
+      "migration 0153 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
