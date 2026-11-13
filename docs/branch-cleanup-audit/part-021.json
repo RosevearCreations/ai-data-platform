@@ -1,0 +1,144 @@
+{
+  "page": 4,
+  "offset": 34,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-365-trusted-source-signer-durable-ledger",
+      "sha": "f0e7d6a6108763c5dc5e8abfe9620378403033f2",
+      "ahead_by": 0,
+      "behind_by": 461,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-366-signer-enrollment-health-admission-owner-review",
+      "sha": "c14771ca59f2d81af20a94c19c079e6f5afe5e54",
+      "ahead_by": 0,
+      "behind_by": 423,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-367-source-evidence-owner-review-acceptance",
+      "sha": "c86dcbe184ff84bcbfd729472d51cf0c6a0dcace",
+      "ahead_by": 0,
+      "behind_by": 408,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-368-master-runtime-reconvergence-receipt-refresh",
+      "sha": "1c0ad27f9e58c09b68f87ddd36e5ec27fea5d9e4",
+      "ahead_by": 0,
+      "behind_by": 392,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-369-source-refresh-evidence-three-master-recheck",
+      "sha": "c3928370b51bacc985ddddc58160fed93f48e618",
+      "ahead_by": 0,
+      "behind_by": 378,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-370-independent-manifest-custody-receipt-master-decision",
+      "sha": "9648e3351f987978c82a7a27288c0f9510de7f29",
+      "ahead_by": 0,
+      "behind_by": 363,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-371-yw-product-shell-signer-health-master-resolution",
+      "sha": "f716b6af5170756ca4aab4605c611f7ddecbc0ff",
+      "ahead_by": 0,
+      "behind_by": 344,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-372-yw561-signer-receipt-replay-master-closure",
+      "sha": "a20ba45908a48bdcbda75bd84e22ffad2c02796c",
+      "ahead_by": 0,
+      "behind_by": 329,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-373-yw561-live-signer-receipt-replay-owner-recheck",
+      "sha": "aa5dda7b5a45876c4999dea7771b2744be0ab23f",
+      "ahead_by": 0,
+      "behind_by": 314,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-374-yw561-trusted-source-health-activation-owner-gate",
+      "sha": "dc78c34da61a7898d03114f7759328cf2fab6ae3",
+      "ahead_by": 0,
+      "behind_by": 299,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-375-yw561-owner-decision-runtime-connection-reconciliation",
+      "sha": "010ce2e2c892d9fd901622836fa97f5420dc4a2b",
+      "ahead_by": 0,
+      "behind_by": 284,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-376-yw561-independent-connection-three-master-sync",
+      "sha": "a8e4811ca2dde5e0df79456d43e098c03d9850ef",
+      "ahead_by": 0,
+      "behind_by": 269,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-377-comms-ql422-reconciliation",
+      "sha": "d69735bd41fffd9abc0c5eb5761ab5bf4ddc11a0",
+      "ahead_by": 0,
+      "behind_by": 247,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-377-yw562-live-connection-continuity",
+      "sha": "acf4cc6ea6012ff66d420c926a2070ec51fb6dd9",
+      "ahead_by": 0,
+      "behind_by": 253,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-378-yw562-runtime-ql422-readiness",
+      "sha": "2a4f3382f16ea4fd1e1c308649a4565df8cdd9da",
+      "ahead_by": 0,
+      "behind_by": 231,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-379-migration-policy-hotfix",
+      "sha": "f29e6f2063ca863d034a9c54b0e8184296f52b01",
+      "ahead_by": 0,
+      "behind_by": 189,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-379-migration-role-hotfix",
+      "sha": "649ed613acdeab6dd3d61716630bd7b26ba48d24",
+      "ahead_by": 0,
+      "behind_by": 193,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
