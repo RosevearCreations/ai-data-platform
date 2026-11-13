@@ -167,7 +167,10 @@ const requiredTables = [
   "master_build383_incident_closure_events",
   "master_build384_post_recovery_watch_samples",
   "master_build384_recurrent_drift_events",
-  "master_build384_recurrence_prevention_audits"
+  "master_build384_recurrence_prevention_audits",
+  "master_build385_long_horizon_stability_samples",
+  "master_build385_recurrence_trend_events",
+  "master_build385_preventive_control_effectiveness_reviews"
 ];
 
 const appendOnlyTables = [
@@ -301,7 +304,10 @@ const appendOnlyTables = [
   "master_build383_incident_closure_events",
   "master_build384_post_recovery_watch_samples",
   "master_build384_recurrent_drift_events",
-  "master_build384_recurrence_prevention_audits"
+  "master_build384_recurrence_prevention_audits",
+  "master_build385_long_horizon_stability_samples",
+  "master_build385_recurrence_trend_events",
+  "master_build385_preventive_control_effectiveness_reviews"
 ];
 
 
@@ -408,7 +414,8 @@ async function main() {
         "0145_master_yw562_receiver_health_continuity.sql",
         "0146_master_yw562_runtime_renewal_drift_continuity.sql",
         "0147_master_yw562_runtime_continuity_incident_ledger.sql",
-        "0148_master_yw562_post_recovery_continuity_watch.sql"
+        "0148_master_yw562_post_recovery_continuity_watch.sql",
+        "0149_master_yw562_long_horizon_continuity_stability.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -559,6 +566,10 @@ async function main() {
     assert(
       migrationNames.has("0148_master_yw562_post_recovery_continuity_watch.sql"),
       "migration 0148 is not recorded"
+    );
+    assert(
+      migrationNames.has("0149_master_yw562_long_horizon_continuity_stability.sql"),
+      "migration 0149 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
