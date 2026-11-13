@@ -4,8 +4,7 @@ import type { PoolClient } from "pg";
 
 import { withUserDatabase } from "./database";
 import {
-  composeBuild367OwnerReview,
-  type Build367SourceSnapshot
+  composeBuild367OwnerReview
 } from "./source-owner-review";
 import type {
   ConvergenceLedgerReceipt,
