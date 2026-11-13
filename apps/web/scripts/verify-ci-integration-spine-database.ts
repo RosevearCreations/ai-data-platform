@@ -332,7 +332,10 @@ const appendOnlyTables = [
   "master_build388_module_fusion_audits",
   "master_build390_theme_adoption_receipts",
   "master_build390_navigation_acceptance_audits",
-  "master_build390_yw_icamp_visual_parity_certifications"
+  "master_build390_yw_icamp_visual_parity_certifications",
+  "master_build391_theme_drift_observations",
+  "master_build391_responsive_parity_regressions",
+  "master_build391_visual_governance_closure_audits"
 ];
 
 
