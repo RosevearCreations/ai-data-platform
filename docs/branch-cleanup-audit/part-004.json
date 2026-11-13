@@ -1,0 +1,144 @@
+{
+  "page": 1,
+  "offset": 49,
+  "size": 17,
+  "baseline": "main",
+  "results": [
+    {
+      "branch": "build-059-production-closeout",
+      "sha": "a1ccd3b67bac9a4867bcba237de63640b6b2f581",
+      "ahead_by": 0,
+      "behind_by": 5084,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-059-regression-verifier-compatibility",
+      "sha": "9d3037c1f2ff8397d5f5cb1a837b7e8421edd947",
+      "ahead_by": 0,
+      "behind_by": 5088,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-059-successor-reconciliation-reclosure",
+      "sha": "bff38624ebeff700690081117e47ec6ef0c11718",
+      "ahead_by": 0,
+      "behind_by": 5090,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-060-post-reclosure-recurrence",
+      "sha": "98552313b6c53f0c5ccb0a284a8cc1aa0869c257",
+      "ahead_by": 0,
+      "behind_by": 5062,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-060-production-closeout",
+      "sha": "6adb3e38bd2d6e79a027f3cb984aae2f8b87ea1e",
+      "ahead_by": 0,
+      "behind_by": 5058,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-061-production-closeout",
+      "sha": "f84ee7055c0b81526c8fda65d21943d4f0365cdb",
+      "ahead_by": 0,
+      "behind_by": 5032,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-061-recurrent-retriage-next-generation-planning",
+      "sha": "340a44d839d4aec47fafa2cc0cf2bb278a17ecc2",
+      "ahead_by": 0,
+      "behind_by": 5036,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-062-next-generation-delivery-execution",
+      "sha": "981a116e72455bfcf59993659338179d5ec0e169",
+      "ahead_by": 0,
+      "behind_by": 5011,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-062-production-closeout",
+      "sha": "d911c887eb575b15bd1f383bd65932c1ca0f0da4",
+      "ahead_by": 0,
+      "behind_by": 5003,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-062-verifier-operation-compatibility",
+      "sha": "6c4affb8171e0607a57d6c05f61fdd326b44d79a",
+      "ahead_by": 0,
+      "behind_by": 5007,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-062-verifier-type-compatibility",
+      "sha": "29476b8a111dae844dfc56433e81e04af3655d55",
+      "ahead_by": 0,
+      "behind_by": 5009,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-063-next-generation-reconciliation-reclosure",
+      "sha": "3d9210a463ed1edc4f0bc9fd09574b6cbca609d3",
+      "ahead_by": 0,
+      "behind_by": 4982,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-063-production-closeout",
+      "sha": "ba4bd18de77edfed8d0c8a157a40feb5be0f9c5e",
+      "ahead_by": 0,
+      "behind_by": 4978,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-064-post-next-generation-reclosure-recurrence",
+      "sha": "330ecfa59801f1bcf725b3114454aa37e528dd0a",
+      "ahead_by": 0,
+      "behind_by": 4955,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-064-production-closeout",
+      "sha": "b36b2aa2c6a5555b67c51a358207d9854c9e7628",
+      "ahead_by": 0,
+      "behind_by": 4951,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-065-second-recurrence-successor-generation-planning",
+      "sha": "5aaffcf4b4fb496796f495c03c84ca4f3fa0e609",
+      "ahead_by": 0,
+      "behind_by": 4934,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    },
+    {
+      "branch": "build-066-successor-generation-corrective-delivery",
+      "sha": "ddf646bcf7d51c591901ea98a30b33ac4965d1c5",
+      "ahead_by": 0,
+      "behind_by": 4906,
+      "status": "behind",
+      "classification": "SAFE_TO_DELETE"
+    }
+  ]
+}
