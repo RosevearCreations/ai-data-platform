@@ -14,7 +14,7 @@ export default async function MasterRuntimeSourceRefreshPage() {
   const model = data.model;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 368 · Runtime closure recheck</p>
         <h1>

@@ -16,7 +16,7 @@ export default async function MasterActivationReconciliationPage() {
   const model = composeMasterActivationEvidenceReconciliation();
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 361 · Master activation evidence reconciliation</p>
         <h1>Ree-Host Runtime Closure &amp; Source-Onboarding Gate</h1>

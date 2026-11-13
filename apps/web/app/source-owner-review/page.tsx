@@ -14,7 +14,7 @@ export default async function SourceOwnerReviewPage() {
   const model = data.model;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 367 · Owner acceptance gate</p>
         <h1>

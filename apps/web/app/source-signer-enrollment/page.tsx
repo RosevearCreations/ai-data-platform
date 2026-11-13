@@ -16,7 +16,7 @@ export default async function SourceSignerEnrollmentPage() {
   const model = await listSignerEnrollmentAndOwnerReviewForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 366 · Independent signer admission</p>
         <h1>

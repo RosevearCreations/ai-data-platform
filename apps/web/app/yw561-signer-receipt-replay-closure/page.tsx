@@ -19,7 +19,7 @@ export default async function Yw561SignerReceiptReplayClosurePage() {
   const provider = model.providerEvidence;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 372 · YW561 source-health closure</p>
         <h1>

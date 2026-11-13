@@ -21,7 +21,7 @@ export default async function MasterProductionReadinessPage() {
   const model = await listMasterProductionReadinessForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--management">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--management">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 349 · Rosevear Suite Master Shell</p>
         <h1>Master Shell Production Readiness, Recovery, Owner Acceptance & Rollback</h1>

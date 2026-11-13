@@ -16,7 +16,7 @@ export default async function SourceConvergencePage() {
   const model = composeSourceConvergence();
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 363 · Source convergence and acceptance closure</p>
         <h1>

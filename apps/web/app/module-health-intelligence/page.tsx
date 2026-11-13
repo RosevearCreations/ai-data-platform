@@ -22,7 +22,7 @@ export default async function ModuleHealthIntelligencePage() {
   const model = await listModuleHealthIntelligenceForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 344 · Rosevear Suite Master Shell</p>
         <h1>Module Health &amp; Blocker Intelligence</h1>

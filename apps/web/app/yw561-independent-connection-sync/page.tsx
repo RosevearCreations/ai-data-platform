@@ -17,7 +17,7 @@ export default async function Yw561IndependentConnectionSyncPage() {
   const model = data.model;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 376 · YW561 independent connection and three-Master sync</p>
         <h1>

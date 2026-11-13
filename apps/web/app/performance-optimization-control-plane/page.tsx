@@ -35,7 +35,7 @@ export default async function PerformanceOptimizationControlPlanePage() {
   });
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 355 · Moderate Controls</p>
         <h1>Performance Optimization Control Plane</h1>

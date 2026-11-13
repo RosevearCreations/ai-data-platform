@@ -17,7 +17,7 @@ export default async function ManifestCustodyReceiptDecisionPage() {
   const model = data.model;
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 370 · Independent production observation</p>
         <h1>

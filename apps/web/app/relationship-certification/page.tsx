@@ -21,7 +21,7 @@ export default async function RelationshipCertificationPage() {
   const model = await listRelationshipCertificationForUser(session.user.id);
 
   return (
-    <main className="shell reviewShell opsCommandScreen opsCommandScreen--status">
+    <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
         <p className="eyebrow">Build 346 · Rosevear Suite Master Shell</p>
         <h1>Relationship Integration Certification</h1>
