@@ -21,8 +21,6 @@ import {
   type Build378RuntimePrerequisiteEvidence
 } from "./yw562-runtime-ql422-protected-readiness";
 
-const UUID =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const SHA64 = /^[a-f0-9]{64}$/;
 const SHA40 = /^[a-f0-9]{40}$/;
 
