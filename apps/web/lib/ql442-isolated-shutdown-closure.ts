@@ -235,7 +235,7 @@ export function evaluateQl442IsolatedShutdown(input: Ql442Inputs): Ql442Decision
     const m = envelope?.payload;
     if (!m || !MASTER_IDS.some(id => id === m.masterId) ||
       seen.has(m.masterId) ||
-      !signedPayload(envelope,masterFields,input.pins.masters[m.masterId]) ||
+      !signedPayload(envelope,masterFields,input.pins.masters[m.masterId as MasterClosure["masterId"]]) ||
       m.schema !== "rosevear.ql442.three-master-closure-attestation.v1" ||
       m.incidentId !== p.originalIncidentId ||
       m.hostShutdownDigest !== digest(host.payload) ||
