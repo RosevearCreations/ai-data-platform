@@ -214,7 +214,10 @@ const requiredTables = [
   "master_build400_predictive_renewal_governance",
   "master_build401_predictive_renewal_execution",
   "master_build401_post_renewal_confidence_restoration",
-  "master_build401_forecast_accuracy_governance"
+  "master_build401_forecast_accuracy_governance",
+  "master_build402_forecast_recalibration_effectiveness",
+  "master_build402_renewal_timing_optimization",
+  "master_build402_linkage_continuity"
 ];
 
 const appendOnlyTables = [
@@ -395,7 +398,10 @@ const appendOnlyTables = [
   "master_build400_predictive_renewal_governance",
   "master_build401_predictive_renewal_execution",
   "master_build401_post_renewal_confidence_restoration",
-  "master_build401_forecast_accuracy_governance"
+  "master_build401_forecast_accuracy_governance",
+  "master_build402_forecast_recalibration_effectiveness",
+  "master_build402_renewal_timing_optimization",
+  "master_build402_linkage_continuity"
 ];
 
 
@@ -518,7 +524,8 @@ async function main() {
         "0161_master_confidence_stability_persistence_drift_assurance_renewal.sql",
         "0162_master_long_horizon_assurance_recovery_confidence_warning.sql",
         "0163_master_warning_response_assurance_recovery_predictive_renewal.sql",
-        "0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql"
+        "0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql",
+        "0165_master_forecast_recalibration_renewal_timing_linkage_continuity.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -733,6 +740,10 @@ async function main() {
     assert(
       migrationNames.has("0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql"),
       "migration 0164 is not recorded"
+    );
+    assert(
+      migrationNames.has("0165_master_forecast_recalibration_renewal_timing_linkage_continuity.sql"),
+      "migration 0165 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
