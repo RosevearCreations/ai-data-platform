@@ -211,7 +211,10 @@ const requiredTables = [
   "master_build399_confidence_degradation_early_warnings",
   "master_build400_early_warning_response_effectiveness",
   "master_build400_assurance_degradation_recovery",
-  "master_build400_predictive_renewal_governance"
+  "master_build400_predictive_renewal_governance",
+  "master_build401_predictive_renewal_execution",
+  "master_build401_post_renewal_confidence_restoration",
+  "master_build401_forecast_accuracy_governance"
 ];
 
 const appendOnlyTables = [
@@ -389,7 +392,10 @@ const appendOnlyTables = [
   "master_build399_confidence_degradation_early_warnings",
   "master_build400_early_warning_response_effectiveness",
   "master_build400_assurance_degradation_recovery",
-  "master_build400_predictive_renewal_governance"
+  "master_build400_predictive_renewal_governance",
+  "master_build401_predictive_renewal_execution",
+  "master_build401_post_renewal_confidence_restoration",
+  "master_build401_forecast_accuracy_governance"
 ];
 
 
@@ -511,7 +517,8 @@ async function main() {
         "0160_master_recalibrated_stability_outcome_persistence_confidence.sql",
         "0161_master_confidence_stability_persistence_drift_assurance_renewal.sql",
         "0162_master_long_horizon_assurance_recovery_confidence_warning.sql",
-        "0163_master_warning_response_assurance_recovery_predictive_renewal.sql"
+        "0163_master_warning_response_assurance_recovery_predictive_renewal.sql",
+        "0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -722,6 +729,10 @@ async function main() {
     assert(
       migrationNames.has("0163_master_warning_response_assurance_recovery_predictive_renewal.sql"),
       "migration 0163 is not recorded"
+    );
+    assert(
+      migrationNames.has("0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql"),
+      "migration 0164 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
