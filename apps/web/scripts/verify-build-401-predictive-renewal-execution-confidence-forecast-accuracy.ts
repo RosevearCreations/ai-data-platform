@@ -278,6 +278,33 @@ for (const token of [
   "does not transfer runtime"
 ]) assert.ok(docs.includes(token), "documentation token " + token);
 
+const receipts = source(
+  "../../docs/BUILD_401_MASTER_TOPOLOGY_LINKAGE_RECEIPTS.md"
+);
+for (const token of [
+  "RosevearCreations/rosevear-comms-hub",
+  "RosevearCreations/rosevear-ai-hub",
+  "RosevearCreations/iCamp",
+  "RosevearCreations/yw",
+  "RosevearCreations/devilndove-site",
+  "RosevearCreations/rosiedazzlers",
+  "#908",
+  "#761",
+  "#610",
+  "#794",
+  "#914",
+  "#1072",
+  "af484810e18dcc177b43421b0bb66be3ca56dd72",
+  "bfd42a3fe07de0233b52694dc0f4c58c69486697",
+  "d8c4e3102dfcce26b6710da110fbc384a3ee02cc",
+  "f8c462acce8f84ce3f076ab4ad2480e6e74faf55",
+  "2a68878a9b6e3a383a9227158b6ca5350822108d"
+]) assert.ok(receipts.includes(token), "linkage receipt token " + token);
+assert.ok(
+  !receipts.includes("PENDING_PRODUCTION_GATE"),
+  "cross-repository topology linkage is still pending"
+);
+
 const masterPage = source("app/master-suite/page.tsx");
 assert.ok(masterPage.includes("Build 401 execution governance"));
 assert.ok(masterPage.includes("Predictive renewal execution"));
