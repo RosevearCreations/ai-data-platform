@@ -263,6 +263,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 395 predictive governance</p>
+            <h2>Threshold calibration, intervention readiness and risk escalation</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Predictive threshold calibration</h3>
+            <p>Measured recurrence evidence calibrates warning and escalation thresholds for every governed shell, with owner approval and independent verification.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Intervention readiness</h3>
+            <p>Preventive controls, rollback, runbooks and owner-on-call coverage must all be ready before elevated recurrence risk can close.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Cross-shell escalation</h3>
+            <p>Every shell receives a current NORMAL, WATCH, ACTION or CRITICAL decision bound to the calibrated thresholds and verified risk evidence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed predictive governance</h3>
+            <p>Production GREEN cannot invent threshold calibration, intervention readiness or compliant escalation evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
