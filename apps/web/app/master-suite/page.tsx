@@ -425,6 +425,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 401 execution governance</p>
+            <h2>Renewal execution, confidence restoration and forecast accuracy</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Predictive renewal execution</h3>
+            <p>Advance renewals required by Build 400 must execute with verified lead time before the projected confidence breach.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Post-renewal confidence restoration</h3>
+            <p>Executed renewals must restore confidence above the governed floor through a measured observation window with no recurrence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Forecast accuracy governance</h3>
+            <p>Predicted and observed confidence are reconciled across every governed shell; excessive forecast error forces recalibration.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Seven-application GitHub topology</h3>
+            <p>AI Data Platform validates the three Masters, YW/iCamp governed shells, and direct Devil n Dove/Rosie Master linkages from one repository topology contract without transferring operational authority.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
