@@ -479,6 +479,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 403 recurrence-prevention governance</p>
+            <h2>Recalibration persistence, renewal drift recovery and linkage recurrence prevention</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Recalibration persistence validation</h3>
+            <p>Forecast accuracy must remain inside the 500-basis-point budget across a 72-hour evidence horizon with at least seven independently verified samples.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Renewal timing drift recovery</h3>
+            <p>Timing that leaves the governed 6–24 hour lead window must return inside it through a measured recovery window without threshold breach or recurrence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Seven-application recurrence prevention</h3>
+            <p>All three Masters, both governed shells and both direct applications require recurrence-free topology evidence with current hashes and no authority transfer.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed recurrence prevention</h3>
+            <p>Production GREEN cannot replace sustained recalibration accuracy, timing-drift recovery or independently verified recurrence-prevention evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>

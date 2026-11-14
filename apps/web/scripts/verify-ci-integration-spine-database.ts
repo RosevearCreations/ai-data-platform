@@ -217,7 +217,10 @@ const requiredTables = [
   "master_build401_forecast_accuracy_governance",
   "master_build402_forecast_recalibration_effectiveness",
   "master_build402_renewal_timing_optimization",
-  "master_build402_linkage_continuity"
+  "master_build402_linkage_continuity",
+  "master_build403_recalibration_persistence_validation",
+  "master_build403_renewal_timing_drift_recovery",
+  "master_build403_linkage_recurrence_prevention"
 ];
 
 const appendOnlyTables = [
@@ -525,7 +528,8 @@ async function main() {
         "0162_master_long_horizon_assurance_recovery_confidence_warning.sql",
         "0163_master_warning_response_assurance_recovery_predictive_renewal.sql",
         "0164_master_predictive_renewal_execution_confidence_forecast_accuracy.sql",
-        "0165_master_forecast_recalibration_renewal_timing_linkage_continuity.sql"
+        "0165_master_forecast_recalibration_renewal_timing_linkage_continuity.sql",
+        "0166_master_recalibration_persistence_renewal_drift_linkage_recurrence_prevention.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -744,6 +748,10 @@ async function main() {
     assert(
       migrationNames.has("0165_master_forecast_recalibration_renewal_timing_linkage_continuity.sql"),
       "migration 0165 is not recorded"
+    );
+    assert(
+      migrationNames.has("0166_master_recalibration_persistence_renewal_drift_linkage_recurrence_prevention.sql"),
+      "migration 0166 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
