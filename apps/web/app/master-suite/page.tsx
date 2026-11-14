@@ -317,6 +317,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 397 confidence governance</p>
+            <h2>Recalibrated stability, persistent outcomes and escalation confidence</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Recalibrated threshold stability</h3>
+            <p>Every governed shell must keep its recalibrated thresholds stable through a verified 24-hour evidence window with no recurrence or threshold breach.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Intervention outcome persistence</h3>
+            <p>Previously effective interventions must keep recurrence risk at or below their verified post-intervention baseline across a longer persistence window.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Escalation confidence</h3>
+            <p>Cross-shell escalation decisions require current threshold and intervention evidence plus independently verified confidence of at least 70%.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed confidence loop</h3>
+            <p>Production GREEN cannot substitute for threshold stability, outcome persistence or evidence-backed escalation confidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
