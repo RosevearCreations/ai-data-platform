@@ -344,6 +344,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 398 assurance renewal</p>
+            <h2>Confidence stability, persistence drift and escalation assurance renewal</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Confidence stability monitoring</h3>
+            <p>Every governed shell must keep confidence above the verified floor and within a bounded post-recalibration drop budget across current evidence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Persistence drift detection</h3>
+            <p>Previously effective interventions are watched for renewed recurrence risk; drift beyond the allowed basis-point budget fails closed.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Escalation assurance renewal</h3>
+            <p>Confidence, threshold and persistence evidence must all be current before owner renewal and independent verification can renew cross-shell assurance.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed renewal</h3>
+            <p>Production GREEN cannot extend expired or degraded assurance without fresh evidence-backed renewal.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
