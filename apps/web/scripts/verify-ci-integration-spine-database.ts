@@ -196,7 +196,10 @@ const requiredTables = [
   "master_build394_recurrence_risk_forecasts",
   "master_build395_recurrence_threshold_calibrations",
   "master_build395_preventive_intervention_readiness",
-  "master_build395_cross_shell_risk_escalations"
+  "master_build395_cross_shell_risk_escalations",
+  "master_build396_threshold_drift_observations",
+  "master_build396_intervention_outcome_effectiveness",
+  "master_build396_escalation_feedback_recalibrations"
 ];
 
 const appendOnlyTables = [
@@ -359,7 +362,10 @@ const appendOnlyTables = [
   "master_build394_recurrence_risk_forecasts",
   "master_build395_recurrence_threshold_calibrations",
   "master_build395_preventive_intervention_readiness",
-  "master_build395_cross_shell_risk_escalations"
+  "master_build395_cross_shell_risk_escalations",
+  "master_build396_threshold_drift_observations",
+  "master_build396_intervention_outcome_effectiveness",
+  "master_build396_escalation_feedback_recalibrations"
 ];
 
 
@@ -476,7 +482,8 @@ async function main() {
         "0155_master_visual_governance_remediation_recertification.sql",
         "0156_master_post_recertification_visual_stability.sql",
         "0157_master_long_horizon_visual_stability_risk.sql",
-        "0158_master_predictive_threshold_intervention_escalation.sql"
+        "0158_master_predictive_threshold_intervention_escalation.sql",
+        "0159_master_threshold_drift_outcome_feedback_recalibration.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -667,6 +674,10 @@ async function main() {
     assert(
       migrationNames.has("0158_master_predictive_threshold_intervention_escalation.sql"),
       "migration 0158 is not recorded"
+    );
+    assert(
+      migrationNames.has("0159_master_threshold_drift_outcome_feedback_recalibration.sql"),
+      "migration 0159 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
