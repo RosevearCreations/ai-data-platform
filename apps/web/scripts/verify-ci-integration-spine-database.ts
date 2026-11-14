@@ -205,7 +205,10 @@ const requiredTables = [
   "master_build397_escalation_confidence_governance",
   "master_build398_confidence_stability_observations",
   "master_build398_intervention_persistence_drift",
-  "master_build398_escalation_assurance_renewals"
+  "master_build398_escalation_assurance_renewals",
+  "master_build399_long_horizon_assurance_stability",
+  "master_build399_persistence_drift_recovery_effectiveness",
+  "master_build399_confidence_degradation_early_warnings"
 ];
 
 const appendOnlyTables = [
@@ -377,7 +380,10 @@ const appendOnlyTables = [
   "master_build397_escalation_confidence_governance",
   "master_build398_confidence_stability_observations",
   "master_build398_intervention_persistence_drift",
-  "master_build398_escalation_assurance_renewals"
+  "master_build398_escalation_assurance_renewals",
+  "master_build399_long_horizon_assurance_stability",
+  "master_build399_persistence_drift_recovery_effectiveness",
+  "master_build399_confidence_degradation_early_warnings"
 ];
 
 
@@ -497,7 +503,8 @@ async function main() {
         "0158_master_predictive_threshold_intervention_escalation.sql",
         "0159_master_threshold_drift_outcome_feedback_recalibration.sql",
         "0160_master_recalibrated_stability_outcome_persistence_confidence.sql",
-        "0161_master_confidence_stability_persistence_drift_assurance_renewal.sql"
+        "0161_master_confidence_stability_persistence_drift_assurance_renewal.sql",
+        "0162_master_long_horizon_assurance_recovery_confidence_warning.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -700,6 +707,10 @@ async function main() {
     assert(
       migrationNames.has("0161_master_confidence_stability_persistence_drift_assurance_renewal.sql"),
       "migration 0161 is not recorded"
+    );
+    assert(
+      migrationNames.has("0162_master_long_horizon_assurance_recovery_confidence_warning.sql"),
+      "migration 0162 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
