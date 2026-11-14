@@ -236,6 +236,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 394 long-horizon governance</p>
+            <h2>Trend correlation, control degradation and recurrence risk</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Long-horizon trend correlation</h3>
+            <p>Every governed shell must retain independently observed stability across 24-hour-or-longer evidence windows.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Preventive-control degradation</h3>
+            <p>Expected controls remain measurable; missing health, degradation signals or failed review prevents visual-governance closure.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Recurrence risk forecasting</h3>
+            <p>Evidence-backed forecasts cover every shell and surface high or critical recurrence risk before it becomes another drift event.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed long horizon</h3>
+            <p>Production GREEN cannot erase a degrading trend, unhealthy preventive control or elevated visual recurrence risk.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
