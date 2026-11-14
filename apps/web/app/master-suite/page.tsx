@@ -452,6 +452,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 402 continuity governance</p>
+            <h2>Forecast recalibration, renewal timing and seven-application continuity</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Forecast recalibration effectiveness</h3>
+            <p>Forecasts outside the 500-basis-point accuracy budget must return inside tolerance through a measured, independently verified recalibration window.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Renewal timing optimization</h3>
+            <p>Required predictive renewals must execute inside the governed 6–24 hour lead window without allowing the projected threshold breach.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Seven-application linkage continuity</h3>
+            <p>All three Masters, both governed shells and both direct applications require fresh production-main topology evidence with no authority transfer.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed continuity</h3>
+            <p>Production GREEN cannot replace current recalibration, optimized renewal timing or independently verified repository-linkage continuity.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
