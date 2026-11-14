@@ -398,6 +398,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 400 predictive renewal governance</p>
+            <h2>Warning response, assurance recovery and predictive renewal</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Warning response effectiveness</h3>
+            <p>Triggered confidence warnings must show measurable recovery through a verified observation window and restore confidence above the governed floor.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Assurance degradation recovery</h3>
+            <p>Long-horizon degradation must prove sustained recovery, no missed renewals and no recurrence before assurance can close again.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Predictive renewal governance</h3>
+            <p>Forecasted confidence deterioration requires advance renewal scheduling before the projected drop becomes an assurance failure.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed predictive renewal</h3>
+            <p>Production GREEN cannot substitute for response-effectiveness, degradation-recovery or predictive-renewal evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
