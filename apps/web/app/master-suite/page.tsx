@@ -371,6 +371,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 399 long-horizon governance</p>
+            <h2>Assurance stability, drift recovery and confidence early warning</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Assurance renewal stability</h3>
+            <p>Every governed shell must sustain a verified renewal cadence across a 72-hour horizon with no missed assurance renewals.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Drift recovery effectiveness</h3>
+            <p>Detected persistence drift must recover through a measured window, reduce residual drift to 250 basis points or less and avoid recurrence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Confidence degradation early warning</h3>
+            <p>Projected confidence is classified CLEAR, WATCH or ACTION; managed WATCH signals require mitigation readiness before closure.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed long horizon</h3>
+            <p>Production GREEN cannot replace long-horizon assurance, recovery-effectiveness or confidence early-warning evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
