@@ -290,6 +290,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 396 feedback governance</p>
+            <h2>Threshold drift, intervention outcomes and feedback recalibration</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Threshold drift monitoring</h3>
+            <p>Every governed shell compares its calibrated warning and escalation thresholds against fresh evidence-backed recommendations.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Intervention outcome effectiveness</h3>
+            <p>Invoked interventions must demonstrate lower recurrence risk, no recurrence and a verified observation window before they are considered effective.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Feedback recalibration</h3>
+            <p>Stable thresholds may be retained explicitly; drifted thresholds must be recalibrated to independently observed recommendations with owner approval.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed feedback loop</h3>
+            <p>Production GREEN cannot replace threshold-drift, intervention-outcome or recalibration evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
