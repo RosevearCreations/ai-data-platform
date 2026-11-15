@@ -231,7 +231,11 @@ const requiredTables = [
   "master_build405_completion_acceleration_targets",
   "master_build406_security_tier_baselines",
   "master_build406_trust_matrix_baselines",
-  "master_build406_completion_denominator_baselines"
+  "master_build406_completion_denominator_baselines",
+  "master_build407_service_principals",
+  "master_build407_key_rotation_receipts",
+  "master_build407_transport_policies",
+  "master_build407_signed_request_evidence"
 ];
 
 const appendOnlyTables = [
@@ -418,7 +422,11 @@ const appendOnlyTables = [
   "master_build402_linkage_continuity",
   "master_build406_security_tier_baselines",
   "master_build406_trust_matrix_baselines",
-  "master_build406_completion_denominator_baselines"
+  "master_build406_completion_denominator_baselines",
+  "master_build407_service_principals",
+  "master_build407_key_rotation_receipts",
+  "master_build407_transport_policies",
+  "master_build407_signed_request_evidence"
 ];
 
 
@@ -546,7 +554,8 @@ async function main() {
         "0166_master_recalibration_persistence_renewal_drift_linkage_recurrence_prevention.sql",
         "0167_master_long_horizon_recalibration_recovery_linkage_assurance.sql",
         "0168_master_assurance_renewal_security_comms_recertification.sql",
-        "0169_master_unified_security_trust_completion_baseline.sql"
+        "0169_master_unified_security_trust_completion_baseline.sql",
+        "0170_master_zero_trust_service_transport.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -781,6 +790,10 @@ async function main() {
     assert(
       migrationNames.has("0169_master_unified_security_trust_completion_baseline.sql"),
       "migration 0169 is not recorded"
+    );
+    assert(
+      migrationNames.has("0170_master_zero_trust_service_transport.sql"),
+      "migration 0170 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{

@@ -6,6 +6,7 @@ import { Pool } from "pg";
 
 import { auth } from "../lib/auth";
 import { closeDatabasePools } from "../lib/database";
+import { enforceStrictPostgresTls } from "../lib/database-ssl-policy";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -13,8 +14,10 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required.");
 }
 
+const strictDatabaseUrl = enforceStrictPostgresTls(databaseUrl);
+
 const adminPool = new Pool({
-  connectionString: databaseUrl,
+  connectionString: strictDatabaseUrl,
   max: 1,
   application_name: "ai-data-platform-migrations"
 });
