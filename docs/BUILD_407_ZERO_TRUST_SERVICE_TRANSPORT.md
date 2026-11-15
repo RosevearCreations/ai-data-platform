@@ -24,7 +24,7 @@ The three Master applications use the shared `rosevear-master-instrument.v1` the
 
 ## Database transport hardening
 
-Production migration connections explicitly normalize PostgreSQL TLS to `sslmode=verify-full`; weak compatibility mode is removed. This resolves the future pg/libpq security-semantic warning without weakening certificate verification.
+Production migration, application and authentication database pools explicitly normalize PostgreSQL TLS to `sslmode=verify-full`; weak compatibility mode is removed. This resolves the future pg/libpq security-semantic warning without weakening certificate verification.
 
 ## Final state
 
