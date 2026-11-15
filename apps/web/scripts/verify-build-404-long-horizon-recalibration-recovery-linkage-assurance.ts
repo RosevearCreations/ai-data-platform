@@ -259,7 +259,7 @@ for (const token of [
   "72-hour",
   "All seven applications",
   "continuity break",
-  "authority transfer remains forbidden"
+  "Authority transfer remains forbidden."
 ]) assert.ok(docs.includes(token), "documentation token " + token);
 
 const masterPage = source("app/master-suite/page.tsx");
