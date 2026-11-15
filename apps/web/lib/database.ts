@@ -2,6 +2,8 @@ import { randomUUID } from "node:crypto";
 
 import { Pool, type PoolClient, type QueryResultRow } from "pg";
 
+import { enforceStrictPostgresTls } from "./database-ssl-policy";
+
 const databaseUrl = process.env.DATABASE_URL;
 
 function requireDatabaseUrl() {
@@ -9,7 +11,7 @@ function requireDatabaseUrl() {
     throw new Error("DATABASE_URL is required.");
   }
 
-  return databaseUrl;
+  return enforceStrictPostgresTls(databaseUrl);
 }
 
 declare global {
