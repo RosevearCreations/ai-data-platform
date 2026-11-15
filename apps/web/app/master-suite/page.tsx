@@ -506,6 +506,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 405 suite acceleration governance</p>
+            <h2>Assurance renewal, five-tier security, communications re-certification and measurable completion acceleration</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Five-tier security re-certification</h3>
+            <p>All seven applications must independently certify identity/provenance, transport/authentication, authorization/tenant/consent, data/audit/replay/fail-closed and privileged-operation/recovery tiers.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>14 cross-application relationships</h3>
+            <p>Canonical Master-to-application relationships require authenticated transport, audience binding, tenant isolation, replay defense, classified payloads and zero secret sharing.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>49 completion acceleration targets</h3>
+            <p>Seven applications × seven independent completion axes receive evidence-backed baselines and minimum +10 percentage-point targets, capped at 100%.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Authority-preserving communications</h3>
+            <p>AI Data Platform keeps validation authority, Comms Hub keeps communications authority, applications keep operational authority, and consequential writes remain owner-gated.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Build 404 long-horizon assurance governance</p>
             <h2>Recalibration stability, recovery effectiveness and seven-application prevention assurance</h2>
           </div>
