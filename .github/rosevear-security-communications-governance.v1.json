@@ -1,0 +1,102 @@
+{
+  "schema": "rosevear.security-communications-governance.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "validationAuthority": "ai-data-platform",
+  "authorityTransfer": false,
+  "securityTiers": [
+    {
+      "id": "T1_IDENTITY_PROVENANCE",
+      "purpose": "Application identity, signer provenance, repository and deployment lineage."
+    },
+    {
+      "id": "T2_TRANSPORT_AUTHENTICATION",
+      "purpose": "Authenticated transport, audience binding, key rotation and replay-resistant sessions."
+    },
+    {
+      "id": "T3_AUTHORIZATION_TENANT_CONSENT",
+      "purpose": "Least privilege, role authorization, tenant/workspace isolation and explicit consent."
+    },
+    {
+      "id": "T4_DATA_AUDIT_REPLAY_FAIL_CLOSED",
+      "purpose": "Sensitive-data handling, classification, redaction, audit evidence, replay protection and fail-closed controls."
+    },
+    {
+      "id": "T5_PRIVILEGED_OPERATION_RECOVERY",
+      "purpose": "Owner-gated consequential actions, privileged custody, recovery, rollback and break-glass governance."
+    }
+  ],
+  "communicationPolicy": {
+    "runtimeCommunicationUsesExistingIntegrationContracts": true,
+    "directPeerDatabaseWrites": false,
+    "rawSecretSharing": false,
+    "consequentialWritesRequireOwnerGate": true,
+    "directChildToChildRelationships": false,
+    "messageAuthorityRemainsRosevearCommsHub": true,
+    "validationAuthorityRemainsAiDataPlatform": true
+  },
+  "relationships": [
+    [
+      "ai-data-platform",
+      "rosevear-ai-hub"
+    ],
+    [
+      "ai-data-platform",
+      "rosevear-comms-hub"
+    ],
+    [
+      "ai-data-platform",
+      "icamp"
+    ],
+    [
+      "ai-data-platform",
+      "yw"
+    ],
+    [
+      "ai-data-platform",
+      "devilndove"
+    ],
+    [
+      "ai-data-platform",
+      "rosiedazzlers"
+    ],
+    [
+      "rosevear-ai-hub",
+      "icamp"
+    ],
+    [
+      "rosevear-ai-hub",
+      "yw"
+    ],
+    [
+      "rosevear-ai-hub",
+      "devilndove"
+    ],
+    [
+      "rosevear-ai-hub",
+      "rosiedazzlers"
+    ],
+    [
+      "rosevear-comms-hub",
+      "icamp"
+    ],
+    [
+      "rosevear-comms-hub",
+      "yw"
+    ],
+    [
+      "rosevear-comms-hub",
+      "devilndove"
+    ],
+    [
+      "rosevear-comms-hub",
+      "rosiedazzlers"
+    ]
+  ],
+  "channels": [
+    "SECURITY_EVIDENCE",
+    "HEALTH_EVIDENCE",
+    "CORRELATION_EVENT",
+    "WORKFLOW_HANDOFF",
+    "OWNER_GATED_COMMAND"
+  ]
+}
