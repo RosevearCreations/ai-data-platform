@@ -285,6 +285,10 @@ const migrate = source("scripts/migrate.ts");
 assert.ok(migrate.includes("enforceStrictPostgresTls"));
 assert.ok(migrate.includes("strictDatabaseUrl"));
 
+const database = source("lib/database.ts");
+assert.ok(database.includes('import { enforceStrictPostgresTls } from "./database-ssl-policy";'));
+assert.ok(database.includes("return enforceStrictPostgresTls(databaseUrl);"));
+
 const docs = source("../../docs/BUILD_407_ZERO_TRUST_SERVICE_TRANSPORT.md");
 for (const token of [
   "Only `dev` and `main`",
