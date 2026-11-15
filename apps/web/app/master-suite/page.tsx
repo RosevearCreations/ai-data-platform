@@ -141,7 +141,7 @@ export default async function MasterSuitePage() {
         <div className="masterChildShellGrid">
           {MASTER_INSTRUMENT_CHILD_SHELLS.map((shell) => (
             <article className="reviewBatchSummary" key={shell.id}>
-              <span className="reviewStatus">PRODUCT SHELL</span>
+              <span className="reviewStatus">SLAVE APPLICATION SHELL</span>
               <h3>{shell.displayName}</h3>
               <p>{shell.tenancyNote}</p>
               <Link className="secondaryButton" href={shell.href}>
@@ -499,6 +499,33 @@ export default async function MasterSuitePage() {
           <article className="reviewBatchSummary">
             <h3>Fail-closed recurrence prevention</h3>
             <p>Production GREEN cannot replace sustained recalibration accuracy, timing-drift recovery or independently verified recurrence-prevention evidence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Build 407 zero-trust transport</p>
+            <h2>Signed service identity, secretless routing and strict transport across all seven applications</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Ed25519 service identity</h3>
+            <p>Every application uses an independently reviewed service principal with issuer, audience, body-digest and one-time nonce binding. Raw private keys never enter cross-application contracts.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>28 directional transport policies</h3>
+            <p>Every canonical relationship is governed in both directions with verified TLS, replay defense, secret-reference-only routing, no T5 transport and no delegated authority.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Devil n Dove + Rosie → all three Masters</h3>
+            <p>Both direct Master applications must retain authenticated routes to AI Data Platform, Rosevear AI Hub and Rosevear Comms Hub before the transport gate can close.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>dev / main only</h3>
+            <p>Only dev and main are valid long-term branches. All feature, release, fix and historical branches are cleanup-only after their merged work is verified.</p>
           </article>
         </div>
       </section>
