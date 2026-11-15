@@ -1,0 +1,90 @@
+{
+  "schema": "rosevear.zero-trust-service-transport.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "controller": "ai-data-platform",
+  "build": 407,
+  "approvedBranches": [
+    "dev",
+    "main"
+  ],
+  "branchPolicy": {
+    "onlyApprovedBranchesAreLongTermValid": true,
+    "allOtherBranches": "cleanup-only-after-merge",
+    "neverDelete": [
+      "dev",
+      "main"
+    ]
+  },
+  "masterTheme": {
+    "id": "rosevear-master-instrument.v1",
+    "requiredFor": [
+      "ai-data-platform",
+      "rosevear-ai-hub",
+      "rosevear-comms-hub"
+    ],
+    "tokens": {
+      "background": "#050b16",
+      "surface": "#081625",
+      "panel": "#0b1c2d",
+      "panelStrong": "#0d2135",
+      "purple": "#9a46ff",
+      "blue": "#31a9ff",
+      "green": "#2ed58f",
+      "amber": "#ffbd4a",
+      "red": "#ff5c72",
+      "muted": "#8ca3b8",
+      "text": "#eef6ff"
+    }
+  },
+  "shellPresentation": {
+    "slaveApplications": [
+      "icamp",
+      "yw"
+    ],
+    "requiredLabel": "SLAVE APPLICATION SHELL",
+    "mayKeepOwnThemes": true,
+    "directMasterApps": [
+      "devilndove",
+      "rosiedazzlers"
+    ]
+  },
+  "authentication": {
+    "algorithm": "Ed25519",
+    "signedRequestsRequired": true,
+    "issuerBindingRequired": true,
+    "audienceBindingRequired": true,
+    "bodyDigestRequired": true,
+    "nonceRequired": true,
+    "replayProtectionRequired": true,
+    "maxRequestAgeSeconds": 300,
+    "maxKeyAgeDays": 90,
+    "rawPrivateKeysInContracts": false
+  },
+  "transport": {
+    "minimumTlsVersion": "TLSv1.2",
+    "certificateValidation": "verify-full",
+    "postgresSslMode": "verify-full",
+    "secretlessRouting": true,
+    "rawSecretsAllowed": false,
+    "t5Allowed": false,
+    "directPeerDatabaseWrites": false,
+    "delegatedAuthority": false,
+    "consequentialWritesRequireOwnerGate": true
+  },
+  "communications": {
+    "validationAuthority": "ai-data-platform",
+    "communicationsAuthority": "rosevear-comms-hub",
+    "authorityTransfer": false,
+    "directAppsMustReachAllMasters": [
+      "devilndove",
+      "rosiedazzlers"
+    ],
+    "channels": [
+      "SECURITY_EVIDENCE",
+      "HEALTH_EVIDENCE",
+      "CORRELATION_EVENT",
+      "WORKFLOW_HANDOFF",
+      "OWNER_GATED_COMMAND"
+    ]
+  }
+}
