@@ -3,7 +3,10 @@ import {
   BUILD_405_COMMUNICATION_CHANNELS,
   BUILD_405_COMMUNICATION_RELATIONSHIPS
 } from "./master-assurance-renewal-security-comms-recertification";
-export type Build407CommunicationChannel =\n  (typeof BUILD_405_COMMUNICATION_CHANNELS)[number];\n\nimport type { Build402ApplicationId } from "./master-forecast-recalibration-renewal-timing-linkage-continuity";
+export type Build407CommunicationChannel =
+  (typeof BUILD_405_COMMUNICATION_CHANNELS)[number];
+
+import type { Build402ApplicationId } from "./master-forecast-recalibration-renewal-timing-linkage-continuity";
 import type { Build406GovernanceAssessment } from "./master-unified-security-trust-completion-baseline";
 
 export const BUILD_407 = 407 as const;
