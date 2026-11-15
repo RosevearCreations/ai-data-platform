@@ -1,0 +1,126 @@
+{
+  "schema": "rosevear.unified-security-trust-completion-baseline.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "validationAuthority": "ai-data-platform",
+  "communicationsAuthority": "rosevear-comms-hub",
+  "authorityTransfer": false,
+  "accessTiers": [
+    {
+      "id": "T0_PUBLIC_READ",
+      "purpose": "Public brochures, storefront and help; no protected customer data."
+    },
+    {
+      "id": "T1_USER_SCOPED",
+      "purpose": "Authenticated users limited to their own resources."
+    },
+    {
+      "id": "T2_TENANT_SCOPED",
+      "purpose": "Tenant staff with explicit tenant ownership in API, database and storage."
+    },
+    {
+      "id": "T3_OPERATOR_SCOPED",
+      "purpose": "Company administrators and delegated operators under least privilege and audit."
+    },
+    {
+      "id": "T4_MASTER_GOVERNANCE",
+      "purpose": "Independently authenticated Master governance with freshness and replay protection."
+    },
+    {
+      "id": "T5_ORIGINAL_HOST_OWNER_CEREMONY",
+      "purpose": "Protected on-machine owner ceremony; never routable through ordinary application transport."
+    }
+  ],
+  "controlDomains": [
+    "T1_IDENTITY_PROVENANCE",
+    "T2_TRANSPORT_AUTHENTICATION",
+    "T3_AUTHORIZATION_TENANT_CONSENT",
+    "T4_DATA_AUDIT_REPLAY_FAIL_CLOSED",
+    "T5_PRIVILEGED_OPERATION_RECOVERY"
+  ],
+  "compatibility": {
+    "build405FiveSecurityTiersRetainedAsControlDomains": true,
+    "sixAccessTiersAreCanonical": true
+  },
+  "trustPolicy": {
+    "transitiveTrustAllowed": false,
+    "directPeerDatabaseWrites": false,
+    "rawSecretSharing": false,
+    "delegatedOperationalAuthority": false,
+    "consequentialWritesRequireOwnerGate": true,
+    "t5Routable": false,
+    "t4MayGrantT5": false
+  },
+  "completionAspects": [
+    "customer-guest",
+    "worker-admin",
+    "product-storefront",
+    "finance-tax",
+    "stock-inventory",
+    "scheduling-jobs",
+    "hr-payroll",
+    "media-social",
+    "security-privacy",
+    "cross-app-integration",
+    "accessibility-mobile",
+    "deployment-recovery",
+    "observability-support"
+  ],
+  "relationships": [
+    [
+      "ai-data-platform",
+      "rosevear-ai-hub"
+    ],
+    [
+      "ai-data-platform",
+      "rosevear-comms-hub"
+    ],
+    [
+      "ai-data-platform",
+      "icamp"
+    ],
+    [
+      "ai-data-platform",
+      "yw"
+    ],
+    [
+      "ai-data-platform",
+      "devilndove"
+    ],
+    [
+      "ai-data-platform",
+      "rosiedazzlers"
+    ],
+    [
+      "rosevear-ai-hub",
+      "icamp"
+    ],
+    [
+      "rosevear-ai-hub",
+      "yw"
+    ],
+    [
+      "rosevear-ai-hub",
+      "devilndove"
+    ],
+    [
+      "rosevear-ai-hub",
+      "rosiedazzlers"
+    ],
+    [
+      "rosevear-comms-hub",
+      "icamp"
+    ],
+    [
+      "rosevear-comms-hub",
+      "yw"
+    ],
+    [
+      "rosevear-comms-hub",
+      "devilndove"
+    ],
+    [
+      "rosevear-comms-hub",
+      "rosiedazzlers"
+    ]
+  ]
+}
