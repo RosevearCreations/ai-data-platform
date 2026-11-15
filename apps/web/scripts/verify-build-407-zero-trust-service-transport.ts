@@ -14,7 +14,8 @@ import {
   BUILD_407_MASTER_APPLICATIONS,
   BUILD_407_MASTER_THEME_ID,
   BUILD_407_SLAVE_SHELL_LABEL,
-  assessBuild407Governance
+  assessBuild407Governance,
+  type Build407TransportPolicy
 } from "../lib/master-zero-trust-service-transport";
 import type { Build406GovernanceAssessment } from "../lib/master-unified-security-trust-completion-baseline";
 import {
@@ -190,7 +191,7 @@ assert.equal(
     build406: build406Verified,
     servicePrincipals,
     keyRotations,
-    transportPolicies: invalidPolicy
+    transportPolicies: invalidPolicy as unknown as Build407TransportPolicy[]
   }).governanceState,
   "TRANSPORT_POLICY_INVALID"
 );
