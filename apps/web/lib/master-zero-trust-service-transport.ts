@@ -1,10 +1,9 @@
 import {
   BUILD_405_APPLICATION_IDS,
   BUILD_405_COMMUNICATION_CHANNELS,
-  BUILD_405_COMMUNICATION_RELATIONSHIPS,
-  type Build405CommunicationChannel
+  BUILD_405_COMMUNICATION_RELATIONSHIPS
 } from "./master-assurance-renewal-security-comms-recertification";
-import type { Build402ApplicationId } from "./master-forecast-recalibration-renewal-timing-linkage-continuity";
+export type Build407CommunicationChannel =\n  (typeof BUILD_405_COMMUNICATION_CHANNELS)[number];\n\nimport type { Build402ApplicationId } from "./master-forecast-recalibration-renewal-timing-linkage-continuity";
 import type { Build406GovernanceAssessment } from "./master-unified-security-trust-completion-baseline";
 
 export const BUILD_407 = 407 as const;
@@ -71,7 +70,7 @@ export type Build407TransportPolicy = {
   policyId: string;
   sourceAppId: Build402ApplicationId;
   targetAppId: Build402ApplicationId;
-  allowedChannels: Build405CommunicationChannel[];
+  allowedChannels: Build407CommunicationChannel[];
   transportKind: "direct-https" | "trusted-local-relay" | "approved-cloud-relay";
   minimumTlsVersion: typeof BUILD_407_MIN_TLS_VERSION;
   certificateValidation: "verify-full";
@@ -98,7 +97,7 @@ export type Build407SignedRequestEvidence = {
   evidenceId: string;
   sourceAppId: Build402ApplicationId;
   targetAppId: Build402ApplicationId;
-  channel: Build405CommunicationChannel;
+  channel: Build407CommunicationChannel;
   keyId: string;
   issuer: string;
   audience: string;
