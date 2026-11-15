@@ -506,6 +506,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 406 unified security baseline</p>
+            <h2>One access model, explicit trust, and locked completion denominators across all seven applications</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Six access tiers × five control domains</h3>
+            <p>T0–T5 define authority scope while Build 405's five security domains apply across every tier, preventing the three Masters from drifting into incompatible security vocabularies.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Explicit 14-relationship trust matrix</h3>
+            <p>Trust is source-bound, non-transitive and non-delegating. Raw secret sharing and direct peer database writes stay forbidden, with consequential operations owner-gated.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>91 locked completion denominators</h3>
+            <p>Seven applications × thirteen functional, security and operational aspects receive evidence-backed denominators before any +10-point advancement can be claimed.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>T5 stays off ordinary transport</h3>
+            <p>The original-host owner ceremony cannot be granted by T4 or transported through normal HTTP, queues, Vercel, Cloudflare or customer sessions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Build 405 suite acceleration governance</p>
             <h2>Assurance renewal, five-tier security, communications re-certification and measurable completion acceleration</h2>
           </div>
