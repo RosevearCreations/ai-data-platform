@@ -506,6 +506,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 404 long-horizon assurance governance</p>
+            <h2>Recalibration stability, recovery effectiveness and seven-application prevention assurance</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>Long-horizon recalibration stability</h3>
+            <p>Forecast accuracy must remain inside the 500-basis-point budget across a seven-day evidence horizon with at least 14 independently verified samples.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Renewal drift recovery effectiveness</h3>
+            <p>Every detected timing-drift event must remain recovered inside the governed 6–24 hour lead window without breach or recurrence through a 72-hour effectiveness horizon.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Seven-application prevention assurance</h3>
+            <p>All seven application links require current hashes, canonical identity, seven-day assurance evidence and zero continuity, stale-evidence or authority-transfer recurrence.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Fail-closed long-horizon assurance</h3>
+            <p>Production GREEN cannot replace long-horizon recalibration stability, recovery effectiveness or independently verified linkage prevention assurance.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Theme governance</p>
             <h2>Cross-shell visual contract</h2>
           </div>
