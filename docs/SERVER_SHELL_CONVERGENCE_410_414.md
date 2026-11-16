@@ -13,6 +13,8 @@ This overlay does not replace the existing security roadmap. It defines how the 
 
 ## Build 411 — privileged module/service controls
 
+**Implemented in Build 411:** the cloud shell now exposes authenticated owner-gated module control intents, while physical execution remains restricted to the enrolled protected Windows host and requires immutable host evidence.
+
 Extends Privileged Operations, Owner Approval, Break-Glass Custody, Administrative Separation & Audit Ceremony Governance with:
 - owner-gated enable/disable controls for each of the three server modules;
 - exact module/service state receipts;
