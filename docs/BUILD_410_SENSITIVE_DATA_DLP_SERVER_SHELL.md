@@ -62,7 +62,7 @@ Three certified theme profiles are introduced:
 
 Each module can select its own color treatment and background-image slot while retaining one common Server Shell navigation language. Theme changes cannot hide or redefine security/health status colors.
 
-## YW and iCamp futuristic monitoring
+## Futuristic YW and iCamp monitoring
 
 The Server Shell receives read-only monitoring profiles for both governed slave shells:
 - deployment state;
