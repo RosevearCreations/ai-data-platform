@@ -35,6 +35,8 @@ export async function requestServerModuleControl(
   if (!isModuleId(input.moduleId)) throw new Error("server_module_invalid");
   if (!isAction(input.action)) throw new Error("server_module_action_invalid");
 
+  const moduleId: Build410ServerModuleId = input.moduleId;
+  const action: Build411ModuleAction = input.action;
   const reason = input.reason.trim();
   if (reason.length < 10 || reason.length > 500) {
     throw new Error("server_module_reason_invalid");
@@ -70,8 +72,8 @@ export async function requestServerModuleControl(
 
     const reasonDigest = digestReason(reason);
     const decision = evaluateBuild411ModuleControlRequest({
-      moduleId: input.moduleId,
-      action: input.action,
+      moduleId,
+      action,
       requesterRole,
       requesterUserId: userId,
       reasonDigest,
@@ -95,20 +97,20 @@ export async function requestServerModuleControl(
        values ($1,$2,$3,$4,$5,$6,$7,$8,'QUEUED')`,
       [
         intentId,
-        input.moduleId,
-        input.action,
+        moduleId,
+        action,
         userId,
         reasonDigest,
         ownerApprovalReceiptId,
         custodian?.receipt_id ?? null,
-        input.action === "DISABLE" ? "DISABLED" : "ENABLED"
+        action === "DISABLE" ? "DISABLED" : "ENABLED"
       ]
     );
 
     return {
       intentId,
-      moduleId: input.moduleId,
-      action: input.action,
+      moduleId,
+      action,
       controlState: "QUEUED" as const,
       ownerApprovalReceiptId,
       requiresProtectedWindowsHost: true,
