@@ -1,0 +1,88 @@
+{
+  "schema": "rosevear.fine-grained-authorization-consent-independent-sync.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "validationAuthority": "ai-data-platform",
+  "communicationsAuthority": "rosevear-comms-hub",
+  "authorityTransfer": false,
+  "build": 408,
+  "dependsOnState": "ZERO_TRUST_SERVICE_TRANSPORT_ENFORCED",
+  "protocol": {
+    "major": 1,
+    "minor": 1,
+    "compatiblePeerMajors": [
+      1
+    ],
+    "minimumPeerMajor": 1
+  },
+  "authorization": {
+    "accessTiers": [
+      "T0_PUBLIC_READ",
+      "T1_USER_SCOPED",
+      "T2_TENANT_SCOPED",
+      "T3_OPERATOR_SCOPED",
+      "T4_MASTER_GOVERNANCE",
+      "T5_ORIGINAL_HOST_OWNER_CEREMONY"
+    ],
+    "denyByDefault": true,
+    "exactCapabilityNamespaceRequired": true,
+    "wildcardCapabilityGrantsAllowed": false,
+    "crossTenantAccessAllowed": false,
+    "personalDataRequiresConsent": true,
+    "t5Delegable": false
+  },
+  "consent": {
+    "purposeBound": true,
+    "explicitForPersonalData": true,
+    "revocable": true,
+    "withdrawalPropagates": true,
+    "expiryEnforced": true,
+    "mayGrantNewCapability": false,
+    "rawPersonalDataInEvidence": false
+  },
+  "tenantIsolation": {
+    "apiBoundaryRequired": true,
+    "databaseRlsRequired": true,
+    "storageBoundaryRequired": true,
+    "sameTenantForeignAccessDenied": true,
+    "crossTenantAccessDenied": true,
+    "crossWorkspaceAccessDenied": true
+  },
+  "delegation": {
+    "maxLifetimeHours": 24,
+    "exactCapabilityRequired": true,
+    "exactAudienceRequired": true,
+    "tenantScopePreserved": true,
+    "workspaceScopePreserved": true,
+    "consentScopePreserved": true,
+    "subdelegationAllowed": false,
+    "authorityTransfer": false,
+    "t5DelegationAllowed": false,
+    "revocationPropagationRequired": true,
+    "consequentialWritesRequireOwnerGate": true
+  },
+  "releaseCoordination": {
+    "protocolVersion": "1.1",
+    "compatibleWithExistingProtocol": "1.0",
+    "lockstepReleaseRequired": false,
+    "applicationLocalChangesMayReleaseIndependently": true,
+    "peerContractCompatibilityRequiredForCrossAppCapabilities": true,
+    "unavailablePeerBlocksOnlyDependentCrossAppCapability": true,
+    "unrelatedLocalOperationsContinue": true,
+    "additiveChangesMustRemainBackwardCompatible": true,
+    "breakingChangesRequireMajorVersionBump": true,
+    "breakingChangesRequireExplicitPeerHandoff": true,
+    "unknownCapabilitiesFailClosed": true,
+    "rawSecretSynchronization": false,
+    "directPeerDatabaseSynchronization": false,
+    "vercelQuotaOnOneApplicationDoesNotBlockUnrelatedPeerRelease": true
+  },
+  "handoffOrder": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub",
+    "icamp",
+    "yw",
+    "devilndove",
+    "rosiedazzlers"
+  ]
+}
