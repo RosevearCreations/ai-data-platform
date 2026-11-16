@@ -431,11 +431,10 @@ for (const token of [
 
 const masterPage = source("app/master-suite/page.tsx");
 for (const token of [
-  "Build 410 · Rosevear Server Shell",
-  "One Server Shell, Three Clear Server Modules",
+  "Build 410 sensitive-data assurance",
+  "Classification, encryption, redaction, retention and DLP across the Server Shell",
   "Server module convergence",
   "Futuristic YW and iCamp status screens",
-  "Build 410 sensitive-data assurance",
   "35 classification policies",
   "24/7 local automation boundary"
 ]) assert.ok(masterPage.includes(token), "Master Suite token " + token);
