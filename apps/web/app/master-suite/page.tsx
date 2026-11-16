@@ -7,7 +7,10 @@ import { buildMasterShellCommandCenter } from "@/lib/master-shell-command-center
 import {
   MASTER_INSTRUMENT_CHILD_SHELLS,
   MASTER_INSTRUMENT_MODULES,
-  MASTER_INSTRUMENT_THEME_VERSION
+  MASTER_INSTRUMENT_THEME_VERSION,
+  SERVER_SHELL_ID,
+  SERVER_SHELL_PRIMARY_AUTOMATION_HOST,
+  SERVER_SHELL_THEME_PROFILES
 } from "@/lib/master-instrument-navigation";
 
 export const dynamic = "force-dynamic";
@@ -46,23 +49,23 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 388 · Rosevear Unified Master Instrument</p>
-        <h1>One Master Console, Three Authority-Preserving Modules</h1>
+        <p className="eyebrow">Build 410 · Rosevear Server Shell</p>
+        <h1>One Server Shell, Three Clear Server Modules</h1>
         <p className="lead">
-          AI Data Platform, Rosevear Comms Hub and Rosevear AI Hub now share one
-          instrument navigation and fusion layout. Their visual shell is unified;
-          their authentication, source identity and operational authority remain
-          independent and fail-closed.
+          AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
+          AI/Home/Automation and Communications/Operations now present as three
+          switchable modules in one system while preserving their security,
+          source identity and operational authority boundaries.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/master-shell-command-center">
-            Intelligence
+            Data & Intelligence
           </Link>
           <Link className="secondaryButton" href="/comms-complementary-plane">
-            Communications
+            Communications & Operations
           </Link>
           <Link className="secondaryButton" href="/master-application-inventory">
-            Runtime
+            AI, Home & Automation
           </Link>
           <Link className="secondaryButton" href="/master-sysop">
             Sysop
@@ -74,11 +77,11 @@ export default async function MasterSuitePage() {
         <div className="commandMetrics">
           <article>
             <strong>3</strong>
-            <span>Master modules</span>
+            <span>Server modules</span>
           </article>
           <article>
-            <strong>{MASTER_INSTRUMENT_THEME_VERSION}</strong>
-            <span>shared instrument contract</span>
+            <strong>{SERVER_SHELL_THEME_PROFILES.length}</strong>
+            <span>selectable module themes</span>
           </article>
           <article>
             <strong>{model.views.management.connectedApplications}</strong>
@@ -92,19 +95,21 @@ export default async function MasterSuitePage() {
       </section>
 
       <section className="dataQualityPolicyNote">
-        <strong>Fusion is navigation, not authority transfer.</strong>
+        <strong>{SERVER_SHELL_ID}: convergence without authority transfer.</strong>
         <p>
-          The three modules remain independently authoritative. A shared visual
-          surface cannot turn discovery, deployment, catalogue presence or another
-          module&apos;s status into acceptance.
+          Each module is independently disableable through an owner-gated control
+          path, and a disabled module must fail closed without taking down the outer
+          Server Shell. The primary 24/7 automation host role is
+          {" "}{SERVER_SHELL_PRIMARY_AUTOMATION_HOST}; Production GREEN never proves
+          that the physical Windows server has been updated.
         </p>
       </section>
 
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
-            <p className="eyebrow">Master module fusion</p>
-            <h2>Three peer planes in one operating console</h2>
+            <p className="eyebrow">Server module convergence</p>
+            <h2>Three server modules in one operating shell</h2>
           </div>
         </div>
         <div className="masterFusionGrid">
@@ -122,6 +127,13 @@ export default async function MasterSuitePage() {
                   <strong>Authority boundary</strong>
                   <span>{module.authorityBoundary}</span>
                 </div>
+                <div className="masterAuthorityBoundary">
+                  <strong>Server Shell controls</strong>
+                  <span>
+                    Owner switch · independently disableable · fail closed · themes:
+                    {" "}{module.themeProfiles.join(" / ")}
+                  </span>
+                </div>
                 <Link className="secondaryButton" href={module.href}>
                   Open {module.label}
                 </Link>
@@ -134,8 +146,8 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
-            <p className="eyebrow">Product shells</p>
-            <h2>Yard Workers and iCamp oversight</h2>
+            <p className="eyebrow">Slave-shell monitoring</p>
+            <h2>Futuristic YW and iCamp status screens</h2>
           </div>
         </div>
         <div className="masterChildShellGrid">
@@ -144,6 +156,11 @@ export default async function MasterSuitePage() {
               <span className="reviewStatus">SLAVE APPLICATION SHELL</span>
               <h3>{shell.displayName}</h3>
               <p>{shell.tenancyNote}</p>
+              <p>
+                Read-only server monitoring: deployment · runtime health · source revision ·
+                signer/receiver · queue/DLQ · latency/errors · migrations · security holds ·
+                Vercel quota. Missing evidence displays UNKNOWN/HOLD.
+              </p>
               <Link className="secondaryButton" href={shell.href}>
                 Open shell oversight
               </Link>
@@ -580,6 +597,33 @@ export default async function MasterSuitePage() {
           <article className="reviewBatchSummary">
             <h3>DLQ + bounded replay</h3>
             <p>Replay is digest-bound, capped at 168 hours, denied after revocation or consent withdrawal, and owner-gated for consequential work without expanding authority.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Build 410 sensitive-data assurance</p>
+            <h2>Classification, encryption, redaction, retention and DLP across the Server Shell</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>35 classification policies</h3>
+            <p>Seven applications × five data classes define encryption, redaction, export inspection, retention and deletion-evidence boundaries.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Encryption + redaction</h3>
+            <p>Sensitive data requires protected transport and storage; secrets require field-level protection and never enter logs, audit evidence or cross-app messages.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Retention + DLP</h3>
+            <p>Purpose-bound retention, expiry/deletion evidence, export inspection, owner-gated restricted export and cross-tenant exfiltration prevention are mandatory.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>24/7 local automation boundary</h3>
+            <p>Home Assistant, MQTT, cameras, Ollama and deterministic automations stay inside the AI Hub module on the Windows server; hazardous autonomous actions remain forbidden.</p>
           </article>
         </div>
       </section>
