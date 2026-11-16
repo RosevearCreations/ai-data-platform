@@ -1,0 +1,80 @@
+{
+  "schema": "rosevear.cross-application-event-message-v2-durable-replay.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "validationAuthority": "ai-data-platform",
+  "communicationsAuthority": "rosevear-comms-hub",
+  "authorityTransfer": false,
+  "build": 409,
+  "dependsOnState": "FINE_GRAINED_AUTHORIZATION_CONSENT_AND_INDEPENDENT_SYNC_RECERTIFIED",
+  "synchronizationProtocol": "1.1",
+  "eventContract": {
+    "preferredVersion": 2,
+    "supportedVersions": [
+      1,
+      2
+    ],
+    "emitHighestMutuallySupportedVersion": true,
+    "requiredEnvelopeFields": [
+      "eventId",
+      "eventType",
+      "eventVersion",
+      "sourceAppId",
+      "targetAppId",
+      "occurredAt",
+      "correlationId",
+      "causationId",
+      "traceId",
+      "idempotencyKey",
+      "schemaRef",
+      "payloadDigestSha256",
+      "capabilityNamespace"
+    ],
+    "payloadDigest": "sha256",
+    "rawSecretsAllowed": false,
+    "rawPersonalDataInAuditEvidence": false,
+    "messageMayCreateConsent": false,
+    "messageMayGrantCapability": false,
+    "messageMayTransferAuthority": false,
+    "messageMayManufactureConnectedState": false
+  },
+  "durableDelivery": {
+    "deliverySemantics": "at-least-once",
+    "acknowledgementRequired": true,
+    "idempotencyRequired": true,
+    "duplicateSuppressionRequired": true,
+    "maxDeliveryAttempts": 8,
+    "exponentialBackoffRequired": true,
+    "deadLetterAfterExhaustion": true
+  },
+  "correlationContinuity": {
+    "correlationIdPreserved": true,
+    "causationIdRequiredForDerivedEvents": true,
+    "rootEventsMayHaveNullCausation": true,
+    "traceIdPreserved": true,
+    "tenantScopePreserved": true,
+    "workspaceScopePreserved": true,
+    "capabilityScopePreserved": true,
+    "consentScopePreserved": true
+  },
+  "deadLetterReplay": {
+    "deadLetterRequired": true,
+    "replayRequiresOriginalEnvelopeDigest": true,
+    "replayCreatesNewAttemptId": true,
+    "replayPreservesOriginalEventId": true,
+    "replayPreservesCorrelationAndCausation": true,
+    "replayMaxAgeHours": 168,
+    "replayAfterCapabilityRevocation": false,
+    "replayAfterConsentWithdrawal": false,
+    "consequentialReplayRequiresOwnerGate": true,
+    "replayMayExpandAuthority": false
+  },
+  "independentRelease": {
+    "lockstepReleaseRequired": false,
+    "peerVersionNegotiationRequired": true,
+    "v1FallbackRequired": true,
+    "unavailablePeerBlocksOnlyDependentDelivery": true,
+    "unrelatedLocalOperationsContinue": true,
+    "vercelQuotaOnOneApplicationDoesNotBlockUnrelatedPeerRelease": true
+  },
+  "directionalRelationships": 28
+}
