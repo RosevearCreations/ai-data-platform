@@ -110,6 +110,11 @@ export default async function MasterSuitePage() {
         Fusion is navigation, not authority transfer.
       </p>
 
+      <p className="dataQualityPolicyNote">
+        Build 390 continuity: Yard Workers and iCamp oversight remains governed by the
+        Cross-shell visual contract while the Server Shell adds richer read-only monitoring.
+      </p>
+
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
