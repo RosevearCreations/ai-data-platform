@@ -235,7 +235,12 @@ const requiredTables = [
   "master_build407_service_principals",
   "master_build407_key_rotation_receipts",
   "master_build407_transport_policies",
-  "master_build407_signed_request_evidence"
+  "master_build407_signed_request_evidence",
+  "master_build408_authorization_policies",
+  "master_build408_consent_policy_receipts",
+  "master_build408_tenant_isolation_evidence",
+  "master_build408_delegated_capability_recertifications",
+  "master_build408_sync_compatibility_contracts"
 ];
 
 const appendOnlyTables = [
@@ -426,7 +431,12 @@ const appendOnlyTables = [
   "master_build407_service_principals",
   "master_build407_key_rotation_receipts",
   "master_build407_transport_policies",
-  "master_build407_signed_request_evidence"
+  "master_build407_signed_request_evidence",
+  "master_build408_authorization_policies",
+  "master_build408_consent_policy_receipts",
+  "master_build408_tenant_isolation_evidence",
+  "master_build408_delegated_capability_recertifications",
+  "master_build408_sync_compatibility_contracts"
 ];
 
 
@@ -555,7 +565,8 @@ async function main() {
         "0167_master_long_horizon_recalibration_recovery_linkage_assurance.sql",
         "0168_master_assurance_renewal_security_comms_recertification.sql",
         "0169_master_unified_security_trust_completion_baseline.sql",
-        "0170_master_zero_trust_service_transport.sql"
+        "0170_master_zero_trust_service_transport.sql",
+        "0171_master_fine_grained_authorization_consent_independent_sync.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -794,6 +805,10 @@ async function main() {
     assert(
       migrationNames.has("0170_master_zero_trust_service_transport.sql"),
       "migration 0170 is not recorded"
+    );
+    assert(
+      migrationNames.has("0171_master_fine_grained_authorization_consent_independent_sync.sql"),
+      "migration 0171 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
