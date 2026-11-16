@@ -560,6 +560,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 409 event/message V2</p>
+            <h2>Version-negotiated envelopes, durable delivery and bounded replay across all directional routes</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>28 V2/V1-negotiated routes</h3>
+            <p>Every directional relationship prefers event contract V2 while retaining V1 fallback through peer-version negotiation, so independent releases remain compatible.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Durable ACK + dedupe</h3>
+            <p>At-least-once delivery requires acknowledgement, idempotency, duplicate suppression, bounded retries and dead-letter routing without repeating side effects.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Correlation continuity</h3>
+            <p>Correlation, causation, trace, source identity, tenant, workspace, capability, consent and authority context remain preserved across message hops.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>DLQ + bounded replay</h3>
+            <p>Replay is digest-bound, capped at 168 hours, denied after revocation or consent withdrawal, and owner-gated for consequential work without expanding authority.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Build 406 unified security baseline</p>
             <h2>One access model, explicit trust, and locked completion denominators across all seven applications</h2>
           </div>
