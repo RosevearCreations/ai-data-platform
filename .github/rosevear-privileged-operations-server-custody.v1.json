@@ -1,0 +1,73 @@
+{
+  "schema": "rosevear.ai-data-platform.privileged-operations-server-custody.v1",
+  "build": 411,
+  "title": "Privileged Operations, Owner Approval, Break-Glass Custody, Administrative Separation & Audit Ceremony Governance + Server Module Enable/Disable & 24/7 Windows Service Custody",
+  "serverShell": {
+    "shellId": "rosevear-server-shell",
+    "ownerAuthority": "master-sysop-owner",
+    "modules": [
+      "ai-data-platform",
+      "rosevear-ai-hub",
+      "rosevear-comms-hub"
+    ],
+    "actions": ["ENABLE", "DISABLE", "RESTART"],
+    "disableRequiresOwner": true,
+    "enableRequiresOwnerAndIndependentCustodian": true,
+    "restartRequiresOwnerAndIndependentCustodian": true,
+    "implicitCrossModuleActivationForbidden": true,
+    "authorityTransferForbidden": true
+  },
+  "privilegedOperations": {
+    "applications": 7,
+    "ownerGateRequired": true,
+    "requesterApproverSeparationRequired": true,
+    "selfApprovalForbiddenForDualControl": true,
+    "rawSecretsInAuditForbidden": true,
+    "immutableReceiptsRequired": true,
+    "ordinaryOperatorMayExecutePrivilegedAction": false
+  },
+  "breakGlass": {
+    "supported": true,
+    "normalPathReplacement": false,
+    "ownerApprovalRequired": true,
+    "twoDistinctCustodiansRequired": true,
+    "maximumMinutes": 30,
+    "singleUse": true,
+    "expiryRequired": true,
+    "authorityTransferForbidden": true,
+    "rawSecretEvidenceForbidden": true
+  },
+  "windowsServiceCustody": {
+    "hostRole": "rosevear-ai-hub-windows-server",
+    "services": [
+      {
+        "serviceId": "rosevear-ai-hub-automation-host",
+        "moduleId": "rosevear-ai-hub",
+        "owner": "rosevear-ai-hub"
+      },
+      {
+        "serviceId": "rosevear-ai-data-platform-worker",
+        "moduleId": "ai-data-platform",
+        "owner": "ai-data-platform"
+      },
+      {
+        "serviceId": "rosevear-comms-hub-worker",
+        "moduleId": "rosevear-comms-hub",
+        "owner": "rosevear-comms-hub"
+      }
+    ],
+    "leastPrivilegeServiceAccountRequired": true,
+    "osSecretStoreRequired": true,
+    "publicInboundRequired": false,
+    "automaticStartMayBeEnrolled": true,
+    "physicalActivationRequiresHostReceipt": true
+  },
+  "releaseBoundary": {
+    "synchronizationProtocol": "1.1",
+    "lockstepReleaseRequired": false,
+    "productionGreenImpliesPhysicalWindowsHostUpdated": false,
+    "productionGreenImpliesServiceRestarted": false,
+    "moduleControlIntentExecutesInCloud": false,
+    "protectedWindowsHostExecutesApprovedIntent": true
+  }
+}
