@@ -2,10 +2,12 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { SecurityIncidentFusionPanel } from "@/components/security-incident-fusion-panel";
 import { auth } from "@/lib/auth";
 import { composeBasicAlerts } from "@/lib/basic-alerts";
 import { composeCrossApplicationControlCenter } from "@/lib/cross-application-control-center";
 import { composeIncidentRunbookRecoveryOrchestration } from "@/lib/incident-runbook-recovery-orchestration";
+import { summarizeBuild412FromRunbooks } from "@/lib/master-security-incident-fusion";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,7 @@ export default async function IncidentRunbookRecoveryPage() {
     alerts,
     controlCenter
   });
+  const build412 = summarizeBuild412FromRunbooks(model);
 
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
@@ -115,6 +118,22 @@ export default async function IncidentRunbookRecoveryPage() {
           ))}
         </div>
       </section>
+
+      <SecurityIncidentFusionPanel
+        activePlans={build412.activePlans}
+        critical={build412.critical}
+        blocked={build412.blocked}
+        ywState={
+          build412.yw
+            ? build412.yw.severity + " · " + build412.yw.state
+            : "NO ACTIVE ALERT / telemetry not inferred"
+        }
+        icampState={
+          build412.icamp
+            ? build412.icamp.severity + " · " + build412.icamp.state
+            : "NO ACTIVE ALERT / telemetry not inferred"
+        }
+      />
 
       <section className="dataQualityPolicyNote">
         <strong>Fail closed on missing or held evidence.</strong>
