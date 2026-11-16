@@ -533,6 +533,33 @@ export default async function MasterSuitePage() {
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
+            <p className="eyebrow">Build 408 fine-grained authorization</p>
+            <h2>Capability-level authorization, consent boundaries and independent synchronization</h2>
+          </div>
+        </div>
+        <div className="masterGovernanceGrid">
+          <article className="reviewBatchSummary">
+            <h3>42 capability-tier policies</h3>
+            <p>Seven applications × six canonical access tiers are deny-by-default, exact-capability scoped and cross-tenant denied; T5 remains non-delegable.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Consent + tenant isolation</h3>
+            <p>Personal-data access requires purpose-bound revocable consent while API, PostgreSQL RLS and storage boundaries preserve tenant and workspace isolation.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>28 bounded delegations</h3>
+            <p>Every directional relationship preserves capability, audience, tenant, workspace and consent scope with 24-hour maximum lifetime, no subdelegation and no authority transfer.</p>
+          </article>
+          <article className="reviewBatchSummary">
+            <h3>Independent releases · protocol 1.1</h3>
+            <p>Additive changes remain compatible with protocol 1.0 peers. Vercel limits on AI Data Platform, YW or iCamp do not force unrelated applications into a lockstep deployment.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
             <p className="eyebrow">Build 406 unified security baseline</p>
             <h2>One access model, explicit trust, and locked completion denominators across all seven applications</h2>
           </div>
