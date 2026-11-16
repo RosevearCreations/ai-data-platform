@@ -1,0 +1,96 @@
+{
+  "schema": "rosevear.sensitive-data-dlp-server-shell.v1",
+  "topologyId": "rosevear-master-shell-seven-apps.v1",
+  "build": 410,
+  "dependsOnState": "EVENT_MESSAGE_V2_DURABLE_DELIVERY_AND_REPLAY_GOVERNANCE_VERIFIED",
+  "synchronizationProtocol": "1.1",
+  "serverShell": {
+    "shellId": "rosevear-server-shell",
+    "outerShell": "ai-data-platform",
+    "primaryAutomationHostRole": "rosevear-ai-hub-windows-server",
+    "modules": [
+      {
+        "id": "ai-data-platform",
+        "label": "Data & Intelligence",
+        "independentlyDisableable": true,
+        "automationHost": "rosevear-ai-hub-windows-server"
+      },
+      {
+        "id": "rosevear-ai-hub",
+        "label": "AI, Home & Automation",
+        "independentlyDisableable": true,
+        "automationHost": "rosevear-ai-hub-windows-server"
+      },
+      {
+        "id": "rosevear-comms-hub",
+        "label": "Communications & Operations",
+        "independentlyDisableable": true,
+        "automationHost": "rosevear-ai-hub-windows-server"
+      }
+    ],
+    "disablingOneModuleMustNotStopShell": true,
+    "disabledModuleFailsClosed": true,
+    "productionGreenDoesNotForceModuleEnabled": true
+  },
+  "themes": {
+    "perModuleSelectable": true,
+    "colorsChangeable": true,
+    "imageSlotsChangeable": true,
+    "semanticSecurityColorsImmutable": true,
+    "securityStateCannotBeHiddenByTheme": true,
+    "profiles": [
+      "night-ops",
+      "copper-workshop",
+      "meadow-grid"
+    ]
+  },
+  "slaveMonitoring": {
+    "shells": [
+      "yw",
+      "icamp"
+    ],
+    "readOnlyByDefault": true,
+    "evidenceRequired": true,
+    "metrics": [
+      "deployment",
+      "runtime-health",
+      "source-revision",
+      "signer-receiver",
+      "queue-dlq",
+      "latency-errors",
+      "migration",
+      "security-holds",
+      "vercel-quota"
+    ],
+    "unknownStateFailsClosed": true
+  },
+  "dataClasses": [
+    "D0_PUBLIC",
+    "D1_INTERNAL",
+    "D2_PERSONAL",
+    "D3_CONFIDENTIAL",
+    "D4_SECRET"
+  ],
+  "protections": {
+    "tlsRequired": true,
+    "atRestEncryptionForSensitiveClasses": true,
+    "fieldLevelEncryptionForSecrets": true,
+    "logsRedacted": true,
+    "rawSecretsInLogs": false,
+    "rawSecretsInCrossAppMessages": false,
+    "rawPersonalDataInAuditEvidence": false,
+    "retentionPurposeBound": true,
+    "deletionEvidenceRequired": true,
+    "dlpExportInspectionRequired": true,
+    "ownerGateForRestrictedExport": true
+  },
+  "homeAutomationBoundary": {
+    "module": "rosevear-ai-hub",
+    "homeAssistant": true,
+    "mqtt": true,
+    "cameras": true,
+    "localAiOllama": true,
+    "deterministicAutomationEngine": true,
+    "hazardousAutonomousActionsRemainForbidden": true
+  }
+}
