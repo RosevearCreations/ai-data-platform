@@ -1,30 +1,53 @@
 export const BUILD_388 = 388 as const;
 export const MASTER_INSTRUMENT_THEME_VERSION = "rosevear-master-instrument.v1" as const;
+export const SERVER_SHELL_ID = "rosevear-server-shell" as const;
+export const SERVER_SHELL_PRIMARY_AUTOMATION_HOST =
+  "rosevear-ai-hub-windows-server" as const;
+export const SERVER_SHELL_THEME_PROFILES = [
+  "night-ops",
+  "copper-workshop",
+  "meadow-grid"
+] as const;
 
 export const MASTER_INSTRUMENT_MODULES = [
   {
     id: "ai-data-platform",
-    label: "Intelligence",
+    label: "Data & Intelligence",
     displayName: "AI Data Platform",
     href: "/master-shell-command-center",
-    role: "Master intelligence, evidence, analytics and readiness coordination",
-    authorityBoundary: "Does not inherit message authority or local host authority"
+    role: "Server Shell data, evidence, analytics, validation and readiness coordination",
+    authorityBoundary: "Does not inherit message authority or local host authority",
+    serverShellId: SERVER_SHELL_ID,
+    independentlyDisableable: true,
+    ownerSwitchRequired: true,
+    primaryAutomationHostRole: SERVER_SHELL_PRIMARY_AUTOMATION_HOST,
+    themeProfiles: SERVER_SHELL_THEME_PROFILES
   },
   {
     id: "rosevear-comms-hub",
-    label: "Communications",
+    label: "Communications & Operations",
     displayName: "Rosevear Comms Hub",
     href: "/comms-complementary-plane",
-    role: "Communications, incident, follow-up and operator control plane",
-    authorityBoundary: "Remains the source of authority for communications and operator actions"
+    role: "Server Shell communications, incident, follow-up and operator control plane",
+    authorityBoundary: "Remains the source of authority for communications and operator actions",
+    serverShellId: SERVER_SHELL_ID,
+    independentlyDisableable: true,
+    ownerSwitchRequired: true,
+    primaryAutomationHostRole: SERVER_SHELL_PRIMARY_AUTOMATION_HOST,
+    themeProfiles: SERVER_SHELL_THEME_PROFILES
   },
   {
     id: "rosevear-ai-hub",
-    label: "Runtime",
+    label: "AI, Home & Automation",
     displayName: "Rosevear AI Hub",
     href: "/master-application-inventory",
-    role: "Original Windows local runtime, device and support host",
-    authorityBoundary: "Remains independently authenticated and locally authoritative"
+    role: "Primary 24/7 Windows runtime for local AI, Home Assistant, MQTT, cameras and deterministic automation",
+    authorityBoundary: "Remains independently authenticated and locally authoritative for physical-device automation",
+    serverShellId: SERVER_SHELL_ID,
+    independentlyDisableable: true,
+    ownerSwitchRequired: true,
+    primaryAutomationHostRole: SERVER_SHELL_PRIMARY_AUTOMATION_HOST,
+    themeProfiles: SERVER_SHELL_THEME_PROFILES
   }
 ] as const;
 
