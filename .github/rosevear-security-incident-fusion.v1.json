@@ -1,0 +1,30 @@
+{
+  "schema": "rosevear.ai-data-platform.security-incident-fusion.v1",
+  "build": 412,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "telemetryDimensions": ["DEPLOYMENT","RUNTIME","SOURCE","SIGNER","RECEIVER","QUEUE","DLQ","LATENCY","ERROR","MIGRATION","SECURITY","QUOTA"],
+  "incidentFusion": {
+    "correlationAcrossApplications": true,
+    "rawSecretTelemetryForbidden": true,
+    "missingTelemetryIsHealthy": false,
+    "staleTelemetryMayAuthorizeRecovery": false,
+    "localOperationalAuthorityPreserved": true,
+    "commsAuthorityPreserved": true,
+    "aiDataPlatformMayExecutePeerRecovery": false
+  },
+  "supervisedActions": {
+    "actions": ["CONTAIN","RECOVER","ROLLBACK","RESTART"],
+    "ownerApprovalRequired": true,
+    "independentCustodianRequired": true,
+    "sourceExecutionReceiptRequired": true,
+    "postActionTelemetryRequired": true,
+    "cloudDirectPeerMutationForbidden": true
+  },
+  "releaseBoundary": {
+    "productionGreenImpliesIncidentResolved": false,
+    "productionGreenImpliesPeerRecovered": false,
+    "productionGreenImpliesWindowsServiceRestarted": false,
+    "protocol": "1.1",
+    "lockstepReleaseRequired": false
+  }
+}
