@@ -591,7 +591,8 @@ async function main() {
         "0171_master_fine_grained_authorization_consent_independent_sync.sql",
         "0172_master_event_message_v2_durable_replay.sql",
         "0173_master_sensitive_data_dlp_server_shell.sql",
-        "0174_master_privileged_operations_server_custody.sql"
+        "0174_master_privileged_operations_server_custody.sql",
+        "0175_master_security_incident_fusion.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -846,6 +847,10 @@ async function main() {
     assert(
       migrationNames.has("0174_master_privileged_operations_server_custody.sql"),
       "migration 0174 is not recorded"
+    );
+    assert(
+      migrationNames.has("0175_master_security_incident_fusion.sql"),
+      "migration 0175 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
