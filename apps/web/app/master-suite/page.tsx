@@ -105,6 +105,11 @@ export default async function MasterSuitePage() {
         </p>
       </section>
 
+      <p className="dataQualityPolicyNote">
+        Build 388 continuity: One Master Console, Three Authority-Preserving Modules.
+        Fusion is navigation, not authority transfer.
+      </p>
+
       <section className="reviewQueue">
         <div className="sectionHeading">
           <div>
