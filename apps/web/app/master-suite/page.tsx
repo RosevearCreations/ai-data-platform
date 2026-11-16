@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { ServerModuleControlPanel } from "@/components/server-module-control-panel";
 import { auth } from "@/lib/auth";
 import { buildMasterShellCommandCenter } from "@/lib/master-shell-command-center";
 import {
@@ -49,13 +50,14 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 410 · Rosevear Server Shell</p>
-        <h1>One Server Shell, Three Clear Server Modules</h1>
+        <p className="eyebrow">Build 411 · Rosevear Server Shell</p>
+        <h1>Privileged Server Module Controls & 24/7 Windows Service Custody</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
-          switchable modules in one system while preserving their security,
-          source identity and operational authority boundaries.
+          owner-gated modules in one system while preserving their security,
+          source identity and operational authority boundaries. Module control intents
+          are audited in the cloud and executed only by the protected Windows host.
         </p>
         <div className="heroActions">
           <Link className="secondaryButton" href="/master-shell-command-center">
@@ -609,6 +611,34 @@ export default async function MasterSuitePage() {
             <p>Replay is digest-bound, capped at 168 hours, denied after revocation or consent withdrawal, and owner-gated for consequential work without expanding authority.</p>
           </article>
         </div>
+      </section>
+
+      <section className="reviewQueue">
+        <div className="sectionHeading">
+          <div>
+            <p className="eyebrow">Build 411 privileged module/service controls</p>
+            <h2>Owner-gated enable, disable and restart intents with Windows-host custody</h2>
+          </div>
+        </div>
+        <ServerModuleControlPanel
+          modules={[
+            {
+              moduleId: "ai-data-platform",
+              displayName: "Data & Intelligence",
+              runtimeState: runtimeState("ai-data-platform")
+            },
+            {
+              moduleId: "rosevear-ai-hub",
+              displayName: "AI, Home & Automation",
+              runtimeState: runtimeState("rosevear-ai-hub")
+            },
+            {
+              moduleId: "rosevear-comms-hub",
+              displayName: "Communications & Operations",
+              runtimeState: runtimeState("rosevear-comms-hub")
+            }
+          ]}
+        />
       </section>
 
       <section className="reviewQueue">
