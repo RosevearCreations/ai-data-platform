@@ -245,7 +245,13 @@ const requiredTables = [
   "master_build409_durable_delivery_policies",
   "master_build409_correlation_continuity_evidence",
   "master_build409_dead_letter_replay_policies",
-  "master_build409_message_compatibility_contracts"
+  "master_build409_message_compatibility_contracts",
+  "master_build410_data_classification_policies",
+  "master_build410_encryption_profiles",
+  "master_build410_redaction_retention_dlp_assurance",
+  "master_build410_server_shell_modules",
+  "master_build410_slave_monitoring_profiles",
+  "master_build410_theme_profiles"
 ];
 
 const appendOnlyTables = [
@@ -446,7 +452,13 @@ const appendOnlyTables = [
   "master_build409_durable_delivery_policies",
   "master_build409_correlation_continuity_evidence",
   "master_build409_dead_letter_replay_policies",
-  "master_build409_message_compatibility_contracts"
+  "master_build409_message_compatibility_contracts",
+  "master_build410_data_classification_policies",
+  "master_build410_encryption_profiles",
+  "master_build410_redaction_retention_dlp_assurance",
+  "master_build410_server_shell_modules",
+  "master_build410_slave_monitoring_profiles",
+  "master_build410_theme_profiles"
 ];
 
 
@@ -577,7 +589,8 @@ async function main() {
         "0169_master_unified_security_trust_completion_baseline.sql",
         "0170_master_zero_trust_service_transport.sql",
         "0171_master_fine_grained_authorization_consent_independent_sync.sql",
-        "0172_master_event_message_v2_durable_replay.sql"
+        "0172_master_event_message_v2_durable_replay.sql",
+        "0173_master_sensitive_data_dlp_server_shell.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -824,6 +837,10 @@ async function main() {
     assert(
       migrationNames.has("0172_master_event_message_v2_durable_replay.sql"),
       "migration 0172 is not recorded"
+    );
+    assert(
+      migrationNames.has("0173_master_sensitive_data_dlp_server_shell.sql"),
+      "migration 0173 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
