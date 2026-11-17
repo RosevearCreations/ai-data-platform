@@ -87,6 +87,9 @@ const requiredTables = [
   "performance_baseline_snapshots",
   "experience_telemetry_events",
   "service_performance_events",
+  "master_build413_acceptance_evidence",
+  "master_build413_completion_advancement_evidence",
+  "master_build413_theme_selection_events",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
   "master_completion_requirement_revisions",
@@ -251,7 +254,10 @@ const requiredTables = [
   "master_build410_redaction_retention_dlp_assurance",
   "master_build410_server_shell_modules",
   "master_build410_slave_monitoring_profiles",
-  "master_build410_theme_profiles"
+  "master_build410_theme_profiles",
+  "master_build413_acceptance_evidence",
+  "master_build413_completion_advancement_evidence",
+  "master_build413_theme_selection_events"
 ];
 
 const appendOnlyTables = [
