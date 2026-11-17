@@ -41,7 +41,7 @@ jobs:
           --health-retries 10
 
     env:
-      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_test
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_test?sslmode=verify-full&sslrootcert=/tmp/ql467-ci-postgres.crt
       BETTER_AUTH_SECRET: build-002-ci-only-secret-please-never-use-in-production-000000000000
       BETTER_AUTH_URL: http://localhost:3000
       BETTER_AUTH_TRUSTED_ORIGINS: http://localhost:3000
@@ -68,6 +68,28 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Enable verified TLS for ephemeral CI PostgreSQL only
+        # CI-local service is a disposable container. Production retains verify-full.
+        run: |
+          set -euo pipefail
+          openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
+            -subj '/CN=localhost' \
+            -addext 'subjectAltName=IP:127.0.0.1,DNS:localhost' \
+            -keyout /tmp/ql467-ci-postgres.key \
+            -out /tmp/ql467-ci-postgres.crt >/dev/null 2>&1
+          pg_container="$(docker ps --filter 'ancestor=postgres:18-alpine' -q | head -n 1)"
+          test -n "$pg_container"
+          docker cp /tmp/ql467-ci-postgres.key "$pg_container:/tmp/ql467-ci-postgres.key"
+          docker cp /tmp/ql467-ci-postgres.crt "$pg_container:/tmp/ql467-ci-postgres.crt"
+          docker exec -u root "$pg_container" sh -c "chown postgres:postgres /tmp/ql467-ci-postgres.key /tmp/ql467-ci-postgres.crt && chmod 0600 /tmp/ql467-ci-postgres.key && chmod 0644 /tmp/ql467-ci-postgres.crt"
+          docker exec -e PGPASSWORD=postgres "$pg_container" psql -h 127.0.0.1 -U postgres -d ai_data_platform_test -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl_cert_file TO '/tmp/ql467-ci-postgres.crt'"
+          docker exec -e PGPASSWORD=postgres "$pg_container" psql -h 127.0.0.1 -U postgres -d ai_data_platform_test -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl_key_file TO '/tmp/ql467-ci-postgres.key'"
+          docker exec -e PGPASSWORD=postgres "$pg_container" psql -h 127.0.0.1 -U postgres -d ai_data_platform_test -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl TO 'on'"
+          docker exec -e PGPASSWORD=postgres "$pg_container" psql -h 127.0.0.1 -U postgres -d ai_data_platform_test -v ON_ERROR_STOP=1 -c "SELECT pg_reload_conf()"
+          docker exec -e PGPASSWORD=postgres "$pg_container" psql -h 127.0.0.1 -U postgres -d ai_data_platform_test -v ON_ERROR_STOP=1 -c "SHOW ssl" | grep -q on
+          openssl s_client -connect 127.0.0.1:5432 -starttls postgres \
+            -CAfile /tmp/ql467-ci-postgres.crt -verify_return_error </dev/null 2>&1 | grep -q 'Verify return code: 0 (ok)'
+
       - name: Apply database migrations
         run: pnpm --filter @rosevear/ai-data-web db:migrate
 
@@ -92,13 +114,13 @@ jobs:
         if: steps.impact.outputs.legacy_required == 'true'
         run: pnpm --filter @rosevear/ai-data-web db:migrate
         env:
-          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test?sslmode=verify-full&sslrootcert=/tmp/ql467-ci-postgres.crt
 
       - name: Run exhaustive historical audit when required
         if: steps.impact.outputs.legacy_required == 'true'
         run: pnpm ci:legacy
         env:
-          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test
+          DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/ai_data_platform_legacy_test?sslmode=verify-full&sslrootcert=/tmp/ql467-ci-postgres.crt
 
       - name: Record consolidation result
         if: always()
