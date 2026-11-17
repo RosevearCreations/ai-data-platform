@@ -704,6 +704,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "integration-delivery"
       },
       {
+        href: "/communications-delivery-operations",
+        label: "Communications Delivery Operations",
+        description: "Review Build 417 delivery SLA, signed ACK latency, duplicate suppression, replay quality and dead-letter recovery evidence.",
+        helpTopic: "integration-delivery"
+      },
+      {
         href: "/delivery-guarantees",
         label: "Delivery Guarantees",
         description: "Review deterministic idempotency keys, exactly-once internal intents and duplicate suppression evidence.",
