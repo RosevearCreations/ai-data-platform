@@ -163,7 +163,7 @@ for(const token of [
   "319b718950ff48e5a8ca28fd82d03d2e56bf74ad",
   "904f1480d349b6ee508fd11221063d28cc35342e",
   "NOT IMPLEMENTED",
-  "Rosevear AI Hub Unattended Boot",
+  "Hub unattended Scheduled Task installers",
   "24-hour continuity",
   "does not perform the rotation"
 ]) assert.ok(doc.includes(token),"doc token missing: "+token);
