@@ -1,0 +1,103 @@
+{
+  "schema": "rosevear.master-themes.v2",
+  "scope": "three-independent-masters",
+  "masters": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub"
+  ],
+  "presentationOnly": true,
+  "authorityTransfer": false,
+  "themeIds": [
+    "instrument",
+    "nebula",
+    "meadow",
+    "high-contrast",
+    "copper",
+    "arctic",
+    "solar",
+    "graphite"
+  ],
+  "themes": [
+    {
+      "id": "instrument",
+      "label": "Master Instrument",
+      "background": "#050b16",
+      "surface": "#081625",
+      "panel": "#0b1c2d",
+      "text": "#eef6ff",
+      "accent": "#9a46ff",
+      "muted": "#b4c5d7"
+    },
+    {
+      "id": "nebula",
+      "label": "Nebula Purple",
+      "background": "#130923",
+      "surface": "#211134",
+      "panel": "#281848",
+      "text": "#f9eeff",
+      "accent": "#d27dfd",
+      "muted": "#e2c7f8"
+    },
+    {
+      "id": "meadow",
+      "label": "Meadow",
+      "background": "#061b1b",
+      "surface": "#113a36",
+      "panel": "#17493f",
+      "text": "#e8fff5",
+      "accent": "#66ddb4",
+      "muted": "#b9e2d4"
+    },
+    {
+      "id": "high-contrast",
+      "label": "High Contrast",
+      "background": "#030303",
+      "surface": "#111111",
+      "panel": "#1d1d1d",
+      "text": "#ffffff",
+      "accent": "#ffdd55",
+      "muted": "#f3f3f3"
+    },
+    {
+      "id": "copper",
+      "label": "Copper Workshop",
+      "background": "#181018",
+      "surface": "#2b1c1a",
+      "panel": "#362624",
+      "text": "#fff3e9",
+      "accent": "#f6b46d",
+      "muted": "#ead2c5"
+    },
+    {
+      "id": "arctic",
+      "label": "Arctic Blue",
+      "background": "#071b30",
+      "surface": "#0d3450",
+      "panel": "#154461",
+      "text": "#edfbff",
+      "accent": "#78dcff",
+      "muted": "#c6ecf8"
+    },
+    {
+      "id": "solar",
+      "label": "Solar Gold",
+      "background": "#201911",
+      "surface": "#352819",
+      "panel": "#423321",
+      "text": "#fff8e5",
+      "accent": "#ffcd68",
+      "muted": "#ead8ac"
+    },
+    {
+      "id": "graphite",
+      "label": "Graphite Cyan",
+      "background": "#0b141c",
+      "surface": "#192933",
+      "panel": "#203843",
+      "text": "#eaf9ff",
+      "accent": "#55e3e6",
+      "muted": "#bfdee6"
+    }
+  ]
+}
