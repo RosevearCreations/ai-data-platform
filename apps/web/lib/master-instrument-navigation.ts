@@ -84,6 +84,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/acceptance-advancement",
   "/acceleration-closure",
   "/evidence-freshness",
+  "/original-host-continuity",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",

@@ -56,6 +56,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/original-host-continuity",
+        label: "Original-Host Continuity",
+        description: "Review Build 416 Windows service identity, reboot witness, independent peer ACK, certificate re-enrollment and rollback evidence without host mutation.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/master-sysop",
         label: "Master Sysop Shell",
         description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
