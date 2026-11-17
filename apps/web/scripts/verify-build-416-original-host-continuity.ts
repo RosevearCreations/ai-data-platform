@@ -151,7 +151,8 @@ const page=read("apps/web/app/original-host-continuity/page.tsx");
 for(const token of [
   "Build 416 · Original-Host Continuity",
   "Windows Boot Witness, Runtime Custody & Independent Peer ACK",
-  "NOT IMPLEMENTED",
+  "BUILD_416_SOURCE_REVIEW.aiDataSinkRoute",
+  "BUILD_416_SOURCE_REVIEW.commsSinkRoute",
   "Observed physical state",
   "Secrets are deliberately excluded"
 ]) assert.ok(page.includes(token),"page token missing: "+token);
