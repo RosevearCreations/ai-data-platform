@@ -127,7 +127,9 @@ for(const token of [
 ])assert.ok(css.includes(token),"css token missing: "+token);
 
 const themes=JSON.parse(read(".github/rosevear-master-themes.v2.json"));
-assert.equal(themes.themeIds.length,12);
+assert.equal(themes.themeIds.length,16);
+assert.equal(themes.build417Extension.sharedThemeCount,12);
+assert.equal(themes.build359Extension.sharedThemeCount,16);
 assert.deepEqual(themes.build417Extension.newThemeIds,["crimson","emerald","ultraviolet","steel"]);
 assert.equal(themes.build417Extension.sameCatalogueForAllMasters,true);
 assert.deepEqual(themes.masters,["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub"]);
