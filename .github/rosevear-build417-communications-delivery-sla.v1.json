@@ -1,0 +1,27 @@
+{
+  "schema":"rosevear.ai-data-platform.build417-communications-delivery-sla.v1",
+  "build":417,
+  "authorityHolder":"rosevear-comms-hub",
+  "relationshipCount":14,
+  "policy":{
+    "ackSlaSeconds":120,
+    "queueToDeliverySlaSeconds":300,
+    "deadLetterRecoveryHours":24,
+    "maxReplayAttempts":3,
+    "duplicateSuppressionRequired":true,
+    "missingEvidenceMayPass":false,
+    "deadLetterMayPassWithoutRecovery":false,
+    "cloudGreenImpliesLiveDelivery":false,
+    "automaticReplayAuthorized":false,
+    "directPeerDatabaseWriteAllowed":false,
+    "lockstepReleaseRequired":false
+  },
+  "ux":{
+    "sharedMasterThemes":12,
+    "newThemes":["crimson","emerald","ultraviolet","steel"],
+    "sharedAcrossMasters":["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub"],
+    "responsiveFormControls":true,
+    "boundedTextAreas":true,
+    "datePickerContrast":true
+  }
+}
