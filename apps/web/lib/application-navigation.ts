@@ -50,6 +50,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/evidence-freshness",
+        label: "Live Evidence Freshness",
+        description: "Review Build 415 freshness SLAs, evidence aging, expiry alerts and governed cross-application renewal requests.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/master-sysop",
         label: "Master Sysop Shell",
         description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
