@@ -1,0 +1,20 @@
+{
+  "schema": "rosevear.ai-data-platform.build413-acceptance-advancement.v1",
+  "build": 413,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "acceptanceDimensions": ["ROLE_DEVICE","ACCESSIBILITY","PERFORMANCE","UX","LOADING_DEGRADED"],
+  "completionAxes": ["design","implementation","automated-testing","integration-verification","security","accessibility-device-acceptance","production-user-acceptance"],
+  "themeProfiles": ["night-ops","copper-workshop","meadow-grid"],
+  "serverModules": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub"],
+  "policy": {
+    "minimumAdvancementPoints": 10,
+    "targetCappedAt100": true,
+    "denominatorMustRemainLocked": true,
+    "missingEvidenceMayAdvance": false,
+    "staleEvidenceMayAdvance": false,
+    "deploymentGreenMayAdvance": false,
+    "semanticStatusMeaningImmutable": true,
+    "themeMayHideSecurityState": false,
+    "roleDeviceGrid": "customer-worker-admin x mobile-tablet-desktop"
+  }
+}
