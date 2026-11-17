@@ -51,8 +51,8 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 415 · Rosevear Server Shell</p>
-        <h1>Live Evidence Freshness, Expiry SLA & Renewal Control</h1>
+        <p className="eyebrow">Build 416 · Rosevear Server Shell</p>
+        <h1>Original-Host Service Continuity, Reboot Witness & Runtime Custody</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
@@ -81,6 +81,9 @@ export default async function MasterSuitePage() {
           </Link>
           <Link className="secondaryButton" href="/evidence-freshness">
             Evidence Freshness
+          </Link>
+          <Link className="secondaryButton" href="/original-host-continuity">
+            Original-Host Continuity
           </Link>
         </div>
       </section>
