@@ -1,0 +1,56 @@
+{
+  "schema": "rosevear.ai-data-platform.build416-original-host-continuity.v1",
+  "build": 416,
+  "sourceReview": {
+    "rosevear-ai-hub": {
+      "mainSha": "793faaed8498bc649ae9b48788474ae715675697",
+      "pr804Merged": true,
+      "outboundReadOnlyEventClientContract": "IMPLEMENTED",
+      "windowsWorkerScmInstaller": "NOT_IMPLEMENTED",
+      "hubUnattendedTaskInstaller": "IMPLEMENTED_TASKS_ONLY"
+    },
+    "ai-data-platform": {
+      "mainSha": "319b718950ff48e5a8ca28fd82d03d2e56bf74ad",
+      "readOnlyEventSinkRoute": "NOT_IMPLEMENTED",
+      "windowsWorkerScmInstaller": "NOT_IMPLEMENTED"
+    },
+    "rosevear-comms-hub": {
+      "mainSha": "904f1480d349b6ee508fd11221063d28cc35342e",
+      "readOnlyEventSinkRoute": "NOT_IMPLEMENTED",
+      "windowsWorkerScmInstaller": "NOT_IMPLEMENTED"
+    }
+  },
+  "originalHost": "DESKTOP-AE894KC",
+  "readOnlySinkPath": "/internal/rosevear/master/events/read-only/v1",
+  "servicePolicies": [
+    {
+      "serviceId": "rosevear-ai-hub-automation-host",
+      "scmServiceName": "Rosevear-AIHub",
+      "requiredStartupMode": "AUTOMATIC"
+    },
+    {
+      "serviceId": "rosevear-ai-data-platform-worker",
+      "scmServiceName": "Rosevear-AIDataPlatform",
+      "requiredStartupMode": "AUTOMATIC"
+    },
+    {
+      "serviceId": "rosevear-comms-hub-worker",
+      "scmServiceName": "Rosevear-CommsHub",
+      "requiredStartupMode": "AUTOMATIC"
+    }
+  ],
+  "policy": {
+    "cloudGreenImpliesWindowsAcceptance": false,
+    "sourceDocumentImpliesLiveState": false,
+    "receiverOrActuatorControlInScope": false,
+    "installOrStartWorkersInScope": false,
+    "enableCloudModuleIntentInScope": false,
+    "rotateSecretsInScope": false,
+    "lockstepReleaseRequired": false,
+    "physicalAcceptanceRequiresBootWitness": true,
+    "physicalAcceptanceRequiresIndependentPeerAck": true,
+    "automaticStartupMustBeObservedOnOriginalHost": true,
+    "continuityHoursRequired": 24,
+    "certificateRotationOverlapHoursMax": 24
+  }
+}
