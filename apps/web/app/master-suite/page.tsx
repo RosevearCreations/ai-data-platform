@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { ServerModuleControlPanel } from "@/components/server-module-control-panel";
+import { ServerShellThemeAcceptancePanel } from "@/components/server-shell-theme-acceptance-panel";
 import { auth } from "@/lib/auth";
 import { buildMasterShellCommandCenter } from "@/lib/master-shell-command-center";
 import {
@@ -50,8 +51,8 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 411 · Rosevear Server Shell</p>
-        <h1>Privileged Server Module Controls & 24/7 Windows Service Custody</h1>
+        <p className="eyebrow">Build 413 · Rosevear Server Shell</p>
+        <h1>Unified Acceptance, Themes & Evidence Advancement</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
@@ -71,6 +72,9 @@ export default async function MasterSuitePage() {
           </Link>
           <Link className="secondaryButton" href="/master-sysop">
             Sysop
+          </Link>
+          <Link className="secondaryButton" href="/acceptance-advancement">
+            Acceptance & +10 Evidence
           </Link>
         </div>
       </section>
@@ -154,6 +158,8 @@ export default async function MasterSuitePage() {
           })}
         </div>
       </section>
+
+      <ServerShellThemeAcceptancePanel />
 
       <section className="reviewQueue">
         <div className="sectionHeading">
