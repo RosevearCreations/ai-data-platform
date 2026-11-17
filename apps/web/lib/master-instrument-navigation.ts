@@ -82,6 +82,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/module-health-intelligence",
   "/role-device-acceptance",
   "/acceptance-advancement",
+  "/acceleration-closure",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
