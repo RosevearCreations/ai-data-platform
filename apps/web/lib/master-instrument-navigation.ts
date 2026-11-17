@@ -5,7 +5,8 @@ export const SERVER_SHELL_PRIMARY_AUTOMATION_HOST =
   "rosevear-ai-hub-windows-server" as const;
 export const SERVER_SHELL_THEME_PROFILES = [
   "instrument","nebula","meadow","high-contrast","copper","arctic",
-  "solar","graphite","crimson","emerald","ultraviolet","steel"
+  "solar","graphite","crimson","emerald","ultraviolet","steel",
+  "aurora","amber-night","orchid","daylight"
 ] as const;
 
 export const MASTER_INSTRUMENT_MODULES = [
