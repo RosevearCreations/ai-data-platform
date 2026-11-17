@@ -81,6 +81,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/cross-application-interaction-trace",
   "/module-health-intelligence",
   "/role-device-acceptance",
+  "/acceptance-advancement",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
