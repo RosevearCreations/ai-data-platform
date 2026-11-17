@@ -234,6 +234,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/yw562-runtime-activation-closure",
           "/yw562-receiver-health-continuity",
           "/comms-complementary-plane",
+          "/communications-delivery-operations",
           "/field-mappings",
           "/schema-drift",
           "/integration-delivery",
