@@ -1,0 +1,17 @@
+{
+  "schema": "rosevear.ai-data-platform.build415-evidence-freshness-renewal.v1",
+  "build": 415,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "evidenceDomains": ["SOURCE_RUNTIME","COMPLETION","SECURITY","COMMUNICATIONS","ACCESSIBILITY_DEVICE","PERFORMANCE_UX","PRIVILEGED_RECOVERY"],
+  "requiredFreshnessSlots": 49,
+  "deliveryAuthority": "rosevear-comms-hub",
+  "policy": {
+    "missingEvidenceMayBeFresh": false,
+    "expiredEvidenceMayBeFresh": false,
+    "renewalRequestMayMakeEvidenceFresh": false,
+    "sourceOwnsRenewedEvidence": true,
+    "directPeerDatabaseWritesAllowed": false,
+    "productionGreenImpliesFreshEvidence": false,
+    "protocolVersion": "1.1"
+  }
+}
