@@ -10,6 +10,7 @@ import { NavigationAssist } from "@/app/NavigationAssist";
 import { NavigationInsights } from "@/app/NavigationInsights";
 import { OperatorCommandPalette } from "@/app/OperatorCommandPalette";
 import { OperatorWorkspaceMenu } from "@/app/OperatorWorkspaceControls";
+import { MasterThemeChooser467 } from "@/components/master-theme-chooser467";
 import {
   APPLICATION_NAVIGATION,
   MODULE_CARDS,
@@ -83,6 +84,7 @@ export function ApplicationShell({ children }: { children: ReactNode }) {
           </Link>
           <HelpCircle topic="shell-overview" label="Application navigation" />
         </div>
+        <MasterThemeChooser467 />
 
         <nav className="applicationNavigation">
           {APPLICATION_NAVIGATION.map((group) => {

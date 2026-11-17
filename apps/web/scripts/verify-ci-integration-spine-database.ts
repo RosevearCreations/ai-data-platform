@@ -619,7 +619,10 @@ async function main() {
         "0173_master_sensitive_data_dlp_server_shell.sql",
         "0174_master_privileged_operations_server_custody.sql",
         "0175_master_security_incident_fusion.sql",
-        "0176_master_acceptance_advancement.sql"
+        "0176_master_acceptance_advancement.sql",
+        "0177_master_acceleration_closure.sql",
+        "0178_master_evidence_freshness_renewal.sql",
+        "0179_master_original_host_continuity.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
