@@ -97,6 +97,8 @@ const requiredTables = [
   "master_build416_host_boot_witness_receipts",
   "master_build416_peer_ack_receipts",
   "master_build416_certificate_rotation_receipts",
+  "master_build417_delivery_sla_receipts",
+  "master_build417_dead_letter_recovery_receipts",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
   "master_completion_requirement_revisions",
@@ -277,7 +279,9 @@ const requiredTables = [
   "master_build415_expiry_alerts",
   "master_build416_host_boot_witness_receipts",
   "master_build416_peer_ack_receipts",
-  "master_build416_certificate_rotation_receipts"
+  "master_build416_certificate_rotation_receipts",
+  "master_build417_delivery_sla_receipts",
+  "master_build417_dead_letter_recovery_receipts"
 ];
 
 const appendOnlyTables = [
@@ -622,7 +626,8 @@ async function main() {
         "0176_master_acceptance_advancement.sql",
         "0177_master_acceleration_closure.sql",
         "0178_master_evidence_freshness_renewal.sql",
-        "0179_master_original_host_continuity.sql"
+        "0179_master_original_host_continuity.sql",
+        "0180_master_communications_delivery_sla.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -897,6 +902,10 @@ async function main() {
     assert(
       migrationNames.has("0179_master_original_host_continuity.sql"),
       "migration 0179 is not recorded"
+    );
+    assert(
+      migrationNames.has("0180_master_communications_delivery_sla.sql"),
+      "migration 0180 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
