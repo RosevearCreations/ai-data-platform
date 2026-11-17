@@ -51,8 +51,8 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 413 · Rosevear Server Shell</p>
-        <h1>Unified Acceptance, Themes & Evidence Advancement</h1>
+        <p className="eyebrow">Build 414 · Rosevear Server Shell</p>
+        <h1>Acceleration Closure, Security Re-Certification & 24/7 Evidence</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
@@ -75,6 +75,9 @@ export default async function MasterSuitePage() {
           </Link>
           <Link className="secondaryButton" href="/acceptance-advancement">
             Acceptance & +10 Evidence
+          </Link>
+          <Link className="secondaryButton" href="/acceleration-closure">
+            Build 414 Closure
           </Link>
         </div>
       </section>
