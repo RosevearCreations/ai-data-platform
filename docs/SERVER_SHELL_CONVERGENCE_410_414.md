@@ -48,6 +48,8 @@ Extends Seven-Application Role/Device/Accessibility/Performance/UX Acceptance wi
 
 ## Build 414 — 24/7 activation and closure
 
+**Implemented in Build 414:** the Server Shell now has fail-closed final-cycle evidence gates for 49 completion closures, 35 T1–T5 security re-certifications, the 14-relationship communications production pilot, protected original-host service activation receipts and an explicit owner-approved Builds 415–424 roadmap. Production GREEN remains separate from physical-host activation and evidence closure.
+
 Extends Seven-Application Completion Acceleration Closure, Security Re-Certification, Communications Production Pilot & Roadmap Renewal with:
 - supervised activation of the enrolled Windows-server background services;
 - evidence that local AI, Home Assistant, MQTT, cameras and deterministic automations remain locally owned by the AI Hub module;
