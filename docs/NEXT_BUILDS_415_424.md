@@ -2,7 +2,7 @@
 
 This roadmap begins only after Build 414 software release. Each build remains independently owner-authorized and protocol 1.1 compatible. No future build is automatically executed by roadmap approval.
 
-1. **Build 415 — Live Evidence Freshness, Expiry SLA & Cross-Application Renewal Control.** Add bounded freshness SLAs, renewal queues, expiry alerts and evidence-aging dashboards across all seven applications without converting stale evidence into success.
+1. **Build 415 — Live Evidence Freshness, Expiry SLA & Cross-Application Renewal Control.** Add bounded freshness SLAs, renewal queues, expiry alerts and evidence-aging dashboards across all seven applications without converting stale evidence into success. **Implemented in Build 415:** 49 live freshness slots, bounded domain SLAs, fail-closed aging states, append-only expiry alerts and governed renewal requests that never manufacture fresh evidence.
 2. **Build 416 — Original-Host Service Continuity, Reboot Witness & Independent Runtime Custody.** Strengthen signed reboot/startup receipts, service lifecycle evidence and original-host continuity for the three Server Shell workers.
 3. **Build 417 — Communications Delivery SLA, ACK Latency, Replay Quality & Dead-Letter Operations.** Measure Comms Hub delivery, acknowledgement latency, replay outcomes, duplicate suppression and dead-letter recovery across approved relationships.
 4. **Build 418 — Cross-Application Recovery Exercise & Rollback Readiness Certification.** Run evidence-backed supervised recovery and rollback exercises while preserving local authority and explicit owner gates.

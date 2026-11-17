@@ -83,6 +83,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/role-device-acceptance",
   "/acceptance-advancement",
   "/acceleration-closure",
+  "/evidence-freshness",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
