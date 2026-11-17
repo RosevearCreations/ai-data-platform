@@ -36,6 +36,8 @@ Extends Cross-Application Security Incident Fusion, Containment, Recovery, Rollb
 
 ## Build 413 — unified experience, themes and acceptance
 
+**Implemented in Build 413:** the Server Shell now has one evidence-driven acceptance surface across all seven applications, owner-gated per-module certified theme selection, and locked-denominator +10-point completion advancement evidence. Missing or stale evidence remains unresolved and Production GREEN does not manufacture acceptance progress.
+
 Extends Seven-Application Role/Device/Accessibility/Performance/UX Acceptance with:
 - true one-shell navigation across the three server modules;
 - selectable Night Ops, Copper Workshop and Meadow Grid profiles;
