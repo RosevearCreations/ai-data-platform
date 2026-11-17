@@ -509,3 +509,76 @@ html[data-rosevear-master-theme="graphite"] .masterInstrumentShell .masterInstru
 }
 @media(max-width:620px){.masterTheme467Chooser{margin:8px 4px}.masterInstrumentShell :is(input,select,textarea){max-width:100%;min-width:0}}
 @media(forced-colors:active){.masterTheme467Chooser select{border:2px solid CanvasText;forced-color-adjust:auto}}
+
+/* Build 417 — four additional shared Master skins and form/layout refinement. */
+html[data-rosevear-master-theme="crimson"] .masterInstrumentShell{
+ --instrument-bg:#19090d;--instrument-surface:#32121a;--instrument-panel:#451923;
+ --instrument-text:#fff0f3;--instrument-muted:#efb8c3;--instrument-purple:#ff6b84;
+ --instrument-purple-soft:color-mix(in srgb,#ff6b84 18%,transparent);
+ background:linear-gradient(140deg,#19090d,#32121a);color:#fff0f3;
+ border-color:color-mix(in srgb,#ff6b84 44%,transparent);
+}
+html[data-rosevear-master-theme="crimson"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){background:#451923;color:#fff0f3;border-color:color-mix(in srgb,#ff6b84 46%,transparent)}
+html[data-rosevear-master-theme="crimson"] .masterInstrumentShell .reviewHero{background:linear-gradient(115deg,#32121a,#19090d);color:#fff0f3}
+html[data-rosevear-master-theme="crimson"] .masterInstrumentShell .masterInstrumentTopnav{background:#32121a;border-color:#ff6b84}
+
+html[data-rosevear-master-theme="emerald"] .masterInstrumentShell{
+ --instrument-bg:#061813;--instrument-surface:#0c3026;--instrument-panel:#104638;
+ --instrument-text:#ecfff7;--instrument-muted:#b8dfd0;--instrument-purple:#4ee0a5;
+ --instrument-purple-soft:color-mix(in srgb,#4ee0a5 18%,transparent);
+ background:linear-gradient(140deg,#061813,#0c3026);color:#ecfff7;
+ border-color:color-mix(in srgb,#4ee0a5 44%,transparent);
+}
+html[data-rosevear-master-theme="emerald"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){background:#104638;color:#ecfff7;border-color:color-mix(in srgb,#4ee0a5 46%,transparent)}
+html[data-rosevear-master-theme="emerald"] .masterInstrumentShell .reviewHero{background:linear-gradient(115deg,#0c3026,#061813);color:#ecfff7}
+html[data-rosevear-master-theme="emerald"] .masterInstrumentShell .masterInstrumentTopnav{background:#0c3026;border-color:#4ee0a5}
+
+html[data-rosevear-master-theme="ultraviolet"] .masterInstrumentShell{
+ --instrument-bg:#100920;--instrument-surface:#22113c;--instrument-panel:#321653;
+ --instrument-text:#fbf1ff;--instrument-muted:#dbc9ef;--instrument-purple:#b884ff;
+ --instrument-purple-soft:color-mix(in srgb,#b884ff 18%,transparent);
+ background:linear-gradient(140deg,#100920,#22113c);color:#fbf1ff;
+ border-color:color-mix(in srgb,#b884ff 44%,transparent);
+}
+html[data-rosevear-master-theme="ultraviolet"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){background:#321653;color:#fbf1ff;border-color:color-mix(in srgb,#b884ff 46%,transparent)}
+html[data-rosevear-master-theme="ultraviolet"] .masterInstrumentShell .reviewHero{background:linear-gradient(115deg,#22113c,#100920);color:#fbf1ff}
+html[data-rosevear-master-theme="ultraviolet"] .masterInstrumentShell .masterInstrumentTopnav{background:#22113c;border-color:#b884ff}
+
+html[data-rosevear-master-theme="steel"] .masterInstrumentShell{
+ --instrument-bg:#0c1218;--instrument-surface:#18232d;--instrument-panel:#23313d;
+ --instrument-text:#f1f7fb;--instrument-muted:#c0d0dc;--instrument-purple:#8fc7e8;
+ --instrument-purple-soft:color-mix(in srgb,#8fc7e8 18%,transparent);
+ background:linear-gradient(140deg,#0c1218,#18232d);color:#f1f7fb;
+ border-color:color-mix(in srgb,#8fc7e8 44%,transparent);
+}
+html[data-rosevear-master-theme="steel"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){background:#23313d;color:#f1f7fb;border-color:color-mix(in srgb,#8fc7e8 46%,transparent)}
+html[data-rosevear-master-theme="steel"] .masterInstrumentShell .reviewHero{background:linear-gradient(115deg,#18232d,#0c1218);color:#f1f7fb}
+html[data-rosevear-master-theme="steel"] .masterInstrumentShell .masterInstrumentTopnav{background:#18232d;border-color:#8fc7e8}
+
+/* Build 417 master form ergonomics: bounded text lines, readable dates, responsive grids. */
+.masterInstrumentShell .reviewBatchSummary label,
+.masterInstrumentShell .reviewQueue label{display:grid;gap:.38rem;min-width:0;align-content:start}
+.masterInstrumentShell :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){
+ box-sizing:border-box;max-width:100%;min-width:0;width:min(100%,42rem);
+ border:1px solid #7f9fb5;border-radius:.7rem;background:#152d40;color:#f4faff;
+ font:inherit;line-height:1.35;
+}
+.masterInstrumentShell :is(input:not([type="checkbox"]):not([type="radio"]),select){min-height:44px;padding:.62rem .75rem}
+.masterInstrumentShell textarea{min-height:7.25rem;max-height:28rem;padding:.72rem .8rem;resize:vertical}
+.masterInstrumentShell :is(input[type="date"],input[type="datetime-local"],input[type="time"]){
+ width:min(100%,22rem);min-height:44px;padding:.62rem .75rem;color-scheme:dark;
+ background:#152d40;color:#f4faff;border-color:#8faabd;
+}
+.masterInstrumentShell :is(input[type="date"],input[type="datetime-local"],input[type="time"])::-webkit-calendar-picker-indicator{
+ opacity:.92;cursor:pointer;filter:invert(1) brightness(1.25);
+}
+.masterInstrumentShell :is(input,select,textarea):focus-visible{
+ outline:3px solid color-mix(in srgb,var(--instrument-purple) 68%,#fff);
+ outline-offset:2px;border-color:var(--instrument-purple);
+}
+.masterGovernanceGrid--wide{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1050px){.masterGovernanceGrid--wide{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){
+ .masterGovernanceGrid--wide{grid-template-columns:1fr}
+ .masterInstrumentShell :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){width:100%}
+}

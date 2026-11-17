@@ -16,7 +16,11 @@
     "copper",
     "arctic",
     "solar",
-    "graphite"
+    "graphite",
+    "crimson",
+    "emerald",
+    "ultraviolet",
+    "steel"
   ],
   "themes": [
     {
@@ -98,6 +102,56 @@
       "text": "#eaf9ff",
       "accent": "#55e3e6",
       "muted": "#bfdee6"
+    },
+    {
+      "id": "crimson",
+      "label": "Crimson Forge",
+      "background": "#19090d",
+      "surface": "#32121a",
+      "panel": "#451923",
+      "text": "#fff0f3",
+      "accent": "#ff6b84",
+      "muted": "#efb8c3"
+    },
+    {
+      "id": "emerald",
+      "label": "Emerald Circuit",
+      "background": "#061813",
+      "surface": "#0c3026",
+      "panel": "#104638",
+      "text": "#ecfff7",
+      "accent": "#4ee0a5",
+      "muted": "#b8dfd0"
+    },
+    {
+      "id": "ultraviolet",
+      "label": "Ultraviolet Grid",
+      "background": "#100920",
+      "surface": "#22113c",
+      "panel": "#321653",
+      "text": "#fbf1ff",
+      "accent": "#b884ff",
+      "muted": "#dbc9ef"
+    },
+    {
+      "id": "steel",
+      "label": "Steel Command",
+      "background": "#0c1218",
+      "surface": "#18232d",
+      "panel": "#23313d",
+      "text": "#f1f7fb",
+      "accent": "#8fc7e8",
+      "muted": "#c0d0dc"
     }
-  ]
+  ],
+  "build417Extension": {
+    "sharedThemeCount": 12,
+    "newThemeIds": [
+      "crimson",
+      "emerald",
+      "ultraviolet",
+      "steel"
+    ],
+    "sameCatalogueForAllMasters": true
+  }
 }

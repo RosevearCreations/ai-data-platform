@@ -1,13 +1,14 @@
 "use client";
 import {useEffect,useState} from "react";
 export const MASTER_THEME_IDS_467=[
- "instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite"
+ "instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite","crimson","emerald","ultraviolet","steel"
 ] as const;
 export type MasterThemeId467=(typeof MASTER_THEME_IDS_467)[number];
 const names:Record<MasterThemeId467,string>={
  instrument:"Master Instrument",nebula:"Nebula Purple",meadow:"Meadow",
  "high-contrast":"High Contrast",copper:"Copper Workshop",arctic:"Arctic Blue",
- solar:"Solar Gold",graphite:"Graphite Cyan"
+ solar:"Solar Gold",graphite:"Graphite Cyan",crimson:"Crimson Forge",emerald:"Emerald Circuit",
+ ultraviolet:"Ultraviolet Grid",steel:"Steel Command"
 };
 const storage="rosevear-master-appearance-v2";
 const valid=(s:unknown):s is MasterThemeId467=>typeof s==="string"&&

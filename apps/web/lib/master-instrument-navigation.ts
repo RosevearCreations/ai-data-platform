@@ -4,9 +4,8 @@ export const SERVER_SHELL_ID = "rosevear-server-shell" as const;
 export const SERVER_SHELL_PRIMARY_AUTOMATION_HOST =
   "rosevear-ai-hub-windows-server" as const;
 export const SERVER_SHELL_THEME_PROFILES = [
-  "night-ops",
-  "copper-workshop",
-  "meadow-grid"
+  "instrument","nebula","meadow","high-contrast","copper","arctic",
+  "solar","graphite","crimson","emerald","ultraviolet","steel"
 ] as const;
 
 export const MASTER_INSTRUMENT_MODULES = [
@@ -85,6 +84,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/acceleration-closure",
   "/evidence-freshness",
   "/original-host-continuity",
+  "/communications-delivery-operations",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",

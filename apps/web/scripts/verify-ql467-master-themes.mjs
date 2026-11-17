@@ -8,9 +8,11 @@ const css=readFileSync(resolve(root,"apps/web/app/master-instrument-shell.css"),
 assert.equal(contract.schema,"rosevear.master-themes.v2");
 assert.equal(contract.presentationOnly,true);
 assert.equal(contract.authorityTransfer,false);
-assert.deepEqual(contract.themeIds,["instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite"]);
+assert.deepEqual(contract.themeIds,["instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite","crimson","emerald","ultraviolet","steel"]);
 for(const t of contract.themeIds){
  assert.ok(component.includes('"'+t+'"'));
  assert.ok(css.includes('data-rosevear-master-theme="'+t+'"'));
 }
-console.log("QL467_AIDP_MASTER_THEME_PARITY=PASS");
+assert.equal(contract.build417Extension?.sharedThemeCount,12);
+assert.equal(contract.build417Extension?.sameCatalogueForAllMasters,true);
+console.log("QL467_AIDP_MASTER_THEME_PARITY=PASS; BUILD417_SHARED_THEME_COUNT=12");
