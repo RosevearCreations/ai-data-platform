@@ -44,6 +44,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/acceleration-closure",
+        label: "Acceleration Cycle Closure",
+        description: "Review Build 414 completion closure, T1-T5 security re-certification, communications pilot evidence, physical-host receipts and roadmap renewal.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/master-sysop",
         label: "Master Sysop Shell",
         description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
