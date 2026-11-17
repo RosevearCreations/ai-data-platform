@@ -8,11 +8,13 @@ const css=readFileSync(resolve(root,"apps/web/app/master-instrument-shell.css"),
 assert.equal(contract.schema,"rosevear.master-themes.v2");
 assert.equal(contract.presentationOnly,true);
 assert.equal(contract.authorityTransfer,false);
-assert.deepEqual(contract.themeIds,["instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite","crimson","emerald","ultraviolet","steel"]);
+assert.deepEqual(contract.themeIds,["instrument","nebula","meadow","high-contrast","copper","arctic","solar","graphite","crimson","emerald","ultraviolet","steel","aurora","amber-night","orchid","daylight"]);
 for(const t of contract.themeIds){
  assert.ok(component.includes('"'+t+'"'));
  assert.ok(css.includes('data-rosevear-master-theme="'+t+'"'));
 }
 assert.equal(contract.build417Extension?.sharedThemeCount,12);
+assert.equal(contract.build359Extension?.sharedThemeCount,16);
+assert.deepEqual(contract.build359Extension?.newThemeIds,["aurora","amber-night","orchid","daylight"]);
 assert.equal(contract.build417Extension?.sameCatalogueForAllMasters,true);
-console.log("QL467_AIDP_MASTER_THEME_PARITY=PASS; BUILD417_SHARED_THEME_COUNT=12");
+console.log("QL467_AIDP_MASTER_THEME_PARITY=PASS; BUILD359_SHARED_THEME_COUNT=16");
