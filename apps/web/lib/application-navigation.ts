@@ -38,6 +38,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/acceptance-advancement",
+        label: "Seven-App Acceptance & Advancement",
+        description: "Review Build 413 role/device, accessibility, performance and UX acceptance plus locked-denominator +10-point evidence advancement.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/master-sysop",
         label: "Master Sysop Shell",
         description: "Open Build 341 outer-shell navigation, separate Sysop identity and fail-closed tenant context handoff.",
