@@ -20,7 +20,11 @@
     "crimson",
     "emerald",
     "ultraviolet",
-    "steel"
+    "steel",
+    "aurora",
+    "amber-night",
+    "orchid",
+    "daylight"
   ],
   "themes": [
     {
@@ -142,6 +146,46 @@
       "text": "#f1f7fb",
       "accent": "#8fc7e8",
       "muted": "#c0d0dc"
+    },
+    {
+      "id": "aurora",
+      "label": "Aurora Signal",
+      "background": "#061c28",
+      "surface": "#123749",
+      "panel": "#194b5c",
+      "text": "#eafcff",
+      "accent": "#60e8df",
+      "muted": "#b5e2e9"
+    },
+    {
+      "id": "amber-night",
+      "label": "Amber Night",
+      "background": "#21150e",
+      "surface": "#352417",
+      "panel": "#4a3020",
+      "text": "#fff5e6",
+      "accent": "#ffc274",
+      "muted": "#ecd3b5"
+    },
+    {
+      "id": "orchid",
+      "label": "Orchid Circuit",
+      "background": "#170d23",
+      "surface": "#291838",
+      "panel": "#3a264e",
+      "text": "#fff3ff",
+      "accent": "#eea4ff",
+      "muted": "#e1c3ed"
+    },
+    {
+      "id": "daylight",
+      "label": "Daylight Control",
+      "background": "#edf4fd",
+      "surface": "#ffffff",
+      "panel": "#dce9f8",
+      "text": "#142d48",
+      "accent": "#005bb5",
+      "muted": "#415a76"
     }
   ],
   "build417Extension": {
@@ -153,5 +197,17 @@
       "steel"
     ],
     "sameCatalogueForAllMasters": true
+  },
+  "build359Extension": {
+    "sharedThemeCount": 16,
+    "newThemeIds": [
+      "aurora",
+      "amber-night",
+      "orchid",
+      "daylight"
+    ],
+    "sameCatalogueForAllMasters": true,
+    "presentationOnly": true,
+    "authorityTransfer": false
   }
 }

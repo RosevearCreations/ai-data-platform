@@ -582,3 +582,90 @@ html[data-rosevear-master-theme="steel"] .masterInstrumentShell .masterInstrumen
  .masterGovernanceGrid--wide{grid-template-columns:1fr}
  .masterInstrumentShell :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){width:100%}
 }
+
+html[data-rosevear-master-theme="aurora"] .masterInstrumentShell{
+ --instrument-bg:#061c28;--instrument-surface:#123749;--instrument-panel:#194b5c;
+ --instrument-text:#eafcff;--instrument-muted:#b5e2e9;--instrument-purple:#60e8df;
+ --instrument-purple-soft:color-mix(in srgb,#60e8df 18%,transparent);
+ background:linear-gradient(140deg,#061c28,#123749);color:#eafcff;
+ border-color:color-mix(in srgb,#60e8df 48%,transparent);color-scheme:dark;
+}
+html[data-rosevear-master-theme="aurora"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){
+ background:#194b5c;color:#eafcff;border-color:#60e8df
+}
+html[data-rosevear-master-theme="aurora"] .masterInstrumentShell .reviewHero{
+ background:linear-gradient(115deg,#123749,#061c28);color:#eafcff
+}
+html[data-rosevear-master-theme="aurora"] .masterInstrumentShell .masterInstrumentTopnav{
+ background:#123749;border-color:#60e8df
+}
+
+
+html[data-rosevear-master-theme="amber-night"] .masterInstrumentShell{
+ --instrument-bg:#21150e;--instrument-surface:#352417;--instrument-panel:#4a3020;
+ --instrument-text:#fff5e6;--instrument-muted:#ecd3b5;--instrument-purple:#ffc274;
+ --instrument-purple-soft:color-mix(in srgb,#ffc274 18%,transparent);
+ background:linear-gradient(140deg,#21150e,#352417);color:#fff5e6;
+ border-color:color-mix(in srgb,#ffc274 48%,transparent);color-scheme:dark;
+}
+html[data-rosevear-master-theme="amber-night"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){
+ background:#4a3020;color:#fff5e6;border-color:#ffc274
+}
+html[data-rosevear-master-theme="amber-night"] .masterInstrumentShell .reviewHero{
+ background:linear-gradient(115deg,#352417,#21150e);color:#fff5e6
+}
+html[data-rosevear-master-theme="amber-night"] .masterInstrumentShell .masterInstrumentTopnav{
+ background:#352417;border-color:#ffc274
+}
+
+
+html[data-rosevear-master-theme="orchid"] .masterInstrumentShell{
+ --instrument-bg:#170d23;--instrument-surface:#291838;--instrument-panel:#3a264e;
+ --instrument-text:#fff3ff;--instrument-muted:#e1c3ed;--instrument-purple:#eea4ff;
+ --instrument-purple-soft:color-mix(in srgb,#eea4ff 18%,transparent);
+ background:linear-gradient(140deg,#170d23,#291838);color:#fff3ff;
+ border-color:color-mix(in srgb,#eea4ff 48%,transparent);color-scheme:dark;
+}
+html[data-rosevear-master-theme="orchid"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){
+ background:#3a264e;color:#fff3ff;border-color:#eea4ff
+}
+html[data-rosevear-master-theme="orchid"] .masterInstrumentShell .reviewHero{
+ background:linear-gradient(115deg,#291838,#170d23);color:#fff3ff
+}
+html[data-rosevear-master-theme="orchid"] .masterInstrumentShell .masterInstrumentTopnav{
+ background:#291838;border-color:#eea4ff
+}
+
+
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell{
+ --instrument-bg:#edf4fd;--instrument-surface:#ffffff;--instrument-panel:#dce9f8;
+ --instrument-text:#142d48;--instrument-muted:#415a76;--instrument-purple:#005bb5;
+ --instrument-purple-soft:color-mix(in srgb,#005bb5 18%,transparent);
+ background:linear-gradient(140deg,#edf4fd,#ffffff);color:#142d48;
+ border-color:color-mix(in srgb,#005bb5 48%,transparent);color-scheme:light;
+}
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.dataQualityPolicyNote,.commandMetrics > article){
+ background:#dce9f8;color:#142d48;border-color:#005bb5
+}
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell .reviewHero{
+ background:linear-gradient(115deg,#ffffff,#edf4fd);color:#142d48
+}
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell .masterInstrumentTopnav{
+ background:#ffffff;border-color:#005bb5
+}
+
+/* QL-468 shared Master controls: no clipping, calendar contrast and responsive fields. */
+.masterInstrumentShell :is(.reviewBatchSummary,.reviewQueue,.masterGovernanceGrid--wide) :is(label,section,article){min-width:0;max-width:100%;overflow-wrap:anywhere}
+.masterInstrumentShell :is(input,select,textarea){min-width:0;max-width:100%;box-sizing:border-box;line-height:1.45}
+.masterInstrumentShell :is(input[type="date"],input[type="datetime-local"],input[type="month"],input[type="time"]){
+ width:min(100%,23rem);min-height:46px;padding:.68rem .8rem;font-size:16px;
+}
+.masterInstrumentShell textarea{min-height:7rem;max-height:32rem;resize:vertical}
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell :is(input,select,textarea){
+ background:#fff;color:#142d48;border-color:#426c9e;color-scheme:light
+}
+html[data-rosevear-master-theme="daylight"] .masterInstrumentShell :is(p,label,small,h2,h3,h4,summary){color:#142d48}
+.masterInstrumentShell :is(input,select,textarea):focus-visible{outline:3px solid var(--instrument-purple);outline-offset:2px}
+.masterInstrumentShell :is(button,select){min-height:44px;white-space:normal}
+@media(max-width:680px){.masterInstrumentShell :is(input,select,textarea){width:100%}}
+@media(forced-colors:active){.masterInstrumentShell :is(input,select,textarea){forced-color-adjust:auto;border:2px solid CanvasText}}
