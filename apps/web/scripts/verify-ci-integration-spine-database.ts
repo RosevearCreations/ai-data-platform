@@ -257,7 +257,13 @@ const requiredTables = [
   "master_build410_theme_profiles",
   "master_build413_acceptance_evidence",
   "master_build413_completion_advancement_evidence",
-  "master_build413_theme_selection_events"
+  "master_build413_theme_selection_events",
+  "master_build414_completion_closure_evidence",
+  "master_build414_security_recertification_evidence",
+  "master_build414_comms_pilot_requests",
+  "master_build414_comms_pilot_receipts",
+  "master_build414_host_activation_receipts",
+  "master_build414_roadmap_renewal_approvals"
 ];
 
 const appendOnlyTables = [
@@ -862,6 +868,10 @@ async function main() {
     assert(
       migrationNames.has("0176_master_acceptance_advancement.sql"),
       "migration 0176 is not recorded"
+    );
+    assert(
+      migrationNames.has("0177_master_acceleration_closure.sql"),
+      "migration 0177 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
