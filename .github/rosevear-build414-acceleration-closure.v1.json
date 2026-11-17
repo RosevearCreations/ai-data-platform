@@ -1,0 +1,21 @@
+{
+  "schema": "rosevear.ai-data-platform.build414-acceleration-closure.v1",
+  "build": 414,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "completionAxes": ["design","implementation","automated-testing","integration-verification","security","accessibility-device-acceptance","production-user-acceptance"],
+  "securityTiers": ["T1_IDENTITY_PROVENANCE","T2_TRANSPORT_AUTHENTICATION","T3_AUTHORIZATION_TENANT_CONSENT","T4_DATA_AUDIT_REPLAY_FAIL_CLOSED","T5_PRIVILEGED_OPERATION_RECOVERY"],
+  "canonicalCommunicationRelationships": 14,
+  "windowsServices": ["rosevear-ai-hub-automation-host","rosevear-ai-data-platform-worker","rosevear-comms-hub-worker"],
+  "renewedRoadmap": "builds-415-424",
+  "policy": {
+    "completionClosureRequiresTargetEvidence": true,
+    "changedDenominatorMayClose": false,
+    "securityRecertificationRequiresAllSixDimensions": true,
+    "commsAuthorityHolder": "rosevear-comms-hub",
+    "directPeerDatabaseWritesAllowed": false,
+    "productionGreenImpliesPilotPassed": false,
+    "productionGreenImpliesPhysicalHostActivated": false,
+    "physicalHostReceiptsRequiredFor24x7Closure": true,
+    "roadmapRenewalRequiresOwnerApproval": true
+  }
+}
