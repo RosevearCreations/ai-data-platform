@@ -123,8 +123,8 @@ assert.ok(nav.includes('href: "/performance-capacity-guardrails"'));
 const masterNav=read("apps/web/lib/master-instrument-navigation.ts");
 assert.ok(masterNav.includes('"/performance-capacity-guardrails"'));
 const suite=read("apps/web/app/master-suite/page.tsx");
-assert.ok(suite.includes('href="/performance-capacity-guardrails"'));\nassert.ok(read("docs/BUILD_419_SHARED_PERFORMANCE_CAPACITY_VERCEL_GUARDRAILS.md").includes("AI Data Platform Build 419"));
 assert.ok(suite.includes('href="/performance-capacity-guardrails"'));
+assert.ok(read("docs/BUILD_419_SHARED_PERFORMANCE_CAPACITY_VERCEL_GUARDRAILS.md").includes("AI Data Platform Build 419"));
 
 const spine=read("apps/web/scripts/verify-ci-integration-spine-database.ts");
 for(const token of [
