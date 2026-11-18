@@ -482,6 +482,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/data-lifecycle-dlp-renewal",
+        label: "Data Lifecycle & DLP Renewal",
+        description: "Review Build 422 classification, encryption, redaction/minimization, retention, deletion evidence and directional DLP renewal across all seven applications.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
