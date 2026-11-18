@@ -470,6 +470,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/accessibility-device-network-recertification",
+        label: "Accessibility, Device & Network Re-Certification",
+        description: "Review Build 420 fresh desktop/tablet/mobile, accessibility, loading, offline/degraded-network and recovery evidence across all seven applications.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
