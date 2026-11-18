@@ -138,7 +138,8 @@ assert.ok(nav.includes('href: "/recovery-rollback-certification"'));
 const masterNav=read("apps/web/lib/master-instrument-navigation.ts");
 assert.ok(masterNav.includes('"/recovery-rollback-certification"'));
 const suite=read("apps/web/app/master-suite/page.tsx");
-assert.ok(suite.includes("Build 418 · Rosevear Server Shell"));
+assert.ok(suite.includes('href="/recovery-rollback-certification"'));
+assert.ok(read("docs/BUILD_418_CROSS_APPLICATION_RECOVERY_ROLLBACK.md").includes("AI Data Platform Build 418"));
 assert.ok(suite.includes('href="/recovery-rollback-certification"'));
 
 const spine=read("apps/web/scripts/verify-ci-integration-spine-database.ts");
