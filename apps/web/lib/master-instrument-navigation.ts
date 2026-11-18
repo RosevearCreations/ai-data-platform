@@ -90,6 +90,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/performance-capacity-guardrails",
   "/accessibility-device-network-recertification",
   "/tenant-consent-capability-renewal",
+  "/data-lifecycle-dlp-renewal",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
