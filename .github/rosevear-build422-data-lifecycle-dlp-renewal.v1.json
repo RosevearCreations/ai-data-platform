@@ -1,0 +1,53 @@
+{
+  "schema": "rosevear.ai-data-platform.build422-data-lifecycle-retention-deletion-dlp-renewal.v1",
+  "build": 422,
+  "applications": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub",
+    "icamp",
+    "yw",
+    "devilndove",
+    "rosiedazzlers"
+  ],
+  "localDimensions": [
+    "DATA_CLASSIFICATION",
+    "ENCRYPTION_SECRET_CUSTODY",
+    "REDACTION_MINIMIZATION",
+    "RETENTION_EXPIRY",
+    "DELETION_EVIDENCE",
+    "EXPORT_DLP",
+    "CROSS_TENANT_EXFILTRATION"
+  ],
+  "dataClasses": [
+    "D0_PUBLIC",
+    "D1_INTERNAL",
+    "D2_PERSONAL",
+    "D3_CONFIDENTIAL",
+    "D4_SECRET"
+  ],
+  "policy": {
+    "requiredLocalSlots": 49,
+    "requiredDirectionalSlots": 28,
+    "requiredTotalSlots": 77,
+    "evidenceFreshnessHours": 168,
+    "rawSecretsInLogsAllowed": false,
+    "rawSecretsInAuditEvidenceAllowed": false,
+    "rawSecretsInCrossAppPayloadsAllowed": false,
+    "restrictedExportRequiresOwnerGate": true,
+    "crossTenantExportAllowed": false,
+    "deletionReceiptRequired": true,
+    "legalHoldMustBePreserved": true,
+    "sourceOwnedEvidenceRequired": true,
+    "syntheticEvidenceMayRenew": false,
+    "staleEvidenceMayRenew": false,
+    "productionGreenMayRenew": false,
+    "completionScorecardPath": ".github/rosevear-completion-scorecard.v1.json",
+    "featureCompletionImpactTargetPercentagePoints": {
+      "minimum": 5,
+      "maximum": 10
+    },
+    "completionImpactClaimRequiresFeatureInventoryEvidence": true,
+    "protocol": "1.1"
+  }
+}
