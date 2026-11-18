@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/contracts/rosevear-sysop-telemetry-v1.schema.json",
+  "title": "Rosevear seven-application signed Sysop statistics envelope v1",
+  "description": "Authenticated read-only aggregate statistics and operational events. Source signature and independently trusted transport identity are required; signed claims are not host physical proof.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "payload",
+    "signature"
+  ],
+  "properties": {
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "protocolVersion",
+        "appId",
+        "sourceCommit",
+        "eventId",
+        "nonce",
+        "issuedAtMs",
+        "expiresAtMs",
+        "state",
+        "metricsWindowSeconds",
+        "metrics",
+        "sysop",
+        "dataClass",
+        "tenantId",
+        "authorizesAction"
+      ],
+      "properties": {
+        "schema": {
+          "const": "rosevear.sysop.statistics.v1"
+        },
+        "protocolVersion": {
+          "const": "1.1"
+        },
+        "appId": {
+          "enum": [
+            "ai-data-platform",
+            "rosevear-ai-hub",
+            "rosevear-comms-hub",
+            "yw",
+            "icamp",
+            "rosiedazzlers",
+            "devilndove"
+          ]
+        },
+        "sourceCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "eventId": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{16,80}$"
+        },
+        "nonce": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        "issuedAtMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expiresAtMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state": {
+          "enum": [
+            "HEALTHY",
+            "DEGRADED",
+            "UNHEALTHY",
+            "UNKNOWN"
+          ]
+        },
+        "metricsWindowSeconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 86400
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requests",
+            "serverErrors",
+            "jobsCompleted",
+            "jobsFailed",
+            "queueDepth",
+            "latencyP95Ms",
+            "activeSessions"
+          ],
+          "properties": {
+            "requests": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "serverErrors": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "jobsCompleted": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "jobsFailed": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "queueDepth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "latencyP95Ms": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "activeSessions": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            }
+          }
+        },
+        "sysop": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eventKind",
+            "observedAtMs",
+            "processUptimeSec",
+            "restartCount",
+            "lastRestartAtMs",
+            "bootTimeMs",
+            "rebootIsIndependentlyWitnessed"
+          ],
+          "properties": {
+            "eventKind": {
+              "enum": [
+                "HEARTBEAT",
+                "PROCESS_RESTART_OBSERVED",
+                "HOST_BOOT_OBSERVED",
+                "SCHEDULED_MAINTENANCE_OBSERVED",
+                "BACKUP_VERIFY_OBSERVED",
+                "INCIDENT_OBSERVED"
+              ]
+            },
+            "observedAtMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "processUptimeSec": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "restartCount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 2147483647
+            },
+            "lastRestartAtMs": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "bootTimeMs": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "rebootIsIndependentlyWitnessed": {
+              "const": false
+            }
+          }
+        },
+        "dataClass": {
+          "const": "NON_SENSITIVE_AGGREGATE"
+        },
+        "tenantId": {
+          "type": "null"
+        },
+        "authorizesAction": {
+          "const": false
+        }
+      }
+    },
+    "signature": {
+      "type": "string",
+      "description": "128 lowercase hex Ed25519 signature over canonical UTF-8 sorted-keys compact JSON payload (no pretty-print)",
+      "pattern": "^[0-9a-f]{128}$"
+    }
+  }
+}
