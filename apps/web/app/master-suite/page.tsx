@@ -50,8 +50,8 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 418 · Rosevear Server Shell</p>
-        <h1>Cross-Application Recovery Exercise & Rollback Readiness</h1>
+        <p className="eyebrow">Build 419 · Rosevear Server Shell</p>
+        <h1>Shared Performance Budgets, Capacity Forecasting & Vercel Usage Guardrails</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
@@ -89,6 +89,9 @@ export default async function MasterSuitePage() {
           </Link>
           <Link className="secondaryButton" href="/recovery-rollback-certification">
             Recovery & Rollback
+          </Link>
+          <Link className="secondaryButton" href="/performance-capacity-guardrails">
+            Performance & Usage Guardrails
           </Link>
         </div>
       </section>
