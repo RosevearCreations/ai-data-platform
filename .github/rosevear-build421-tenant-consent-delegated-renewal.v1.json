@@ -1,0 +1,32 @@
+{
+  "schema": "rosevear.ai-data-platform.build421-tenant-isolation-consent-delegated-capability-renewal.v1",
+  "build": 421,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "localDimensions": ["LEAST_PRIVILEGE","TENANT_WORKSPACE_ISOLATION","CONSENT_LIFECYCLE"],
+  "policy": {
+    "requiredLocalSlots": 21,
+    "requiredDelegatedSlots": 28,
+    "requiredTotalSlots": 49,
+    "maxDelegationHours": 24,
+    "denyByDefault": true,
+    "wildcardCapabilityGrantsAllowed": false,
+    "crossTenantAccessAllowed": false,
+    "consentExpiryRequired": true,
+    "revocationPropagationRequired": true,
+    "revokedGrantMayAuthorize": false,
+    "freshConsentRequiredForRenewal": true,
+    "previousGrantMaySelfRenew": false,
+    "t5DelegationAllowed": false,
+    "sourceOwnedEvidenceRequired": true,
+    "syntheticEvidenceMayRenew": false,
+    "staleEvidenceMayRenew": false,
+    "productionGreenMayRenew": false,
+    "featureCompletionImpactTargetPercentagePoints": {
+      "minimum": 5,
+      "maximum": 10
+    },
+    "completionImpactClaimRequiresFeatureInventoryEvidence": true,
+    "independentApplicationReleasePreserved": true,
+    "protocol": "1.1"
+  }
+}

@@ -476,6 +476,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/tenant-consent-capability-renewal",
+        label: "Tenant, Consent & Capability Renewal",
+        description: "Review Build 421 least-privilege, tenant/workspace isolation, consent expiry/revocation and delegated-capability renewal evidence across all seven applications.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
