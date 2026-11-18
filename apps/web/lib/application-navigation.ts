@@ -464,6 +464,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/performance-capacity-guardrails",
+        label: "Performance, Capacity & Vercel Guardrails",
+        description: "Review Build 419 seven-application performance budgets, capacity evidence and owner-defined Vercel deployment-usage guardrails.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
