@@ -1,0 +1,24 @@
+{
+  "schema":"rosevear.ai-data-platform.build418-cross-application-recovery-rollback.v1",
+  "build":418,
+  "applications":["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "exerciseDomains":["APPLICATION_ROLLBACK","DATABASE_RECOVERY","COMMUNICATION_REPLAY","DEPENDENCY_RECOVERY"],
+  "policy":{
+    "exerciseSlotsRequired":28,
+    "rollbackReadinessReceiptsRequired":7,
+    "crossApplicationExerciseRequired":true,
+    "minimumCrossApplicationParticipants":2,
+    "ownerApprovalRequired":true,
+    "independentWitnessRequired":true,
+    "sourceExecutionRequired":true,
+    "postRecoveryTelemetryRequired":true,
+    "rollbackExecutionProofRequired":true,
+    "localAuthorityPreserved":true,
+    "communicationsAuthorityPreserved":true,
+    "aiDataPlatformValidationOnly":true,
+    "automaticRecoveryAuthorized":false,
+    "automaticRollbackAuthorized":false,
+    "lockstepReleaseRequired":false,
+    "productionGreenImpliesRecoveryExercisePassed":false
+  }
+}
