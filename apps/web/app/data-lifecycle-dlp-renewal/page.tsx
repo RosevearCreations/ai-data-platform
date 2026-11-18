@@ -52,6 +52,6 @@ export default async function DataLifecycleDlpRenewalPage(){
         <article className="reviewBatchSummary"><h3>DLP + cross-app transfer</h3><p>Export inspection, owner gates for restricted classes, consent preservation, secret-reference-only D4 transfer and cross-tenant exfiltration denial across all 28 directional relationships.</p></article>
       </div>
     </section>
-    <section className="dataQualityPolicyNote"><strong>77 evidence checkpoints; 5–10 point release discipline preserved.</strong><p>Build 422 provides 49 application-local lifecycle slots plus 28 directional DLP renewal slots. The repository scorecard records a 5.5-point feature-completion movement. Live evidence must still be supplied independently.</p></section>
+    <section className="dataQualityPolicyNote"><strong>77 evidence checkpoints; 5–10 point release discipline preserved.</strong><p>Build 422 provides 49 application-local lifecycle slots plus 28 directional DLP renewal slots. The repository scorecard records a 5.4-point feature-completion movement. Live evidence must still be supplied independently.</p></section>
   </main>;
 }

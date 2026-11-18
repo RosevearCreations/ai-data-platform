@@ -14,7 +14,7 @@ Build 422 establishes a repository-owned AI Data Platform scorecard with 36 plat
 
 - reconstructed Build 421 baseline: 85.3%;
 - Build 422 current feature-completion estimate: 90.8%;
-- movement: +5.5 percentage points in the displayed scorecard.
+- movement: +5.4 percentage points in the displayed scorecard.
 
 The scorecard separates software maturity from live external and physical-host evidence. Missing live evidence remains incomplete even when production is GREEN.
 
