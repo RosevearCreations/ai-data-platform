@@ -1,0 +1,24 @@
+{
+  "schema":"rosevear.ai-data-platform.build419-performance-capacity-vercel-guardrails.v1",
+  "build":419,
+  "applications":["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "performanceDomains":["USER_EXPERIENCE","API","DATABASE","INTEGRATION","DELIVERY"],
+  "policy":{
+    "performanceBudgetSlotsRequired":35,
+    "capacityForecastReceiptsRequired":7,
+    "vercelHostingDispositionReceiptsRequired":7,
+    "ownerDefinedVercelBudgetsRequiredForHostedApps":true,
+    "inventVercelPlanLimits":false,
+    "inventBilling":false,
+    "exactShaPreviewReuseRequired":true,
+    "duplicateDeploymentEvidenceTracked":true,
+    "previewDatabaseMigrationsAllowed":false,
+    "automaticScalingAuthorized":false,
+    "automaticPurchasingAuthorized":false,
+    "automaticProviderUpgradeAuthorized":false,
+    "automaticReleaseBlockingAuthorized":false,
+    "localAuthorityPreserved":true,
+    "independentApplicationReleasePreserved":true,
+    "productionGreenImpliesBudgetsHealthy":false
+  }
+}
