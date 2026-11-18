@@ -86,6 +86,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/evidence-freshness",
   "/original-host-continuity",
   "/communications-delivery-operations",
+  "/recovery-rollback-certification",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
