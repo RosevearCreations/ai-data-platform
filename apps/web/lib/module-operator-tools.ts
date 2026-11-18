@@ -209,6 +209,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/performance-optimization-control-plane",
           "/capacity-workload-forecasting",
           "/performance-capacity-guardrails",
+          "/accessibility-device-network-recertification",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
