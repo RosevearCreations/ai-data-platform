@@ -89,6 +89,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/recovery-rollback-certification",
   "/performance-capacity-guardrails",
   "/accessibility-device-network-recertification",
+  "/tenant-consent-capability-renewal",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
