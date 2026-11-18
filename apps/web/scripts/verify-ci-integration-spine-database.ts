@@ -102,6 +102,9 @@ const requiredTables = [
   "master_build418_recovery_exercise_receipts",
   "master_build418_rollback_readiness_receipts",
   "master_build418_cross_application_exercise_receipts",
+  "master_build419_performance_budget_receipts",
+  "master_build419_capacity_forecast_receipts",
+  "master_build419_vercel_usage_receipts",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
   "master_completion_requirement_revisions",
@@ -631,7 +634,8 @@ async function main() {
         "0178_master_evidence_freshness_renewal.sql",
         "0179_master_original_host_continuity.sql",
         "0180_master_communications_delivery_sla.sql",
-        "0181_master_cross_application_recovery_rollback.sql"
+        "0181_master_cross_application_recovery_rollback.sql",
+        "0182_master_performance_capacity_vercel_guardrails.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -914,6 +918,10 @@ async function main() {
     assert(
       migrationNames.has("0181_master_cross_application_recovery_rollback.sql"),
       "migration 0181 is not recorded"
+    );
+    assert(
+      migrationNames.has("0182_master_performance_capacity_vercel_guardrails.sql"),
+      "migration 0182 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{
