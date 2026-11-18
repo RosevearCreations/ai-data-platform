@@ -1,0 +1,25 @@
+{
+  "schema": "rosevear.ai-data-platform.build420-accessibility-device-degraded-network-recertification.v1",
+  "build": 420,
+  "applications": ["ai-data-platform","rosevear-ai-hub","rosevear-comms-hub","icamp","yw","devilndove","rosiedazzlers"],
+  "dimensions": [
+    "DESKTOP","TABLET","MOBILE","KEYBOARD_FOCUS","CONTRAST_FORCED_COLORS",
+    "REDUCED_MOTION","LOADING_ERROR_STATES","OFFLINE_DEGRADED_NETWORK","RECOVERY_BEHAVIOR"
+  ],
+  "policy": {
+    "requiredEvidenceSlots": 63,
+    "minimumAcceptancePercent": 90,
+    "criticalFailuresAllowed": 0,
+    "minimumMobileWidthPx": 320,
+    "minimumTouchTargetPx": 44,
+    "sourceOwnedEvidenceRequired": true,
+    "independentVerificationRequired": true,
+    "ownerReviewRequired": true,
+    "syntheticEvidenceMayRecertify": false,
+    "staleEvidenceMayRecertify": false,
+    "deploymentGreenMayRecertify": false,
+    "offlineMayInferHealthy": false,
+    "automaticRecoveryAuthorized": false,
+    "independentApplicationReleasePreserved": true
+  }
+}
