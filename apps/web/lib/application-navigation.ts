@@ -470,6 +470,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/recovery-rollback-certification",
+        label: "Recovery & Rollback Certification",
+        description: "Review Build 418 supervised recovery exercise coverage, rollback readiness and independently witnessed cross-application recovery evidence.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/anomaly-predictive-risk",
         label: "Anomaly & Predictive Risk",
         description: "Review Build 358 robust behaviour baselines, anomaly detection and advisory predictive-risk intelligence without autonomous source or recovery authority.",
