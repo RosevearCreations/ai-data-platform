@@ -494,6 +494,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/operational-maturity-closure",
+        label: "Operational Maturity Closure",
+        description: "Review Build 424 maturity closure, security renewal, relationship assurance, remaining HOLD evidence and the next owner-gated roadmap ceremony.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
