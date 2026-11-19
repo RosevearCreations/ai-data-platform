@@ -22,6 +22,7 @@
     {
       "id": "master-command-center",
       "name": "Master command center & operator visibility",
+      "build421Percent": 94,
       "build422Percent": 96,
       "build424Percent": 99,
       "deltaPercentagePoints": 3,
@@ -30,6 +31,7 @@
     {
       "id": "data-collection-intake",
       "name": "Data collection & intake",
+      "build421Percent": 90,
       "build422Percent": 90,
       "build424Percent": 94,
       "deltaPercentagePoints": 4,
@@ -38,6 +40,7 @@
     {
       "id": "data-review-approval",
       "name": "Data review & approval",
+      "build421Percent": 92,
       "build422Percent": 92,
       "build424Percent": 96,
       "deltaPercentagePoints": 4,
@@ -46,6 +49,7 @@
     {
       "id": "data-quality-validation",
       "name": "Data quality & validation",
+      "build421Percent": 90,
       "build422Percent": 90,
       "build424Percent": 96,
       "deltaPercentagePoints": 6,
@@ -54,6 +58,7 @@
     {
       "id": "provenance-lineage",
       "name": "Provenance & lineage",
+      "build421Percent": 94,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -62,6 +67,7 @@
     {
       "id": "search-reporting",
       "name": "Search & reporting",
+      "build421Percent": 88,
       "build422Percent": 89,
       "build424Percent": 95,
       "deltaPercentagePoints": 6,
@@ -70,6 +76,7 @@
     {
       "id": "corrective-operations",
       "name": "Corrective operations & reconciliation",
+      "build421Percent": 91,
       "build422Percent": 91,
       "build424Percent": 96,
       "deltaPercentagePoints": 5,
@@ -78,6 +85,7 @@
     {
       "id": "application-module-lifecycle",
       "name": "Application registry & module lifecycle",
+      "build421Percent": 94,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -86,6 +94,7 @@
     {
       "id": "cross-app-contracts",
       "name": "Cross-application data contracts",
+      "build421Percent": 94,
       "build422Percent": 95,
       "build424Percent": 99,
       "deltaPercentagePoints": 4,
@@ -94,6 +103,7 @@
     {
       "id": "event-delivery-replay",
       "name": "Event bus, delivery & replay",
+      "build421Percent": 93,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -102,6 +112,7 @@
     {
       "id": "source-trust",
       "name": "Source onboarding, signer & trust",
+      "build421Percent": 90,
       "build422Percent": 90,
       "build424Percent": 96,
       "deltaPercentagePoints": 6,
@@ -110,6 +121,7 @@
     {
       "id": "connector-diagnostics",
       "name": "Connector setup & diagnostics",
+      "build421Percent": 87,
       "build422Percent": 87,
       "build424Percent": 94,
       "deltaPercentagePoints": 7,
@@ -118,6 +130,7 @@
     {
       "id": "shared-identity",
       "name": "Shared identity & customer resolution",
+      "build421Percent": 85,
       "build422Percent": 85,
       "build424Percent": 92,
       "deltaPercentagePoints": 7,
@@ -126,6 +139,7 @@
     {
       "id": "shared-scheduling-workqueue",
       "name": "Shared scheduling & work queue",
+      "build421Percent": 88,
       "build422Percent": 88,
       "build424Percent": 95,
       "deltaPercentagePoints": 7,
@@ -134,6 +148,7 @@
     {
       "id": "tenant-authorization",
       "name": "Tenant/workspace isolation & authorization",
+      "build421Percent": 92,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -142,6 +157,7 @@
     {
       "id": "consent-governance",
       "name": "Consent & notification governance",
+      "build421Percent": 90,
       "build422Percent": 93,
       "build424Percent": 98,
       "deltaPercentagePoints": 5,
@@ -150,6 +166,7 @@
     {
       "id": "data-classification",
       "name": "Data classification",
+      "build421Percent": 65,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -158,6 +175,7 @@
     {
       "id": "encryption-secret-custody",
       "name": "Encryption & secret custody",
+      "build421Percent": 70,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
@@ -166,6 +184,7 @@
     {
       "id": "redaction-minimization",
       "name": "Redaction & data minimization",
+      "build421Percent": 68,
       "build422Percent": 93,
       "build424Percent": 98,
       "deltaPercentagePoints": 5,
@@ -174,6 +193,7 @@
     {
       "id": "retention-expiry",
       "name": "Retention & expiry",
+      "build421Percent": 60,
       "build422Percent": 92,
       "build424Percent": 97,
       "deltaPercentagePoints": 5,
@@ -182,6 +202,7 @@
     {
       "id": "deletion-evidence",
       "name": "Deletion evidence & legal holds",
+      "build421Percent": 55,
       "build422Percent": 90,
       "build424Percent": 96,
       "deltaPercentagePoints": 6,
@@ -190,6 +211,7 @@
     {
       "id": "dlp-export-controls",
       "name": "DLP & export controls",
+      "build421Percent": 64,
       "build422Percent": 93,
       "build424Percent": 98,
       "deltaPercentagePoints": 5,
@@ -198,6 +220,7 @@
     {
       "id": "privileged-owner-gates",
       "name": "Privileged operations & owner gates",
+      "build421Percent": 95,
       "build422Percent": 95,
       "build424Percent": 99,
       "deltaPercentagePoints": 4,
@@ -206,6 +229,7 @@
     {
       "id": "audit-evidence",
       "name": "Audit & evidence immutability",
+      "build421Percent": 90,
       "build422Percent": 96,
       "build424Percent": 99,
       "deltaPercentagePoints": 3,
@@ -214,6 +238,7 @@
     {
       "id": "incident-recovery",
       "name": "Incident response, recovery & rollback",
+      "build421Percent": 91,
       "build422Percent": 91,
       "build424Percent": 97,
       "deltaPercentagePoints": 6,
@@ -222,6 +247,7 @@
     {
       "id": "performance-capacity",
       "name": "Performance & capacity governance",
+      "build421Percent": 92,
       "build422Percent": 92,
       "build424Percent": 97,
       "deltaPercentagePoints": 5,
@@ -230,6 +256,7 @@
     {
       "id": "desktop-ux",
       "name": "Desktop UX & accessibility",
+      "build421Percent": 91,
       "build422Percent": 91,
       "build424Percent": 96,
       "deltaPercentagePoints": 5,
@@ -238,6 +265,7 @@
     {
       "id": "tablet-ux",
       "name": "Tablet UX & accessibility",
+      "build421Percent": 87,
       "build422Percent": 87,
       "build424Percent": 94,
       "deltaPercentagePoints": 7,
@@ -246,6 +274,7 @@
     {
       "id": "mobile-ux",
       "name": "Mobile UX & accessibility",
+      "build421Percent": 85,
       "build422Percent": 85,
       "build424Percent": 93,
       "deltaPercentagePoints": 8,
@@ -254,6 +283,7 @@
     {
       "id": "degraded-network",
       "name": "Offline/degraded-network resilience",
+      "build421Percent": 87,
       "build422Percent": 87,
       "build424Percent": 94,
       "deltaPercentagePoints": 7,
@@ -262,6 +292,7 @@
     {
       "id": "theme-design-system",
       "name": "Theme & design system",
+      "build421Percent": 92,
       "build422Percent": 92,
       "build424Percent": 96,
       "deltaPercentagePoints": 4,
@@ -270,6 +301,7 @@
     {
       "id": "workflow-ai",
       "name": "Workflow automation & AI suggestions",
+      "build421Percent": 89,
       "build422Percent": 89,
       "build424Percent": 95,
       "deltaPercentagePoints": 6,
@@ -278,6 +310,7 @@
     {
       "id": "original-host-evidence",
       "name": "External runtime/original-host evidence",
+      "build421Percent": 76,
       "build422Percent": 76,
       "build424Percent": 82,
       "deltaPercentagePoints": 6,
@@ -286,6 +319,7 @@
     {
       "id": "live-operational-evidence",
       "name": "Cross-application live operational evidence",
+      "build421Percent": 74,
       "build422Percent": 78,
       "build424Percent": 84,
       "deltaPercentagePoints": 6,
@@ -294,6 +328,7 @@
     {
       "id": "release-engineering",
       "name": "Release/CI/migration engineering",
+      "build421Percent": 95,
       "build422Percent": 97,
       "build424Percent": 99,
       "deltaPercentagePoints": 2,
@@ -302,6 +337,7 @@
     {
       "id": "docs-runbooks",
       "name": "Documentation, help & runbooks",
+      "build421Percent": 94,
       "build422Percent": 94,
       "build424Percent": 98,
       "deltaPercentagePoints": 4,
