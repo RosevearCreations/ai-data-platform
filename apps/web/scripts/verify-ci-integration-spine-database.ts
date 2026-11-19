@@ -110,6 +110,9 @@ const requiredTables = [
   "master_build421_delegated_capability_renewals",
   "master_build422_data_lifecycle_renewals",
   "master_build422_directional_dlp_renewals",
+  "master_build423_role_acceptance_evidence",
+  "master_build423_workflow_ceremony_receipts",
+  "master_build423_sysop_telemetry_receipts",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
   "master_completion_requirement_revisions",
@@ -643,7 +646,8 @@ async function main() {
         "0182_master_performance_capacity_vercel_guardrails.sql",
         "0183_master_accessibility_device_degraded_network_recertification.sql",
         "0184_master_tenant_isolation_consent_expiry_delegated_capability_renewal.sql",
-        "0185_master_data_lifecycle_retention_deletion_dlp_renewal.sql"
+        "0185_master_data_lifecycle_retention_deletion_dlp_renewal.sql",
+        "0186_master_operator_acceptance_role_separation_production_ceremony.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -942,6 +946,10 @@ async function main() {
     assert(
       migrationNames.has("0185_master_data_lifecycle_retention_deletion_dlp_renewal.sql"),
       "migration 0185 is not recorded"
+    );
+    assert(
+      migrationNames.has("0186_master_operator_acceptance_role_separation_production_ceremony.sql"),
+      "migration 0186 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{

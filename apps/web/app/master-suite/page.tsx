@@ -50,8 +50,8 @@ export default async function MasterSuitePage() {
   return (
     <main className="shell reviewShell masterInstrumentShell opsCommandScreen opsCommandScreen--status">
       <section className="hero reviewHero">
-        <p className="eyebrow">Build 422 · Rosevear Server Shell</p>
-        <h1>Data Lifecycle, Retention, Deletion & DLP Renewal Assurance</h1>
+        <p className="eyebrow">Build 423 · Rosevear Server Shell</p>
+        <h1>Operator Acceptance, Role Separation & Production Workflow Ceremony</h1>
         <p className="lead">
           AI Data Platform is the outer Rosevear Server Shell. Data & Intelligence,
           AI/Home/Automation and Communications/Operations now present as three
@@ -101,6 +101,9 @@ export default async function MasterSuitePage() {
           </Link>
           <Link className="secondaryButton" href="/data-lifecycle-dlp-renewal">
             Data Lifecycle & DLP Renewal
+          </Link>
+          <Link className="secondaryButton" href="/operator-production-ceremony">
+            Operator Acceptance & Production Ceremony
           </Link>
         </div>
       </section>
