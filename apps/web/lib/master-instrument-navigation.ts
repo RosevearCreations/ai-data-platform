@@ -92,6 +92,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/tenant-consent-capability-renewal",
   "/data-lifecycle-dlp-renewal",
   "/operator-production-ceremony",
+  "/operational-maturity-closure",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
