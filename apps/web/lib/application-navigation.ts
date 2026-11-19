@@ -500,6 +500,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/live-operational-evidence",
+        label: "Live Operational Evidence",
+        description: "Review Build 425 seven-source enrollment, signed telemetry acceptance, aggregate statistics and Sysop/reboot evidence without inferring live connection from Production GREEN.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",

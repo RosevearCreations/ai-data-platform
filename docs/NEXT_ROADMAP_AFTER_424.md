@@ -52,3 +52,16 @@ Until then, the work below is a closure program, not a numbered build.
 ## 100% closure criteria
 
 The score may reach 100% only when every 36-category software target is complete and all remaining source-owned operational evidence required by that category is current, independently verified and not HOLD/UNKNOWN/STALE. Production GREEN alone is never sufficient.
+
+
+## Owner-authorized Build 425 re-baseline
+
+The owner has now explicitly authorized the next numbered build and selected the realistic operational completion model as the comparison denominator. This satisfies Build 424's requirement for a documented re-baseline before a Build 425.
+
+**Build 425 — Live Operational Evidence Control Plane, Seven-Source Telemetry Acceptance & Original-Host Sysop Closure.**
+
+- Build 424 realistic operational baseline: **86.4%**.
+- Build 425 operational feature completion: **92.3%**.
+- Movement: **+5.9 percentage points**.
+- Genuine live-source coverage remains separately measured; missing signer/token enrollment or independent witnesses remain HOLD.
+- The next numbered build must again move this same operational denominator by 5–10 points. With 7.7 points remaining, a Build 426 is valid only if it closes at least 5.0 points of genuine remaining operational scope.
