@@ -17,7 +17,9 @@
     "build426MovementPercentagePoints": 5.2,
     "remainingTo100PercentagePoints": 2.5,
     "targetMinimumPercentagePoints": 5,
-    "targetMaximumPercentagePoints": 10
+    "targetMaximumPercentagePoints": 10,
+    "build425CurrentPercent": 92.3,
+    "build425MovementPercentagePoints": 5.9
   },
   "categories": [
     {
