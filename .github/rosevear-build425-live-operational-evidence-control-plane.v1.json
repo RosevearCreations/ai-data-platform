@@ -1,0 +1,38 @@
+{
+  "schema": "rosevear.ai-data-platform.build425-live-operational-evidence-control-plane.v1",
+  "build": 425,
+  "title": "Live Operational Evidence Control Plane, Seven-Source Telemetry Acceptance & Original-Host Sysop Closure",
+  "applications": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub",
+    "icamp",
+    "yw",
+    "devilndove",
+    "rosiedazzlers"
+  ],
+  "checkpoints": {
+    "sourceEnrollment": 7,
+    "telemetryAcceptance": 7,
+    "sysopProcedure": 7,
+    "independentOriginalHostRebootWitness": 1,
+    "totalEvidenceCheckpoints": 22,
+    "operationalScoreCategories": 36,
+    "totalTrackedItems": 58
+  },
+  "policy": {
+    "softwareReleaseMayImplyLiveConnection": false,
+    "sourceSecretsInEvidence": false,
+    "sourceOwnedEvidenceRequired": true,
+    "ownerReviewRequired": true,
+    "independentVerificationRequiredForPass": true,
+    "physicalRebootRequiresIndependentWitness": true,
+    "telemetryAuthorizesAction": false,
+    "staleEvidenceMayPass": false,
+    "missingEvidenceMayPass": false,
+    "operationalScorecardPath": ".github/rosevear-operational-completion-scorecard.v1.json",
+    "build424OperationalBaselinePercent": 86.4,
+    "build425OperationalPercent": 92.3,
+    "build425MovementPercentagePoints": 5.9
+  }
+}
