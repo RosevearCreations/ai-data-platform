@@ -1,0 +1,6 @@
+import {headers} from "next/headers";import {auth} from "@/lib/auth";import {observeApiOperation} from "@/lib/performance-observatory-database";import {readBuild426Dashboard,refreshBuild426} from "@/lib/build426-live-runtime-database";
+export const runtime="nodejs";export const dynamic="force-dynamic";
+async function userId(){const session=await auth.api.getSession({headers:await headers()});return session?.user.id??null;}
+function status(m:string){if(m.includes("operator_required"))return 403;return 500;}
+export async function GET(){const id=await userId();if(!id)return Response.json({error:"authentication_required"},{status:401});return observeApiOperation(id,"api.live-runtime-operations.get",async()=>{try{return Response.json(await readBuild426Dashboard(id),{headers:{"Cache-Control":"no-store"}});}catch(e){const m=e instanceof Error?e.message:"build426_read_failed";return Response.json({error:m},{status:status(m)});}});}
+export async function POST(){const id=await userId();if(!id)return Response.json({error:"authentication_required"},{status:401});return observeApiOperation(id,"api.live-runtime-operations.refresh",async()=>{try{return Response.json(await refreshBuild426(id),{status:200,headers:{"Cache-Control":"no-store"}});}catch(e){const m=e instanceof Error?e.message:"build426_refresh_failed";return Response.json({error:m},{status:status(m)});}});}
