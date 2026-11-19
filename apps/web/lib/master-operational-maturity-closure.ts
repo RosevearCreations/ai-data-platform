@@ -31,11 +31,11 @@ export type Build424RoadmapReceipt={
  pathwayTo100Published:boolean;nextRoadmapOwnerGated:boolean;noAutomaticBuild425:boolean;denominatorRulePublished:boolean;
  evidenceDigest:string;sourceOwned:boolean;syntheticEvidence:boolean;ownerReviewed:boolean;independentlyVerified:boolean;observedAt:string;expiresAt:string;
 };
-const digest=v=>/^sha256:[a-f0-9]{64}$/.test(v);
-const parse=v=>Date.parse(v);
-const fresh=(o,e,now)=>Number.isFinite(parse(o))&&Number.isFinite(parse(e))&&parse(o)<=now&&parse(e)>now&&parse(e)>parse(o);
-function latest(items,key){const out=new Map();for(const item of [...items].sort((a,b)=>(b.observedAt??"").localeCompare(a.observedAt??""))){const k=key(item);if(!out.has(k))out.set(k,item);}return out;}
-function pair(s,t){return s+"::"+t;}
+const digest=(v:string)=>/^sha256:[a-f0-9]{64}$/.test(v);
+const parse=(v:string)=>Date.parse(v);
+const fresh=(o:string,e:string,now:number)=>Number.isFinite(parse(o))&&Number.isFinite(parse(e))&&parse(o)<=now&&parse(e)>now&&parse(e)>parse(o);
+function latest<T extends {observedAt:string}>(items:readonly T[],key:(value:T)=>string){const out=new Map<string,T>();for(const item of [...items].sort((a,b)=>b.observedAt.localeCompare(a.observedAt))){const k=key(item);if(!out.has(k))out.set(k,item);}return out;}
+function pair(s:string,t:string){return s+"::"+t;}
 export function validateBuild424Local(item:Build424LocalRenewal,nowIso:string){
  if(!BUILD_405_APPLICATION_IDS.includes(item.appId)||!BUILD_424_LOCAL_DOMAINS.includes(item.domain)||item.state!=="PASS"||!digest(item.evidenceDigest)||
   !item.sourceOwned||item.syntheticEvidence||!item.ownerReviewed||!item.independentlyVerified||!fresh(item.observedAt,item.expiresAt,parse(nowIso)))return false;
