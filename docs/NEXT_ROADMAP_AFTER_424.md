@@ -65,3 +65,18 @@ The owner has now explicitly authorized the next numbered build and selected the
 - Movement: **+5.9 percentage points**.
 - Genuine live-source coverage remains separately measured; missing signer/token enrollment or independent witnesses remain HOLD.
 - The next numbered build must again move this same operational denominator by 5–10 points. With 7.7 points remaining, a Build 426 is valid only if it closes at least 5.0 points of genuine remaining operational scope.
+
+
+## Owner-authorized Build 426
+
+**Build 426 — Seven-Source Live Enrollment Ceremony, Independent Transport Verification & First Statistical Rollup Acceptance.**
+
+The owner requires AIDP to stop being a pure preview and expose real runtime information/functionality.
+
+- Build 425 operational feature baseline: **92.3%**.
+- Build 426 operational feature completion: **97.5%**.
+- Movement: **+5.2 percentage points**.
+- AIDP now reads live production runtime/database/performance facts on each operator request.
+- Operator-triggered source refresh performs bounded HTTPS reachability and signed telemetry admission when runtime credentials/pins exist.
+- Genuine signed-source coverage remains a separate evidence metric and cannot be inferred from this score.
+- Only 2.5 points remain on this denominator; **no Build 427 is automatically valid** under the 5–10-point rule unless the denominator is deliberately re-baselined or genuine remaining scope is expanded first.

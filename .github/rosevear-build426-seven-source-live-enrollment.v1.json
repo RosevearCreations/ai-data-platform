@@ -1,0 +1,46 @@
+{
+  "schema": "rosevear.ai-data-platform.build426-seven-source-live-enrollment.v1",
+  "build": 426,
+  "title": "Seven-Source Live Enrollment Ceremony, Independent Transport Verification & First Statistical Rollup Acceptance",
+  "applications": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub",
+    "icamp",
+    "yw",
+    "devilndove",
+    "rosiedazzlers"
+  ],
+  "liveNow": [
+    "production database timestamp",
+    "migration count and latest migration",
+    "process uptime",
+    "Vercel commit/environment/region",
+    "database pool pressure",
+    "24-hour API sample/failure/p95 statistics",
+    "Build 425/423 evidence counts"
+  ],
+  "defaultOrigins": {
+    "ai-data-platform": "https://ai-data-platform-beryl.vercel.app",
+    "rosevear-ai-hub": null,
+    "rosevear-comms-hub": "https://rosevear-comms-hub.devilndovelive.workers.dev",
+    "icamp": "https://i-camp-pi.vercel.app",
+    "yw": "https://yw-alpha.vercel.app",
+    "devilndove": "https://devilndove-site.pages.dev",
+    "rosiedazzlers": "https://rosiedazzlers.ca"
+  },
+  "policy": {
+    "httpsOnly": true,
+    "redirectsAllowed": false,
+    "probeTimeoutMs": 4500,
+    "maxResponseBytes": 20000,
+    "telemetryPath": "/internal/rosevear/sysop/telemetry/v1",
+    "telemetryAuthorizesAction": false,
+    "secretsPersisted": false,
+    "productionGreenMayImplyConnected": false,
+    "originalHostRebootAuthority": "rosevear-ai-hub",
+    "build425BaselinePercent": 92.3,
+    "build426FeatureCompletionPercent": 97.5,
+    "movementPercentagePoints": 5.2
+  }
+}
