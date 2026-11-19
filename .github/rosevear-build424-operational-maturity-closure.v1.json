@@ -1,0 +1,43 @@
+{
+  "schema": "rosevear.ai-data-platform.build424-operational-maturity-closure-security-renewal-next-roadmap.v1",
+  "build": 424,
+  "applications": [
+    "ai-data-platform",
+    "rosevear-ai-hub",
+    "rosevear-comms-hub",
+    "icamp",
+    "yw",
+    "devilndove",
+    "rosiedazzlers"
+  ],
+  "localDomains": [
+    "RELEASE_MATURITY",
+    "SECURITY_RENEWAL",
+    "COMMUNICATIONS_ASSURANCE",
+    "RECOVERY_READINESS",
+    "TELEMETRY_ENROLLMENT",
+    "OPERATIONS_RUNBOOK_CUSTODY"
+  ],
+  "policy": {
+    "requiredLocalSlots": 42,
+    "requiredDirectionalSlots": 28,
+    "requiredRoadmapSlots": 8,
+    "requiredTotalSlots": 78,
+    "evidenceFreshnessHours": 168,
+    "sourceOwnedEvidenceRequired": true,
+    "ownerReviewRequired": true,
+    "independentVerificationRequired": true,
+    "syntheticEvidenceMayClose": false,
+    "staleEvidenceMayClose": false,
+    "productionGreenMayClose": false,
+    "liveTelemetryEnrollmentRequiredForOperationalClosure": true,
+    "physicalRebootRequiresIndependentWitness": true,
+    "noSecretsInGitHubEvidence": true,
+    "completionScorecardPath": ".github/rosevear-completion-scorecard.v1.json",
+    "build422FormalBaselinePercent": 90.8,
+    "build424CurrentPercent": 95.8,
+    "build424MovementPercentagePoints": 5.1,
+    "nextNumberedBuildRequiresDenominatorRebaselineOrAtLeastFivePointCapacity": true,
+    "protocol": "1.1"
+  }
+}
