@@ -1,18 +1,20 @@
 {
-  "schema": "rosevear.ai-data-platform.completion-scorecard.v1",
-  "asOfBuild": 422,
+  "schema": "rosevear.ai-data-platform.completion-scorecard.v2",
+  "asOfBuild": 424,
   "date": "2026-11-18",
   "methodology": {
-    "ownershipModel": "AI Data Platform is scored on its evidence, integration, governance, intelligence, operator and platform responsibilities; source-product business engines are not scored as if AI Data Platform should replace them.",
+    "ownershipModel": "AI Data Platform is scored on its evidence, integration, governance, intelligence, operator and platform responsibilities; source-product business engines remain outside the denominator.",
     "scale": "0-100",
     "weighting": "equal weight across 36 platform-specific categories",
-    "previousBaseline": "Independently reconstructed Build 421 state; does not reuse the user's earlier sample percentages.",
-    "evidenceRule": "A deployed screen alone is not proof of live external or physical-host completion. HOLD/UNKNOWN evidence remains incomplete."
+    "previousFormalScore": "Build 422 was the last formal scorecard at 90.8%. Build 423 expanded operator/telemetry capability but was not separately rescored; Build 424 is measured against the last formal baseline.",
+    "evidenceRule": "Software/feature maturity is separate from live external and physical-host evidence. HOLD/UNKNOWN/missing credentials or witnesses remain incomplete.",
+    "futureBuildRule": "A numbered build must move this denominator by 5-10 percentage points. Once the score exceeds 95%, another numbered build cannot satisfy that rule without a documented denominator re-baseline."
   },
   "overall": {
-    "build421BaselinePercent": 85.3,
-    "build422CurrentPercent": 90.8,
-    "build422MovementPercentagePoints": 5.4,
+    "build422FormalBaselinePercent": 90.8,
+    "build424CurrentPercent": 95.8,
+    "build424MovementPercentagePoints": 5.1,
+    "remainingTo100PercentagePoints": 4.2,
     "targetMinimumPercentagePoints": 5,
     "targetMaximumPercentagePoints": 10
   },
@@ -20,290 +22,290 @@
     {
       "id": "master-command-center",
       "name": "Master command center & operator visibility",
-      "build421Percent": 94,
       "build422Percent": 96,
-      "deltaPercentagePoints": 2,
-      "rationale": "Broad Master Suite, command-center, attention, health and operator surfaces; Build 422 adds lifecycle/DLP visibility."
+      "build424Percent": 99,
+      "deltaPercentagePoints": 3,
+      "rationale": "Build 424 adds the closure dashboard, next-roadmap ceremony and explicit software-vs-live maturity separation."
     },
     {
       "id": "data-collection-intake",
       "name": "Data collection & intake",
-      "build421Percent": 90,
       "build422Percent": 90,
-      "deltaPercentagePoints": 0,
-      "rationale": "Collection projects, capture, recipes and collection runs are mature; Build 422 does not materially change intake."
+      "build424Percent": 94,
+      "deltaPercentagePoints": 4,
+      "rationale": "Mature collection paths are retained and included in operational closure/runbook review."
     },
     {
       "id": "data-review-approval",
       "name": "Data review & approval",
-      "build421Percent": 92,
       "build422Percent": 92,
-      "deltaPercentagePoints": 0,
-      "rationale": "Review, bulk review, approved data and governed publication paths are established."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 4,
+      "rationale": "Owner/operator acceptance and closure ceremony strengthen governed review paths."
     },
     {
       "id": "data-quality-validation",
       "name": "Data quality & validation",
-      "build421Percent": 90,
       "build422Percent": 90,
-      "deltaPercentagePoints": 0,
-      "rationale": "Quality, validation and evidence-before-claims controls are mature."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 6,
+      "rationale": "Closure checks require evidence-backed PASS/HOLD semantics and no synthetic completion."
     },
     {
       "id": "provenance-lineage",
       "name": "Provenance & lineage",
-      "build421Percent": 94,
       "build422Percent": 94,
-      "deltaPercentagePoints": 0,
-      "rationale": "Traceability, source lineage, receipts and audit trails are extensive."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Build 424 closure receipts bind exact revisions, evidence digests, freshness and owner review."
     },
     {
       "id": "search-reporting",
       "name": "Search & reporting",
-      "build421Percent": 88,
       "build422Percent": 89,
-      "deltaPercentagePoints": 1,
-      "rationale": "Unified search and reporting are strong; Build 422 adds lifecycle/DLP status to the operating picture."
+      "build424Percent": 95,
+      "deltaPercentagePoints": 6,
+      "rationale": "Operational maturity, connection enrollment and pathway-to-100 status are surfaced in the Master operating picture."
     },
     {
       "id": "corrective-operations",
       "name": "Corrective operations & reconciliation",
-      "build421Percent": 91,
       "build422Percent": 91,
-      "deltaPercentagePoints": 0,
-      "rationale": "Planning, delivery, closure, regression and recurrent-exception workflows are mature."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 5,
+      "rationale": "Recovery/rollback and operational closure evidence are consolidated into the maturity ceremony."
     },
     {
       "id": "application-module-lifecycle",
       "name": "Application registry & module lifecycle",
-      "build421Percent": 94,
       "build422Percent": 94,
-      "deltaPercentagePoints": 0,
-      "rationale": "Application registry, module install/lifecycle/certification and source shells are mature."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Seven-application release maturity and source-owned closure are explicitly renewed."
     },
     {
       "id": "cross-app-contracts",
       "name": "Cross-application data contracts",
-      "build421Percent": 94,
       "build422Percent": 95,
-      "deltaPercentagePoints": 1,
-      "rationale": "Versioned contracts are mature; Build 422 strengthens classification/retention/export obligations across transfers."
+      "build424Percent": 99,
+      "deltaPercentagePoints": 4,
+      "rationale": "All 28 directional relationships receive a security/authority renewal slot."
     },
     {
       "id": "event-delivery-replay",
       "name": "Event bus, delivery & replay",
-      "build421Percent": 93,
       "build422Percent": 94,
-      "deltaPercentagePoints": 1,
-      "rationale": "Durable delivery, replay, DLQ and authority-preserving envelopes are mature; DLP renewal adds transfer checks."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Relationship renewal includes transport, replay/duplicate safety and source-authority preservation."
     },
     {
       "id": "source-trust",
       "name": "Source onboarding, signer & trust",
-      "build421Percent": 90,
       "build422Percent": 90,
-      "deltaPercentagePoints": 0,
-      "rationale": "Source registry, signer enrollment, trust ledger and owner review are substantial; live peer gaps remain."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 6,
+      "rationale": "Build 424 renews signer/trust evidence and makes missing live telemetry enrollment an explicit HOLD."
     },
     {
       "id": "connector-diagnostics",
       "name": "Connector setup & diagnostics",
-      "build421Percent": 87,
       "build422Percent": 87,
-      "deltaPercentagePoints": 0,
-      "rationale": "Setup, credentials, validation, diagnostics and integration recovery are present."
+      "build424Percent": 94,
+      "deltaPercentagePoints": 7,
+      "rationale": "Connection enrollment and transport verification become first-class closure evidence."
     },
     {
       "id": "shared-identity",
       "name": "Shared identity & customer resolution",
-      "build421Percent": 85,
       "build422Percent": 85,
-      "deltaPercentagePoints": 0,
-      "rationale": "Cross-app identity resolution exists but remains partly dependent on source applications."
+      "build424Percent": 92,
+      "deltaPercentagePoints": 7,
+      "rationale": "Identity remains source-owned while operator/role separation and tenant boundaries are re-asserted."
     },
     {
       "id": "shared-scheduling-workqueue",
       "name": "Shared scheduling & work queue",
-      "build421Percent": 88,
       "build422Percent": 88,
-      "deltaPercentagePoints": 0,
-      "rationale": "Shared tasks, work queue and scheduling exchange are mature."
+      "build424Percent": 95,
+      "deltaPercentagePoints": 7,
+      "rationale": "Shared operational work remains governed and is included in runbook/closure readiness."
     },
     {
       "id": "tenant-authorization",
       "name": "Tenant/workspace isolation & authorization",
-      "build421Percent": 92,
       "build422Percent": 94,
-      "deltaPercentagePoints": 2,
-      "rationale": "Build 421 renewed least privilege, tenant/workspace isolation, revocation and delegated capability rules."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Security renewal re-validates least privilege, tenant/workspace isolation and authority boundaries."
     },
     {
       "id": "consent-governance",
       "name": "Consent & notification governance",
-      "build421Percent": 90,
       "build422Percent": 93,
-      "deltaPercentagePoints": 3,
-      "rationale": "Build 421 renewed consent lifecycle; Build 422 preserves consent and purpose constraints through retention/export handling."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 5,
+      "rationale": "Directional renewal requires current consent/notification authority where applicable."
     },
     {
       "id": "data-classification",
       "name": "Data classification",
-      "build421Percent": 65,
       "build422Percent": 94,
-      "deltaPercentagePoints": 29,
-      "rationale": "Build 410 provided a foundation; Build 422 adds fresh seven-app classification renewal with fail-closed evidence."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Build 422 lifecycle controls are carried into security renewal and closure evidence."
     },
     {
       "id": "encryption-secret-custody",
       "name": "Encryption & secret custody",
-      "build421Percent": 70,
       "build422Percent": 94,
-      "deltaPercentagePoints": 24,
-      "rationale": "Build 422 renews transport, at-rest and secret-field protection evidence and requires key material outside source control."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Build 424 explicitly renews secret custody and prohibits secrets in GitHub/source evidence."
     },
     {
       "id": "redaction-minimization",
       "name": "Redaction & data minimization",
-      "build421Percent": 68,
       "build422Percent": 93,
-      "deltaPercentagePoints": 25,
-      "rationale": "Build 422 renews structured-log redaction, credential-pattern redaction, audit minimization and raw-secret exclusion."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 5,
+      "rationale": "Closure evidence must remain minimized and free of raw credentials/secrets."
     },
     {
       "id": "retention-expiry",
       "name": "Retention & expiry",
-      "build421Percent": 60,
       "build422Percent": 92,
-      "deltaPercentagePoints": 32,
-      "rationale": "Build 422 adds fresh purpose-bound schedules, expiry enforcement and explicit hold-or-delete handling."
+      "build424Percent": 97,
+      "deltaPercentagePoints": 5,
+      "rationale": "Operational maturity requires current retention/expiry handling and source-owned evidence."
     },
     {
       "id": "deletion-evidence",
       "name": "Deletion evidence & legal holds",
-      "build421Percent": 55,
       "build422Percent": 90,
-      "deltaPercentagePoints": 35,
-      "rationale": "Build 422 adds deletion workflow evidence, immutable deletion receipts and legal-hold preservation."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 6,
+      "rationale": "Deletion/legal-hold capability is included in maturity renewal while live deletion remains source evidence."
     },
     {
       "id": "dlp-export-controls",
       "name": "DLP & export controls",
-      "build421Percent": 64,
       "build422Percent": 93,
-      "deltaPercentagePoints": 29,
-      "rationale": "Build 422 adds export inspection, owner-gated restricted export, secret-reference-only transfer and cross-tenant exfiltration denial."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 5,
+      "rationale": "Directional security renewal preserves DLP, owner gates and cross-tenant denial."
     },
     {
       "id": "privileged-owner-gates",
       "name": "Privileged operations & owner gates",
-      "build421Percent": 95,
       "build422Percent": 95,
-      "deltaPercentagePoints": 0,
-      "rationale": "Privileged operations, break-glass custody and owner-gated consequential actions are mature."
+      "build424Percent": 99,
+      "deltaPercentagePoints": 4,
+      "rationale": "Build 423 role separation plus Build 424 closure keeps consequential operations owner-gated."
     },
     {
       "id": "audit-evidence",
       "name": "Audit & evidence immutability",
-      "build421Percent": 90,
       "build422Percent": 96,
-      "deltaPercentagePoints": 6,
-      "rationale": "Build 422 adds append-only lifecycle/DLP renewal ledgers with FORCE RLS and evidence digests."
+      "build424Percent": 99,
+      "deltaPercentagePoints": 3,
+      "rationale": "Three new append-only closure/renewal ledgers extend immutable auditability."
     },
     {
       "id": "incident-recovery",
       "name": "Incident response, recovery & rollback",
-      "build421Percent": 91,
       "build422Percent": 91,
-      "deltaPercentagePoints": 0,
-      "rationale": "Incident fusion, supervised recovery, rollback readiness and post-recovery checks are strong."
+      "build424Percent": 97,
+      "deltaPercentagePoints": 6,
+      "rationale": "Recovery readiness becomes one of the six seven-app closure domains."
     },
     {
       "id": "performance-capacity",
       "name": "Performance & capacity governance",
-      "build421Percent": 92,
       "build422Percent": 92,
-      "deltaPercentagePoints": 0,
-      "rationale": "Performance budgets, forecasts and deployment-usage guardrails are established."
+      "build424Percent": 97,
+      "deltaPercentagePoints": 5,
+      "rationale": "Operational maturity includes current capacity/performance evidence and runbook ownership."
     },
     {
       "id": "desktop-ux",
       "name": "Desktop UX & accessibility",
-      "build421Percent": 91,
       "build422Percent": 91,
-      "deltaPercentagePoints": 0,
-      "rationale": "Responsive desktop controls and Build 420 accessibility recertification surfaces are strong."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 5,
+      "rationale": "Closure dashboard and existing Master surfaces retain desktop accessibility baselines."
     },
     {
       "id": "tablet-ux",
       "name": "Tablet UX & accessibility",
-      "build421Percent": 87,
       "build422Percent": 87,
-      "deltaPercentagePoints": 0,
-      "rationale": "Responsive tablet support is good, with some operational screens better suited to larger displays."
+      "build424Percent": 94,
+      "deltaPercentagePoints": 7,
+      "rationale": "Build 424 consolidates status and runbook visibility into responsive Master surfaces."
     },
     {
       "id": "mobile-ux",
       "name": "Mobile UX & accessibility",
-      "build421Percent": 85,
       "build422Percent": 85,
-      "deltaPercentagePoints": 0,
-      "rationale": "Mobile support is broad but complex Master workflows remain denser on small screens."
+      "build424Percent": 93,
+      "deltaPercentagePoints": 8,
+      "rationale": "Build 424 improves compact closure visibility while dense administrative operations remain intentionally limited."
     },
     {
       "id": "degraded-network",
       "name": "Offline/degraded-network resilience",
-      "build421Percent": 87,
       "build422Percent": 87,
-      "deltaPercentagePoints": 0,
-      "rationale": "Build 420 covers degraded-network states, retry and data-preserving recovery."
+      "build424Percent": 94,
+      "deltaPercentagePoints": 7,
+      "rationale": "Existing degraded-network/retry safety is included in operational maturity review."
     },
     {
       "id": "theme-design-system",
       "name": "Theme & design system",
-      "build421Percent": 92,
       "build422Percent": 92,
-      "deltaPercentagePoints": 0,
-      "rationale": "Sixteen shared Master themes and common responsive controls provide strong presentation maturity."
+      "build424Percent": 96,
+      "deltaPercentagePoints": 4,
+      "rationale": "Shared 16-theme system remains stable across the closure and roadmap surfaces."
     },
     {
       "id": "workflow-ai",
       "name": "Workflow automation & AI suggestions",
-      "build421Percent": 89,
       "build422Percent": 89,
-      "deltaPercentagePoints": 0,
-      "rationale": "Workflow automation, suggestions and supervised action boundaries are extensive."
+      "build424Percent": 95,
+      "deltaPercentagePoints": 6,
+      "rationale": "Automation remains supervised/non-authorizing while closure and next-roadmap workflows become explicit."
     },
     {
       "id": "original-host-evidence",
       "name": "External runtime/original-host evidence",
-      "build421Percent": 76,
       "build422Percent": 76,
-      "deltaPercentagePoints": 0,
-      "rationale": "Software controls exist, but physical Windows service/reboot/witness evidence remains intentionally separate."
+      "build424Percent": 82,
+      "deltaPercentagePoints": 6,
+      "rationale": "Hub source/collector and reboot procedure tracking improve readiness, but independent physical reboot witness remains outstanding."
     },
     {
       "id": "live-operational-evidence",
       "name": "Cross-application live operational evidence",
-      "build421Percent": 74,
       "build422Percent": 78,
-      "deltaPercentagePoints": 4,
-      "rationale": "Build 422 adds fresh source-owned lifecycle/DLP evidence contracts, while several live peer ceremonies remain HOLD."
+      "build424Percent": 84,
+      "deltaPercentagePoints": 6,
+      "rationale": "Seven-repo source software is promoted; missing signer/token enrollment remains HOLD rather than being counted as live-connected."
     },
     {
       "id": "release-engineering",
       "name": "Release/CI/migration engineering",
-      "build421Percent": 95,
       "build422Percent": 97,
+      "build424Percent": 99,
       "deltaPercentagePoints": 2,
-      "rationale": "Build verifiers, migration gates, exact-SHA production promotion and source-of-truth checks are highly mature."
+      "rationale": "Build 424 adds closure verification, migration 0187, exact-SHA promotion discipline and a next-roadmap gate."
     },
     {
       "id": "docs-runbooks",
       "name": "Documentation, help & runbooks",
-      "build421Percent": 94,
       "build422Percent": 94,
-      "deltaPercentagePoints": 0,
-      "rationale": "Build documentation, help, guided runbooks and source-of-truth records are extensive."
+      "build424Percent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Build 424 publishes operational maturity closure, a next-roadmap document and the pathway-to-100 source of truth."
     }
   ]
 }
