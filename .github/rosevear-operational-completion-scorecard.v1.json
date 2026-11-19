@@ -1,0 +1,311 @@
+{
+  "schema": "rosevear.ai-data-platform.operational-completion-scorecard.v1",
+  "asOfBuild": 425,
+  "date": "2026-11-19",
+  "methodology": {
+    "model": "Realistic operational completion: software capability plus evidence-readiness, while genuine live-source coverage is reported separately and never inferred from Production GREEN.",
+    "scale": "0-100",
+    "weighting": "equal weight across 36 AI Data Platform operational categories",
+    "baseline": "Owner-approved Build 424 realistic operational baseline: 86.4%.",
+    "buildRule": "Every numbered build must move this operational denominator by 5-10 percentage points unless the denominator is deliberately re-baselined first.",
+    "liveEvidenceRule": "Missing signer/token enrollment, transport review or independent reboot witness remains HOLD and does not become live-connected because this score advances."
+  },
+  "overall": {
+    "build424OperationalBaselinePercent": 86.4,
+    "build425CurrentPercent": 92.3,
+    "build425MovementPercentagePoints": 5.9,
+    "remainingTo100PercentagePoints": 7.7,
+    "targetMinimumPercentagePoints": 5,
+    "targetMaximumPercentagePoints": 10
+  },
+  "categories": [
+    {
+      "id": "master-command-center",
+      "name": "Master command center & operator visibility",
+      "build424OperationalPercent": 96,
+      "build425OperationalPercent": 100,
+      "deltaPercentagePoints": 4,
+      "rationale": "Adds a dedicated seven-source live-operational command view with explicit HOLD/accepted states."
+    },
+    {
+      "id": "data-collection-intake",
+      "name": "Data collection & intake",
+      "build424OperationalPercent": 90,
+      "build425OperationalPercent": 95,
+      "deltaPercentagePoints": 5,
+      "rationale": "Adds a governed intake path for enrollment, signed telemetry review and Sysop procedure evidence."
+    },
+    {
+      "id": "data-review-approval",
+      "name": "Data review & approval",
+      "build424OperationalPercent": 91,
+      "build425OperationalPercent": 97,
+      "deltaPercentagePoints": 6,
+      "rationale": "Adds owner-reviewed acceptance events layered over immutable Build 423 signed receipts."
+    },
+    {
+      "id": "data-quality-validation",
+      "name": "Data quality & validation",
+      "build424OperationalPercent": 89,
+      "build425OperationalPercent": 96,
+      "deltaPercentagePoints": 7,
+      "rationale": "Separates signed-source validity, transport review, freshness and live acceptance instead of collapsing them."
+    },
+    {
+      "id": "provenance-lineage",
+      "name": "Provenance & lineage",
+      "build424OperationalPercent": 92,
+      "build425OperationalPercent": 98,
+      "deltaPercentagePoints": 6,
+      "rationale": "Links enrollment, receipt, acceptance and Sysop evidence by exact application and source revision."
+    },
+    {
+      "id": "search-reporting",
+      "name": "Search & reporting",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 96,
+      "deltaPercentagePoints": 8,
+      "rationale": "Adds per-application statistical rollups, source state, latest event and operational evidence visibility."
+    },
+    {
+      "id": "corrective-operations",
+      "name": "Corrective operations & reconciliation",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 94,
+      "deltaPercentagePoints": 6,
+      "rationale": "Adds explicit HOLD reasons and owner-reviewed operational closure rather than inferred remediation."
+    },
+    {
+      "id": "application-module-lifecycle",
+      "name": "Application registry & module lifecycle",
+      "build424OperationalPercent": 93,
+      "build425OperationalPercent": 97,
+      "deltaPercentagePoints": 4,
+      "rationale": "All seven application identities are first-class operational evidence subjects with exact revision binding."
+    },
+    {
+      "id": "cross-app-contracts",
+      "name": "Cross-application data contracts",
+      "build424OperationalPercent": 90,
+      "build425OperationalPercent": 95,
+      "deltaPercentagePoints": 5,
+      "rationale": "Build 425 reuses the canonical seven-app source contract and keeps cross-app authority source-owned."
+    },
+    {
+      "id": "event-delivery-replay",
+      "name": "Event bus, delivery & replay",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 96,
+      "deltaPercentagePoints": 8,
+      "rationale": "Signed receipt, anti-replay, freshness and separate transport acceptance are surfaced as one governed chain."
+    },
+    {
+      "id": "source-trust",
+      "name": "Source onboarding, signer & trust",
+      "build424OperationalPercent": 75,
+      "build425OperationalPercent": 88,
+      "deltaPercentagePoints": 13,
+      "rationale": "Adds source enrollment evidence, signer fingerprint/revision custody and owner-reviewed acceptance without storing secrets."
+    },
+    {
+      "id": "connector-diagnostics",
+      "name": "Connector setup & diagnostics",
+      "build424OperationalPercent": 80,
+      "build425OperationalPercent": 91,
+      "deltaPercentagePoints": 11,
+      "rationale": "Adds transport/enrollment diagnostics and distinguishes NOT_ENROLLED, SIGNED_ONLY and LIVE_ACCEPTED."
+    },
+    {
+      "id": "shared-identity",
+      "name": "Shared identity & customer resolution",
+      "build424OperationalPercent": 78,
+      "build425OperationalPercent": 84,
+      "deltaPercentagePoints": 6,
+      "rationale": "Operational source identity is bound to exact app/revision while customer identities remain source-owned."
+    },
+    {
+      "id": "shared-scheduling-workqueue",
+      "name": "Shared scheduling & work queue",
+      "build424OperationalPercent": 84,
+      "build425OperationalPercent": 89,
+      "deltaPercentagePoints": 5,
+      "rationale": "Operational queue/rollup status is exposed without granting source scheduling authority."
+    },
+    {
+      "id": "tenant-authorization",
+      "name": "Tenant/workspace isolation & authorization",
+      "build424OperationalPercent": 91,
+      "build425OperationalPercent": 95,
+      "deltaPercentagePoints": 4,
+      "rationale": "Owner/operator-only evidence access and owner-only acceptance writes preserve least privilege."
+    },
+    {
+      "id": "consent-governance",
+      "name": "Consent & notification governance",
+      "build424OperationalPercent": 89,
+      "build425OperationalPercent": 94,
+      "deltaPercentagePoints": 5,
+      "rationale": "Operational evidence keeps consent/communications authority separate from telemetry observation."
+    },
+    {
+      "id": "data-classification",
+      "name": "Data classification",
+      "build424OperationalPercent": 91,
+      "build425OperationalPercent": 93,
+      "deltaPercentagePoints": 2,
+      "rationale": "Operational evidence uses aggregate non-sensitive telemetry classes and exact application identity."
+    },
+    {
+      "id": "encryption-secret-custody",
+      "name": "Encryption & secret custody",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 93,
+      "deltaPercentagePoints": 5,
+      "rationale": "Signer fingerprints and custody evidence are recorded without private keys or read tokens entering GitHub/DB evidence."
+    },
+    {
+      "id": "redaction-minimization",
+      "name": "Redaction & data minimization",
+      "build424OperationalPercent": 90,
+      "build425OperationalPercent": 92,
+      "deltaPercentagePoints": 2,
+      "rationale": "Rollups expose aggregate-only statistics and never persist raw secrets/customer payloads."
+    },
+    {
+      "id": "retention-expiry",
+      "name": "Retention & expiry",
+      "build424OperationalPercent": 87,
+      "build425OperationalPercent": 91,
+      "deltaPercentagePoints": 4,
+      "rationale": "Evidence freshness/expiry is enforced for enrollment, acceptance and Sysop procedure records."
+    },
+    {
+      "id": "deletion-evidence",
+      "name": "Deletion evidence & legal holds",
+      "build424OperationalPercent": 83,
+      "build425OperationalPercent": 88,
+      "deltaPercentagePoints": 5,
+      "rationale": "Recovery/procedure receipts are append-only and preserve legal/audit evidence rather than mutating history."
+    },
+    {
+      "id": "dlp-export-controls",
+      "name": "DLP & export controls",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 93,
+      "deltaPercentagePoints": 5,
+      "rationale": "Telemetry remains non-authorizing and cannot be used as an export/control bypass."
+    },
+    {
+      "id": "privileged-owner-gates",
+      "name": "Privileged operations & owner gates",
+      "build424OperationalPercent": 94,
+      "build425OperationalPercent": 98,
+      "deltaPercentagePoints": 4,
+      "rationale": "Owner-only acceptance and evidence review strengthen consequential-operation gates."
+    },
+    {
+      "id": "audit-evidence",
+      "name": "Audit & evidence immutability",
+      "build424OperationalPercent": 94,
+      "build425OperationalPercent": 99,
+      "deltaPercentagePoints": 5,
+      "rationale": "Adds append-only enrollment, telemetry acceptance and Sysop procedure ledgers with FORCE RLS."
+    },
+    {
+      "id": "incident-recovery",
+      "name": "Incident response, recovery & rollback",
+      "build424OperationalPercent": 86,
+      "build425OperationalPercent": 94,
+      "deltaPercentagePoints": 8,
+      "rationale": "Adds current recovery/reboot/backup/incident procedure evidence as explicit operational inputs."
+    },
+    {
+      "id": "performance-capacity",
+      "name": "Performance & capacity governance",
+      "build424OperationalPercent": 88,
+      "build425OperationalPercent": 95,
+      "deltaPercentagePoints": 7,
+      "rationale": "Adds p95 latency, queue, failures and active-session fields to the seven-source operating picture when sources provide them."
+    },
+    {
+      "id": "desktop-ux",
+      "name": "Desktop UX & accessibility",
+      "build424OperationalPercent": 89,
+      "build425OperationalPercent": 93,
+      "deltaPercentagePoints": 4,
+      "rationale": "Adds a compact command view that retains existing desktop accessibility controls."
+    },
+    {
+      "id": "tablet-ux",
+      "name": "Tablet UX & accessibility",
+      "build424OperationalPercent": 82,
+      "build425OperationalPercent": 88,
+      "deltaPercentagePoints": 6,
+      "rationale": "Operational evidence cards are simplified for tablet-sized review."
+    },
+    {
+      "id": "mobile-ux",
+      "name": "Mobile UX & accessibility",
+      "build424OperationalPercent": 78,
+      "build425OperationalPercent": 84,
+      "deltaPercentagePoints": 6,
+      "rationale": "Compact per-source status/metrics improve mobile review while dense evidence entry remains admin-oriented."
+    },
+    {
+      "id": "degraded-network",
+      "name": "Offline/degraded-network resilience",
+      "build424OperationalPercent": 80,
+      "build425OperationalPercent": 88,
+      "deltaPercentagePoints": 8,
+      "rationale": "Stale/missing source evidence remains HOLD and can recover without destructive state changes."
+    },
+    {
+      "id": "theme-design-system",
+      "name": "Theme & design system",
+      "build424OperationalPercent": 92,
+      "build425OperationalPercent": 94,
+      "deltaPercentagePoints": 2,
+      "rationale": "Uses the existing 16-theme Master design system without changing application authority."
+    },
+    {
+      "id": "workflow-ai",
+      "name": "Workflow automation & AI suggestions",
+      "build424OperationalPercent": 86,
+      "build425OperationalPercent": 94,
+      "deltaPercentagePoints": 8,
+      "rationale": "Supports supervised evidence intake/review workflows; no automatic operational action is introduced."
+    },
+    {
+      "id": "original-host-evidence",
+      "name": "External runtime/original-host evidence",
+      "build424OperationalPercent": 65,
+      "build425OperationalPercent": 78,
+      "deltaPercentagePoints": 13,
+      "rationale": "Adds original-host Sysop procedure evidence and independently witnessed reboot requirements while retaining Hub authority."
+    },
+    {
+      "id": "live-operational-evidence",
+      "name": "Cross-application live operational evidence",
+      "build424OperationalPercent": 60,
+      "build425OperationalPercent": 65,
+      "deltaPercentagePoints": 5,
+      "rationale": "Adds the full live-acceptance software chain but keeps genuine source coverage separate; zero live sources remains zero."
+    },
+    {
+      "id": "release-engineering",
+      "name": "Release/CI/migration engineering",
+      "build424OperationalPercent": 96,
+      "build425OperationalPercent": 100,
+      "deltaPercentagePoints": 4,
+      "rationale": "Adds migration 0188, Build 425 verifier and exact-SHA release gating."
+    },
+    {
+      "id": "docs-runbooks",
+      "name": "Documentation, help & runbooks",
+      "build424OperationalPercent": 93,
+      "build425OperationalPercent": 99,
+      "deltaPercentagePoints": 6,
+      "rationale": "Publishes the operational re-baseline, evidence model, API contract and live-source closure runbook."
+    }
+  ]
+}

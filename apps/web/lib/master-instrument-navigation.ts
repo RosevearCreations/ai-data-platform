@@ -93,6 +93,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/data-lifecycle-dlp-renewal",
   "/operator-production-ceremony",
   "/operational-maturity-closure",
+  "/live-operational-evidence",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
