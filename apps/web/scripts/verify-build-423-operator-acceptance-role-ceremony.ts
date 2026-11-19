@@ -1,0 +1,19 @@
+import assert from "node:assert/strict";import fs from "node:fs";import path from "node:path";import {generateKeyPairSync,createHash,sign} from "node:crypto";
+import {BUILD_423_ROLE_MATRIX,BUILD_423_WORKFLOWS,evaluateBuild423,validateBuild423Ceremony,validateBuild423RoleAcceptance} from "../lib/master-operator-acceptance-role-ceremony";
+const now="2026-11-18T22:00:00.000Z",digest="sha256:"+"a".repeat(64),h=(c:string)=>createHash("sha256").update(c).digest("hex");
+const roles=[] as any[],ceremonies=[] as any[];for(const [appId,appRoles] of Object.entries(BUILD_423_ROLE_MATRIX)){
+ for(const role of appRoles)roles.push({evidenceId:appId+"-"+role,appId,role,state:"PASS",acceptancePercent:95,criticalFailureCount:0,evidenceDigest:digest,observedAt:"2026-11-18T21:00:00.000Z",expiresAt:"2026-11-25T21:00:00.000Z",sourceOwned:true,ownerReviewed:true,independentlyVerified:true});
+ for(const workflow of BUILD_423_WORKFLOWS){const requesterRole=appRoles.includes("OPERATOR" as never)?"OPERATOR":appRoles.includes("WORKER" as never)?"WORKER":"CUSTOMER";const approverRole="OWNER";const executorRole=appRoles.includes("OPERATOR" as never)?"OPERATOR":appRoles.includes("ADMIN" as never)?"ADMIN":"OWNER";
+  ceremonies.push({receiptId:appId+"-"+workflow,appId,workflow,state:"PASS",requesterRole,approverRole,executorRole,requesterIdHash:h(appId+workflow+"r"),approverIdHash:h(appId+workflow+"a"),executorIdHash:h(appId+workflow+"e"),explicitApproval:true,authoritySeparated:true,ownerGatePreserved:true,sourceAuthorityPreserved:true,rollbackOrAbortAvailable:true,evidenceDigest:digest,observedAt:"2026-11-18T21:00:00.000Z",expiresAt:"2026-11-25T21:00:00.000Z",sourceOwned:true,ownerReviewed:true,independentlyVerified:true});}}
+assert.equal(roles.length,22);assert.equal(ceremonies.length,35);assert.ok(roles.every(x=>validateBuild423RoleAcceptance(x,now)));assert.ok(ceremonies.every(x=>validateBuild423Ceremony(x,now)));
+const hold=evaluateBuild423({roles,ceremonies,telemetry:[],nowIso:now});assert.equal(hold.governanceState,"HOLD_SYSOP_TELEMETRY_REQUIRED");assert.equal(hold.counts.totalCheckpoints,64);
+const root=path.resolve(process.cwd(),"../..");const read=(p:string)=>fs.readFileSync(path.join(root,p),"utf8");
+const migration=read("db/migrations/0186_master_operator_acceptance_role_separation_production_ceremony.sql");for(const token of ["master_build423_role_acceptance_evidence","master_build423_workflow_ceremony_receipts","master_build423_sysop_telemetry_receipts","requester_id_hash<>approver_id_hash","force row level security"])assert.ok(migration.includes(token));
+const pkg=JSON.parse(read("apps/web/package.json"));assert.ok(pkg.scripts.build.includes("verify-build-423-operator-acceptance-role-ceremony.ts"));
+const nav=read("apps/web/lib/application-navigation.ts");assert.ok(nav.includes('href: "/operator-production-ceremony"'));
+const mnav=read("apps/web/lib/master-instrument-navigation.ts");assert.ok(mnav.includes('"/operator-production-ceremony"'));
+const suite=read("apps/web/app/master-suite/page.tsx");assert.ok(suite.includes('href="/operator-production-ceremony"'));
+const roadmap=read("docs/NEXT_BUILDS_415_424.md");assert.ok(roadmap.includes("Implemented in Build 423"));assert.ok(roadmap.includes("64 concrete checkpoints"));
+const producer=read("apps/web/app/internal/rosevear/sysop/telemetry/v1/route.ts");assert.ok(producer.includes("buildLocalAIDPTelemetryEnvelope"));
+const intake=read("apps/web/app/api/sysop-telemetry/intake/route.ts");assert.ok(intake.includes("admitSysopTelemetryEnvelope"));
+console.log("Build 423 Operator Acceptance, Role Separation & Production Workflow Ceremony verification passed.");
