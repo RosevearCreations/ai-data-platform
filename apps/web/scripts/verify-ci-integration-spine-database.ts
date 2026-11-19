@@ -119,6 +119,9 @@ const requiredTables = [
   "master_build425_source_enrollment_evidence",
   "master_build425_telemetry_acceptance_events",
   "master_build425_sysop_procedure_evidence",
+  "master_build426_runtime_snapshots",
+  "master_build426_transport_probe_events",
+  "master_build426_statistical_rollups",
   "master_shell_source_registry_evidence",
   "master_shell_source_updates",
   "master_completion_requirement_revisions",
@@ -655,7 +658,8 @@ async function main() {
         "0185_master_data_lifecycle_retention_deletion_dlp_renewal.sql",
         "0186_master_operator_acceptance_role_separation_production_ceremony.sql",
         "0187_master_operational_maturity_closure_security_renewal.sql",
-        "0188_master_live_operational_evidence_control_plane.sql"
+        "0188_master_live_operational_evidence_control_plane.sql",
+        "0189_master_seven_source_live_enrollment.sql"
       ]]
     );
     const migrationNames = new Set(migrationEvidence.rows.map((row) => row.name));
@@ -966,6 +970,10 @@ async function main() {
     assert(
       migrationNames.has("0188_master_live_operational_evidence_control_plane.sql"),
       "migration 0188 is not recorded"
+    );
+    assert(
+      migrationNames.has("0189_master_seven_source_live_enrollment.sql"),
+      "migration 0189 is not recorded"
     );
 
     const relationshipCertificationGrants = await pool.query<{

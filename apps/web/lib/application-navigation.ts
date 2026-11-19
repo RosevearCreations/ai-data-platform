@@ -506,6 +506,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/live-runtime-operations",
+        label: "Live Runtime Operations",
+        description: "Read current production runtime/database/performance facts and run bounded seven-source transport/telemetry probes with first statistical rollups.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",

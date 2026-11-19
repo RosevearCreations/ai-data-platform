@@ -94,6 +94,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/operator-production-ceremony",
   "/operational-maturity-closure",
   "/live-operational-evidence",
+  "/live-runtime-operations",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
