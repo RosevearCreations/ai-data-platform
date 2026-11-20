@@ -117,6 +117,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/master-health">
             Master Health
           </Link>
+          <Link className="secondaryButton" href="/source-signer-activation">
+            Source Signer Activation
+          </Link>
         </div>
       </section>
 
