@@ -6,7 +6,7 @@ Build 428 moves the Master Health system from credential-readiness into genuine 
 
 **Yard Workers** and **iCamp** retain their own Ed25519 private signing keys and telemetry read tokens in their Vercel production environments. AI Data Platform stores the matching read credentials in its own protected production environment and stores only the public signer pins/fingerprints and exact deployed source commits as verification material.
 
-Yard Workers additionally required a canonical route publication repair: `/internal/rosevear/sysop/telemetry/v1` now rewrites to its Vercel function while preserving the canonical signed scope. The accepted YW source revision is `0681809271428de7aea94ea83ca6a0dc9abacd0c`.
+During first live acceptance, AIDP also exposed a legacy verifier mismatch: the published telemetry schema allows epoch-millisecond Sysop timestamps, but runtime validation had incorrectly applied the 32-bit counter ceiling to those timestamp fields. Build 428 now keeps the 32-bit ceiling only for counters/metrics and validates Sysop timestamps as non-negative safe integers, with a modern-epoch signed regression test.\n\nYard Workers additionally required a canonical route publication repair: `/internal/rosevear/sysop/telemetry/v1` now rewrites to its Vercel function while preserving the canonical signed scope. The accepted YW source revision is `0681809271428de7aea94ea83ca6a0dc9abacd0c`.
 
 The Build 428 production build runs an authenticated read-only source sweep **after database migrations and before the final Next.js compile**. Production fails closed unless both YW and iCamp return fresh telemetry envelopes that pass:
 - exact source application identity;
