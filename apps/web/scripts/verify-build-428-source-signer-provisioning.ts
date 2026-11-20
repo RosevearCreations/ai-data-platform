@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import path from "node:path";\nimport {createHash,generateKeyPairSync,sign} from "node:crypto";\nimport {verifySysopTelemetryEnvelope} from "../lib/sysop-telemetry-v1";
+import path from "node:path";
+import {createHash,generateKeyPairSync,sign} from "node:crypto";
+import {verifySysopTelemetryEnvelope} from "../lib/sysop-telemetry-v1";
 import {BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,BUILD_428_SOURCE_MATRIX,build428AcceptanceState,build428RunState} from "../lib/master-source-signer-provisioning";
 assert.deepEqual(BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,["yw","icamp"]);
 assert.equal(BUILD_428_SOURCE_MATRIX.yw.publicKeyFingerprint?.length,64);assert.equal(BUILD_428_SOURCE_MATRIX.yw.expectedCommit,"0681809271428de7aea94ea83ca6a0dc9abacd0c");
