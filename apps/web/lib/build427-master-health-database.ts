@@ -6,7 +6,10 @@ import {aggregateBuild426Metrics} from "./master-seven-source-live-enrollment";
 import {probeBuild426Source,refreshBuild426,type Build426Probe} from "./build426-live-runtime-database";
 import {BUILD_427_CREDENTIAL_ENV_KEYS,build427CredentialSnapshot,build427MasterState,build427SourceState} from "./master-seven-source-credential-activation";
 
-interface Build426DashboardProbeRow extends QueryResultRow{\n app_id:string;origin:string|null;origin_reachable:boolean;telemetry_status:number|null;telemetry_latency_ms:number|null;token_configured:boolean;telemetry_verified:boolean;source_commit:string|null;detail:string;observed_at:Date;\n}\ninterface ActivationRow extends QueryResultRow{
+interface Build426DashboardProbeRow extends QueryResultRow{
+ app_id:string;origin:string|null;origin_reachable:boolean;telemetry_status:number|null;telemetry_latency_ms:number|null;token_configured:boolean;telemetry_verified:boolean;source_commit:string|null;detail:string;observed_at:Date;
+}
+interface ActivationRow extends QueryResultRow{
  app_id:string;credential_env_key:string;credential_present:boolean;origin:string|null;origin_reachable:boolean;telemetry_status:number|null;
  telemetry_latency_ms:number|null;telemetry_verified:boolean;source_commit:string|null;detail:string;metrics:Record<string,unknown>;observed_at:Date;
 }
