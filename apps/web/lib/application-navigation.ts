@@ -518,6 +518,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/source-signer-activation",
+        label: "Source Signer Activation",
+        description: "Review Build 428 source-side signer custody, exact credential pairing, genuine signed first-heartbeat acceptance and remaining provider/original-host holds.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
