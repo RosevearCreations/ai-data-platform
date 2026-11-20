@@ -95,6 +95,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/operational-maturity-closure",
   "/live-operational-evidence",
   "/live-runtime-operations",
+  "/master-health",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
