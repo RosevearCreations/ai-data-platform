@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import {BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,BUILD_428_SOURCE_MATRIX,build428AcceptanceState,build428RunState} from "../lib/master-source-signer-provisioning";
 assert.deepEqual(BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,["yw","icamp"]);
-assert.equal(BUILD_428_SOURCE_MATRIX.yw.publicKeyFingerprint?.length,64);
+assert.equal(BUILD_428_SOURCE_MATRIX.yw.publicKeyFingerprint?.length,64);assert.equal(BUILD_428_SOURCE_MATRIX.yw.expectedCommit,"0681809271428de7aea94ea83ca6a0dc9abacd0c");
 assert.equal(BUILD_428_SOURCE_MATRIX.icamp.expectedCommit,"2ea77f56bc6c444ef489ac76fff4dd4a9bea5447");
 assert.equal(BUILD_428_SOURCE_MATRIX["rosevear-ai-hub"].provider,"ORIGINAL_HOST");
 assert.equal(build428AcceptanceState({appId:"yw",telemetryVerified:true,receiptPresent:true}),"ACTIVE_SIGNED_FIRST_HEARTBEAT");
