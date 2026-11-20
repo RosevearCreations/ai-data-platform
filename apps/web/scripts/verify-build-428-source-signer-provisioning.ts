@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import path from "node:path";
+import path from "node:path";\nimport {createHash,generateKeyPairSync,sign} from "node:crypto";\nimport {verifySysopTelemetryEnvelope} from "../lib/sysop-telemetry-v1";
 import {BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,BUILD_428_SOURCE_MATRIX,build428AcceptanceState,build428RunState} from "../lib/master-source-signer-provisioning";
 assert.deepEqual(BUILD_428_REQUIRED_FIRST_HEARTBEAT_SOURCES,["yw","icamp"]);
 assert.equal(BUILD_428_SOURCE_MATRIX.yw.publicKeyFingerprint?.length,64);assert.equal(BUILD_428_SOURCE_MATRIX.yw.expectedCommit,"0681809271428de7aea94ea83ca6a0dc9abacd0c");
@@ -9,6 +9,15 @@ assert.equal(BUILD_428_SOURCE_MATRIX["rosevear-ai-hub"].provider,"ORIGINAL_HOST"
 assert.equal(build428AcceptanceState({appId:"yw",telemetryVerified:true,receiptPresent:true}),"ACTIVE_SIGNED_FIRST_HEARTBEAT");
 assert.equal(build428AcceptanceState({appId:"yw",telemetryVerified:false,receiptPresent:false}),"HOLD_REQUIRED_SOURCE_NOT_VERIFIED");
 assert.equal(build428RunState({verifiedRequired:2,activeSources:2}),"PARTIAL_GENUINE_ACTIVATION_ACCEPTED");
+const modernNowMs=1_800_000_000_000,modernCommit="b".repeat(40),{privateKey,publicKey}=generateKeyPairSync("ed25519");
+const modernPublicPem=publicKey.export({format:"pem",type:"spki"}).toString(),modernRaw=publicKey.export({format:"der",type:"spki"});
+const modernFingerprint=createHash("sha256").update(modernRaw.subarray(modernRaw.length-32)).digest("hex");
+const modernPayload={schema:"rosevear.sysop.statistics.v1",protocolVersion:"1.1",appId:"yw",sourceCommit:modernCommit,eventId:"modernEpochHeartbeat01",nonce:"c".repeat(32),issuedAtMs:modernNowMs,expiresAtMs:modernNowMs+60_000,state:"UNKNOWN",metricsWindowSeconds:60,metrics:{requests:null,serverErrors:null,jobsCompleted:null,jobsFailed:null,queueDepth:null,latencyP95Ms:null,activeSessions:null},sysop:{eventKind:"HEARTBEAT",observedAtMs:modernNowMs,processUptimeSec:123,restartCount:null,lastRestartAtMs:null,bootTimeMs:null,rebootIsIndependentlyWitnessed:false},dataClass:"NON_SENSITIVE_AGGREGATE",tenantId:null,authorizesAction:false};
+const canonical=(value:unknown):string=>Array.isArray(value)?"["+value.map(canonical).join(",")+"]":value&&typeof value==="object"?"{"+Object.keys(value as Record<string,unknown>).sort().map(k=>JSON.stringify(k)+":"+canonical((value as Record<string,unknown>)[k])).join(",")+"}":JSON.stringify(value);
+const previousPins=process.env.ROSEVEAR_SYSOP_TELEMETRY_PINS_JSON;process.env.ROSEVEAR_SYSOP_TELEMETRY_PINS_JSON=JSON.stringify({yw:{publicKeyPem:modernPublicPem,fingerprint:modernFingerprint,expectedCommit:modernCommit}});
+const modernEnvelope={payload:modernPayload,signature:sign(null,Buffer.from(canonical(modernPayload)),privateKey).toString("hex")};
+assert.equal(verifySysopTelemetryEnvelope(modernEnvelope,modernNowMs+1_000).appId,"yw");
+if(previousPins===undefined)delete process.env.ROSEVEAR_SYSOP_TELEMETRY_PINS_JSON;else process.env.ROSEVEAR_SYSOP_TELEMETRY_PINS_JSON=previousPins;
 const root=path.resolve(process.cwd(),"../.."),read=(p:string)=>fs.readFileSync(path.join(root,p),"utf8");
 const manifest=JSON.parse(read(".github/rosevear-build428-source-signer-provisioning.v1.json"));assert.equal(manifest.build,428);assert.equal(manifest.productionGate.requiredCount,2);assert.equal(manifest.secretPolicy.privateKeysInGit,false);
 const migration=read("db/migrations/0191_master_source_signer_provisioning_first_heartbeat.sql");for(const token of ["master_build428_source_pairing_acceptance","master_build428_activation_runs","master_build428_latest_source_acceptance","force row level security"])assert.ok(migration.includes(token));
