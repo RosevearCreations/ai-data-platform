@@ -217,6 +217,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/live-operational-evidence",
           "/live-runtime-operations",
           "/master-health",
+          "/source-signer-activation",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
