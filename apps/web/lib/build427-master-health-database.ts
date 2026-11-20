@@ -6,7 +6,7 @@ import {aggregateBuild426Metrics} from "./master-seven-source-live-enrollment";
 import {probeBuild426Source,refreshBuild426,type Build426Probe} from "./build426-live-runtime-database";
 import {BUILD_427_CREDENTIAL_ENV_KEYS,build427CredentialSnapshot,build427MasterState,build427SourceState} from "./master-seven-source-credential-activation";
 
-interface ActivationRow extends QueryResultRow{
+interface Build426DashboardProbeRow extends QueryResultRow{\n app_id:string;origin:string|null;origin_reachable:boolean;telemetry_status:number|null;telemetry_latency_ms:number|null;token_configured:boolean;telemetry_verified:boolean;source_commit:string|null;detail:string;observed_at:Date;\n}\ninterface ActivationRow extends QueryResultRow{
  app_id:string;credential_env_key:string;credential_present:boolean;origin:string|null;origin_reachable:boolean;telemetry_status:number|null;
  telemetry_latency_ms:number|null;telemetry_verified:boolean;source_commit:string|null;detail:string;metrics:Record<string,unknown>;observed_at:Date;
 }
@@ -43,8 +43,8 @@ export async function sweepBuild427Protected(){
 export async function refreshBuild427(userId:string){
  await sysopRole(userId);
  const b426=await refreshBuild426(userId);
- const rows=b426.probes as ActivationRow[];
- const normalized=rows.map(x=>({appId:x.app_id,credentialEnvKey:BUILD_427_CREDENTIAL_ENV_KEYS[x.app_id as keyof typeof BUILD_427_CREDENTIAL_ENV_KEYS],credentialPresent:Boolean(x.credential_present??x.token_configured),origin:x.origin,originReachable:Boolean(x.origin_reachable),telemetryStatus:x.telemetry_status,telemetryLatencyMs:x.telemetry_latency_ms,telemetryVerified:Boolean(x.telemetry_verified),sourceCommit:x.source_commit,detail:x.detail??"unknown"}));
+ const rows=b426.probes as Build426DashboardProbeRow[];
+ const normalized=rows.map(x=>({appId:x.app_id,credentialEnvKey:BUILD_427_CREDENTIAL_ENV_KEYS[x.app_id as keyof typeof BUILD_427_CREDENTIAL_ENV_KEYS],credentialPresent:Boolean(x.token_configured),origin:x.origin,originReachable:Boolean(x.origin_reachable),telemetryStatus:x.telemetry_status,telemetryLatencyMs:x.telemetry_latency_ms,telemetryVerified:Boolean(x.telemetry_verified),sourceCommit:x.source_commit,detail:x.detail??"unknown"}));
  const c=countsFromProbes(normalized);
  await withUserDatabase(userId,async client=>{
   for(const x of normalized)await client.query(`insert into app.master_build427_source_activation_events(event_id,app_id,credential_env_key,credential_present,origin,origin_reachable,telemetry_status,telemetry_latency_ms,telemetry_verified,source_commit,detail,metrics,observed_at) values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'{}'::jsonb,now())`,[randomUUID(),x.appId,x.credentialEnvKey,x.credentialPresent,x.origin,x.originReachable,x.telemetryStatus,x.telemetryLatencyMs,x.telemetryVerified,x.sourceCommit,x.detail.slice(0,500)]);
