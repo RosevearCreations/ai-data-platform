@@ -14,7 +14,7 @@ function canonical(value:unknown):string{
  return JSON.stringify(value);
 }
 function exact(value:unknown,keys:readonly string[]){return Boolean(value&&typeof value==="object"&&!Array.isArray(value)&&Object.keys(value as object).length===keys.length&&Object.keys(value as object).every(k=>keys.includes(k)));}
-function bounded(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0&&Number(value)<=2147483647);}
+function boundedCounter(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0&&Number(value)<=2147483647);}\nfunction timestampOrNull(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0);}
 function tokenOk(actual:string|null,expected:string|undefined){
  if(!expected||!actual)return false;const a=Buffer.from(actual),b=Buffer.from(expected);return a.length===b.length&&timingSafeEqual(a,b);
 }
@@ -36,10 +36,14 @@ export function verifySysopTelemetryEnvelope(envelope:Envelope,nowMs=Date.now())
   Number(p.expiresAtMs)<=nowMs||Number(p.expiresAtMs)-Number(p.issuedAtMs)>MAX_AGE_MS||!["HEALTHY","DEGRADED","UNHEALTHY","UNKNOWN"].includes(String(p.state))||
   !Number.isSafeInteger(p.metricsWindowSeconds)||Number(p.metricsWindowSeconds)<60||Number(p.metricsWindowSeconds)>86400||
   p.dataClass!=="NON_SENSITIVE_AGGREGATE"||p.tenantId!==null||p.authorizesAction!==false)throw new Error("build423_telemetry_scope_or_freshness_invalid");
- if(!exact(p.metrics,METRIC_KEYS)||!METRIC_KEYS.every(k=>bounded((p.metrics as Record<string,unknown>)[k])))throw new Error("build423_telemetry_metrics_invalid");
- if(!exact(p.sysop,SYSOP_KEYS)||!SYSOP_KEYS.every(k=>k==="eventKind"||k==="rebootIsIndependentlyWitnessed"||bounded((p.sysop as Record<string,unknown>)[k]))||
-   !["HEARTBEAT","PROCESS_RESTART_OBSERVED","HOST_BOOT_OBSERVED","SCHEDULED_MAINTENANCE_OBSERVED","BACKUP_VERIFY_OBSERVED","INCIDENT_OBSERVED"].includes(String((p.sysop as Record<string,unknown>).eventKind))||
-   (p.sysop as Record<string,unknown>).rebootIsIndependentlyWitnessed!==false)throw new Error("build423_telemetry_sysop_invalid");
+ if(!exact(p.metrics,METRIC_KEYS)||!METRIC_KEYS.every(k=>boundedCounter((p.metrics as Record<string,unknown>)[k])))throw new Error("build423_telemetry_metrics_invalid");
+ const sysop=p.sysop as Record<string,unknown>;
+ if(!exact(sysop,SYSOP_KEYS)||
+   !Number.isSafeInteger(sysop.observedAtMs)||Number(sysop.observedAtMs)<0||
+   !boundedCounter(sysop.processUptimeSec)||!boundedCounter(sysop.restartCount)||
+   !timestampOrNull(sysop.lastRestartAtMs)||!timestampOrNull(sysop.bootTimeMs)||
+   !["HEARTBEAT","PROCESS_RESTART_OBSERVED","HOST_BOOT_OBSERVED","SCHEDULED_MAINTENANCE_OBSERVED","BACKUP_VERIFY_OBSERVED","INCIDENT_OBSERVED"].includes(String(sysop.eventKind))||
+   sysop.rebootIsIndependentlyWitnessed!==false)throw new Error("build423_telemetry_sysop_invalid");
  if(appId!=="rosevear-ai-hub"&&((p.sysop as Record<string,unknown>).bootTimeMs!==null||(p.sysop as Record<string,unknown>).eventKind==="HOST_BOOT_OBSERVED"))throw new Error("build423_telemetry_boot_scope_invalid");
  const key=createPublicKey(pin.publicKeyPem);const raw=key.export({format:"der",type:"spki"});const fingerprint=createHash("sha256").update(raw.subarray(raw.length-32)).digest("hex");
  if(fingerprint!==pin.fingerprint)throw new Error("build423_telemetry_pin_mismatch");
