@@ -1,0 +1,31 @@
+{
+  "schema": "rosevear.ai-data-platform.build428-source-signer-provisioning.v1",
+  "build": 428,
+  "title": "Seven-Source Source-Side Signer Provisioning, Credential Pairing, First Genuine Signed Heartbeats & Continuous Master Health Activation",
+  "productionGate": {
+    "requiredFirstHeartbeatSources": [
+      "yw",
+      "icamp"
+    ],
+    "requiredCount": 2,
+    "failClosed": true
+  },
+  "activatedProviderAuthority": [
+    "YW via Vercel",
+    "iCamp via Vercel"
+  ],
+  "holds": {
+    "ai-data-platform": "AIDP private signer provider write blocked by connected tool safeguard",
+    "rosevear-ai-hub": "original Windows host signer and approved HTTPS relay required",
+    "rosevear-comms-hub": "Cloudflare secret authority not connected",
+    "devilndove": "telemetry route plus Cloudflare secret authority required",
+    "rosiedazzlers": "Cloudflare secret authority not connected"
+  },
+  "secretPolicy": {
+    "privateKeysInGit": false,
+    "readTokensInGit": false,
+    "databaseStoresSecretValues": false,
+    "publicPinsAndFingerprintsAllowed": true
+  },
+  "productionGreenMayImplySevenSourceConnected": false
+}
