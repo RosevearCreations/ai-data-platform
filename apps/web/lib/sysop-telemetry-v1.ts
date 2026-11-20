@@ -37,9 +37,14 @@ export function verifySysopTelemetryEnvelope(envelope:Envelope,nowMs=Date.now())
   !Number.isSafeInteger(p.metricsWindowSeconds)||Number(p.metricsWindowSeconds)<60||Number(p.metricsWindowSeconds)>86400||
   p.dataClass!=="NON_SENSITIVE_AGGREGATE"||p.tenantId!==null||p.authorizesAction!==false)throw new Error("build423_telemetry_scope_or_freshness_invalid");
  if(!exact(p.metrics,METRIC_KEYS)||!METRIC_KEYS.every(k=>bounded((p.metrics as Record<string,unknown>)[k])))throw new Error("build423_telemetry_metrics_invalid");
- if(!exact(p.sysop,SYSOP_KEYS)||!SYSOP_KEYS.every(k=>k==="eventKind"||k==="rebootIsIndependentlyWitnessed"||bounded((p.sysop as Record<string,unknown>)[k]))||
-   !["HEARTBEAT","PROCESS_RESTART_OBSERVED","HOST_BOOT_OBSERVED","SCHEDULED_MAINTENANCE_OBSERVED","BACKUP_VERIFY_OBSERVED","INCIDENT_OBSERVED"].includes(String((p.sysop as Record<string,unknown>).eventKind))||
-   (p.sysop as Record<string,unknown>).rebootIsIndependentlyWitnessed!==false)throw new Error("build423_telemetry_sysop_invalid");
+ const sysop=p.sysop as Record<string,unknown>;
+ const observedAtMs=sysop.observedAtMs;
+ const optionalEpoch=(value:unknown)=>value===null||(Number.isSafeInteger(value)&&Number(value)>=0&&Number(value)<=nowMs+2000);
+ if(!exact(p.sysop,SYSOP_KEYS)||
+   !Number.isSafeInteger(observedAtMs)||Number(observedAtMs)<0||Number(observedAtMs)>nowMs+2000||nowMs-Number(observedAtMs)>MAX_AGE_MS||
+   !bounded(sysop.processUptimeSec)||!bounded(sysop.restartCount)||!optionalEpoch(sysop.lastRestartAtMs)||!optionalEpoch(sysop.bootTimeMs)||
+   !["HEARTBEAT","PROCESS_RESTART_OBSERVED","HOST_BOOT_OBSERVED","SCHEDULED_MAINTENANCE_OBSERVED","BACKUP_VERIFY_OBSERVED","INCIDENT_OBSERVED"].includes(String(sysop.eventKind))||
+   sysop.rebootIsIndependentlyWitnessed!==false)throw new Error("build423_telemetry_sysop_invalid");
  if(appId!=="rosevear-ai-hub"&&((p.sysop as Record<string,unknown>).bootTimeMs!==null||(p.sysop as Record<string,unknown>).eventKind==="HOST_BOOT_OBSERVED"))throw new Error("build423_telemetry_boot_scope_invalid");
  const key=createPublicKey(pin.publicKeyPem);const raw=key.export({format:"der",type:"spki"});const fingerprint=createHash("sha256").update(raw.subarray(raw.length-32)).digest("hex");
  if(fingerprint!==pin.fingerprint)throw new Error("build423_telemetry_pin_mismatch");
