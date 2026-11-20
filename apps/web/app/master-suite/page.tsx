@@ -114,6 +114,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/live-runtime-operations">
             Live Runtime Operations
           </Link>
+          <Link className="secondaryButton" href="/master-health">
+            Master Health
+          </Link>
         </div>
       </section>
 
