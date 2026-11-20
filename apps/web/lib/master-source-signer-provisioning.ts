@@ -15,7 +15,7 @@ export const BUILD_428_SOURCE_MATRIX:Record<Build426AppId,{
  pendingReason:string|null;
 }>={
  "ai-data-platform":{provider:"VERCEL",sourceRoutePresent:true,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS["ai-data-platform"],publicKeyFingerprint:null,expectedCommit:null,pendingReason:"AIDP_PRIVATE_SIGNER_PROVIDER_WRITE_BLOCKED"},
- "yw":{provider:"VERCEL",sourceRoutePresent:true,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS.yw,publicKeyFingerprint:"eefe31aa41ffc53b08f313b72290e632fa44c29fbc5dc71bd0f3dd6feef75847",expectedCommit:"ff08032062d2d2bf6636eba19e41c9aba1dc8cba",pendingReason:null},
+ "yw":{provider:"VERCEL",sourceRoutePresent:true,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS.yw,publicKeyFingerprint:"eefe31aa41ffc53b08f313b72290e632fa44c29fbc5dc71bd0f3dd6feef75847",expectedCommit:"0681809271428de7aea94ea83ca6a0dc9abacd0c",pendingReason:null},
  "icamp":{provider:"VERCEL",sourceRoutePresent:true,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS.icamp,publicKeyFingerprint:"c0fb0cfe20cafaf796a95b44ce4c375bd6afcdb1b177a5e78018045d43ce25e0",expectedCommit:"2ea77f56bc6c444ef489ac76fff4dd4a9bea5447",pendingReason:null},
  "rosevear-ai-hub":{provider:"ORIGINAL_HOST",sourceRoutePresent:false,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS["rosevear-ai-hub"],publicKeyFingerprint:null,expectedCommit:null,pendingReason:"ORIGINAL_HOST_SIGNER_AND_HTTPS_RELAY_REQUIRED"},
  "rosevear-comms-hub":{provider:"CLOUDFLARE",sourceRoutePresent:true,credentialRef:BUILD_427_CREDENTIAL_ENV_KEYS["rosevear-comms-hub"],publicKeyFingerprint:null,expectedCommit:null,pendingReason:"CLOUDFLARE_SECRET_AUTHORITY_NOT_CONNECTED"},
