@@ -97,6 +97,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/live-runtime-operations",
   "/master-health",
   "/source-signer-activation",
+  "/seven-source-health",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
