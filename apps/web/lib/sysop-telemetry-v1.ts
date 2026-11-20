@@ -14,7 +14,8 @@ function canonical(value:unknown):string{
  return JSON.stringify(value);
 }
 function exact(value:unknown,keys:readonly string[]){return Boolean(value&&typeof value==="object"&&!Array.isArray(value)&&Object.keys(value as object).length===keys.length&&Object.keys(value as object).every(k=>keys.includes(k)));}
-function boundedCounter(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0&&Number(value)<=2147483647);}\nfunction timestampOrNull(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0);}
+function boundedCounter(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0&&Number(value)<=2147483647);}
+function timestampOrNull(value:unknown){return value===null||(Number.isSafeInteger(value)&&Number(value)>=0);}
 function tokenOk(actual:string|null,expected:string|undefined){
  if(!expected||!actual)return false;const a=Buffer.from(actual),b=Buffer.from(expected);return a.length===b.length&&timingSafeEqual(a,b);
 }
