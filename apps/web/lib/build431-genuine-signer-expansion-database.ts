@@ -72,7 +72,7 @@ function summarize(probes:readonly Build431Probe[]){
  const classifiedSources=states.filter(x=>x.state==="ACTIVE_V12_SIGNED"||x.state.startsWith("HOLD_")).length;
  const heldSources=states.filter(x=>x.state!=="ACTIVE_V12_SIGNED").length;
  const state=verifiedSources===7?"SEVEN_SOURCE_V12_SIGNED_LIVE":classifiedSources===7?"SEVEN_SOURCE_CLASSIFIED_SIGNER_EXPANSION":"SEVEN_SOURCE_SIGNER_CLASSIFICATION_INCOMPLETE";
- return {states,verifiedSources,classifiedSources,heldSources,state,...build431Coverage({verifiedSources,classifiedSources})};
+ return {states,heldSources,state,...build431Coverage({verifiedSources,classifiedSources})};
 }
 async function persist(client:PoolClient,mode:Mode,probes:readonly Build431Probe[]){
  const sweepId=randomUUID(),summary=summarize(probes);
