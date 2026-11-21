@@ -530,6 +530,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/sweep-challenge-reliability",
+        label: "Signed Sweep Challenge & Reliability",
+        description: "Review Build 430 source-signed protocol v1.2 challenges, overlapping-sweep isolation, YW/iCamp reliability history and measured hosted cadence.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
