@@ -1,0 +1,22 @@
+{
+  "schema": "rosevear.ai-data-platform.build431-genuine-signer-expansion.v1",
+  "build": 431,
+  "title": "Remaining Five-Source Genuine Signer Enrollment, Cross-Provider Production Telemetry Activation & Seven-Source Continuous Signed-Health Expansion",
+  "productionGate": {
+    "allSevenClassified": true,
+    "minimumGenuineV12SignedSources": 3,
+    "requiredSignedSources": [
+      "ai-data-platform",
+      "yw",
+      "icamp"
+    ],
+    "explicitHoldsAllowedForUnprovisionedProviderSources": true,
+    "failClosed": true
+  },
+  "providerTruth": {
+    "vercelManualRestart": false,
+    "originalHostRuntimeRestartWhenCodeOrEnvironmentChanges": true,
+    "cloudflareSecretAuthorityStillRequired": true
+  },
+  "truthBoundary": "Production GREEN certifies the Build 431 release and three genuine v1.2 signed sources; it does not claim the four held provider/original-host sources are connected."
+}

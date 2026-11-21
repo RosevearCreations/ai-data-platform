@@ -34,7 +34,7 @@ const migration=read("db/migrations/0193_master_build430_source_signed_challenge
 for(const token of ["protocol_version","challenge_sha256","challenge_verified","master_build430_sweep_runs","master_build430_source_challenge_observations","master_build430_reliability_events","master_build430_cadence_baseline","force row level security"])assert.ok(migration.includes(token),token);
 
 const cron=read("apps/web/app/api/cron/build427-rollup/route.ts");
-assert.ok(cron.includes("runBuild430ProtectedSweep"));assert.ok(cron.includes("build:430"));
+assert.ok(cron.includes("runBuild430ProtectedSweep"));assert.ok(cron.includes("build430:{"));
 const vercel=JSON.parse(read("apps/web/vercel.json"));assert.equal(vercel.crons[0].schedule,"17 12 * * *");
 
 const manifest=JSON.parse(read(".github/rosevear-build430-source-signed-sweep-challenge.v1.json"));
