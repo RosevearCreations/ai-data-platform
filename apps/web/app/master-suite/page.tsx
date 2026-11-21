@@ -126,6 +126,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/sweep-challenge-reliability">
             Signed Sweep Reliability
           </Link>
+          <Link className="secondaryButton" href="/genuine-signer-expansion">
+            Genuine Signer Expansion
+          </Link>
         </div>
       </section>
 
