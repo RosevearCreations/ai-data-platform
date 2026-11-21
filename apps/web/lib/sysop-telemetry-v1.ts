@@ -23,6 +23,13 @@ type Pin={publicKeyPem:string;fingerprint:string;expectedCommit:string};
 function pins():Record<string,Pin>{
  try{return JSON.parse(process.env.ROSEVEAR_SYSOP_TELEMETRY_PINS_JSON??"{}") as Record<string,Pin>;}catch{return {};}
 }
+function expectedCommitMatches(appId:string,pinExpected:string,sourceCommit:string){
+ if(appId==="ai-data-platform"&&pinExpected==="SELF_VERCEL_GIT_COMMIT_SHA"){
+  const deployed=process.env.VERCEL_GIT_COMMIT_SHA??process.env.GITHUB_SHA??"";
+  return /^[a-f0-9]{40}$/.test(deployed)&&sourceCommit===deployed;
+ }
+ return sourceCommit===pinExpected;
+}
 export function verifySysopTelemetryEnvelope(envelope:Envelope,nowMs=Date.now(),options:{expectedChallenge?:string|null}={}){
  if(!envelope||!exact(envelope,["payload","signature"])||!/^[a-f0-9]{128}$/.test(envelope.signature))throw new Error("build423_telemetry_envelope_invalid");
  const p=envelope.payload;
@@ -35,7 +42,7 @@ export function verifySysopTelemetryEnvelope(envelope:Envelope,nowMs=Date.now(),
  const appId=String(p.appId);
  if(!BUILD_405_APPLICATION_IDS.includes(appId as (typeof BUILD_405_APPLICATION_IDS)[number]))throw new Error("build423_telemetry_app_invalid");
  const pin=pins()[appId];if(!pin)throw new Error("build423_telemetry_source_not_enrolled");
- if(p.schema!==SYSOP_TELEMETRY_SCHEMA||p.sourceCommit!==pin.expectedCommit||!/^[a-f0-9]{40}$/.test(String(p.sourceCommit))||
+ if(p.schema!==SYSOP_TELEMETRY_SCHEMA||!expectedCommitMatches(appId,pin.expectedCommit,String(p.sourceCommit))||!/^[a-f0-9]{40}$/.test(String(p.sourceCommit))||
   !/^[A-Za-z0-9_-]{16,80}$/.test(String(p.eventId))||!/^[a-f0-9]{32}$/.test(String(p.nonce))||
   !Number.isSafeInteger(p.issuedAtMs)||!Number.isSafeInteger(p.expiresAtMs)||Number(p.issuedAtMs)>nowMs+2000||nowMs-Number(p.issuedAtMs)>MAX_AGE_MS||
   Number(p.expiresAtMs)<=nowMs||Number(p.expiresAtMs)-Number(p.issuedAtMs)>MAX_AGE_MS||!["HEALTHY","DEGRADED","UNHEALTHY","UNKNOWN"].includes(String(p.state))||
