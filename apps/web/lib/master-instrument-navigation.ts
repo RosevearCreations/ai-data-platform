@@ -98,6 +98,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/master-health",
   "/source-signer-activation",
   "/seven-source-health",
+  "/sweep-challenge-reliability",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
