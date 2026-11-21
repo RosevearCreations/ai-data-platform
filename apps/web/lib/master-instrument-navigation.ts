@@ -99,6 +99,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/source-signer-activation",
   "/seven-source-health",
   "/sweep-challenge-reliability",
+  "/genuine-signer-expansion",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
