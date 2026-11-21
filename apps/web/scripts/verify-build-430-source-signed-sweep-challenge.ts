@@ -27,7 +27,8 @@ const protocol=read("apps/web/lib/sysop-telemetry-v1.ts");
 for(const token of ["SYSOP_TELEMETRY_CHALLENGE_HEADER","protocolVersion===\"1.2\"","expectedChallenge","build430_telemetry_challenge_mismatch","challenge_verified"])assert.ok(protocol.includes(token),token);
 
 const db=read("apps/web/lib/build430-sweep-challenge-database.ts");
-for(const token of ["randomBytes(32)","x-rosevear-telemetry-challenge","expectedChallenge:challenge","certifyBuild430OverlapIsolation","runBuild430ProductionAcceptance","priorReliability","DEPLOYMENT_CHANGE_VERIFIED"])assert.ok(db.includes(token),token);
+for(const token of ["randomBytes(32)","x-rosevear-telemetry-challenge","expectedChallenge:challenge","certifyBuild430OverlapIsolation","runBuild430ProductionAcceptance","priorReliability"])assert.ok(db.includes(token),token);
+const policy=read("apps/web/lib/master-build430-sweep-challenge.ts");assert.ok(policy.includes("DEPLOYMENT_CHANGE_VERIFIED"));
 
 const migration=read("db/migrations/0193_master_build430_source_signed_challenge.sql");
 for(const token of ["protocol_version","challenge_sha256","challenge_verified","master_build430_sweep_runs","master_build430_source_challenge_observations","master_build430_reliability_events","master_build430_cadence_baseline","force row level security"])assert.ok(migration.includes(token),token);
