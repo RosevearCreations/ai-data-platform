@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import {BUILD_431_REQUIRED_SIGNED_SOURCES,build431Coverage,build431SourceState} from "../lib/master-build431-genuine-signer-expansion";
+
+assert.deepEqual(BUILD_431_REQUIRED_SIGNED_SOURCES,["ai-data-platform","yw","icamp"]);
+assert.equal(build431SourceState("ai-data-platform",{challengeVerified:true,protocolVersion:"1.2",receiptId:"r"}),"ACTIVE_V12_SIGNED");
+assert.equal(build431SourceState("rosevear-ai-hub",{challengeVerified:false,protocolVersion:null,receiptId:null}),"HOLD_ORIGINAL_HOST_RESTART_SIGNER_AND_HTTPS_RELAY_REQUIRED");
+assert.equal(build431Coverage({verifiedSources:3,classifiedSources:7}).signedCoveragePercent,42.9);
+
+const root=path.resolve(process.cwd(),"../.."),read=(p:string)=>fs.readFileSync(path.join(root,p),"utf8");
+const telemetry=read("apps/web/lib/sysop-telemetry-v1.ts");
+for(const token of ["SELF_VERCEL_GIT_COMMIT_SHA","expectedCommitMatches","VERCEL_GIT_COMMIT_SHA"])assert.ok(telemetry.includes(token),token);
+const route=read("apps/web/app/internal/rosevear/sysop/telemetry/v1/route.ts");
+for(const token of ["x-rosevear-telemetry-challenge","buildLocalAIDPTelemetryEnvelope(Date.now(),challenge)","INVALID_CHALLENGE"])assert.ok(route.includes(token),token);
+const runtime=read("apps/web/lib/build431-genuine-signer-expansion-database.ts");
+for(const token of ["probeBuild431Source","expectedChallenge:challenge","runBuild431ProductionAcceptance","build431_required_three_signed_sources_not_verified","master_build431_source_observations"])assert.ok(runtime.includes(token),token);
+const migration=read("db/migrations/0194_master_build431_genuine_signer_expansion.sql");
+for(const token of ["master_build431_sweep_runs","master_build431_source_observations","master_build431_latest_source_status","force row level security"])assert.ok(migration.includes(token),token);
+const cron=read("apps/web/app/api/cron/build427-rollup/route.ts");assert.ok(cron.includes("runBuild431ProtectedSweep"));assert.ok(cron.includes("build:431"));
+const api=read("apps/web/app/api/genuine-signer-expansion/route.ts");assert.ok(api.includes("refreshBuild431"));assert.ok(api.includes("authentication_required"));
+const page=read("apps/web/app/genuine-signer-expansion/page.tsx");assert.ok(page.includes("Production GREEN is not seven-source CONNECTED"));assert.ok(page.includes("restart"));
+const nav=read("apps/web/lib/application-navigation.ts");assert.ok(nav.includes('href: "/genuine-signer-expansion"'));
+const mnav=read("apps/web/lib/master-instrument-navigation.ts");assert.ok(mnav.includes('"/genuine-signer-expansion"'));
+const tools=read("apps/web/lib/module-operator-tools.ts");assert.ok(tools.includes('"/genuine-signer-expansion"'));
+const suite=read("apps/web/app/master-suite/page.tsx");assert.ok(suite.includes('href="/genuine-signer-expansion"'));
+const docs=read("docs/BUILD_431_GENUINE_SIGNER_EXPANSION.md");assert.ok(docs.includes("no manual restart"));assert.ok(docs.includes("original-host process"));
+const manifest=JSON.parse(read(".github/rosevear-build431-genuine-signer-expansion.v1.json"));assert.equal(manifest.build,431);assert.equal(manifest.productionGate.minimumGenuineV12SignedSources,3);
+const pkg=JSON.parse(read("apps/web/package.json"));assert.ok(pkg.scripts.build.includes("verify-build-431-genuine-signer-expansion.ts"));assert.ok(pkg.scripts.build.includes("activate-build-431-production.ts"));
+console.log("Build 431 Remaining Five-Source Genuine Signer Enrollment, Cross-Provider Production Telemetry Activation & Seven-Source Continuous Signed-Health Expansion verification passed.");
