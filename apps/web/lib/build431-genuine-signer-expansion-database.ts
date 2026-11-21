@@ -2,7 +2,7 @@ import {createHash,randomBytes,randomUUID} from "node:crypto";
 import {performance} from "node:perf_hooks";
 import type {PoolClient,QueryResultRow} from "pg";
 import {withProtectedDatabase,withUserDatabase} from "./database";
-import {admitSysopTelemetryEnvelope} from "./sysop-telemetry-v1";
+import {admitSysopTelemetryEnvelope,buildLocalAIDPTelemetryEnvelope} from "./sysop-telemetry-v1";
 import {BUILD_405_APPLICATION_IDS} from "./master-assurance-renewal-security-comms-recertification";
 import {BUILD_426_TELEMETRY_PATH,build426Origin,build426Token,type Build426AppId} from "./master-seven-source-live-enrollment";
 import {BUILD_431_PROVIDER_MATRIX,BUILD_431_REQUIRED_SIGNED_SOURCES,build431Coverage,build431SourceState} from "./master-build431-genuine-signer-expansion";
@@ -32,6 +32,15 @@ async function timedFetch(url:string,init:RequestInit){
 export async function probeBuild431Source(appId:Build426AppId):Promise<Build431Probe>{
  const challenge=randomBytes(32).toString("hex"),challengeSha256=createHash("sha256").update(challenge).digest("hex");
  const token=build426Token(appId);let origin:string|null=null;
+ if(appId==="ai-data-platform"){
+  try{
+   origin=build426Origin(appId);
+   const envelope=buildLocalAIDPTelemetryEnvelope(Date.now(),challenge);
+   const accepted=await admitSysopTelemetryEnvelope(envelope,{expectedChallenge:challenge});
+   const payload=envelope.payload;
+   return {appId,challengeSha256,origin,originReachable:true,credentialPresent:Boolean(token),telemetryStatus:200,telemetryLatencyMs:0,protocolVersion:String(payload.protocolVersion),challengeVerified:accepted.challengeVerified===true,receiptId:String(accepted.receiptId),sourceCommit:String(payload.sourceCommit),detail:"candidate_local_v12_signed_challenge_verified"};
+  }catch(e){return {appId,challengeSha256,origin,originReachable:Boolean(origin),credentialPresent:Boolean(token),telemetryStatus:null,telemetryLatencyMs:null,protocolVersion:null,challengeVerified:false,receiptId:null,sourceCommit:null,detail:e instanceof Error?e.message:"aidp_candidate_local_probe_failed"};}
+ }
  try{origin=build426Origin(appId);}catch(e){return {appId,challengeSha256,origin:null,originReachable:false,credentialPresent:Boolean(token),telemetryStatus:null,telemetryLatencyMs:null,protocolVersion:null,challengeVerified:false,receiptId:null,sourceCommit:null,detail:e instanceof Error?e.message:"origin_invalid"};}
  if(!origin)return {appId,challengeSha256,origin:null,originReachable:false,credentialPresent:Boolean(token),telemetryStatus:null,telemetryLatencyMs:null,protocolVersion:null,challengeVerified:false,receiptId:null,sourceCommit:null,detail:"origin_not_configured"};
  let originReachable=false;
