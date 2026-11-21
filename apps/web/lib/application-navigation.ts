@@ -536,6 +536,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/genuine-signer-expansion",
+        label: "Genuine Signer Expansion",
+        description: "Review Build 431 cross-provider protocol v1.2 signer evidence, AIDP self-signer activation and explicit Cloudflare/original-host authority holds.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
