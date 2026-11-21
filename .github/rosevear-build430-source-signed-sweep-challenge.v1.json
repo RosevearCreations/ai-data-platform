@@ -1,0 +1,33 @@
+{
+  "schema": "rosevear.ai-data-platform.build430-source-signed-sweep-challenge.v1",
+  "build": 430,
+  "title": "Source-Signed Sweep Challenge V1.2, Overlapping-Sweep Isolation Certification, Repeated YW/iCamp Deployment & Offline Reliability History, and Hosted Cadence Baseline",
+  "protocol": {
+    "version": "1.2",
+    "challengeHeader": "x-rosevear-telemetry-challenge",
+    "challengeBits": 256,
+    "challengeInSignedPayload": true,
+    "legacyV11Compatibility": true
+  },
+  "productionGate": {
+    "requiredSources": ["yw", "icamp"],
+    "twoSequentialChallengeSweepsRequired": true,
+    "twoConcurrentChallengesPerSourceRequired": true,
+    "uniqueReceiptsRequired": true,
+    "uniqueChallengesRequired": true,
+    "overlapIsolationRequired": true,
+    "failClosed": true
+  },
+  "reliability": {
+    "events": ["ONLINE_VERIFIED","ONLINE_CONTINUITY_VERIFIED","DEPLOYMENT_CHANGE_VERIFIED","OFFLINE_OR_HELD","RETURN_VERIFIED"],
+    "offlineEventsMustBeObservedNotSimulated": true,
+    "legacyBuild429BaselineUsedForFirstTransition": true
+  },
+  "hostedCadence": {
+    "provider": "VERCEL_CRON",
+    "schedule": "17 12 * * *",
+    "floorSeconds": 86400,
+    "fiveMinuteUptimeClaim": false
+  },
+  "truthBoundary": "Production GREEN requires live challenge-bound YW/iCamp receipts and overlap isolation. It does not claim the other five sources are connected or that a daily hosted cron is five-minute monitoring."
+}
