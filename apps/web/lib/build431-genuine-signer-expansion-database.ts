@@ -1,6 +1,6 @@
 import {createHash,randomBytes,randomUUID} from "node:crypto";
 import {performance} from "node:perf_hooks";
-import type {QueryResultRow} from "pg";
+import type {PoolClient,QueryResultRow} from "pg";
 import {withProtectedDatabase,withUserDatabase} from "./database";
 import {admitSysopTelemetryEnvelope} from "./sysop-telemetry-v1";
 import {BUILD_405_APPLICATION_IDS} from "./master-assurance-renewal-security-comms-recertification";
@@ -65,7 +65,7 @@ function summarize(probes:readonly Build431Probe[]){
  const state=verifiedSources===7?"SEVEN_SOURCE_V12_SIGNED_LIVE":classifiedSources===7?"SEVEN_SOURCE_CLASSIFIED_SIGNER_EXPANSION":"SEVEN_SOURCE_SIGNER_CLASSIFICATION_INCOMPLETE";
  return {states,verifiedSources,classifiedSources,heldSources,state,...build431Coverage({verifiedSources,classifiedSources})};
 }
-async function persist(client:Parameters<Parameters<typeof withProtectedDatabase>[0]>[0],mode:Mode,probes:readonly Build431Probe[]){
+async function persist(client:PoolClient,mode:Mode,probes:readonly Build431Probe[]){
  const sweepId=randomUUID(),summary=summarize(probes);
  await client.query("insert into app.master_build431_sweep_runs(sweep_id,mode,observed_sources,verified_sources,classified_sources,held_sources,state,observed_at) values($1,$2,$3,$4,$5,$6,$7,now())",[sweepId,mode,probes.length,summary.verifiedSources,summary.classifiedSources,summary.heldSources,summary.state]);
  for(const {probe,state} of summary.states){
