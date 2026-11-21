@@ -37,6 +37,9 @@ interface ReliabilityRow extends QueryResultRow{
 interface SweepRow extends QueryResultRow{
  sweep_id:string;mode:string;observed_sources:number;verified_sources:number;challenge_verified_sources:number;overlap_isolation_verified:boolean;state:string;observed_at:Date;
 }
+interface LegacyHealthRow extends QueryResultRow{
+ app_id:Build430RequiredSource;telemetry_verified:boolean;source_receipt_id:string|null;source_commit:string|null;detail:string;observed_at:Date;
+}
 
 async function sysopRole(userId:string){
  return withUserDatabase(userId,async client=>{
@@ -159,7 +162,7 @@ export async function readBuild430Dashboard(userId:string){
    client.query<SweepRow>("select sweep_id,mode,observed_sources,verified_sources,challenge_verified_sources,overlap_isolation_verified,state,observed_at from app.master_build430_sweep_runs order by observed_at desc limit 30"),
    client.query<ReliabilityRow>("select app_id,event_kind,previous_verified,current_verified,previous_source_commit,current_source_commit,source_receipt_id,gap_seconds,observed_at from app.master_build430_reliability_events order by observed_at desc limit 60"),
    client.query("select * from app.master_build430_cadence_baseline"),
-   client.query("select app_id,telemetry_verified,source_receipt_id,source_commit,detail,observed_at from app.master_build429_source_health_observations where app_id in('yw','icamp') order by observed_at desc limit 20")
+   client.query<LegacyHealthRow>("select app_id,telemetry_verified,source_receipt_id,source_commit,detail,observed_at from app.master_build429_source_health_observations where app_id in('yw','icamp') order by observed_at desc limit 20")
   ]);
   return {
    schema:"rosevear.ai-data-platform.build430-source-signed-sweep-challenge-dashboard.v1",build:430,capturedAt:new Date().toISOString(),
@@ -167,7 +170,7 @@ export async function readBuild430Dashboard(userId:string){
    cadenceBaseline:cadence.rows[0]??null,
    sweeps:sweeps.rows.map(r=>({...r,observed_at:r.observed_at.toISOString()})),
    reliability:reliability.rows.map(r=>({...r,gap_seconds:r.gap_seconds===null?null:Number(r.gap_seconds),observed_at:r.observed_at.toISOString()})),
-   legacySignedHistory:legacy.rows.map((r:any)=>({...r,observed_at:r.observed_at.toISOString()})),
+   legacySignedHistory:legacy.rows.map(r=>({...r,observed_at:r.observed_at.toISOString()})),
    summary:{
     latestState:sweeps.rows[0]?.state??"NO_BUILD430_SWEEP",
     v12Sources:sweeps.rows[0]?.challenge_verified_sources??0,
