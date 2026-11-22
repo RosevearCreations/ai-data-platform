@@ -8,7 +8,8 @@
     "freshnessCurrentSeconds": 900,
     "freshnessAgingSeconds": 3600,
     "staleEvidenceFailsClosed": true,
-    "deploymentReadyDoesNotImplyOperationalGreen": true
+    "deploymentReadyDoesNotImplyOperationalGreen": true,
+    "ephemeralRuntimeEvidenceDoesNotBlockCodeDeployment": true
   },
   "analytics": [
     "historicalSevenOfSevenSuccessRate",
