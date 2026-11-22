@@ -222,6 +222,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/sweep-challenge-reliability",
           "/genuine-signer-expansion",
           "/seven-source-telemetry-closure",
+          "/continuous-production-assurance",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
