@@ -64,8 +64,8 @@ export function verifySysopTelemetryEnvelope(envelope:Envelope,nowMs=Date.now(),
   if(!/^[a-f0-9]{64}$/.test(options.expectedChallenge))throw new Error("build430_expected_challenge_invalid");
   if(protocolVersion!=="1.2"||challenge!==options.expectedChallenge)throw new Error("build430_telemetry_challenge_mismatch");
  }
- const key=createPublicKey(pin.publicKeyPem);const raw=key.export({format:"der",type:"spki"});const fingerprint=createHash("sha256").update(raw.subarray(raw.length-32)).digest("hex");
- if(fingerprint!==pin.fingerprint)throw new Error("build423_telemetry_pin_mismatch");
+ const key=createPublicKey(pin.publicKeyPem);const raw=key.export({format:"der",type:"spki"});const legacyRawFingerprint=createHash("sha256").update(raw.subarray(raw.length-32)).digest("hex");const spkiFingerprint=createHash("sha256").update(raw).digest("hex");
+ if(pin.fingerprint!==legacyRawFingerprint&&pin.fingerprint!==spkiFingerprint)throw new Error("build423_telemetry_pin_mismatch");
  if(!verify(null,Buffer.from(canonical(p)),key,Buffer.from(envelope.signature,"hex")))throw new Error("build423_telemetry_signature_invalid");
  const challengeVerified=protocolVersion==="1.2"&&Boolean(options.expectedChallenge)&&challenge===options.expectedChallenge;
  return {appId,eventId:String(p.eventId),nonce:String(p.nonce),sourceCommit:String(p.sourceCommit),state:String(p.state),metrics:p.metrics as Record<string,unknown>,sysop:p.sysop as Record<string,unknown>,protocolVersion,challenge,challengeVerified,
