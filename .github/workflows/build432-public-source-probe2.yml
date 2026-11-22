@@ -1,0 +1,30 @@
+name: Build 432 public source probe v2
+on:
+  push:
+    branches:
+      - build432-public-source-probe
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe public telemetry
+        shell: bash
+        run: |
+          set -euo pipefail
+          challenge="$(openssl rand -hex 32)"
+          for spec in             "devil-pages|https://devilndove-site.pages.dev/internal/rosevear/sysop/telemetry/v1"             "devil-custom|https://devilndove.com/internal/rosevear/sysop/telemetry/v1"             "rosie-pages|https://rosiedazzlers.pages.dev/internal/rosevear/sysop/telemetry/v1"             "rosie-custom|https://rosiedazzlers.ca/internal/rosevear/sysop/telemetry/v1"             "comms|https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1"
+          do
+            app="${spec%%|*}"; url="${spec#*|}"; body="/tmp/${app}.body"
+            code="$(curl -sS --max-time 12 -o "$body" -w '%{http_code}' -H "Accept: application/json" -H "x-rosevear-telemetry-challenge: $challenge" "$url" || true)"
+            echo "SOURCE=$app HTTP=$code URL=$url"
+            if jq -e . "$body" >/dev/null 2>&1; then
+              jq -c '{state:(.state//null),appId:(.payload.appId//null),protocolVersion:(.payload.protocolVersion//null),sourceCommit:(.payload.sourceCommit//null),challengePresent:(.payload.challenge!=null),hasSignature:(.signature!=null),authorizesAction:(.payload.authorizesAction//.authorizesAction//null)}' "$body"
+            else
+              echo '{"parse":"non_json_or_empty"}'
+            fi
+          done
+          echo "COMMS_PUBLIC_KEY"
+          curl -sS --max-time 12 https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1/public-key | jq -c '{fingerprint:(.fingerprint//null),publicKeyPem:(.publicKeyPem//null)}'
