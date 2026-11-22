@@ -1,0 +1,21 @@
+{
+  "schema": "rosevear.ai-data-platform.build433-continuous-production-assurance.v1",
+  "build": 433,
+  "title": "Durable Seven-Source Continuous Production Assurance, Freshness Expiry, Recovery Evidence & Historical Analytics",
+  "sourceOfTruth": "app.master_build432_closure_runs",
+  "requirements": {
+    "genuineSourcesRequiredForGreen": 7,
+    "freshnessCurrentSeconds": 900,
+    "freshnessAgingSeconds": 3600,
+    "staleEvidenceFailsClosed": true,
+    "deploymentReadyDoesNotImplyOperationalGreen": true
+  },
+  "analytics": [
+    "historicalSevenOfSevenSuccessRate",
+    "consecutiveGreenObservations",
+    "holdToGreenRecoveries",
+    "latestGreenTimestamp",
+    "latestHoldTimestamp",
+    "evidenceAge"
+  ]
+}
