@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";import fs from "node:fs";import path from "node:path";
-const root=path.resolve(process.cwd());const read=(p:string)=>fs.readFileSync(path.join(root,p),"utf8");
+const root=path.resolve(process.cwd(),"../..");const read=(p:string)=>fs.readFileSync(path.join(root,p),"utf8");
 const checks:Record<string,string[]>={
  ".github/rosevear-build433-continuous-production-assurance.v1.json":["staleEvidenceFailsClosed","historicalSevenOfSevenSuccessRate","holdToGreenRecoveries"],
  "apps/web/lib/build433-continuous-production-assurance-database.ts":["greenRatePct","consecutiveGreen","recoveries","STALE"],
