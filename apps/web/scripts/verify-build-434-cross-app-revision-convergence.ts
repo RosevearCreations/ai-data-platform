@@ -3,7 +3,7 @@ const root=path.resolve(process.cwd(),"../..");const read=(p:string)=>fs.readFil
 const checks:Record<string,string[]>={
  ".github/rosevear-build434-cross-app-revision-convergence.v1.json":["verifiedPeerRevisionAdvanceIsExpectedEvolution","movementPoints","gitBranchDivergenceRemainsSeparateFromPeerRevisionEvolution"],
  "apps/web/lib/build434-cross-app-revision-convergence.ts":["EXPECTED_PEER_ADVANCE","UNVERIFIED_REVISION_CHANGE","BUILD_434_PEER_BASELINE"],
- "apps/web/lib/build434-cross-app-revision-convergence-database.ts":["master_build432_closure_runs","previousObservationAt","releaseConvergenceState"],
+ "apps/web/lib/build434-cross-app-revision-convergence-database.ts":["master_build432_closure_runs","previousObservationAt","build434Summary"],
  "apps/web/app/cross-app-revision-convergence/page.tsx":["Peer application progress is not automatically branch divergence","Two kinds of divergence are now kept separate"],
  "docs/AUTONOMOUS_BUILDS_435_454.md":["Build 435","Build 454","20. **Build 454"]
 };
