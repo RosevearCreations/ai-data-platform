@@ -101,6 +101,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/sweep-challenge-reliability",
   "/genuine-signer-expansion",
   "/seven-source-telemetry-closure",\n  "/continuous-production-assurance",
+  "/cross-app-revision-convergence",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
