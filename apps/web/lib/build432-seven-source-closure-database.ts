@@ -42,7 +42,7 @@ export async function runBuild432Closure(mode:Mode="CRON"){
 }
 export async function runBuild432ProductionAcceptance(){
  const r=await runBuild432Closure("PRODUCTION_BUILD");
- if(r.verifiedSources!==7||r.state!=="SEVEN_OF_SEVEN_GENUINE_SIGNED_LIVE")throw new Error(`build432_seven_of_seven_required_${r.verifiedSources}_verified`);
+ if(r.verifiedSources!==7||r.state!=="SEVEN_OF_SEVEN_GENUINE_SIGNED_LIVE"){console.error("Build 432 safe source diagnostics:",JSON.stringify(r.probes.map(p=>({appId:p.appId,verified:p.verified,sourceCommit:p.sourceCommit,detail:p.detail}))));throw new Error(`build432_seven_of_seven_required_${r.verifiedSources}_verified`);}
  return r;
 }
 export async function latestBuild432Closure(){
