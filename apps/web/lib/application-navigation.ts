@@ -554,6 +554,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/cross-app-revision-convergence",
+        label: "Cross-App Revision Convergence",
+        description: "Review Build 434 source-aware peer revision evolution, signed revision changes and AIDP branch-divergence separation.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
