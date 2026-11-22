@@ -221,6 +221,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/seven-source-health",
           "/sweep-challenge-reliability",
           "/genuine-signer-expansion",
+          "/seven-source-telemetry-closure",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",

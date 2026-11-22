@@ -129,6 +129,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/genuine-signer-expansion">
             Genuine Signer Expansion
           </Link>
+          <Link className="secondaryButton" href="/seven-source-telemetry-closure">
+            Seven-Source Telemetry Closure
+          </Link>
         </div>
       </section>
 
