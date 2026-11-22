@@ -16,3 +16,7 @@ Build 432 proved that all seven Rosevear sources can reach genuine signed protoc
 ## Production meaning
 
 Vercel READY means the application deployed successfully. Build 433 GREEN means the newest seven-source evidence is current and all seven sources are genuinely verified. Those are deliberately separate facts.
+
+## Deployment/runtime separation
+
+Build 433 removes historical live-telemetry activation scripts from the compile-time deployment chain. Code deployment continues to require verification, type safety and migrations, while operational GREEN remains a separate fail-closed runtime assertion based on current seven-source evidence. This prevents an expired heartbeat from blocking unrelated code deployment without weakening the runtime truth model.
