@@ -1,0 +1,31 @@
+name: Build 432 public source probe
+on:
+  push:
+    branches: [build432-public-source-probe]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe public Build 432 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          challenge="$(openssl rand -hex 32)"
+          for spec in             "devilndove|https://devilndove-site.pages.dev/internal/rosevear/sysop/telemetry/v1"             "rosiedazzlers|https://rosiedazzlers.ca/internal/rosevear/sysop/telemetry/v1"             "rosevear-comms-hub|https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1"
+          do
+            app="${spec%%|*}"; url="${spec#*|}"
+            body="/tmp/${app}.json"
+            status="$(curl --silent --show-error --max-time 10 --output "$body" --write-out '%{http_code}' -H "Accept: application/json" -H "x-rosevear-telemetry-challenge: $challenge" "$url" || true)"
+            echo "SOURCE=$app HTTP=$status"
+            node - "$app" "$body" <<'NODE'
+          const fs=require("fs");const app=process.argv[2],p=process.argv[3];
+          try{
+            const x=JSON.parse(fs.readFileSync(p,"utf8"));
+            const y=x.payload||{};
+            console.log(JSON.stringify({app,httpBodyState:x.state??null,payloadAppId:y.appId??null,protocolVersion:y.protocolVersion??null,sourceCommit:y.sourceCommit??null,challengeMatches:typeof y.challenge==="string"&&/^[a-f0-9]{64}$/.test(y.challenge),hasSignature:typeof x.signature==="string"&&x.signature.length>0,authorizesAction:y.authorizesAction??x.authorizesAction??null}));
+          }catch(e){console.log(JSON.stringify({app,parse:"non_json_or_empty"}));}
+          NODE
+          done
