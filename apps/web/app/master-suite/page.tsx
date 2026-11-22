@@ -132,6 +132,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/seven-source-telemetry-closure">
             Seven-Source Telemetry Closure
           </Link>
+          <Link className="secondaryButton" href="/continuous-production-assurance">
+            Continuous Production Assurance
+          </Link>
         </div>
       </section>
 
