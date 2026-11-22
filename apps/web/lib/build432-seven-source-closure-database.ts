@@ -1,6 +1,6 @@
 import {randomBytes,randomUUID} from "node:crypto";
 import {performance} from "node:perf_hooks";
-import {withProtectedDatabase} from "./database";
+import {withProtectedDatabase,withUserDatabase} from "./database";
 import {admitSysopTelemetryEnvelope} from "./sysop-telemetry-v1";
 import {build426Origin,type Build426AppId} from "./master-seven-source-live-enrollment";
 import {probeBuild431Source} from "./build431-genuine-signer-expansion-database";
@@ -46,4 +46,13 @@ export async function runBuild432ProductionAcceptance(){
 }
 export async function latestBuild432Closure(){
  return withProtectedDatabase(async client=>{const r=await client.query<{closure_id:string;mode:string;verified_sources:number;state:string;source_receipt_ids:Record<string,unknown>;observed_at:Date}>("select * from app.master_build432_closure_runs order by observed_at desc limit 1");const row=r.rows[0];return row?{...row,observed_at:row.observed_at.toISOString()}:null;});
+}
+
+export async function readBuild432Dashboard(userId:string){
+ return withUserDatabase(userId,async client=>{
+  const role=(await client.query<{role:string|null}>("select app.current_master_sysop_role() as role")).rows[0]?.role??null;
+  if(!["owner","operator"].includes(role))throw new Error("build432_operator_required");
+  const r=await client.query<{closure_id:string;mode:string;verified_sources:number;state:string;source_receipt_ids:Record<string,unknown>;observed_at:Date}>("select * from app.master_build432_closure_runs order by observed_at desc limit 24");
+  return {schema:"rosevear.ai-data-platform.build432-seven-source-closure-dashboard.v1",build:432,capturedAt:new Date().toISOString(),runs:r.rows.map(row=>({...row,observed_at:row.observed_at.toISOString()})),latest:r.rows[0]?{...r.rows[0],observed_at:r.rows[0].observed_at.toISOString()}:null};
+ });
 }
