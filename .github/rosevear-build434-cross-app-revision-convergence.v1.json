@@ -1,0 +1,16 @@
+{
+  "schema":"rosevear.ai-data-platform.build434-cross-app-revision-convergence.v1",
+  "build":434,
+  "title":"Cross-Application Revision Convergence, Source-Aware Divergence Classification & Multi-App Build Awareness",
+  "capabilityTrack":"cross-application-release-coordination",
+  "baselinePercent":62,
+  "completionPercent":70,
+  "movementPoints":8,
+  "rules":{
+    "verifiedPeerRevisionAdvanceIsExpectedEvolution":true,
+    "peerAdvanceDoesNotImplyAidpBranchFault":true,
+    "unsignedOrUnverifiedRevisionChangeFailsClosed":true,
+    "operationalAuthorityRemainsSourceOwned":true,
+    "gitBranchDivergenceRemainsSeparateFromPeerRevisionEvolution":true
+  }
+}
