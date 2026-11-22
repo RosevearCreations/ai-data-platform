@@ -135,6 +135,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/continuous-production-assurance">
             Continuous Production Assurance
           </Link>
+          <Link className="secondaryButton" href="/cross-app-revision-convergence">
+            Cross-App Revision Convergence
+          </Link>
         </div>
       </section>
 
