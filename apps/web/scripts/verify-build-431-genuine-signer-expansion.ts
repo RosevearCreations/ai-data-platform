@@ -26,5 +26,5 @@ const tools=read("apps/web/lib/module-operator-tools.ts");assert.ok(tools.includ
 const suite=read("apps/web/app/master-suite/page.tsx");assert.ok(suite.includes('href="/genuine-signer-expansion"'));
 const docs=read("docs/BUILD_431_GENUINE_SIGNER_EXPANSION.md");assert.ok(docs.includes("no manual restart"));assert.ok(docs.includes("original-host process"));
 const manifest=JSON.parse(read(".github/rosevear-build431-genuine-signer-expansion.v1.json"));assert.equal(manifest.build,431);assert.equal(manifest.productionGate.minimumGenuineV12SignedSources,3);
-const pkg=JSON.parse(read("apps/web/package.json"));assert.ok(pkg.scripts.build.includes("verify-build-431-genuine-signer-expansion.ts"));assert.ok(pkg.scripts.build.includes("activate-build-431-production.ts"));
+const pkg=JSON.parse(read("apps/web/package.json"));assert.ok(pkg.scripts.build.includes("verify-build-431-genuine-signer-expansion.ts"));assert.ok(!pkg.scripts.build.includes("activate-build-431-production.ts"));const build433=JSON.parse(read(".github/rosevear-build433-continuous-production-assurance.v1.json"));assert.equal(build433.requirements.ephemeralRuntimeEvidenceDoesNotBlockCodeDeployment,true);
 console.log("Build 431 Remaining Five-Source Genuine Signer Enrollment, Cross-Provider Production Telemetry Activation & Seven-Source Continuous Signed-Health Expansion verification passed.");
