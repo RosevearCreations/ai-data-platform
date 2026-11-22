@@ -542,6 +542,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/seven-source-telemetry-closure",
+        label: "Seven-Source Telemetry Closure",
+        description: "Review Build 432 strict 7/7 protocol v1.2 signed production evidence, Cloudflare provider signers and the original-Windows AI Hub relay receipt.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",

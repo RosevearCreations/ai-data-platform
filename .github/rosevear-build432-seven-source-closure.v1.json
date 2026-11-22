@@ -1,0 +1,17 @@
+{
+  "schema": "rosevear.ai-data-platform.build432-seven-source-closure.v1",
+  "build": 432,
+  "title": "Cloudflare Three-Source Signer Provisioning, Original-Host AI Hub Signed Relay Activation & Seven-of-Seven Genuine Production Telemetry Closure",
+  "productionGate": {
+    "genuineV12SignedSourcesRequired": 7,
+    "explicitHoldsAllowed": false,
+    "originalHostReceiptRequired": true,
+    "failClosed": true
+  },
+  "cloudflareSources": [
+    "rosevear-comms-hub",
+    "devilndove",
+    "rosiedazzlers"
+  ],
+  "truthBoundary": "CI cannot substitute for DESKTOP-AE894KC. Production GREEN requires a fresh original-host relay receipt."
+}

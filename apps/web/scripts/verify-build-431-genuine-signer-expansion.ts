@@ -17,7 +17,7 @@ const runtime=read("apps/web/lib/build431-genuine-signer-expansion-database.ts")
 for(const token of ["probeBuild431Source","expectedChallenge:challenge","runBuild431ProductionAcceptance","build431_required_three_signed_sources_not_verified","master_build431_source_observations"])assert.ok(runtime.includes(token),token);
 const migration=read("db/migrations/0194_master_build431_genuine_signer_expansion.sql");
 for(const token of ["master_build431_sweep_runs","master_build431_source_observations","master_build431_latest_source_status","force row level security"])assert.ok(migration.includes(token),token);
-const cron=read("apps/web/app/api/cron/build427-rollup/route.ts");assert.ok(cron.includes("runBuild431ProtectedSweep"));assert.ok(cron.includes("build:431"));
+const cron=read("apps/web/app/api/cron/build427-rollup/route.ts");assert.ok(cron.includes("runBuild431ProtectedSweep"));assert.ok(cron.includes("build431:{"));
 const api=read("apps/web/app/api/genuine-signer-expansion/route.ts");assert.ok(api.includes("refreshBuild431"));assert.ok(api.includes("authentication_required"));
 const page=read("apps/web/app/genuine-signer-expansion/page.tsx");assert.ok(page.includes("Production GREEN is not seven-source CONNECTED"));assert.ok(page.includes("restart"));
 const nav=read("apps/web/lib/application-navigation.ts");assert.ok(nav.includes('href: "/genuine-signer-expansion"'));
