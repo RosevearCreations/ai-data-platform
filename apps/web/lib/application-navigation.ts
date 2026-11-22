@@ -548,6 +548,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/continuous-production-assurance",
+        label: "Continuous Production Assurance",
+        description: "Review Build 433 freshness expiry, seven-of-seven history, consecutive GREEN observations and observed HOLD-to-GREEN recoveries.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
