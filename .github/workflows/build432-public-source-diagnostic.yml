@@ -9,23 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Probe public Build 432 sources
+      - name: Probe Cloudflare native and custom signed telemetry surfaces
         shell: bash
         run: |
           set -euo pipefail
           challenge="$(openssl rand -hex 32)"
-          for spec in             "devilndove|https://devilndove-site.pages.dev/internal/rosevear/sysop/telemetry/v1"             "rosiedazzlers|https://rosiedazzlers.ca/internal/rosevear/sysop/telemetry/v1"             "rosevear-comms-hub|https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1"
-          do
-            app="${spec%%|*}"; url="${spec#*|}"
-            body="/tmp/${app}.json"
+          probe() {
+            app="$1"; url="$2"; body="/tmp/${app}.json"
             status="$(curl --silent --show-error --max-time 10 --output "$body" --write-out '%{http_code}' -H "Accept: application/json" -H "x-rosevear-telemetry-challenge: $challenge" "$url" || true)"
-            echo "SOURCE=$app HTTP=$status"
+            echo "SOURCE=$app HTTP=$status URL=$url"
             node - "$app" "$body" <<'NODE'
           const fs=require("fs");const app=process.argv[2],p=process.argv[3];
-          try{
-            const x=JSON.parse(fs.readFileSync(p,"utf8"));
-            const y=x.payload||{};
-            console.log(JSON.stringify({app,httpBodyState:x.state??null,payloadAppId:y.appId??null,protocolVersion:y.protocolVersion??null,sourceCommit:y.sourceCommit??null,challengeMatches:typeof y.challenge==="string"&&/^[a-f0-9]{64}$/.test(y.challenge),hasSignature:typeof x.signature==="string"&&x.signature.length>0,authorizesAction:y.authorizesAction??x.authorizesAction??null}));
-          }catch(e){console.log(JSON.stringify({app,parse:"non_json_or_empty"}));}
+          try{const x=JSON.parse(fs.readFileSync(p,"utf8"));const y=x.payload||{};console.log(JSON.stringify({app,state:x.state??null,payloadAppId:y.appId??null,protocolVersion:y.protocolVersion??null,sourceCommit:y.sourceCommit??null,challengePresent:typeof y.challenge==="string",hasSignature:typeof x.signature==="string"&&x.signature.length>0,authorizesAction:y.authorizesAction??x.authorizesAction??null}));}
+          catch{console.log(JSON.stringify({app,parse:"non_json_or_empty"}));}
           NODE
-          done
+          }
+          probe devil-pages https://devilndove-site.pages.dev/internal/rosevear/sysop/telemetry/v1
+          probe devil-custom https://devilndove.com/internal/rosevear/sysop/telemetry/v1
+          probe rosie-pages https://rosiedazzlers.pages.dev/internal/rosevear/sysop/telemetry/v1
+          probe rosie-custom https://rosiedazzlers.ca/internal/rosevear/sysop/telemetry/v1
+          probe comms https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1
+          echo "COMMS_PUBLIC_KEY"
+          curl --silent --show-error --max-time 10 https://rosevear-comms-hub.devilndovelive.workers.dev/internal/rosevear/sysop/telemetry/v1/public-key | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const x=JSON.parse(s);console.log(JSON.stringify({spkiSha256:x.spkiSha256??x.fingerprint??null,publicKeyPemBase64:x.publicKeyPemBase64??null,sourceCommit:x.sourceCommit??null}))}catch{console.log("PUBLIC_KEY_PARSE_FAILED")}})'
