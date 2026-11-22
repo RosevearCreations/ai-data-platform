@@ -16,9 +16,10 @@ async function timedFetch(url:string,init:RequestInit){
 }
 async function publicCloudflareProbe(appId:"rosevear-comms-hub"|"devilndove"|"rosiedazzlers"):Promise<Probe>{
  const origin=build426Origin(appId);if(!origin)return {appId,verified:false,receiptId:null,sourceCommit:null,detail:"origin_not_configured"};
+ const sourceOrigin:string=origin;
  const challenge=randomBytes(32).toString("hex");
  try{
-  const x=await timedFetch(origin+"/internal/rosevear/sysop/telemetry/v1",{method:"GET",headers:{Accept:"application/json","x-rosevear-telemetry-challenge":challenge}});
+  const x=await timedFetch(sourceOrigin+"/internal/rosevear/sysop/telemetry/v1",{method:"GET",headers:{Accept:"application/json","x-rosevear-telemetry-challenge":challenge}});
   const raw=await x.res.text();if(Buffer.byteLength(raw,"utf8")>20000)throw new Error("telemetry_response_too_large");
   if(x.res.status!==200)return {appId,verified:false,receiptId:null,sourceCommit:null,detail:"telemetry_http_"+x.res.status};
   const envelope=JSON.parse(raw) as {payload:Record<string,unknown>;signature:string};
