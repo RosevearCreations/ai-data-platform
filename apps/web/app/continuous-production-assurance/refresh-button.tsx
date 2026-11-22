@@ -1,0 +1,3 @@
+"use client";
+import {useRouter} from "next/navigation";import {useState} from "react";
+export function Build433RefreshButton(){const r=useRouter();const [s,setS]=useState<"idle"|"running"|"error">("idle");async function go(){setS("running");try{const x=await fetch("/api/continuous-production-assurance",{method:"POST"});if(!x.ok)throw new Error();setS("idle");r.refresh();}catch{setS("error");}}return <button className="primaryButton" onClick={go} disabled={s==="running"}>{s==="running"?"Running seven-source observation…":s==="error"?"Observation failed — retry":"Run fresh production observation"}</button>}
