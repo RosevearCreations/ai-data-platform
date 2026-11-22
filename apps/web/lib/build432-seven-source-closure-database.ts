@@ -56,3 +56,9 @@ export async function readBuild432Dashboard(userId:string){
   return {schema:"rosevear.ai-data-platform.build432-seven-source-closure-dashboard.v1",build:432,capturedAt:new Date().toISOString(),runs:r.rows.map(row=>({...row,observed_at:row.observed_at.toISOString()})),latest:r.rows[0]?{...r.rows[0],observed_at:r.rows[0].observed_at.toISOString()}:null};
  });
 }
+
+export async function refreshBuild432(userId:string){
+ await readBuild432Dashboard(userId);
+ await runBuild432Closure("CRON");
+ return readBuild432Dashboard(userId);
+}
