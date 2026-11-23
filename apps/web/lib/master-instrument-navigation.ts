@@ -104,6 +104,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/cross-app-revision-convergence",
   "/peer-release-ledger",
   "/branch-reconciliation",
+  "/contract-compatibility",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
