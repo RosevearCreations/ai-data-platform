@@ -566,6 +566,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/branch-reconciliation",
+        label: "Branch Reconciliation Intelligence",
+        description: "Review Build 436 AIDP dev/main ancestry classification, safe merge-custody planning and non-destructive reconciliation rules.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
