@@ -4,7 +4,7 @@ Build 435 makes Build 434's source-aware revision classification durable.
 
 ## Delivered
 
-- protected append-only peer release ledger keyed by application + verified source commit;
+- protected append-only verified-observation history plus a non-deletable per-revision summary ledger keyed by application + verified source commit;
 - first/last verified observation timestamps and observation counts;
 - predecessor commit linkage;
 - evidence-backed build labels where known;
