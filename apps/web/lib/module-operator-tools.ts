@@ -226,6 +226,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/cross-app-revision-convergence",
           "/peer-release-ledger",
           "/branch-reconciliation",
+          "/contract-compatibility",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
