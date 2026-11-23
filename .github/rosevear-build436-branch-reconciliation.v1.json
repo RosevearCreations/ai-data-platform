@@ -1,0 +1,23 @@
+{
+  "schema":"rosevear.ai-data-platform.build436-branch-reconciliation.v1",
+  "build":436,
+  "title":"Branch Reconciliation Intelligence, Safe Ancestry Classification & Merge-Custody Planner",
+  "capabilityTrack":"cross-application-release-coordination",
+  "baselinePercent":78,
+  "completionPercent":86,
+  "movementPoints":8,
+  "capturedBranchState":{
+    "mainSha":"327339983d8138d47cb3520488d5d58cf01f8224",
+    "status":"diverged",
+    "devAheadBy":238,
+    "devBehindBy":222,
+    "mergeBase":"b382ac45bbb7d5f7bcaf2c311d2c3fab45d0a2d2"
+  },
+  "rules":{
+    "neverForceResetProtectedBranches":true,
+    "neverDeleteUniqueCommitsWithoutProof":true,
+    "cleanMainPromotionIsAllowedWhenHistoriesDiverge":true,
+    "peerReleaseEvolutionIsNotAidpAncestryDivergence":true,
+    "reconciliationRequiresUniqueCommitClassification":true
+  }
+}
