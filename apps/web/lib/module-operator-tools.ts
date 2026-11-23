@@ -227,6 +227,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/peer-release-ledger",
           "/branch-reconciliation",
           "/contract-compatibility",
+          "/interface-drift-observatory",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
