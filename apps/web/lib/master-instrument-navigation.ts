@@ -103,6 +103,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/seven-source-telemetry-closure",\n  "/continuous-production-assurance",
   "/cross-app-revision-convergence",
   "/peer-release-ledger",
+  "/branch-reconciliation",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
