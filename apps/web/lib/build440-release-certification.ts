@@ -40,7 +40,7 @@ export function certifyBuild440Evidence(
  }));
  const graph=planBuild439Releases(nodes,BUILD_439_EDGES);
  return {schema:BUILD_440_SCHEMA,build:440,capturedAt:now.toISOString(),certifications,graph,
-  signedEvidenceCount:certifications.filter(x=>x.receiptId&&x.reason!=="SIGNATURE_OR_RECEIPT_PROVENANCE_UNVERIFIED").length,
+  signedEvidenceCount:certifications.filter(x=>x.reason==="SIGNED_SOURCE_VERIFIED_INTERFACE_AND_OWNER_ACCEPTANCE_PENDING").length,
   rolloutAcceptance:"HOLD_PENDING_INDEPENDENT_FIELD_CERTIFICATION" as const,
   explanation:"A source ledger closure is prior signed-intake evidence; this view does not independently reverify the original signature or grant promotion authority."};
 }
