@@ -224,6 +224,7 @@ const MODULE_OPERATOR_TOOLS: Record<string, ModuleOperatorTools> = {
           "/seven-source-telemetry-closure",
           "/continuous-production-assurance",
           "/cross-app-revision-convergence",
+          "/peer-release-ledger",
           "/incident-runbook-recovery",
           "/recovery-rollback-certification",
           "/anomaly-predictive-risk",
