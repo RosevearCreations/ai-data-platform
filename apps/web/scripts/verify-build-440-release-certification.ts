@@ -1,0 +1,21 @@
+import assert from "node:assert/strict";
+import {certifyBuild440Evidence} from "../lib/build440-release-certification";
+import {BUILD_438_PROFILES} from "../lib/build438-interface-drift-observatory";
+const now=new Date("2026-11-23T20:00:00.000Z");
+const valid=BUILD_438_PROFILES.map(p=>({appId:p.appId,sourceCommit:p.mainCommit==="SELF_AT_RUNTIME"?"a".repeat(40):p.mainCommit,receiptId:"signed-"+p.appId,verifiedAt:"2026-11-23T19:30:00.000Z",observationCount:2,continuity:"CONTINUOUS",verifiedByClosure:true}));
+const baseline=certifyBuild440Evidence(valid,now);
+assert.equal(baseline.certifications.length,7);
+assert.equal(baseline.signedEvidenceCount,7);
+assert.equal(baseline.graph.safeToPromote,false);
+assert.ok(baseline.certifications.every(x=>x.state==="REVIEW_REQUIRED"));
+const forged=certifyBuild440Evidence(valid.map(e=>e.appId==="rosevear-ai-hub"?{...e,verifiedByClosure:false}:e),now);
+assert.equal(forged.certifications.find(x=>x.appId==="rosevear-ai-hub")?.state,"HOLD");
+assert.equal(forged.graph.releases.find(x=>x.appId==="ai-data-platform")?.state,"BLOCKED_BY_DEPENDENCY");
+const stale=certifyBuild440Evidence(valid.map(e=>({...e,verifiedAt:"2026-11-20T19:30:00.000Z"})),now);
+assert.ok(stale.certifications.every(x=>xreason(x)==="EVIDENCE_EXPIRED_OR_INVALID_TIME"));
+function xreason(x:{reason:string}){return x.reason;}
+const changed=certifyBuild440Evidence(valid.map(e=>e.appId==="yw"?{...e,sourceCommit:"b".repeat(40)}:e),now);
+assert.equal(changed.certifications.find(x=>x.appId==="yw")?.reason,"NEW_RELEASE_REQUIRES_INTERFACE_RECERTIFICATION");
+const duplicated=certifyBuild440Evidence([...valid,valid[0]],now);
+assert.equal(duplicated.certifications.find(x=>x.appId===valid[0].appId)?.state,"HOLD");
+console.log("Build 440 source receipts, expiry, provenance, propagation and hold tests passed.");
