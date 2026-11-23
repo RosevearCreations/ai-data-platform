@@ -102,6 +102,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/genuine-signer-expansion",
   "/seven-source-telemetry-closure",\n  "/continuous-production-assurance",
   "/cross-app-revision-convergence",
+  "/peer-release-ledger",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
