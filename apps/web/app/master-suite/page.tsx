@@ -138,6 +138,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/cross-app-revision-convergence">
             Cross-App Revision Convergence
           </Link>
+          <Link className="secondaryButton" href="/peer-release-ledger">
+            Signed Peer Release Ledger
+          </Link>
         </div>
       </section>
 
