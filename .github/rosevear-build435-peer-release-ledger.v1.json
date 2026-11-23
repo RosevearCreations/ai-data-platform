@@ -1,0 +1,16 @@
+{
+  "schema":"rosevear.ai-data-platform.build435-peer-release-ledger.v1",
+  "build":435,
+  "title":"Signed Peer Release Ledger, Build-Number Continuity & Source Revision History",
+  "capabilityTrack":"cross-application-release-coordination",
+  "baselinePercent":70,
+  "completionPercent":78,
+  "movementPoints":8,
+  "rules":{
+    "onlyVerifiedSourceRevisionsEnterLedger":true,
+    "unknownBuildNumbersRemainUnresolved":true,
+    "revisionHistoryIsAppendOnly":true,
+    "sourceRegressionFailsClosed":true,
+    "peerReleaseHistoryDoesNotRewriteAidpGitAncestry":true
+  }
+}
