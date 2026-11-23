@@ -572,6 +572,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/contract-compatibility",
+        label: "Contract Compatibility Matrix",
+        description: "Review Build 437 peer release contract compatibility, signed-observation gaps and forecasted change impact.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",

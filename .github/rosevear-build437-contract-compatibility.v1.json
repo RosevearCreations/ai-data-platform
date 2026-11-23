@@ -1,0 +1,21 @@
+{
+  "schema":"rosevear.ai-data-platform.build437-contract-compatibility.v1",
+  "build":437,
+  "title":"Cross-Application Contract Compatibility Matrix & Change-Impact Forecasting",
+  "capabilityTrack":"cross-application-release-coordination",
+  "baselinePercent":86,
+  "completionPercent":94,
+  "movementPoints":8,
+  "contracts":{
+    "signedTelemetry":"rosevear.sysop.telemetry.v1.2",
+    "masterTopology":"rosevear-master-shell-seven-apps.v1",
+    "masterEventSchema":"rosevear.master-shell.event.v1@1.0.0"
+  },
+  "rules":{
+    "shaChangeAloneIsNotBreakingChange":true,
+    "criticalContractEvidenceRequiredForCompatible":true,
+    "unobservedNewPeerReleaseRequiresReview":true,
+    "authorityBoundaryChangesAlwaysRequireReview":true,
+    "contractBreakageFailsClosed":true
+  }
+}

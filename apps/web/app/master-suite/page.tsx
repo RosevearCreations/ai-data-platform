@@ -144,6 +144,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/branch-reconciliation">
             Branch Reconciliation Intelligence
           </Link>
+          <Link className="secondaryButton" href="/contract-compatibility">
+            Contract Compatibility Matrix
+          </Link>
         </div>
       </section>
 
