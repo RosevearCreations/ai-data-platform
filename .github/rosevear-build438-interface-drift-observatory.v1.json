@@ -1,0 +1,19 @@
+{
+  "schema":"rosevear.ai-data-platform.build438-interface-drift-observatory.v1",
+  "build":438,
+  "title":"Seven-Application Schema, Capability & Endpoint Drift Observatory",
+  "capabilityTrack":"cross-application-release-coordination",
+  "baselinePercent":94,
+  "completionPercent":100,
+  "movementPoints":6,
+  "dimensions":["sourceRevision","schemas","capabilities","endpoints","authorityBoundary"],
+  "rules":{
+    "revisionMovementTriggersInspectionNotFailure":true,
+    "additiveOptionalSurfaceIsNonBreaking":true,
+    "removedRequiredCapabilityIsBreaking":true,
+    "removedRequiredEndpointIsBreaking":true,
+    "schemaVersionChangeRequiresReview":true,
+    "authorityBoundaryChangeIsCritical":true,
+    "unknownObservedSurfaceFailsClosedToReview":true
+  }
+}

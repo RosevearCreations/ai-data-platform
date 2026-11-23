@@ -147,6 +147,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/contract-compatibility">
             Contract Compatibility Matrix
           </Link>
+          <Link className="secondaryButton" href="/interface-drift-observatory">
+            Schema & Endpoint Drift Observatory
+          </Link>
         </div>
       </section>
 

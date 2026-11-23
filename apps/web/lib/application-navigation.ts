@@ -578,6 +578,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/interface-drift-observatory",
+        label: "Schema & Endpoint Drift Observatory",
+        description: "Review Build 438 seven-application schema, capability, endpoint and authority-boundary drift independently from revision movement.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
