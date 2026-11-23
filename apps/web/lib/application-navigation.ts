@@ -560,6 +560,12 @@ export const APPLICATION_NAVIGATION: ApplicationNavigationGroup[] = [
         helpTopic: "command-center"
       },
       {
+        href: "/peer-release-ledger",
+        label: "Signed Peer Release Ledger",
+        description: "Review Build 435 durable verified peer revision history, evidence-backed build labels, predecessor linkage and continuity holds.",
+        helpTopic: "command-center"
+      },
+      {
         href: "/incident-runbook-recovery",
         label: "Incident Runbooks & Recovery",
         description: "Review Build 357 incident classification, evidence-aware runbooks, Comms escalation preparation and supervised source recovery handoffs.",
