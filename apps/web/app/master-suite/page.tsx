@@ -141,6 +141,9 @@ export default async function MasterSuitePage() {
           <Link className="secondaryButton" href="/peer-release-ledger">
             Signed Peer Release Ledger
           </Link>
+          <Link className="secondaryButton" href="/branch-reconciliation">
+            Branch Reconciliation Intelligence
+          </Link>
         </div>
       </section>
 
