@@ -105,6 +105,7 @@ const MASTER_INSTRUMENT_PREFIXES = [
   "/peer-release-ledger",
   "/branch-reconciliation",
   "/contract-compatibility",
+  "/interface-drift-observatory",
   "/relationship-certification",
   "/source-onboarding-pilot",
   "/source-shell-onboarding",
