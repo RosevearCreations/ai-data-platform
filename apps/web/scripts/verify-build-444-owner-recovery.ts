@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+import {build444Readiness} from "../lib/build444-owner-recovery-ceremony";
+const none=build444Readiness({mailKeyPresent:false,senderPresent:false,senderAddress:null,trustedWitnessPinsPresent:false,witnessBindings:null});
+assert.equal(none.mailConfiguration,"HOLD_CONFIGURE_VERIFIED_SENDER");
+assert.equal(none.recoveryCeremony,"HOLD_PENDING_ORIGINAL_OWNER_IDENTITY_AND_DELIVERY");
+assert.equal(none.automaticAccountChanges,0);
+const configured=build444Readiness({mailKeyPresent:true,senderPresent:true,senderAddress:"recovery@example.com",trustedWitnessPinsPresent:true,witnessBindings:{keyA:{appIds:["yw"],originalDeviceId:"original-device",witnessId:"w1",witnessRole:"independent-observer",independentOfSource:true,active:true}}});
+assert.equal(configured.mailConfiguration,"CONFIGURED_NOT_DELIVERY_VERIFIED");
+assert.equal(configured.originalDeviceEnrollment,"KEY_POLICY_CONFIGURED_PROOFS_PENDING");
+assert.notEqual(configured.recoveryCeremony,"VERIFIED");
+assert.notEqual(configured.fieldAcceptance,"VERIFIED");
+const fullyProven=build444Readiness({mailKeyPresent:true,senderPresent:true,senderAddress:"recovery@example.com",trustedWitnessPinsPresent:true,witnessBindings:{keyA:{appIds:["yw"],originalDeviceId:"original-device",witnessId:"w1",witnessRole:"independent-observer",independentOfSource:true,active:true}},proof:{ownerSessionVerified:true,ownerRoleVerified:true,accountEmailAccessible:true,recoveryEmailDeliveryConfirmed:true,originalWitnessEvidenceVerified:true}});
+assert.equal(fullyProven.recoveryCeremony,"VERIFIED");
+assert.equal(fullyProven.automaticPeerPromotions,0);
+assert.equal(build444Readiness({mailKeyPresent:true,senderPresent:true,senderAddress:"invalid",trustedWitnessPinsPresent:false,witnessBindings:null}).mailConfiguration,"HOLD_CONFIGURE_VERIFIED_SENDER");
+assert.equal(build444Readiness({mailKeyPresent:false,senderPresent:false,senderAddress:null,trustedWitnessPinsPresent:true,witnessBindings:{keyA:{appIds:["yw"],originalDeviceId:"d",witnessId:"w",witnessRole:"r",active:false,independentOfSource:true}}}).approvedIndependentKeyBindings,0);
+console.log("Build 444 owner ceremony, mail provider and independent witness fail-closed tests passed.");
