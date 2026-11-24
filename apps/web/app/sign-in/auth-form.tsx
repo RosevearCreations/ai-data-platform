@@ -119,7 +119,7 @@ export function AuthForm({ allowSignUp, callbackUrl }: AuthFormProps) {
               ? "Create account"
               : "Sign in"}
         </button>
-        {mode === "sign-in" ? <p><Link href="/forgot-password">Forgot your password or need account recovery?</Link></p> : null}
+        {mode === "sign-in" ? <p><Link href="/forgot-password">Forgot your password?</Link> · <Link href="/account-access">Diagnose account access and 403 errors</Link></p> : null}
       </form>
     </div>
   );
