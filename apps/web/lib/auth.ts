@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { PostgresDialect } from "kysely";
 
 import { authPool, bootstrapFirstOwner } from "./database";
+import {build443TrustedOrigins} from "./build443-owner-auth-diagnostics";
 
 function requireServerEnv(name: "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL") {
   const value = process.env[name];
@@ -13,10 +14,9 @@ function requireServerEnv(name: "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL") {
   return value;
 }
 
-const trustedOrigins = (process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
-  .split(",")
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+const trustedOrigins = build443TrustedOrigins(
+  requireServerEnv("BETTER_AUTH_URL"),process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? ""
+);
 
 export const auth = betterAuth({
   database: {
