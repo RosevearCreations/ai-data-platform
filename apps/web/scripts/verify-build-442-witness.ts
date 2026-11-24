@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import {generateKeyPairSync,sign} from "node:crypto";
+import {verifyBuild442Witness,BUILD_442_SCHEMA} from "../lib/build442-witness-crypto";
+const {privateKey,publicKey}=generateKeyPairSync("ed25519");
+const pin={independent:publicKey.export({type:"spki",format:"pem"}).toString()};
+const payload={schema:BUILD_442_SCHEMA,appId:"yw",sourceCommit:"a".repeat(40),witnessId:"trusted-witness",witnessRole:"independent-observer",originalDeviceId:"original-device",observedAt:"2026-11-24T10:00:00.000Z",nonce:"0123456789abcdef01234567",interfaceCertified:true,receiverAckVerified:true,ownerAcceptanceVerified:true,keyId:"independent"};
+const signature=sign(null,Buffer.from(JSON.stringify(payload)),privateKey).toString("base64");
+const signed={...payload,signature};
+assert.equal(verifyBuild442Witness(signed,pin,new Date("2026-11-24T10:01:00.000Z")).appId,"yw");
+assert.throws(()=>verifyBuild442Witness({...signed,sourceCommit:"b".repeat(40)},pin,new Date("2026-11-24T10:01:00.000Z")));
+assert.throws(()=>verifyBuild442Witness({...signed,observedAt:"2026-11-24T09:00:00.000Z"},pin,new Date("2026-11-24T10:01:00.000Z")));
+assert.throws(()=>verifyBuild442Witness({...signed,ownerAcceptanceVerified:false},pin,new Date("2026-11-24T10:01:00.000Z")));
+assert.throws(()=>verifyBuild442Witness(signed,{},new Date("2026-11-24T10:01:00.000Z")));
+console.log("Build 442 original-device Ed25519 envelope tests passed.");
