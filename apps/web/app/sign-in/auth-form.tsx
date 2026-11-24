@@ -1,3 +1,4 @@
+import Link from "next/link";
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -118,6 +119,7 @@ export function AuthForm({ allowSignUp, callbackUrl }: AuthFormProps) {
               ? "Create account"
               : "Sign in"}
         </button>
+        {mode === "sign-in" ? <p><Link href="/forgot-password">Forgot your password or need account recovery?</Link></p> : null}
       </form>
     </div>
   );
