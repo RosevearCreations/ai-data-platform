@@ -19,7 +19,7 @@ export default async function Page(){
  <p><strong>Recovery closure:</strong> {s.closure.replaceAll("_"," ")}</p>
  <p><strong>Independent field acceptance:</strong> Separate original-device evidence required</p>
  {s.mailbox==="HOLD_UNVERIFIED_ORIGINAL_EMAIL"?<VerifyMailboxButton/>:null}
- <p><Link href="/forgot-password">Request original-owner password reset</Link> · <Link href="/owner-account-inventory">Recovery receipt history</Link></p>
+ <p><Link href="/forgot-password">Request original-owner password reset</Link> · <Link href="/owner-account-inventory">Recovery receipt history</Link> · <Link href="/owner-live-recovery">Build 447 original owner and seven-app acceptance</Link></p>
  <p>Use the account's registered mailbox for the password reset and email verification. The Resend sender address is not a substitute for the account login.</p>
  </section></main>;
 }
