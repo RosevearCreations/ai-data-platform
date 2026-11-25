@@ -33,7 +33,7 @@ export async function readBuild446OwnerClosure(userId:string,sessionCreatedAt:Da
   verificationProviderReceiptAt:verifyAccepted?.occurred_at.toISOString()??null,
   verificationLastEvent:verifyDelivery
  });
- return {...state,accountName:u.name,maskedLoginEmail:build445MaskedEmail(u.email),
+ return {...state,recoveryAcceptedAt:lastAccepted?.occurred_at.toISOString()??null,resetCompletedAt:latestReset?.occurred_at.toISOString()??null,accountName:u.name,maskedLoginEmail:build445MaskedEmail(u.email),
   verificationRequestsLast30m:verificationReceipts.filter(x=>x.stage==="REQUESTED"&&Date.now()-x.occurred_at.getTime()<1800000).length,
   recoveryReceipts:resetReceipts.length,mailboxVerificationReceipts:verificationReceipts.length};
 }
