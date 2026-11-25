@@ -9,7 +9,7 @@ export default function Page(){
  <p><strong>Witness enrollment:</strong> {s.originalDeviceEnrollment.replaceAll("_"," ")}</p>
  <p><strong>Independent acceptance:</strong> {s.fieldAcceptance.replaceAll("_"," ")}</p>
  <p>If the original account mailbox is accessible, configure a verified sender in Vercel, then <Link href="/forgot-password">request a reset email</Link>. If the account email is unknown or inaccessible, an authorized operator must verify ownership before any credential or email change.</p>
- <p><Link href="/sign-in">Sign in</Link> · <Link href="/account-access">Sign-in diagnostics</Link> · <Link href="/field-witness-certification">Field acceptance dashboard</Link></p>
+ <p><Link href="/sign-in">Sign in</Link> · <Link href="/account-access">Sign-in diagnostics</Link> · <Link href="/owner-account-inventory">Authenticated owner inventory and recovery audit</Link> · <Link href="/field-witness-certification">Field acceptance dashboard</Link></p>
  <p>Authenticated owner-role proof can be checked via <Link href="/api/owner-recovery-ceremony">owner-only ceremony readback</Link>. It never discloses account identities.</p>
  </section></main>;
 }
