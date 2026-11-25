@@ -30,7 +30,7 @@ export async function readBuild445OwnerInventory(userId:string){
  return {...ceremony,account:{name:u.name,maskedEmail:build445MaskedEmail(u.email),emailVerified:u.email_verified,hasCredential:u.credential},
   receipts:history.rows.map(r=>({stage:r.stage,occurredAt:r.occurred_at.toISOString(),deliveryState:r.provider_email_id===latestAccepted?.provider_email_id?build445ProviderState(providerEvent):"NOT_CHECKED"}))};
 }
-async function fetchBuild445ProviderEvent(emailId:string){
+export async function fetchBuild445ProviderEvent(emailId:string){
  if(!/^[a-zA-Z0-9-]{8,100}$/.test(emailId)||!process.env.RESEND_API_KEY)return null;
  try{
   const controller=new AbortController();
