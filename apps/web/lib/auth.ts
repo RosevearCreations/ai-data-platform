@@ -4,6 +4,7 @@ import { PostgresDialect } from "kysely";
 import { authPool, bootstrapFirstOwner } from "./database";
 import {build443TrustedOrigins} from "./build443-owner-auth-diagnostics";
 import {recordBuild445RecoveryStage} from "./build445-recovery-ledger";
+import {recordBuild446MailboxReceipt} from "./build446-mailbox-ledger";
 
 function requireServerEnv(name: "BETTER_AUTH_SECRET" | "BETTER_AUTH_URL") {
   const value = process.env[name];
@@ -63,6 +64,33 @@ export const auth = betterAuth({
       catch{console.error("build445_password_reset_audit_storage_unavailable");}
     },
     resetPasswordTokenExpiresIn: 900
+  },
+  emailVerification: {
+    // Verification is requested by an authenticated owner from a rate-limited route.
+    // Do not require it for initial sign-in: the existing owner is not yet verified.
+    sendOnSignUp: false,
+    sendVerificationEmail: async ({user,url}) => {
+      const token=process.env.RESEND_API_KEY;
+      const sender=process.env.AUTH_RECOVERY_FROM_EMAIL;
+      if(!token||!sender)throw Error("mailbox_verification_sender_unconfigured");
+      const canonical=new URL(requireServerEnv("BETTER_AUTH_URL"));
+      if(new URL(url).origin!==canonical.origin)throw Error("mailbox_verification_origin_mismatch");
+      const response=await fetch("https://api.resend.com/emails",{
+        method:"POST",
+        headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},
+        body:JSON.stringify({from:sender,to:[user.email],subject:"Verify your AI Data Platform account email",
+          text:`A verification was requested for the existing AI Data Platform account. Open this secure verification link: ${url}\n\nIf this was not requested, ignore this email.`})
+      });
+      if(!response.ok){
+        try{await recordBuild446MailboxReceipt(user.id,"PROVIDER_REJECTED");}catch{/* preserve original provider error */}
+        throw Error("mailbox_verification_provider_rejected");
+      }
+      const result=await response.json() as {id?:unknown};
+      if(typeof result.id==="string"&&/^[a-zA-Z0-9-]{8,100}$/.test(result.id)){
+        try{await recordBuild446MailboxReceipt(user.id,"PROVIDER_ACCEPTED",result.id);}
+        catch{console.error("build446_verification_receipt_storage_unavailable");}
+      }
+    }
   },
   advanced: {
     database: {
