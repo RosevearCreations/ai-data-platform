@@ -18,7 +18,7 @@ export default async function Page(){
   <div className="b449-grid">
    <article className="b449-card"><h2>Historically verified signed sources</h2><span className="b449-value">{s.history.verified} / 7</span><p className="b449-muted">{s.history.at??"No historic sweep"} — {s.history.state.replaceAll("_"," ")}</p></article>
    <article className="b449-card"><h2>Latest signed source challenges</h2><span className="b449-value">{s.latestSweep?.verified??0} / 7</span><p className="b449-muted">{s.latestSweep?.at??"No sweep"}; {s.latestSweep?.fresh?"recently checked":"stale until fresh validation completes"}</p></article>
-   <article className="b449-card"><h2>Reachable app origins</h2><span className="b449-value">{s.currentlyReachableOrigins} / 7</span><p className="b449-muted">An accessible website alone does not prove a signed source handshake.</p></article>
+   <article className="b449-card"><h2>Reachable app origins</h2><span className="b449-value">{s.currentlyReachableOrigins} / 7</span><p className="b449-muted">Reachable in the recent owner-authorized signed-source sweep. An accessible website alone is not a signed handshake.</p></article>
    <article className="b449-card"><h2>Independent original-device witnesses</h2><span className="b449-value">{s.independentOriginalDeviceWitnesses} / 7</span><p className="b449-muted">This separate field gate cannot be replaced by our approval or an ordinary source health receipt.</p></article>
   </div>
   <section className="b449-section">
