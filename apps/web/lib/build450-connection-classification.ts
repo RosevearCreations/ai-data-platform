@@ -30,7 +30,11 @@ export function classifyBuild450(input:Build450Input){
    originReachable,challengeVerifiedRecently:originReachable&&status?.challengeVerified===true,
    independentFieldWitness:input.originalWitnessCertified.has(appId)?"FRESH_INDEPENDENT_SOURCE_BOUND_PROOF":"NOT_VERIFIED",
    independentSignerKeyReady:input.sourceKeyReady.has(appId),
-   sourceHoldReason:signedCurrent?"NONE":status?.state??(proof?.detail??"NO_SOURCE_EVIDENCE"),
+   sourceHoldReason:signedCurrent?"NONE":
+     (status?.detail?.startsWith("VERIFIED_SIGNATURE_")||status?.detail==="SIGNED_CANDIDATE_UNADMITTED_SOURCE_TOKEN_MISSING"
+       ?status.detail
+       :proof?.detail?.startsWith("VERIFIED_SIGNATURE_")?proof.detail:
+        status?.state??(proof?.detail??"NO_SOURCE_EVIDENCE")),
    latestSourceObservedAt:status?.observedAt??null};
  });
  const current=rows.filter(x=>x.recentlySigned).length;
