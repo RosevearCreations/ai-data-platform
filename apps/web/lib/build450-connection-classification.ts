@@ -21,7 +21,8 @@ export function classifyBuild450(input:Build450Input){
   const proof=last?.sources?.[appId];
   const historical=!!allSeven?.sources?.[appId]?.verified;
   const signedCurrent=!!recent&&proof?.verified===true&&!!proof.receiptId&&/^[a-f0-9]{40}$/.test(proof.sourceCommit??"");
-  const originReachable=status?.originReachable===true;
+  const statusAge=status?elapsed(now,status.observedAt):NaN;
+  const originReachable=status?.originReachable===true&&Number.isFinite(statusAge)&&statusAge>=0&&statusAge<=2*60*60_000;
   const label=signedCurrent?"SIGNED_CHALLENGE_VERIFIED_RECENT":
    historical?"HISTORIC_SIGNED_SOURCE_CURRENT_REVALIDATION_REQUIRED":
    originReachable?"REACHABLE_SIGNED_SOURCE_HOLD":"SOURCE_CONNECTIVITY_HOLD";
