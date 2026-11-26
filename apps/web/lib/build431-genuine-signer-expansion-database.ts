@@ -62,6 +62,13 @@ export async function probeBuild431Source(appId:Build426AppId):Promise<Build431P
    const accepted=await admitSysopTelemetryEnvelope(body as {payload:Record<string,unknown>;signature:string},{expectedChallenge:challenge});
    receiptId=String(accepted.receiptId);challengeVerified=accepted.challengeVerified===true;
    detail=challengeVerified?"v12_signed_challenge_verified":"signed_telemetry_without_matching_challenge";
+  }else if(x.res.status===200&&body&&typeof body==="object"){
+   // A publicly readable signature is useful for diagnostics, but lack of source read authority
+   // must never become a signed telemetry admission.
+   const diagnosis=diagnoseBuild451SourceEnvelope(body,appId);
+   detail=diagnosis.cryptographicSignatureVerified
+     ?(diagnosis.code==="SIGNED_CANDIDATE_PENDING_FULL_ADMISSION"?"SIGNED_CANDIDATE_UNADMITTED_SOURCE_TOKEN_MISSING":diagnosis.code)
+     :"UNTRUSTED_PUBLIC_SOURCE_RESPONSE";
   }else if(x.res.status===401)detail=token?"token_rejected":"telemetry_token_not_configured";
   else if(x.res.status===503)detail="source_not_enrolled";
   else if(x.res.status===404)detail="telemetry_route_not_exposed";
