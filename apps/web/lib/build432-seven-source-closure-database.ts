@@ -2,6 +2,7 @@ import {randomBytes,randomUUID} from "node:crypto";
 import {performance} from "node:perf_hooks";
 import {withProtectedDatabase,withUserDatabase} from "./database";
 import {admitSysopTelemetryEnvelope} from "./sysop-telemetry-v1";
+import {diagnoseBuild451SourceEnvelope} from "./build451-signer-diagnostics";
 import {build426Origin,type Build426AppId} from "./master-seven-source-live-enrollment";
 import {probeBuild431Source} from "./build431-genuine-signer-expansion-database";
 import {latestBuild432HubRelay} from "./build432-original-host-relay-database";
@@ -18,14 +19,21 @@ async function publicCloudflareProbe(appId:"rosevear-comms-hub"|"devilndove"|"ro
  const origin=build426Origin(appId);if(!origin)return {appId,verified:false,receiptId:null,sourceCommit:null,detail:"origin_not_configured"};
  const sourceOrigin:string=origin;
  const challenge=randomBytes(32).toString("hex");
+ let candidateEnvelope:unknown=null;
  try{
   const x=await timedFetch(sourceOrigin+"/internal/rosevear/sysop/telemetry/v1",{method:"GET",headers:{Accept:"application/json","x-rosevear-telemetry-challenge":challenge}});
   const raw=await x.res.text();if(Buffer.byteLength(raw,"utf8")>20000)throw new Error("telemetry_response_too_large");
   if(x.res.status!==200)return {appId,verified:false,receiptId:null,sourceCommit:null,detail:"telemetry_http_"+x.res.status};
   const envelope=JSON.parse(raw) as {payload:Record<string,unknown>;signature:string};
+  candidateEnvelope=envelope;
   const admitted=await admitSysopTelemetryEnvelope(envelope,{expectedChallenge:challenge});
   return {appId,verified:admitted.protocolVersion==="1.2"&&admitted.challengeVerified,receiptId:String(admitted.receiptId),sourceCommit:String(envelope.payload.sourceCommit??""),detail:`v12_signed_challenge_verified_${x.latencyMs}ms`};
- }catch(e){return {appId,verified:false,receiptId:null,sourceCommit:null,detail:e instanceof Error?e.message:"cloudflare_probe_failed"};}
+ }catch(e){
+  const diagnosis=diagnoseBuild451SourceEnvelope(candidateEnvelope,appId);
+  const detail=diagnosis.cryptographicSignatureVerified&&diagnosis.code!=="SIGNED_CANDIDATE_PENDING_FULL_ADMISSION"
+   ?diagnosis.code:(e instanceof Error?e.message:"cloudflare_probe_failed");
+  return {appId,verified:false,receiptId:null,sourceCommit:null,detail};
+ }
 }
 async function probeSource(appId:Build426AppId):Promise<Probe>{
  if(appId==="rosevear-ai-hub"){
