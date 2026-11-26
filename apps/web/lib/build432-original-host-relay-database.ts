@@ -1,6 +1,6 @@
 import {createHash,randomBytes,randomUUID} from "node:crypto";
 import {withProtectedDatabase} from "./database";
-import {admitSysopTelemetryEnvelope} from "./sysop-telemetry-v1";
+import {admitSysopTelemetryEnvelope,verifySysopTelemetryEnvelope} from "./sysop-telemetry-v1";
 
 type Envelope={payload:Record<string,unknown>;signature:string};
 const TTL_MS=120_000;
@@ -13,6 +13,11 @@ export async function issueBuild432HubChallenge(){
 export async function admitBuild432HubRelay(envelope:Envelope){
  const payload=envelope?.payload;if(!payload||payload.appId!=="rosevear-ai-hub"||payload.protocolVersion!=="1.2")throw new Error("build432_hub_payload_invalid");
  const challenge=String(payload.challenge??"");if(!/^[a-f0-9]{64}$/.test(challenge))throw new Error("build432_hub_challenge_invalid");
+ // A forged or stale device signature must not consume a genuine Windows challenge.
+ // Verify against the configured original-host public pin before claiming the nonce.
+ const preflight=verifySysopTelemetryEnvelope(envelope,Date.now(),{expectedChallenge:challenge});
+ if(preflight.appId!=="rosevear-ai-hub"||preflight.protocolVersion!=="1.2"||!preflight.challengeVerified)
+  throw new Error("build451_original_host_preflight_rejected");
  const digest=createHash("sha256").update(challenge).digest("hex");
  const challengeRow=await withProtectedDatabase(async client=>{
   const r=await client.query<{challenge_id:string}>(`update app.master_build432_hub_challenges
