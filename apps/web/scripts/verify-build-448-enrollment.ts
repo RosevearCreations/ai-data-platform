@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {generateKeyPairSync} from "node:crypto";
 import {build448EnrollmentInventory} from "../lib/build448-genuine-witness-enrollment";
 import {build448Transport,build448RecoveryDecision} from "../lib/build448-provider-acceptance";
+import {build445ProviderState} from "../lib/build445-owner-recovery-contract";
 import {BUILD_447_APPS} from "../lib/build447-recovery-witness-reconciliation";
 const absent=build448EnrollmentInventory(null,null);
 assert.equal(absent.appsReady,0);assert.equal(absent.state,"HOLD_GENUINE_INDEPENDENT_KEY_ENROLLMENT");
@@ -16,6 +17,9 @@ const ready=build448EnrollmentInventory(JSON.stringify(keys),JSON.stringify(bind
 assert.equal(ready.appsReady,7);assert.equal(ready.activeValidPublicKeys,7);
 assert.equal(ready.acceptance,"HOLD_UNTIL_SEVEN_INDEPENDENT_ORIGINAL_DEVICE_SIGNATURES_ARE_VERIFIED");
 assert.equal(build448EnrollmentInventory(JSON.stringify(keys),JSON.stringify({...bindings,"rogue":{active:true}})).invalidEntries,1);
+assert.equal(build448EnrollmentInventory(JSON.stringify({...keys,"field-0":"-----BEGIN PRIVATE KEY-----SECRET-----END PRIVATE KEY-----"}),JSON.stringify(bindings)).appsReady,6);
+assert.equal(build445ProviderState("email.bounced_transient"),"PROVIDER_FAILED");
+assert.equal(build445ProviderState("email.delivered"),"PROVIDER_DELIVERED_NOT_MAILBOX_PROVEN");
 assert.equal(build448Transport("delivered",true).state,"DELIVERED");
 assert.equal(build448Transport("email.bounced",true).state,"FAILED");
 assert.equal(build448Transport("suppressed",true).state,"FAILED");
