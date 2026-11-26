@@ -3,6 +3,7 @@ import {performance} from "node:perf_hooks";
 import type {PoolClient,QueryResultRow} from "pg";
 import {withProtectedDatabase,withUserDatabase} from "./database";
 import {admitSysopTelemetryEnvelope,buildLocalAIDPTelemetryEnvelope} from "./sysop-telemetry-v1";
+import {diagnoseBuild451SourceEnvelope} from "./build451-signer-diagnostics";
 import {BUILD_405_APPLICATION_IDS} from "./master-assurance-renewal-security-comms-recertification";
 import {BUILD_426_TELEMETRY_PATH,build426Origin,build426Token,type Build426AppId} from "./master-seven-source-live-enrollment";
 import {BUILD_431_PROVIDER_MATRIX,BUILD_431_REQUIRED_SIGNED_SOURCES,build431Coverage,build431SourceState} from "./master-build431-genuine-signer-expansion";
@@ -47,11 +48,13 @@ export async function probeBuild431Source(appId:Build426AppId):Promise<Build431P
  try{const head=await timedFetch(origin,{method:"HEAD",headers:{Accept:"text/html,application/json"}});originReachable=head.res.status>=200&&head.res.status<500;}
  catch(e){return {appId,challengeSha256,origin,originReachable:false,credentialPresent:Boolean(token),telemetryStatus:null,telemetryLatencyMs:null,protocolVersion:null,challengeVerified:false,receiptId:null,sourceCommit:null,detail:e instanceof Error?e.name:"origin_probe_failed"};}
  let telemetryStatus:number|null=null,telemetryLatencyMs:number|null=null,protocolVersion:string|null=null,challengeVerified=false,receiptId:string|null=null,sourceCommit:string|null=null,detail=originReachable?"origin_reachable":"origin_failed";
+ let candidateEnvelope:unknown=null;
  try{
   const headers:Record<string,string>={Accept:"application/json","x-rosevear-telemetry-challenge":challenge};if(token)headers["x-rosevear-telemetry-token"]=token;
   const x=await timedFetch(origin+BUILD_426_TELEMETRY_PATH,{method:"GET",headers});telemetryStatus=x.res.status;telemetryLatencyMs=x.latencyMs;
   const raw=await x.res.text();if(Buffer.byteLength(raw,"utf8")>20000)throw new Error("build431_telemetry_response_too_large");
   let body:unknown=null;try{body=JSON.parse(raw);}catch{}
+  candidateEnvelope=body;
   if(x.res.status===200&&token&&body&&typeof body==="object"){
    const payload=(body as {payload?:Record<string,unknown>}).payload;
    protocolVersion=typeof payload?.protocolVersion==="string"?payload.protocolVersion:null;
@@ -63,7 +66,11 @@ export async function probeBuild431Source(appId:Build426AppId):Promise<Build431P
   else if(x.res.status===503)detail="source_not_enrolled";
   else if(x.res.status===404)detail="telemetry_route_not_exposed";
   else detail="telemetry_http_"+x.res.status;
- }catch(e){detail=e instanceof Error?e.message:"build431_probe_failed";}
+ }catch(e){
+  const diagnosis=diagnoseBuild451SourceEnvelope(candidateEnvelope,appId);
+  detail=diagnosis.cryptographicSignatureVerified&&diagnosis.code!=="SIGNED_CANDIDATE_PENDING_FULL_ADMISSION"
+   ?diagnosis.code:(e instanceof Error?e.message:"build431_probe_failed");
+ }
  return {appId,challengeSha256,origin,originReachable,credentialPresent:Boolean(token),telemetryStatus,telemetryLatencyMs,protocolVersion,challengeVerified,receiptId,sourceCommit,detail};
 }
 function summarize(probes:readonly Build431Probe[]){
