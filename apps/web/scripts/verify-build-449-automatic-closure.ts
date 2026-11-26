@@ -17,6 +17,7 @@ assert.equal(reconcileBuild449({...baseline,originalOwnerRecovered:false}).origi
 assert.equal(reconcileBuild449({...baseline,betterAuthEmailVerified:true}).additionalEmailVerificationFlag,"VERIFIED_BY_BETTER_AUTH_EMAIL_LINK");
 const signed=apps.map(a=>({...a,keyStatus:"READY_FOR_SIGNED_ORIGINAL_DEVICE_SUBMISSION",fieldStatus:"CERTIFIED_WITH_FRESH_ORIGINAL_EVIDENCE"}));
 assert.equal(reconcileBuild449({...baseline,apps:signed,independentlyEnrolledKeys:7,genuineFreshWitnesses:7}).sevenAppFieldCertification,"CERTIFIED_WITH_SEVEN_INDEPENDENT_ORIGINAL_WITNESSES");
+assert.equal(reconcileBuild449({...baseline,apps:signed,independentlyEnrolledKeys:7,genuineFreshWitnesses:0}).sevenAppFieldCertification,"HOLD_PENDING_SOURCE_SIDE_INDEPENDENT_SIGNERS");
 assert.equal(reconcileBuild449({...baseline,apps:[...signed,signed[0]]}).sevenAppGenuineWitnessCount,6);
 assert.equal(reconcileBuild449({...baseline,apps:signed,witnessReadback:"UNAVAILABLE_HOLD"}).sevenAppFieldCertification,"HOLD_PENDING_SOURCE_SIDE_INDEPENDENT_SIGNERS");
 const page=readFileSync(new URL("../app/owner-field-enrollment/page.tsx",import.meta.url),"utf8");
