@@ -9,6 +9,7 @@ assert.equal(recovered.originalOwnerRecoveryClosure,"RECOVERY_EVIDENCE_COMPLETE"
 assert.equal(recovered.additionalEmailVerificationFlag,"NOT_SET_DISTINCT_FROM_SUCCESSFUL_PASSWORD_RECOVERY");
 assert.equal(recovered.ownerRecoveryNextStep,"NO_PASSWORD_RESET_OR_JSON_ACTION_REQUIRED");
 assert.equal(recovered.sevenAppGenuineWitnessCount,0);
+assert.equal(recovered.firstGenuineWitnessPilot,"HOLD_NO_ORIGINAL_DEVICE_SIGNER_CONNECTED");
 assert.equal(recovered.sevenAppFieldCertification,"HOLD_PENDING_SOURCE_SIDE_INDEPENDENT_SIGNERS");
 assert.equal(recovered.manualJSONInputRequired,false);
 assert.equal(reconcileBuild449({...baseline,resetMessageDelivery:"UNKNOWN"}).originalOwnerRecoveryClosure,"HOLD_ORIGINAL_RECOVERY_DELIVERY");
