@@ -7,7 +7,7 @@ import {probeBuild431Source} from "./build431-genuine-signer-expansion-database"
 import {latestBuild432HubRelay} from "./build432-original-host-relay-database";
 import {BUILD_432_ALL_SOURCES,build432ClosureState} from "./master-build432-seven-source-closure";
 
-type Mode="CRON"|"PRODUCTION_BUILD";
+type Mode="CRON"|"PRODUCTION_BUILD"|"OPERATOR";
 type Probe={appId:Build426AppId;verified:boolean;receiptId:string|null;sourceCommit:string|null;detail:string};
 
 async function timedFetch(url:string,init:RequestInit){
@@ -60,6 +60,6 @@ export async function readBuild432Dashboard(userId:string){
 
 export async function refreshBuild432(userId:string){
  await readBuild432Dashboard(userId);
- await runBuild432Closure("CRON");
+ await runBuild432Closure("OPERATOR");
  return readBuild432Dashboard(userId);
 }
