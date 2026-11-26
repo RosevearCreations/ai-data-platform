@@ -26,6 +26,8 @@ export function reconcileBuild449(input:Build449Input){
    automaticOriginalDeviceEnrollment:false};
  });
  const certified=applications.filter(a=>a.state==="CERTIFIED").length;
+ const pilotComplete=applications.find(a=>a.state==="CERTIFIED");
+ const pilotReady=input.apps.find(a=>a.keyStatus==="READY_FOR_SIGNED_ORIGINAL_DEVICE_SUBMISSION"&&a.fieldStatus!=="CERTIFIED_WITH_FRESH_ORIGINAL_EVIDENCE");
  return {
   schema:BUILD_449_SCHEMA,build:449,
   originalOwnerSession:resetLinkAndLoginVerified?"RECOVERED_AND_AUTHENTICATED":"HOLD",
@@ -34,11 +36,13 @@ export function reconcileBuild449(input:Build449Input){
   providerDelivery:input.resetMessageDelivery,
   ownerRecoveryNextStep:resetLinkAndLoginVerified?"NO_PASSWORD_RESET_OR_JSON_ACTION_REQUIRED":"OWNER_AUTHENTICATION_NOT_YET_COMPLETE",
   originalOwnerRecoveryClosure:gmailControlEvidence?"RECOVERY_EVIDENCE_COMPLETE":"HOLD_ORIGINAL_RECOVERY_DELIVERY",
+  firstGenuineWitnessPilot:pilotComplete?"FIRST_INDEPENDENT_ORIGINAL_DEVICE_WITNESS_CERTIFIED":pilotReady?"HOLD_AWAITING_SIGNED_ORIGINAL_DEVICE_PILOT":"HOLD_NO_ORIGINAL_DEVICE_SIGNER_CONNECTED",
+  pilotAppId:pilotComplete?.appId??pilotReady?.appId??null,
   sevenAppKeyReadiness:input.independentlyEnrolledKeys,
   sevenAppGenuineWitnessCount:certified,
   appsExpected:BUILD_449_APPS.length,
   applications,
-  sevenAppFieldCertification:certified===7&&input.witnessReadback==="AVAILABLE"?"CERTIFIED_WITH_SEVEN_INDEPENDENT_ORIGINAL_WITNESSES":"HOLD_PENDING_SOURCE_SIDE_INDEPENDENT_SIGNERS",
+  sevenAppFieldCertification:certified===7&&input.genuineFreshWitnesses===7&&input.witnessReadback==="AVAILABLE"?"CERTIFIED_WITH_SEVEN_INDEPENDENT_ORIGINAL_WITNESSES":"HOLD_PENDING_SOURCE_SIDE_INDEPENDENT_SIGNERS",
   witnessReadback:input.witnessReadback,
   unattendedSourceDeviceSigning:false,
   manualJSONInputRequired:false,
