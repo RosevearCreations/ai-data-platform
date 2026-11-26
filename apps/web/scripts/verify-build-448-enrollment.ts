@@ -1,0 +1,27 @@
+import assert from "node:assert/strict";
+import {generateKeyPairSync} from "node:crypto";
+import {build448EnrollmentInventory} from "../lib/build448-genuine-witness-enrollment";
+import {build448Transport,build448RecoveryDecision} from "../lib/build448-provider-acceptance";
+import {BUILD_447_APPS} from "../lib/build447-recovery-witness-reconciliation";
+const absent=build448EnrollmentInventory(null,null);
+assert.equal(absent.appsReady,0);assert.equal(absent.state,"HOLD_GENUINE_INDEPENDENT_KEY_ENROLLMENT");
+assert.equal(build448EnrollmentInventory("{", "{}").appsReady,0);
+const keys:Record<string,string>={},bindings:Record<string,unknown>={};
+for(let i=0;i<BUILD_447_APPS.length;i++){
+ const {publicKey}=generateKeyPairSync("ed25519");
+ const id="field-"+i;keys[id]=publicKey.export({format:"pem",type:"spki"}).toString();
+ bindings[id]={active:true,independentOfSource:true,appIds:[BUILD_447_APPS[i]],originalDeviceId:"original-device-"+i,witnessId:"independent-"+i,witnessRole:"independent-observer"};
+}
+const ready=build448EnrollmentInventory(JSON.stringify(keys),JSON.stringify(bindings));
+assert.equal(ready.appsReady,7);assert.equal(ready.activeValidPublicKeys,7);
+assert.equal(ready.acceptance,"HOLD_UNTIL_SEVEN_INDEPENDENT_ORIGINAL_DEVICE_SIGNATURES_ARE_VERIFIED");
+assert.equal(build448EnrollmentInventory(JSON.stringify(keys),JSON.stringify({...bindings,"rogue":{active:true}})).invalidEntries,1);
+assert.equal(build448Transport("delivered",true).state,"DELIVERED");
+assert.equal(build448Transport("email.bounced",true).state,"FAILED");
+assert.equal(build448Transport("suppressed",true).state,"FAILED");
+assert.equal(build448Transport("delivery_delayed",true).state,"DELAYED");
+assert.equal(build448Transport(null,true).state,"UNKNOWN");
+assert.equal(build448Transport(null,false).state,"NOT_REQUESTED");
+assert.equal(build448RecoveryDecision({ownerRecovered:true,originalEmailVerified:false,resetEmailAccepted:true,resetEvent:"delivered",verificationEmailAccepted:false,verificationEvent:null}).closure,"HOLD_PENDING_ORIGINAL_MAILBOX_OR_PROVIDER_EVIDENCE");
+assert.equal(build448RecoveryDecision({ownerRecovered:true,originalEmailVerified:true,resetEmailAccepted:true,resetEvent:"delivered",verificationEmailAccepted:false,verificationEvent:null}).closure,"VERIFIED_ORIGINAL_OWNER_MAILBOX_AND_PROVIDER_DELIVERY");
+console.log("Build 448 provider delivery, actual mailbox identity, seven-app public-key custody and fail-closed enrollment tests passed.");
