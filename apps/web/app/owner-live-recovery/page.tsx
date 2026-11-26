@@ -18,7 +18,7 @@ export default async function Page(){
  <p><strong>Independent app witnesses:</strong> {s.witnessCount} of {s.witnessExpected} certified</p>
  <p><strong>Seven-application acceptance:</strong> {s.sevenApplicationClosure.replaceAll("_"," ")}</p>
  <p><strong>Readback availability:</strong> {s.witnessReadback.replaceAll("_"," ")}</p>
- <p><Link href="/owner-recovery-closure">Verify original mailbox</Link> · <Link href="/owner-account-inventory">Review reset receipts</Link> · <Link href="/field-witness-certification">View independent witness dashboard</Link></p>
+ <p><Link href="/owner-recovery-closure">Verify original mailbox</Link> · <Link href="/owner-account-inventory">Review reset receipts</Link> · <Link href="/field-witness-certification">View independent witness dashboard</Link> · <Link href="/owner-field-enrollment">Build 448 genuine key enrollment and mailbox closure</Link></p>
  <h2>Application-by-application witness review</h2>
  {s.applications.map(app=><p key={app.appId}><strong>{app.appId}:</strong> {app.state} — {app.reason.replaceAll("_"," ")}</p>)}
  <p>No automatic resends, password changes, peer deployments or synthetic witness certifications have occurred.</p>
