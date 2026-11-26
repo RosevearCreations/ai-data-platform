@@ -38,6 +38,7 @@ export default async function Page(){
   </section>
   <nav className="b449-links" aria-label="Build 450 evidence links">
    <Link href="/seven-source-telemetry-closure">Earlier signed telemetry closure</Link>
+   <Link href="/owner-signer-authority">Build 451 source signer recovery</Link>
    <Link href="/owner-field-enrollment">Independent field evidence</Link>
    <Link href="https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/BUILD_450_SIGNED_CONNECTION_DISCOVERY.md">Production evidence audit</Link>
   </nav>
