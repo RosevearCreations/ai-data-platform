@@ -58,6 +58,7 @@ export default async function Page(){
   <p className="b449-muted">No password changes, re-sent recovery emails, forged signatures or cross-application deployments were performed by this readback.</p>
  </section>
  <nav className="b449-links" aria-label="Owner evidence navigation">
+  <Link href="/owner-connection-validation">Build 450 genuine connection validation</Link>
   <Link href="/owner-live-recovery">Recovery event details</Link>
   <Link href="/field-witness-certification">Original-device source evidence</Link>
   <Link href="https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/BUILD_449_AUTOMATIC_ORIGINAL_OWNER_GMAIL_AND_WITNESS_CONTINUITY.md">Build 449 technical audit</Link>
