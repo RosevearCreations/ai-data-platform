@@ -28,7 +28,7 @@ export function classifyBuild450(input:Build450Input){
    originReachable?"REACHABLE_SIGNED_SOURCE_HOLD":"SOURCE_CONNECTIVITY_HOLD";
   return {appId,state:label,
    historicallySigned:historical,recentlySigned:signedCurrent,
-   originReachable,challengeVerifiedRecently:!!recent&&status?.challengeVerified===true,
+   originReachable,challengeVerifiedRecently:originReachable&&status?.challengeVerified===true,
    independentFieldWitness:input.originalWitnessCertified.has(appId)?"FRESH_INDEPENDENT_SOURCE_BOUND_PROOF":"NOT_VERIFIED",
    independentSignerKeyReady:input.sourceKeyReady.has(appId),
    sourceHoldReason:signedCurrent?"NONE":status?.state??(proof?.detail??"NO_SOURCE_EVIDENCE"),
