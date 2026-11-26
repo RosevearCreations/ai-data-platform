@@ -13,7 +13,7 @@ export default async function Page(){
  return <main className="shell b449-wrapper">
   <p className="eyebrow">Build 450 · Owner-authorized production connection discovery</p>
   <h1 className="b449-heading">Seven application connections · genuine evidence</h1>
-  <p className="b449-lead">We have confirmed historical signed communication across seven applications. This page independently reruns fresh, source-signed challenge checks when opened, subject to a ten-minute cooldown. Independent original Windows/device field certification remains a distinct proof requirement.</p>
+  <p className="b449-lead">We have confirmed historical signed communication across seven applications. This page independently reruns fresh, source-signed challenge checks and endpoint reachability when opened, subject to a ten-minute cooldown. Independent original Windows/device field certification remains a distinct proof requirement.</p>
   <Build450AutoValidate/>
   <div className="b449-grid">
    <article className="b449-card"><h2>Historically verified signed sources</h2><span className="b449-value">{s.history.verified} / 7</span><p className="b449-muted">{s.history.at??"No historic sweep"} — {s.history.state.replaceAll("_"," ")}</p></article>
