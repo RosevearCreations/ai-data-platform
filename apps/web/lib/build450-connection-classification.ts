@@ -1,7 +1,6 @@
 import {BUILD_432_ALL_SOURCES} from "./master-build432-seven-source-closure";
 export const BUILD_450=450 as const;
 export const BUILD_450_SCHEMA="rosevear.ai-data-platform.build450-real-source-validation.v1" as const;
-type SourceId=typeof BUILD_432_ALL_SOURCES[number];
 export type ClosureEvidence={mode:string;observedAt:string;verifiedSources:number;state:string;sources:Record<string,{verified:boolean;receiptId:string|null;sourceCommit:string|null;detail:string}>};
 export type LatestSourceStatus={appId:string;state:string;originReachable:boolean;credentialPresent:boolean;challengeVerified:boolean;observedAt:string;detail:string};
 export type Build450Input={
