@@ -26,6 +26,8 @@ export async function POST(request:Request){
   const newestOperator=prior.runs.find(r=>r.mode==="OPERATOR");
   if(newestOperator&&Date.now()-Date.parse(newestOperator.observed_at)<10*60_000)
    return Response.json({state:"RECENT_OWNER_VALIDATION_ALREADY_RECORDED",lastAt:newestOperator.observed_at},{status:200,headers:noStore});
+  // Refresh source reachability and signed V1.2 signer state before independent closure probes.
+  await refreshBuild431(session.user.id);
   await refreshBuild432(session.user.id);
   return Response.json({state:"OWNER_AUTHORIZED_FRESH_SIGNED_CHALLENGE_COMPLETED",report:await readBuild450ConnectionValidation(session.user.id,session.session.createdAt)},{headers:noStore});
  }catch{
