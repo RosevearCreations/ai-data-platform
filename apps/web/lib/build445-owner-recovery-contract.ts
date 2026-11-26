@@ -10,7 +10,7 @@ export function build445ProviderState(event:string|null|undefined){
  if(!event)return "NOT_CHECKED" as const;
  const normalized=event.trim().toLowerCase().replace(/^email\\./,"");
  if(["delivered","opened","clicked"].includes(normalized)return "PROVIDER_DELIVERED_NOT_MAILBOX_PROVEN" as const;
- if(["bounced","complained","failed","suppressed","canceled"].includes(event))return "PROVIDER_FAILED" as const;
+ if(["bounced","bounced_transient","bounced_permanent","bounced_undetermined","complained","failed","suppressed","canceled"].includes(normalized)return "PROVIDER_FAILED" as const;
  if(["sent","queued","scheduled","delivery_delayed"].includes(event))return "PENDING_OR_DELAYED" as const;
  return "PROVIDER_STATE_UNRECOGNIZED" as const;
 }
