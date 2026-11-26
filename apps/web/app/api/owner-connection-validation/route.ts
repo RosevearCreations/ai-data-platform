@@ -3,6 +3,7 @@ import {auth} from "@/lib/auth";
 import {readBuild449Dashboard} from "@/lib/build449-automatic-owner-dashboard";
 import {readBuild432Dashboard,refreshBuild432} from "@/lib/build432-seven-source-closure-database";
 import {readBuild450ConnectionValidation} from "@/lib/build450-live-discovery";
+import {refreshBuild431} from "@/lib/build431-genuine-signer-expansion-database";
 export const runtime="nodejs";export const dynamic="force-dynamic";export const maxDuration=60;
 const noStore={"Cache-Control":"no-store","X-Content-Type-Options":"nosniff"};
 export async function GET(){
