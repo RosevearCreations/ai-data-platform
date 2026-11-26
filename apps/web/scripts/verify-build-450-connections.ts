@@ -13,6 +13,7 @@ assert.equal(report.history.verified,7);
 assert.equal(report.currentSignedChallengeSources,1);
 assert.equal(report.currentConnectionState,"PARTIAL_SIGNED_LIVE");
 assert.equal(report.currentlyReachableOrigins,6);
+assert.equal(classifyBuild450({...{closures:[historical],sourceStatus:status,sourceKeyReady:new Set(),originalWitnessCertified:new Set(),ownerAuthorizedValidation:true,now:new Date("2026-11-27T04:00:00Z")}}).currentlyReachableOrigins,0);
 assert.equal(report.independentOriginalDeviceWitnesses,0);
 assert.equal(report.firstAuthenticSourceTelemetryPilot.appId,"ai-data-platform");
 assert.equal(report.rows.find(x=>x.appId==="icamp")?.state,"HISTORIC_SIGNED_SOURCE_CURRENT_REVALIDATION_REQUIRED");
