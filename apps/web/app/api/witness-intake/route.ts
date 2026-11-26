@@ -19,16 +19,16 @@ export async function POST(request:Request){
   requireBuild443WitnessBinding(v,bindings);
   const id=randomUUID();
   await withProtectedDatabase(async client=>{
-   await client.query("begin");
-   try{
     await client.query(`insert into app.master_build441_field_witness(witness_id,app_id,source_commit,witness_role,original_device_id,observed_at,signature_verified,independent_of_source,interface_certified,receiver_ack_verified,owner_acceptance_verified,verifier_receipt_id)
      values($1,$2,$3,$4,$5,$6,true,true,true,true,true,$7)`,[id,witness.appId,witness.sourceCommit,witness.witnessRole,witness.originalDeviceId,witness.observedAt,witness.witnessId]);
     await client.query("insert into app.master_build442_witness_replay(key_id,nonce,app_id,witness_id) values($1,$2,$3,$4)",[v.keyId,witness.nonce,witness.appId,id]);
-    await client.query("commit");
-   }catch(e){await client.query("rollback");throw e;}
   });
   return Response.json({accepted:true,witnessId:id},{status:202,headers:{"Cache-Control":"no-store"}});
- }catch{
-  return Response.json({error:"invalid_or_duplicate_witness"},{status:400,headers:{"Cache-Control":"no-store"}});
+ }catch(e){
+  const code=e&&typeof e==="object"&&"code" in e?String(e.code):"";
+  if(code==="23505")return Response.json({error:"duplicate_witness_nonce"},{status:409,headers:{"Cache-Control":"no-store"}});
+  if(e instanceof Error&&/^(invalid_|incomplete_|witness_|field_|trusted_|unverified_|source_)/.test(e.message))
+   return Response.json({error:"invalid_or_unapproved_original_witness"},{status:400,headers:{"Cache-Control":"no-store"}});
+  return Response.json({error:"witness_intake_storage_unavailable"},{status:503,headers:{"Cache-Control":"no-store"}});
  }
 }
