@@ -29,7 +29,7 @@ export function build448EnrollmentInventory(pinsText:string|null|undefined,bindi
    try{
     const key=createPublicKey(pem);
     if(key.asymmetricKeyType!=="ed25519"){invalidEntries++;continue;}
-    configs.push({keyId,pem,binding:v as Build443WitnessBinding});
+    configs.push({keyId,pem,binding:v as unknown as Build443WitnessBinding});
    }catch{invalidEntries++;}
   }
  }
