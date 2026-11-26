@@ -43,7 +43,7 @@ export default async function Page(){
  </div>
  <section className="b449-section">
   <h2>Seven applications · automatic source check</h2>
-  <p className="b449-muted">No JSON entry is requested. Source agents can submit genuine signed evidence through the existing protected witness endpoint once their independent key custody is established.</p>
+  <p className="b449-muted">No JSON entry is requested. Source agents can submit genuine signed evidence through the existing protected witness endpoint once their independent key custody is established.</p><p><strong>First genuine original-device pilot:</strong> {s.firstGenuineWitnessPilot.replaceAll("_"," ")}{s.pilotAppId?" — "+s.pilotAppId:""}</p>
   <div className="b449-apps">
   {s.applications.map(a=><article className="b449-app" key={a.appId}>
    <strong>{a.appId}</strong>
