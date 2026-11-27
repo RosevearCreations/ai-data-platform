@@ -35,7 +35,7 @@ export default async function Page(){
   </article>):<article className="b449-app"><strong>No Site 12 events received</strong>
    <p>Master webhook receipts cannot prove the guest journey yet. Do not infer success from an empty trace.</p></article>}</div>
  </section>
- <nav className="b449-links"><Link href="/owner-signer-authority">Signer authority</Link>
+ <nav className="b449-links"><Link href="/owner-intake-readiness">Build 453 automatic intake readiness</Link><Link href="/owner-signer-authority">Signer authority</Link>
  <Link href="/owner-connection-validation">Seven-app connections</Link>
  <Link href="https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/BUILD_452_SITE12_SOURCE_OF_TRUTH_ACCEPTANCE.md">Complete Site 12 source acceptance guide</Link></nav>
  </main>;
