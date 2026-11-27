@@ -29,6 +29,7 @@ export default async function Page(){
     </article>)}</div>}
   </section>
   <nav className="b449-links">
+   <Link href="/owner-exception-history">Build 455 durable history and escalations</Link>
    <Link href="/owner-intake-readiness">Build 453 intake source</Link>
    <Link href="/owner-site12-trace">Original Site 12 trace</Link>
    <Link href="/owner-signer-authority">Signed-source authority</Link>
