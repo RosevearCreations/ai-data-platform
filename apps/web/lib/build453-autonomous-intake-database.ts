@@ -74,3 +74,15 @@ export async function readBuild453OwnerIntake(userId:string){
   sourceOfTruth:"protected_aggregate_of_existing_intake_and_signed_source_receipts",
   rawKeysOrGuestDataReturned:false};
 }
+
+export async function readBuild453ProtectedIntake(){
+ const [report,latest]=await Promise.all([
+  inspectBuild453(),
+  withProtectedDatabase(async client=>{
+   const r=await client.query<{captured_at:Date;state:string}>(
+    "select captured_at,state from app.master_build453_intake_watch order by captured_at desc limit 1");
+   return r.rows[0]??null;
+  })
+ ]);
+ return {...report,lastAutonomousCheck:latest?{at:latest.captured_at.toISOString(),state:latest.state}:null};
+}
