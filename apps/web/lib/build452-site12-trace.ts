@@ -63,7 +63,9 @@ export function build452Site12Trace(input:readonly Build452Event[],options:{now?
    operationId:chronological[0].operationId,siteNumber:"12",firstEventAt:chronological[0].occurredAt,
    newestObservedAt:new Date(newest).toISOString(),sourceAgeMinutes:ageMinutes,stale,
    stages:[...latestByStage.keys()].sort(),missingStages:missing,
-   maintenanceState:!maintenance?"NO_REPAIR_EVENTS":has("maintenance.resolved")?"REPORTED_RESOLVED":has("maintenance.acknowledged")?"ACKNOWLEDGED":"AWAITING_ACK",
+   maintenanceState:!maintenance?"NO_REPAIR_EVENTS":
+    latestMaintenance?.eventType==="camp.site.maintenance.resolved"?"REPORTED_RESOLVED":
+    latestMaintenance?.eventType==="camp.site.maintenance.acknowledged"?"ACKNOWLEDGED":"AWAITING_ACK",
    addonState:!addon?"NO_ADDON_EVENTS":missing.length===0?"REPORTED_POSTED_AND_CAPTURED":"PARTIAL_OR_UNRECONCILED",
    folioReference:folio,financialResult:addon&&missing.length===0?"SOURCE_REPORTS_FOLIO_AND_PAYMENT":"NOT_RECONCILED",
    margin:"UNAVAILABLE_WITHOUT_SOURCE_COSTS",sourceEvidenceCount:chronological.length};
