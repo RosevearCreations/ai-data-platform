@@ -42,7 +42,12 @@ export function build452Site12Trace(input:readonly Build452Event[],options:{now?
    highestByStage.set(stage,e.version);latestByStage.set(stage,e);
   }
   const has=(s:string)=>latestByStage.has(s);
-  const maintenance=chronological.some(e=>e.eventType.startsWith("camp.site.maintenance."));
+  // A delayed older "resolved" message must not undo a newer staff acknowledgement.
+  const maintenanceEvents=chronological.filter(e=>e.eventType.startsWith("camp.site.maintenance."));
+  const latestMaintenance=[...maintenanceEvents].sort((a,b)=>b.version-a.version||Date.parse(b.occurredAt)-Date.parse(a.occurredAt))[0];
+  const olderResolution=maintenanceEvents.some(e=>e.eventType==="camp.site.maintenance.resolved"&&latestMaintenance&&e.version<latestMaintenance.version);
+  if(olderResolution)outOfOrder++;
+  const maintenance=maintenanceEvents.length>0;
   const addon=chronological.some(e=>e.eventType.startsWith("camp.site.addon.")||e.eventType.startsWith("camp.site.payment.")||e.eventType.startsWith("camp.site.folio."));
   const required:string[]=[];
   if(maintenance)required.push("maintenance.requested","maintenance.acknowledged");
