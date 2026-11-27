@@ -28,7 +28,8 @@ assert.equal(assessBuild453({...ready,site12EventReceipts:2,lastSite12ReceiptAt:
 const sql=readFileSync(new URL("../../../db/migrations/0201_master_build453_intake_watch.sql",import.meta.url),"utf8");
 assert.match(sql,/security definer/i);
 assert.match(sql,/revoke all on function app\.build453_intake_source_summary\(\) from public/i);
-assert.match(sql,/on conflict/i);
+const watcher=readFileSync(new URL("../lib/build453-autonomous-intake-database.ts",import.meta.url),"utf8");
+assert.match(watcher,/on conflict/i);
 const cron=readFileSync(new URL("../app/api/cron/build427-rollup/route.ts",import.meta.url),"utf8");
 assert.ok(cron.includes("runBuild453AutonomousIntakeWatch"));
 assert.ok(cron.indexOf("runBuild453AutonomousIntakeWatch")<cron.indexOf("sweepBuild427Protected()"));
