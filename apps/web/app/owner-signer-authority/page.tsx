@@ -37,6 +37,7 @@ export default async function Page(){
    <p className="b449-muted">No application secret, source pin, receiver role, account credential or original Windows service was changed automatically.</p>
   </section>
   <nav className="b449-links">
+   <Link href="/owner-site12-trace">Build 452 Site 12 event trace</Link>
    <Link href="/owner-connection-validation">Run owner-authorized live source challenge</Link>
    <Link href="/owner-field-enrollment">Original-device field witness records</Link>
    <Link href="https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/BUILD_451_SOURCE_OF_TRUTH_SIGNER_RECOVERY.md">Build 451 evidence and next Source of Truth acceptance</Link>
