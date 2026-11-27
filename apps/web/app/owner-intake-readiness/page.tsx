@@ -41,6 +41,7 @@ export default async function Page(){
    <p className="b449-muted">The existing daily authenticated Master health process records this intake check separately from seven-source signed telemetry. The browser always queries current database counts.</p>
   </section>
   <nav className="b449-links">
+   <Link href="/owner-exceptions">Build 454 owner exceptions</Link>
    <Link href="/owner-site12-trace">Build 452 Site 12 trace</Link>
    <Link href="/owner-signer-authority">Signed source authority</Link>
    <Link href="https://github.com/RosevearCreations/ai-data-platform/blob/main/docs/BUILD_453_INDEPENDENT_MASTER_OPERATIONS.md">Build 453 handoff and evidence</Link>
