@@ -6,7 +6,10 @@ import {BUILD455_SCHEMA,nextDiagnosticAt,escalationFor,recoveryTransition} from 
 
 type StoredCase={exception_key:string;status:"OPEN"|"RECOVERY_VERIFIED";};
 export async function runBuild455ProtectedExceptionSweep(){
- const input=await readBuild453ProtectedIntake();
+ let input:Awaited<ReturnType<typeof readBuild453ProtectedIntake>>;
+ let diagnosticReadAttempts=1;
+ try{input=await readBuild453ProtectedIntake();}
+ catch{diagnosticReadAttempts=2;input=await readBuild453ProtectedIntake();}
  const observed=classifyBuild454(input);
  const now=new Date();
  const open=new Map(observed.exceptions.map(e=>[e.id,e]));
@@ -52,7 +55,7 @@ export async function runBuild455ProtectedExceptionSweep(){
   }
   return {newlyOpen,recovered,open:open.size};
  });
- return {schema:BUILD455_SCHEMA,build:455,...result,
+ return {schema:BUILD455_SCHEMA,build:455,...result,diagnosticReadAttempts,
   evidence:"CURRENT_PROTECTED_MASTER_SNAPSHOT",
   authority:"DIAGNOSTIC_ONLY_NO_EXTERNAL_MUTATIONS",
   schedule:"EXISTING_DAILY_MASTER_CRON_WITH_DUE_TIME_CLASSIFICATION"};
