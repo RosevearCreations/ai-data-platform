@@ -33,6 +33,6 @@ const crossTenant=build452Site12Trace([repair,{...repair,tenantId:"other-tenant"
 assert.equal(crossTenant.journeyCount,2);
 const wrongSite=build452Site12Trace([repair,{...repair,eventId:"wrong",siteNumber:"18"}],{now});
 assert.equal(wrongSite.excludedEvents,1);
-const versionLate=build452Site12Trace([repair,{...ack,eventId:"later",version:10},{...ack,eventId:"older",version:2}],{now});
+const versionLate=build452Site12Trace([repair,{...ack,eventId:"later",version:10},{...ack,eventId:"older",version:2,occurredAt:new Date(now.getTime()-60000).toISOString()}],{now});
 assert.equal(versionLate.outOfOrderIgnored,1);
 console.log("Build 452 Site12 duplicate, conflicting, out-of-order, stale, tenancy, missing paid stages and no-fabricated-margin checks passed.");
