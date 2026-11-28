@@ -22,15 +22,16 @@ export function forecastBuild457(cases:readonly ForecastCase[],events:readonly H
   const age=millis(c.first_seen_at);
   const ageHrs=Number.isFinite(age)?Math.max(0,(now.getTime()-age)/3600_000):0;
   // The outcome is a transparent rule-based signal, never an ungrounded failure probability.
-  const riskBand=opens===0?"INSUFFICIENT_EVIDENCE":reopenings>=2||opens>=10?"HIGH":reopenings>=1||opens>=3?"ELEVATED":"LOW";
+  const riskBand:Forecast["riskBand"]=opens===0?"INSUFFICIENT_EVIDENCE":reopenings>=2||opens>=10?"HIGH":reopenings>=1||opens>=3?"ELEVATED":"LOW";
   const priority:"URGENT"|"REVIEW"|"MONITOR"=c.escalation==="OWNER_REVIEW"&&(ageHrs>=72||riskBand==="HIGH")?"URGENT":
    c.escalation==="OWNER_REVIEW"||riskBand==="ELEVATED"?"REVIEW":"MONITOR";
   const recommendationCode=c.owner_scope!=="AI_DATA_PLATFORM"?"REQUEST_ORIGINAL_SOURCE_EVIDENCE":
    c.action_code==="RETRY_READ_ONLY_INTAKE"?"RECHECK_PROTECTED_MASTER_READBACK":
    "REVIEW_MASTER_INTAKE_CONFIGURATION";
-  return {key:c.exception_key,riskBand,priority,reopeningCount:reopenings,openObservations:opens,
+  const forecast:Forecast={key:c.exception_key,riskBand,priority,reopeningCount:reopenings,openObservations:opens,
    evidenceWindowDays:windowDays,recommendationCode,
    explanation:"Assessment uses recorded OPEN/RECOVERY_VERIFIED history and owner aging, not a statistical recurrence probability.",
    advisoryOnly:true};
+  return forecast;
  }).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)||a.key.localeCompare(b.key));
 }
