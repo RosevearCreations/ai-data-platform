@@ -29,6 +29,6 @@ export default async function Page(){
      <strong>{d.day}</strong><p>Open {d.open}; owner escalations {d.escalations}; verified recovered {d.recovered}</p>
     </article>)}</div>}</section>
   <p className="b449-muted">Daily snapshots use a bounded recent evidence window. Empty history is reported as N/A, not a perfect recovery score. Diagnostic-only: no automatic external, device, credential or payment changes.</p>
-  <nav className="b449-links"><Link href="/owner-exception-history">Build 455 durable case history</Link><Link href="/owner-exceptions">Build 454 current exceptions</Link></nav>
+  <nav className="b449-links"><Link href="/owner-recurrence-forecast">Build 457 recurrence forecasts</Link><Link href="/owner-exception-history">Build 455 durable case history</Link><Link href="/owner-exceptions">Build 454 current exceptions</Link></nav>
  </main>;
 }
