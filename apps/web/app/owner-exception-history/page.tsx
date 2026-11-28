@@ -37,6 +37,6 @@ export default async function Page(){
    </article>)}</div>}
   </section>
   <p className="b449-muted">The daily scheduler may execute later than a diagnostic due time. This dashboard cannot trigger physical devices, credential rotation, payments, outbound messages or cross-app repairs.</p>
-  <nav className="b449-links"><Link href="/owner-exceptions">Build 454 live exceptions</Link><Link href="/owner-intake-readiness">Master intake readiness</Link></nav>
+  <nav className="b449-links"><Link href="/owner-incident-intelligence">Build 456 incident intelligence</Link><Link href="/owner-exceptions">Build 454 live exceptions</Link><Link href="/owner-intake-readiness">Master intake readiness</Link></nav>
  </main>;
 }
