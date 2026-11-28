@@ -11,6 +11,7 @@ if (!["promotion", "legacy"].includes(suite)) {
 const suites = {
   promotion: [
     ["pnpm", ["typecheck"], "workspace typecheck"],
+    ["pnpm", ["--filter", "@rosevear/ai-data-web", "exec", "tsx", "scripts/verify-build-456.ts"], "Build 456 incident intelligence dedup, RLS and recovery evidence"],
     ["pnpm", ["--filter", "@rosevear/ai-data-web", "exec", "tsx", "scripts/verify-build-455.ts"], "Build 455 durable exception and recovery verification"],
     ["node", ["apps/web/scripts/verify-build454.mjs"], "Build 454 owner exception and recovery safety policy"],
     ["pnpm", ["lint"], "workspace lint"],
