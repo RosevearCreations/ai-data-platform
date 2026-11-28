@@ -5,6 +5,9 @@ export type Forecast={key:string;riskBand:"INSUFFICIENT_EVIDENCE"|"LOW"|"ELEVATE
  priority:"MONITOR"|"REVIEW"|"URGENT";reopeningCount:number;openObservations:number;
  evidenceWindowDays:number;recommendationCode:string;explanation:string;advisoryOnly:true};
 function millis(v:Date|string){const n=new Date(v).getTime();return Number.isFinite(n)?n:NaN;}
+function priorityRank(priority:"URGENT"|"REVIEW"|"MONITOR"):number{
+ switch(priority){case "URGENT":return 0;case "REVIEW":return 1;case "MONITOR":return 2;}
+}
 export function forecastBuild457(cases:readonly ForecastCase[],events:readonly HistoryEvidence[],now=new Date()):Forecast[]{
  const windowDays=30,cutoff=now.getTime()-windowDays*86400_000;
  return cases.filter(c=>c.status==="OPEN").map(c=>{
@@ -29,6 +32,5 @@ export function forecastBuild457(cases:readonly ForecastCase[],events:readonly H
    evidenceWindowDays:windowDays,recommendationCode,
    explanation:"Assessment uses recorded OPEN/RECOVERY_VERIFIED history and owner aging, not a statistical recurrence probability.",
    advisoryOnly:true};
- }).sort((a,b)=>({URGENT:0,REVIEW:1,MONITOR:2}[a.priority]-{URGENT:0,REVIEW:1,MONITOR:2}[b.priority])||
- a.key.localeCompare(b.key));
+ }).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)||a.key.localeCompare(b.key));
 }
