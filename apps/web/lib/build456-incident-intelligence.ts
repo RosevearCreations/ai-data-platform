@@ -24,7 +24,7 @@ export function assessBuild456(cases:readonly CaseEvidence[],events:readonly His
  const verifiedRecoveryEvents=new Set(events.filter(e=>e.outcome==="RECOVERY_VERIFIED").map(e=>e.exception_key)).size;
  // Measured outcome of observed incidents, never presented as success of an unrecorded retry.
  const effectiveness=observedRecoveryCandidates>0?
-  Math.round(1000*verifiedRecoveryEvents/observedRecoveryCandidates)/10:null;
+  Math.min(100,Math.round(1000*verifiedRecoveryEvents/observedRecoveryCandidates)/10):null;
  const ownerAge=owner.map(c=>({
   key:c.exception_key,
   ageHours:at(c.first_seen_at)===null?null:Math.max(0,Math.floor((time-(at(c.first_seen_at)??time))/3600000)),
